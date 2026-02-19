@@ -38,15 +38,15 @@ class SoConIPduIdentifier(Referrable):
         return False
 
     header_id: Optional[PositiveInteger]
-    pdu_collection_ref: Optional[ARRef]
-    pdu_collection_trigger_ref: Optional[ARRef]
+    pdu_collection_ref: Optional[Any]
+    pdu_collection_trigger_ref: Optional[PduCollectionTriggerEnum]
     pdu_triggering_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SoConIPduIdentifier."""
         super().__init__()
         self.header_id: Optional[PositiveInteger] = None
-        self.pdu_collection_ref: Optional[ARRef] = None
-        self.pdu_collection_trigger_ref: Optional[ARRef] = None
+        self.pdu_collection_ref: Optional[Any] = None
+        self.pdu_collection_trigger_ref: Optional[PduCollectionTriggerEnum] = None
         self.pdu_triggering_ref: Optional[ARRef] = None
     def serialize(self) -> ET.Element:
         """Serialize SoConIPduIdentifier to XML element.
@@ -55,7 +55,7 @@ class SoConIPduIdentifier(Referrable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -115,7 +115,7 @@ class SoConIPduIdentifier(Referrable):
             serialized = ARObject._serialize_item(self.pdu_triggering_ref, "PduTriggering")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PDU-TRIGGERING")
+                wrapped = ET.Element("PDU-TRIGGERING-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -148,19 +148,19 @@ class SoConIPduIdentifier(Referrable):
         # Parse pdu_collection_ref
         child = ARObject._find_child_element(element, "PDU-COLLECTION")
         if child is not None:
-            pdu_collection_ref_value = child.text
+            pdu_collection_ref_value = ARRef.deserialize(child)
             obj.pdu_collection_ref = pdu_collection_ref_value
 
         # Parse pdu_collection_trigger_ref
         child = ARObject._find_child_element(element, "PDU-COLLECTION-TRIGGER")
         if child is not None:
-            pdu_collection_trigger_ref_value = PduCollectionTriggerEnum.deserialize(child)
+            pdu_collection_trigger_ref_value = ARRef.deserialize(child)
             obj.pdu_collection_trigger_ref = pdu_collection_trigger_ref_value
 
         # Parse pdu_triggering_ref
-        child = ARObject._find_child_element(element, "PDU-TRIGGERING")
+        child = ARObject._find_child_element(element, "PDU-TRIGGERING-REF")
         if child is not None:
-            pdu_triggering_ref_value = ARObject._deserialize_by_tag(child, "PduTriggering")
+            pdu_triggering_ref_value = ARRef.deserialize(child)
             obj.pdu_triggering_ref = pdu_triggering_ref_value
 
         return obj

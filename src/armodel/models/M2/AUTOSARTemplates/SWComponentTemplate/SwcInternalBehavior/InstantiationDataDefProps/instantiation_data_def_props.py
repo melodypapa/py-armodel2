@@ -53,7 +53,7 @@ class InstantiationDataDefProps(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize parameter_ref
@@ -117,7 +117,7 @@ class InstantiationDataDefProps(ARObject):
         # Parse parameter_ref
         child = ARObject._find_child_element(element, "PARAMETER")
         if child is not None:
-            parameter_ref_value = ARObject._deserialize_by_tag(child, "AutosarParameterRef")
+            parameter_ref_value = ARRef.deserialize(child)
             obj.parameter_ref = parameter_ref_value
 
         # Parse sw_data_def
@@ -129,7 +129,7 @@ class InstantiationDataDefProps(ARObject):
         # Parse variable_instance_ref
         child = ARObject._find_child_element(element, "VARIABLE-INSTANCE")
         if child is not None:
-            variable_instance_ref_value = ARObject._deserialize_by_tag(child, "AutosarVariableRef")
+            variable_instance_ref_value = ARRef.deserialize(child)
             obj.variable_instance_ref = variable_instance_ref_value
 
         return obj

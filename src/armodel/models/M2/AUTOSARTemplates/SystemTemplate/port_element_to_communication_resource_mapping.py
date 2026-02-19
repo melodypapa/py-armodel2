@@ -68,7 +68,7 @@ class PortElementToCommunicationResourceMapping(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -195,25 +195,25 @@ class PortElementToCommunicationResourceMapping(Identifiable):
         # Parse mode_ref
         child = ARObject._find_child_element(element, "MODE")
         if child is not None:
-            mode_ref_value = ARObject._deserialize_by_tag(child, "ModeDeclarationGroup")
+            mode_ref_value = ARRef.deserialize(child)
             obj.mode_ref = mode_ref_value
 
         # Parse parameter_data_in_system_instance_ref
         child = ARObject._find_child_element(element, "PARAMETER-DATA-IN-SYSTEM-INSTANCE-REF")
         if child is not None:
-            parameter_data_in_system_instance_ref_value = ARObject._deserialize_by_tag(child, "ParameterDataPrototype")
+            parameter_data_in_system_instance_ref_value = ARRef.deserialize(child)
             obj.parameter_data_in_system_instance_ref = parameter_data_in_system_instance_ref_value
 
         # Parse trigger_ref
         child = ARObject._find_child_element(element, "TRIGGER")
         if child is not None:
-            trigger_ref_value = ARObject._deserialize_by_tag(child, "Trigger")
+            trigger_ref_value = ARRef.deserialize(child)
             obj.trigger_ref = trigger_ref_value
 
         # Parse variable_data_system_instance_ref
         child = ARObject._find_child_element(element, "VARIABLE-DATA-SYSTEM-INSTANCE-REF")
         if child is not None:
-            variable_data_system_instance_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            variable_data_system_instance_ref_value = ARRef.deserialize(child)
             obj.variable_data_system_instance_ref = variable_data_system_instance_ref_value
 
         return obj

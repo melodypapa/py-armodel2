@@ -54,7 +54,7 @@ class McSwEmulationMethodSupport(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize base_reference_ref
@@ -62,7 +62,7 @@ class McSwEmulationMethodSupport(ARObject):
             serialized = ARObject._serialize_item(self.base_reference_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("BASE-REFERENCE")
+                wrapped = ET.Element("BASE-REFERENCE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -100,7 +100,7 @@ class McSwEmulationMethodSupport(ARObject):
             serialized = ARObject._serialize_item(self.reference_table_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("REFERENCE-TABLE")
+                wrapped = ET.Element("REFERENCE-TABLE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -140,9 +140,9 @@ class McSwEmulationMethodSupport(ARObject):
         obj.__init__()
 
         # Parse base_reference_ref
-        child = ARObject._find_child_element(element, "BASE-REFERENCE")
+        child = ARObject._find_child_element(element, "BASE-REFERENCE-REF")
         if child is not None:
-            base_reference_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            base_reference_ref_value = ARRef.deserialize(child)
             obj.base_reference_ref = base_reference_ref_value
 
         # Parse category
@@ -162,9 +162,9 @@ class McSwEmulationMethodSupport(ARObject):
                     obj.element_groups.append(child_value)
 
         # Parse reference_table_ref
-        child = ARObject._find_child_element(element, "REFERENCE-TABLE")
+        child = ARObject._find_child_element(element, "REFERENCE-TABLE-REF")
         if child is not None:
-            reference_table_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            reference_table_ref_value = ARRef.deserialize(child)
             obj.reference_table_ref = reference_table_ref_value
 
         # Parse short_label

@@ -27,7 +27,12 @@ class NameConverter:
             l4 → L-4 (language-specific element)
             l5 → L-5 (language-specific element)
             l10 → L-10 (language-specific element)
+            timestamp → T (timestamp attribute)
         """
+        # Special case for timestamp attribute
+        if name == 'timestamp':
+            return "T"
+
         # Handle language-specific elements (l1, l2, l3, l4, l5, l10)
         if name in ['l1', 'l2', 'l3', 'l4', 'l5']:
             return f"L-{name[1]}"
@@ -93,7 +98,12 @@ class NameConverter:
             L-4 → l4 (language-specific element)
             L-5 → l5 (language-specific element)
             L-10 → l10 (language-specific element)
+            T → timestamp (timestamp attribute)
         """
+        # Special case for timestamp attribute
+        if tag == 'T':
+            return "timestamp"
+
         # Handle language-specific elements (L-1, L-2, L-3, L-4, L-5, L-10)
         if tag in ['L-1', 'L-2', 'L-3', 'L-4', 'L-5']:
             return f"l{tag[2]}"

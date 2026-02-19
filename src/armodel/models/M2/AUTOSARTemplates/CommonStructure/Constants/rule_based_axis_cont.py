@@ -57,7 +57,7 @@ class RuleBasedAxisCont(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize category
@@ -161,7 +161,7 @@ class RuleBasedAxisCont(ARObject):
         # Parse sw_arraysize_ref
         child = ARObject._find_child_element(element, "SW-ARRAYSIZE")
         if child is not None:
-            sw_arraysize_ref_value = ARObject._deserialize_by_tag(child, "ValueList")
+            sw_arraysize_ref_value = ARRef.deserialize(child)
             obj.sw_arraysize_ref = sw_arraysize_ref_value
 
         # Parse sw_axis_index

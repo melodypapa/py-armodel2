@@ -47,7 +47,7 @@ class InnerPortGroupInCompositionInstanceRef(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize base
@@ -79,7 +79,7 @@ class InnerPortGroupInCompositionInstanceRef(ARObject):
             serialized = ARObject._serialize_item(self.target_ref, "PortGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TARGET")
+                wrapped = ET.Element("TARGET-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -121,9 +121,9 @@ class InnerPortGroupInCompositionInstanceRef(ARObject):
                     obj.contexts.append(child_value)
 
         # Parse target_ref
-        child = ARObject._find_child_element(element, "TARGET")
+        child = ARObject._find_child_element(element, "TARGET-REF")
         if child is not None:
-            target_ref_value = ARObject._deserialize_by_tag(child, "PortGroup")
+            target_ref_value = ARRef.deserialize(child)
             obj.target_ref = target_ref_value
 
         return obj

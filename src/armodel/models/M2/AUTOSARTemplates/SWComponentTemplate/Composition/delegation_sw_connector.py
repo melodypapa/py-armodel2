@@ -46,7 +46,7 @@ class DelegationSwConnector(SwConnector):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -78,7 +78,7 @@ class DelegationSwConnector(SwConnector):
             serialized = ARObject._serialize_item(self.outer_port_ref, "PortPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("OUTER-PORT")
+                wrapped = ET.Element("OUTER-PORT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -105,13 +105,13 @@ class DelegationSwConnector(SwConnector):
         # Parse inner_port_instance_ref
         child = ARObject._find_child_element(element, "INNER-PORT-INSTANCE-REF")
         if child is not None:
-            inner_port_instance_ref_value = ARObject._deserialize_by_tag(child, "PortPrototype")
+            inner_port_instance_ref_value = ARRef.deserialize(child)
             obj.inner_port_instance_ref = inner_port_instance_ref_value
 
         # Parse outer_port_ref
-        child = ARObject._find_child_element(element, "OUTER-PORT")
+        child = ARObject._find_child_element(element, "OUTER-PORT-REF")
         if child is not None:
-            outer_port_ref_value = ARObject._deserialize_by_tag(child, "PortPrototype")
+            outer_port_ref_value = ARRef.deserialize(child)
             obj.outer_port_ref = outer_port_ref_value
 
         return obj

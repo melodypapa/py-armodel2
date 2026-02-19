@@ -45,7 +45,7 @@ class SwCalprmRefProxy(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize ar_parameter_ref
@@ -95,7 +95,7 @@ class SwCalprmRefProxy(ARObject):
         # Parse ar_parameter_ref
         child = ARObject._find_child_element(element, "AR-PARAMETER")
         if child is not None:
-            ar_parameter_ref_value = ARObject._deserialize_by_tag(child, "AutosarParameterRef")
+            ar_parameter_ref_value = ARRef.deserialize(child)
             obj.ar_parameter_ref = ar_parameter_ref_value
 
         # Parse mc_data_instance

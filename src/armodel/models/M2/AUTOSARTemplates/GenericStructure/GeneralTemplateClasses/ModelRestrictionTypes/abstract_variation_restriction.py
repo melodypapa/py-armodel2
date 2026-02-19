@@ -46,7 +46,7 @@ class AbstractVariationRestriction(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize valid_bindings (list to container "VALID-BINDINGS")

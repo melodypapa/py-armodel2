@@ -58,7 +58,7 @@ class SwValues(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize v
@@ -162,7 +162,7 @@ class SwValues(ARObject):
         # Parse vg_ref
         child = ARObject._find_child_element(element, "VG")
         if child is not None:
-            vg_ref_value = ARObject._deserialize_by_tag(child, "ValueGroup")
+            vg_ref_value = ARRef.deserialize(child)
             obj.vg_ref = vg_ref_value
 
         # Parse vt

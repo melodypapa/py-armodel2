@@ -53,7 +53,7 @@ class SwComponentType(ARElement, ABC):
     consistency_needses: list[ConsistencyNeeds]
     port_refs: list[ARRef]
     port_group_refs: list[ARRef]
-    swc_mapping_refs: list[ARRef]
+    swc_mapping_refs: list[Any]
     sw_component_documentation: Optional[SwComponentDocumentation]
     unit_group_refs: list[ARRef]
     def __init__(self) -> None:
@@ -62,7 +62,7 @@ class SwComponentType(ARElement, ABC):
         self.consistency_needses: list[ConsistencyNeeds] = []
         self.port_refs: list[ARRef] = []
         self.port_group_refs: list[ARRef] = []
-        self.swc_mapping_refs: list[ARRef] = []
+        self.swc_mapping_refs: list[Any] = []
         self.sw_component_documentation: Optional[SwComponentDocumentation] = None
         self.unit_group_refs: list[ARRef] = []
     def serialize(self) -> ET.Element:
@@ -72,7 +72,7 @@ class SwComponentType(ARElement, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

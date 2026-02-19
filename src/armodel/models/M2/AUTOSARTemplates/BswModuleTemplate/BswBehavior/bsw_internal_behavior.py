@@ -92,7 +92,7 @@ class BswInternalBehavior(InternalBehavior):
     parameter_policies: list[Any]
     per_instances: list[ParameterDataPrototype]
     reception_policies: list[BswDataReceptionPolicy]
-    released_trigger_refs: list[ARRef]
+    released_trigger_refs: list[Any]
     scheduler_names: list[BswSchedulerNamePrefix]
     send_policies: list[Any]
     services: list[Any]
@@ -116,7 +116,7 @@ class BswInternalBehavior(InternalBehavior):
         self.parameter_policies: list[Any] = []
         self.per_instances: list[ParameterDataPrototype] = []
         self.reception_policies: list[BswDataReceptionPolicy] = []
-        self.released_trigger_refs: list[ARRef] = []
+        self.released_trigger_refs: list[Any] = []
         self.scheduler_names: list[BswSchedulerNamePrefix] = []
         self.send_policies: list[Any] = []
         self.services: list[Any] = []
@@ -129,7 +129,7 @@ class BswInternalBehavior(InternalBehavior):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

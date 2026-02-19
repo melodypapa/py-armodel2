@@ -36,13 +36,13 @@ class TtcanAbsolutelyScheduledTiming(ARObject):
 
     communication_cycle_cycle: Optional[CommunicationCycle]
     time_mark: Optional[Integer]
-    trigger_ref: Optional[ARRef]
+    trigger_ref: Optional[TtcanTriggerType]
     def __init__(self) -> None:
         """Initialize TtcanAbsolutelyScheduledTiming."""
         super().__init__()
         self.communication_cycle_cycle: Optional[CommunicationCycle] = None
         self.time_mark: Optional[Integer] = None
-        self.trigger_ref: Optional[ARRef] = None
+        self.trigger_ref: Optional[TtcanTriggerType] = None
     def serialize(self) -> ET.Element:
         """Serialize TtcanAbsolutelyScheduledTiming to XML element.
 
@@ -50,7 +50,7 @@ class TtcanAbsolutelyScheduledTiming(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize communication_cycle_cycle
@@ -126,7 +126,7 @@ class TtcanAbsolutelyScheduledTiming(ARObject):
         # Parse trigger_ref
         child = ARObject._find_child_element(element, "TRIGGER")
         if child is not None:
-            trigger_ref_value = TtcanTriggerType.deserialize(child)
+            trigger_ref_value = ARRef.deserialize(child)
             obj.trigger_ref = trigger_ref_value
 
         return obj

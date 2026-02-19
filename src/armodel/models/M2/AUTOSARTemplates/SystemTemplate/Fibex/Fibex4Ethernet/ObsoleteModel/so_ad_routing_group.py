@@ -31,11 +31,11 @@ class SoAdRoutingGroup(FibexElement):
         """
         return False
 
-    event_group_ref: Optional[ARRef]
+    event_group_ref: Optional[EventGroupControlTypeEnum]
     def __init__(self) -> None:
         """Initialize SoAdRoutingGroup."""
         super().__init__()
-        self.event_group_ref: Optional[ARRef] = None
+        self.event_group_ref: Optional[EventGroupControlTypeEnum] = None
     def serialize(self) -> ET.Element:
         """Serialize SoAdRoutingGroup to XML element.
 
@@ -43,7 +43,7 @@ class SoAdRoutingGroup(FibexElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -88,7 +88,7 @@ class SoAdRoutingGroup(FibexElement):
         # Parse event_group_ref
         child = ARObject._find_child_element(element, "EVENT-GROUP")
         if child is not None:
-            event_group_ref_value = EventGroupControlTypeEnum.deserialize(child)
+            event_group_ref_value = ARRef.deserialize(child)
             obj.event_group_ref = event_group_ref_value
 
         return obj

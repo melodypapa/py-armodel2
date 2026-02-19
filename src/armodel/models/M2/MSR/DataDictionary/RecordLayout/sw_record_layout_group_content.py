@@ -45,7 +45,7 @@ class SwRecordLayoutGroupContent(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize sw_record_ref
@@ -95,7 +95,7 @@ class SwRecordLayoutGroupContent(ARObject):
         # Parse sw_record_ref
         child = ARObject._find_child_element(element, "SW-RECORD")
         if child is not None:
-            sw_record_ref_value = ARObject._deserialize_by_tag(child, "SwRecordLayoutGroup")
+            sw_record_ref_value = ARRef.deserialize(child)
             obj.sw_record_ref = sw_record_ref_value
 
         # Parse sw_record_layout_v

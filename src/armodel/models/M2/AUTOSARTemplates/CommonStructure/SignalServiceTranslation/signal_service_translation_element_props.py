@@ -53,7 +53,7 @@ class SignalServiceTranslationElementProps(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -126,7 +126,7 @@ class SignalServiceTranslationElementProps(Identifiable):
         # Parse element_ref
         child = ARObject._find_child_element(element, "ELEMENT")
         if child is not None:
-            element_ref_value = ARObject._deserialize_by_tag(child, "DataPrototype")
+            element_ref_value = ARRef.deserialize(child)
             obj.element_ref = element_ref_value
 
         # Parse filter

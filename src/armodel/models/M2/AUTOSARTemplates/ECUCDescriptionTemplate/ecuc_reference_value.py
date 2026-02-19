@@ -44,7 +44,7 @@ class EcucReferenceValue(EcucAbstractReferenceValue):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +62,7 @@ class EcucReferenceValue(EcucAbstractReferenceValue):
             serialized = ARObject._serialize_item(self.value_ref, "Referrable")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("VALUE")
+                wrapped = ET.Element("VALUE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -87,9 +87,9 @@ class EcucReferenceValue(EcucAbstractReferenceValue):
         obj = super(EcucReferenceValue, cls).deserialize(element)
 
         # Parse value_ref
-        child = ARObject._find_child_element(element, "VALUE")
+        child = ARObject._find_child_element(element, "VALUE-REF")
         if child is not None:
-            value_ref_value = ARObject._deserialize_by_tag(child, "Referrable")
+            value_ref_value = ARRef.deserialize(child)
             obj.value_ref = value_ref_value
 
         return obj

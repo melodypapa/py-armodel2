@@ -51,7 +51,7 @@ class OperationInAtomicSwcInstanceRef(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize base
@@ -73,7 +73,7 @@ class OperationInAtomicSwcInstanceRef(ARObject, ABC):
             serialized = ARObject._serialize_item(self.context_port_ref, "PortPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT-PORT")
+                wrapped = ET.Element("CONTEXT-PORT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -119,9 +119,9 @@ class OperationInAtomicSwcInstanceRef(ARObject, ABC):
             obj.base = base_value
 
         # Parse context_port_ref
-        child = ARObject._find_child_element(element, "CONTEXT-PORT")
+        child = ARObject._find_child_element(element, "CONTEXT-PORT-REF")
         if child is not None:
-            context_port_ref_value = ARObject._deserialize_by_tag(child, "PortPrototype")
+            context_port_ref_value = ARRef.deserialize(child)
             obj.context_port_ref = context_port_ref_value
 
         # Parse target_operation

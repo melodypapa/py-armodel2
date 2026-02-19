@@ -48,7 +48,7 @@ class TransformerHardErrorEvent(RTEEvent):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -113,7 +113,7 @@ class TransformerHardErrorEvent(RTEEvent):
         # Parse required_trigger_ref
         child = ARObject._find_child_element(element, "REQUIRED-TRIGGER")
         if child is not None:
-            required_trigger_ref_value = ARObject._deserialize_by_tag(child, "Trigger")
+            required_trigger_ref_value = ARRef.deserialize(child)
             obj.required_trigger_ref = required_trigger_ref_value
 
         return obj

@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 from armodel.core.global_settings import GlobalSettingsManager
 from armodel.serialization.name_converter import NameConverter
 from armodel.serialization.model_factory import ModelFactory
+from armodel.serialization.decorators import xml_attribute
 
 if TYPE_CHECKING:
     from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (

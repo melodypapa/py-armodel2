@@ -38,14 +38,14 @@ class TextTableMapping(ARObject):
 
     bitfield_text_table: Optional[PositiveInteger]
     identical: Optional[Boolean]
-    mapping_ref: Optional[ARRef]
+    mapping_ref: Optional[MappingDirectionEnum]
     value_pairs: list[TextTableValuePair]
     def __init__(self) -> None:
         """Initialize TextTableMapping."""
         super().__init__()
         self.bitfield_text_table: Optional[PositiveInteger] = None
         self.identical: Optional[Boolean] = None
-        self.mapping_ref: Optional[ARRef] = None
+        self.mapping_ref: Optional[MappingDirectionEnum] = None
         self.value_pairs: list[TextTableValuePair] = []
     def serialize(self) -> ET.Element:
         """Serialize TextTableMapping to XML element.
@@ -54,7 +54,7 @@ class TextTableMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize bitfield_text_table
@@ -140,7 +140,7 @@ class TextTableMapping(ARObject):
         # Parse mapping_ref
         child = ARObject._find_child_element(element, "MAPPING")
         if child is not None:
-            mapping_ref_value = MappingDirectionEnum.deserialize(child)
+            mapping_ref_value = ARRef.deserialize(child)
             obj.mapping_ref = mapping_ref_value
 
         # Parse value_pairs (list from container "VALUE-PAIRS")

@@ -48,7 +48,7 @@ class RTriggerInAtomicSwcInstanceRef(TriggerInAtomicSwcInstanceRef):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -80,7 +80,7 @@ class RTriggerInAtomicSwcInstanceRef(TriggerInAtomicSwcInstanceRef):
             serialized = ARObject._serialize_item(self.target_trigger_ref, "Trigger")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TARGET-TRIGGER")
+                wrapped = ET.Element("TARGET-TRIGGER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -111,9 +111,9 @@ class RTriggerInAtomicSwcInstanceRef(TriggerInAtomicSwcInstanceRef):
             obj.context_r_port_prototype = context_r_port_prototype_value
 
         # Parse target_trigger_ref
-        child = ARObject._find_child_element(element, "TARGET-TRIGGER")
+        child = ARObject._find_child_element(element, "TARGET-TRIGGER-REF")
         if child is not None:
-            target_trigger_ref_value = ARObject._deserialize_by_tag(child, "Trigger")
+            target_trigger_ref_value = ARRef.deserialize(child)
             obj.target_trigger_ref = target_trigger_ref_value
 
         return obj

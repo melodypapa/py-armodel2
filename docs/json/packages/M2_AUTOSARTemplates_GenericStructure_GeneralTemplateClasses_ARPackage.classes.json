@@ -430,7 +430,7 @@
           "type": "ReferenceBase",
           "multiplicity": "*",
           "kind": "attribute",
-          "is_ref": true,
+          "is_ref": false,
           "note": "This denotes the reference bases for the package. This is"
         }
       }
@@ -512,19 +512,12 @@
         }
       ],
       "attributes": {
-        "globalElements": {
-          "type": "ReferrableSubtypesEnum",
-          "multiplicity": "*",
+        "shortLabel": {
+          "type": "Identifier",
+          "multiplicity": "1",
           "kind": "attribute",
-          "is_ref": true,
-          "note": "This attribute represents a meta-class for which the global is supported via this reference base."
-        },
-        "globalIns": {
-          "type": "ARPackage",
-          "multiplicity": "*",
-          "kind": "reference",
           "is_ref": false,
-          "note": "This represents the ability to express that global elements in various packages which do not have a common Packages mentioned by Reference used in addition to the one in"
+          "note": "This is the name of the reference base. By this name,"
         },
         "isDefault": {
           "type": "Boolean",
@@ -533,19 +526,40 @@
           "is_ref": false,
           "note": "This attribute denotes if the current ReferenceBase is the"
         },
+        "isGlobal": {
+          "type": "Boolean",
+          "multiplicity": "1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This attribute denotes if the global element is globally visible."
+        },
+        "baseIsThisPackage": {
+          "type": "Boolean",
+          "multiplicity": "1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This attribute denotes if the base is the current package."
+        },
         "package": {
           "type": "ARPackage",
           "multiplicity": "0..1",
           "kind": "reference",
-          "is_ref": false,
+          "is_ref": true,
           "note": "This association specifies the basis of all relative the base equals shortLabel."
         },
-        "shortLabel": {
-          "type": "Identifier",
-          "multiplicity": "1",
+        "globalElements": {
+          "type": "ReferrableSubtypesEnum",
+          "multiplicity": "*",
           "kind": "attribute",
-          "is_ref": false,
-          "note": "This is the name of the reference base. By this name,"
+          "is_ref": true,
+          "note": "This attribute represents a meta-class for which the global is supported via this reference base."
+        },
+        "globalInPackages": {
+          "type": "ARPackage",
+          "multiplicity": "*",
+          "kind": "reference",
+          "is_ref": true,
+          "note": "This represents the ability to express that global elements in various packages which do not have a common Packages mentioned by Reference used in addition to the one in"
         }
       }
     }

@@ -50,7 +50,7 @@ class McParameterElementGroup(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize ram_location_ref
@@ -58,7 +58,7 @@ class McParameterElementGroup(ARObject):
             serialized = ARObject._serialize_item(self.ram_location_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("RAM-LOCATION")
+                wrapped = ET.Element("RAM-LOCATION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -72,7 +72,7 @@ class McParameterElementGroup(ARObject):
             serialized = ARObject._serialize_item(self.rom_location_ref, "ParameterDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ROM-LOCATION")
+                wrapped = ET.Element("ROM-LOCATION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -112,15 +112,15 @@ class McParameterElementGroup(ARObject):
         obj.__init__()
 
         # Parse ram_location_ref
-        child = ARObject._find_child_element(element, "RAM-LOCATION")
+        child = ARObject._find_child_element(element, "RAM-LOCATION-REF")
         if child is not None:
-            ram_location_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            ram_location_ref_value = ARRef.deserialize(child)
             obj.ram_location_ref = ram_location_ref_value
 
         # Parse rom_location_ref
-        child = ARObject._find_child_element(element, "ROM-LOCATION")
+        child = ARObject._find_child_element(element, "ROM-LOCATION-REF")
         if child is not None:
-            rom_location_ref_value = ARObject._deserialize_by_tag(child, "ParameterDataPrototype")
+            rom_location_ref_value = ARRef.deserialize(child)
             obj.rom_location_ref = rom_location_ref_value
 
         # Parse short_label

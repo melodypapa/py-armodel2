@@ -55,7 +55,7 @@ class DiagnosticServiceDataMapping(DiagnosticSwMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -154,7 +154,7 @@ class DiagnosticServiceDataMapping(DiagnosticSwMapping):
         # Parse mapped_data_ref
         child = ARObject._find_child_element(element, "MAPPED-DATA")
         if child is not None:
-            mapped_data_ref_value = ARObject._deserialize_by_tag(child, "DataPrototype")
+            mapped_data_ref_value = ARRef.deserialize(child)
             obj.mapped_data_ref = mapped_data_ref_value
 
         # Parse parameter

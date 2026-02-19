@@ -50,7 +50,7 @@ class DdsCpServiceInstanceEvent(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize dds_event_ref
@@ -58,7 +58,7 @@ class DdsCpServiceInstanceEvent(ARObject):
             serialized = ARObject._serialize_item(self.dds_event_ref, "PduTriggering")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DDS-EVENT")
+                wrapped = ET.Element("DDS-EVENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -112,9 +112,9 @@ class DdsCpServiceInstanceEvent(ARObject):
         obj.__init__()
 
         # Parse dds_event_ref
-        child = ARObject._find_child_element(element, "DDS-EVENT")
+        child = ARObject._find_child_element(element, "DDS-EVENT-REF")
         if child is not None:
-            dds_event_ref_value = ARObject._deserialize_by_tag(child, "PduTriggering")
+            dds_event_ref_value = ARRef.deserialize(child)
             obj.dds_event_ref = dds_event_ref_value
 
         # Parse dds_event_qos

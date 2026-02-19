@@ -56,7 +56,7 @@ class RoleBasedDataAssignment(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize role
@@ -140,13 +140,13 @@ class RoleBasedDataAssignment(ARObject):
         # Parse used_data_ref
         child = ARObject._find_child_element(element, "USED-DATA")
         if child is not None:
-            used_data_ref_value = ARObject._deserialize_by_tag(child, "AutosarVariableRef")
+            used_data_ref_value = ARRef.deserialize(child)
             obj.used_data_ref = used_data_ref_value
 
         # Parse used_parameter_ref
         child = ARObject._find_child_element(element, "USED-PARAMETER")
         if child is not None:
-            used_parameter_ref_value = ARObject._deserialize_by_tag(child, "AutosarParameterRef")
+            used_parameter_ref_value = ARRef.deserialize(child)
             obj.used_parameter_ref = used_parameter_ref_value
 
         # Parse used_pim

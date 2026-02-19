@@ -43,7 +43,7 @@ class BswExternalTriggerOccurredEvent(BswScheduleEvent):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -61,7 +61,7 @@ class BswExternalTriggerOccurredEvent(BswScheduleEvent):
             serialized = ARObject._serialize_item(self.trigger_ref, "Trigger")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TRIGGER")
+                wrapped = ET.Element("TRIGGER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -86,9 +86,9 @@ class BswExternalTriggerOccurredEvent(BswScheduleEvent):
         obj = super(BswExternalTriggerOccurredEvent, cls).deserialize(element)
 
         # Parse trigger_ref
-        child = ARObject._find_child_element(element, "TRIGGER")
+        child = ARObject._find_child_element(element, "TRIGGER-REF")
         if child is not None:
-            trigger_ref_value = ARObject._deserialize_by_tag(child, "Trigger")
+            trigger_ref_value = ARRef.deserialize(child)
             obj.trigger_ref = trigger_ref_value
 
         return obj

@@ -36,13 +36,13 @@ class EcucAbstractReferenceValue(EcucIndexableValue, ABC):
         return True
 
     annotations: list[Annotation]
-    definition_ref: Optional[ARRef]
+    definition_ref: Optional[Any]
     is_auto_value: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize EcucAbstractReferenceValue."""
         super().__init__()
         self.annotations: list[Annotation] = []
-        self.definition_ref: Optional[ARRef] = None
+        self.definition_ref: Optional[Any] = None
         self.is_auto_value: Optional[Boolean] = None
     def serialize(self) -> ET.Element:
         """Serialize EcucAbstractReferenceValue to XML element.
@@ -51,7 +51,7 @@ class EcucAbstractReferenceValue(EcucIndexableValue, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -79,7 +79,7 @@ class EcucAbstractReferenceValue(EcucIndexableValue, ABC):
             serialized = ARObject._serialize_item(self.definition_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DEFINITION")
+                wrapped = ET.Element("DEFINITION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -128,9 +128,9 @@ class EcucAbstractReferenceValue(EcucIndexableValue, ABC):
                     obj.annotations.append(child_value)
 
         # Parse definition_ref
-        child = ARObject._find_child_element(element, "DEFINITION")
+        child = ARObject._find_child_element(element, "DEFINITION-REF")
         if child is not None:
-            definition_ref_value = child.text
+            definition_ref_value = ARRef.deserialize(child)
             obj.definition_ref = definition_ref_value
 
         # Parse is_auto_value

@@ -31,12 +31,12 @@ class AbstractEnumerationValueVariationPoint(ARObject, ABC):
         return True
 
     base: Optional[Identifier]
-    enum_table_ref: Optional[ARRef]
+    enum_table_ref: Optional[Ref]
     def __init__(self) -> None:
         """Initialize AbstractEnumerationValueVariationPoint."""
         super().__init__()
         self.base: Optional[Identifier] = None
-        self.enum_table_ref: Optional[ARRef] = None
+        self.enum_table_ref: Optional[Ref] = None
     def serialize(self) -> ET.Element:
         """Serialize AbstractEnumerationValueVariationPoint to XML element.
 
@@ -44,7 +44,7 @@ class AbstractEnumerationValueVariationPoint(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize base
@@ -100,7 +100,7 @@ class AbstractEnumerationValueVariationPoint(ARObject, ABC):
         # Parse enum_table_ref
         child = ARObject._find_child_element(element, "ENUM-TABLE")
         if child is not None:
-            enum_table_ref_value = ARObject._deserialize_by_tag(child, "Ref")
+            enum_table_ref_value = ARRef.deserialize(child)
             obj.enum_table_ref = enum_table_ref_value
 
         return obj

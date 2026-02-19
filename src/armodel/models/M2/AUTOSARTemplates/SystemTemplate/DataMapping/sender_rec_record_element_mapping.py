@@ -56,7 +56,7 @@ class SenderRecRecordElementMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize application_record
@@ -180,13 +180,13 @@ class SenderRecRecordElementMapping(ARObject):
         # Parse sender_to_signal_ref
         child = ARObject._find_child_element(element, "SENDER-TO-SIGNAL")
         if child is not None:
-            sender_to_signal_ref_value = ARObject._deserialize_by_tag(child, "TextTableMapping")
+            sender_to_signal_ref_value = ARRef.deserialize(child)
             obj.sender_to_signal_ref = sender_to_signal_ref_value
 
         # Parse signal_to_ref
         child = ARObject._find_child_element(element, "SIGNAL-TO")
         if child is not None:
-            signal_to_ref_value = ARObject._deserialize_by_tag(child, "TextTableMapping")
+            signal_to_ref_value = ARRef.deserialize(child)
             obj.signal_to_ref = signal_to_ref_value
 
         # Parse system_signal

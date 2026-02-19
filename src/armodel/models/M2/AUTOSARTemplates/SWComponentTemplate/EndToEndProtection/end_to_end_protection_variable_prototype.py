@@ -48,7 +48,7 @@ class EndToEndProtectionVariablePrototype(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize receiver_refs (list to container "RECEIVERS")
@@ -118,7 +118,7 @@ class EndToEndProtectionVariablePrototype(ARObject):
         # Parse sender_ref
         child = ARObject._find_child_element(element, "SENDER")
         if child is not None:
-            sender_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            sender_ref_value = ARRef.deserialize(child)
             obj.sender_ref = sender_ref_value
 
         # Parse short_label

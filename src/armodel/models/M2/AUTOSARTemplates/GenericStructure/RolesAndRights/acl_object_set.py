@@ -44,7 +44,7 @@ class AclObjectSet(ARElement):
         """
         return False
 
-    acl_object_classe_refs: list[ARRef]
+    acl_object_classe_refs: list[ReferrableSubtypesEnum]
     acl_scope: AclScopeEnum
     collection_ref: Optional[ARRef]
     derived_froms: list[AtpBlueprint]
@@ -52,7 +52,7 @@ class AclObjectSet(ARElement):
     def __init__(self) -> None:
         """Initialize AclObjectSet."""
         super().__init__()
-        self.acl_object_classe_refs: list[ARRef] = []
+        self.acl_object_classe_refs: list[ReferrableSubtypesEnum] = []
         self.acl_scope: AclScopeEnum = None
         self.collection_ref: Optional[ARRef] = None
         self.derived_froms: list[AtpBlueprint] = []
@@ -64,7 +64,7 @@ class AclObjectSet(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -106,7 +106,7 @@ class AclObjectSet(ARElement):
             serialized = ARObject._serialize_item(self.collection_ref, "Collection")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("COLLECTION")
+                wrapped = ET.Element("COLLECTION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -167,9 +167,9 @@ class AclObjectSet(ARElement):
             obj.acl_scope = acl_scope_value
 
         # Parse collection_ref
-        child = ARObject._find_child_element(element, "COLLECTION")
+        child = ARObject._find_child_element(element, "COLLECTION-REF")
         if child is not None:
-            collection_ref_value = ARObject._deserialize_by_tag(child, "Collection")
+            collection_ref_value = ARRef.deserialize(child)
             obj.collection_ref = collection_ref_value
 
         # Parse derived_froms (list from container "DERIVED-FROMS")

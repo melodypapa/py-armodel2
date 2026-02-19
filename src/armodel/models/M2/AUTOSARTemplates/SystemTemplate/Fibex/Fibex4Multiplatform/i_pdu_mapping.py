@@ -57,7 +57,7 @@ class IPduMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize introduction
@@ -107,7 +107,7 @@ class IPduMapping(ARObject):
             serialized = ARObject._serialize_item(self.source_i_pdu_ref, "PduTriggering")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SOURCE-I-PDU")
+                wrapped = ET.Element("SOURCE-I-PDU-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -165,15 +165,15 @@ class IPduMapping(ARObject):
             obj.pdur_tp_chunk = pdur_tp_chunk_value
 
         # Parse source_i_pdu_ref
-        child = ARObject._find_child_element(element, "SOURCE-I-PDU")
+        child = ARObject._find_child_element(element, "SOURCE-I-PDU-REF")
         if child is not None:
-            source_i_pdu_ref_value = ARObject._deserialize_by_tag(child, "PduTriggering")
+            source_i_pdu_ref_value = ARRef.deserialize(child)
             obj.source_i_pdu_ref = source_i_pdu_ref_value
 
         # Parse target_i_pdu_ref
         child = ARObject._find_child_element(element, "TARGET-I-PDU")
         if child is not None:
-            target_i_pdu_ref_value = ARObject._deserialize_by_tag(child, "TargetIPduRef")
+            target_i_pdu_ref_value = ARRef.deserialize(child)
             obj.target_i_pdu_ref = target_i_pdu_ref_value
 
         return obj

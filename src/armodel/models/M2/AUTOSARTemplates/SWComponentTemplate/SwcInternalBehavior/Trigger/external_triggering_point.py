@@ -43,7 +43,7 @@ class ExternalTriggeringPoint(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize ident_ref
@@ -93,13 +93,13 @@ class ExternalTriggeringPoint(ARObject):
         # Parse ident_ref
         child = ARObject._find_child_element(element, "IDENT")
         if child is not None:
-            ident_ref_value = ARObject._deserialize_by_tag(child, "ExternalTriggeringPoint")
+            ident_ref_value = ARRef.deserialize(child)
             obj.ident_ref = ident_ref_value
 
         # Parse trigger_ref
         child = ARObject._find_child_element(element, "TRIGGER")
         if child is not None:
-            trigger_ref_value = ARObject._deserialize_by_tag(child, "Trigger")
+            trigger_ref_value = ARRef.deserialize(child)
             obj.trigger_ref = trigger_ref_value
 
         return obj

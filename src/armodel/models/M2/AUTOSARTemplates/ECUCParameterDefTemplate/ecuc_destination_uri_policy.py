@@ -34,14 +34,14 @@ class EcucDestinationUriPolicy(ARObject):
     containers: list[EcucContainerDef]
     destination_uri: Optional[Any]
     parameters: list[EcucParameterDef]
-    reference_refs: list[ARRef]
+    reference_refs: list[Any]
     def __init__(self) -> None:
         """Initialize EcucDestinationUriPolicy."""
         super().__init__()
         self.containers: list[EcucContainerDef] = []
         self.destination_uri: Optional[Any] = None
         self.parameters: list[EcucParameterDef] = []
-        self.reference_refs: list[ARRef] = []
+        self.reference_refs: list[Any] = []
     def serialize(self) -> ET.Element:
         """Serialize EcucDestinationUriPolicy to XML element.
 
@@ -49,7 +49,7 @@ class EcucDestinationUriPolicy(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize containers (list to container "CONTAINERS")

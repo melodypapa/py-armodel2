@@ -49,6 +49,7 @@ skip_classes:
   - "LParagraph"
   - "LOverviewParagraph"
   - "LVerbatim"
+  - "MixedContentForUnitNames"
 
 # Force TYPE_CHECKING Imports
 # These types will always be imported inside TYPE_CHECKING blocks to prevent circular imports.

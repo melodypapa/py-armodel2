@@ -48,7 +48,7 @@ class RModeGroupInAtomicSWCInstanceRef(ModeGroupInAtomicSwcInstanceRef):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -80,7 +80,7 @@ class RModeGroupInAtomicSWCInstanceRef(ModeGroupInAtomicSwcInstanceRef):
             serialized = ARObject._serialize_item(self.target_mode_ref, "ModeDeclarationGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TARGET-MODE")
+                wrapped = ET.Element("TARGET-MODE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -111,9 +111,9 @@ class RModeGroupInAtomicSWCInstanceRef(ModeGroupInAtomicSwcInstanceRef):
             obj.context_r_port_prototype = context_r_port_prototype_value
 
         # Parse target_mode_ref
-        child = ARObject._find_child_element(element, "TARGET-MODE")
+        child = ARObject._find_child_element(element, "TARGET-MODE-REF")
         if child is not None:
-            target_mode_ref_value = ARObject._deserialize_by_tag(child, "ModeDeclarationGroup")
+            target_mode_ref_value = ARRef.deserialize(child)
             obj.target_mode_ref = target_mode_ref_value
 
         return obj

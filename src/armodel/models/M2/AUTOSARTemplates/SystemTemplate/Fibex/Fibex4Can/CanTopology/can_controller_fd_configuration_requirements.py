@@ -60,7 +60,7 @@ class CanControllerFdConfigurationRequirements(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize max_number_of_time_quanta_per

@@ -39,14 +39,14 @@ class EcucContainerValue(Identifiable):
 
     definition: Optional[EcucContainerDef]
     parameter_values: list[EcucParameterValue]
-    reference_value_refs: list[ARRef]
+    reference_value_refs: list[Any]
     sub_containers: list[EcucContainerValue]
     def __init__(self) -> None:
         """Initialize EcucContainerValue."""
         super().__init__()
         self.definition: Optional[EcucContainerDef] = None
         self.parameter_values: list[EcucParameterValue] = []
-        self.reference_value_refs: list[ARRef] = []
+        self.reference_value_refs: list[Any] = []
         self.sub_containers: list[EcucContainerValue] = []
     def serialize(self) -> ET.Element:
         """Serialize EcucContainerValue to XML element.
@@ -55,7 +55,7 @@ class EcucContainerValue(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

@@ -73,7 +73,7 @@ class DltLogChannel(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -167,7 +167,7 @@ class DltLogChannel(Identifiable):
             serialized = ARObject._serialize_item(self.rx_pdu_triggering_channel_ref, "PduTriggering")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("RX-PDU-TRIGGERING-CHANNEL")
+                wrapped = ET.Element("RX-PDU-TRIGGERING-CHANNEL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -195,7 +195,7 @@ class DltLogChannel(Identifiable):
             serialized = ARObject._serialize_item(self.tx_pdu_triggering_ref, "PduTriggering")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TX-PDU-TRIGGERING")
+                wrapped = ET.Element("TX-PDU-TRIGGERING-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -264,9 +264,9 @@ class DltLogChannel(Identifiable):
             obj.non_verbose = non_verbose_value
 
         # Parse rx_pdu_triggering_channel_ref
-        child = ARObject._find_child_element(element, "RX-PDU-TRIGGERING-CHANNEL")
+        child = ARObject._find_child_element(element, "RX-PDU-TRIGGERING-CHANNEL-REF")
         if child is not None:
-            rx_pdu_triggering_channel_ref_value = ARObject._deserialize_by_tag(child, "PduTriggering")
+            rx_pdu_triggering_channel_ref_value = ARRef.deserialize(child)
             obj.rx_pdu_triggering_channel_ref = rx_pdu_triggering_channel_ref_value
 
         # Parse segmentation
@@ -276,9 +276,9 @@ class DltLogChannel(Identifiable):
             obj.segmentation = segmentation_value
 
         # Parse tx_pdu_triggering_ref
-        child = ARObject._find_child_element(element, "TX-PDU-TRIGGERING")
+        child = ARObject._find_child_element(element, "TX-PDU-TRIGGERING-REF")
         if child is not None:
-            tx_pdu_triggering_ref_value = ARObject._deserialize_by_tag(child, "PduTriggering")
+            tx_pdu_triggering_ref_value = ARRef.deserialize(child)
             obj.tx_pdu_triggering_ref = tx_pdu_triggering_ref_value
 
         return obj

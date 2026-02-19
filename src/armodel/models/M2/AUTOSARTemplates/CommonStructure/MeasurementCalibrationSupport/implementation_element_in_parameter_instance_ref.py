@@ -42,7 +42,7 @@ class ImplementationElementInParameterInstanceRef(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize context_ref
@@ -50,7 +50,7 @@ class ImplementationElementInParameterInstanceRef(ARObject):
             serialized = ARObject._serialize_item(self.context_ref, "ParameterDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT")
+                wrapped = ET.Element("CONTEXT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -90,9 +90,9 @@ class ImplementationElementInParameterInstanceRef(ARObject):
         obj.__init__()
 
         # Parse context_ref
-        child = ARObject._find_child_element(element, "CONTEXT")
+        child = ARObject._find_child_element(element, "CONTEXT-REF")
         if child is not None:
-            context_ref_value = ARObject._deserialize_by_tag(child, "ParameterDataPrototype")
+            context_ref_value = ARRef.deserialize(child)
             obj.context_ref = context_ref_value
 
         # Parse target

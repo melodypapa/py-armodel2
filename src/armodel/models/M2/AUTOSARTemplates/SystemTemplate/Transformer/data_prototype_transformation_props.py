@@ -53,7 +53,7 @@ class DataPrototypeTransformationProps(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize data_prototype_in_ref
@@ -117,7 +117,7 @@ class DataPrototypeTransformationProps(ARObject):
         # Parse data_prototype_in_ref
         child = ARObject._find_child_element(element, "DATA-PROTOTYPE-IN")
         if child is not None:
-            data_prototype_in_ref_value = ARObject._deserialize_by_tag(child, "DataPrototype")
+            data_prototype_in_ref_value = ARRef.deserialize(child)
             obj.data_prototype_in_ref = data_prototype_in_ref_value
 
         # Parse network

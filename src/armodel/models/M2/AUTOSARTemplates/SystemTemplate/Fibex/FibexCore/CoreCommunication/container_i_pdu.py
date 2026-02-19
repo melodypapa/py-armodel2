@@ -46,7 +46,7 @@ class ContainerIPdu(IPdu):
     contained_i_pdu_propses: list[ContainedIPduProps]
     contained_pdu_refs: list[ARRef]
     container: Optional[TimeValue]
-    container_trigger_ref: Optional[ARRef]
+    container_trigger_ref: Optional[ContainerIPduTriggerEnum]
     header_type: Optional[ContainerIPduHeaderTypeEnum]
     minimum_rx: Optional[PositiveInteger]
     minimum_tx: Optional[PositiveInteger]
@@ -59,7 +59,7 @@ class ContainerIPdu(IPdu):
         self.contained_i_pdu_propses: list[ContainedIPduProps] = []
         self.contained_pdu_refs: list[ARRef] = []
         self.container: Optional[TimeValue] = None
-        self.container_trigger_ref: Optional[ARRef] = None
+        self.container_trigger_ref: Optional[ContainerIPduTriggerEnum] = None
         self.header_type: Optional[ContainerIPduHeaderTypeEnum] = None
         self.minimum_rx: Optional[PositiveInteger] = None
         self.minimum_tx: Optional[PositiveInteger] = None
@@ -73,7 +73,7 @@ class ContainerIPdu(IPdu):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -262,7 +262,7 @@ class ContainerIPdu(IPdu):
         # Parse container_trigger_ref
         child = ARObject._find_child_element(element, "CONTAINER-TRIGGER")
         if child is not None:
-            container_trigger_ref_value = ContainerIPduTriggerEnum.deserialize(child)
+            container_trigger_ref_value = ARRef.deserialize(child)
             obj.container_trigger_ref = container_trigger_ref_value
 
         # Parse header_type

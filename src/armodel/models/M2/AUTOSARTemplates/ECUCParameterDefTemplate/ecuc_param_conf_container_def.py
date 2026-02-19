@@ -32,13 +32,13 @@ class EcucParamConfContainerDef(EcucContainerDef):
         return False
 
     parameters: list[EcucParameterDef]
-    reference_refs: list[ARRef]
+    reference_refs: list[Any]
     sub_containers: list[EcucContainerDef]
     def __init__(self) -> None:
         """Initialize EcucParamConfContainerDef."""
         super().__init__()
         self.parameters: list[EcucParameterDef] = []
-        self.reference_refs: list[ARRef] = []
+        self.reference_refs: list[Any] = []
         self.sub_containers: list[EcucContainerDef] = []
     def serialize(self) -> ET.Element:
         """Serialize EcucParamConfContainerDef to XML element.
@@ -47,7 +47,7 @@ class EcucParamConfContainerDef(EcucContainerDef):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

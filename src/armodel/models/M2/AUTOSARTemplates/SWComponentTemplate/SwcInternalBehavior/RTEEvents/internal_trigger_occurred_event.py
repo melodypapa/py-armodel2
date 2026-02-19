@@ -43,7 +43,7 @@ class InternalTriggerOccurredEvent(RTEEvent):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -61,7 +61,7 @@ class InternalTriggerOccurredEvent(RTEEvent):
             serialized = ARObject._serialize_item(self.event_source_ref, "InternalTriggeringPoint")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("EVENT-SOURCE")
+                wrapped = ET.Element("EVENT-SOURCE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -86,9 +86,9 @@ class InternalTriggerOccurredEvent(RTEEvent):
         obj = super(InternalTriggerOccurredEvent, cls).deserialize(element)
 
         # Parse event_source_ref
-        child = ARObject._find_child_element(element, "EVENT-SOURCE")
+        child = ARObject._find_child_element(element, "EVENT-SOURCE-REF")
         if child is not None:
-            event_source_ref_value = ARObject._deserialize_by_tag(child, "InternalTriggeringPoint")
+            event_source_ref_value = ARRef.deserialize(child)
             obj.event_source_ref = event_source_ref_value
 
         return obj

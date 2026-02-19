@@ -41,7 +41,7 @@ class BswDataReceptionPolicy(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize received_data_ref
@@ -49,7 +49,7 @@ class BswDataReceptionPolicy(ARObject, ABC):
             serialized = ARObject._serialize_item(self.received_data_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("RECEIVED-DATA")
+                wrapped = ET.Element("RECEIVED-DATA-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -75,9 +75,9 @@ class BswDataReceptionPolicy(ARObject, ABC):
         obj.__init__()
 
         # Parse received_data_ref
-        child = ARObject._find_child_element(element, "RECEIVED-DATA")
+        child = ARObject._find_child_element(element, "RECEIVED-DATA-REF")
         if child is not None:
-            received_data_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            received_data_ref_value = ARRef.deserialize(child)
             obj.received_data_ref = received_data_ref_value
 
         return obj

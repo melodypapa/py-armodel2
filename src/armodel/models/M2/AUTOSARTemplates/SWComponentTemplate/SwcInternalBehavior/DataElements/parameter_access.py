@@ -52,7 +52,7 @@ class ParameterAccess(AbstractAccessPoint):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -111,7 +111,7 @@ class ParameterAccess(AbstractAccessPoint):
         # Parse accessed_parameter_ref
         child = ARObject._find_child_element(element, "ACCESSED-PARAMETER")
         if child is not None:
-            accessed_parameter_ref_value = ARObject._deserialize_by_tag(child, "AutosarParameterRef")
+            accessed_parameter_ref_value = ARRef.deserialize(child)
             obj.accessed_parameter_ref = accessed_parameter_ref_value
 
         # Parse sw_data_def

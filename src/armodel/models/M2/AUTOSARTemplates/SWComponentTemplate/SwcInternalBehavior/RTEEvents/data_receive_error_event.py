@@ -43,7 +43,7 @@ class DataReceiveErrorEvent(RTEEvent):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -88,7 +88,7 @@ class DataReceiveErrorEvent(RTEEvent):
         # Parse data_ref
         child = ARObject._find_child_element(element, "DATA")
         if child is not None:
-            data_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            data_ref_value = ARRef.deserialize(child)
             obj.data_ref = data_ref_value
 
         return obj

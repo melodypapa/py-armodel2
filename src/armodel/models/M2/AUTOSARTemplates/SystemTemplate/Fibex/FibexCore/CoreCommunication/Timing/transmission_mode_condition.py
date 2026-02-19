@@ -45,7 +45,7 @@ class TransmissionModeCondition(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize data_filter
@@ -67,7 +67,7 @@ class TransmissionModeCondition(ARObject):
             serialized = ARObject._serialize_item(self.i_signal_in_i_pdu_ref, "ISignalToIPduMapping")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("I-SIGNAL-IN-I-PDU")
+                wrapped = ET.Element("I-SIGNAL-IN-I-PDU-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -99,9 +99,9 @@ class TransmissionModeCondition(ARObject):
             obj.data_filter = data_filter_value
 
         # Parse i_signal_in_i_pdu_ref
-        child = ARObject._find_child_element(element, "I-SIGNAL-IN-I-PDU")
+        child = ARObject._find_child_element(element, "I-SIGNAL-IN-I-PDU-REF")
         if child is not None:
-            i_signal_in_i_pdu_ref_value = ARObject._deserialize_by_tag(child, "ISignalToIPduMapping")
+            i_signal_in_i_pdu_ref_value = ARRef.deserialize(child)
             obj.i_signal_in_i_pdu_ref = i_signal_in_i_pdu_ref_value
 
         return obj

@@ -47,7 +47,7 @@ class SubElementMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize first_element_ref
@@ -111,19 +111,19 @@ class SubElementMapping(ARObject):
         # Parse first_element_ref
         child = ARObject._find_child_element(element, "FIRST-ELEMENT")
         if child is not None:
-            first_element_ref_value = ARObject._deserialize_by_tag(child, "SubElementRef")
+            first_element_ref_value = ARRef.deserialize(child)
             obj.first_element_ref = first_element_ref_value
 
         # Parse second_element_ref
         child = ARObject._find_child_element(element, "SECOND-ELEMENT")
         if child is not None:
-            second_element_ref_value = ARObject._deserialize_by_tag(child, "SubElementRef")
+            second_element_ref_value = ARRef.deserialize(child)
             obj.second_element_ref = second_element_ref_value
 
         # Parse text_table_ref
         child = ARObject._find_child_element(element, "TEXT-TABLE")
         if child is not None:
-            text_table_ref_value = ARObject._deserialize_by_tag(child, "TextTableMapping")
+            text_table_ref_value = ARRef.deserialize(child)
             obj.text_table_ref = text_table_ref_value
 
         return obj

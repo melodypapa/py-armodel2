@@ -73,10 +73,10 @@
           "note": "This is the offset for the conversion from and to siUnits."
         },
         "physical": {
-          "type": "PhysicalDimension",
+          "type": "physicalDimension",
           "multiplicity": "0..1",
           "kind": "reference",
-          "is_ref": false,
+          "is_ref": true,
           "note": "This association represents the physical dimension to the unit belongs to. Note that only values with units same physical dimensions might be converted."
         }
       }

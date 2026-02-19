@@ -47,7 +47,7 @@ class FrameMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize introduction
@@ -69,7 +69,7 @@ class FrameMapping(ARObject):
             serialized = ARObject._serialize_item(self.source_frame_ref, "FrameTriggering")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SOURCE-FRAME")
+                wrapped = ET.Element("SOURCE-FRAME-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -83,7 +83,7 @@ class FrameMapping(ARObject):
             serialized = ARObject._serialize_item(self.target_frame_ref, "FrameTriggering")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TARGET-FRAME")
+                wrapped = ET.Element("TARGET-FRAME-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -115,15 +115,15 @@ class FrameMapping(ARObject):
             obj.introduction = introduction_value
 
         # Parse source_frame_ref
-        child = ARObject._find_child_element(element, "SOURCE-FRAME")
+        child = ARObject._find_child_element(element, "SOURCE-FRAME-REF")
         if child is not None:
-            source_frame_ref_value = ARObject._deserialize_by_tag(child, "FrameTriggering")
+            source_frame_ref_value = ARRef.deserialize(child)
             obj.source_frame_ref = source_frame_ref_value
 
         # Parse target_frame_ref
-        child = ARObject._find_child_element(element, "TARGET-FRAME")
+        child = ARObject._find_child_element(element, "TARGET-FRAME-REF")
         if child is not None:
-            target_frame_ref_value = ARObject._deserialize_by_tag(child, "FrameTriggering")
+            target_frame_ref_value = ARRef.deserialize(child)
             obj.target_frame_ref = target_frame_ref_value
 
         return obj

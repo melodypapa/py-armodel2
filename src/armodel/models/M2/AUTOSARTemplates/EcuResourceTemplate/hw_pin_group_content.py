@@ -48,7 +48,7 @@ class HwPinGroupContent(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize hw_pin
@@ -104,7 +104,7 @@ class HwPinGroupContent(ARObject):
         # Parse hw_pin_group_ref
         child = ARObject._find_child_element(element, "HW-PIN-GROUP")
         if child is not None:
-            hw_pin_group_ref_value = ARObject._deserialize_by_tag(child, "HwPinGroup")
+            hw_pin_group_ref_value = ARRef.deserialize(child)
             obj.hw_pin_group_ref = hw_pin_group_ref_value
 
         return obj

@@ -34,12 +34,12 @@ class PduActivationRoutingGroup(Identifiable):
         """
         return False
 
-    event_group_ref: Optional[ARRef]
+    event_group_ref: Optional[EventGroupControlTypeEnum]
     i_pdu_identifiers: list[SoConIPduIdentifier]
     def __init__(self) -> None:
         """Initialize PduActivationRoutingGroup."""
         super().__init__()
-        self.event_group_ref: Optional[ARRef] = None
+        self.event_group_ref: Optional[EventGroupControlTypeEnum] = None
         self.i_pdu_identifiers: list[SoConIPduIdentifier] = []
     def serialize(self) -> ET.Element:
         """Serialize PduActivationRoutingGroup to XML element.
@@ -48,7 +48,7 @@ class PduActivationRoutingGroup(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -103,7 +103,7 @@ class PduActivationRoutingGroup(Identifiable):
         # Parse event_group_ref
         child = ARObject._find_child_element(element, "EVENT-GROUP")
         if child is not None:
-            event_group_ref_value = EventGroupControlTypeEnum.deserialize(child)
+            event_group_ref_value = ARRef.deserialize(child)
             obj.event_group_ref = event_group_ref_value
 
         # Parse i_pdu_identifiers (list from container "I-PDU-IDENTIFIERS")

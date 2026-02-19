@@ -54,7 +54,7 @@ class ParameterInAtomicSWCTypeInstanceRef(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize base
@@ -86,7 +86,7 @@ class ParameterInAtomicSWCTypeInstanceRef(ARObject):
             serialized = ARObject._serialize_item(self.port_prototype_ref, "PortPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PORT-PROTOTYPE")
+                wrapped = ET.Element("PORT-PROTOTYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -100,7 +100,7 @@ class ParameterInAtomicSWCTypeInstanceRef(ARObject):
             serialized = ARObject._serialize_item(self.root_parameter_ref, "DataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ROOT-PARAMETER")
+                wrapped = ET.Element("ROOT-PARAMETER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -114,7 +114,7 @@ class ParameterInAtomicSWCTypeInstanceRef(ARObject):
             serialized = ARObject._serialize_item(self.target_data_ref, "DataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TARGET-DATA")
+                wrapped = ET.Element("TARGET-DATA-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -156,21 +156,21 @@ class ParameterInAtomicSWCTypeInstanceRef(ARObject):
                     obj.context_datas.append(child_value)
 
         # Parse port_prototype_ref
-        child = ARObject._find_child_element(element, "PORT-PROTOTYPE")
+        child = ARObject._find_child_element(element, "PORT-PROTOTYPE-REF")
         if child is not None:
-            port_prototype_ref_value = ARObject._deserialize_by_tag(child, "PortPrototype")
+            port_prototype_ref_value = ARRef.deserialize(child)
             obj.port_prototype_ref = port_prototype_ref_value
 
         # Parse root_parameter_ref
-        child = ARObject._find_child_element(element, "ROOT-PARAMETER")
+        child = ARObject._find_child_element(element, "ROOT-PARAMETER-REF")
         if child is not None:
-            root_parameter_ref_value = ARObject._deserialize_by_tag(child, "DataPrototype")
+            root_parameter_ref_value = ARRef.deserialize(child)
             obj.root_parameter_ref = root_parameter_ref_value
 
         # Parse target_data_ref
-        child = ARObject._find_child_element(element, "TARGET-DATA")
+        child = ARObject._find_child_element(element, "TARGET-DATA-REF")
         if child is not None:
-            target_data_ref_value = ARObject._deserialize_by_tag(child, "DataPrototype")
+            target_data_ref_value = ARRef.deserialize(child)
             obj.target_data_ref = target_data_ref_value
 
         return obj

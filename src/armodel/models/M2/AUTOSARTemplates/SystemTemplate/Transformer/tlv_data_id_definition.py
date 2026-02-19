@@ -55,7 +55,7 @@ class TlvDataIdDefinition(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize id
@@ -77,7 +77,7 @@ class TlvDataIdDefinition(ARObject):
             serialized = ARObject._serialize_item(self.tlv_argument_ref, "ArgumentDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TLV-ARGUMENT")
+                wrapped = ET.Element("TLV-ARGUMENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -137,9 +137,9 @@ class TlvDataIdDefinition(ARObject):
             obj.id = id_value
 
         # Parse tlv_argument_ref
-        child = ARObject._find_child_element(element, "TLV-ARGUMENT")
+        child = ARObject._find_child_element(element, "TLV-ARGUMENT-REF")
         if child is not None:
-            tlv_argument_ref_value = ARObject._deserialize_by_tag(child, "ArgumentDataPrototype")
+            tlv_argument_ref_value = ARRef.deserialize(child)
             obj.tlv_argument_ref = tlv_argument_ref_value
 
         # Parse tlv

@@ -43,7 +43,7 @@ class AutosarVariableRef(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize autosar_variable
@@ -65,7 +65,7 @@ class AutosarVariableRef(ARObject):
             serialized = ARObject._serialize_item(self.local_variable_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("LOCAL-VARIABLE")
+                wrapped = ET.Element("LOCAL-VARIABLE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -97,9 +97,9 @@ class AutosarVariableRef(ARObject):
             obj.autosar_variable = autosar_variable_value
 
         # Parse local_variable_ref
-        child = ARObject._find_child_element(element, "LOCAL-VARIABLE")
+        child = ARObject._find_child_element(element, "LOCAL-VARIABLE-REF")
         if child is not None:
-            local_variable_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            local_variable_ref_value = ARRef.deserialize(child)
             obj.local_variable_ref = local_variable_ref_value
 
         return obj

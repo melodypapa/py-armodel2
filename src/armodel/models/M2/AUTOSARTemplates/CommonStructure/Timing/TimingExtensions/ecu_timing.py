@@ -43,7 +43,7 @@ class EcuTiming(TimingExtension):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -61,7 +61,7 @@ class EcuTiming(TimingExtension):
             serialized = ARObject._serialize_item(self.ecu_ref, "EcucValueCollection")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ECU")
+                wrapped = ET.Element("ECU-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -86,9 +86,9 @@ class EcuTiming(TimingExtension):
         obj = super(EcuTiming, cls).deserialize(element)
 
         # Parse ecu_ref
-        child = ARObject._find_child_element(element, "ECU")
+        child = ARObject._find_child_element(element, "ECU-REF")
         if child is not None:
-            ecu_ref_value = ARObject._deserialize_by_tag(child, "EcucValueCollection")
+            ecu_ref_value = ARRef.deserialize(child)
             obj.ecu_ref = ecu_ref_value
 
         return obj

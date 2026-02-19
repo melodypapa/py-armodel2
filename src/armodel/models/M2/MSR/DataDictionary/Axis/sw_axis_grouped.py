@@ -56,7 +56,7 @@ class SwAxisGrouped(SwCalprmAxisTypeProps):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -141,7 +141,7 @@ class SwAxisGrouped(SwCalprmAxisTypeProps):
         # Parse sw_calprm_ref_proxy_ref
         child = ARObject._find_child_element(element, "SW-CALPRM-REF-PROXY")
         if child is not None:
-            sw_calprm_ref_proxy_ref_value = ARObject._deserialize_by_tag(child, "SwCalprmRefProxy")
+            sw_calprm_ref_proxy_ref_value = ARRef.deserialize(child)
             obj.sw_calprm_ref_proxy_ref = sw_calprm_ref_proxy_ref_value
 
         return obj

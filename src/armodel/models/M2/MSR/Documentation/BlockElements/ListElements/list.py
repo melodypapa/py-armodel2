@@ -38,12 +38,12 @@ class List(Paginateable):
         return False
 
     item: Item
-    type_ref: Optional[ARRef]
+    type_ref: Optional[ListEnum]
     def __init__(self) -> None:
         """Initialize List."""
         super().__init__()
         self.item: Item = None
-        self.type_ref: Optional[ARRef] = None
+        self.type_ref: Optional[ListEnum] = None
     def serialize(self) -> ET.Element:
         """Serialize List to XML element.
 
@@ -51,7 +51,7 @@ class List(Paginateable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -116,7 +116,7 @@ class List(Paginateable):
         # Parse type_ref
         child = ARObject._find_child_element(element, "TYPE")
         if child is not None:
-            type_ref_value = ListEnum.deserialize(child)
+            type_ref_value = ARRef.deserialize(child)
             obj.type_ref = type_ref_value
 
         return obj

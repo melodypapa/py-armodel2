@@ -48,7 +48,7 @@ class BulkNvDataDescriptor(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -103,7 +103,7 @@ class BulkNvDataDescriptor(Identifiable):
         # Parse bulk_nv_block_ref
         child = ARObject._find_child_element(element, "BULK-NV-BLOCK")
         if child is not None:
-            bulk_nv_block_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            bulk_nv_block_ref_value = ARRef.deserialize(child)
             obj.bulk_nv_block_ref = bulk_nv_block_ref_value
 
         # Parse nv_block_data_refs (list from container "NV-BLOCK-DATAS")

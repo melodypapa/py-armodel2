@@ -31,13 +31,13 @@ class GenericModelReference(ARObject):
 
     base: NameToken
     dest: NameToken
-    ref_ref: ARRef
+    ref_ref: Ref
     def __init__(self) -> None:
         """Initialize GenericModelReference."""
         super().__init__()
         self.base: NameToken = None
         self.dest: NameToken = None
-        self.ref_ref: ARRef = None
+        self.ref_ref: Ref = None
     def serialize(self) -> ET.Element:
         """Serialize GenericModelReference to XML element.
 
@@ -45,7 +45,7 @@ class GenericModelReference(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize base
@@ -121,7 +121,7 @@ class GenericModelReference(ARObject):
         # Parse ref_ref
         child = ARObject._find_child_element(element, "REF")
         if child is not None:
-            ref_ref_value = ARObject._deserialize_by_tag(child, "Ref")
+            ref_ref_value = ARRef.deserialize(child)
             obj.ref_ref = ref_ref_value
 
         return obj

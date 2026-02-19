@@ -45,7 +45,7 @@ class DiagnosticIumprGroup(DiagnosticCommonElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -110,7 +110,7 @@ class DiagnosticIumprGroup(DiagnosticCommonElement):
         # Parse iumpr_group_ref
         child = ARObject._find_child_element(element, "IUMPR-GROUP")
         if child is not None:
-            iumpr_group_ref_value = ARObject._deserialize_by_tag(child, "DiagnosticIumprGroup")
+            iumpr_group_ref_value = ARRef.deserialize(child)
             obj.iumpr_group_ref = iumpr_group_ref_value
 
         return obj

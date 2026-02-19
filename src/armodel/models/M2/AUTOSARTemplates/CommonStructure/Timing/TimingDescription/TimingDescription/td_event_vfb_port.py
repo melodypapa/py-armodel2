@@ -55,7 +55,7 @@ class TDEventVfbPort(TDEventVfb, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -87,7 +87,7 @@ class TDEventVfbPort(TDEventVfb, ABC):
             serialized = ARObject._serialize_item(self.port_ref, "PortPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PORT")
+                wrapped = ET.Element("PORT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -101,7 +101,7 @@ class TDEventVfbPort(TDEventVfb, ABC):
             serialized = ARObject._serialize_item(self.port_prototype_ref, "PortPrototypeBlueprint")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PORT-PROTOTYPE")
+                wrapped = ET.Element("PORT-PROTOTYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -132,15 +132,15 @@ class TDEventVfbPort(TDEventVfb, ABC):
             obj.is_external = is_external_value
 
         # Parse port_ref
-        child = ARObject._find_child_element(element, "PORT")
+        child = ARObject._find_child_element(element, "PORT-REF")
         if child is not None:
-            port_ref_value = ARObject._deserialize_by_tag(child, "PortPrototype")
+            port_ref_value = ARRef.deserialize(child)
             obj.port_ref = port_ref_value
 
         # Parse port_prototype_ref
-        child = ARObject._find_child_element(element, "PORT-PROTOTYPE")
+        child = ARObject._find_child_element(element, "PORT-PROTOTYPE-REF")
         if child is not None:
-            port_prototype_ref_value = ARObject._deserialize_by_tag(child, "PortPrototypeBlueprint")
+            port_prototype_ref_value = ARRef.deserialize(child)
             obj.port_prototype_ref = port_prototype_ref_value
 
         return obj

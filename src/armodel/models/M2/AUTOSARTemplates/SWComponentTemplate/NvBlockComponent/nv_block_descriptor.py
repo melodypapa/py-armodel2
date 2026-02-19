@@ -92,7 +92,7 @@ class NvBlockDescriptor(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -329,13 +329,13 @@ class NvBlockDescriptor(Identifiable):
         # Parse ram_block_ref
         child = ARObject._find_child_element(element, "RAM-BLOCK")
         if child is not None:
-            ram_block_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            ram_block_ref_value = ARRef.deserialize(child)
             obj.ram_block_ref = ram_block_ref_value
 
         # Parse rom_block_ref
         child = ARObject._find_child_element(element, "ROM-BLOCK")
         if child is not None:
-            rom_block_ref_value = ARObject._deserialize_by_tag(child, "ParameterDataPrototype")
+            rom_block_ref_value = ARRef.deserialize(child)
             obj.rom_block_ref = rom_block_ref_value
 
         # Parse support_dirty

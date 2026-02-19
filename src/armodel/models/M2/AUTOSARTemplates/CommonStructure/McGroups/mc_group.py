@@ -53,7 +53,7 @@ class McGroup(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -142,13 +142,13 @@ class McGroup(ARElement):
         # Parse ref_calprm_set_ref
         child = ARObject._find_child_element(element, "REF-CALPRM-SET")
         if child is not None:
-            ref_calprm_set_ref_value = ARObject._deserialize_by_tag(child, "McGroupDataRefSet")
+            ref_calprm_set_ref_value = ARRef.deserialize(child)
             obj.ref_calprm_set_ref = ref_calprm_set_ref_value
 
         # Parse ref_ref
         child = ARObject._find_child_element(element, "REF")
         if child is not None:
-            ref_ref_value = ARObject._deserialize_by_tag(child, "McGroupDataRefSet")
+            ref_ref_value = ARRef.deserialize(child)
             obj.ref_ref = ref_ref_value
 
         # Parse sub_group_refs (list from container "SUB-GROUPS")

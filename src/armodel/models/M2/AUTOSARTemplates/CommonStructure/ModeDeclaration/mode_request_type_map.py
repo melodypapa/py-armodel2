@@ -49,7 +49,7 @@ class ModeRequestTypeMap(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize implementation
@@ -71,7 +71,7 @@ class ModeRequestTypeMap(ARObject):
             serialized = ARObject._serialize_item(self.mode_group_ref, "ModeDeclarationGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("MODE-GROUP")
+                wrapped = ET.Element("MODE-GROUP-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -103,9 +103,9 @@ class ModeRequestTypeMap(ARObject):
             obj.implementation = implementation_value
 
         # Parse mode_group_ref
-        child = ARObject._find_child_element(element, "MODE-GROUP")
+        child = ARObject._find_child_element(element, "MODE-GROUP-REF")
         if child is not None:
-            mode_group_ref_value = ARObject._deserialize_by_tag(child, "ModeDeclarationGroup")
+            mode_group_ref_value = ARRef.deserialize(child)
             obj.mode_group_ref = mode_group_ref_value
 
         return obj

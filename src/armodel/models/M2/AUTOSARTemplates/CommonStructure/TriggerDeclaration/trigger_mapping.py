@@ -42,7 +42,7 @@ class TriggerMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize first_trigger_ref
@@ -50,7 +50,7 @@ class TriggerMapping(ARObject):
             serialized = ARObject._serialize_item(self.first_trigger_ref, "Trigger")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("FIRST-TRIGGER")
+                wrapped = ET.Element("FIRST-TRIGGER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -64,7 +64,7 @@ class TriggerMapping(ARObject):
             serialized = ARObject._serialize_item(self.second_trigger_ref, "Trigger")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SECOND-TRIGGER")
+                wrapped = ET.Element("SECOND-TRIGGER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -90,15 +90,15 @@ class TriggerMapping(ARObject):
         obj.__init__()
 
         # Parse first_trigger_ref
-        child = ARObject._find_child_element(element, "FIRST-TRIGGER")
+        child = ARObject._find_child_element(element, "FIRST-TRIGGER-REF")
         if child is not None:
-            first_trigger_ref_value = ARObject._deserialize_by_tag(child, "Trigger")
+            first_trigger_ref_value = ARRef.deserialize(child)
             obj.first_trigger_ref = first_trigger_ref_value
 
         # Parse second_trigger_ref
-        child = ARObject._find_child_element(element, "SECOND-TRIGGER")
+        child = ARObject._find_child_element(element, "SECOND-TRIGGER-REF")
         if child is not None:
-            second_trigger_ref_value = ARObject._deserialize_by_tag(child, "Trigger")
+            second_trigger_ref_value = ARRef.deserialize(child)
             obj.second_trigger_ref = second_trigger_ref_value
 
         return obj

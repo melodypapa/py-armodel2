@@ -52,7 +52,7 @@ class VariableDataPrototypeInCompositionInstanceRef(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize base
@@ -74,7 +74,7 @@ class VariableDataPrototypeInCompositionInstanceRef(ARObject):
             serialized = ARObject._serialize_item(self.context_port_ref, "PortPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT-PORT")
+                wrapped = ET.Element("CONTEXT-PORT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -98,7 +98,7 @@ class VariableDataPrototypeInCompositionInstanceRef(ARObject):
             serialized = ARObject._serialize_item(self.target_variable_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TARGET-VARIABLE")
+                wrapped = ET.Element("TARGET-VARIABLE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -130,9 +130,9 @@ class VariableDataPrototypeInCompositionInstanceRef(ARObject):
             obj.base = base_value
 
         # Parse context_port_ref
-        child = ARObject._find_child_element(element, "CONTEXT-PORT")
+        child = ARObject._find_child_element(element, "CONTEXT-PORT-REF")
         if child is not None:
-            context_port_ref_value = ARObject._deserialize_by_tag(child, "PortPrototype")
+            context_port_ref_value = ARRef.deserialize(child)
             obj.context_port_ref = context_port_ref_value
 
         # Parse context_sws (list from container "CONTEXT-SWS")
@@ -146,9 +146,9 @@ class VariableDataPrototypeInCompositionInstanceRef(ARObject):
                     obj.context_sws.append(child_value)
 
         # Parse target_variable_ref
-        child = ARObject._find_child_element(element, "TARGET-VARIABLE")
+        child = ARObject._find_child_element(element, "TARGET-VARIABLE-REF")
         if child is not None:
-            target_variable_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            target_variable_ref_value = ARRef.deserialize(child)
             obj.target_variable_ref = target_variable_ref_value
 
         return obj

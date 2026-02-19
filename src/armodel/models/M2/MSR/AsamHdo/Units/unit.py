@@ -16,11 +16,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Float,
-)
-from armodel.models.M2.MSR.AsamHdo.Units.physical_dimension import (
-    PhysicalDimension,
 )
 from armodel.models.M2.MSR.Documentation.TextModel.SingleLanguageData.single_language_unit_names import (
     SingleLanguageUnitNames,
@@ -42,14 +40,14 @@ class Unit(ARElement):
     display_name: Optional[SingleLanguageUnitNames]
     factor_si_to_unit: Optional[Float]
     offset_si_to_unit: Optional[Float]
-    physical: Optional[PhysicalDimension]
+    physical_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize Unit."""
         super().__init__()
         self.display_name: Optional[SingleLanguageUnitNames] = None
         self.factor_si_to_unit: Optional[Float] = None
         self.offset_si_to_unit: Optional[Float] = None
-        self.physical: Optional[PhysicalDimension] = None
+        self.physical_ref: Optional[ARRef] = None
     def serialize(self) -> ET.Element:
         """Serialize Unit to XML element.
 
@@ -57,7 +55,7 @@ class Unit(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -112,12 +110,12 @@ class Unit(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize physical
-        if self.physical is not None:
-            serialized = ARObject._serialize_item(self.physical, "PhysicalDimension")
+        # Serialize physical_ref
+        if self.physical_ref is not None:
+            serialized = ARObject._serialize_item(self.physical_ref, "physicalDimension")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PHYSICAL")
+                wrapped = ET.Element("PHYSICAL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -159,11 +157,11 @@ class Unit(ARElement):
             offset_si_to_unit_value = child.text
             obj.offset_si_to_unit = offset_si_to_unit_value
 
-        # Parse physical
-        child = ARObject._find_child_element(element, "PHYSICAL")
+        # Parse physical_ref
+        child = ARObject._find_child_element(element, "PHYSICAL-REF")
         if child is not None:
-            physical_value = ARObject._deserialize_by_tag(child, "PhysicalDimension")
-            obj.physical = physical_value
+            physical_ref_value = ARRef.deserialize(child)
+            obj.physical_ref = physical_ref_value
 
         return obj
 

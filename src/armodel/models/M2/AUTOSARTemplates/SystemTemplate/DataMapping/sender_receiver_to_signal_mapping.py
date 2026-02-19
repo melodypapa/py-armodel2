@@ -56,7 +56,7 @@ class SenderReceiverToSignalMapping(DataMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -143,19 +143,19 @@ class SenderReceiverToSignalMapping(DataMapping):
         # Parse data_element_system_instance_ref
         child = ARObject._find_child_element(element, "DATA-ELEMENT-SYSTEM-INSTANCE-REF")
         if child is not None:
-            data_element_system_instance_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            data_element_system_instance_ref_value = ARRef.deserialize(child)
             obj.data_element_system_instance_ref = data_element_system_instance_ref_value
 
         # Parse sender_to_signal_ref
         child = ARObject._find_child_element(element, "SENDER-TO-SIGNAL")
         if child is not None:
-            sender_to_signal_ref_value = ARObject._deserialize_by_tag(child, "TextTableMapping")
+            sender_to_signal_ref_value = ARRef.deserialize(child)
             obj.sender_to_signal_ref = sender_to_signal_ref_value
 
         # Parse signal_to_ref
         child = ARObject._find_child_element(element, "SIGNAL-TO")
         if child is not None:
-            signal_to_ref_value = ARObject._deserialize_by_tag(child, "TextTableMapping")
+            signal_to_ref_value = ARRef.deserialize(child)
             obj.signal_to_ref = signal_to_ref_value
 
         # Parse system_signal

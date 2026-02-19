@@ -36,19 +36,23 @@ class ReferenceBase(ARObject):
         """
         return False
 
-    global_element_refs: list[ARRef]
-    global_ins: list[ARPackage]
-    is_default: Boolean
-    package: Optional[ARPackage]
     short_label: Identifier
+    is_default: Boolean
+    is_global: Boolean
+    base_is_this_package: Boolean
+    package_ref: Optional[ARRef]
+    global_element_refs: list[ReferrableSubtypesEnum]
+    global_in_package_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize ReferenceBase."""
         super().__init__()
-        self.global_element_refs: list[ARRef] = []
-        self.global_ins: list[ARPackage] = []
-        self.is_default: Boolean = None
-        self.package: Optional[ARPackage] = None
         self.short_label: Identifier = None
+        self.is_default: Boolean = None
+        self.is_global: Boolean = None
+        self.base_is_this_package: Boolean = None
+        self.package_ref: Optional[ARRef] = None
+        self.global_element_refs: list[ReferrableSubtypesEnum] = []
+        self.global_in_package_refs: list[ARRef] = []
     def serialize(self) -> ET.Element:
         """Serialize ReferenceBase to XML element.
 
@@ -56,28 +60,22 @@ class ReferenceBase(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize global_element_refs (list to container "GLOBAL-ELEMENTS")
-        if self.global_element_refs:
-            wrapper = ET.Element("GLOBAL-ELEMENTS")
-            for item in self.global_element_refs:
-                serialized = ARObject._serialize_item(item, "ReferrableSubtypesEnum")
-                if serialized is not None:
-                    wrapper.append(serialized)
-            if len(wrapper) > 0:
-                elem.append(wrapper)
-
-        # Serialize global_ins (list to container "GLOBAL-INS")
-        if self.global_ins:
-            wrapper = ET.Element("GLOBAL-INS")
-            for item in self.global_ins:
-                serialized = ARObject._serialize_item(item, "ARPackage")
-                if serialized is not None:
-                    wrapper.append(serialized)
-            if len(wrapper) > 0:
-                elem.append(wrapper)
+        # Serialize short_label
+        if self.short_label is not None:
+            serialized = ARObject._serialize_item(self.short_label, "Identifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SHORT-LABEL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
 
         # Serialize is_default
         if self.is_default is not None:
@@ -93,12 +91,12 @@ class ReferenceBase(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize package
-        if self.package is not None:
-            serialized = ARObject._serialize_item(self.package, "ARPackage")
+        # Serialize is_global
+        if self.is_global is not None:
+            serialized = ARObject._serialize_item(self.is_global, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PACKAGE")
+                wrapped = ET.Element("IS-GLOBAL")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -107,12 +105,12 @@ class ReferenceBase(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize short_label
-        if self.short_label is not None:
-            serialized = ARObject._serialize_item(self.short_label, "Identifier")
+        # Serialize base_is_this_package
+        if self.base_is_this_package is not None:
+            serialized = ARObject._serialize_item(self.base_is_this_package, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SHORT-LABEL")
+                wrapped = ET.Element("BASE-IS-THIS-PACKAGE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -120,6 +118,40 @@ class ReferenceBase(ARObject):
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
+
+        # Serialize package_ref
+        if self.package_ref is not None:
+            serialized = ARObject._serialize_item(self.package_ref, "ARPackage")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PACKAGE-REF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize global_element_refs (list to container "GLOBAL-ELEMENTS")
+        if self.global_element_refs:
+            wrapper = ET.Element("GLOBAL-ELEMENTS")
+            for item in self.global_element_refs:
+                serialized = ARObject._serialize_item(item, "ReferrableSubtypesEnum")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize global_in_package_refs (list to container "GLOBAL-IN-PACKAGES")
+        if self.global_in_package_refs:
+            wrapper = ET.Element("GLOBAL-IN-PACKAGES")
+            for item in self.global_in_package_refs:
+                serialized = ARObject._serialize_item(item, "ARPackage")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
 
         return elem
 
@@ -137,6 +169,36 @@ class ReferenceBase(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
+        # Parse short_label
+        child = ARObject._find_child_element(element, "SHORT-LABEL")
+        if child is not None:
+            short_label_value = ARObject._deserialize_by_tag(child, "Identifier")
+            obj.short_label = short_label_value
+
+        # Parse is_default
+        child = ARObject._find_child_element(element, "IS-DEFAULT")
+        if child is not None:
+            is_default_value = child.text
+            obj.is_default = is_default_value
+
+        # Parse is_global
+        child = ARObject._find_child_element(element, "IS-GLOBAL")
+        if child is not None:
+            is_global_value = child.text
+            obj.is_global = is_global_value
+
+        # Parse base_is_this_package
+        child = ARObject._find_child_element(element, "BASE-IS-THIS-PACKAGE")
+        if child is not None:
+            base_is_this_package_value = child.text
+            obj.base_is_this_package = base_is_this_package_value
+
+        # Parse package_ref
+        child = ARObject._find_child_element(element, "PACKAGE-REF")
+        if child is not None:
+            package_ref_value = ARRef.deserialize(child)
+            obj.package_ref = package_ref_value
+
         # Parse global_element_refs (list from container "GLOBAL-ELEMENTS")
         obj.global_element_refs = []
         container = ARObject._find_child_element(element, "GLOBAL-ELEMENTS")
@@ -147,33 +209,15 @@ class ReferenceBase(ARObject):
                 if child_value is not None:
                     obj.global_element_refs.append(child_value)
 
-        # Parse global_ins (list from container "GLOBAL-INS")
-        obj.global_ins = []
-        container = ARObject._find_child_element(element, "GLOBAL-INS")
+        # Parse global_in_package_refs (list from container "GLOBAL-IN-PACKAGES")
+        obj.global_in_package_refs = []
+        container = ARObject._find_child_element(element, "GLOBAL-IN-PACKAGES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.global_ins.append(child_value)
-
-        # Parse is_default
-        child = ARObject._find_child_element(element, "IS-DEFAULT")
-        if child is not None:
-            is_default_value = child.text
-            obj.is_default = is_default_value
-
-        # Parse package
-        child = ARObject._find_child_element(element, "PACKAGE")
-        if child is not None:
-            package_value = ARObject._deserialize_by_tag(child, "ARPackage")
-            obj.package = package_value
-
-        # Parse short_label
-        child = ARObject._find_child_element(element, "SHORT-LABEL")
-        if child is not None:
-            short_label_value = ARObject._deserialize_by_tag(child, "Identifier")
-            obj.short_label = short_label_value
+                    obj.global_in_package_refs.append(child_value)
 
         return obj
 

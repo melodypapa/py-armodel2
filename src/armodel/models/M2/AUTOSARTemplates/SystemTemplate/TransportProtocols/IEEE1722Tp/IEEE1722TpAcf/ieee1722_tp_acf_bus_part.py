@@ -32,11 +32,11 @@ class IEEE1722TpAcfBusPart(Identifiable, ABC):
         """
         return True
 
-    collection_trigger_ref: Optional[ARRef]
+    collection_trigger_ref: Optional[PduCollectionTriggerEnum]
     def __init__(self) -> None:
         """Initialize IEEE1722TpAcfBusPart."""
         super().__init__()
-        self.collection_trigger_ref: Optional[ARRef] = None
+        self.collection_trigger_ref: Optional[PduCollectionTriggerEnum] = None
     def serialize(self) -> ET.Element:
         """Serialize IEEE1722TpAcfBusPart to XML element.
 
@@ -44,7 +44,7 @@ class IEEE1722TpAcfBusPart(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -89,7 +89,7 @@ class IEEE1722TpAcfBusPart(Identifiable, ABC):
         # Parse collection_trigger_ref
         child = ARObject._find_child_element(element, "COLLECTION-TRIGGER")
         if child is not None:
-            collection_trigger_ref_value = PduCollectionTriggerEnum.deserialize(child)
+            collection_trigger_ref_value = ARRef.deserialize(child)
             obj.collection_trigger_ref = collection_trigger_ref_value
 
         return obj

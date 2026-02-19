@@ -48,7 +48,7 @@ class DiagnosticJ1939SwMapping(DiagnosticSwMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -113,7 +113,7 @@ class DiagnosticJ1939SwMapping(DiagnosticSwMapping):
         # Parse sw_component_prototype_composition_instance_ref
         child = ARObject._find_child_element(element, "SW-COMPONENT-PROTOTYPE-COMPOSITION-INSTANCE-REF")
         if child is not None:
-            sw_component_prototype_composition_instance_ref_value = ARObject._deserialize_by_tag(child, "SwComponentPrototype")
+            sw_component_prototype_composition_instance_ref_value = ARRef.deserialize(child)
             obj.sw_component_prototype_composition_instance_ref = sw_component_prototype_composition_instance_ref_value
 
         return obj

@@ -49,7 +49,7 @@ class ArVariableInImplementationDataInstanceRef(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize context_datas (list to container "CONTEXT-DATAS")
@@ -67,7 +67,7 @@ class ArVariableInImplementationDataInstanceRef(ARObject):
             serialized = ARObject._serialize_item(self.port_prototype_ref, "PortPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PORT-PROTOTYPE")
+                wrapped = ET.Element("PORT-PROTOTYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -81,7 +81,7 @@ class ArVariableInImplementationDataInstanceRef(ARObject):
             serialized = ARObject._serialize_item(self.root_variable_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ROOT-VARIABLE")
+                wrapped = ET.Element("ROOT-VARIABLE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -131,15 +131,15 @@ class ArVariableInImplementationDataInstanceRef(ARObject):
                     obj.context_datas.append(child_value)
 
         # Parse port_prototype_ref
-        child = ARObject._find_child_element(element, "PORT-PROTOTYPE")
+        child = ARObject._find_child_element(element, "PORT-PROTOTYPE-REF")
         if child is not None:
-            port_prototype_ref_value = ARObject._deserialize_by_tag(child, "PortPrototype")
+            port_prototype_ref_value = ARRef.deserialize(child)
             obj.port_prototype_ref = port_prototype_ref_value
 
         # Parse root_variable_ref
-        child = ARObject._find_child_element(element, "ROOT-VARIABLE")
+        child = ARObject._find_child_element(element, "ROOT-VARIABLE-REF")
         if child is not None:
-            root_variable_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            root_variable_ref_value = ARRef.deserialize(child)
             obj.root_variable_ref = root_variable_ref_value
 
         # Parse target_data

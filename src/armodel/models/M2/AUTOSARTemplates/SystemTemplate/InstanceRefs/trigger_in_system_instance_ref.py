@@ -55,7 +55,7 @@ class TriggerInSystemInstanceRef(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize base
@@ -91,7 +91,7 @@ class TriggerInSystemInstanceRef(ARObject):
             serialized = ARObject._serialize_item(self.context_port_ref, "PortPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT-PORT")
+                wrapped = ET.Element("CONTEXT-PORT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -105,7 +105,7 @@ class TriggerInSystemInstanceRef(ARObject):
             serialized = ARObject._serialize_item(self.target_trigger_ref, "Trigger")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TARGET-TRIGGER")
+                wrapped = ET.Element("TARGET-TRIGGER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -143,15 +143,15 @@ class TriggerInSystemInstanceRef(ARObject):
             obj.context = context_value
 
         # Parse context_port_ref
-        child = ARObject._find_child_element(element, "CONTEXT-PORT")
+        child = ARObject._find_child_element(element, "CONTEXT-PORT-REF")
         if child is not None:
-            context_port_ref_value = ARObject._deserialize_by_tag(child, "PortPrototype")
+            context_port_ref_value = ARRef.deserialize(child)
             obj.context_port_ref = context_port_ref_value
 
         # Parse target_trigger_ref
-        child = ARObject._find_child_element(element, "TARGET-TRIGGER")
+        child = ARObject._find_child_element(element, "TARGET-TRIGGER-REF")
         if child is not None:
-            target_trigger_ref_value = ARObject._deserialize_by_tag(child, "Trigger")
+            target_trigger_ref_value = ARRef.deserialize(child)
             obj.target_trigger_ref = target_trigger_ref_value
 
         return obj

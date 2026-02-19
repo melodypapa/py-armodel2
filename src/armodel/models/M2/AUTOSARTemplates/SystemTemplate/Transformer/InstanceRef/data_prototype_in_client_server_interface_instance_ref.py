@@ -55,7 +55,7 @@ class DataPrototypeInClientServerInterfaceInstanceRef(DataPrototypeInPortInterfa
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -97,7 +97,7 @@ class DataPrototypeInClientServerInterfaceInstanceRef(DataPrototypeInPortInterfa
             serialized = ARObject._serialize_item(self.root_data_prototype_in_cs_ref, "AutosarDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ROOT-DATA-PROTOTYPE-IN-CS")
+                wrapped = ET.Element("ROOT-DATA-PROTOTYPE-IN-CS-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -111,7 +111,7 @@ class DataPrototypeInClientServerInterfaceInstanceRef(DataPrototypeInPortInterfa
             serialized = ARObject._serialize_item(self.target_data_prototype_in_cs_ref, "DataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TARGET-DATA-PROTOTYPE-IN-CS")
+                wrapped = ET.Element("TARGET-DATA-PROTOTYPE-IN-CS-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -152,15 +152,15 @@ class DataPrototypeInClientServerInterfaceInstanceRef(DataPrototypeInPortInterfa
                     obj.context_datas.append(child_value)
 
         # Parse root_data_prototype_in_cs_ref
-        child = ARObject._find_child_element(element, "ROOT-DATA-PROTOTYPE-IN-CS")
+        child = ARObject._find_child_element(element, "ROOT-DATA-PROTOTYPE-IN-CS-REF")
         if child is not None:
-            root_data_prototype_in_cs_ref_value = ARObject._deserialize_by_tag(child, "AutosarDataPrototype")
+            root_data_prototype_in_cs_ref_value = ARRef.deserialize(child)
             obj.root_data_prototype_in_cs_ref = root_data_prototype_in_cs_ref_value
 
         # Parse target_data_prototype_in_cs_ref
-        child = ARObject._find_child_element(element, "TARGET-DATA-PROTOTYPE-IN-CS")
+        child = ARObject._find_child_element(element, "TARGET-DATA-PROTOTYPE-IN-CS-REF")
         if child is not None:
-            target_data_prototype_in_cs_ref_value = ARObject._deserialize_by_tag(child, "DataPrototype")
+            target_data_prototype_in_cs_ref_value = ARRef.deserialize(child)
             obj.target_data_prototype_in_cs_ref = target_data_prototype_in_cs_ref_value
 
         return obj

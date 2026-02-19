@@ -93,7 +93,7 @@ class DocumentationBlock(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize def_list_ref
@@ -269,7 +269,7 @@ class DocumentationBlock(ARObject):
         # Parse def_list_ref
         child = ARObject._find_child_element(element, "DEF-LIST")
         if child is not None:
-            def_list_ref_value = ARObject._deserialize_by_tag(child, "DefList")
+            def_list_ref_value = ARRef.deserialize(child)
             obj.def_list_ref = def_list_ref_value
 
         # Parse figure
@@ -287,13 +287,13 @@ class DocumentationBlock(ARObject):
         # Parse labeled_list_label_ref
         child = ARObject._find_child_element(element, "LABELED-LIST-LABEL")
         if child is not None:
-            labeled_list_label_ref_value = ARObject._deserialize_by_tag(child, "LabeledList")
+            labeled_list_label_ref_value = ARRef.deserialize(child)
             obj.labeled_list_label_ref = labeled_list_label_ref_value
 
         # Parse list_ref
         child = ARObject._find_child_element(element, "LIST")
         if child is not None:
-            list_ref_value = ARObject._deserialize_by_tag(child, "List")
+            list_ref_value = ARRef.deserialize(child)
             obj.list_ref = list_ref_value
 
         # Parse msr_query_p2

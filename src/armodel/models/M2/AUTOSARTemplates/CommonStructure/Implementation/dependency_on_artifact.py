@@ -36,12 +36,12 @@ class DependencyOnArtifact(Identifiable):
         return False
 
     artifact: Optional[AutosarEngineeringObject]
-    usage_refs: list[ARRef]
+    usage_refs: list[DependencyUsageEnum]
     def __init__(self) -> None:
         """Initialize DependencyOnArtifact."""
         super().__init__()
         self.artifact: Optional[AutosarEngineeringObject] = None
-        self.usage_refs: list[ARRef] = []
+        self.usage_refs: list[DependencyUsageEnum] = []
     def serialize(self) -> ET.Element:
         """Serialize DependencyOnArtifact to XML element.
 
@@ -49,7 +49,7 @@ class DependencyOnArtifact(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

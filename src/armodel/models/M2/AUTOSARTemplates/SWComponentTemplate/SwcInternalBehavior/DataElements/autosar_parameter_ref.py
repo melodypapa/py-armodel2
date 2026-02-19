@@ -46,7 +46,7 @@ class AutosarParameterRef(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize autosar_ref
@@ -68,7 +68,7 @@ class AutosarParameterRef(ARObject):
             serialized = ARObject._serialize_item(self.local_parameter_ref, "DataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("LOCAL-PARAMETER")
+                wrapped = ET.Element("LOCAL-PARAMETER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -96,13 +96,13 @@ class AutosarParameterRef(ARObject):
         # Parse autosar_ref
         child = ARObject._find_child_element(element, "AUTOSAR")
         if child is not None:
-            autosar_ref_value = ARObject._deserialize_by_tag(child, "DataPrototype")
+            autosar_ref_value = ARRef.deserialize(child)
             obj.autosar_ref = autosar_ref_value
 
         # Parse local_parameter_ref
-        child = ARObject._find_child_element(element, "LOCAL-PARAMETER")
+        child = ARObject._find_child_element(element, "LOCAL-PARAMETER-REF")
         if child is not None:
-            local_parameter_ref_value = ARObject._deserialize_by_tag(child, "DataPrototype")
+            local_parameter_ref_value = ARRef.deserialize(child)
             obj.local_parameter_ref = local_parameter_ref_value
 
         return obj

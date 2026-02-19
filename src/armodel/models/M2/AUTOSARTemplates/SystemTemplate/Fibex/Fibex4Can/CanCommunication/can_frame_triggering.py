@@ -77,7 +77,7 @@ class CanFrameTriggering(FrameTriggering):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -272,7 +272,7 @@ class CanFrameTriggering(FrameTriggering):
         # Parse can_xl_frame_ref
         child = ARObject._find_child_element(element, "CAN-XL-FRAME")
         if child is not None:
-            can_xl_frame_ref_value = ARObject._deserialize_by_tag(child, "CanXlFrameTriggeringProps")
+            can_xl_frame_ref_value = ARRef.deserialize(child)
             obj.can_xl_frame_ref = can_xl_frame_ref_value
 
         # Parse identifier

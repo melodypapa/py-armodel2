@@ -129,10 +129,12 @@ def generate_class_code(
                         attr_type = attr_info["type"]
                         multiplicity = attr_info["multiplicity"]
                         is_ref = attr_info.get("is_ref", False)
+                        kind = attr_info.get("kind", "attribute")
                         attribute_types[attr_name] = {
                             "type": attr_type,
                             "multiplicity": multiplicity,
                             "is_ref": is_ref,
+                            "kind": kind,
                         }
                     break
 
@@ -182,10 +184,12 @@ def generate_class_code(
                     attr_type = attr_info["type"]
                     multiplicity = attr_info["multiplicity"]
                     is_ref = attr_info.get("is_ref", False)
+                    kind = attr_info.get("kind", "attribute")
                     attribute_types[attr_name] = {
                         "type": attr_type,
                         "multiplicity": multiplicity,
                         "is_ref": is_ref,
+                        "kind": kind,
                     }
                 break
 
@@ -512,12 +516,21 @@ def _generate_deserialize_method(
             attr_type = attr_info["type"]
             multiplicity = attr_info["multiplicity"]
             is_ref = attr_info.get("is_ref", False)
+            kind = attr_info.get("kind", "attribute")
+
+            # Debug output for ReferenceBase package attribute
+            if class_name == "ReferenceBase" and attr_name == "package":
+                print(f"DEBUG [deserialize]: class={class_name}, attr={attr_name}, is_ref={is_ref}, kind={kind}, is_ref and kind == 'reference'={is_ref and kind == 'reference'}")
 
             # Get Python identifier
             python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity)
             # Convert attribute name to snake_case then to XML tag (UPPER-CASE-WITH-HYPHENS)
             snake_name = to_snake_case(attr_name)
             xml_tag = snake_name.upper().replace("_", "-")
+            # Add -REF suffix for reference attributes (kind: "reference") with multiplicity != "*"
+            # Container elements (multiplicity "*") should not have -REF suffix
+            if is_ref and kind == "reference" and multiplicity != "*":
+                xml_tag = f"{xml_tag}-REF"
 
             # Convert "any (xxx)" types to "Any" for generation
             effective_type = attr_type
@@ -548,7 +561,7 @@ def _generate_deserialize_method(
                     code += f'''        # Parse {python_name} (list)
         obj.{python_name} = []
         for child in ARObject._find_all_child_elements(element, "{xml_tag}"):
-            {_generate_value_extraction_code(effective_type, "child", package_data, python_name)}
+            {_generate_value_extraction_code(effective_type, "child", package_data, python_name, is_ref)}
             obj.{python_name}.append({python_name}_value)
 
 '''
@@ -557,7 +570,7 @@ def _generate_deserialize_method(
                 code += f'''        # Parse {python_name}
         child = ARObject._find_child_element(element, "{xml_tag}")
         if child is not None:
-            {_generate_value_extraction_code(effective_type, "child", package_data, python_name)}
+            {_generate_value_extraction_code(effective_type, "child", package_data, python_name, is_ref)}
             obj.{python_name} = {python_name}_value
 
 '''
@@ -569,7 +582,7 @@ def _generate_deserialize_method(
 
 
 def _generate_value_extraction_code(
-    attr_type: str, element_var: str, package_data: Dict[str, Dict[str, Any]], var_name: str
+    attr_type: str, element_var: str, package_data: Dict[str, Dict[str, Any]], var_name: str, is_ref: bool = False
 ) -> str:
     """Generate code to extract value from XML element.
 
@@ -578,11 +591,17 @@ def _generate_value_extraction_code(
         element_var: Variable name for the XML element
         package_data: Package data dictionary
         var_name: Variable name to store the result
+        is_ref: Whether this is a reference type (should use ARRef.deserialize)
 
     Returns:
         Generated code for value extraction
     """
     value_var = f"{var_name}_value"
+
+    # Handle reference types (ARRef)
+    if is_ref:
+        # Use ARRef.deserialize() for reference types
+        return f"""{value_var} = ARRef.deserialize({element_var})"""
 
     # Handle primitive types
     if is_primitive_type(attr_type, package_data):
@@ -1346,7 +1365,7 @@ def _generate_serialize_method(
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
 '''
@@ -1372,12 +1391,17 @@ def _generate_serialize_method(
             attr_type = attr_info["type"]
             multiplicity = attr_info["multiplicity"]
             is_ref = attr_info.get("is_ref", False)
+            kind = attr_info.get("kind", "attribute")
 
             # Get Python identifier
             python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity)
             # Convert attribute name to snake_case then to XML tag (UPPER-CASE-WITH-HYPHENS)
             snake_name = to_snake_case(attr_name)
             xml_tag = snake_name.upper().replace("_", "-")
+            # Add -REF suffix for reference attributes (kind: "reference") with multiplicity != "*"
+            # Container elements (multiplicity "*") should not have -REF suffix
+            if is_ref and kind == "reference" and multiplicity != "*":
+                xml_tag = f"{xml_tag}-REF"
 
             # Convert "any (xxx)" types to "Any" for generation
             effective_type = attr_type

@@ -32,12 +32,12 @@ class ComponentClustering(MappingConstraint):
         return False
 
     clustereds: list[Any]
-    mapping_scope_enum_ref: Optional[ARRef]
+    mapping_scope_enum_ref: Optional[MappingScopeEnum]
     def __init__(self) -> None:
         """Initialize ComponentClustering."""
         super().__init__()
         self.clustereds: list[Any] = []
-        self.mapping_scope_enum_ref: Optional[ARRef] = None
+        self.mapping_scope_enum_ref: Optional[MappingScopeEnum] = None
     def serialize(self) -> ET.Element:
         """Serialize ComponentClustering to XML element.
 
@@ -45,7 +45,7 @@ class ComponentClustering(MappingConstraint):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -110,7 +110,7 @@ class ComponentClustering(MappingConstraint):
         # Parse mapping_scope_enum_ref
         child = ARObject._find_child_element(element, "MAPPING-SCOPE-ENUM")
         if child is not None:
-            mapping_scope_enum_ref_value = MappingScopeEnum.deserialize(child)
+            mapping_scope_enum_ref_value = ARRef.deserialize(child)
             obj.mapping_scope_enum_ref = mapping_scope_enum_ref_value
 
         return obj

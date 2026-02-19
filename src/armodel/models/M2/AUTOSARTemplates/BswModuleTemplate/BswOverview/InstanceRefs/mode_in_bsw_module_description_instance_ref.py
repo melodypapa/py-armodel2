@@ -50,7 +50,7 @@ class ModeInBswModuleDescriptionInstanceRef(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize base
@@ -72,7 +72,7 @@ class ModeInBswModuleDescriptionInstanceRef(ARObject):
             serialized = ARObject._serialize_item(self.context_mode_group_ref, "ModeDeclarationGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT-MODE-GROUP")
+                wrapped = ET.Element("CONTEXT-MODE-GROUP-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -118,9 +118,9 @@ class ModeInBswModuleDescriptionInstanceRef(ARObject):
             obj.base = base_value
 
         # Parse context_mode_group_ref
-        child = ARObject._find_child_element(element, "CONTEXT-MODE-GROUP")
+        child = ARObject._find_child_element(element, "CONTEXT-MODE-GROUP-REF")
         if child is not None:
-            context_mode_group_ref_value = ARObject._deserialize_by_tag(child, "ModeDeclarationGroup")
+            context_mode_group_ref_value = ARRef.deserialize(child)
             obj.context_mode_group_ref = context_mode_group_ref_value
 
         # Parse target_mode

@@ -47,7 +47,7 @@ class SomeipTpConnection(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize tp_channel
@@ -69,7 +69,7 @@ class SomeipTpConnection(ARObject):
             serialized = ARObject._serialize_item(self.tp_sdu_ref, "PduTriggering")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TP-SDU")
+                wrapped = ET.Element("TP-SDU-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -83,7 +83,7 @@ class SomeipTpConnection(ARObject):
             serialized = ARObject._serialize_item(self.transport_pdu_ref, "PduTriggering")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TRANSPORT-PDU")
+                wrapped = ET.Element("TRANSPORT-PDU-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -115,15 +115,15 @@ class SomeipTpConnection(ARObject):
             obj.tp_channel = tp_channel_value
 
         # Parse tp_sdu_ref
-        child = ARObject._find_child_element(element, "TP-SDU")
+        child = ARObject._find_child_element(element, "TP-SDU-REF")
         if child is not None:
-            tp_sdu_ref_value = ARObject._deserialize_by_tag(child, "PduTriggering")
+            tp_sdu_ref_value = ARRef.deserialize(child)
             obj.tp_sdu_ref = tp_sdu_ref_value
 
         # Parse transport_pdu_ref
-        child = ARObject._find_child_element(element, "TRANSPORT-PDU")
+        child = ARObject._find_child_element(element, "TRANSPORT-PDU-REF")
         if child is not None:
-            transport_pdu_ref_value = ARObject._deserialize_by_tag(child, "PduTriggering")
+            transport_pdu_ref_value = ARRef.deserialize(child)
             obj.transport_pdu_ref = transport_pdu_ref_value
 
         return obj

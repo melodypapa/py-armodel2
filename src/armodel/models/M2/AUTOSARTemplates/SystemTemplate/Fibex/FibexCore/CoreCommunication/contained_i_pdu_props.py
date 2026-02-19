@@ -42,7 +42,7 @@ class ContainedIPduProps(ARObject):
     offset: Optional[PositiveInteger]
     priority: Optional[PositiveInteger]
     timeout: Optional[TimeValue]
-    trigger_ref: Optional[ARRef]
+    trigger_ref: Optional[PduCollectionTriggerEnum]
     update: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize ContainedIPduProps."""
@@ -54,7 +54,7 @@ class ContainedIPduProps(ARObject):
         self.offset: Optional[PositiveInteger] = None
         self.priority: Optional[PositiveInteger] = None
         self.timeout: Optional[TimeValue] = None
-        self.trigger_ref: Optional[ARRef] = None
+        self.trigger_ref: Optional[PduCollectionTriggerEnum] = None
         self.update: Optional[PositiveInteger] = None
     def serialize(self) -> ET.Element:
         """Serialize ContainedIPduProps to XML element.
@@ -63,7 +63,7 @@ class ContainedIPduProps(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize collection
@@ -85,7 +85,7 @@ class ContainedIPduProps(ARObject):
             serialized = ARObject._serialize_item(self.contained_pdu_ref, "PduTriggering")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONTAINED-PDU")
+                wrapped = ET.Element("CONTAINED-PDU-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -215,9 +215,9 @@ class ContainedIPduProps(ARObject):
             obj.collection = collection_value
 
         # Parse contained_pdu_ref
-        child = ARObject._find_child_element(element, "CONTAINED-PDU")
+        child = ARObject._find_child_element(element, "CONTAINED-PDU-REF")
         if child is not None:
-            contained_pdu_ref_value = ARObject._deserialize_by_tag(child, "PduTriggering")
+            contained_pdu_ref_value = ARRef.deserialize(child)
             obj.contained_pdu_ref = contained_pdu_ref_value
 
         # Parse header_id_long
@@ -253,7 +253,7 @@ class ContainedIPduProps(ARObject):
         # Parse trigger_ref
         child = ARObject._find_child_element(element, "TRIGGER")
         if child is not None:
-            trigger_ref_value = PduCollectionTriggerEnum.deserialize(child)
+            trigger_ref_value = ARRef.deserialize(child)
             obj.trigger_ref = trigger_ref_value
 
         # Parse update

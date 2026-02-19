@@ -56,7 +56,7 @@ class SwcServiceDependency(ServiceDependency):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -94,7 +94,7 @@ class SwcServiceDependency(ServiceDependency):
             serialized = ARObject._serialize_item(self.represented_port_ref, "PortGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("REPRESENTED-PORT")
+                wrapped = ET.Element("REPRESENTED-PORT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -153,9 +153,9 @@ class SwcServiceDependency(ServiceDependency):
                     obj.assigned_ports.append(child_value)
 
         # Parse represented_port_ref
-        child = ARObject._find_child_element(element, "REPRESENTED-PORT")
+        child = ARObject._find_child_element(element, "REPRESENTED-PORT-REF")
         if child is not None:
-            represented_port_ref_value = ARObject._deserialize_by_tag(child, "PortGroup")
+            represented_port_ref_value = ARRef.deserialize(child)
             obj.represented_port_ref = represented_port_ref_value
 
         # Parse service_needs

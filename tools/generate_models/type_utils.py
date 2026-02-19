@@ -71,6 +71,9 @@ def get_python_type(
         # Use AUTOSAR primitive type names directly instead of Python types
         # The primitive types are imported from PrimitiveTypes module
         base_type = type_name
+    elif is_enum_type(type_name, package_data):
+        # Enum types are used directly, not wrapped in ARRef
+        base_type = type_name
     elif type_name == "Any":
         # Handle the Any type specifically
         base_type = "Any"
@@ -78,8 +81,9 @@ def get_python_type(
         # It's a class type
         base_type = type_name
 
-    # Handle reference types - wrap in ARRef
-    if is_ref:
+    # Handle reference types - wrap in ARRef only for class types
+    # Primitive types and enum types are referenced by their string values, not by ARRef
+    if is_ref and not is_primitive_type(type_name, package_data) and not is_enum_type(type_name, package_data) and type_name != "Any":
         base_type = "ARRef"
 
     # Apply multiplicity
