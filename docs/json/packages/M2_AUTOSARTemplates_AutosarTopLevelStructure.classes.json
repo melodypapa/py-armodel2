@@ -117,7 +117,7 @@
           "is_ref": false,
           "note": "This is the top level package in an AUTOSAR model. atpVariation"
         },
-        "fileInfo": {
+        "fileInfoComment": {
           "type": "FileInfoComment",
           "multiplicity": "0..1",
           "kind": "attribute",

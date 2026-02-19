@@ -120,7 +120,7 @@ class SchemaVersionManager:
         if xsd_file:
             from pathlib import Path
 
-            return str(Path("demos/xsd/AUTOSAR_") / version / xsd_file)
+            return str(Path("demos/xsd") / f"AUTOSAR_{version}" / xsd_file)
         return None
 
     def get_all_versions(self) -> list[str]:

@@ -107,15 +107,15 @@ class SwDataDefProps(ARObject):
 
     additional_native_type_qualifier: Optional[NativeDeclarationString]
     annotations: list[Annotation]
-    base_type: Optional[SwBaseType]
-    compu_method: Optional[CompuMethod]
-    data_constr: Optional[DataConstr]
+    base_type_ref: Optional[ARRef]
+    compu_method_ref: Optional[ARRef]
+    data_constr_ref: Optional[ARRef]
     display_format: Optional[DisplayFormatString]
     display_presentation: Optional[DisplayPresentationEnum]
-    implementation_data_type: Optional[AbstractImplementationDataType]
+    implementation_data_type_ref: Optional[ARRef]
     invalid_value: Optional[ValueSpecification]
     step_size: Optional[Float]
-    sw_addr_method: Optional[SwAddrMethod]
+    sw_addr_method_ref: Optional[ARRef]
     sw_alignment: Optional[AlignmentType]
     sw_bit_representation: Optional[SwBitRepresentation]
     sw_calibration_access: Optional[SwCalibrationAccessEnum]
@@ -128,12 +128,12 @@ class SwDataDefProps(ARObject):
     sw_interpolation_method: Optional[Identifier]
     sw_is_virtual: Optional[Boolean]
     sw_pointer_target_props: Optional[SwPointerTargetProps]
-    sw_record_layout: Optional[SwRecordLayout]
+    sw_record_layout_ref: Optional[ARRef]
     sw_refresh_timing: Optional[MultidimensionalTime]
     sw_text_props: Optional[SwTextProps]
     sw_value_block_size: Optional[Numerical]
     sw_value_block_size_mults: list[Numerical]
-    unit: Optional[Unit]
+    unit_ref: Optional[ARRef]
     value_axis_data_type: Optional[ApplicationPrimitiveDataType]
 
     def __init__(self) -> None:
@@ -141,15 +141,15 @@ class SwDataDefProps(ARObject):
         super().__init__()
         self.additional_native_type_qualifier: Optional[NativeDeclarationString] = None
         self.annotations: list[Annotation] = []
-        self.base_type: Optional[SwBaseType] = None
-        self.compu_method: Optional[CompuMethod] = None
-        self.data_constr: Optional[DataConstr] = None
+        self.base_type_ref: Optional[ARRef] = None
+        self.compu_method_ref: Optional[ARRef] = None
+        self.data_constr_ref: Optional[ARRef] = None
         self.display_format: Optional[DisplayFormatString] = None
         self.display_presentation: Optional[DisplayPresentationEnum] = None
-        self.implementation_data_type: Optional[AbstractImplementationDataType] = None
+        self.implementation_data_type_ref: Optional[ARRef] = None
         self.invalid_value: Optional[ValueSpecification] = None
         self.step_size: Optional[Float] = None
-        self.sw_addr_method: Optional[SwAddrMethod] = None
+        self.sw_addr_method_ref: Optional[ARRef] = None
         self.sw_alignment: Optional[AlignmentType] = None
         self.sw_bit_representation: Optional[SwBitRepresentation] = None
         self.sw_calibration_access: Optional[SwCalibrationAccessEnum] = None
@@ -162,12 +162,12 @@ class SwDataDefProps(ARObject):
         self.sw_interpolation_method: Optional[Identifier] = None
         self.sw_is_virtual: Optional[Boolean] = None
         self.sw_pointer_target_props: Optional[SwPointerTargetProps] = None
-        self.sw_record_layout: Optional[SwRecordLayout] = None
+        self.sw_record_layout_ref: Optional[ARRef] = None
         self.sw_refresh_timing: Optional[MultidimensionalTime] = None
         self.sw_text_props: Optional[SwTextProps] = None
         self.sw_value_block_size: Optional[Numerical] = None
         self.sw_value_block_size_mults: list[Numerical] = []
-        self.unit: Optional[Unit] = None
+        self.unit_ref: Optional[ARRef] = None
         self.value_axis_data_type: Optional[ApplicationPrimitiveDataType] = None
 
     def serialize(self, namespace: str = "") -> ET.Element:
@@ -194,36 +194,26 @@ class SwDataDefProps(ARObject):
         conditional_elem = ET.Element("SW-DATA-DEF-PROPS-CONDITIONAL")
 
         # Serialize reference attributes that go inside SW-DATA-DEF-PROPS-CONDITIONAL
-        # These are the attributes that are typically references wrapped in -REF elements
-        if self.base_type:
-            ref_elem = ET.Element("BASE-TYPE-REF")
-            ref_elem.set("DEST", "SW-BASE-TYPE")
-            ref_elem.text = str(self.base_type) if hasattr(self.base_type, '__str__') else str(self.base_type)
-            conditional_elem.append(ref_elem)
+        # These are ARRef attributes that should be wrapped in -REF elements
+        if self.base_type_ref:
+            child = self._serialize_with_correct_tag(self.base_type_ref, "BASE-TYPE-REF")
+            conditional_elem.append(child)
 
-        if self.implementation_data_type:
-            ref_elem = ET.Element("IMPLEMENTATION-DATA-TYPE-REF")
-            ref_elem.set("DEST", "IMPLEMENTATION-DATA-TYPE")
-            ref_elem.text = str(self.implementation_data_type) if hasattr(self.implementation_data_type, '__str__') else str(self.implementation_data_type)
-            conditional_elem.append(ref_elem)
+        if self.implementation_data_type_ref:
+            child = self._serialize_with_correct_tag(self.implementation_data_type_ref, "IMPLEMENTATION-DATA-TYPE-REF")
+            conditional_elem.append(child)
 
-        if self.data_constr:
-            ref_elem = ET.Element("DATA-CONSTR-REF")
-            ref_elem.set("DEST", "DATA-CONSTR")
-            ref_elem.text = str(self.data_constr) if hasattr(self.data_constr, '__str__') else str(self.data_constr)
-            conditional_elem.append(ref_elem)
+        if self.data_constr_ref:
+            child = self._serialize_with_correct_tag(self.data_constr_ref, "DATA-CONSTR-REF")
+            conditional_elem.append(child)
 
-        if self.compu_method:
-            ref_elem = ET.Element("COMPU-METHOD-REF")
-            ref_elem.set("DEST", "COMPU-METHOD")
-            ref_elem.text = str(self.compu_method) if hasattr(self.compu_method, '__str__') else str(self.compu_method)
-            conditional_elem.append(ref_elem)
+        if self.compu_method_ref:
+            child = self._serialize_with_correct_tag(self.compu_method_ref, "COMPU-METHOD-REF")
+            conditional_elem.append(child)
 
-        if self.unit:
-            ref_elem = ET.Element("UNIT-REF")
-            ref_elem.set("DEST", "UNIT")
-            ref_elem.text = str(self.unit) if hasattr(self.unit, '__str__') else str(self.unit)
-            conditional_elem.append(ref_elem)
+        if self.unit_ref:
+            child = self._serialize_with_correct_tag(self.unit_ref, "UNIT-REF")
+            conditional_elem.append(child)
 
         # Add conditional to variants
         variants_elem.append(conditional_elem)
@@ -234,7 +224,7 @@ class SwDataDefProps(ARObject):
         # Serialize other attributes using reflection-based approach
         for name, value in vars(self).items():
             # Skip private attributes and already handled ones
-            if name.startswith('_') or name in ['base_type', 'implementation_data_type', 'data_constr', 'compu_method', 'unit']:
+            if name.startswith('_') or name in ['base_type_ref', 'implementation_data_type_ref', 'data_constr_ref', 'compu_method_ref', 'unit_ref']:
                 continue
 
             # Skip None values
@@ -329,20 +319,20 @@ class SwDataDefProps(ARObject):
             for child in conditional_elem:
                 child_tag = strip_namespace(child.tag)
                 if child_tag == "BASE-TYPE-REF":
-                    obj.base_type = child.text
+                    obj.base_type_ref = ARRef.deserialize(child)
                 elif child_tag == "IMPLEMENTATION-DATA-TYPE-REF":
-                    obj.implementation_data_type = child.text
+                    obj.implementation_data_type_ref = ARRef.deserialize(child)
                 elif child_tag == "DATA-CONSTR-REF":
-                    obj.data_constr = child.text
+                    obj.data_constr_ref = ARRef.deserialize(child)
                 elif child_tag == "COMPU-METHOD-REF":
-                    obj.compu_method = child.text
+                    obj.compu_method_ref = ARRef.deserialize(child)
                 elif child_tag == "UNIT-REF":
-                    obj.unit = child.text
+                    obj.unit_ref = ARRef.deserialize(child)
 
         # Process other attributes using standard reflection-based approach
         for attr_name, attr_type in type_hints.items():
             # Skip already handled attributes
-            if attr_name in ['base_type', 'implementation_data_type', 'data_constr', 'compu_method', 'unit']:
+            if attr_name in ['base_type_ref', 'implementation_data_type_ref', 'data_constr_ref', 'compu_method_ref', 'unit_ref']:
                 continue
 
             # Convert Python name to XML tag

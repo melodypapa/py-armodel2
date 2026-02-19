@@ -14,11 +14,17 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel import (
+    LEnum,
+)
 from armodel.models.M2.MSR.AsamHdo.AdminData.doc_revision import (
     DocRevision,
 )
 from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_language_plain_text import (
     MultiLanguagePlainText,
+)
+from armodel.models.M2.MSR.AsamHdo.SpecialData.sdg import (
+    Sdg,
 )
 
 
@@ -35,11 +41,15 @@ class AdminData(ARObject):
         return False
 
     doc_revisions: list[DocRevision]
+    language: Optional[LEnum]
+    sdg: list[Sdg]
     used_languages: Optional[MultiLanguagePlainText]
     def __init__(self) -> None:
         """Initialize AdminData."""
         super().__init__()
         self.doc_revisions: list[DocRevision] = []
+        self.language: Optional[LEnum] = None
+        self.sdg: list[Sdg] = []
         self.used_languages: Optional[MultiLanguagePlainText] = None
 
 
