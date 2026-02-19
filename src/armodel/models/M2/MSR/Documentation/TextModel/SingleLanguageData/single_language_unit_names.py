@@ -10,9 +10,12 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.MSR.Documentation.TextModel.InlineTextModel.mixed_content_for_unit_names import (
+    MixedContentForUnitNames,
+)
 
 
-class SingleLanguageUnitNames(ARObject):
+class SingleLanguageUnitNames(MixedContentForUnitNames):
     """AUTOSAR SingleLanguageUnitNames."""
 
     @property
@@ -37,6 +40,20 @@ class SingleLanguageUnitNames(ARObject):
         tag = ARObject._get_xml_tag(self)
         elem = ET.Element(tag)
 
+        # Call parent's serialize to handle inherited attributes (text content, sub, sup)
+        parent_elem = super(SingleLanguageUnitNames, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Copy text from parent element (the display name content)
+        if parent_elem.text is not None:
+            elem.text = parent_elem.text
+
         return elem
 
     @classmethod
@@ -49,11 +66,8 @@ class SingleLanguageUnitNames(ARObject):
         Returns:
             Deserialized SingleLanguageUnitNames object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
-
-        return obj
+        # Call parent's deserialize to handle inherited attributes (text content, sub, sup)
+        return super(SingleLanguageUnitNames, cls).deserialize(element)
 
 
 

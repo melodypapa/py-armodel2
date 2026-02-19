@@ -31,12 +31,31 @@ class ARObject:
     """AUTOSAR ARObject."""
     """Abstract base class - do not instantiate directly."""
 
-    checksum: Optional["String"]
-    timestamp: Optional["DateTime"]
     def __init__(self) -> None:
         """Initialize ARObject."""
-        self.checksum: Optional["String"] = None
-        self.timestamp: Optional["DateTime"] = None
+        self._checksum: Optional["String"] = None
+        self._timestamp: Optional["DateTime"] = None
+
+    @property
+    def checksum(self) -> Optional["String"]:
+        """Checksum attribute."""
+        return self._checksum
+
+    @checksum.setter
+    def checksum(self, value: Optional["String"]) -> None:
+        """Set checksum attribute."""
+        self._checksum = value
+
+    @property
+    @xml_attribute
+    def timestamp(self) -> Optional["DateTime"]:
+        """Timestamp attribute serialized as XML attribute 'T'."""
+        return self._timestamp
+
+    @timestamp.setter
+    def timestamp(self, value: Optional["DateTime"]) -> None:
+        """Set timestamp attribute."""
+        self._timestamp = value
 
     def serialize(self) -> ET.Element:
         """Serialize object to XML element using reflection.
