@@ -32,6 +32,46 @@ class AbstractCanCommunicationControllerAttributes(ARObject, ABC):
         super().__init__()
         self.can_controller_fd: Optional[Any] = None
         self.can_controller_xl: Optional[Any] = None
+    def serialize(self) -> ET.Element:
+        """Serialize AbstractCanCommunicationControllerAttributes to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize can_controller_fd
+        if self.can_controller_fd is not None:
+            serialized = ARObject._serialize_item(self.can_controller_fd, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CAN-CONTROLLER-FD")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize can_controller_xl
+        if self.can_controller_xl is not None:
+            serialized = ARObject._serialize_item(self.can_controller_xl, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CAN-CONTROLLER-XL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "AbstractCanCommunicationControllerAttributes":
         """Deserialize XML element to AbstractCanCommunicationControllerAttributes object.

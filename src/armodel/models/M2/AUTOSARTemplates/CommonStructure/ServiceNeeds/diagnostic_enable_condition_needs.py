@@ -35,6 +35,42 @@ class DiagnosticEnableConditionNeeds(DiagnosticCapabilityElement):
         """Initialize DiagnosticEnableConditionNeeds."""
         super().__init__()
         self.initial_status: Optional[EventAcceptanceStatusEnum] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DiagnosticEnableConditionNeeds to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DiagnosticEnableConditionNeeds, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize initial_status
+        if self.initial_status is not None:
+            serialized = ARObject._serialize_item(self.initial_status, "EventAcceptanceStatusEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("INITIAL-STATUS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagnosticEnableConditionNeeds":
         """Deserialize XML element to DiagnosticEnableConditionNeeds object.

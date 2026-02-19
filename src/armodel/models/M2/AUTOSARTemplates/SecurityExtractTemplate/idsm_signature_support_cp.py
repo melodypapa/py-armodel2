@@ -37,6 +37,46 @@ class IdsmSignatureSupportCp(ARObject):
         super().__init__()
         self.authentication: Optional[CryptoServicePrimitive] = None
         self.crypto_service_key: Optional[CryptoServiceKey] = None
+    def serialize(self) -> ET.Element:
+        """Serialize IdsmSignatureSupportCp to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize authentication
+        if self.authentication is not None:
+            serialized = ARObject._serialize_item(self.authentication, "CryptoServicePrimitive")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("AUTHENTICATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize crypto_service_key
+        if self.crypto_service_key is not None:
+            serialized = ARObject._serialize_item(self.crypto_service_key, "CryptoServiceKey")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CRYPTO-SERVICE-KEY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "IdsmSignatureSupportCp":
         """Deserialize XML element to IdsmSignatureSupportCp object.

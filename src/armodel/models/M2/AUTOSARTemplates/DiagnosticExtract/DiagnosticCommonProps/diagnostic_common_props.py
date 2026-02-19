@@ -63,6 +63,168 @@ class DiagnosticCommonProps(ARObject):
         self.response_on_all: Optional[Boolean] = None
         self.response_on: Optional[Boolean] = None
         self.type_of_event: Optional[DiagnosticEvent] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DiagnosticCommonProps to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize authentication
+        if self.authentication is not None:
+            serialized = ARObject._serialize_item(self.authentication, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("AUTHENTICATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize debounces (list to container "DEBOUNCES")
+        if self.debounces:
+            wrapper = ET.Element("DEBOUNCES")
+            for item in self.debounces:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize default
+        if self.default is not None:
+            serialized = ARObject._serialize_item(self.default, "ByteOrderEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DEFAULT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize event
+        if self.event is not None:
+            serialized = ARObject._serialize_item(self.event, "DiagnosticEvent")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("EVENT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize max_number_of
+        if self.max_number_of is not None:
+            serialized = ARObject._serialize_item(self.max_number_of, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX-NUMBER-OF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize occurrence
+        if self.occurrence is not None:
+            serialized = ARObject._serialize_item(self.occurrence, "DiagnosticOccurrenceCounterProcessingEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("OCCURRENCE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize reset_confirmed
+        if self.reset_confirmed is not None:
+            serialized = ARObject._serialize_item(self.reset_confirmed, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RESET-CONFIRMED")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize reset_pending_bit
+        if self.reset_pending_bit is not None:
+            serialized = ARObject._serialize_item(self.reset_pending_bit, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RESET-PENDING-BIT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize response_on_all
+        if self.response_on_all is not None:
+            serialized = ARObject._serialize_item(self.response_on_all, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RESPONSE-ON-ALL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize response_on
+        if self.response_on is not None:
+            serialized = ARObject._serialize_item(self.response_on, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RESPONSE-ON")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize type_of_event
+        if self.type_of_event is not None:
+            serialized = ARObject._serialize_item(self.type_of_event, "DiagnosticEvent")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TYPE-OF-EVENT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagnosticCommonProps":
         """Deserialize XML element to DiagnosticCommonProps object.

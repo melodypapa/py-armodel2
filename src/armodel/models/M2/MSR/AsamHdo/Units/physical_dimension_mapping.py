@@ -34,6 +34,46 @@ class PhysicalDimensionMapping(ARObject):
         super().__init__()
         self.first_physical: Optional[PhysicalDimension] = None
         self.second_physical: Optional[PhysicalDimension] = None
+    def serialize(self) -> ET.Element:
+        """Serialize PhysicalDimensionMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize first_physical
+        if self.first_physical is not None:
+            serialized = ARObject._serialize_item(self.first_physical, "PhysicalDimension")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FIRST-PHYSICAL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize second_physical
+        if self.second_physical is not None:
+            serialized = ARObject._serialize_item(self.second_physical, "PhysicalDimension")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SECOND-PHYSICAL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "PhysicalDimensionMapping":
         """Deserialize XML element to PhysicalDimensionMapping object.

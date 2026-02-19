@@ -38,6 +38,46 @@ class TransmissionModeCondition(ARObject):
         super().__init__()
         self.data_filter: Optional[DataFilter] = None
         self.i_signal_in_i_pdu_ref: Optional[ARRef] = None
+    def serialize(self) -> ET.Element:
+        """Serialize TransmissionModeCondition to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize data_filter
+        if self.data_filter is not None:
+            serialized = ARObject._serialize_item(self.data_filter, "DataFilter")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DATA-FILTER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize i_signal_in_i_pdu_ref
+        if self.i_signal_in_i_pdu_ref is not None:
+            serialized = ARObject._serialize_item(self.i_signal_in_i_pdu_ref, "ISignalToIPduMapping")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("I-SIGNAL-IN-I-PDU")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "TransmissionModeCondition":
         """Deserialize XML element to TransmissionModeCondition object.

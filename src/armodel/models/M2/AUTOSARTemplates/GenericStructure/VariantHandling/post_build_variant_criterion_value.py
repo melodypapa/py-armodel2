@@ -41,6 +41,56 @@ class PostBuildVariantCriterionValue(ARObject):
         self.annotations: list[Annotation] = []
         self.value: Integer = None
         self.variant_criterion: Any = None
+    def serialize(self) -> ET.Element:
+        """Serialize PostBuildVariantCriterionValue to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize annotations (list to container "ANNOTATIONS")
+        if self.annotations:
+            wrapper = ET.Element("ANNOTATIONS")
+            for item in self.annotations:
+                serialized = ARObject._serialize_item(item, "Annotation")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize value
+        if self.value is not None:
+            serialized = ARObject._serialize_item(self.value, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VALUE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize variant_criterion
+        if self.variant_criterion is not None:
+            serialized = ARObject._serialize_item(self.variant_criterion, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VARIANT-CRITERION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "PostBuildVariantCriterionValue":
         """Deserialize XML element to PostBuildVariantCriterionValue object.

@@ -27,6 +27,18 @@ class UserDefinedTransformationISignalProps(ARObject):
     def __init__(self) -> None:
         """Initialize UserDefinedTransformationISignalProps."""
         super().__init__()
+    def serialize(self) -> ET.Element:
+        """Serialize UserDefinedTransformationISignalProps to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "UserDefinedTransformationISignalProps":
         """Deserialize XML element to UserDefinedTransformationISignalProps object.

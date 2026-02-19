@@ -434,18 +434,21 @@ class {class_name}:
 
     # Add serialize/deserialize methods
     # Special handling for ARObject which implements the reflection-based pattern
-    # All other classes inherit serialize/deserialize from ARObject
+    # All other classes get optimized serialize() and deserialize() methods
     if class_name == "ARObject":
         # ARObject uses reflection-based serialization framework
         # Add serialize(), deserialize(), and helper methods
         code += _generate_ar_object_methods()
     else:
-        # For other classes, generate optimized deserialize() method
-        # This method parses XML directly without reflection
+        # For other classes, generate optimized serialize() and deserialize() methods
+        # These methods parse/serialize XML directly without reflection for better performance
+        serialize_code = _generate_serialize_method(
+            class_name, attribute_types, parent_class, package_data
+        )
         deserialize_code = _generate_deserialize_method(
             class_name, attribute_types, parent_class, package_data
         )
-        code += deserialize_code
+        code += serialize_code + deserialize_code
 
     return code
 
@@ -1311,6 +1314,132 @@ class AREnum(ARObject):
         """Return detailed string representation."""
         return f"{self.__class__.__name__}.{self.name if hasattr(self, 'name') else self.value}"
 '''
+    return code
+
+
+def _generate_serialize_method(
+    class_name: str,
+    attribute_types: Dict[str, Dict[str, Any]],
+    parent_class: Optional[str],
+    package_data: Dict[str, Dict[str, Any]],
+) -> str:
+    """Generate optimized serialize() method for a class.
+
+    This method generates a custom serialize() implementation that:
+    1. Serializes attributes directly without reflection
+    2. Reuses parent class serialize() for inherited attributes
+    3. Handles lists, primitives, objects, and ARRef types efficiently
+
+    Args:
+        class_name: Name of the class
+        attribute_types: Dictionary of attribute information
+        parent_class: Name of parent class (if any)
+        package_data: Package data dictionary
+
+    Returns:
+        Generated serialize() method code
+    """
+    code = f'''    def serialize(self) -> ET.Element:
+        """Serialize {class_name} to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+'''
+
+    # If class has a parent class (other than ARObject), call parent's serialize first
+    # to handle inherited attributes, then serialize own attributes
+    if parent_class and parent_class != "ARObject":
+        code += f"""        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super({class_name}, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+"""
+
+    # Generate code to serialize each attribute
+    if attribute_types:
+        for attr_name, attr_info in attribute_types.items():
+            attr_type = attr_info["type"]
+            multiplicity = attr_info["multiplicity"]
+            is_ref = attr_info.get("is_ref", False)
+
+            # Get Python identifier
+            python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity)
+            # Convert attribute name to snake_case then to XML tag (UPPER-CASE-WITH-HYPHENS)
+            snake_name = to_snake_case(attr_name)
+            xml_tag = snake_name.upper().replace("_", "-")
+
+            # Convert "any (xxx)" types to "Any" for generation
+            effective_type = attr_type
+            if attr_type.startswith("any ("):
+                effective_type = "Any"
+
+            # Generate serialization code based on type and multiplicity
+            if multiplicity == "*":
+                # List type
+                # Check if the XML tag ends with "S" (plural form like PACKAGES, ELEMENTS)
+                # If so, it's a container element and we need to create a wrapper
+                if xml_tag.endswith("S"):
+                    # Container element (e.g., AR-PACKAGES, ELEMENTS)
+                    code += f'''        # Serialize {python_name} (list to container "{xml_tag}")
+        if self.{python_name}:
+            wrapper = ET.Element("{xml_tag}")
+            for item in self.{python_name}:
+                serialized = ARObject._serialize_item(item, "{effective_type}")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+'''
+                else:
+                    # Non-container list type (multiple instances of the same element)
+                    code += f'''        # Serialize {python_name} (list)
+        for item in self.{python_name}:
+            serialized = ARObject._serialize_item(item, "{effective_type}")
+            if serialized is not None:
+                # For non-container lists, wrap with correct tag
+                wrapped = ET.Element("{xml_tag}")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+'''
+            else:
+                # Single value type
+                code += f'''        # Serialize {python_name}
+        if self.{python_name} is not None:
+            serialized = ARObject._serialize_item(self.{python_name}, "{effective_type}")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("{xml_tag}")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+'''
+
+    code += """        return elem
+
+"""
     return code
 
 

@@ -47,6 +47,98 @@ class HttpTp(TransportProtocolConfiguration):
         self.request_method_enum: Optional[Any] = None
         self.tcp_tp_config: Optional[TcpTp] = None
         self.uri: Optional[UriString] = None
+    def serialize(self) -> ET.Element:
+        """Serialize HttpTp to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(HttpTp, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize content_type
+        if self.content_type is not None:
+            serialized = ARObject._serialize_item(self.content_type, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CONTENT-TYPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize protocol_version
+        if self.protocol_version is not None:
+            serialized = ARObject._serialize_item(self.protocol_version, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PROTOCOL-VERSION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize request_method_enum
+        if self.request_method_enum is not None:
+            serialized = ARObject._serialize_item(self.request_method_enum, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("REQUEST-METHOD-ENUM")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize tcp_tp_config
+        if self.tcp_tp_config is not None:
+            serialized = ARObject._serialize_item(self.tcp_tp_config, "TcpTp")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TCP-TP-CONFIG")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize uri
+        if self.uri is not None:
+            serialized = ARObject._serialize_item(self.uri, "UriString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("URI")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "HttpTp":
         """Deserialize XML element to HttpTp object.

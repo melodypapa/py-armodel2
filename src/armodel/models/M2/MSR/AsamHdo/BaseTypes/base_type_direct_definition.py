@@ -53,6 +53,98 @@ class BaseTypeDirectDefinition(BaseTypeDefinition):
         self.byte_order: Optional[ByteOrderEnum] = None
         self.mem_alignment: Optional[PositiveInteger] = None
         self.native: Optional[NativeDeclarationString] = None
+    def serialize(self) -> ET.Element:
+        """Serialize BaseTypeDirectDefinition to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(BaseTypeDirectDefinition, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize base_type_encoding
+        if self.base_type_encoding is not None:
+            serialized = ARObject._serialize_item(self.base_type_encoding, "BaseTypeEncodingString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BASE-TYPE-ENCODING")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize base_type_size
+        if self.base_type_size is not None:
+            serialized = ARObject._serialize_item(self.base_type_size, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BASE-TYPE-SIZE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize byte_order
+        if self.byte_order is not None:
+            serialized = ARObject._serialize_item(self.byte_order, "ByteOrderEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BYTE-ORDER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize mem_alignment
+        if self.mem_alignment is not None:
+            serialized = ARObject._serialize_item(self.mem_alignment, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MEM-ALIGNMENT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize native
+        if self.native is not None:
+            serialized = ARObject._serialize_item(self.native, "NativeDeclarationString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NATIVE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "BaseTypeDirectDefinition":
         """Deserialize XML element to BaseTypeDirectDefinition object.

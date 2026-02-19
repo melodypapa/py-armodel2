@@ -41,6 +41,58 @@ class PredefinedVariant(ARElement):
         self.included_variants: list[PredefinedVariant] = []
         self.post_build_variants: list[Any] = []
         self.sws: list[SwSystemconstantValueSet] = []
+    def serialize(self) -> ET.Element:
+        """Serialize PredefinedVariant to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(PredefinedVariant, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize included_variants (list to container "INCLUDED-VARIANTS")
+        if self.included_variants:
+            wrapper = ET.Element("INCLUDED-VARIANTS")
+            for item in self.included_variants:
+                serialized = ARObject._serialize_item(item, "PredefinedVariant")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize post_build_variants (list to container "POST-BUILD-VARIANTS")
+        if self.post_build_variants:
+            wrapper = ET.Element("POST-BUILD-VARIANTS")
+            for item in self.post_build_variants:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize sws (list to container "SWS")
+        if self.sws:
+            wrapper = ET.Element("SWS")
+            for item in self.sws:
+                serialized = ARObject._serialize_item(item, "SwSystemconstantValueSet")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "PredefinedVariant":
         """Deserialize XML element to PredefinedVariant object.

@@ -62,6 +62,188 @@ class IPSecConfigProps(ARElement):
         self.sa_over_time: Optional[PositiveInteger] = None
         self.sa_rand_time: Optional[TimeValue] = None
         self.sa_rekey_time: Optional[TimeValue] = None
+    def serialize(self) -> ET.Element:
+        """Serialize IPSecConfigProps to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(IPSecConfigProps, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize ah_cipher_suites (list to container "AH-CIPHER-SUITES")
+        if self.ah_cipher_suites:
+            wrapper = ET.Element("AH-CIPHER-SUITES")
+            for item in self.ah_cipher_suites:
+                serialized = ARObject._serialize_item(item, "String")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize dpd_action
+        if self.dpd_action is not None:
+            serialized = ARObject._serialize_item(self.dpd_action, "IPsecDpdActionEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DPD-ACTION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize dpd_delay
+        if self.dpd_delay is not None:
+            serialized = ARObject._serialize_item(self.dpd_delay, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DPD-DELAY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize esp_cipher_suites (list to container "ESP-CIPHER-SUITES")
+        if self.esp_cipher_suites:
+            wrapper = ET.Element("ESP-CIPHER-SUITES")
+            for item in self.esp_cipher_suites:
+                serialized = ARObject._serialize_item(item, "String")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize ike_cipher_suite
+        if self.ike_cipher_suite is not None:
+            serialized = ARObject._serialize_item(self.ike_cipher_suite, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IKE-CIPHER-SUITE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize ike_over_time
+        if self.ike_over_time is not None:
+            serialized = ARObject._serialize_item(self.ike_over_time, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IKE-OVER-TIME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize ike_rand_time
+        if self.ike_rand_time is not None:
+            serialized = ARObject._serialize_item(self.ike_rand_time, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IKE-RAND-TIME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize ike_reauth_time
+        if self.ike_reauth_time is not None:
+            serialized = ARObject._serialize_item(self.ike_reauth_time, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IKE-REAUTH-TIME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize ike_rekey_time
+        if self.ike_rekey_time is not None:
+            serialized = ARObject._serialize_item(self.ike_rekey_time, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IKE-REKEY-TIME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sa_over_time
+        if self.sa_over_time is not None:
+            serialized = ARObject._serialize_item(self.sa_over_time, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SA-OVER-TIME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sa_rand_time
+        if self.sa_rand_time is not None:
+            serialized = ARObject._serialize_item(self.sa_rand_time, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SA-RAND-TIME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sa_rekey_time
+        if self.sa_rekey_time is not None:
+            serialized = ARObject._serialize_item(self.sa_rekey_time, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SA-REKEY-TIME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "IPSecConfigProps":
         """Deserialize XML element to IPSecConfigProps object.

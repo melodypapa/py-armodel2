@@ -39,6 +39,74 @@ class Ipv6FragmentationProps(ARObject):
         self.tcp_ip_ip_reassembly_buffer_size: Optional[PositiveInteger] = None
         self.tcp_ip_ip_tx: Optional[PositiveInteger] = None
         self.tcp_ip_ip_tx_fragment_buffer_size: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize Ipv6FragmentationProps to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize tcp_ip_ip
+        if self.tcp_ip_ip is not None:
+            serialized = ARObject._serialize_item(self.tcp_ip_ip, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TCP-IP-IP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize tcp_ip_ip_reassembly_buffer_size
+        if self.tcp_ip_ip_reassembly_buffer_size is not None:
+            serialized = ARObject._serialize_item(self.tcp_ip_ip_reassembly_buffer_size, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TCP-IP-IP-REASSEMBLY-BUFFER-SIZE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize tcp_ip_ip_tx
+        if self.tcp_ip_ip_tx is not None:
+            serialized = ARObject._serialize_item(self.tcp_ip_ip_tx, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TCP-IP-IP-TX")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize tcp_ip_ip_tx_fragment_buffer_size
+        if self.tcp_ip_ip_tx_fragment_buffer_size is not None:
+            serialized = ARObject._serialize_item(self.tcp_ip_ip_tx_fragment_buffer_size, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TCP-IP-IP-TX-FRAGMENT-BUFFER-SIZE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "Ipv6FragmentationProps":
         """Deserialize XML element to Ipv6FragmentationProps object.

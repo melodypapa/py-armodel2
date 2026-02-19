@@ -36,6 +36,38 @@ class UnitGroup(ARElement):
         """Initialize UnitGroup."""
         super().__init__()
         self.units: list[Unit] = []
+    def serialize(self) -> ET.Element:
+        """Serialize UnitGroup to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(UnitGroup, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize units (list to container "UNITS")
+        if self.units:
+            wrapper = ET.Element("UNITS")
+            for item in self.units:
+                serialized = ARObject._serialize_item(item, "Unit")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "UnitGroup":
         """Deserialize XML element to UnitGroup object.

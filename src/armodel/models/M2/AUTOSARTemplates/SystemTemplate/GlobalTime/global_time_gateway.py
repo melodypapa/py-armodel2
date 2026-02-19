@@ -45,6 +45,70 @@ class GlobalTimeGateway(Identifiable):
         self.host: Optional[EcuInstance] = None
         self.master: Optional[GlobalTimeMaster] = None
         self.slave: Optional[GlobalTimeSlave] = None
+    def serialize(self) -> ET.Element:
+        """Serialize GlobalTimeGateway to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(GlobalTimeGateway, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize host
+        if self.host is not None:
+            serialized = ARObject._serialize_item(self.host, "EcuInstance")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("HOST")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize master
+        if self.master is not None:
+            serialized = ARObject._serialize_item(self.master, "GlobalTimeMaster")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MASTER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize slave
+        if self.slave is not None:
+            serialized = ARObject._serialize_item(self.slave, "GlobalTimeSlave")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SLAVE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "GlobalTimeGateway":
         """Deserialize XML element to GlobalTimeGateway object.

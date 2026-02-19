@@ -47,6 +47,74 @@ class SwTextProps(ARObject):
         self.base_type: Optional[SwBaseType] = None
         self.sw_fill_character: Optional[Integer] = None
         self.sw_max_text_size: Optional[Integer] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SwTextProps to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize array_size
+        if self.array_size is not None:
+            serialized = ARObject._serialize_item(self.array_size, "ArraySizeSemanticsEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ARRAY-SIZE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize base_type
+        if self.base_type is not None:
+            serialized = ARObject._serialize_item(self.base_type, "SwBaseType")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BASE-TYPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_fill_character
+        if self.sw_fill_character is not None:
+            serialized = ARObject._serialize_item(self.sw_fill_character, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-FILL-CHARACTER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_max_text_size
+        if self.sw_max_text_size is not None:
+            serialized = ARObject._serialize_item(self.sw_max_text_size, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-MAX-TEXT-SIZE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SwTextProps":
         """Deserialize XML element to SwTextProps object.

@@ -34,6 +34,46 @@ class SomeipServiceVersion(ARObject):
         super().__init__()
         self.major_version: Optional[PositiveInteger] = None
         self.minor_version: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SomeipServiceVersion to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize major_version
+        if self.major_version is not None:
+            serialized = ARObject._serialize_item(self.major_version, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAJOR-VERSION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize minor_version
+        if self.minor_version is not None:
+            serialized = ARObject._serialize_item(self.minor_version, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MINOR-VERSION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SomeipServiceVersion":
         """Deserialize XML element to SomeipServiceVersion object.

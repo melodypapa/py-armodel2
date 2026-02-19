@@ -37,6 +37,42 @@ class IEEE1722TpAcfBusPart(Identifiable, ABC):
         """Initialize IEEE1722TpAcfBusPart."""
         super().__init__()
         self.collection_trigger_ref: Optional[ARRef] = None
+    def serialize(self) -> ET.Element:
+        """Serialize IEEE1722TpAcfBusPart to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(IEEE1722TpAcfBusPart, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize collection_trigger_ref
+        if self.collection_trigger_ref is not None:
+            serialized = ARObject._serialize_item(self.collection_trigger_ref, "PduCollectionTriggerEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COLLECTION-TRIGGER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "IEEE1722TpAcfBusPart":
         """Deserialize XML element to IEEE1722TpAcfBusPart object.

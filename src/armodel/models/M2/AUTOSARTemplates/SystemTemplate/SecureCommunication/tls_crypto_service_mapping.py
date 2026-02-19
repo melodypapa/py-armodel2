@@ -47,6 +47,76 @@ class TlsCryptoServiceMapping(CryptoServiceMapping):
         self.tls_cipher_suites: list[TlsCryptoCipherSuite] = []
         self.use_client: Optional[Boolean] = None
         self.use_security: Optional[Boolean] = None
+    def serialize(self) -> ET.Element:
+        """Serialize TlsCryptoServiceMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(TlsCryptoServiceMapping, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize key_exchanges (list to container "KEY-EXCHANGES")
+        if self.key_exchanges:
+            wrapper = ET.Element("KEY-EXCHANGES")
+            for item in self.key_exchanges:
+                serialized = ARObject._serialize_item(item, "CryptoServicePrimitive")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize tls_cipher_suites (list to container "TLS-CIPHER-SUITES")
+        if self.tls_cipher_suites:
+            wrapper = ET.Element("TLS-CIPHER-SUITES")
+            for item in self.tls_cipher_suites:
+                serialized = ARObject._serialize_item(item, "TlsCryptoCipherSuite")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize use_client
+        if self.use_client is not None:
+            serialized = ARObject._serialize_item(self.use_client, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("USE-CLIENT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize use_security
+        if self.use_security is not None:
+            serialized = ARObject._serialize_item(self.use_security, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("USE-SECURITY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "TlsCryptoServiceMapping":
         """Deserialize XML element to TlsCryptoServiceMapping object.

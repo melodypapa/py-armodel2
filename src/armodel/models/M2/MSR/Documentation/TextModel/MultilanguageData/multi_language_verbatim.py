@@ -51,6 +51,98 @@ class MultiLanguageVerbatim(Paginateable):
         self.help_entry: Optional[String] = None
         self.l5: LVerbatim = None
         self.pgwide: Optional[PgwideEnum] = None
+    def serialize(self) -> ET.Element:
+        """Serialize MultiLanguageVerbatim to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(MultiLanguageVerbatim, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize allow_break
+        if self.allow_break is not None:
+            serialized = ARObject._serialize_item(self.allow_break, "NameToken")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ALLOW-BREAK")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize float
+        if self.float is not None:
+            serialized = ARObject._serialize_item(self.float, "FloatEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FLOAT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize help_entry
+        if self.help_entry is not None:
+            serialized = ARObject._serialize_item(self.help_entry, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("HELP-ENTRY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize l5
+        if self.l5 is not None:
+            serialized = ARObject._serialize_item(self.l5, "LVerbatim")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("L5")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize pgwide
+        if self.pgwide is not None:
+            serialized = ARObject._serialize_item(self.pgwide, "PgwideEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PGWIDE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "MultiLanguageVerbatim":
         """Deserialize XML element to MultiLanguageVerbatim object.

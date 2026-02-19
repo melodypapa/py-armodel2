@@ -65,6 +65,136 @@ class IdsmInstance(IdsCommonElement):
         self.signature: Optional[Any] = None
         self.timestamp: Optional[String] = None
         self.traffic_limitation: Optional[IdsmTrafficLimitation] = None
+    def serialize(self) -> ET.Element:
+        """Serialize IdsmInstance to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(IdsmInstance, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize block_states (list to container "BLOCK-STATES")
+        if self.block_states:
+            wrapper = ET.Element("BLOCK-STATES")
+            for item in self.block_states:
+                serialized = ARObject._serialize_item(item, "BlockState")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize ecu_instance
+        if self.ecu_instance is not None:
+            serialized = ARObject._serialize_item(self.ecu_instance, "EcuInstance")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ECU-INSTANCE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize idsm_instance_id
+        if self.idsm_instance_id is not None:
+            serialized = ARObject._serialize_item(self.idsm_instance_id, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IDSM-INSTANCE-ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize idsm_module
+        if self.idsm_module is not None:
+            serialized = ARObject._serialize_item(self.idsm_module, "IdsmModuleInstantiation")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IDSM-MODULE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize rate_limitation
+        if self.rate_limitation is not None:
+            serialized = ARObject._serialize_item(self.rate_limitation, "IdsmRateLimitation")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RATE-LIMITATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize signature
+        if self.signature is not None:
+            serialized = ARObject._serialize_item(self.signature, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SIGNATURE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize timestamp
+        if self.timestamp is not None:
+            serialized = ARObject._serialize_item(self.timestamp, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIMESTAMP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize traffic_limitation
+        if self.traffic_limitation is not None:
+            serialized = ARObject._serialize_item(self.traffic_limitation, "IdsmTrafficLimitation")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TRAFFIC-LIMITATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "IdsmInstance":
         """Deserialize XML element to IdsmInstance object.

@@ -64,6 +64,186 @@ class Entry(ARObject):
         self.rowsep: Optional[TableSeparatorString] = None
         self.spanname: Optional[String] = None
         self.valign: Optional[ValignEnum] = None
+    def serialize(self) -> ET.Element:
+        """Serialize Entry to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize align
+        if self.align is not None:
+            serialized = ARObject._serialize_item(self.align, "AlignEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ALIGN")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize bgcolor
+        if self.bgcolor is not None:
+            serialized = ARObject._serialize_item(self.bgcolor, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BGCOLOR")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize colname
+        if self.colname is not None:
+            serialized = ARObject._serialize_item(self.colname, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COLNAME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize colsep
+        if self.colsep is not None:
+            serialized = ARObject._serialize_item(self.colsep, "TableSeparatorString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COLSEP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize entry_contents
+        if self.entry_contents is not None:
+            serialized = ARObject._serialize_item(self.entry_contents, "DocumentationBlock")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ENTRY-CONTENTS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize morerows
+        if self.morerows is not None:
+            serialized = ARObject._serialize_item(self.morerows, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MOREROWS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nameend
+        if self.nameend is not None:
+            serialized = ARObject._serialize_item(self.nameend, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NAMEEND")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize namest
+        if self.namest is not None:
+            serialized = ARObject._serialize_item(self.namest, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NAMEST")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize rotate
+        if self.rotate is not None:
+            serialized = ARObject._serialize_item(self.rotate, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ROTATE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize rowsep
+        if self.rowsep is not None:
+            serialized = ARObject._serialize_item(self.rowsep, "TableSeparatorString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ROWSEP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize spanname
+        if self.spanname is not None:
+            serialized = ARObject._serialize_item(self.spanname, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SPANNAME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize valign
+        if self.valign is not None:
+            serialized = ARObject._serialize_item(self.valign, "ValignEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VALIGN")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "Entry":
         """Deserialize XML element to Entry object.

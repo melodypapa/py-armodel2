@@ -53,6 +53,80 @@ class StaticSocketConnection(Identifiable):
         self.remote_address: Optional[SocketAddress] = None
         self.tcp_connect: Optional[TimeValue] = None
         self.tcp_role: Optional[TcpRoleEnum] = None
+    def serialize(self) -> ET.Element:
+        """Serialize StaticSocketConnection to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(StaticSocketConnection, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize i_pdu_identifiers (list to container "I-PDU-IDENTIFIERS")
+        if self.i_pdu_identifiers:
+            wrapper = ET.Element("I-PDU-IDENTIFIERS")
+            for item in self.i_pdu_identifiers:
+                serialized = ARObject._serialize_item(item, "SoConIPduIdentifier")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize remote_address
+        if self.remote_address is not None:
+            serialized = ARObject._serialize_item(self.remote_address, "SocketAddress")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("REMOTE-ADDRESS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize tcp_connect
+        if self.tcp_connect is not None:
+            serialized = ARObject._serialize_item(self.tcp_connect, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TCP-CONNECT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize tcp_role
+        if self.tcp_role is not None:
+            serialized = ARObject._serialize_item(self.tcp_role, "TcpRoleEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TCP-ROLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "StaticSocketConnection":
         """Deserialize XML element to StaticSocketConnection object.

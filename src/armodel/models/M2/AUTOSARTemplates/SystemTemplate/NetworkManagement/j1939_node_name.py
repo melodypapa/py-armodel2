@@ -48,6 +48,144 @@ class J1939NodeName(ARObject):
         self.manufacturer_code: Optional[Integer] = None
         self.vehicle_system: Optional[Integer] = None
         self.vehicle_system_instance: Optional[Integer] = None
+    def serialize(self) -> ET.Element:
+        """Serialize J1939NodeName to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize arbitrary_address
+        if self.arbitrary_address is not None:
+            serialized = ARObject._serialize_item(self.arbitrary_address, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ARBITRARY-ADDRESS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize ecu_instance
+        if self.ecu_instance is not None:
+            serialized = ARObject._serialize_item(self.ecu_instance, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ECU-INSTANCE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize function
+        if self.function is not None:
+            serialized = ARObject._serialize_item(self.function, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FUNCTION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize function_instance
+        if self.function_instance is not None:
+            serialized = ARObject._serialize_item(self.function_instance, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FUNCTION-INSTANCE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize identitiy_number
+        if self.identitiy_number is not None:
+            serialized = ARObject._serialize_item(self.identitiy_number, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IDENTITIY-NUMBER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize industry_group
+        if self.industry_group is not None:
+            serialized = ARObject._serialize_item(self.industry_group, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("INDUSTRY-GROUP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize manufacturer_code
+        if self.manufacturer_code is not None:
+            serialized = ARObject._serialize_item(self.manufacturer_code, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MANUFACTURER-CODE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize vehicle_system
+        if self.vehicle_system is not None:
+            serialized = ARObject._serialize_item(self.vehicle_system, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VEHICLE-SYSTEM")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize vehicle_system_instance
+        if self.vehicle_system_instance is not None:
+            serialized = ARObject._serialize_item(self.vehicle_system_instance, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VEHICLE-SYSTEM-INSTANCE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "J1939NodeName":
         """Deserialize XML element to J1939NodeName object.

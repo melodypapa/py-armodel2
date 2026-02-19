@@ -48,6 +48,84 @@ class PerInstanceMemory(Identifiable):
         self.sw_data_def: Optional[SwDataDefProps] = None
         self.type: Optional[CIdentifier] = None
         self.type_definition: Optional[String] = None
+    def serialize(self) -> ET.Element:
+        """Serialize PerInstanceMemory to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(PerInstanceMemory, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize init_value
+        if self.init_value is not None:
+            serialized = ARObject._serialize_item(self.init_value, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("INIT-VALUE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_data_def
+        if self.sw_data_def is not None:
+            serialized = ARObject._serialize_item(self.sw_data_def, "SwDataDefProps")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-DATA-DEF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize type
+        if self.type is not None:
+            serialized = ARObject._serialize_item(self.type, "CIdentifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TYPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize type_definition
+        if self.type_definition is not None:
+            serialized = ARObject._serialize_item(self.type_definition, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TYPE-DEFINITION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "PerInstanceMemory":
         """Deserialize XML element to PerInstanceMemory object.

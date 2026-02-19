@@ -69,6 +69,160 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
         self.priority: Optional[PositiveInteger] = None
         self.significance: Optional[DiagnosticSignificanceEnum] = None
         self.snapshot: Optional[DiagnosticDataIdentifier] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DiagnosticTroubleCodeProps to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DiagnosticTroubleCodeProps, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize aging
+        if self.aging is not None:
+            serialized = ARObject._serialize_item(self.aging, "DiagnosticAging")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("AGING")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize diagnostic_memory
+        if self.diagnostic_memory is not None:
+            serialized = ARObject._serialize_item(self.diagnostic_memory, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DIAGNOSTIC-MEMORY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize extended_datas (list to container "EXTENDED-DATAS")
+        if self.extended_datas:
+            wrapper = ET.Element("EXTENDED-DATAS")
+            for item in self.extended_datas:
+                serialized = ARObject._serialize_item(item, "DiagnosticExtendedDataRecord")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize freeze_frames (list to container "FREEZE-FRAMES")
+        if self.freeze_frames:
+            wrapper = ET.Element("FREEZE-FRAMES")
+            for item in self.freeze_frames:
+                serialized = ARObject._serialize_item(item, "DiagnosticFreezeFrame")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize immediate_nv
+        if self.immediate_nv is not None:
+            serialized = ARObject._serialize_item(self.immediate_nv, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IMMEDIATE-NV")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize legislated
+        if self.legislated is not None:
+            serialized = ARObject._serialize_item(self.legislated, "DiagnosticDataIdentifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("LEGISLATED")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize max_number
+        if self.max_number is not None:
+            serialized = ARObject._serialize_item(self.max_number, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX-NUMBER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize priority
+        if self.priority is not None:
+            serialized = ARObject._serialize_item(self.priority, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PRIORITY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize significance
+        if self.significance is not None:
+            serialized = ARObject._serialize_item(self.significance, "DiagnosticSignificanceEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SIGNIFICANCE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize snapshot
+        if self.snapshot is not None:
+            serialized = ARObject._serialize_item(self.snapshot, "DiagnosticDataIdentifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SNAPSHOT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagnosticTroubleCodeProps":
         """Deserialize XML element to DiagnosticTroubleCodeProps object.

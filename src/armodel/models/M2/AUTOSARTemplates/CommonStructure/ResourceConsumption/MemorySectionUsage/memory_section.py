@@ -60,6 +60,118 @@ class MemorySection(Identifiable):
         self.size: Optional[PositiveInteger] = None
         self.sw_addrmethod: Optional[SwAddrMethod] = None
         self.symbol: Optional[Identifier] = None
+    def serialize(self) -> ET.Element:
+        """Serialize MemorySection to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(MemorySection, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize alignment
+        if self.alignment is not None:
+            serialized = ARObject._serialize_item(self.alignment, "AlignmentType")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ALIGNMENT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize executable_entities (list to container "EXECUTABLE-ENTITIES")
+        if self.executable_entities:
+            wrapper = ET.Element("EXECUTABLE-ENTITIES")
+            for item in self.executable_entities:
+                serialized = ARObject._serialize_item(item, "ExecutableEntity")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize options (list to container "OPTIONS")
+        if self.options:
+            wrapper = ET.Element("OPTIONS")
+            for item in self.options:
+                serialized = ARObject._serialize_item(item, "Identifier")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize prefix
+        if self.prefix is not None:
+            serialized = ARObject._serialize_item(self.prefix, "SectionNamePrefix")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PREFIX")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize size
+        if self.size is not None:
+            serialized = ARObject._serialize_item(self.size, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SIZE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_addrmethod
+        if self.sw_addrmethod is not None:
+            serialized = ARObject._serialize_item(self.sw_addrmethod, "SwAddrMethod")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-ADDRMETHOD")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize symbol
+        if self.symbol is not None:
+            serialized = ARObject._serialize_item(self.symbol, "Identifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SYMBOL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "MemorySection":
         """Deserialize XML element to MemorySection object.

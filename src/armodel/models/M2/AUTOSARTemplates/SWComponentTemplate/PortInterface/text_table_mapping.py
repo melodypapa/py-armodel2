@@ -47,6 +47,70 @@ class TextTableMapping(ARObject):
         self.identical: Optional[Boolean] = None
         self.mapping_ref: Optional[ARRef] = None
         self.value_pairs: list[TextTableValuePair] = []
+    def serialize(self) -> ET.Element:
+        """Serialize TextTableMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize bitfield_text_table
+        if self.bitfield_text_table is not None:
+            serialized = ARObject._serialize_item(self.bitfield_text_table, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BITFIELD-TEXT-TABLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize identical
+        if self.identical is not None:
+            serialized = ARObject._serialize_item(self.identical, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IDENTICAL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize mapping_ref
+        if self.mapping_ref is not None:
+            serialized = ARObject._serialize_item(self.mapping_ref, "MappingDirectionEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAPPING")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize value_pairs (list to container "VALUE-PAIRS")
+        if self.value_pairs:
+            wrapper = ET.Element("VALUE-PAIRS")
+            for item in self.value_pairs:
+                serialized = ARObject._serialize_item(item, "TextTableValuePair")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "TextTableMapping":
         """Deserialize XML element to TextTableMapping object.

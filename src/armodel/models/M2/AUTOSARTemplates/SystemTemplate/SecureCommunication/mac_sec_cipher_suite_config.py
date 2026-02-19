@@ -32,6 +32,32 @@ class MacSecCipherSuiteConfig(ARObject):
         """Initialize MacSecCipherSuiteConfig."""
         super().__init__()
         self.cipher_suite: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize MacSecCipherSuiteConfig to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize cipher_suite
+        if self.cipher_suite is not None:
+            serialized = ARObject._serialize_item(self.cipher_suite, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CIPHER-SUITE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "MacSecCipherSuiteConfig":
         """Deserialize XML element to MacSecCipherSuiteConfig object.

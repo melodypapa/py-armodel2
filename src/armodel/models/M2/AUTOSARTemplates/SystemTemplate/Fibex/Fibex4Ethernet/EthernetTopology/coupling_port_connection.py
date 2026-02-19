@@ -43,6 +43,84 @@ class CouplingPortConnection(ARObject):
         self.plca_local_node: Optional[PositiveInteger] = None
         self.plca_transmit: Optional[PositiveInteger] = None
         self.second_port: Optional[CouplingPort] = None
+    def serialize(self) -> ET.Element:
+        """Serialize CouplingPortConnection to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize first_port
+        if self.first_port is not None:
+            serialized = ARObject._serialize_item(self.first_port, "CouplingPort")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FIRST-PORT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize node_ports (list to container "NODE-PORTS")
+        if self.node_ports:
+            wrapper = ET.Element("NODE-PORTS")
+            for item in self.node_ports:
+                serialized = ARObject._serialize_item(item, "CouplingPort")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize plca_local_node
+        if self.plca_local_node is not None:
+            serialized = ARObject._serialize_item(self.plca_local_node, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PLCA-LOCAL-NODE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize plca_transmit
+        if self.plca_transmit is not None:
+            serialized = ARObject._serialize_item(self.plca_transmit, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PLCA-TRANSMIT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize second_port
+        if self.second_port is not None:
+            serialized = ARObject._serialize_item(self.second_port, "CouplingPort")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SECOND-PORT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "CouplingPortConnection":
         """Deserialize XML element to CouplingPortConnection object.

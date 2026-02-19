@@ -45,6 +45,66 @@ class CpSoftwareClusterResource(Identifiable, ABC):
         self.dependents: list[RoleBasedResourceDependency] = []
         self.global_resource: Optional[PositiveInteger] = None
         self.is_mandatory: Optional[Boolean] = None
+    def serialize(self) -> ET.Element:
+        """Serialize CpSoftwareClusterResource to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(CpSoftwareClusterResource, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize dependents (list to container "DEPENDENTS")
+        if self.dependents:
+            wrapper = ET.Element("DEPENDENTS")
+            for item in self.dependents:
+                serialized = ARObject._serialize_item(item, "RoleBasedResourceDependency")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize global_resource
+        if self.global_resource is not None:
+            serialized = ARObject._serialize_item(self.global_resource, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("GLOBAL-RESOURCE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize is_mandatory
+        if self.is_mandatory is not None:
+            serialized = ARObject._serialize_item(self.is_mandatory, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IS-MANDATORY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "CpSoftwareClusterResource":
         """Deserialize XML element to CpSoftwareClusterResource object.

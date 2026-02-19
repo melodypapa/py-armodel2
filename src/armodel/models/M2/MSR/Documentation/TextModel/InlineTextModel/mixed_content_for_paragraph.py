@@ -90,6 +90,200 @@ class MixedContentForParagraph(ARObject, ABC):
         self.xfile: Xfile = None
         self.xref: Xref = None
         self.xref_target: XrefTarget = None
+    def serialize(self) -> ET.Element:
+        """Serialize MixedContentForParagraph to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize br
+        if self.br is not None:
+            serialized = ARObject._serialize_item(self.br, "Br")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BR")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize e
+        if self.e is not None:
+            serialized = ARObject._serialize_item(self.e, "EmphasisText")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("E")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize ft
+        if self.ft is not None:
+            serialized = ARObject._serialize_item(self.ft, "SlParagraph")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize ie
+        if self.ie is not None:
+            serialized = ARObject._serialize_item(self.ie, "IndexEntry")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize std
+        if self.std is not None:
+            serialized = ARObject._serialize_item(self.std, "Std")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("STD")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sub
+        if self.sub is not None:
+            serialized = ARObject._serialize_item(self.sub, "Superscript")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SUB")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sup
+        if self.sup is not None:
+            serialized = ARObject._serialize_item(self.sup, "Superscript")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SUP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize trace
+        if self.trace is not None:
+            serialized = ARObject._serialize_item(self.trace, "Traceable")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TRACE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize tt
+        if self.tt is not None:
+            serialized = ARObject._serialize_item(self.tt, "Tt")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize xdoc
+        if self.xdoc is not None:
+            serialized = ARObject._serialize_item(self.xdoc, "Xdoc")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("XDOC")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize xfile
+        if self.xfile is not None:
+            serialized = ARObject._serialize_item(self.xfile, "Xfile")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("XFILE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize xref
+        if self.xref is not None:
+            serialized = ARObject._serialize_item(self.xref, "Xref")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("XREF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize xref_target
+        if self.xref_target is not None:
+            serialized = ARObject._serialize_item(self.xref_target, "XrefTarget")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("XREF-TARGET")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "MixedContentForParagraph":
         """Deserialize XML element to MixedContentForParagraph object.

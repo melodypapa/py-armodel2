@@ -41,6 +41,70 @@ class BinaryManifestResource(Identifiable, ABC):
         self.global_resource: Optional[PositiveInteger] = None
         self.resource: Optional[Any] = None
         self.resource_guard: Optional[String] = None
+    def serialize(self) -> ET.Element:
+        """Serialize BinaryManifestResource to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(BinaryManifestResource, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize global_resource
+        if self.global_resource is not None:
+            serialized = ARObject._serialize_item(self.global_resource, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("GLOBAL-RESOURCE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize resource
+        if self.resource is not None:
+            serialized = ARObject._serialize_item(self.resource, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RESOURCE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize resource_guard
+        if self.resource_guard is not None:
+            serialized = ARObject._serialize_item(self.resource_guard, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RESOURCE-GUARD")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "BinaryManifestResource":
         """Deserialize XML element to BinaryManifestResource object.

@@ -63,6 +63,150 @@ class FlexrayTpConnection(TpConnection):
         self.tp_connection: Optional[FlexrayTpConnection] = None
         self.transmitter: Optional[FlexrayTpNode] = None
         self.tx_pdu_pool: Optional[FlexrayTpPduPool] = None
+    def serialize(self) -> ET.Element:
+        """Serialize FlexrayTpConnection to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(FlexrayTpConnection, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize bandwidth
+        if self.bandwidth is not None:
+            serialized = ARObject._serialize_item(self.bandwidth, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BANDWIDTH")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize direct_tp_sdu
+        if self.direct_tp_sdu is not None:
+            serialized = ARObject._serialize_item(self.direct_tp_sdu, "IPdu")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DIRECT-TP-SDU")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize multicast
+        if self.multicast is not None:
+            serialized = ARObject._serialize_item(self.multicast, "TpAddress")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MULTICAST")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize receivers (list to container "RECEIVERS")
+        if self.receivers:
+            wrapper = ET.Element("RECEIVERS")
+            for item in self.receivers:
+                serialized = ARObject._serialize_item(item, "FlexrayTpNode")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize reversed_tp_sdu
+        if self.reversed_tp_sdu is not None:
+            serialized = ARObject._serialize_item(self.reversed_tp_sdu, "IPdu")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("REVERSED-TP-SDU")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize rx_pdu_pool
+        if self.rx_pdu_pool is not None:
+            serialized = ARObject._serialize_item(self.rx_pdu_pool, "FlexrayTpPduPool")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RX-PDU-POOL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize tp_connection
+        if self.tp_connection is not None:
+            serialized = ARObject._serialize_item(self.tp_connection, "FlexrayTpConnection")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TP-CONNECTION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize transmitter
+        if self.transmitter is not None:
+            serialized = ARObject._serialize_item(self.transmitter, "FlexrayTpNode")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TRANSMITTER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize tx_pdu_pool
+        if self.tx_pdu_pool is not None:
+            serialized = ARObject._serialize_item(self.tx_pdu_pool, "FlexrayTpPduPool")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TX-PDU-POOL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "FlexrayTpConnection":
         """Deserialize XML element to FlexrayTpConnection object.

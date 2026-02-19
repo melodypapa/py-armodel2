@@ -50,6 +50,72 @@ class PortPrototypeBlueprint(ARElement):
         self.interface: PortInterface = None
         self.provided_coms: list[PPortComSpec] = []
         self.required_coms: list[RPortComSpec] = []
+    def serialize(self) -> ET.Element:
+        """Serialize PortPrototypeBlueprint to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(PortPrototypeBlueprint, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize init_value_refs (list to container "INIT-VALUES")
+        if self.init_value_refs:
+            wrapper = ET.Element("INIT-VALUES")
+            for item in self.init_value_refs:
+                serialized = ARObject._serialize_item(item, "PortPrototypeBlueprint")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize interface
+        if self.interface is not None:
+            serialized = ARObject._serialize_item(self.interface, "PortInterface")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("INTERFACE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize provided_coms (list to container "PROVIDED-COMS")
+        if self.provided_coms:
+            wrapper = ET.Element("PROVIDED-COMS")
+            for item in self.provided_coms:
+                serialized = ARObject._serialize_item(item, "PPortComSpec")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize required_coms (list to container "REQUIRED-COMS")
+        if self.required_coms:
+            wrapper = ET.Element("REQUIRED-COMS")
+            for item in self.required_coms:
+                serialized = ARObject._serialize_item(item, "RPortComSpec")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "PortPrototypeBlueprint":
         """Deserialize XML element to PortPrototypeBlueprint object.

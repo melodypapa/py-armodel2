@@ -38,6 +38,74 @@ class EthTSynSubTlvConfig(ARObject):
         self.status_sub_tlv: Optional[Boolean] = None
         self.time_sub_tlv: Optional[Boolean] = None
         self.user_data_sub_tlv: Optional[Boolean] = None
+    def serialize(self) -> ET.Element:
+        """Serialize EthTSynSubTlvConfig to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize ofs_sub_tlv
+        if self.ofs_sub_tlv is not None:
+            serialized = ARObject._serialize_item(self.ofs_sub_tlv, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("OFS-SUB-TLV")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize status_sub_tlv
+        if self.status_sub_tlv is not None:
+            serialized = ARObject._serialize_item(self.status_sub_tlv, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("STATUS-SUB-TLV")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize time_sub_tlv
+        if self.time_sub_tlv is not None:
+            serialized = ARObject._serialize_item(self.time_sub_tlv, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIME-SUB-TLV")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize user_data_sub_tlv
+        if self.user_data_sub_tlv is not None:
+            serialized = ARObject._serialize_item(self.user_data_sub_tlv, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("USER-DATA-SUB-TLV")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "EthTSynSubTlvConfig":
         """Deserialize XML element to EthTSynSubTlvConfig object.

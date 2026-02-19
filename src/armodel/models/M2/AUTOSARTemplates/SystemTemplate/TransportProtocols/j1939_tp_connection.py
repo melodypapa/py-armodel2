@@ -67,6 +67,188 @@ class J1939TpConnection(TpConnection):
         self.retry: Optional[Boolean] = None
         self.tp_pgs: list[J1939TpPg] = []
         self.transmitter: Optional[J1939TpNode] = None
+    def serialize(self) -> ET.Element:
+        """Serialize J1939TpConnection to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(J1939TpConnection, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize broadcast
+        if self.broadcast is not None:
+            serialized = ARObject._serialize_item(self.broadcast, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BROADCAST")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize buffer_ratio
+        if self.buffer_ratio is not None:
+            serialized = ARObject._serialize_item(self.buffer_ratio, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BUFFER-RATIO")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize cancellation
+        if self.cancellation is not None:
+            serialized = ARObject._serialize_item(self.cancellation, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CANCELLATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize data_pdu
+        if self.data_pdu is not None:
+            serialized = ARObject._serialize_item(self.data_pdu, "NPdu")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DATA-PDU")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize dynamic_bs
+        if self.dynamic_bs is not None:
+            serialized = ARObject._serialize_item(self.dynamic_bs, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DYNAMIC-BS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize flow_control_pdu
+        if self.flow_control_pdu is not None:
+            serialized = ARObject._serialize_item(self.flow_control_pdu, "NPdu")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FLOW-CONTROL-PDU")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize max_bs
+        if self.max_bs is not None:
+            serialized = ARObject._serialize_item(self.max_bs, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX-BS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize max_exp_bs
+        if self.max_exp_bs is not None:
+            serialized = ARObject._serialize_item(self.max_exp_bs, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX-EXP-BS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize receivers (list to container "RECEIVERS")
+        if self.receivers:
+            wrapper = ET.Element("RECEIVERS")
+            for item in self.receivers:
+                serialized = ARObject._serialize_item(item, "J1939TpNode")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize retry
+        if self.retry is not None:
+            serialized = ARObject._serialize_item(self.retry, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RETRY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize tp_pgs (list to container "TP-PGS")
+        if self.tp_pgs:
+            wrapper = ET.Element("TP-PGS")
+            for item in self.tp_pgs:
+                serialized = ARObject._serialize_item(item, "J1939TpPg")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize transmitter
+        if self.transmitter is not None:
+            serialized = ARObject._serialize_item(self.transmitter, "J1939TpNode")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TRANSMITTER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "J1939TpConnection":
         """Deserialize XML element to J1939TpConnection object.

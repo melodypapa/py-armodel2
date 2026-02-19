@@ -40,6 +40,56 @@ class DoIpLogicAddress(Identifiable):
         super().__init__()
         self.address: Optional[Integer] = None
         self.do_ip_logic: Optional[AbstractDoIpLogicAddressProps] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DoIpLogicAddress to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DoIpLogicAddress, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize address
+        if self.address is not None:
+            serialized = ARObject._serialize_item(self.address, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ADDRESS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize do_ip_logic
+        if self.do_ip_logic is not None:
+            serialized = ARObject._serialize_item(self.do_ip_logic, "AbstractDoIpLogicAddressProps")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DO-IP-LOGIC")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DoIpLogicAddress":
         """Deserialize XML element to DoIpLogicAddress object.

@@ -35,6 +35,38 @@ class EcucDestinationUriDefSet(ARElement):
         """Initialize EcucDestinationUriDefSet."""
         super().__init__()
         self.destination_uri_defs: list[EcucDestinationUriDef] = []
+    def serialize(self) -> ET.Element:
+        """Serialize EcucDestinationUriDefSet to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(EcucDestinationUriDefSet, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize destination_uri_defs (list to container "DESTINATION-URI-DEFS")
+        if self.destination_uri_defs:
+            wrapper = ET.Element("DESTINATION-URI-DEFS")
+            for item in self.destination_uri_defs:
+                serialized = ARObject._serialize_item(item, "EcucDestinationUriDef")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "EcucDestinationUriDefSet":
         """Deserialize XML element to EcucDestinationUriDefSet object.

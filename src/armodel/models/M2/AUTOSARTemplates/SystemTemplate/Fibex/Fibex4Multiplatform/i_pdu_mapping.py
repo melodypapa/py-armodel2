@@ -50,6 +50,88 @@ class IPduMapping(ARObject):
         self.pdur_tp_chunk: Optional[PositiveInteger] = None
         self.source_i_pdu_ref: Optional[ARRef] = None
         self.target_i_pdu_ref: Optional[ARRef] = None
+    def serialize(self) -> ET.Element:
+        """Serialize IPduMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize introduction
+        if self.introduction is not None:
+            serialized = ARObject._serialize_item(self.introduction, "DocumentationBlock")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("INTRODUCTION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize pdu_max_length
+        if self.pdu_max_length is not None:
+            serialized = ARObject._serialize_item(self.pdu_max_length, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PDU-MAX-LENGTH")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize pdur_tp_chunk
+        if self.pdur_tp_chunk is not None:
+            serialized = ARObject._serialize_item(self.pdur_tp_chunk, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PDUR-TP-CHUNK")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize source_i_pdu_ref
+        if self.source_i_pdu_ref is not None:
+            serialized = ARObject._serialize_item(self.source_i_pdu_ref, "PduTriggering")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SOURCE-I-PDU")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize target_i_pdu_ref
+        if self.target_i_pdu_ref is not None:
+            serialized = ARObject._serialize_item(self.target_i_pdu_ref, "TargetIPduRef")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TARGET-I-PDU")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "IPduMapping":
         """Deserialize XML element to IPduMapping object.

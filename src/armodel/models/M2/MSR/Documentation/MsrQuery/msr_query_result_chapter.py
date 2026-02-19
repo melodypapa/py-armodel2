@@ -35,6 +35,28 @@ class MsrQueryResultChapter(ARObject):
         """Initialize MsrQueryResultChapter."""
         super().__init__()
         self.chapters: list[Chapter] = []
+    def serialize(self) -> ET.Element:
+        """Serialize MsrQueryResultChapter to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize chapters (list to container "CHAPTERS")
+        if self.chapters:
+            wrapper = ET.Element("CHAPTERS")
+            for item in self.chapters:
+                serialized = ARObject._serialize_item(item, "Chapter")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "MsrQueryResultChapter":
         """Deserialize XML element to MsrQueryResultChapter object.

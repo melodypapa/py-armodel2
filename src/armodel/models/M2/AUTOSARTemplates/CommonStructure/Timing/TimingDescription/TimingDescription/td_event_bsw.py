@@ -36,6 +36,42 @@ class TDEventBsw(TimingDescriptionEvent, ABC):
         """Initialize TDEventBsw."""
         super().__init__()
         self.bsw_module_description: Optional[BswModuleDescription] = None
+    def serialize(self) -> ET.Element:
+        """Serialize TDEventBsw to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(TDEventBsw, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize bsw_module_description
+        if self.bsw_module_description is not None:
+            serialized = ARObject._serialize_item(self.bsw_module_description, "BswModuleDescription")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BSW-MODULE-DESCRIPTION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "TDEventBsw":
         """Deserialize XML element to TDEventBsw object.

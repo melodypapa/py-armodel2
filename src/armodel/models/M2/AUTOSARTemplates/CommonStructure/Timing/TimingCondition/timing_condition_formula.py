@@ -49,6 +49,88 @@ class TimingConditionFormula(ARObject):
         self.timing_event: Optional[TimingDescriptionEvent] = None
         self.timing_mode: Optional[TimingModeInstance] = None
         self.timing_variable_instance: Optional[Any] = None
+    def serialize(self) -> ET.Element:
+        """Serialize TimingConditionFormula to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize timing_argument_argument_instance
+        if self.timing_argument_argument_instance is not None:
+            serialized = ARObject._serialize_item(self.timing_argument_argument_instance, "AutosarOperationArgumentInstance")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIMING-ARGUMENT-ARGUMENT-INSTANCE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize timing_condition
+        if self.timing_condition is not None:
+            serialized = ARObject._serialize_item(self.timing_condition, "TimingCondition")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIMING-CONDITION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize timing_event
+        if self.timing_event is not None:
+            serialized = ARObject._serialize_item(self.timing_event, "TimingDescriptionEvent")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIMING-EVENT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize timing_mode
+        if self.timing_mode is not None:
+            serialized = ARObject._serialize_item(self.timing_mode, "TimingModeInstance")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIMING-MODE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize timing_variable_instance
+        if self.timing_variable_instance is not None:
+            serialized = ARObject._serialize_item(self.timing_variable_instance, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIMING-VARIABLE-INSTANCE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "TimingConditionFormula":
         """Deserialize XML element to TimingConditionFormula object.

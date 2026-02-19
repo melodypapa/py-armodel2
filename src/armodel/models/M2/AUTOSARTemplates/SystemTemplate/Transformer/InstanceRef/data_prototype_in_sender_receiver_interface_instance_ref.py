@@ -45,6 +45,80 @@ class DataPrototypeInSenderReceiverInterfaceInstanceRef(DataPrototypeInPortInter
         self.context_datas: list[Any] = []
         self.root_data_prototype_in_sr_ref: Optional[ARRef] = None
         self.target_data_prototype_in_sr_ref: Optional[ARRef] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DataPrototypeInSenderReceiverInterfaceInstanceRef to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DataPrototypeInSenderReceiverInterfaceInstanceRef, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize base_interface
+        if self.base_interface is not None:
+            serialized = ARObject._serialize_item(self.base_interface, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BASE-INTERFACE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize context_datas (list to container "CONTEXT-DATAS")
+        if self.context_datas:
+            wrapper = ET.Element("CONTEXT-DATAS")
+            for item in self.context_datas:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize root_data_prototype_in_sr_ref
+        if self.root_data_prototype_in_sr_ref is not None:
+            serialized = ARObject._serialize_item(self.root_data_prototype_in_sr_ref, "AutosarDataPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ROOT-DATA-PROTOTYPE-IN-SR")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize target_data_prototype_in_sr_ref
+        if self.target_data_prototype_in_sr_ref is not None:
+            serialized = ARObject._serialize_item(self.target_data_prototype_in_sr_ref, "DataPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TARGET-DATA-PROTOTYPE-IN-SR")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DataPrototypeInSenderReceiverInterfaceInstanceRef":
         """Deserialize XML element to DataPrototypeInSenderReceiverInterfaceInstanceRef object.

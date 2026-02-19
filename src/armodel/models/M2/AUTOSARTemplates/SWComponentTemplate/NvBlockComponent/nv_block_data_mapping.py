@@ -44,6 +44,88 @@ class NvBlockDataMapping(ARObject):
         self.read_nv_data_ref: Optional[ARRef] = None
         self.written_nv_data_ref: Optional[ARRef] = None
         self.written_read_nv_ref: Optional[ARRef] = None
+    def serialize(self) -> ET.Element:
+        """Serialize NvBlockDataMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize bitfield_text_table
+        if self.bitfield_text_table is not None:
+            serialized = ARObject._serialize_item(self.bitfield_text_table, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BITFIELD-TEXT-TABLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nv_ram_block_ref
+        if self.nv_ram_block_ref is not None:
+            serialized = ARObject._serialize_item(self.nv_ram_block_ref, "AutosarVariableRef")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NV-RAM-BLOCK")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize read_nv_data_ref
+        if self.read_nv_data_ref is not None:
+            serialized = ARObject._serialize_item(self.read_nv_data_ref, "AutosarVariableRef")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("READ-NV-DATA")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize written_nv_data_ref
+        if self.written_nv_data_ref is not None:
+            serialized = ARObject._serialize_item(self.written_nv_data_ref, "AutosarVariableRef")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("WRITTEN-NV-DATA")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize written_read_nv_ref
+        if self.written_read_nv_ref is not None:
+            serialized = ARObject._serialize_item(self.written_read_nv_ref, "AutosarVariableRef")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("WRITTEN-READ-NV")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "NvBlockDataMapping":
         """Deserialize XML element to NvBlockDataMapping object.

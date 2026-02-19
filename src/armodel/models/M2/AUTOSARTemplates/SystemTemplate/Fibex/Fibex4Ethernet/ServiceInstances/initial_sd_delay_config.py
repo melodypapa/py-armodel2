@@ -37,6 +37,60 @@ class InitialSdDelayConfig(ARObject):
         self.initial_delay_max: Optional[TimeValue] = None
         self.initial_delay_min: Optional[TimeValue] = None
         self.initial: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize InitialSdDelayConfig to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize initial_delay_max
+        if self.initial_delay_max is not None:
+            serialized = ARObject._serialize_item(self.initial_delay_max, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("INITIAL-DELAY-MAX")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize initial_delay_min
+        if self.initial_delay_min is not None:
+            serialized = ARObject._serialize_item(self.initial_delay_min, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("INITIAL-DELAY-MIN")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize initial
+        if self.initial is not None:
+            serialized = ARObject._serialize_item(self.initial, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("INITIAL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "InitialSdDelayConfig":
         """Deserialize XML element to InitialSdDelayConfig object.

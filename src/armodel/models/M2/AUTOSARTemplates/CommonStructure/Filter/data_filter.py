@@ -49,6 +49,116 @@ class DataFilter(ARObject):
         self.offset: Optional[PositiveInteger] = None
         self.period: Optional[PositiveInteger] = None
         self.x: Optional[UnlimitedInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DataFilter to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize data_filter_type_enum
+        if self.data_filter_type_enum is not None:
+            serialized = ARObject._serialize_item(self.data_filter_type_enum, "DataFilterTypeEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DATA-FILTER-TYPE-ENUM")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize mask
+        if self.mask is not None:
+            serialized = ARObject._serialize_item(self.mask, "UnlimitedInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MASK")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize max
+        if self.max is not None:
+            serialized = ARObject._serialize_item(self.max, "UnlimitedInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize min
+        if self.min is not None:
+            serialized = ARObject._serialize_item(self.min, "UnlimitedInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MIN")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize offset
+        if self.offset is not None:
+            serialized = ARObject._serialize_item(self.offset, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("OFFSET")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize period
+        if self.period is not None:
+            serialized = ARObject._serialize_item(self.period, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PERIOD")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize x
+        if self.x is not None:
+            serialized = ARObject._serialize_item(self.x, "UnlimitedInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("X")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DataFilter":
         """Deserialize XML element to DataFilter object.

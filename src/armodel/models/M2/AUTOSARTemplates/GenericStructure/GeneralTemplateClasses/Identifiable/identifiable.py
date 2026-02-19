@@ -71,6 +71,108 @@ class Identifiable(MultilanguageReferrable, ABC):
         self.desc: Optional[MultiLanguageOverviewParagraph] = None
         self.introduction: Optional[DocumentationBlock] = None
         self.uuid: Optional[String] = None
+    def serialize(self) -> ET.Element:
+        """Serialize Identifiable to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(Identifiable, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize admin_data
+        if self.admin_data is not None:
+            serialized = ARObject._serialize_item(self.admin_data, "AdminData")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ADMIN-DATA")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize annotations (list to container "ANNOTATIONS")
+        if self.annotations:
+            wrapper = ET.Element("ANNOTATIONS")
+            for item in self.annotations:
+                serialized = ARObject._serialize_item(item, "Annotation")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize category
+        if self.category is not None:
+            serialized = ARObject._serialize_item(self.category, "CategoryString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CATEGORY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize desc
+        if self.desc is not None:
+            serialized = ARObject._serialize_item(self.desc, "MultiLanguageOverviewParagraph")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DESC")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize introduction
+        if self.introduction is not None:
+            serialized = ARObject._serialize_item(self.introduction, "DocumentationBlock")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("INTRODUCTION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize uuid
+        if self.uuid is not None:
+            serialized = ARObject._serialize_item(self.uuid, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("UUID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "Identifiable":
         """Deserialize XML element to Identifiable object.

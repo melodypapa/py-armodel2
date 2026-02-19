@@ -39,6 +39,60 @@ class TopicContent(ARObject):
         self.block_level: DocumentationBlock = None
         self.table: Optional[Table] = None
         self.traceable_table: Any = None
+    def serialize(self) -> ET.Element:
+        """Serialize TopicContent to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize block_level
+        if self.block_level is not None:
+            serialized = ARObject._serialize_item(self.block_level, "DocumentationBlock")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BLOCK-LEVEL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize table
+        if self.table is not None:
+            serialized = ARObject._serialize_item(self.table, "Table")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TABLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize traceable_table
+        if self.traceable_table is not None:
+            serialized = ARObject._serialize_item(self.traceable_table, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TRACEABLE-TABLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "TopicContent":
         """Deserialize XML element to TopicContent object.

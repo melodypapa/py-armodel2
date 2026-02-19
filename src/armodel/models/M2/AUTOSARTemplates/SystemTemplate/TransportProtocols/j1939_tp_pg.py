@@ -45,6 +45,70 @@ class J1939TpPg(ARObject):
         self.pgn: Optional[Integer] = None
         self.requestable: Optional[Boolean] = None
         self.sdus: list[IPdu] = []
+    def serialize(self) -> ET.Element:
+        """Serialize J1939TpPg to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize direct_pdu
+        if self.direct_pdu is not None:
+            serialized = ARObject._serialize_item(self.direct_pdu, "NPdu")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DIRECT-PDU")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize pgn
+        if self.pgn is not None:
+            serialized = ARObject._serialize_item(self.pgn, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PGN")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize requestable
+        if self.requestable is not None:
+            serialized = ARObject._serialize_item(self.requestable, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("REQUESTABLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sdus (list to container "SDUS")
+        if self.sdus:
+            wrapper = ET.Element("SDUS")
+            for item in self.sdus:
+                serialized = ARObject._serialize_item(item, "IPdu")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "J1939TpPg":
         """Deserialize XML element to J1939TpPg object.

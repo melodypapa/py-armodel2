@@ -57,6 +57,98 @@ class FlatInstanceDescriptor(Identifiable):
         self.rte_plugin_props: Optional[RtePluginProps] = None
         self.sw_data_def: Optional[SwDataDefProps] = None
         self.upstream: Optional[AtpFeature] = None
+    def serialize(self) -> ET.Element:
+        """Serialize FlatInstanceDescriptor to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(FlatInstanceDescriptor, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize ecu_extract
+        if self.ecu_extract is not None:
+            serialized = ARObject._serialize_item(self.ecu_extract, "AtpFeature")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ECU-EXTRACT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize role
+        if self.role is not None:
+            serialized = ARObject._serialize_item(self.role, "Identifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ROLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize rte_plugin_props
+        if self.rte_plugin_props is not None:
+            serialized = ARObject._serialize_item(self.rte_plugin_props, "RtePluginProps")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RTE-PLUGIN-PROPS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_data_def
+        if self.sw_data_def is not None:
+            serialized = ARObject._serialize_item(self.sw_data_def, "SwDataDefProps")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-DATA-DEF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize upstream
+        if self.upstream is not None:
+            serialized = ARObject._serialize_item(self.upstream, "AtpFeature")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("UPSTREAM")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "FlatInstanceDescriptor":
         """Deserialize XML element to FlatInstanceDescriptor object.

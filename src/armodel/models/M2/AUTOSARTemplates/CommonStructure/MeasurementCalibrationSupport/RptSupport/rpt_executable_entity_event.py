@@ -60,6 +60,100 @@ class RptExecutableEntityEvent(Identifiable):
         self.rpt_executable_entity: Optional[RptExecutableEntity] = None
         self.rpt_impl_policy: Optional[RptImplPolicy] = None
         self.rpt_service_points: list[RptServicePoint] = []
+    def serialize(self) -> ET.Element:
+        """Serialize RptExecutableEntityEvent to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(RptExecutableEntityEvent, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize executions (list to container "EXECUTIONS")
+        if self.executions:
+            wrapper = ET.Element("EXECUTIONS")
+            for item in self.executions:
+                serialized = ARObject._serialize_item(item, "RptExecutionContext")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize mc_datas (list to container "MC-DATAS")
+        if self.mc_datas:
+            wrapper = ET.Element("MC-DATAS")
+            for item in self.mc_datas:
+                serialized = ARObject._serialize_item(item, "RoleBasedMcDataAssignment")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize rpt_event_id
+        if self.rpt_event_id is not None:
+            serialized = ARObject._serialize_item(self.rpt_event_id, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RPT-EVENT-ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize rpt_executable_entity
+        if self.rpt_executable_entity is not None:
+            serialized = ARObject._serialize_item(self.rpt_executable_entity, "RptExecutableEntity")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RPT-EXECUTABLE-ENTITY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize rpt_impl_policy
+        if self.rpt_impl_policy is not None:
+            serialized = ARObject._serialize_item(self.rpt_impl_policy, "RptImplPolicy")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RPT-IMPL-POLICY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize rpt_service_points (list to container "RPT-SERVICE-POINTS")
+        if self.rpt_service_points:
+            wrapper = ET.Element("RPT-SERVICE-POINTS")
+            for item in self.rpt_service_points:
+                serialized = ARObject._serialize_item(item, "RptServicePoint")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "RptExecutableEntityEvent":
         """Deserialize XML element to RptExecutableEntityEvent object.

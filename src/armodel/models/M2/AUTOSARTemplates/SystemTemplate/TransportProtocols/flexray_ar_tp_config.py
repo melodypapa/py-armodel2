@@ -45,6 +45,58 @@ class FlexrayArTpConfig(TpConfig):
         self.tp_addresses: list[TpAddress] = []
         self.tp_channels: list[FlexrayArTpChannel] = []
         self.tp_nodes: list[FlexrayArTpNode] = []
+    def serialize(self) -> ET.Element:
+        """Serialize FlexrayArTpConfig to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(FlexrayArTpConfig, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize tp_addresses (list to container "TP-ADDRESSES")
+        if self.tp_addresses:
+            wrapper = ET.Element("TP-ADDRESSES")
+            for item in self.tp_addresses:
+                serialized = ARObject._serialize_item(item, "TpAddress")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize tp_channels (list to container "TP-CHANNELS")
+        if self.tp_channels:
+            wrapper = ET.Element("TP-CHANNELS")
+            for item in self.tp_channels:
+                serialized = ARObject._serialize_item(item, "FlexrayArTpChannel")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize tp_nodes (list to container "TP-NODES")
+        if self.tp_nodes:
+            wrapper = ET.Element("TP-NODES")
+            for item in self.tp_nodes:
+                serialized = ARObject._serialize_item(item, "FlexrayArTpNode")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "FlexrayArTpConfig":
         """Deserialize XML element to FlexrayArTpConfig object.

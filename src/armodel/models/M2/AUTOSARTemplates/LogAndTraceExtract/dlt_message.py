@@ -53,6 +53,108 @@ class DltMessage(Identifiable):
         self.message_source: Optional[String] = None
         self.message_type_info: Optional[String] = None
         self.privacy_level: Optional[PrivacyLevel] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DltMessage to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DltMessage, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize dlt_arguments (list to container "DLT-ARGUMENTS")
+        if self.dlt_arguments:
+            wrapper = ET.Element("DLT-ARGUMENTS")
+            for item in self.dlt_arguments:
+                serialized = ARObject._serialize_item(item, "DltArgument")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize message_id
+        if self.message_id is not None:
+            serialized = ARObject._serialize_item(self.message_id, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MESSAGE-ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize message_line
+        if self.message_line is not None:
+            serialized = ARObject._serialize_item(self.message_line, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MESSAGE-LINE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize message_source
+        if self.message_source is not None:
+            serialized = ARObject._serialize_item(self.message_source, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MESSAGE-SOURCE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize message_type_info
+        if self.message_type_info is not None:
+            serialized = ARObject._serialize_item(self.message_type_info, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MESSAGE-TYPE-INFO")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize privacy_level
+        if self.privacy_level is not None:
+            serialized = ARObject._serialize_item(self.privacy_level, "PrivacyLevel")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PRIVACY-LEVEL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DltMessage":
         """Deserialize XML element to DltMessage object.

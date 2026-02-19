@@ -53,6 +53,98 @@ class LifeCycleInfo(ARObject):
         self.period_end: Optional[LifeCyclePeriod] = None
         self.remark: Optional[DocumentationBlock] = None
         self.use_instead_refs: list[ARRef] = []
+    def serialize(self) -> ET.Element:
+        """Serialize LifeCycleInfo to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize lc_object_ref
+        if self.lc_object_ref is not None:
+            serialized = ARObject._serialize_item(self.lc_object_ref, "Referrable")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("LC-OBJECT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize lc_state
+        if self.lc_state is not None:
+            serialized = ARObject._serialize_item(self.lc_state, "LifeCycleState")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("LC-STATE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize period_begin
+        if self.period_begin is not None:
+            serialized = ARObject._serialize_item(self.period_begin, "LifeCyclePeriod")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PERIOD-BEGIN")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize period_end
+        if self.period_end is not None:
+            serialized = ARObject._serialize_item(self.period_end, "LifeCyclePeriod")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PERIOD-END")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize remark
+        if self.remark is not None:
+            serialized = ARObject._serialize_item(self.remark, "DocumentationBlock")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("REMARK")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize use_instead_refs (list to container "USE-INSTEADS")
+        if self.use_instead_refs:
+            wrapper = ET.Element("USE-INSTEADS")
+            for item in self.use_instead_refs:
+                serialized = ARObject._serialize_item(item, "Referrable")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "LifeCycleInfo":
         """Deserialize XML element to LifeCycleInfo object.

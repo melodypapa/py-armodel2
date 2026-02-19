@@ -49,6 +49,80 @@ class BusMirrorChannelMapping(FibexElement, ABC):
         self.source_channel: Optional[BusMirrorChannel] = None
         self.target_channel: Optional[BusMirrorChannel] = None
         self.target_pdu_refs: list[ARRef] = []
+    def serialize(self) -> ET.Element:
+        """Serialize BusMirrorChannelMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(BusMirrorChannelMapping, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize mirroring
+        if self.mirroring is not None:
+            serialized = ARObject._serialize_item(self.mirroring, "MirroringProtocolEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MIRRORING")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize source_channel
+        if self.source_channel is not None:
+            serialized = ARObject._serialize_item(self.source_channel, "BusMirrorChannel")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SOURCE-CHANNEL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize target_channel
+        if self.target_channel is not None:
+            serialized = ARObject._serialize_item(self.target_channel, "BusMirrorChannel")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TARGET-CHANNEL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize target_pdu_refs (list to container "TARGET-PDUS")
+        if self.target_pdu_refs:
+            wrapper = ET.Element("TARGET-PDUS")
+            for item in self.target_pdu_refs:
+                serialized = ARObject._serialize_item(item, "PduTriggering")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "BusMirrorChannelMapping":
         """Deserialize XML element to BusMirrorChannelMapping object.

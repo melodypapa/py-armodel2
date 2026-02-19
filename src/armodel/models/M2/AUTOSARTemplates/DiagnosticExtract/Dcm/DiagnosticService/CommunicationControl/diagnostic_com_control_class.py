@@ -44,6 +44,68 @@ class DiagnosticComControlClass(DiagnosticServiceClass):
         self.all_physicals: list[Any] = []
         self.specific_channels: list[DiagnosticComControl] = []
         self.sub_nodes: list[DiagnosticComControl] = []
+    def serialize(self) -> ET.Element:
+        """Serialize DiagnosticComControlClass to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DiagnosticComControlClass, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize all_channelses (list to container "ALL-CHANNELSES")
+        if self.all_channelses:
+            wrapper = ET.Element("ALL-CHANNELSES")
+            for item in self.all_channelses:
+                serialized = ARObject._serialize_item(item, "CommunicationCluster")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize all_physicals (list to container "ALL-PHYSICALS")
+        if self.all_physicals:
+            wrapper = ET.Element("ALL-PHYSICALS")
+            for item in self.all_physicals:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize specific_channels (list to container "SPECIFIC-CHANNELS")
+        if self.specific_channels:
+            wrapper = ET.Element("SPECIFIC-CHANNELS")
+            for item in self.specific_channels:
+                serialized = ARObject._serialize_item(item, "DiagnosticComControl")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize sub_nodes (list to container "SUB-NODES")
+        if self.sub_nodes:
+            wrapper = ET.Element("SUB-NODES")
+            for item in self.sub_nodes:
+                serialized = ARObject._serialize_item(item, "DiagnosticComControl")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagnosticComControlClass":
         """Deserialize XML element to DiagnosticComControlClass object.

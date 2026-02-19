@@ -37,6 +37,42 @@ class TimeSyncClientConfiguration(ARObject):
         super().__init__()
         self.ordered_masters: list[OrderedMaster] = []
         self.time_sync: Optional[TimeSyncTechnologyEnum] = None
+    def serialize(self) -> ET.Element:
+        """Serialize TimeSyncClientConfiguration to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize ordered_masters (list to container "ORDERED-MASTERS")
+        if self.ordered_masters:
+            wrapper = ET.Element("ORDERED-MASTERS")
+            for item in self.ordered_masters:
+                serialized = ARObject._serialize_item(item, "OrderedMaster")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize time_sync
+        if self.time_sync is not None:
+            serialized = ARObject._serialize_item(self.time_sync, "TimeSyncTechnologyEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIME-SYNC")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "TimeSyncClientConfiguration":
         """Deserialize XML element to TimeSyncClientConfiguration object.

@@ -34,6 +34,38 @@ class Traceable(MultilanguageReferrable, ABC):
         """Initialize Traceable."""
         super().__init__()
         self.traces: list[Traceable] = []
+    def serialize(self) -> ET.Element:
+        """Serialize Traceable to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(Traceable, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize traces (list to container "TRACES")
+        if self.traces:
+            wrapper = ET.Element("TRACES")
+            for item in self.traces:
+                serialized = ARObject._serialize_item(item, "Traceable")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "Traceable":
         """Deserialize XML element to Traceable object.

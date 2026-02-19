@@ -46,6 +46,56 @@ class PortInterface(ARElement, ABC):
         super().__init__()
         self.is_service: Optional[Boolean] = None
         self.service_kind: Optional[ServiceProviderEnum] = None
+    def serialize(self) -> ET.Element:
+        """Serialize PortInterface to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(PortInterface, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize is_service
+        if self.is_service is not None:
+            serialized = ARObject._serialize_item(self.is_service, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IS-SERVICE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize service_kind
+        if self.service_kind is not None:
+            serialized = ARObject._serialize_item(self.service_kind, "ServiceProviderEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SERVICE-KIND")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "PortInterface":
         """Deserialize XML element to PortInterface object.

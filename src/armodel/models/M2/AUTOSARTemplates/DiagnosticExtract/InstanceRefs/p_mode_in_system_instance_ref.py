@@ -53,6 +53,88 @@ class PModeInSystemInstanceRef(ARObject):
         self.context_mode_group_ref: Optional[ARRef] = None
         self.context_p_port_prototype: Optional[AbstractProvidedPortPrototype] = None
         self.target_mode: Optional[ModeDeclaration] = None
+    def serialize(self) -> ET.Element:
+        """Serialize PModeInSystemInstanceRef to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize base
+        if self.base is not None:
+            serialized = ARObject._serialize_item(self.base, "System")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BASE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize context
+        if self.context is not None:
+            serialized = ARObject._serialize_item(self.context, "RootSwCompositionPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CONTEXT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize context_mode_group_ref
+        if self.context_mode_group_ref is not None:
+            serialized = ARObject._serialize_item(self.context_mode_group_ref, "ModeDeclarationGroup")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CONTEXT-MODE-GROUP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize context_p_port_prototype
+        if self.context_p_port_prototype is not None:
+            serialized = ARObject._serialize_item(self.context_p_port_prototype, "AbstractProvidedPortPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CONTEXT-P-PORT-PROTOTYPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize target_mode
+        if self.target_mode is not None:
+            serialized = ARObject._serialize_item(self.target_mode, "ModeDeclaration")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TARGET-MODE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "PModeInSystemInstanceRef":
         """Deserialize XML element to PModeInSystemInstanceRef object.

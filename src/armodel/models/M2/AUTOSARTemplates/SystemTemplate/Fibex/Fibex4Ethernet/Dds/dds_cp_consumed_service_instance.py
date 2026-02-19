@@ -44,6 +44,80 @@ class DdsCpConsumedServiceInstance(DdsCpServiceInstance):
         self.local_unicast: Optional[ApplicationEndpoint] = None
         self.minor_version: Optional[AnyVersionString] = None
         self.static_remote: Optional[ApplicationEndpoint] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DdsCpConsumedServiceInstance to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DdsCpConsumedServiceInstance, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize consumed_ddses (list to container "CONSUMED-DDSES")
+        if self.consumed_ddses:
+            wrapper = ET.Element("CONSUMED-DDSES")
+            for item in self.consumed_ddses:
+                serialized = ARObject._serialize_item(item, "DdsCpServiceInstance")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize local_unicast
+        if self.local_unicast is not None:
+            serialized = ARObject._serialize_item(self.local_unicast, "ApplicationEndpoint")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("LOCAL-UNICAST")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize minor_version
+        if self.minor_version is not None:
+            serialized = ARObject._serialize_item(self.minor_version, "AnyVersionString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MINOR-VERSION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize static_remote
+        if self.static_remote is not None:
+            serialized = ARObject._serialize_item(self.static_remote, "ApplicationEndpoint")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("STATIC-REMOTE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DdsCpConsumedServiceInstance":
         """Deserialize XML element to DdsCpConsumedServiceInstance object.

@@ -37,6 +37,56 @@ class BlueprintPolicyList(BlueprintPolicy):
         super().__init__()
         self.max_number_of: PositiveInteger = None
         self.min_number_of: PositiveInteger = None
+    def serialize(self) -> ET.Element:
+        """Serialize BlueprintPolicyList to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(BlueprintPolicyList, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize max_number_of
+        if self.max_number_of is not None:
+            serialized = ARObject._serialize_item(self.max_number_of, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX-NUMBER-OF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize min_number_of
+        if self.min_number_of is not None:
+            serialized = ARObject._serialize_item(self.min_number_of, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MIN-NUMBER-OF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "BlueprintPolicyList":
         """Deserialize XML element to BlueprintPolicyList object.

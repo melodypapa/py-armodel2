@@ -33,6 +33,32 @@ class LinCommunicationController(ARObject, ABC):
         """Initialize LinCommunicationController."""
         super().__init__()
         self.protocol_version: Optional[String] = None
+    def serialize(self) -> ET.Element:
+        """Serialize LinCommunicationController to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize protocol_version
+        if self.protocol_version is not None:
+            serialized = ARObject._serialize_item(self.protocol_version, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PROTOCOL-VERSION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "LinCommunicationController":
         """Deserialize XML element to LinCommunicationController object.

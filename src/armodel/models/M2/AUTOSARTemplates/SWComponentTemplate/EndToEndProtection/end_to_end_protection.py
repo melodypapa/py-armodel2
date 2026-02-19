@@ -33,6 +33,38 @@ class EndToEndProtection(Identifiable):
         """Initialize EndToEndProtection."""
         super().__init__()
         self.end_to_ends: list[EndToEndProtection] = []
+    def serialize(self) -> ET.Element:
+        """Serialize EndToEndProtection to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(EndToEndProtection, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize end_to_ends (list to container "END-TO-ENDS")
+        if self.end_to_ends:
+            wrapper = ET.Element("END-TO-ENDS")
+            for item in self.end_to_ends:
+                serialized = ARObject._serialize_item(item, "EndToEndProtection")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "EndToEndProtection":
         """Deserialize XML element to EndToEndProtection object.

@@ -48,6 +48,98 @@ class EthernetCommunicationConnector(CommunicationConnector):
         self.neighbor_cache: Optional[PositiveInteger] = None
         self.path_mtu: Optional[Boolean] = None
         self.path_mtu_timeout: Optional[TimeValue] = None
+    def serialize(self) -> ET.Element:
+        """Serialize EthernetCommunicationConnector to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(EthernetCommunicationConnector, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize eth_ip_props
+        if self.eth_ip_props is not None:
+            serialized = ARObject._serialize_item(self.eth_ip_props, "EthIpProps")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ETH-IP-PROPS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize maximum
+        if self.maximum is not None:
+            serialized = ARObject._serialize_item(self.maximum, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAXIMUM")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize neighbor_cache
+        if self.neighbor_cache is not None:
+            serialized = ARObject._serialize_item(self.neighbor_cache, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NEIGHBOR-CACHE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize path_mtu
+        if self.path_mtu is not None:
+            serialized = ARObject._serialize_item(self.path_mtu, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PATH-MTU")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize path_mtu_timeout
+        if self.path_mtu_timeout is not None:
+            serialized = ARObject._serialize_item(self.path_mtu_timeout, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PATH-MTU-TIMEOUT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "EthernetCommunicationConnector":
         """Deserialize XML element to EthernetCommunicationConnector object.

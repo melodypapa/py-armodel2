@@ -43,6 +43,84 @@ class Compiler(Identifiable):
         self.options: Optional[String] = None
         self.vendor: Optional[String] = None
         self.version: Optional[String] = None
+    def serialize(self) -> ET.Element:
+        """Serialize Compiler to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(Compiler, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize name
+        if self.name is not None:
+            serialized = ARObject._serialize_item(self.name, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NAME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize options
+        if self.options is not None:
+            serialized = ARObject._serialize_item(self.options, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("OPTIONS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize vendor
+        if self.vendor is not None:
+            serialized = ARObject._serialize_item(self.vendor, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VENDOR")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize version
+        if self.version is not None:
+            serialized = ARObject._serialize_item(self.version, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VERSION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "Compiler":
         """Deserialize XML element to Compiler object.

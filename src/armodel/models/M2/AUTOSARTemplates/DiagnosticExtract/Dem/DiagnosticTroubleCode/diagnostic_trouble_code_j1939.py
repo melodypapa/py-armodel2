@@ -49,6 +49,98 @@ class DiagnosticTroubleCodeJ1939(DiagnosticTroubleCode):
         self.kind: Optional[DiagnosticTroubleCode] = None
         self.node: Optional[DiagnosticJ1939Node] = None
         self.spn: Optional[DiagnosticJ1939Spn] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DiagnosticTroubleCodeJ1939 to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DiagnosticTroubleCodeJ1939, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize dtc_props_props
+        if self.dtc_props_props is not None:
+            serialized = ARObject._serialize_item(self.dtc_props_props, "DiagnosticTroubleCode")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DTC-PROPS-PROPS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize fmi
+        if self.fmi is not None:
+            serialized = ARObject._serialize_item(self.fmi, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FMI")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize kind
+        if self.kind is not None:
+            serialized = ARObject._serialize_item(self.kind, "DiagnosticTroubleCode")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("KIND")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize node
+        if self.node is not None:
+            serialized = ARObject._serialize_item(self.node, "DiagnosticJ1939Node")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NODE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize spn
+        if self.spn is not None:
+            serialized = ARObject._serialize_item(self.spn, "DiagnosticJ1939Spn")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SPN")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagnosticTroubleCodeJ1939":
         """Deserialize XML element to DiagnosticTroubleCodeJ1939 object.

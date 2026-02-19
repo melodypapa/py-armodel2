@@ -94,6 +94,176 @@ class BswModuleDescription(ARElement):
         self.required_data_refs: list[ARRef] = []
         self.required_mode_refs: list[ARRef] = []
         self.required_trigger_refs: list[ARRef] = []
+    def serialize(self) -> ET.Element:
+        """Serialize BswModuleDescription to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(BswModuleDescription, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize bsw_module_refs (list to container "BSW-MODULES")
+        if self.bsw_module_refs:
+            wrapper = ET.Element("BSW-MODULES")
+            for item in self.bsw_module_refs:
+                serialized = ARObject._serialize_item(item, "BswModuleDependency")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize bsw_module_documentation
+        if self.bsw_module_documentation is not None:
+            serialized = ARObject._serialize_item(self.bsw_module_documentation, "SwComponentDocumentation")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BSW-MODULE-DOCUMENTATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize expected_entries (list to container "EXPECTED-ENTRIES")
+        if self.expected_entries:
+            wrapper = ET.Element("EXPECTED-ENTRIES")
+            for item in self.expected_entries:
+                serialized = ARObject._serialize_item(item, "BswModuleEntry")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize implementeds (list to container "IMPLEMENTEDS")
+        if self.implementeds:
+            wrapper = ET.Element("IMPLEMENTEDS")
+            for item in self.implementeds:
+                serialized = ARObject._serialize_item(item, "BswModuleEntry")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize internal_behaviors (list to container "INTERNAL-BEHAVIORS")
+        if self.internal_behaviors:
+            wrapper = ET.Element("INTERNAL-BEHAVIORS")
+            for item in self.internal_behaviors:
+                serialized = ARObject._serialize_item(item, "BswInternalBehavior")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize module_id
+        if self.module_id is not None:
+            serialized = ARObject._serialize_item(self.module_id, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MODULE-ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize provided_clients (list to container "PROVIDED-CLIENTS")
+        if self.provided_clients:
+            wrapper = ET.Element("PROVIDED-CLIENTS")
+            for item in self.provided_clients:
+                serialized = ARObject._serialize_item(item, "BswModuleClientServerEntry")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize provided_data_refs (list to container "PROVIDED-DATAS")
+        if self.provided_data_refs:
+            wrapper = ET.Element("PROVIDED-DATAS")
+            for item in self.provided_data_refs:
+                serialized = ARObject._serialize_item(item, "VariableDataPrototype")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize provided_mode_refs (list to container "PROVIDED-MODES")
+        if self.provided_mode_refs:
+            wrapper = ET.Element("PROVIDED-MODES")
+            for item in self.provided_mode_refs:
+                serialized = ARObject._serialize_item(item, "ModeDeclarationGroup")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize released_trigger_refs (list to container "RELEASED-TRIGGERS")
+        if self.released_trigger_refs:
+            wrapper = ET.Element("RELEASED-TRIGGERS")
+            for item in self.released_trigger_refs:
+                serialized = ARObject._serialize_item(item, "Trigger")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize required_clients (list to container "REQUIRED-CLIENTS")
+        if self.required_clients:
+            wrapper = ET.Element("REQUIRED-CLIENTS")
+            for item in self.required_clients:
+                serialized = ARObject._serialize_item(item, "BswModuleClientServerEntry")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize required_data_refs (list to container "REQUIRED-DATAS")
+        if self.required_data_refs:
+            wrapper = ET.Element("REQUIRED-DATAS")
+            for item in self.required_data_refs:
+                serialized = ARObject._serialize_item(item, "VariableDataPrototype")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize required_mode_refs (list to container "REQUIRED-MODES")
+        if self.required_mode_refs:
+            wrapper = ET.Element("REQUIRED-MODES")
+            for item in self.required_mode_refs:
+                serialized = ARObject._serialize_item(item, "ModeDeclarationGroup")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize required_trigger_refs (list to container "REQUIRED-TRIGGERS")
+        if self.required_trigger_refs:
+            wrapper = ET.Element("REQUIRED-TRIGGERS")
+            for item in self.required_trigger_refs:
+                serialized = ARObject._serialize_item(item, "Trigger")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "BswModuleDescription":
         """Deserialize XML element to BswModuleDescription object.

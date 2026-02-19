@@ -40,6 +40,70 @@ class SomeipTpChannel(Identifiable):
         self.burst_size: Optional[PositiveInteger] = None
         self.rx_timeout_time: Optional[TimeValue] = None
         self.separation_time: Optional[TimeValue] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SomeipTpChannel to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(SomeipTpChannel, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize burst_size
+        if self.burst_size is not None:
+            serialized = ARObject._serialize_item(self.burst_size, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BURST-SIZE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize rx_timeout_time
+        if self.rx_timeout_time is not None:
+            serialized = ARObject._serialize_item(self.rx_timeout_time, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RX-TIMEOUT-TIME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize separation_time
+        if self.separation_time is not None:
+            serialized = ARObject._serialize_item(self.separation_time, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SEPARATION-TIME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SomeipTpChannel":
         """Deserialize XML element to SomeipTpChannel object.

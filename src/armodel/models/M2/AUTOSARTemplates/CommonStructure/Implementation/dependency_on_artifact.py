@@ -42,6 +42,52 @@ class DependencyOnArtifact(Identifiable):
         super().__init__()
         self.artifact: Optional[AutosarEngineeringObject] = None
         self.usage_refs: list[ARRef] = []
+    def serialize(self) -> ET.Element:
+        """Serialize DependencyOnArtifact to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DependencyOnArtifact, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize artifact
+        if self.artifact is not None:
+            serialized = ARObject._serialize_item(self.artifact, "AutosarEngineeringObject")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ARTIFACT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize usage_refs (list to container "USAGES")
+        if self.usage_refs:
+            wrapper = ET.Element("USAGES")
+            for item in self.usage_refs:
+                serialized = ARObject._serialize_item(item, "DependencyUsageEnum")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DependencyOnArtifact":
         """Deserialize XML element to DependencyOnArtifact object.

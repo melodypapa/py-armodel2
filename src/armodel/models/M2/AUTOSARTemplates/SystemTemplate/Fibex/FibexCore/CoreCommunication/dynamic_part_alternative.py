@@ -40,6 +40,60 @@ class DynamicPartAlternative(ARObject):
         self.initial_dynamic: Optional[Boolean] = None
         self.i_pdu: Optional[ISignalIPdu] = None
         self.selector_field: Optional[Integer] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DynamicPartAlternative to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize initial_dynamic
+        if self.initial_dynamic is not None:
+            serialized = ARObject._serialize_item(self.initial_dynamic, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("INITIAL-DYNAMIC")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize i_pdu
+        if self.i_pdu is not None:
+            serialized = ARObject._serialize_item(self.i_pdu, "ISignalIPdu")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("I-PDU")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize selector_field
+        if self.selector_field is not None:
+            serialized = ARObject._serialize_item(self.selector_field, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SELECTOR-FIELD")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DynamicPartAlternative":
         """Deserialize XML element to DynamicPartAlternative object.

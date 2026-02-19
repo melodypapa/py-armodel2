@@ -36,6 +36,38 @@ class GeneralPurposeConnection(ARElement):
         """Initialize GeneralPurposeConnection."""
         super().__init__()
         self.pdu_triggering_refs: list[ARRef] = []
+    def serialize(self) -> ET.Element:
+        """Serialize GeneralPurposeConnection to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(GeneralPurposeConnection, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize pdu_triggering_refs (list to container "PDU-TRIGGERINGS")
+        if self.pdu_triggering_refs:
+            wrapper = ET.Element("PDU-TRIGGERINGS")
+            for item in self.pdu_triggering_refs:
+                serialized = ARObject._serialize_item(item, "PduTriggering")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "GeneralPurposeConnection":
         """Deserialize XML element to GeneralPurposeConnection object.

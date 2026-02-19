@@ -76,6 +76,178 @@ class BswModuleEntry(ARElement):
         self.role: Optional[Identifier] = None
         self.service_id: Optional[PositiveInteger] = None
         self.sw_service_impl_policy: Optional[SwServiceImplPolicyEnum] = None
+    def serialize(self) -> ET.Element:
+        """Serialize BswModuleEntry to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(BswModuleEntry, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize arguments (list to container "ARGUMENTS")
+        if self.arguments:
+            wrapper = ET.Element("ARGUMENTS")
+            for item in self.arguments:
+                serialized = ARObject._serialize_item(item, "SwServiceArg")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize bsw_entry_kind_enum
+        if self.bsw_entry_kind_enum is not None:
+            serialized = ARObject._serialize_item(self.bsw_entry_kind_enum, "BswEntryKindEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BSW-ENTRY-KIND-ENUM")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize call_type
+        if self.call_type is not None:
+            serialized = ARObject._serialize_item(self.call_type, "BswCallType")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CALL-TYPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize execution
+        if self.execution is not None:
+            serialized = ARObject._serialize_item(self.execution, "BswExecutionContext")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("EXECUTION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize function
+        if self.function is not None:
+            serialized = ARObject._serialize_item(self.function, "NameToken")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FUNCTION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize is_reentrant
+        if self.is_reentrant is not None:
+            serialized = ARObject._serialize_item(self.is_reentrant, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IS-REENTRANT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize is_synchronous
+        if self.is_synchronous is not None:
+            serialized = ARObject._serialize_item(self.is_synchronous, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IS-SYNCHRONOUS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize return_type
+        if self.return_type is not None:
+            serialized = ARObject._serialize_item(self.return_type, "SwServiceArg")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RETURN-TYPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize role
+        if self.role is not None:
+            serialized = ARObject._serialize_item(self.role, "Identifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ROLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize service_id
+        if self.service_id is not None:
+            serialized = ARObject._serialize_item(self.service_id, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SERVICE-ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_service_impl_policy
+        if self.sw_service_impl_policy is not None:
+            serialized = ARObject._serialize_item(self.sw_service_impl_policy, "SwServiceImplPolicyEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-SERVICE-IMPL-POLICY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "BswModuleEntry":
         """Deserialize XML element to BswModuleEntry object.

@@ -41,6 +41,60 @@ class PortInCompositionTypeInstanceRef(ARObject, ABC):
         self.abstract_context: Optional[Any] = None
         self.base: Optional[CompositionSwComponentType] = None
         self.target_port_ref: Optional[ARRef] = None
+    def serialize(self) -> ET.Element:
+        """Serialize PortInCompositionTypeInstanceRef to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize abstract_context
+        if self.abstract_context is not None:
+            serialized = ARObject._serialize_item(self.abstract_context, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ABSTRACT-CONTEXT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize base
+        if self.base is not None:
+            serialized = ARObject._serialize_item(self.base, "CompositionSwComponentType")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BASE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize target_port_ref
+        if self.target_port_ref is not None:
+            serialized = ARObject._serialize_item(self.target_port_ref, "PortPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TARGET-PORT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "PortInCompositionTypeInstanceRef":
         """Deserialize XML element to PortInCompositionTypeInstanceRef object.

@@ -49,6 +49,126 @@ class FlexrayNmCluster(NmCluster):
         self.nm_repeat: Optional[TimeValue] = None
         self.nm_repetition: Optional[Integer] = None
         self.nm_voting_cycle: Optional[Integer] = None
+    def serialize(self) -> ET.Element:
+        """Serialize FlexrayNmCluster to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(FlexrayNmCluster, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize nm_car_wake_up
+        if self.nm_car_wake_up is not None:
+            serialized = ARObject._serialize_item(self.nm_car_wake_up, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-CAR-WAKE-UP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nm_data_cycle
+        if self.nm_data_cycle is not None:
+            serialized = ARObject._serialize_item(self.nm_data_cycle, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-DATA-CYCLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nm_main
+        if self.nm_main is not None:
+            serialized = ARObject._serialize_item(self.nm_main, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-MAIN")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nm_remote
+        if self.nm_remote is not None:
+            serialized = ARObject._serialize_item(self.nm_remote, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-REMOTE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nm_repeat
+        if self.nm_repeat is not None:
+            serialized = ARObject._serialize_item(self.nm_repeat, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-REPEAT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nm_repetition
+        if self.nm_repetition is not None:
+            serialized = ARObject._serialize_item(self.nm_repetition, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-REPETITION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nm_voting_cycle
+        if self.nm_voting_cycle is not None:
+            serialized = ARObject._serialize_item(self.nm_voting_cycle, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-VOTING-CYCLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "FlexrayNmCluster":
         """Deserialize XML element to FlexrayNmCluster object.

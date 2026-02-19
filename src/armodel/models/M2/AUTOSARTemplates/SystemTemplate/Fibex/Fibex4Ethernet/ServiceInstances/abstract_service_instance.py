@@ -52,6 +52,76 @@ class AbstractServiceInstance(Identifiable, ABC):
         self.major_version: Optional[PositiveInteger] = None
         self.method: Optional[PduActivationRoutingGroup] = None
         self.routing_group_refs: list[ARRef] = []
+    def serialize(self) -> ET.Element:
+        """Serialize AbstractServiceInstance to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(AbstractServiceInstance, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize capabilities (list to container "CAPABILITIES")
+        if self.capabilities:
+            wrapper = ET.Element("CAPABILITIES")
+            for item in self.capabilities:
+                serialized = ARObject._serialize_item(item, "TagWithOptionalValue")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize major_version
+        if self.major_version is not None:
+            serialized = ARObject._serialize_item(self.major_version, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAJOR-VERSION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize method
+        if self.method is not None:
+            serialized = ARObject._serialize_item(self.method, "PduActivationRoutingGroup")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("METHOD")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize routing_group_refs (list to container "ROUTING-GROUPS")
+        if self.routing_group_refs:
+            wrapper = ET.Element("ROUTING-GROUPS")
+            for item in self.routing_group_refs:
+                serialized = ARObject._serialize_item(item, "SoAdRoutingGroup")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "AbstractServiceInstance":
         """Deserialize XML element to AbstractServiceInstance object.

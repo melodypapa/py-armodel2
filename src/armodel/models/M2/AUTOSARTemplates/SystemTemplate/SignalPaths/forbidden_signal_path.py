@@ -42,6 +42,58 @@ class ForbiddenSignalPath(SignalPathConstraint):
         self.operations: list[Any] = []
         self.physical_channels: list[PhysicalChannel] = []
         self.signals: list[SwcToSwcSignal] = []
+    def serialize(self) -> ET.Element:
+        """Serialize ForbiddenSignalPath to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(ForbiddenSignalPath, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize operations (list to container "OPERATIONS")
+        if self.operations:
+            wrapper = ET.Element("OPERATIONS")
+            for item in self.operations:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize physical_channels (list to container "PHYSICAL-CHANNELS")
+        if self.physical_channels:
+            wrapper = ET.Element("PHYSICAL-CHANNELS")
+            for item in self.physical_channels:
+                serialized = ARObject._serialize_item(item, "PhysicalChannel")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize signals (list to container "SIGNALS")
+        if self.signals:
+            wrapper = ET.Element("SIGNALS")
+            for item in self.signals:
+                serialized = ARObject._serialize_item(item, "SwcToSwcSignal")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ForbiddenSignalPath":
         """Deserialize XML element to ForbiddenSignalPath object.

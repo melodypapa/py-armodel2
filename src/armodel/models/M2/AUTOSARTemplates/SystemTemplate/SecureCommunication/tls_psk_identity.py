@@ -39,6 +39,60 @@ class TlsPskIdentity(ARObject):
         self.pre_shared_key: Optional[CryptoServiceKey] = None
         self.psk_identity: Optional[String] = None
         self.psk_identity_hint: Optional[String] = None
+    def serialize(self) -> ET.Element:
+        """Serialize TlsPskIdentity to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize pre_shared_key
+        if self.pre_shared_key is not None:
+            serialized = ARObject._serialize_item(self.pre_shared_key, "CryptoServiceKey")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PRE-SHARED-KEY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize psk_identity
+        if self.psk_identity is not None:
+            serialized = ARObject._serialize_item(self.psk_identity, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PSK-IDENTITY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize psk_identity_hint
+        if self.psk_identity_hint is not None:
+            serialized = ARObject._serialize_item(self.psk_identity_hint, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PSK-IDENTITY-HINT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "TlsPskIdentity":
         """Deserialize XML element to TlsPskIdentity object.

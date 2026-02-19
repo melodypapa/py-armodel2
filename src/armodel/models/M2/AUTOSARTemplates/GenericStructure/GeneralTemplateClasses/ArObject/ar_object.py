@@ -1160,6 +1160,59 @@ class ARObject:
             return tag.split('}')[1]
         return tag
 
+    @staticmethod
+    def _serialize_item(value, expected_type: str) -> Optional[ET.Element]:
+        """Serialize a single item for use in generated serialize() methods.
+
+        This helper method is used by generated serialize() methods to serialize
+        individual items (from lists or single attributes) without needing to
+        import the actual types. It handles ARPrimitive, AREnum, ARRef, and
+        ARObject types efficiently.
+
+        Args:
+            value: The value to serialize
+            expected_type: The expected type name (for context, can be "Any" for polymorphic)
+
+        Returns:
+            Serialized XML element, or None if value is None
+        """
+        if value is None:
+            return None
+
+        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_primitive import (
+            ARPrimitive,
+        )
+        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.ar_enum import (
+            AREnum,
+        )
+        from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import (
+            ARRef,
+        )
+
+        # Handle ARPrimitive types
+        if isinstance(value, ARPrimitive):
+            return value.serialize()
+
+        # Handle AREnum types
+        elif isinstance(value, AREnum):
+            elem = ET.Element("VALUE")
+            elem.text = str(value.value).upper()
+            return elem
+
+        # Handle ARRef types
+        elif isinstance(value, ARRef):
+            return value.serialize()
+
+        # Handle ARObject types
+        elif hasattr(value, 'serialize'):
+            return value.serialize()
+
+        # Handle primitive Python types (str, int, float, bool)
+        else:
+            elem = ET.Element("VALUE")
+            elem.text = str(value)
+            return elem
+
 
 class ARObjectBuilder:
     """Builder for ARObject."""

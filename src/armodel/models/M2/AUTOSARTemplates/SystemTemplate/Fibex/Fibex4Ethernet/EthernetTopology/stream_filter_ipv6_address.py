@@ -32,6 +32,32 @@ class StreamFilterIpv6Address(ARObject):
         """Initialize StreamFilterIpv6Address."""
         super().__init__()
         self.ipv6_address: Optional[Ip6AddressString] = None
+    def serialize(self) -> ET.Element:
+        """Serialize StreamFilterIpv6Address to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize ipv6_address
+        if self.ipv6_address is not None:
+            serialized = ARObject._serialize_item(self.ipv6_address, "Ip6AddressString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IPV6-ADDRESS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "StreamFilterIpv6Address":
         """Deserialize XML element to StreamFilterIpv6Address object.

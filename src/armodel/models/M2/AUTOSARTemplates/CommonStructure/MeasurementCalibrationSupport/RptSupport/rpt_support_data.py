@@ -42,6 +42,48 @@ class RptSupportData(ARObject):
         self.executions: list[RptExecutionContext] = []
         self.rpt_components: list[RptComponent] = []
         self.rpt_service_points: list[RptServicePoint] = []
+    def serialize(self) -> ET.Element:
+        """Serialize RptSupportData to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize executions (list to container "EXECUTIONS")
+        if self.executions:
+            wrapper = ET.Element("EXECUTIONS")
+            for item in self.executions:
+                serialized = ARObject._serialize_item(item, "RptExecutionContext")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize rpt_components (list to container "RPT-COMPONENTS")
+        if self.rpt_components:
+            wrapper = ET.Element("RPT-COMPONENTS")
+            for item in self.rpt_components:
+                serialized = ARObject._serialize_item(item, "RptComponent")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize rpt_service_points (list to container "RPT-SERVICE-POINTS")
+        if self.rpt_service_points:
+            wrapper = ET.Element("RPT-SERVICE-POINTS")
+            for item in self.rpt_service_points:
+                serialized = ARObject._serialize_item(item, "RptServicePoint")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "RptSupportData":
         """Deserialize XML element to RptSupportData object.

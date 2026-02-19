@@ -37,6 +37,42 @@ class SwAxisGeneric(ARObject):
         super().__init__()
         self.sw_axis_type: Optional[SwAxisType] = None
         self.sw_generic_axis_params: list[SwGenericAxisParam] = []
+    def serialize(self) -> ET.Element:
+        """Serialize SwAxisGeneric to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize sw_axis_type
+        if self.sw_axis_type is not None:
+            serialized = ARObject._serialize_item(self.sw_axis_type, "SwAxisType")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-AXIS-TYPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_generic_axis_params (list to container "SW-GENERIC-AXIS-PARAMS")
+        if self.sw_generic_axis_params:
+            wrapper = ET.Element("SW-GENERIC-AXIS-PARAMS")
+            for item in self.sw_generic_axis_params:
+                serialized = ARObject._serialize_item(item, "SwGenericAxisParam")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SwAxisGeneric":
         """Deserialize XML element to SwAxisGeneric object.

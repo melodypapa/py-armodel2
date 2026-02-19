@@ -37,6 +37,56 @@ class AnalyzedExecutionTime(ExecutionTime):
         super().__init__()
         self.best_case: Optional[MultidimensionalTime] = None
         self.worst_case: Optional[MultidimensionalTime] = None
+    def serialize(self) -> ET.Element:
+        """Serialize AnalyzedExecutionTime to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(AnalyzedExecutionTime, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize best_case
+        if self.best_case is not None:
+            serialized = ARObject._serialize_item(self.best_case, "MultidimensionalTime")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BEST-CASE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize worst_case
+        if self.worst_case is not None:
+            serialized = ARObject._serialize_item(self.worst_case, "MultidimensionalTime")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("WORST-CASE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "AnalyzedExecutionTime":
         """Deserialize XML element to AnalyzedExecutionTime object.

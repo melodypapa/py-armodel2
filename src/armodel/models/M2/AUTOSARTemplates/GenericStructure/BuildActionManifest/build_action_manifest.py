@@ -46,6 +46,68 @@ class BuildActionManifest(ARElement):
         self.dynamic_actions: list[BuildAction] = []
         self.start_actions: list[BuildAction] = []
         self.tear_down_actions: list[BuildAction] = []
+    def serialize(self) -> ET.Element:
+        """Serialize BuildActionManifest to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(BuildActionManifest, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize build_actions (list to container "BUILD-ACTIONS")
+        if self.build_actions:
+            wrapper = ET.Element("BUILD-ACTIONS")
+            for item in self.build_actions:
+                serialized = ARObject._serialize_item(item, "BuildActionEnvironment")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize dynamic_actions (list to container "DYNAMIC-ACTIONS")
+        if self.dynamic_actions:
+            wrapper = ET.Element("DYNAMIC-ACTIONS")
+            for item in self.dynamic_actions:
+                serialized = ARObject._serialize_item(item, "BuildAction")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize start_actions (list to container "START-ACTIONS")
+        if self.start_actions:
+            wrapper = ET.Element("START-ACTIONS")
+            for item in self.start_actions:
+                serialized = ARObject._serialize_item(item, "BuildAction")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize tear_down_actions (list to container "TEAR-DOWN-ACTIONS")
+        if self.tear_down_actions:
+            wrapper = ET.Element("TEAR-DOWN-ACTIONS")
+            for item in self.tear_down_actions:
+                serialized = ARObject._serialize_item(item, "BuildAction")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "BuildActionManifest":
         """Deserialize XML element to BuildActionManifest object.

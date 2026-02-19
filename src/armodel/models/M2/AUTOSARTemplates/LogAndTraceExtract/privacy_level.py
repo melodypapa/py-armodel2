@@ -37,6 +37,46 @@ class PrivacyLevel(ARObject):
         super().__init__()
         self.compu_method: Optional[CompuMethod] = None
         self.privacy_level: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize PrivacyLevel to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize compu_method
+        if self.compu_method is not None:
+            serialized = ARObject._serialize_item(self.compu_method, "CompuMethod")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COMPU-METHOD")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize privacy_level
+        if self.privacy_level is not None:
+            serialized = ARObject._serialize_item(self.privacy_level, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PRIVACY-LEVEL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "PrivacyLevel":
         """Deserialize XML element to PrivacyLevel object.

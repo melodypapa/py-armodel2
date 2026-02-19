@@ -45,6 +45,66 @@ class DiagnosticJ1939SpnMapping(DiagnosticMapping):
         self.sending_nodes: list[DiagnosticJ1939Node] = []
         self.spn: Optional[DiagnosticJ1939Spn] = None
         self.system_signal: Optional[SystemSignal] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DiagnosticJ1939SpnMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DiagnosticJ1939SpnMapping, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize sending_nodes (list to container "SENDING-NODES")
+        if self.sending_nodes:
+            wrapper = ET.Element("SENDING-NODES")
+            for item in self.sending_nodes:
+                serialized = ARObject._serialize_item(item, "DiagnosticJ1939Node")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize spn
+        if self.spn is not None:
+            serialized = ARObject._serialize_item(self.spn, "DiagnosticJ1939Spn")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SPN")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize system_signal
+        if self.system_signal is not None:
+            serialized = ARObject._serialize_item(self.system_signal, "SystemSignal")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SYSTEM-SIGNAL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagnosticJ1939SpnMapping":
         """Deserialize XML element to DiagnosticJ1939SpnMapping object.

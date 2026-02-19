@@ -42,6 +42,46 @@ class VariationPoint(ARObject):
         super().__init__()
         self.blueprint: Optional[DocumentationBlock] = None
         self.sw_syscond: Optional[ConditionByFormula] = None
+    def serialize(self) -> ET.Element:
+        """Serialize VariationPoint to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize blueprint
+        if self.blueprint is not None:
+            serialized = ARObject._serialize_item(self.blueprint, "DocumentationBlock")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BLUEPRINT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_syscond
+        if self.sw_syscond is not None:
+            serialized = ARObject._serialize_item(self.sw_syscond, "ConditionByFormula")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-SYSCOND")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "VariationPoint":
         """Deserialize XML element to VariationPoint object.

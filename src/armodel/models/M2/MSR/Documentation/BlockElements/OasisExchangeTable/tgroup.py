@@ -58,6 +58,126 @@ class Tgroup(ARObject):
         self.tbody: Tbody = None
         self.tfoot: Optional[Tbody] = None
         self.thead: Optional[Tbody] = None
+    def serialize(self) -> ET.Element:
+        """Serialize Tgroup to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize align
+        if self.align is not None:
+            serialized = ARObject._serialize_item(self.align, "AlignEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ALIGN")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize cols
+        if self.cols is not None:
+            serialized = ARObject._serialize_item(self.cols, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COLS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize colsep
+        if self.colsep is not None:
+            serialized = ARObject._serialize_item(self.colsep, "TableSeparatorString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COLSEP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize colspecs (list to container "COLSPECS")
+        if self.colspecs:
+            wrapper = ET.Element("COLSPECS")
+            for item in self.colspecs:
+                serialized = ARObject._serialize_item(item, "Colspec")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize rowsep
+        if self.rowsep is not None:
+            serialized = ARObject._serialize_item(self.rowsep, "TableSeparatorString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ROWSEP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize tbody
+        if self.tbody is not None:
+            serialized = ARObject._serialize_item(self.tbody, "Tbody")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TBODY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize tfoot
+        if self.tfoot is not None:
+            serialized = ARObject._serialize_item(self.tfoot, "Tbody")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TFOOT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize thead
+        if self.thead is not None:
+            serialized = ARObject._serialize_item(self.thead, "Tbody")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("THEAD")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "Tgroup":
         """Deserialize XML element to Tgroup object.

@@ -38,6 +38,42 @@ class IncludedModeDeclarationGroupSet(ARObject):
         super().__init__()
         self.mode_refs: list[ARRef] = []
         self.prefix: Optional[Identifier] = None
+    def serialize(self) -> ET.Element:
+        """Serialize IncludedModeDeclarationGroupSet to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize mode_refs (list to container "MODES")
+        if self.mode_refs:
+            wrapper = ET.Element("MODES")
+            for item in self.mode_refs:
+                serialized = ARObject._serialize_item(item, "ModeDeclarationGroup")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize prefix
+        if self.prefix is not None:
+            serialized = ARObject._serialize_item(self.prefix, "Identifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PREFIX")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "IncludedModeDeclarationGroupSet":
         """Deserialize XML element to IncludedModeDeclarationGroupSet object.

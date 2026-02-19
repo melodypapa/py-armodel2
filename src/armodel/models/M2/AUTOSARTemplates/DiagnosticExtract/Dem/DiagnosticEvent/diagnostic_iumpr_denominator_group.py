@@ -35,6 +35,38 @@ class DiagnosticIumprDenominatorGroup(DiagnosticCommonElement):
         """Initialize DiagnosticIumprDenominatorGroup."""
         super().__init__()
         self.iumprs: list[DiagnosticIumpr] = []
+    def serialize(self) -> ET.Element:
+        """Serialize DiagnosticIumprDenominatorGroup to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DiagnosticIumprDenominatorGroup, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize iumprs (list to container "IUMPRS")
+        if self.iumprs:
+            wrapper = ET.Element("IUMPRS")
+            for item in self.iumprs:
+                serialized = ARObject._serialize_item(item, "DiagnosticIumpr")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagnosticIumprDenominatorGroup":
         """Deserialize XML element to DiagnosticIumprDenominatorGroup object.

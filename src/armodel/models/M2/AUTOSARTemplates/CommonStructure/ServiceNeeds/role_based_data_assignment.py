@@ -49,6 +49,74 @@ class RoleBasedDataAssignment(ARObject):
         self.used_data_ref: Optional[ARRef] = None
         self.used_parameter_ref: Optional[ARRef] = None
         self.used_pim: Optional[PerInstanceMemory] = None
+    def serialize(self) -> ET.Element:
+        """Serialize RoleBasedDataAssignment to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize role
+        if self.role is not None:
+            serialized = ARObject._serialize_item(self.role, "Identifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ROLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize used_data_ref
+        if self.used_data_ref is not None:
+            serialized = ARObject._serialize_item(self.used_data_ref, "AutosarVariableRef")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("USED-DATA")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize used_parameter_ref
+        if self.used_parameter_ref is not None:
+            serialized = ARObject._serialize_item(self.used_parameter_ref, "AutosarParameterRef")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("USED-PARAMETER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize used_pim
+        if self.used_pim is not None:
+            serialized = ARObject._serialize_item(self.used_pim, "PerInstanceMemory")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("USED-PIM")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "RoleBasedDataAssignment":
         """Deserialize XML element to RoleBasedDataAssignment object.

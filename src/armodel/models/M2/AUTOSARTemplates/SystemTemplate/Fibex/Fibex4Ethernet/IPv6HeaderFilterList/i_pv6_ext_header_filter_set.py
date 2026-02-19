@@ -36,6 +36,38 @@ class IPv6ExtHeaderFilterSet(ARElement):
         """Initialize IPv6ExtHeaderFilterSet."""
         super().__init__()
         self.ext_header_filter_refs: list[ARRef] = []
+    def serialize(self) -> ET.Element:
+        """Serialize IPv6ExtHeaderFilterSet to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(IPv6ExtHeaderFilterSet, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize ext_header_filter_refs (list to container "EXT-HEADER-FILTERS")
+        if self.ext_header_filter_refs:
+            wrapper = ET.Element("EXT-HEADER-FILTERS")
+            for item in self.ext_header_filter_refs:
+                serialized = ARObject._serialize_item(item, "IPv6ExtHeaderFilterList")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "IPv6ExtHeaderFilterSet":
         """Deserialize XML element to IPv6ExtHeaderFilterSet object.

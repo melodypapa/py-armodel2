@@ -34,6 +34,46 @@ class DiagnosticPeriodicRate(ARObject):
         super().__init__()
         self.period: Optional[TimeValue] = None
         self.periodic_rate: Optional[DiagnosticPeriodicRate] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DiagnosticPeriodicRate to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize period
+        if self.period is not None:
+            serialized = ARObject._serialize_item(self.period, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PERIOD")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize periodic_rate
+        if self.periodic_rate is not None:
+            serialized = ARObject._serialize_item(self.periodic_rate, "DiagnosticPeriodicRate")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PERIODIC-RATE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagnosticPeriodicRate":
         """Deserialize XML element to DiagnosticPeriodicRate object.

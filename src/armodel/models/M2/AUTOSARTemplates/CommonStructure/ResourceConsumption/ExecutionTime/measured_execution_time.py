@@ -39,6 +39,70 @@ class MeasuredExecutionTime(ExecutionTime):
         self.maximum_execution_time: Optional[MultidimensionalTime] = None
         self.minimum_execution_time: Optional[MultidimensionalTime] = None
         self.nominal_execution_time: Optional[MultidimensionalTime] = None
+    def serialize(self) -> ET.Element:
+        """Serialize MeasuredExecutionTime to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(MeasuredExecutionTime, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize maximum_execution_time
+        if self.maximum_execution_time is not None:
+            serialized = ARObject._serialize_item(self.maximum_execution_time, "MultidimensionalTime")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAXIMUM-EXECUTION-TIME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize minimum_execution_time
+        if self.minimum_execution_time is not None:
+            serialized = ARObject._serialize_item(self.minimum_execution_time, "MultidimensionalTime")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MINIMUM-EXECUTION-TIME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nominal_execution_time
+        if self.nominal_execution_time is not None:
+            serialized = ARObject._serialize_item(self.nominal_execution_time, "MultidimensionalTime")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NOMINAL-EXECUTION-TIME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "MeasuredExecutionTime":
         """Deserialize XML element to MeasuredExecutionTime object.

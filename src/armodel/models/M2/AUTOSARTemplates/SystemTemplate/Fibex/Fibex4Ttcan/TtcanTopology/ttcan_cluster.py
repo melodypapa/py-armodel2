@@ -38,6 +38,60 @@ class TtcanCluster(ARObject):
         self.basic_cycle_length: Optional[Integer] = None
         self.ntu: Optional[TimeValue] = None
         self.operation_mode: Optional[Boolean] = None
+    def serialize(self) -> ET.Element:
+        """Serialize TtcanCluster to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize basic_cycle_length
+        if self.basic_cycle_length is not None:
+            serialized = ARObject._serialize_item(self.basic_cycle_length, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BASIC-CYCLE-LENGTH")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize ntu
+        if self.ntu is not None:
+            serialized = ARObject._serialize_item(self.ntu, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NTU")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize operation_mode
+        if self.operation_mode is not None:
+            serialized = ARObject._serialize_item(self.operation_mode, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("OPERATION-MODE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "TtcanCluster":
         """Deserialize XML element to TtcanCluster object.

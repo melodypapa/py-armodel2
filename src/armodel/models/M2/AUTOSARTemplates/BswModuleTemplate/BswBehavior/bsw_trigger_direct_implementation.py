@@ -40,6 +40,60 @@ class BswTriggerDirectImplementation(ARObject):
         self.cat2_isr: Optional[Identifier] = None
         self.mastered_trigger_ref: Optional[ARRef] = None
         self.task: Optional[Identifier] = None
+    def serialize(self) -> ET.Element:
+        """Serialize BswTriggerDirectImplementation to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize cat2_isr
+        if self.cat2_isr is not None:
+            serialized = ARObject._serialize_item(self.cat2_isr, "Identifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CAT2-ISR")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize mastered_trigger_ref
+        if self.mastered_trigger_ref is not None:
+            serialized = ARObject._serialize_item(self.mastered_trigger_ref, "Trigger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MASTERED-TRIGGER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize task
+        if self.task is not None:
+            serialized = ARObject._serialize_item(self.task, "Identifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TASK")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "BswTriggerDirectImplementation":
         """Deserialize XML element to BswTriggerDirectImplementation object.

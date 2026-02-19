@@ -32,6 +32,28 @@ class PduMappingDefaultValue(ARObject):
         """Initialize PduMappingDefaultValue."""
         super().__init__()
         self.default_values: list[DefaultValueElement] = []
+    def serialize(self) -> ET.Element:
+        """Serialize PduMappingDefaultValue to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize default_values (list to container "DEFAULT-VALUES")
+        if self.default_values:
+            wrapper = ET.Element("DEFAULT-VALUES")
+            for item in self.default_values:
+                serialized = ARObject._serialize_item(item, "DefaultValueElement")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "PduMappingDefaultValue":
         """Deserialize XML element to PduMappingDefaultValue object.

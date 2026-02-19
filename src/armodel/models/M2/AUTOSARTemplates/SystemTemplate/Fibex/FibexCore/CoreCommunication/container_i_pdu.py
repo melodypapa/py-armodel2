@@ -66,6 +66,160 @@ class ContainerIPdu(IPdu):
         self.rx_accept: Optional[RxAcceptContainedIPduEnum] = None
         self.threshold_size: Optional[PositiveInteger] = None
         self.unused_bit: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize ContainerIPdu to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(ContainerIPdu, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize contained_i_pdu_propses (list to container "CONTAINED-I-PDU-PROPSES")
+        if self.contained_i_pdu_propses:
+            wrapper = ET.Element("CONTAINED-I-PDU-PROPSES")
+            for item in self.contained_i_pdu_propses:
+                serialized = ARObject._serialize_item(item, "ContainedIPduProps")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize contained_pdu_refs (list to container "CONTAINED-PDUS")
+        if self.contained_pdu_refs:
+            wrapper = ET.Element("CONTAINED-PDUS")
+            for item in self.contained_pdu_refs:
+                serialized = ARObject._serialize_item(item, "PduTriggering")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize container
+        if self.container is not None:
+            serialized = ARObject._serialize_item(self.container, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CONTAINER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize container_trigger_ref
+        if self.container_trigger_ref is not None:
+            serialized = ARObject._serialize_item(self.container_trigger_ref, "ContainerIPduTriggerEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CONTAINER-TRIGGER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize header_type
+        if self.header_type is not None:
+            serialized = ARObject._serialize_item(self.header_type, "ContainerIPduHeaderTypeEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("HEADER-TYPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize minimum_rx
+        if self.minimum_rx is not None:
+            serialized = ARObject._serialize_item(self.minimum_rx, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MINIMUM-RX")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize minimum_tx
+        if self.minimum_tx is not None:
+            serialized = ARObject._serialize_item(self.minimum_tx, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MINIMUM-TX")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize rx_accept
+        if self.rx_accept is not None:
+            serialized = ARObject._serialize_item(self.rx_accept, "RxAcceptContainedIPduEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RX-ACCEPT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize threshold_size
+        if self.threshold_size is not None:
+            serialized = ARObject._serialize_item(self.threshold_size, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("THRESHOLD-SIZE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize unused_bit
+        if self.unused_bit is not None:
+            serialized = ARObject._serialize_item(self.unused_bit, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("UNUSED-BIT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ContainerIPdu":
         """Deserialize XML element to ContainerIPdu object.

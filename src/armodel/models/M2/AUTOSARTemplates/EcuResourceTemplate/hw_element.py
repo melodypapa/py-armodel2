@@ -49,6 +49,58 @@ class HwElement(HwDescriptionEntity):
         self.hw_elements: list[HwElementConnector] = []
         self.hw_pin_group_refs: list[ARRef] = []
         self.nested_elements: list[HwElement] = []
+    def serialize(self) -> ET.Element:
+        """Serialize HwElement to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(HwElement, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize hw_elements (list to container "HW-ELEMENTS")
+        if self.hw_elements:
+            wrapper = ET.Element("HW-ELEMENTS")
+            for item in self.hw_elements:
+                serialized = ARObject._serialize_item(item, "HwElementConnector")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize hw_pin_group_refs (list to container "HW-PIN-GROUPS")
+        if self.hw_pin_group_refs:
+            wrapper = ET.Element("HW-PIN-GROUPS")
+            for item in self.hw_pin_group_refs:
+                serialized = ARObject._serialize_item(item, "HwPinGroup")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize nested_elements (list to container "NESTED-ELEMENTS")
+        if self.nested_elements:
+            wrapper = ET.Element("NESTED-ELEMENTS")
+            for item in self.nested_elements:
+                serialized = ARObject._serialize_item(item, "HwElement")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "HwElement":
         """Deserialize XML element to HwElement object.

@@ -43,6 +43,48 @@ class DataTypeMappingSet(ARElement):
         super().__init__()
         self.data_type_maps: list[DataTypeMap] = []
         self.mode_request_type_maps: list[ModeRequestTypeMap] = []
+    def serialize(self) -> ET.Element:
+        """Serialize DataTypeMappingSet to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DataTypeMappingSet, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize data_type_maps (list to container "DATA-TYPE-MAPS")
+        if self.data_type_maps:
+            wrapper = ET.Element("DATA-TYPE-MAPS")
+            for item in self.data_type_maps:
+                serialized = ARObject._serialize_item(item, "DataTypeMap")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize mode_request_type_maps (list to container "MODE-REQUEST-TYPE-MAPS")
+        if self.mode_request_type_maps:
+            wrapper = ET.Element("MODE-REQUEST-TYPE-MAPS")
+            for item in self.mode_request_type_maps:
+                serialized = ARObject._serialize_item(item, "ModeRequestTypeMap")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DataTypeMappingSet":
         """Deserialize XML element to DataTypeMappingSet object.

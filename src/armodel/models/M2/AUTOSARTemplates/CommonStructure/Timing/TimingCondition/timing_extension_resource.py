@@ -42,6 +42,58 @@ class TimingExtensionResource(Identifiable):
         self.timing_arguments: list[AutosarOperationArgumentInstance] = []
         self.timing_modes: list[TimingModeInstance] = []
         self.timing_variables: list[Any] = []
+    def serialize(self) -> ET.Element:
+        """Serialize TimingExtensionResource to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(TimingExtensionResource, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize timing_arguments (list to container "TIMING-ARGUMENTS")
+        if self.timing_arguments:
+            wrapper = ET.Element("TIMING-ARGUMENTS")
+            for item in self.timing_arguments:
+                serialized = ARObject._serialize_item(item, "AutosarOperationArgumentInstance")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize timing_modes (list to container "TIMING-MODES")
+        if self.timing_modes:
+            wrapper = ET.Element("TIMING-MODES")
+            for item in self.timing_modes:
+                serialized = ARObject._serialize_item(item, "TimingModeInstance")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize timing_variables (list to container "TIMING-VARIABLES")
+        if self.timing_variables:
+            wrapper = ET.Element("TIMING-VARIABLES")
+            for item in self.timing_variables:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "TimingExtensionResource":
         """Deserialize XML element to TimingExtensionResource object.

@@ -33,6 +33,28 @@ class SwcToSwcSignal(ARObject):
         """Initialize SwcToSwcSignal."""
         super().__init__()
         self.data_element_refs: list[ARRef] = []
+    def serialize(self) -> ET.Element:
+        """Serialize SwcToSwcSignal to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize data_element_refs (list to container "DATA-ELEMENTS")
+        if self.data_element_refs:
+            wrapper = ET.Element("DATA-ELEMENTS")
+            for item in self.data_element_refs:
+                serialized = ARObject._serialize_item(item, "VariableDataPrototype")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SwcToSwcSignal":
         """Deserialize XML element to SwcToSwcSignal object.

@@ -52,6 +52,98 @@ class ISignalPort(CommConnectorPort):
         self.first_timeout: Optional[TimeValue] = None
         self.handle_invalid_enum: Optional[HandleInvalidEnum] = None
         self.timeout: Optional[TimeValue] = None
+    def serialize(self) -> ET.Element:
+        """Serialize ISignalPort to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(ISignalPort, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize data_filter
+        if self.data_filter is not None:
+            serialized = ARObject._serialize_item(self.data_filter, "DataFilter")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DATA-FILTER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize dds_qos_profile
+        if self.dds_qos_profile is not None:
+            serialized = ARObject._serialize_item(self.dds_qos_profile, "DdsCpQosProfile")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DDS-QOS-PROFILE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize first_timeout
+        if self.first_timeout is not None:
+            serialized = ARObject._serialize_item(self.first_timeout, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FIRST-TIMEOUT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize handle_invalid_enum
+        if self.handle_invalid_enum is not None:
+            serialized = ARObject._serialize_item(self.handle_invalid_enum, "HandleInvalidEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("HANDLE-INVALID-ENUM")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize timeout
+        if self.timeout is not None:
+            serialized = ARObject._serialize_item(self.timeout, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIMEOUT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ISignalPort":
         """Deserialize XML element to ISignalPort object.

@@ -32,6 +32,32 @@ class DdsTopicData(ARObject):
         """Initialize DdsTopicData."""
         super().__init__()
         self.topic_data: Optional[String] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DdsTopicData to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize topic_data
+        if self.topic_data is not None:
+            serialized = ARObject._serialize_item(self.topic_data, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TOPIC-DATA")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DdsTopicData":
         """Deserialize XML element to DdsTopicData object.

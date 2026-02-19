@@ -44,6 +44,60 @@ class VariableInAtomicSwcInstanceRef(ARObject, ABC):
         self.abstract_target_ref: Optional[ARRef] = None
         self.base: Optional[AtomicSwComponentType] = None
         self.context_port_ref: Optional[ARRef] = None
+    def serialize(self) -> ET.Element:
+        """Serialize VariableInAtomicSwcInstanceRef to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize abstract_target_ref
+        if self.abstract_target_ref is not None:
+            serialized = ARObject._serialize_item(self.abstract_target_ref, "VariableDataPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ABSTRACT-TARGET")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize base
+        if self.base is not None:
+            serialized = ARObject._serialize_item(self.base, "AtomicSwComponentType")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BASE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize context_port_ref
+        if self.context_port_ref is not None:
+            serialized = ARObject._serialize_item(self.context_port_ref, "PortPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CONTEXT-PORT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "VariableInAtomicSwcInstanceRef":
         """Deserialize XML element to VariableInAtomicSwcInstanceRef object.

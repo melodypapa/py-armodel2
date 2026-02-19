@@ -34,6 +34,46 @@ class RtePluginProps(ARObject):
         super().__init__()
         self.associated: Optional[EcucContainerValue] = None
         self.associated_rte: Optional[EcucContainerValue] = None
+    def serialize(self) -> ET.Element:
+        """Serialize RtePluginProps to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize associated
+        if self.associated is not None:
+            serialized = ARObject._serialize_item(self.associated, "EcucContainerValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ASSOCIATED")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize associated_rte
+        if self.associated_rte is not None:
+            serialized = ARObject._serialize_item(self.associated_rte, "EcucContainerValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ASSOCIATED-RTE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "RtePluginProps":
         """Deserialize XML element to RtePluginProps object.

@@ -49,6 +49,80 @@ class ReferenceBase(ARObject):
         self.is_default: Boolean = None
         self.package: Optional[ARPackage] = None
         self.short_label: Identifier = None
+    def serialize(self) -> ET.Element:
+        """Serialize ReferenceBase to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize global_element_refs (list to container "GLOBAL-ELEMENTS")
+        if self.global_element_refs:
+            wrapper = ET.Element("GLOBAL-ELEMENTS")
+            for item in self.global_element_refs:
+                serialized = ARObject._serialize_item(item, "ReferrableSubtypesEnum")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize global_ins (list to container "GLOBAL-INS")
+        if self.global_ins:
+            wrapper = ET.Element("GLOBAL-INS")
+            for item in self.global_ins:
+                serialized = ARObject._serialize_item(item, "ARPackage")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize is_default
+        if self.is_default is not None:
+            serialized = ARObject._serialize_item(self.is_default, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IS-DEFAULT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize package
+        if self.package is not None:
+            serialized = ARObject._serialize_item(self.package, "ARPackage")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PACKAGE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize short_label
+        if self.short_label is not None:
+            serialized = ARObject._serialize_item(self.short_label, "Identifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SHORT-LABEL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ReferenceBase":
         """Deserialize XML element to ReferenceBase object.

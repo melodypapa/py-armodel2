@@ -35,6 +35,42 @@ class TDEventTTCanCycleStart(TDEventCycleStart):
         """Initialize TDEventTTCanCycleStart."""
         super().__init__()
         self.tt_can_cluster: Optional[TtcanCluster] = None
+    def serialize(self) -> ET.Element:
+        """Serialize TDEventTTCanCycleStart to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(TDEventTTCanCycleStart, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize tt_can_cluster
+        if self.tt_can_cluster is not None:
+            serialized = ARObject._serialize_item(self.tt_can_cluster, "TtcanCluster")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TT-CAN-CLUSTER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "TDEventTTCanCycleStart":
         """Deserialize XML element to TDEventTTCanCycleStart object.

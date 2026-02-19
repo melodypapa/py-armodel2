@@ -35,6 +35,38 @@ class LogAndTraceMessageCollectionSet(ARElement):
         """Initialize LogAndTraceMessageCollectionSet."""
         super().__init__()
         self.dlt_messages: list[DltMessage] = []
+    def serialize(self) -> ET.Element:
+        """Serialize LogAndTraceMessageCollectionSet to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(LogAndTraceMessageCollectionSet, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize dlt_messages (list to container "DLT-MESSAGES")
+        if self.dlt_messages:
+            wrapper = ET.Element("DLT-MESSAGES")
+            for item in self.dlt_messages:
+                serialized = ARObject._serialize_item(item, "DltMessage")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "LogAndTraceMessageCollectionSet":
         """Deserialize XML element to LogAndTraceMessageCollectionSet object.

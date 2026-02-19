@@ -35,6 +35,46 @@ class MixedContentForUnitNames(ARObject, ABC):
         super().__init__()
         self.sub: Superscript = None
         self.sup: Superscript = None
+    def serialize(self) -> ET.Element:
+        """Serialize MixedContentForUnitNames to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize sub
+        if self.sub is not None:
+            serialized = ARObject._serialize_item(self.sub, "Superscript")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SUB")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sup
+        if self.sup is not None:
+            serialized = ARObject._serialize_item(self.sup, "Superscript")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SUP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "MixedContentForUnitNames":
         """Deserialize XML element to MixedContentForUnitNames object.

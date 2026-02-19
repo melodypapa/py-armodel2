@@ -40,6 +40,38 @@ class SwSystemconstantValueSet(ARElement):
         """Initialize SwSystemconstantValueSet."""
         super().__init__()
         self.sws: list[SwSystemconstValue] = []
+    def serialize(self) -> ET.Element:
+        """Serialize SwSystemconstantValueSet to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(SwSystemconstantValueSet, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize sws (list to container "SWS")
+        if self.sws:
+            wrapper = ET.Element("SWS")
+            for item in self.sws:
+                serialized = ARObject._serialize_item(item, "SwSystemconstValue")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SwSystemconstantValueSet":
         """Deserialize XML element to SwSystemconstantValueSet object.

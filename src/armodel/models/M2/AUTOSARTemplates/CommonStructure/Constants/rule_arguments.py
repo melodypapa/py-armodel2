@@ -43,6 +43,74 @@ class RuleArguments(ARObject):
         self.vf: Optional[Numerical] = None
         self.vt: Optional[VerbatimString] = None
         self.vtf: Optional[NumericalOrText] = None
+    def serialize(self) -> ET.Element:
+        """Serialize RuleArguments to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize v
+        if self.v is not None:
+            serialized = ARObject._serialize_item(self.v, "Numerical")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("V")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize vf
+        if self.vf is not None:
+            serialized = ARObject._serialize_item(self.vf, "Numerical")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize vt
+        if self.vt is not None:
+            serialized = ARObject._serialize_item(self.vt, "VerbatimString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize vtf
+        if self.vtf is not None:
+            serialized = ARObject._serialize_item(self.vtf, "NumericalOrText")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VTF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "RuleArguments":
         """Deserialize XML element to RuleArguments object.

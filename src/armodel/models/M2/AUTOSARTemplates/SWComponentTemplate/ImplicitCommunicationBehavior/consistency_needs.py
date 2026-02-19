@@ -46,6 +46,68 @@ class ConsistencyNeeds(Identifiable):
         self.dpg_requirese_refs: list[ARRef] = []
         self.reg_does_not_refs: list[ARRef] = []
         self.reg_requirese_refs: list[ARRef] = []
+    def serialize(self) -> ET.Element:
+        """Serialize ConsistencyNeeds to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(ConsistencyNeeds, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize dpg_does_not_refs (list to container "DPG-DOES-NOTS")
+        if self.dpg_does_not_refs:
+            wrapper = ET.Element("DPG-DOES-NOTS")
+            for item in self.dpg_does_not_refs:
+                serialized = ARObject._serialize_item(item, "DataPrototypeGroup")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize dpg_requirese_refs (list to container "DPG-REQUIRESES")
+        if self.dpg_requirese_refs:
+            wrapper = ET.Element("DPG-REQUIRESES")
+            for item in self.dpg_requirese_refs:
+                serialized = ARObject._serialize_item(item, "DataPrototypeGroup")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize reg_does_not_refs (list to container "REG-DOES-NOTS")
+        if self.reg_does_not_refs:
+            wrapper = ET.Element("REG-DOES-NOTS")
+            for item in self.reg_does_not_refs:
+                serialized = ARObject._serialize_item(item, "RunnableEntityGroup")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize reg_requirese_refs (list to container "REG-REQUIRESES")
+        if self.reg_requirese_refs:
+            wrapper = ET.Element("REG-REQUIRESES")
+            for item in self.reg_requirese_refs:
+                serialized = ARObject._serialize_item(item, "RunnableEntityGroup")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ConsistencyNeeds":
         """Deserialize XML element to ConsistencyNeeds object.

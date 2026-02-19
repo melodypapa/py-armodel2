@@ -53,6 +53,164 @@ class FirewallRule(ARElement):
         self.someip_rule: Optional[Any] = None
         self.someip_sd_rule: Optional[Any] = None
         self.transport_layer_rule: Optional[Any] = None
+    def serialize(self) -> ET.Element:
+        """Serialize FirewallRule to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(FirewallRule, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize bucket_size
+        if self.bucket_size is not None:
+            serialized = ARObject._serialize_item(self.bucket_size, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BUCKET-SIZE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize data_link_layer_rule
+        if self.data_link_layer_rule is not None:
+            serialized = ARObject._serialize_item(self.data_link_layer_rule, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DATA-LINK-LAYER-RULE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize dds_rule
+        if self.dds_rule is not None:
+            serialized = ARObject._serialize_item(self.dds_rule, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DDS-RULE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize do_ip_rule
+        if self.do_ip_rule is not None:
+            serialized = ARObject._serialize_item(self.do_ip_rule, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DO-IP-RULE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize network_layer_rule
+        if self.network_layer_rule is not None:
+            serialized = ARObject._serialize_item(self.network_layer_rule, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NETWORK-LAYER-RULE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize payload_byte_patterns (list to container "PAYLOAD-BYTE-PATTERNS")
+        if self.payload_byte_patterns:
+            wrapper = ET.Element("PAYLOAD-BYTE-PATTERNS")
+            for item in self.payload_byte_patterns:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize refill_amount
+        if self.refill_amount is not None:
+            serialized = ARObject._serialize_item(self.refill_amount, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("REFILL-AMOUNT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize someip_rule
+        if self.someip_rule is not None:
+            serialized = ARObject._serialize_item(self.someip_rule, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SOMEIP-RULE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize someip_sd_rule
+        if self.someip_sd_rule is not None:
+            serialized = ARObject._serialize_item(self.someip_sd_rule, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SOMEIP-SD-RULE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize transport_layer_rule
+        if self.transport_layer_rule is not None:
+            serialized = ARObject._serialize_item(self.transport_layer_rule, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TRANSPORT-LAYER-RULE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "FirewallRule":
         """Deserialize XML element to FirewallRule object.

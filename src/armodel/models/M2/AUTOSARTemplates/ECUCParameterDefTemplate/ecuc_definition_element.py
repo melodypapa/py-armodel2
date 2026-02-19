@@ -60,6 +60,108 @@ class EcucDefinitionElement(Identifiable, ABC):
         self.related_trace: Optional[Traceable] = None
         self.scope: Optional[EcucScopeEnum] = None
         self.upper_multiplicity: Optional[Boolean] = None
+    def serialize(self) -> ET.Element:
+        """Serialize EcucDefinitionElement to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(EcucDefinitionElement, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize ecuc_cond
+        if self.ecuc_cond is not None:
+            serialized = ARObject._serialize_item(self.ecuc_cond, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ECUC-COND")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize ecuc_validations (list to container "ECUC-VALIDATIONS")
+        if self.ecuc_validations:
+            wrapper = ET.Element("ECUC-VALIDATIONS")
+            for item in self.ecuc_validations:
+                serialized = ARObject._serialize_item(item, "EcucValidationCondition")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize lower_multiplicity
+        if self.lower_multiplicity is not None:
+            serialized = ARObject._serialize_item(self.lower_multiplicity, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("LOWER-MULTIPLICITY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize related_trace
+        if self.related_trace is not None:
+            serialized = ARObject._serialize_item(self.related_trace, "Traceable")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RELATED-TRACE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize scope
+        if self.scope is not None:
+            serialized = ARObject._serialize_item(self.scope, "EcucScopeEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SCOPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize upper_multiplicity
+        if self.upper_multiplicity is not None:
+            serialized = ARObject._serialize_item(self.upper_multiplicity, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("UPPER-MULTIPLICITY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "EcucDefinitionElement":
         """Deserialize XML element to EcucDefinitionElement object.

@@ -35,6 +35,38 @@ class AggregationTailoring(AttributeTailoring):
         """Initialize AggregationTailoring."""
         super().__init__()
         self.type_tailorings: list[ClassTailoring] = []
+    def serialize(self) -> ET.Element:
+        """Serialize AggregationTailoring to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(AggregationTailoring, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize type_tailorings (list to container "TYPE-TAILORINGS")
+        if self.type_tailorings:
+            wrapper = ET.Element("TYPE-TAILORINGS")
+            for item in self.type_tailorings:
+                serialized = ARObject._serialize_item(item, "ClassTailoring")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "AggregationTailoring":
         """Deserialize XML element to AggregationTailoring object.

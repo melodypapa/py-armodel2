@@ -51,6 +51,112 @@ class IEEE1722TpConnection(ARElement, ABC):
         self.unique_stream_id: Optional[PositiveInteger] = None
         self.version: Optional[PositiveInteger] = None
         self.vlan_priority: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize IEEE1722TpConnection to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(IEEE1722TpConnection, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize destination_mac
+        if self.destination_mac is not None:
+            serialized = ARObject._serialize_item(self.destination_mac, "MacAddressString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DESTINATION-MAC")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize mac_address_string
+        if self.mac_address_string is not None:
+            serialized = ARObject._serialize_item(self.mac_address_string, "MacAddressString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAC-ADDRESS-STRING")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize pdu_ref
+        if self.pdu_ref is not None:
+            serialized = ARObject._serialize_item(self.pdu_ref, "PduTriggering")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PDU")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize unique_stream_id
+        if self.unique_stream_id is not None:
+            serialized = ARObject._serialize_item(self.unique_stream_id, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("UNIQUE-STREAM-ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize version
+        if self.version is not None:
+            serialized = ARObject._serialize_item(self.version, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VERSION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize vlan_priority
+        if self.vlan_priority is not None:
+            serialized = ARObject._serialize_item(self.vlan_priority, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VLAN-PRIORITY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "IEEE1722TpConnection":
         """Deserialize XML element to IEEE1722TpConnection object.

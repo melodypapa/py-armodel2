@@ -48,6 +48,84 @@ class SoConIPduIdentifier(Referrable):
         self.pdu_collection_ref: Optional[ARRef] = None
         self.pdu_collection_trigger_ref: Optional[ARRef] = None
         self.pdu_triggering_ref: Optional[ARRef] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SoConIPduIdentifier to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(SoConIPduIdentifier, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize header_id
+        if self.header_id is not None:
+            serialized = ARObject._serialize_item(self.header_id, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("HEADER-ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize pdu_collection_ref
+        if self.pdu_collection_ref is not None:
+            serialized = ARObject._serialize_item(self.pdu_collection_ref, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PDU-COLLECTION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize pdu_collection_trigger_ref
+        if self.pdu_collection_trigger_ref is not None:
+            serialized = ARObject._serialize_item(self.pdu_collection_trigger_ref, "PduCollectionTriggerEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PDU-COLLECTION-TRIGGER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize pdu_triggering_ref
+        if self.pdu_triggering_ref is not None:
+            serialized = ARObject._serialize_item(self.pdu_triggering_ref, "PduTriggering")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PDU-TRIGGERING")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SoConIPduIdentifier":
         """Deserialize XML element to SoConIPduIdentifier object.

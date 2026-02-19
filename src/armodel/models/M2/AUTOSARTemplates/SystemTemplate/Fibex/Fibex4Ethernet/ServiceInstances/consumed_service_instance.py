@@ -81,6 +81,212 @@ class ConsumedServiceInstance(AbstractServiceInstance):
         self.sd_client_timer: Optional[SomeipSdClientServiceInstanceConfig] = None
         self.service_identifier: Optional[PositiveInteger] = None
         self.version_driven: Optional[Any] = None
+    def serialize(self) -> ET.Element:
+        """Serialize ConsumedServiceInstance to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(ConsumedServiceInstance, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize allowed_services (list to container "ALLOWED-SERVICES")
+        if self.allowed_services:
+            wrapper = ET.Element("ALLOWED-SERVICES")
+            for item in self.allowed_services:
+                serialized = ARObject._serialize_item(item, "NetworkEndpoint")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize auto_require
+        if self.auto_require is not None:
+            serialized = ARObject._serialize_item(self.auto_require, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("AUTO-REQUIRE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize blocklisteds (list to container "BLOCKLISTEDS")
+        if self.blocklisteds:
+            wrapper = ET.Element("BLOCKLISTEDS")
+            for item in self.blocklisteds:
+                serialized = ARObject._serialize_item(item, "SomeipServiceVersion")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize consumed_event_group_refs (list to container "CONSUMED-EVENT-GROUPS")
+        if self.consumed_event_group_refs:
+            wrapper = ET.Element("CONSUMED-EVENT-GROUPS")
+            for item in self.consumed_event_group_refs:
+                serialized = ARObject._serialize_item(item, "ConsumedEventGroup")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize event_multicast
+        if self.event_multicast is not None:
+            serialized = ARObject._serialize_item(self.event_multicast, "ApplicationEndpoint")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("EVENT-MULTICAST")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize instance
+        if self.instance is not None:
+            serialized = ARObject._serialize_item(self.instance, "AnyServiceInstanceId")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("INSTANCE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize local_unicast
+        if self.local_unicast is not None:
+            serialized = ARObject._serialize_item(self.local_unicast, "ApplicationEndpoint")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("LOCAL-UNICAST")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize minor_version
+        if self.minor_version is not None:
+            serialized = ARObject._serialize_item(self.minor_version, "AnyVersionString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MINOR-VERSION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize provided_service
+        if self.provided_service is not None:
+            serialized = ARObject._serialize_item(self.provided_service, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PROVIDED-SERVICE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize remote_unicast
+        if self.remote_unicast is not None:
+            serialized = ARObject._serialize_item(self.remote_unicast, "ApplicationEndpoint")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("REMOTE-UNICAST")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sd_client_config
+        if self.sd_client_config is not None:
+            serialized = ARObject._serialize_item(self.sd_client_config, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SD-CLIENT-CONFIG")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sd_client_timer
+        if self.sd_client_timer is not None:
+            serialized = ARObject._serialize_item(self.sd_client_timer, "SomeipSdClientServiceInstanceConfig")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SD-CLIENT-TIMER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize service_identifier
+        if self.service_identifier is not None:
+            serialized = ARObject._serialize_item(self.service_identifier, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SERVICE-IDENTIFIER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize version_driven
+        if self.version_driven is not None:
+            serialized = ARObject._serialize_item(self.version_driven, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VERSION-DRIVEN")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ConsumedServiceInstance":
         """Deserialize XML element to ConsumedServiceInstance object.

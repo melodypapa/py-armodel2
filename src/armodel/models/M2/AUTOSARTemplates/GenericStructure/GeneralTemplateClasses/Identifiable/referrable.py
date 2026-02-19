@@ -51,6 +51,42 @@ class Referrable(ARObject, ABC):
         super().__init__()
         self.short_name: Identifier = None
         self.short_name_fragments: list[ShortNameFragment] = []
+    def serialize(self) -> ET.Element:
+        """Serialize Referrable to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize short_name
+        if self.short_name is not None:
+            serialized = ARObject._serialize_item(self.short_name, "Identifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SHORT-NAME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize short_name_fragments (list to container "SHORT-NAME-FRAGMENTS")
+        if self.short_name_fragments:
+            wrapper = ET.Element("SHORT-NAME-FRAGMENTS")
+            for item in self.short_name_fragments:
+                serialized = ARObject._serialize_item(item, "ShortNameFragment")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "Referrable":
         """Deserialize XML element to Referrable object.

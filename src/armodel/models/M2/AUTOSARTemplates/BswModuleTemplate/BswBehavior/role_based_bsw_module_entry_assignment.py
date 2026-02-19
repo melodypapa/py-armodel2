@@ -37,6 +37,46 @@ class RoleBasedBswModuleEntryAssignment(ARObject):
         super().__init__()
         self.assigned_entry: Optional[BswModuleEntry] = None
         self.role: Optional[Identifier] = None
+    def serialize(self) -> ET.Element:
+        """Serialize RoleBasedBswModuleEntryAssignment to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize assigned_entry
+        if self.assigned_entry is not None:
+            serialized = ARObject._serialize_item(self.assigned_entry, "BswModuleEntry")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ASSIGNED-ENTRY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize role
+        if self.role is not None:
+            serialized = ARObject._serialize_item(self.role, "Identifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ROLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "RoleBasedBswModuleEntryAssignment":
         """Deserialize XML element to RoleBasedBswModuleEntryAssignment object.

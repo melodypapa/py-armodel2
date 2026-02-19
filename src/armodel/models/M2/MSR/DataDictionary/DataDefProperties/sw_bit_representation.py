@@ -34,6 +34,46 @@ class SwBitRepresentation(ARObject):
         super().__init__()
         self.bit_position: Optional[Integer] = None
         self.number_of_bits: Optional[Integer] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SwBitRepresentation to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize bit_position
+        if self.bit_position is not None:
+            serialized = ARObject._serialize_item(self.bit_position, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BIT-POSITION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize number_of_bits
+        if self.number_of_bits is not None:
+            serialized = ARObject._serialize_item(self.number_of_bits, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NUMBER-OF-BITS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SwBitRepresentation":
         """Deserialize XML element to SwBitRepresentation object.

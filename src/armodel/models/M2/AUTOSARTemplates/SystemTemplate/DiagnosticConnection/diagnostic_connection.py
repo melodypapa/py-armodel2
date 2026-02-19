@@ -48,6 +48,90 @@ class DiagnosticConnection(ARElement):
         self.physical_request: Optional[TpConnectionIdent] = None
         self.response: Optional[TpConnectionIdent] = None
         self.response_on: Optional[TpConnectionIdent] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DiagnosticConnection to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DiagnosticConnection, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize functional_requests (list to container "FUNCTIONAL-REQUESTS")
+        if self.functional_requests:
+            wrapper = ET.Element("FUNCTIONAL-REQUESTS")
+            for item in self.functional_requests:
+                serialized = ARObject._serialize_item(item, "TpConnectionIdent")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize periodic_response_uudt_refs (list to container "PERIODIC-RESPONSE-UUDTS")
+        if self.periodic_response_uudt_refs:
+            wrapper = ET.Element("PERIODIC-RESPONSE-UUDTS")
+            for item in self.periodic_response_uudt_refs:
+                serialized = ARObject._serialize_item(item, "PduTriggering")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize physical_request
+        if self.physical_request is not None:
+            serialized = ARObject._serialize_item(self.physical_request, "TpConnectionIdent")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PHYSICAL-REQUEST")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize response
+        if self.response is not None:
+            serialized = ARObject._serialize_item(self.response, "TpConnectionIdent")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RESPONSE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize response_on
+        if self.response_on is not None:
+            serialized = ARObject._serialize_item(self.response_on, "TpConnectionIdent")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RESPONSE-ON")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagnosticConnection":
         """Deserialize XML element to DiagnosticConnection object.

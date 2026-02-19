@@ -42,6 +42,70 @@ class ArParameterInImplementationDataInstanceRef(ARObject):
         self.port_prototype_ref: Optional[ARRef] = None
         self.root_parameter: Optional[ParameterDataPrototype] = None
         self.target_data: Optional[Any] = None
+    def serialize(self) -> ET.Element:
+        """Serialize ArParameterInImplementationDataInstanceRef to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize context_datas (list to container "CONTEXT-DATAS")
+        if self.context_datas:
+            wrapper = ET.Element("CONTEXT-DATAS")
+            for item in self.context_datas:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize port_prototype_ref
+        if self.port_prototype_ref is not None:
+            serialized = ARObject._serialize_item(self.port_prototype_ref, "PortPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PORT-PROTOTYPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize root_parameter
+        if self.root_parameter is not None:
+            serialized = ARObject._serialize_item(self.root_parameter, "ParameterDataPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ROOT-PARAMETER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize target_data
+        if self.target_data is not None:
+            serialized = ARObject._serialize_item(self.target_data, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TARGET-DATA")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ArParameterInImplementationDataInstanceRef":
         """Deserialize XML element to ArParameterInImplementationDataInstanceRef object.

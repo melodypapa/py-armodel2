@@ -45,6 +45,74 @@ class MacSecCryptoAlgoConfig(ARObject):
         self.cipher_suite: MacSecCipherSuiteConfig = None
         self.confidentiality: Optional[MacSecConfidentialityOffsetEnum] = None
         self.replay_protection: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize MacSecCryptoAlgoConfig to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize capability
+        if self.capability is not None:
+            serialized = ARObject._serialize_item(self.capability, "MacSecCapabilityEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CAPABILITY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize cipher_suite
+        if self.cipher_suite is not None:
+            serialized = ARObject._serialize_item(self.cipher_suite, "MacSecCipherSuiteConfig")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CIPHER-SUITE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize confidentiality
+        if self.confidentiality is not None:
+            serialized = ARObject._serialize_item(self.confidentiality, "MacSecConfidentialityOffsetEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CONFIDENTIALITY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize replay_protection
+        if self.replay_protection is not None:
+            serialized = ARObject._serialize_item(self.replay_protection, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("REPLAY-PROTECTION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "MacSecCryptoAlgoConfig":
         """Deserialize XML element to MacSecCryptoAlgoConfig object.

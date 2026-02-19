@@ -34,6 +34,42 @@ class DiagnosticParameterElementAccess(ARObject):
         super().__init__()
         self.context_elements: list[DiagnosticParameter] = []
         self.target_element: Optional[DiagnosticParameter] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DiagnosticParameterElementAccess to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize context_elements (list to container "CONTEXT-ELEMENTS")
+        if self.context_elements:
+            wrapper = ET.Element("CONTEXT-ELEMENTS")
+            for item in self.context_elements:
+                serialized = ARObject._serialize_item(item, "DiagnosticParameter")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize target_element
+        if self.target_element is not None:
+            serialized = ARObject._serialize_item(self.target_element, "DiagnosticParameter")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TARGET-ELEMENT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagnosticParameterElementAccess":
         """Deserialize XML element to DiagnosticParameterElementAccess object.

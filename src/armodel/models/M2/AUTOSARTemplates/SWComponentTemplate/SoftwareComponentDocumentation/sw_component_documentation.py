@@ -48,6 +48,126 @@ class SwComponentDocumentation(ARObject):
         self.sw_feature_desc: Optional[Chapter] = None
         self.sw_maintenance: Optional[Chapter] = None
         self.sw_test_desc: Optional[Chapter] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SwComponentDocumentation to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize chapters (list to container "CHAPTERS")
+        if self.chapters:
+            wrapper = ET.Element("CHAPTERS")
+            for item in self.chapters:
+                serialized = ARObject._serialize_item(item, "Chapter")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize sw_calibration
+        if self.sw_calibration is not None:
+            serialized = ARObject._serialize_item(self.sw_calibration, "Chapter")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-CALIBRATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_carb_doc
+        if self.sw_carb_doc is not None:
+            serialized = ARObject._serialize_item(self.sw_carb_doc, "Chapter")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-CARB-DOC")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_diagnostics
+        if self.sw_diagnostics is not None:
+            serialized = ARObject._serialize_item(self.sw_diagnostics, "Chapter")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-DIAGNOSTICS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_feature_def
+        if self.sw_feature_def is not None:
+            serialized = ARObject._serialize_item(self.sw_feature_def, "Chapter")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-FEATURE-DEF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_feature_desc
+        if self.sw_feature_desc is not None:
+            serialized = ARObject._serialize_item(self.sw_feature_desc, "Chapter")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-FEATURE-DESC")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_maintenance
+        if self.sw_maintenance is not None:
+            serialized = ARObject._serialize_item(self.sw_maintenance, "Chapter")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-MAINTENANCE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_test_desc
+        if self.sw_test_desc is not None:
+            serialized = ARObject._serialize_item(self.sw_test_desc, "Chapter")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-TEST-DESC")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SwComponentDocumentation":
         """Deserialize XML element to SwComponentDocumentation object.

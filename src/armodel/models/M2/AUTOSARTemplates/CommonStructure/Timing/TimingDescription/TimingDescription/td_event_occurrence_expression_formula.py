@@ -44,6 +44,74 @@ class TDEventOccurrenceExpressionFormula(ARObject):
         self.event: Optional[TimingDescriptionEvent] = None
         self.mode: Optional[TimingModeInstance] = None
         self.variable: Optional[Any] = None
+    def serialize(self) -> ET.Element:
+        """Serialize TDEventOccurrenceExpressionFormula to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize argument
+        if self.argument is not None:
+            serialized = ARObject._serialize_item(self.argument, "AutosarOperationArgumentInstance")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ARGUMENT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize event
+        if self.event is not None:
+            serialized = ARObject._serialize_item(self.event, "TimingDescriptionEvent")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("EVENT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize mode
+        if self.mode is not None:
+            serialized = ARObject._serialize_item(self.mode, "TimingModeInstance")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MODE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize variable
+        if self.variable is not None:
+            serialized = ARObject._serialize_item(self.variable, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VARIABLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "TDEventOccurrenceExpressionFormula":
         """Deserialize XML element to TDEventOccurrenceExpressionFormula object.

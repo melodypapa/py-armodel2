@@ -44,6 +44,80 @@ class SwcToEcuMapping(Identifiable):
         self.controlled_hw: Optional[HwElement] = None
         self.ecu_instance: Optional[EcuInstance] = None
         self.processing_unit: Optional[HwElement] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SwcToEcuMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(SwcToEcuMapping, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize components (list to container "COMPONENTS")
+        if self.components:
+            wrapper = ET.Element("COMPONENTS")
+            for item in self.components:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize controlled_hw
+        if self.controlled_hw is not None:
+            serialized = ARObject._serialize_item(self.controlled_hw, "HwElement")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CONTROLLED-HW")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize ecu_instance
+        if self.ecu_instance is not None:
+            serialized = ARObject._serialize_item(self.ecu_instance, "EcuInstance")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ECU-INSTANCE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize processing_unit
+        if self.processing_unit is not None:
+            serialized = ARObject._serialize_item(self.processing_unit, "HwElement")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PROCESSING-UNIT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SwcToEcuMapping":
         """Deserialize XML element to SwcToEcuMapping object.

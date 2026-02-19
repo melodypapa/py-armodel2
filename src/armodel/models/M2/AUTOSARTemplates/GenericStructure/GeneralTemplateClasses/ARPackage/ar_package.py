@@ -55,6 +55,58 @@ class ARPackage(CollectableElement):
         self.ar_packages: list[ARPackage] = []
         self.elements: list[PackageableElement] = []
         self.reference_base_refs: list[ARRef] = []
+    def serialize(self) -> ET.Element:
+        """Serialize ARPackage to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(ARPackage, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize ar_packages (list to container "AR-PACKAGES")
+        if self.ar_packages:
+            wrapper = ET.Element("AR-PACKAGES")
+            for item in self.ar_packages:
+                serialized = ARObject._serialize_item(item, "ARPackage")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize elements (list to container "ELEMENTS")
+        if self.elements:
+            wrapper = ET.Element("ELEMENTS")
+            for item in self.elements:
+                serialized = ARObject._serialize_item(item, "PackageableElement")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize reference_base_refs (list to container "REFERENCE-BASES")
+        if self.reference_base_refs:
+            wrapper = ET.Element("REFERENCE-BASES")
+            for item in self.reference_base_refs:
+                serialized = ARObject._serialize_item(item, "ReferenceBase")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ARPackage":
         """Deserialize XML element to ARPackage object.

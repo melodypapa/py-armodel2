@@ -40,6 +40,38 @@ class McDataAccessDetails(ARObject):
         super().__init__()
         self.rte_event_refs: list[RTEEvent] = []
         self.variable_accesses: list[VariableAccess] = []
+    def serialize(self) -> ET.Element:
+        """Serialize McDataAccessDetails to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize rte_event_refs (list to container "RTE-EVENT-REFS")
+        if self.rte_event_refs:
+            wrapper = ET.Element("RTE-EVENT-REFS")
+            for item in self.rte_event_refs:
+                serialized = ARObject._serialize_item(item, "RTEEvent")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize variable_accesses (list to container "VARIABLE-ACCESSES")
+        if self.variable_accesses:
+            wrapper = ET.Element("VARIABLE-ACCESSES")
+            for item in self.variable_accesses:
+                serialized = ARObject._serialize_item(item, "VariableAccess")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "McDataAccessDetails":
         """Deserialize XML element to McDataAccessDetails object.

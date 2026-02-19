@@ -48,6 +48,80 @@ class SwAddrMethod(ARElement):
         self.options: list[Identifier] = []
         self.section: Optional[SectionInitializationPolicyType] = None
         self.section_type: Optional[MemorySectionType] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SwAddrMethod to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(SwAddrMethod, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize memory
+        if self.memory is not None:
+            serialized = ARObject._serialize_item(self.memory, "MemoryAllocationKeywordPolicyType")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MEMORY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize options (list to container "OPTIONS")
+        if self.options:
+            wrapper = ET.Element("OPTIONS")
+            for item in self.options:
+                serialized = ARObject._serialize_item(item, "Identifier")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize section
+        if self.section is not None:
+            serialized = ARObject._serialize_item(self.section, "SectionInitializationPolicyType")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SECTION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize section_type
+        if self.section_type is not None:
+            serialized = ARObject._serialize_item(self.section_type, "MemorySectionType")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SECTION-TYPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SwAddrMethod":
         """Deserialize XML element to SwAddrMethod object.

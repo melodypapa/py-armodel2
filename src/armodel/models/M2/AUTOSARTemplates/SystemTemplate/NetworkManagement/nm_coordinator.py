@@ -46,6 +46,70 @@ class NmCoordinator(ARObject):
         self.nm_coord_sync: Optional[Boolean] = None
         self.nm_global: Optional[TimeValue] = None
         self.nm_nodes: list[NmNode] = []
+    def serialize(self) -> ET.Element:
+        """Serialize NmCoordinator to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize index
+        if self.index is not None:
+            serialized = ARObject._serialize_item(self.index, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("INDEX")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nm_coord_sync
+        if self.nm_coord_sync is not None:
+            serialized = ARObject._serialize_item(self.nm_coord_sync, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-COORD-SYNC")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nm_global
+        if self.nm_global is not None:
+            serialized = ARObject._serialize_item(self.nm_global, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-GLOBAL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nm_nodes (list to container "NM-NODES")
+        if self.nm_nodes:
+            wrapper = ET.Element("NM-NODES")
+            for item in self.nm_nodes:
+                serialized = ARObject._serialize_item(item, "NmNode")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "NmCoordinator":
         """Deserialize XML element to NmCoordinator object.

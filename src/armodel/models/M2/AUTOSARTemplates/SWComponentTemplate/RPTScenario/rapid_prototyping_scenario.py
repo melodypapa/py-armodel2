@@ -48,6 +48,76 @@ class RapidPrototypingScenario(ARElement):
         self.rpt_containers: list[RptContainer] = []
         self.rpt_profiles: list[RptProfile] = []
         self.rpt_system: Optional[System] = None
+    def serialize(self) -> ET.Element:
+        """Serialize RapidPrototypingScenario to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(RapidPrototypingScenario, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize host_system
+        if self.host_system is not None:
+            serialized = ARObject._serialize_item(self.host_system, "System")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("HOST-SYSTEM")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize rpt_containers (list to container "RPT-CONTAINERS")
+        if self.rpt_containers:
+            wrapper = ET.Element("RPT-CONTAINERS")
+            for item in self.rpt_containers:
+                serialized = ARObject._serialize_item(item, "RptContainer")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize rpt_profiles (list to container "RPT-PROFILES")
+        if self.rpt_profiles:
+            wrapper = ET.Element("RPT-PROFILES")
+            for item in self.rpt_profiles:
+                serialized = ARObject._serialize_item(item, "RptProfile")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize rpt_system
+        if self.rpt_system is not None:
+            serialized = ARObject._serialize_item(self.rpt_system, "System")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RPT-SYSTEM")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "RapidPrototypingScenario":
         """Deserialize XML element to RapidPrototypingScenario object.

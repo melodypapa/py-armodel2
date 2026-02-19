@@ -37,6 +37,46 @@ class ModeSwitchEventTriggeredActivity(ARObject):
         super().__init__()
         self.role: Optional[Identifier] = None
         self.swc_mode_switch_event: Optional[SwcModeSwitchEvent] = None
+    def serialize(self) -> ET.Element:
+        """Serialize ModeSwitchEventTriggeredActivity to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize role
+        if self.role is not None:
+            serialized = ARObject._serialize_item(self.role, "Identifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ROLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize swc_mode_switch_event
+        if self.swc_mode_switch_event is not None:
+            serialized = ARObject._serialize_item(self.swc_mode_switch_event, "SwcModeSwitchEvent")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SWC-MODE-SWITCH-EVENT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ModeSwitchEventTriggeredActivity":
         """Deserialize XML element to ModeSwitchEventTriggeredActivity object.

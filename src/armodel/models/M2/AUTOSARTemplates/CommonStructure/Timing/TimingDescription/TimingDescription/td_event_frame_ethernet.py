@@ -48,6 +48,76 @@ class TDEventFrameEthernet(TDEventCom):
         self.td_event_type: Optional[TDEventFrameEthernet] = None
         self.td_header_id_filters: list[TDHeaderIdRange] = []
         self.td_pdu_triggering_refs: list[ARRef] = []
+    def serialize(self) -> ET.Element:
+        """Serialize TDEventFrameEthernet to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(TDEventFrameEthernet, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize static_socket
+        if self.static_socket is not None:
+            serialized = ARObject._serialize_item(self.static_socket, "StaticSocketConnection")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("STATIC-SOCKET")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize td_event_type
+        if self.td_event_type is not None:
+            serialized = ARObject._serialize_item(self.td_event_type, "TDEventFrameEthernet")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TD-EVENT-TYPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize td_header_id_filters (list to container "TD-HEADER-ID-FILTERS")
+        if self.td_header_id_filters:
+            wrapper = ET.Element("TD-HEADER-ID-FILTERS")
+            for item in self.td_header_id_filters:
+                serialized = ARObject._serialize_item(item, "TDHeaderIdRange")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize td_pdu_triggering_refs (list to container "TD-PDU-TRIGGERINGS")
+        if self.td_pdu_triggering_refs:
+            wrapper = ET.Element("TD-PDU-TRIGGERINGS")
+            for item in self.td_pdu_triggering_refs:
+                serialized = ARObject._serialize_item(item, "PduTriggering")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "TDEventFrameEthernet":
         """Deserialize XML element to TDEventFrameEthernet object.

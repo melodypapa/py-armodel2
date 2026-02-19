@@ -34,6 +34,46 @@ class StreamFilterPortRange(ARObject):
         super().__init__()
         self.max: Optional[PositiveInteger] = None
         self.min: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize StreamFilterPortRange to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize max
+        if self.max is not None:
+            serialized = ARObject._serialize_item(self.max, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize min
+        if self.min is not None:
+            serialized = ARObject._serialize_item(self.min, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MIN")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "StreamFilterPortRange":
         """Deserialize XML element to StreamFilterPortRange object.

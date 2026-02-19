@@ -48,6 +48,84 @@ class DiagnosticServiceDataMapping(DiagnosticSwMapping):
         self.diagnostic: Optional[DiagnosticParameter] = None
         self.mapped_data_ref: Optional[ARRef] = None
         self.parameter: Optional[DiagnosticParameter] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DiagnosticServiceDataMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DiagnosticServiceDataMapping, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize diagnostic_data
+        if self.diagnostic_data is not None:
+            serialized = ARObject._serialize_item(self.diagnostic_data, "DiagnosticDataElement")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DIAGNOSTIC-DATA")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize diagnostic
+        if self.diagnostic is not None:
+            serialized = ARObject._serialize_item(self.diagnostic, "DiagnosticParameter")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DIAGNOSTIC")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize mapped_data_ref
+        if self.mapped_data_ref is not None:
+            serialized = ARObject._serialize_item(self.mapped_data_ref, "DataPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAPPED-DATA")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize parameter
+        if self.parameter is not None:
+            serialized = ARObject._serialize_item(self.parameter, "DiagnosticParameter")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PARAMETER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagnosticServiceDataMapping":
         """Deserialize XML element to DiagnosticServiceDataMapping object.

@@ -47,6 +47,80 @@ class NmPdu(Pdu):
         self.nm_data: Optional[Boolean] = None
         self.nm_vote_information: Optional[Boolean] = None
         self.unused_bit: Optional[Integer] = None
+    def serialize(self) -> ET.Element:
+        """Serialize NmPdu to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(NmPdu, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize i_signal_to_i_pdu_refs (list to container "I-SIGNAL-TO-I-PDUS")
+        if self.i_signal_to_i_pdu_refs:
+            wrapper = ET.Element("I-SIGNAL-TO-I-PDUS")
+            for item in self.i_signal_to_i_pdu_refs:
+                serialized = ARObject._serialize_item(item, "ISignalToIPduMapping")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize nm_data
+        if self.nm_data is not None:
+            serialized = ARObject._serialize_item(self.nm_data, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-DATA")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nm_vote_information
+        if self.nm_vote_information is not None:
+            serialized = ARObject._serialize_item(self.nm_vote_information, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-VOTE-INFORMATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize unused_bit
+        if self.unused_bit is not None:
+            serialized = ARObject._serialize_item(self.unused_bit, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("UNUSED-BIT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "NmPdu":
         """Deserialize XML element to NmPdu object.

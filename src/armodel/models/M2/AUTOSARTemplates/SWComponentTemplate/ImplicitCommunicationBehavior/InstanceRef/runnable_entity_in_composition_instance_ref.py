@@ -39,6 +39,56 @@ class RunnableEntityInCompositionInstanceRef(ARObject):
         self.base: Optional[CompositionSwComponentType] = None
         self.context_sws: list[Any] = []
         self.target_runnable: Optional[RunnableEntity] = None
+    def serialize(self) -> ET.Element:
+        """Serialize RunnableEntityInCompositionInstanceRef to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize base
+        if self.base is not None:
+            serialized = ARObject._serialize_item(self.base, "CompositionSwComponentType")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BASE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize context_sws (list to container "CONTEXT-SWS")
+        if self.context_sws:
+            wrapper = ET.Element("CONTEXT-SWS")
+            for item in self.context_sws:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize target_runnable
+        if self.target_runnable is not None:
+            serialized = ARObject._serialize_item(self.target_runnable, "RunnableEntity")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TARGET-RUNNABLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "RunnableEntityInCompositionInstanceRef":
         """Deserialize XML element to RunnableEntityInCompositionInstanceRef object.

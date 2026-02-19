@@ -37,6 +37,52 @@ class DiagnosticSecureCodingMapping(DiagnosticMapping):
         super().__init__()
         self.data_identifiers: list[Any] = []
         self.validation: Optional[DiagnosticStartRoutine] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DiagnosticSecureCodingMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DiagnosticSecureCodingMapping, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize data_identifiers (list to container "DATA-IDENTIFIERS")
+        if self.data_identifiers:
+            wrapper = ET.Element("DATA-IDENTIFIERS")
+            for item in self.data_identifiers:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize validation
+        if self.validation is not None:
+            serialized = ARObject._serialize_item(self.validation, "DiagnosticStartRoutine")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VALIDATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagnosticSecureCodingMapping":
         """Deserialize XML element to DiagnosticSecureCodingMapping object.

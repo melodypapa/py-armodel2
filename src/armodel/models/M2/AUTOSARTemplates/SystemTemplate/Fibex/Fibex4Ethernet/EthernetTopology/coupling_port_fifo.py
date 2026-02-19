@@ -39,6 +39,70 @@ class CouplingPortFifo(CouplingPortStructuralElement):
         self.assigned_traffic: PositiveInteger = None
         self.minimum_fifo: Optional[PositiveInteger] = None
         self.shaper: Optional[Any] = None
+    def serialize(self) -> ET.Element:
+        """Serialize CouplingPortFifo to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(CouplingPortFifo, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize assigned_traffic
+        if self.assigned_traffic is not None:
+            serialized = ARObject._serialize_item(self.assigned_traffic, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ASSIGNED-TRAFFIC")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize minimum_fifo
+        if self.minimum_fifo is not None:
+            serialized = ARObject._serialize_item(self.minimum_fifo, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MINIMUM-FIFO")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize shaper
+        if self.shaper is not None:
+            serialized = ARObject._serialize_item(self.shaper, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SHAPER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "CouplingPortFifo":
         """Deserialize XML element to CouplingPortFifo object.

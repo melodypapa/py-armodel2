@@ -57,6 +57,140 @@ class DiagnosticMemoryDestination(DiagnosticCommonElement, ABC):
         self.memory_entry: Optional[DiagnosticMemoryEntryStorageTriggerEnum] = None
         self.status_bit: Optional[Boolean] = None
         self.type_of_freeze: Optional[Any] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DiagnosticMemoryDestination to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DiagnosticMemoryDestination, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize aging_requires
+        if self.aging_requires is not None:
+            serialized = ARObject._serialize_item(self.aging_requires, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("AGING-REQUIRES")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize clear_dtc
+        if self.clear_dtc is not None:
+            serialized = ARObject._serialize_item(self.clear_dtc, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CLEAR-DTC")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize dtc_status
+        if self.dtc_status is not None:
+            serialized = ARObject._serialize_item(self.dtc_status, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DTC-STATUS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize event
+        if self.event is not None:
+            serialized = ARObject._serialize_item(self.event, "DiagnosticEvent")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("EVENT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize max_number_of
+        if self.max_number_of is not None:
+            serialized = ARObject._serialize_item(self.max_number_of, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX-NUMBER-OF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize memory_entry
+        if self.memory_entry is not None:
+            serialized = ARObject._serialize_item(self.memory_entry, "DiagnosticMemoryEntryStorageTriggerEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MEMORY-ENTRY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize status_bit
+        if self.status_bit is not None:
+            serialized = ARObject._serialize_item(self.status_bit, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("STATUS-BIT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize type_of_freeze
+        if self.type_of_freeze is not None:
+            serialized = ARObject._serialize_item(self.type_of_freeze, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TYPE-OF-FREEZE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagnosticMemoryDestination":
         """Deserialize XML element to DiagnosticMemoryDestination object.

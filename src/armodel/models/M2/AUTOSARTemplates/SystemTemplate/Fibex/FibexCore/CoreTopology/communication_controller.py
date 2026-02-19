@@ -33,6 +33,32 @@ class CommunicationController(ARObject, ABC):
         """Initialize CommunicationController."""
         super().__init__()
         self.wake_up_by: Optional[Boolean] = None
+    def serialize(self) -> ET.Element:
+        """Serialize CommunicationController to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize wake_up_by
+        if self.wake_up_by is not None:
+            serialized = ARObject._serialize_item(self.wake_up_by, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("WAKE-UP-BY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "CommunicationController":
         """Deserialize XML element to CommunicationController object.

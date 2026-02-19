@@ -46,6 +46,60 @@ class DataPrototypeTransformationProps(ARObject):
         self.data_prototype_in_ref: Optional[ARRef] = None
         self.network: Optional[SwDataDefProps] = None
         self.transformation_props: Optional[TransformationProps] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DataPrototypeTransformationProps to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize data_prototype_in_ref
+        if self.data_prototype_in_ref is not None:
+            serialized = ARObject._serialize_item(self.data_prototype_in_ref, "DataPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DATA-PROTOTYPE-IN")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize network
+        if self.network is not None:
+            serialized = ARObject._serialize_item(self.network, "SwDataDefProps")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NETWORK")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize transformation_props
+        if self.transformation_props is not None:
+            serialized = ARObject._serialize_item(self.transformation_props, "TransformationProps")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TRANSFORMATION-PROPS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DataPrototypeTransformationProps":
         """Deserialize XML element to DataPrototypeTransformationProps object.

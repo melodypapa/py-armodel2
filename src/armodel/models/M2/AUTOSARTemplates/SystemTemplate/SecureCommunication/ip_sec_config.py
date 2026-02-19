@@ -40,6 +40,42 @@ class IPSecConfig(ARObject):
         super().__init__()
         self.ip_sec_config: Optional[IPSecConfigProps] = None
         self.ip_sec_rules: list[IPSecRule] = []
+    def serialize(self) -> ET.Element:
+        """Serialize IPSecConfig to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize ip_sec_config
+        if self.ip_sec_config is not None:
+            serialized = ARObject._serialize_item(self.ip_sec_config, "IPSecConfigProps")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IP-SEC-CONFIG")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize ip_sec_rules (list to container "IP-SEC-RULES")
+        if self.ip_sec_rules:
+            wrapper = ET.Element("IP-SEC-RULES")
+            for item in self.ip_sec_rules:
+                serialized = ARObject._serialize_item(item, "IPSecRule")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "IPSecConfig":
         """Deserialize XML element to IPSecConfig object.

@@ -55,6 +55,112 @@ class PhysConstrs(ARObject):
         self.scale_constrs: list[ScaleConstr] = []
         self.unit: Optional[Unit] = None
         self.upper_limit: Optional[Limit] = None
+    def serialize(self) -> ET.Element:
+        """Serialize PhysConstrs to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize lower_limit
+        if self.lower_limit is not None:
+            serialized = ARObject._serialize_item(self.lower_limit, "Limit")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("LOWER-LIMIT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize max_diff
+        if self.max_diff is not None:
+            serialized = ARObject._serialize_item(self.max_diff, "Numerical")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX-DIFF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize max_gradient
+        if self.max_gradient is not None:
+            serialized = ARObject._serialize_item(self.max_gradient, "Numerical")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX-GRADIENT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize monotony
+        if self.monotony is not None:
+            serialized = ARObject._serialize_item(self.monotony, "MonotonyEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MONOTONY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize scale_constrs (list to container "SCALE-CONSTRS")
+        if self.scale_constrs:
+            wrapper = ET.Element("SCALE-CONSTRS")
+            for item in self.scale_constrs:
+                serialized = ARObject._serialize_item(item, "ScaleConstr")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize unit
+        if self.unit is not None:
+            serialized = ARObject._serialize_item(self.unit, "Unit")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("UNIT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize upper_limit
+        if self.upper_limit is not None:
+            serialized = ARObject._serialize_item(self.upper_limit, "Limit")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("UPPER-LIMIT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "PhysConstrs":
         """Deserialize XML element to PhysConstrs object.

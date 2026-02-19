@@ -66,6 +66,146 @@ class DltLogChannel(Identifiable):
         self.rx_pdu_triggering_channel_ref: Optional[ARRef] = None
         self.segmentation: Optional[Boolean] = None
         self.tx_pdu_triggering_ref: Optional[ARRef] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DltLogChannel to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DltLogChannel, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize applications (list to container "APPLICATIONS")
+        if self.applications:
+            wrapper = ET.Element("APPLICATIONS")
+            for item in self.applications:
+                serialized = ARObject._serialize_item(item, "DltContext")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize default_trace
+        if self.default_trace is not None:
+            serialized = ARObject._serialize_item(self.default_trace, "DltDefaultTraceStateEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DEFAULT-TRACE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize dlt_messages (list to container "DLT-MESSAGES")
+        if self.dlt_messages:
+            wrapper = ET.Element("DLT-MESSAGES")
+            for item in self.dlt_messages:
+                serialized = ARObject._serialize_item(item, "DltMessage")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize log_channel_id
+        if self.log_channel_id is not None:
+            serialized = ARObject._serialize_item(self.log_channel_id, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("LOG-CHANNEL-ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize log_trace_default_log
+        if self.log_trace_default_log is not None:
+            serialized = ARObject._serialize_item(self.log_trace_default_log, "LogTraceDefaultLogLevelEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("LOG-TRACE-DEFAULT-LOG")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize non_verbose
+        if self.non_verbose is not None:
+            serialized = ARObject._serialize_item(self.non_verbose, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NON-VERBOSE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize rx_pdu_triggering_channel_ref
+        if self.rx_pdu_triggering_channel_ref is not None:
+            serialized = ARObject._serialize_item(self.rx_pdu_triggering_channel_ref, "PduTriggering")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RX-PDU-TRIGGERING-CHANNEL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize segmentation
+        if self.segmentation is not None:
+            serialized = ARObject._serialize_item(self.segmentation, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SEGMENTATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize tx_pdu_triggering_ref
+        if self.tx_pdu_triggering_ref is not None:
+            serialized = ARObject._serialize_item(self.tx_pdu_triggering_ref, "PduTriggering")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TX-PDU-TRIGGERING")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DltLogChannel":
         """Deserialize XML element to DltLogChannel object.

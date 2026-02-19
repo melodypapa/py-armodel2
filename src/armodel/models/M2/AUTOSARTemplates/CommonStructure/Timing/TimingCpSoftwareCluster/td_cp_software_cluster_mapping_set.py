@@ -32,6 +32,38 @@ class TDCpSoftwareClusterMappingSet(ARElement):
         """Initialize TDCpSoftwareClusterMappingSet."""
         super().__init__()
         self.td_cp_softwares: list[Any] = []
+    def serialize(self) -> ET.Element:
+        """Serialize TDCpSoftwareClusterMappingSet to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(TDCpSoftwareClusterMappingSet, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize td_cp_softwares (list to container "TD-CP-SOFTWARES")
+        if self.td_cp_softwares:
+            wrapper = ET.Element("TD-CP-SOFTWARES")
+            for item in self.td_cp_softwares:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "TDCpSoftwareClusterMappingSet":
         """Deserialize XML element to TDCpSoftwareClusterMappingSet object.

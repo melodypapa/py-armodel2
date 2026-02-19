@@ -32,6 +32,32 @@ class DiagnosticIumprGroupIdentifier(ARObject):
         """Initialize DiagnosticIumprGroupIdentifier."""
         super().__init__()
         self.group_id: Optional[NameToken] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DiagnosticIumprGroupIdentifier to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize group_id
+        if self.group_id is not None:
+            serialized = ARObject._serialize_item(self.group_id, "NameToken")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("GROUP-ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagnosticIumprGroupIdentifier":
         """Deserialize XML element to DiagnosticIumprGroupIdentifier object.

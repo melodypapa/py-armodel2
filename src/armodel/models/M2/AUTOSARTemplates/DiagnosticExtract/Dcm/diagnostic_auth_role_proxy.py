@@ -32,6 +32,28 @@ class DiagnosticAuthRoleProxy(ARObject):
         """Initialize DiagnosticAuthRoleProxy."""
         super().__init__()
         self.authentications: list[DiagnosticAuthRole] = []
+    def serialize(self) -> ET.Element:
+        """Serialize DiagnosticAuthRoleProxy to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize authentications (list to container "AUTHENTICATIONS")
+        if self.authentications:
+            wrapper = ET.Element("AUTHENTICATIONS")
+            for item in self.authentications:
+                serialized = ARObject._serialize_item(item, "DiagnosticAuthRole")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagnosticAuthRoleProxy":
         """Deserialize XML element to DiagnosticAuthRoleProxy object.

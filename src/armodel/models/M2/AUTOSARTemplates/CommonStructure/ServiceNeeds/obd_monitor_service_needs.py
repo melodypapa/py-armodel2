@@ -51,6 +51,84 @@ class ObdMonitorServiceNeeds(DiagnosticCapabilityElement):
         self.event_needs: Optional[DiagnosticEventNeeds] = None
         self.unit_and_scaling_id: Optional[PositiveInteger] = None
         self.update_kind: Optional[DiagnosticMonitorUpdateKindEnum] = None
+    def serialize(self) -> ET.Element:
+        """Serialize ObdMonitorServiceNeeds to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(ObdMonitorServiceNeeds, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize application_data
+        if self.application_data is not None:
+            serialized = ARObject._serialize_item(self.application_data, "ApplicationDataType")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("APPLICATION-DATA")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize event_needs
+        if self.event_needs is not None:
+            serialized = ARObject._serialize_item(self.event_needs, "DiagnosticEventNeeds")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("EVENT-NEEDS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize unit_and_scaling_id
+        if self.unit_and_scaling_id is not None:
+            serialized = ARObject._serialize_item(self.unit_and_scaling_id, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("UNIT-AND-SCALING-ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize update_kind
+        if self.update_kind is not None:
+            serialized = ARObject._serialize_item(self.update_kind, "DiagnosticMonitorUpdateKindEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("UPDATE-KIND")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ObdMonitorServiceNeeds":
         """Deserialize XML element to ObdMonitorServiceNeeds object.

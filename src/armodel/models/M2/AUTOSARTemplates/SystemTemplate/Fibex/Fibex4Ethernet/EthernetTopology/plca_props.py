@@ -34,6 +34,46 @@ class PlcaProps(ARObject):
         super().__init__()
         self.plca_local_node: Optional[PositiveInteger] = None
         self.plca_max_burst: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize PlcaProps to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize plca_local_node
+        if self.plca_local_node is not None:
+            serialized = ARObject._serialize_item(self.plca_local_node, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PLCA-LOCAL-NODE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize plca_max_burst
+        if self.plca_max_burst is not None:
+            serialized = ARObject._serialize_item(self.plca_max_burst, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PLCA-MAX-BURST")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "PlcaProps":
         """Deserialize XML element to PlcaProps object.

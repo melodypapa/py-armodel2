@@ -48,6 +48,74 @@ class SwValueCont(ARObject):
         self.sw_values_phys: Optional[SwValues] = None
         self.unit: Optional[Unit] = None
         self.unit_display: Optional[SingleLanguageUnitNames] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SwValueCont to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize sw_arraysize_ref
+        if self.sw_arraysize_ref is not None:
+            serialized = ARObject._serialize_item(self.sw_arraysize_ref, "ValueList")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-ARRAYSIZE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_values_phys
+        if self.sw_values_phys is not None:
+            serialized = ARObject._serialize_item(self.sw_values_phys, "SwValues")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-VALUES-PHYS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize unit
+        if self.unit is not None:
+            serialized = ARObject._serialize_item(self.unit, "Unit")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("UNIT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize unit_display
+        if self.unit_display is not None:
+            serialized = ARObject._serialize_item(self.unit_display, "SingleLanguageUnitNames")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("UNIT-DISPLAY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SwValueCont":
         """Deserialize XML element to SwValueCont object.

@@ -45,6 +45,70 @@ class ClientServerOperationMapping(ARObject):
         self.first_operation: Optional[ClientServerOperation] = None
         self.first_to_second: Optional[DataTransformation] = None
         self.second: Optional[ClientServerOperation] = None
+    def serialize(self) -> ET.Element:
+        """Serialize ClientServerOperationMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize argument_refs (list to container "ARGUMENTS")
+        if self.argument_refs:
+            wrapper = ET.Element("ARGUMENTS")
+            for item in self.argument_refs:
+                serialized = ARObject._serialize_item(item, "DataPrototypeMapping")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize first_operation
+        if self.first_operation is not None:
+            serialized = ARObject._serialize_item(self.first_operation, "ClientServerOperation")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FIRST-OPERATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize first_to_second
+        if self.first_to_second is not None:
+            serialized = ARObject._serialize_item(self.first_to_second, "DataTransformation")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FIRST-TO-SECOND")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize second
+        if self.second is not None:
+            serialized = ARObject._serialize_item(self.second, "ClientServerOperation")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SECOND")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ClientServerOperationMapping":
         """Deserialize XML element to ClientServerOperationMapping object.

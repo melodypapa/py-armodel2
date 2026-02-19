@@ -41,6 +41,56 @@ class DiagnosticJ1939SwMapping(DiagnosticSwMapping):
         super().__init__()
         self.node: Optional[DiagnosticJ1939Node] = None
         self.sw_component_prototype_composition_instance_ref: Optional[ARRef] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DiagnosticJ1939SwMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DiagnosticJ1939SwMapping, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize node
+        if self.node is not None:
+            serialized = ARObject._serialize_item(self.node, "DiagnosticJ1939Node")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NODE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_component_prototype_composition_instance_ref
+        if self.sw_component_prototype_composition_instance_ref is not None:
+            serialized = ARObject._serialize_item(self.sw_component_prototype_composition_instance_ref, "SwComponentPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-COMPONENT-PROTOTYPE-COMPOSITION-INSTANCE-REF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagnosticJ1939SwMapping":
         """Deserialize XML element to DiagnosticJ1939SwMapping object.

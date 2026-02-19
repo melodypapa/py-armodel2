@@ -33,6 +33,42 @@ class TDEventSwc(TimingDescriptionEvent, ABC):
         """Initialize TDEventSwc."""
         super().__init__()
         self.component: Optional[Any] = None
+    def serialize(self) -> ET.Element:
+        """Serialize TDEventSwc to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(TDEventSwc, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize component
+        if self.component is not None:
+            serialized = ARObject._serialize_item(self.component, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COMPONENT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "TDEventSwc":
         """Deserialize XML element to TDEventSwc object.

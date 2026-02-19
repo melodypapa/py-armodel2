@@ -56,6 +56,144 @@ class ContainedIPduProps(ARObject):
         self.timeout: Optional[TimeValue] = None
         self.trigger_ref: Optional[ARRef] = None
         self.update: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize ContainedIPduProps to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize collection
+        if self.collection is not None:
+            serialized = ARObject._serialize_item(self.collection, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COLLECTION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize contained_pdu_ref
+        if self.contained_pdu_ref is not None:
+            serialized = ARObject._serialize_item(self.contained_pdu_ref, "PduTriggering")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CONTAINED-PDU")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize header_id_long
+        if self.header_id_long is not None:
+            serialized = ARObject._serialize_item(self.header_id_long, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("HEADER-ID-LONG")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize header_id_short
+        if self.header_id_short is not None:
+            serialized = ARObject._serialize_item(self.header_id_short, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("HEADER-ID-SHORT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize offset
+        if self.offset is not None:
+            serialized = ARObject._serialize_item(self.offset, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("OFFSET")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize priority
+        if self.priority is not None:
+            serialized = ARObject._serialize_item(self.priority, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PRIORITY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize timeout
+        if self.timeout is not None:
+            serialized = ARObject._serialize_item(self.timeout, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIMEOUT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize trigger_ref
+        if self.trigger_ref is not None:
+            serialized = ARObject._serialize_item(self.trigger_ref, "PduCollectionTriggerEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TRIGGER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize update
+        if self.update is not None:
+            serialized = ARObject._serialize_item(self.update, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("UPDATE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ContainedIPduProps":
         """Deserialize XML element to ContainedIPduProps object.

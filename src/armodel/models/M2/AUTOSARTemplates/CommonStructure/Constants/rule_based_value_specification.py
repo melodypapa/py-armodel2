@@ -41,6 +41,60 @@ class RuleBasedValueSpecification(ARObject):
         self.arguments: Optional[RuleArguments] = None
         self.max_size_to_fill: Optional[Integer] = None
         self.rule: Optional[Identifier] = None
+    def serialize(self) -> ET.Element:
+        """Serialize RuleBasedValueSpecification to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize arguments
+        if self.arguments is not None:
+            serialized = ARObject._serialize_item(self.arguments, "RuleArguments")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ARGUMENTS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize max_size_to_fill
+        if self.max_size_to_fill is not None:
+            serialized = ARObject._serialize_item(self.max_size_to_fill, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX-SIZE-TO-FILL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize rule
+        if self.rule is not None:
+            serialized = ARObject._serialize_item(self.rule, "Identifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RULE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "RuleBasedValueSpecification":
         """Deserialize XML element to RuleBasedValueSpecification object.

@@ -56,6 +56,140 @@ class SOMEIPTransformationISignalProps(ARObject):
         self.size_of_struct: Optional[PositiveInteger] = None
         self.size_of_union: Optional[PositiveInteger] = None
         self.tlv_data_id_refs: list[ARRef] = []
+    def serialize(self) -> ET.Element:
+        """Serialize SOMEIPTransformationISignalProps to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize implements
+        if self.implements is not None:
+            serialized = ARObject._serialize_item(self.implements, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IMPLEMENTS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize interface_version
+        if self.interface_version is not None:
+            serialized = ARObject._serialize_item(self.interface_version, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("INTERFACE-VERSION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize is_dynamic
+        if self.is_dynamic is not None:
+            serialized = ARObject._serialize_item(self.is_dynamic, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IS-DYNAMIC")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize message_type
+        if self.message_type is not None:
+            serialized = ARObject._serialize_item(self.message_type, "SOMEIPMessageTypeEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MESSAGE-TYPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize size_of_array
+        if self.size_of_array is not None:
+            serialized = ARObject._serialize_item(self.size_of_array, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SIZE-OF-ARRAY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize size_of_string
+        if self.size_of_string is not None:
+            serialized = ARObject._serialize_item(self.size_of_string, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SIZE-OF-STRING")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize size_of_struct
+        if self.size_of_struct is not None:
+            serialized = ARObject._serialize_item(self.size_of_struct, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SIZE-OF-STRUCT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize size_of_union
+        if self.size_of_union is not None:
+            serialized = ARObject._serialize_item(self.size_of_union, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SIZE-OF-UNION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize tlv_data_id_refs (list to container "TLV-DATA-IDS")
+        if self.tlv_data_id_refs:
+            wrapper = ET.Element("TLV-DATA-IDS")
+            for item in self.tlv_data_id_refs:
+                serialized = ARObject._serialize_item(item, "TlvDataIdDefinitionSet")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SOMEIPTransformationISignalProps":
         """Deserialize XML element to SOMEIPTransformationISignalProps object.

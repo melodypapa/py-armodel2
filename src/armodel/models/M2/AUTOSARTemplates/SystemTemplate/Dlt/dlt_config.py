@@ -44,6 +44,70 @@ class DltConfig(ARObject):
         self.dlt_log_channels: list[DltLogChannel] = []
         self.session_id: Optional[Boolean] = None
         self.timestamp: Optional[Boolean] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DltConfig to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize dlt_ecu
+        if self.dlt_ecu is not None:
+            serialized = ARObject._serialize_item(self.dlt_ecu, "DltEcu")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DLT-ECU")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize dlt_log_channels (list to container "DLT-LOG-CHANNELS")
+        if self.dlt_log_channels:
+            wrapper = ET.Element("DLT-LOG-CHANNELS")
+            for item in self.dlt_log_channels:
+                serialized = ARObject._serialize_item(item, "DltLogChannel")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize session_id
+        if self.session_id is not None:
+            serialized = ARObject._serialize_item(self.session_id, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SESSION-ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize timestamp
+        if self.timestamp is not None:
+            serialized = ARObject._serialize_item(self.timestamp, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIMESTAMP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DltConfig":
         """Deserialize XML element to DltConfig object.

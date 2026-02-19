@@ -43,6 +43,58 @@ class FMFeatureSelectionSet(ARElement):
         self.feature_models: list[FMFeatureModel] = []
         self.include_refs: list[ARRef] = []
         self.selections: list[FMFeatureSelection] = []
+    def serialize(self) -> ET.Element:
+        """Serialize FMFeatureSelectionSet to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(FMFeatureSelectionSet, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize feature_models (list to container "FEATURE-MODELS")
+        if self.feature_models:
+            wrapper = ET.Element("FEATURE-MODELS")
+            for item in self.feature_models:
+                serialized = ARObject._serialize_item(item, "FMFeatureModel")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize include_refs (list to container "INCLUDES")
+        if self.include_refs:
+            wrapper = ET.Element("INCLUDES")
+            for item in self.include_refs:
+                serialized = ARObject._serialize_item(item, "FMFeatureSelectionSet")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize selections (list to container "SELECTIONS")
+        if self.selections:
+            wrapper = ET.Element("SELECTIONS")
+            for item in self.selections:
+                serialized = ARObject._serialize_item(item, "FMFeatureSelection")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "FMFeatureSelectionSet":
         """Deserialize XML element to FMFeatureSelectionSet object.

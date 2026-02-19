@@ -44,6 +44,88 @@ class AbstractValueRestriction(ARObject, ABC):
         self.min: Optional[Limit] = None
         self.min_length: Optional[PositiveInteger] = None
         self.pattern: Optional[RegularExpression] = None
+    def serialize(self) -> ET.Element:
+        """Serialize AbstractValueRestriction to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize max
+        if self.max is not None:
+            serialized = ARObject._serialize_item(self.max, "Limit")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize max_length
+        if self.max_length is not None:
+            serialized = ARObject._serialize_item(self.max_length, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX-LENGTH")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize min
+        if self.min is not None:
+            serialized = ARObject._serialize_item(self.min, "Limit")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MIN")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize min_length
+        if self.min_length is not None:
+            serialized = ARObject._serialize_item(self.min_length, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MIN-LENGTH")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize pattern
+        if self.pattern is not None:
+            serialized = ARObject._serialize_item(self.pattern, "RegularExpression")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PATTERN")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "AbstractValueRestriction":
         """Deserialize XML element to AbstractValueRestriction object.

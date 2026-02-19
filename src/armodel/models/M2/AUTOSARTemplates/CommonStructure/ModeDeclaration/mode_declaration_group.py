@@ -58,6 +58,104 @@ class ModeDeclarationGroup(ARElement):
         self.mode_transition_mode_declaration_groups: list[ModeTransition] = []
         self.mode_user_error: Optional[ModeErrorBehavior] = None
         self.on_transition: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize ModeDeclarationGroup to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(ModeDeclarationGroup, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize initial_mode
+        if self.initial_mode is not None:
+            serialized = ARObject._serialize_item(self.initial_mode, "ModeDeclaration")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("INITIAL-MODE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize modes (list to container "MODES")
+        if self.modes:
+            wrapper = ET.Element("MODES")
+            for item in self.modes:
+                serialized = ARObject._serialize_item(item, "ModeDeclaration")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize mode_manager
+        if self.mode_manager is not None:
+            serialized = ARObject._serialize_item(self.mode_manager, "ModeErrorBehavior")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MODE-MANAGER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize mode_transition_mode_declaration_groups (list to container "MODE-TRANSITION-MODE-DECLARATION-GROUPS")
+        if self.mode_transition_mode_declaration_groups:
+            wrapper = ET.Element("MODE-TRANSITION-MODE-DECLARATION-GROUPS")
+            for item in self.mode_transition_mode_declaration_groups:
+                serialized = ARObject._serialize_item(item, "ModeTransition")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize mode_user_error
+        if self.mode_user_error is not None:
+            serialized = ARObject._serialize_item(self.mode_user_error, "ModeErrorBehavior")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MODE-USER-ERROR")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize on_transition
+        if self.on_transition is not None:
+            serialized = ARObject._serialize_item(self.on_transition, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ON-TRANSITION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ModeDeclarationGroup":
         """Deserialize XML element to ModeDeclarationGroup object.

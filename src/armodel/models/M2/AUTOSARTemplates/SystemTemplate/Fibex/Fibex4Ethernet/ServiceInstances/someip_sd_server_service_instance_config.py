@@ -50,6 +50,98 @@ class SomeipSdServerServiceInstanceConfig(ARElement):
         self.priority: Optional[PositiveInteger] = None
         self.request: Optional[RequestResponseDelay] = None
         self.service_offer: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SomeipSdServerServiceInstanceConfig to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(SomeipSdServerServiceInstanceConfig, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize initial_offer_behavior
+        if self.initial_offer_behavior is not None:
+            serialized = ARObject._serialize_item(self.initial_offer_behavior, "InitialSdDelayConfig")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("INITIAL-OFFER-BEHAVIOR")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize offer_cyclic_delay
+        if self.offer_cyclic_delay is not None:
+            serialized = ARObject._serialize_item(self.offer_cyclic_delay, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("OFFER-CYCLIC-DELAY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize priority
+        if self.priority is not None:
+            serialized = ARObject._serialize_item(self.priority, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PRIORITY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize request
+        if self.request is not None:
+            serialized = ARObject._serialize_item(self.request, "RequestResponseDelay")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("REQUEST")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize service_offer
+        if self.service_offer is not None:
+            serialized = ARObject._serialize_item(self.service_offer, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SERVICE-OFFER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SomeipSdServerServiceInstanceConfig":
         """Deserialize XML element to SomeipSdServerServiceInstanceConfig object.

@@ -57,6 +57,94 @@ class CouplingPortDetails(ARObject):
         self.global_time_coupling: Optional[GlobalTimeCouplingPortProps] = None
         self.last_egress: Optional[CouplingPortScheduler] = None
         self.rate_policies: list[CouplingPortRatePolicy] = []
+    def serialize(self) -> ET.Element:
+        """Serialize CouplingPortDetails to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize coupling_ports (list to container "COUPLING-PORTS")
+        if self.coupling_ports:
+            wrapper = ET.Element("COUPLING-PORTS")
+            for item in self.coupling_ports:
+                serialized = ARObject._serialize_item(item, "CouplingPortStructuralElement")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize ethernet_priority
+        if self.ethernet_priority is not None:
+            serialized = ARObject._serialize_item(self.ethernet_priority, "EthernetPriorityRegeneration")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ETHERNET-PRIORITY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize ethernet_traffic
+        if self.ethernet_traffic is not None:
+            serialized = ARObject._serialize_item(self.ethernet_traffic, "CouplingPortTrafficClassAssignment")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ETHERNET-TRAFFIC")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize global_time_coupling
+        if self.global_time_coupling is not None:
+            serialized = ARObject._serialize_item(self.global_time_coupling, "GlobalTimeCouplingPortProps")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("GLOBAL-TIME-COUPLING")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize last_egress
+        if self.last_egress is not None:
+            serialized = ARObject._serialize_item(self.last_egress, "CouplingPortScheduler")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("LAST-EGRESS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize rate_policies (list to container "RATE-POLICIES")
+        if self.rate_policies:
+            wrapper = ET.Element("RATE-POLICIES")
+            for item in self.rate_policies:
+                serialized = ARObject._serialize_item(item, "CouplingPortRatePolicy")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "CouplingPortDetails":
         """Deserialize XML element to CouplingPortDetails object.

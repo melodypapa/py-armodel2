@@ -42,6 +42,74 @@ class EcucAbstractStringParamDef(ARObject, ABC):
         self.max_length: Optional[PositiveInteger] = None
         self.min_length: Optional[PositiveInteger] = None
         self.regular: Optional[RegularExpression] = None
+    def serialize(self) -> ET.Element:
+        """Serialize EcucAbstractStringParamDef to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize default_value
+        if self.default_value is not None:
+            serialized = ARObject._serialize_item(self.default_value, "VerbatimString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DEFAULT-VALUE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize max_length
+        if self.max_length is not None:
+            serialized = ARObject._serialize_item(self.max_length, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX-LENGTH")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize min_length
+        if self.min_length is not None:
+            serialized = ARObject._serialize_item(self.min_length, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MIN-LENGTH")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize regular
+        if self.regular is not None:
+            serialized = ARObject._serialize_item(self.regular, "RegularExpression")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("REGULAR")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "EcucAbstractStringParamDef":
         """Deserialize XML element to EcucAbstractStringParamDef object.

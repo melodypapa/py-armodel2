@@ -34,6 +34,46 @@ class J1939ControllerApplicationToJ1939NmNodeMapping(ARObject):
         super().__init__()
         self.j1939_controller: Optional[Any] = None
         self.j1939_nm_node: Optional[J1939NmNode] = None
+    def serialize(self) -> ET.Element:
+        """Serialize J1939ControllerApplicationToJ1939NmNodeMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize j1939_controller
+        if self.j1939_controller is not None:
+            serialized = ARObject._serialize_item(self.j1939_controller, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("J1939-CONTROLLER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize j1939_nm_node
+        if self.j1939_nm_node is not None:
+            serialized = ARObject._serialize_item(self.j1939_nm_node, "J1939NmNode")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("J1939-NM-NODE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "J1939ControllerApplicationToJ1939NmNodeMapping":
         """Deserialize XML element to J1939ControllerApplicationToJ1939NmNodeMapping object.

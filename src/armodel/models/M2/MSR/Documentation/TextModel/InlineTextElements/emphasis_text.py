@@ -52,6 +52,102 @@ class EmphasisText(ARObject):
         self.sup: Superscript = None
         self.tt: Optional[Tt] = None
         self.type: Optional[EEnum] = None
+    def serialize(self) -> ET.Element:
+        """Serialize EmphasisText to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize color
+        if self.color is not None:
+            serialized = ARObject._serialize_item(self.color, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COLOR")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize font
+        if self.font is not None:
+            serialized = ARObject._serialize_item(self.font, "EEnumFont")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FONT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sub
+        if self.sub is not None:
+            serialized = ARObject._serialize_item(self.sub, "Superscript")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SUB")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sup
+        if self.sup is not None:
+            serialized = ARObject._serialize_item(self.sup, "Superscript")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SUP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize tt
+        if self.tt is not None:
+            serialized = ARObject._serialize_item(self.tt, "Tt")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize type
+        if self.type is not None:
+            serialized = ARObject._serialize_item(self.type, "EEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TYPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "EmphasisText":
         """Deserialize XML element to EmphasisText object.

@@ -37,6 +37,56 @@ class DiagnosticEcuReset(DiagnosticServiceInstance):
         super().__init__()
         self.custom_sub: Optional[PositiveInteger] = None
         self.ecu_reset_class: Optional[DiagnosticEcuReset] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DiagnosticEcuReset to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DiagnosticEcuReset, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize custom_sub
+        if self.custom_sub is not None:
+            serialized = ARObject._serialize_item(self.custom_sub, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CUSTOM-SUB")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize ecu_reset_class
+        if self.ecu_reset_class is not None:
+            serialized = ARObject._serialize_item(self.ecu_reset_class, "DiagnosticEcuReset")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ECU-RESET-CLASS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagnosticEcuReset":
         """Deserialize XML element to DiagnosticEcuReset object.

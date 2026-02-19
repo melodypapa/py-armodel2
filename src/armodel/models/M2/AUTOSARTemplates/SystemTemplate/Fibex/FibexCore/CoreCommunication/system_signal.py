@@ -45,6 +45,56 @@ class SystemSignal(ARElement):
         super().__init__()
         self.dynamic_length: Optional[Boolean] = None
         self.physical_props: Optional[SwDataDefProps] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SystemSignal to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(SystemSignal, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize dynamic_length
+        if self.dynamic_length is not None:
+            serialized = ARObject._serialize_item(self.dynamic_length, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DYNAMIC-LENGTH")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize physical_props
+        if self.physical_props is not None:
+            serialized = ARObject._serialize_item(self.physical_props, "SwDataDefProps")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PHYSICAL-PROPS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SystemSignal":
         """Deserialize XML element to SystemSignal object.

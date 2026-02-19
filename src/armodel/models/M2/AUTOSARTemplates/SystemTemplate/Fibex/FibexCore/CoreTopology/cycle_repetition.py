@@ -40,6 +40,56 @@ class CycleRepetition(CommunicationCycle):
         super().__init__()
         self.base_cycle: Optional[Integer] = None
         self.cycle_repetition: Optional[CycleRepetitionType] = None
+    def serialize(self) -> ET.Element:
+        """Serialize CycleRepetition to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(CycleRepetition, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize base_cycle
+        if self.base_cycle is not None:
+            serialized = ARObject._serialize_item(self.base_cycle, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BASE-CYCLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize cycle_repetition
+        if self.cycle_repetition is not None:
+            serialized = ARObject._serialize_item(self.cycle_repetition, "CycleRepetitionType")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CYCLE-REPETITION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "CycleRepetition":
         """Deserialize XML element to CycleRepetition object.

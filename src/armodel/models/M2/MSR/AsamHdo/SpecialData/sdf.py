@@ -35,6 +35,46 @@ class Sdf(ARObject):
         super().__init__()
         self.gid: NameToken = None
         self.value: Optional[Numerical] = None
+    def serialize(self) -> ET.Element:
+        """Serialize Sdf to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize gid
+        if self.gid is not None:
+            serialized = ARObject._serialize_item(self.gid, "NameToken")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("GID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize value
+        if self.value is not None:
+            serialized = ARObject._serialize_item(self.value, "Numerical")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VALUE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "Sdf":
         """Deserialize XML element to Sdf object.

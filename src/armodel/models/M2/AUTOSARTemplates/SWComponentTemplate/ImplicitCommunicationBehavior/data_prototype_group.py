@@ -39,6 +39,48 @@ class DataPrototypeGroup(Identifiable):
         super().__init__()
         self.data_prototype_group_group_in_composition_instance_ref_refs: list[ARRef] = []
         self.implicit_data_refs: list[ARRef] = []
+    def serialize(self) -> ET.Element:
+        """Serialize DataPrototypeGroup to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DataPrototypeGroup, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize data_prototype_group_group_in_composition_instance_ref_refs (list to container "DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REFS")
+        if self.data_prototype_group_group_in_composition_instance_ref_refs:
+            wrapper = ET.Element("DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REFS")
+            for item in self.data_prototype_group_group_in_composition_instance_ref_refs:
+                serialized = ARObject._serialize_item(item, "DataPrototypeGroup")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize implicit_data_refs (list to container "IMPLICIT-DATAS")
+        if self.implicit_data_refs:
+            wrapper = ET.Element("IMPLICIT-DATAS")
+            for item in self.implicit_data_refs:
+                serialized = ARObject._serialize_item(item, "VariableDataPrototype")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DataPrototypeGroup":
         """Deserialize XML element to DataPrototypeGroup object.

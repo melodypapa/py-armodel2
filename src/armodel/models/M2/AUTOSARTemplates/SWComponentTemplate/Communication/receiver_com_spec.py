@@ -57,6 +57,118 @@ class ReceiverComSpec(RPortComSpec, ABC):
         self.sync_counter_init: Optional[PositiveInteger] = None
         self.transformation_coms: list[Any] = []
         self.uses_end_to_end: Optional[Boolean] = None
+    def serialize(self) -> ET.Element:
+        """Serialize ReceiverComSpec to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(ReceiverComSpec, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize composite_networks (list to container "COMPOSITE-NETWORKS")
+        if self.composite_networks:
+            wrapper = ET.Element("COMPOSITE-NETWORKS")
+            for item in self.composite_networks:
+                serialized = ARObject._serialize_item(item, "CompositeNetworkRepresentation")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize data_element_ref
+        if self.data_element_ref is not None:
+            serialized = ARObject._serialize_item(self.data_element_ref, "AutosarDataPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DATA-ELEMENT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize handle_out_of_range
+        if self.handle_out_of_range is not None:
+            serialized = ARObject._serialize_item(self.handle_out_of_range, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("HANDLE-OUT-OF-RANGE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize max_delta
+        if self.max_delta is not None:
+            serialized = ARObject._serialize_item(self.max_delta, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX-DELTA")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sync_counter_init
+        if self.sync_counter_init is not None:
+            serialized = ARObject._serialize_item(self.sync_counter_init, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SYNC-COUNTER-INIT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize transformation_coms (list to container "TRANSFORMATION-COMS")
+        if self.transformation_coms:
+            wrapper = ET.Element("TRANSFORMATION-COMS")
+            for item in self.transformation_coms:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize uses_end_to_end
+        if self.uses_end_to_end is not None:
+            serialized = ARObject._serialize_item(self.uses_end_to_end, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("USES-END-TO-END")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ReceiverComSpec":
         """Deserialize XML element to ReceiverComSpec object.

@@ -37,6 +37,46 @@ class ChapterContent(ARObject):
         super().__init__()
         self.prms: Prms = None
         self.topic_content_or_msr: Optional[TopicContentOrMsrQuery] = None
+    def serialize(self) -> ET.Element:
+        """Serialize ChapterContent to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize prms
+        if self.prms is not None:
+            serialized = ARObject._serialize_item(self.prms, "Prms")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PRMS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize topic_content_or_msr
+        if self.topic_content_or_msr is not None:
+            serialized = ARObject._serialize_item(self.topic_content_or_msr, "TopicContentOrMsrQuery")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TOPIC-CONTENT-OR-MSR")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ChapterContent":
         """Deserialize XML element to ChapterContent object.

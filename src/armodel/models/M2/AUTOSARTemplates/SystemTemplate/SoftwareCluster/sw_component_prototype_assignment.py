@@ -29,6 +29,32 @@ class SwComponentPrototypeAssignment(ARObject):
         """Initialize SwComponentPrototypeAssignment."""
         super().__init__()
         self.sw_component: Optional[Any] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SwComponentPrototypeAssignment to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize sw_component
+        if self.sw_component is not None:
+            serialized = ARObject._serialize_item(self.sw_component, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-COMPONENT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SwComponentPrototypeAssignment":
         """Deserialize XML element to SwComponentPrototypeAssignment object.

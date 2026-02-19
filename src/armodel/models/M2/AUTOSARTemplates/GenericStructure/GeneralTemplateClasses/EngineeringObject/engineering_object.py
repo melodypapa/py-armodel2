@@ -41,6 +41,70 @@ class EngineeringObject(ARObject, ABC):
         self.domain: Optional[NameToken] = None
         self.revision_label_strings: list[RevisionLabelString] = []
         self.short_label: NameToken = None
+    def serialize(self) -> ET.Element:
+        """Serialize EngineeringObject to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize category
+        if self.category is not None:
+            serialized = ARObject._serialize_item(self.category, "NameToken")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CATEGORY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize domain
+        if self.domain is not None:
+            serialized = ARObject._serialize_item(self.domain, "NameToken")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DOMAIN")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize revision_label_strings (list to container "REVISION-LABEL-STRINGS")
+        if self.revision_label_strings:
+            wrapper = ET.Element("REVISION-LABEL-STRINGS")
+            for item in self.revision_label_strings:
+                serialized = ARObject._serialize_item(item, "RevisionLabelString")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize short_label
+        if self.short_label is not None:
+            serialized = ARObject._serialize_item(self.short_label, "NameToken")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SHORT-LABEL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "EngineeringObject":
         """Deserialize XML element to EngineeringObject object.

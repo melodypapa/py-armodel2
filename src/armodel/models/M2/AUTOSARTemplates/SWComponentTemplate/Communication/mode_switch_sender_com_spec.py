@@ -46,6 +46,84 @@ class ModeSwitchSenderComSpec(PPortComSpec):
         self.mode_group_ref: Optional[ARRef] = None
         self.mode_switched_ack: Optional[Any] = None
         self.queue_length: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize ModeSwitchSenderComSpec to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(ModeSwitchSenderComSpec, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize enhanced_mode
+        if self.enhanced_mode is not None:
+            serialized = ARObject._serialize_item(self.enhanced_mode, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ENHANCED-MODE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize mode_group_ref
+        if self.mode_group_ref is not None:
+            serialized = ARObject._serialize_item(self.mode_group_ref, "ModeDeclarationGroup")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MODE-GROUP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize mode_switched_ack
+        if self.mode_switched_ack is not None:
+            serialized = ARObject._serialize_item(self.mode_switched_ack, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MODE-SWITCHED-ACK")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize queue_length
+        if self.queue_length is not None:
+            serialized = ARObject._serialize_item(self.queue_length, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("QUEUE-LENGTH")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ModeSwitchSenderComSpec":
         """Deserialize XML element to ModeSwitchSenderComSpec object.

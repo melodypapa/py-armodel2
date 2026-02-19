@@ -41,6 +41,80 @@ class BinaryManifestItem(BinaryManifestAddressableObject):
         self.default_value: Optional[BinaryManifestItem] = None
         self.is_unused: Optional[Boolean] = None
         self.value: Optional[BinaryManifestItem] = None
+    def serialize(self) -> ET.Element:
+        """Serialize BinaryManifestItem to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(BinaryManifestItem, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize auxiliary_fields (list to container "AUXILIARY-FIELDS")
+        if self.auxiliary_fields:
+            wrapper = ET.Element("AUXILIARY-FIELDS")
+            for item in self.auxiliary_fields:
+                serialized = ARObject._serialize_item(item, "BinaryManifestItem")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize default_value
+        if self.default_value is not None:
+            serialized = ARObject._serialize_item(self.default_value, "BinaryManifestItem")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DEFAULT-VALUE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize is_unused
+        if self.is_unused is not None:
+            serialized = ARObject._serialize_item(self.is_unused, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IS-UNUSED")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize value
+        if self.value is not None:
+            serialized = ARObject._serialize_item(self.value, "BinaryManifestItem")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VALUE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "BinaryManifestItem":
         """Deserialize XML element to BinaryManifestItem object.

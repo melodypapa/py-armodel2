@@ -45,6 +45,84 @@ class DiagnosticTestResult(DiagnosticCommonElement):
         self.monitored: Optional[Any] = None
         self.test_identifier: Optional[DiagnosticTestIdentifier] = None
         self.update_kind: Optional[DiagnosticTestResult] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DiagnosticTestResult to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DiagnosticTestResult, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize diagnostic_event
+        if self.diagnostic_event is not None:
+            serialized = ARObject._serialize_item(self.diagnostic_event, "DiagnosticEvent")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DIAGNOSTIC-EVENT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize monitored
+        if self.monitored is not None:
+            serialized = ARObject._serialize_item(self.monitored, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MONITORED")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize test_identifier
+        if self.test_identifier is not None:
+            serialized = ARObject._serialize_item(self.test_identifier, "DiagnosticTestIdentifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TEST-IDENTIFIER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize update_kind
+        if self.update_kind is not None:
+            serialized = ARObject._serialize_item(self.update_kind, "DiagnosticTestResult")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("UPDATE-KIND")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagnosticTestResult":
         """Deserialize XML element to DiagnosticTestResult object.

@@ -38,6 +38,60 @@ class TagWithOptionalValue(ARObject):
         self.key: Optional[String] = None
         self.sequence_offset: Optional[Integer] = None
         self.value: Optional[String] = None
+    def serialize(self) -> ET.Element:
+        """Serialize TagWithOptionalValue to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize key
+        if self.key is not None:
+            serialized = ARObject._serialize_item(self.key, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("KEY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sequence_offset
+        if self.sequence_offset is not None:
+            serialized = ARObject._serialize_item(self.sequence_offset, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SEQUENCE-OFFSET")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize value
+        if self.value is not None:
+            serialized = ARObject._serialize_item(self.value, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VALUE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "TagWithOptionalValue":
         """Deserialize XML element to TagWithOptionalValue object.

@@ -32,6 +32,28 @@ class FileInfoComment(ARObject):
         """Initialize FileInfoComment."""
         super().__init__()
         self.sdgs: list[Sdg] = []
+    def serialize(self) -> ET.Element:
+        """Serialize FileInfoComment to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize sdgs (list to container "SDGS")
+        if self.sdgs:
+            wrapper = ET.Element("SDGS")
+            for item in self.sdgs:
+                serialized = ARObject._serialize_item(item, "Sdg")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "FileInfoComment":
         """Deserialize XML element to FileInfoComment object.

@@ -54,6 +54,140 @@ class NmCluster(Identifiable, ABC):
         self.nm_repeat_msg_ind_enabled: Optional[Boolean] = None
         self.nm: Optional[Boolean] = None
         self.pnc_cluster: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize NmCluster to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(NmCluster, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize communication_cluster
+        if self.communication_cluster is not None:
+            serialized = ARObject._serialize_item(self.communication_cluster, "CommunicationCluster")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COMMUNICATION-CLUSTER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nm_channel
+        if self.nm_channel is not None:
+            serialized = ARObject._serialize_item(self.nm_channel, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-CHANNEL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nm_node
+        if self.nm_node is not None:
+            serialized = ARObject._serialize_item(self.nm_node, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-NODE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nm_node_id_enabled
+        if self.nm_node_id_enabled is not None:
+            serialized = ARObject._serialize_item(self.nm_node_id_enabled, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-NODE-ID-ENABLED")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nm_pnc
+        if self.nm_pnc is not None:
+            serialized = ARObject._serialize_item(self.nm_pnc, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-PNC")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nm_repeat_msg_ind_enabled
+        if self.nm_repeat_msg_ind_enabled is not None:
+            serialized = ARObject._serialize_item(self.nm_repeat_msg_ind_enabled, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-REPEAT-MSG-IND-ENABLED")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nm
+        if self.nm is not None:
+            serialized = ARObject._serialize_item(self.nm, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize pnc_cluster
+        if self.pnc_cluster is not None:
+            serialized = ARObject._serialize_item(self.pnc_cluster, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PNC-CLUSTER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "NmCluster":
         """Deserialize XML element to NmCluster object.

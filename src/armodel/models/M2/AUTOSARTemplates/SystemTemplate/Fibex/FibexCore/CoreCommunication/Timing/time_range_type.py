@@ -34,6 +34,46 @@ class TimeRangeType(ARObject):
         super().__init__()
         self.tolerance_tolerance: Optional[TimeRangeType] = None
         self.value: Optional[TimeValue] = None
+    def serialize(self) -> ET.Element:
+        """Serialize TimeRangeType to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize tolerance_tolerance
+        if self.tolerance_tolerance is not None:
+            serialized = ARObject._serialize_item(self.tolerance_tolerance, "TimeRangeType")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TOLERANCE-TOLERANCE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize value
+        if self.value is not None:
+            serialized = ARObject._serialize_item(self.value, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VALUE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "TimeRangeType":
         """Deserialize XML element to TimeRangeType object.

@@ -50,6 +50,84 @@ class EcuResourceEstimation(ARObject):
         self.introduction: Optional[DocumentationBlock] = None
         self.rte_resource: Optional[ResourceConsumption] = None
         self.sw_comp_to_ecu_refs: list[ARRef] = []
+    def serialize(self) -> ET.Element:
+        """Serialize EcuResourceEstimation to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize bsw_resource
+        if self.bsw_resource is not None:
+            serialized = ARObject._serialize_item(self.bsw_resource, "ResourceConsumption")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BSW-RESOURCE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize ecu_instance
+        if self.ecu_instance is not None:
+            serialized = ARObject._serialize_item(self.ecu_instance, "EcuInstance")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ECU-INSTANCE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize introduction
+        if self.introduction is not None:
+            serialized = ARObject._serialize_item(self.introduction, "DocumentationBlock")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("INTRODUCTION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize rte_resource
+        if self.rte_resource is not None:
+            serialized = ARObject._serialize_item(self.rte_resource, "ResourceConsumption")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RTE-RESOURCE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_comp_to_ecu_refs (list to container "SW-COMP-TO-ECUS")
+        if self.sw_comp_to_ecu_refs:
+            wrapper = ET.Element("SW-COMP-TO-ECUS")
+            for item in self.sw_comp_to_ecu_refs:
+                serialized = ARObject._serialize_item(item, "SwcToEcuMapping")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "EcuResourceEstimation":
         """Deserialize XML element to EcuResourceEstimation object.

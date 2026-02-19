@@ -65,6 +65,128 @@ class EventHandler(Identifiable):
         self.routing_group_refs: list[ARRef] = []
         self.sd_server_config: Optional[Any] = None
         self.sd_server_eg: Optional[SomeipSdServerEventGroupTimingConfig] = None
+    def serialize(self) -> ET.Element:
+        """Serialize EventHandler to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(EventHandler, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize consumed_event_group_refs (list to container "CONSUMED-EVENT-GROUPS")
+        if self.consumed_event_group_refs:
+            wrapper = ET.Element("CONSUMED-EVENT-GROUPS")
+            for item in self.consumed_event_group_refs:
+                serialized = ARObject._serialize_item(item, "ConsumedEventGroup")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize event_group
+        if self.event_group is not None:
+            serialized = ARObject._serialize_item(self.event_group, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("EVENT-GROUP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize event_multicast
+        if self.event_multicast is not None:
+            serialized = ARObject._serialize_item(self.event_multicast, "ApplicationEndpoint")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("EVENT-MULTICAST")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize multicast
+        if self.multicast is not None:
+            serialized = ARObject._serialize_item(self.multicast, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MULTICAST")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize pdu_activation_routings (list to container "PDU-ACTIVATION-ROUTINGS")
+        if self.pdu_activation_routings:
+            wrapper = ET.Element("PDU-ACTIVATION-ROUTINGS")
+            for item in self.pdu_activation_routings:
+                serialized = ARObject._serialize_item(item, "PduActivationRoutingGroup")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize routing_group_refs (list to container "ROUTING-GROUPS")
+        if self.routing_group_refs:
+            wrapper = ET.Element("ROUTING-GROUPS")
+            for item in self.routing_group_refs:
+                serialized = ARObject._serialize_item(item, "SoAdRoutingGroup")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize sd_server_config
+        if self.sd_server_config is not None:
+            serialized = ARObject._serialize_item(self.sd_server_config, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SD-SERVER-CONFIG")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sd_server_eg
+        if self.sd_server_eg is not None:
+            serialized = ARObject._serialize_item(self.sd_server_eg, "SomeipSdServerEventGroupTimingConfig")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SD-SERVER-EG")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "EventHandler":
         """Deserialize XML element to EventHandler object.

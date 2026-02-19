@@ -36,6 +36,38 @@ class BswEntryRelationshipSet(ARElement):
         """Initialize BswEntryRelationshipSet."""
         super().__init__()
         self.bsw_entry_relationships: list[BswEntryRelationship] = []
+    def serialize(self) -> ET.Element:
+        """Serialize BswEntryRelationshipSet to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(BswEntryRelationshipSet, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize bsw_entry_relationships (list to container "BSW-ENTRY-RELATIONSHIPS")
+        if self.bsw_entry_relationships:
+            wrapper = ET.Element("BSW-ENTRY-RELATIONSHIPS")
+            for item in self.bsw_entry_relationships:
+                serialized = ARObject._serialize_item(item, "BswEntryRelationship")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "BswEntryRelationshipSet":
         """Deserialize XML element to BswEntryRelationshipSet object.

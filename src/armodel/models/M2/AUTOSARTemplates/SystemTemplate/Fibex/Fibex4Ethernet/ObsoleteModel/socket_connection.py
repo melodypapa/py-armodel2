@@ -57,6 +57,136 @@ class SocketConnection(Describable):
         self.runtime_ip: Optional[Any] = None
         self.runtime_port: Optional[Any] = None
         self.short_label: Optional[Identifier] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SocketConnection to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(SocketConnection, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize client_ip_addr
+        if self.client_ip_addr is not None:
+            serialized = ARObject._serialize_item(self.client_ip_addr, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CLIENT-IP-ADDR")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize client_port
+        if self.client_port is not None:
+            serialized = ARObject._serialize_item(self.client_port, "SocketAddress")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CLIENT-PORT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize client_port_from
+        if self.client_port_from is not None:
+            serialized = ARObject._serialize_item(self.client_port_from, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CLIENT-PORT-FROM")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize pdus (list to container "PDUS")
+        if self.pdus:
+            wrapper = ET.Element("PDUS")
+            for item in self.pdus:
+                serialized = ARObject._serialize_item(item, "SocketConnectionIpduIdentifierSet")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize pdu_collection
+        if self.pdu_collection is not None:
+            serialized = ARObject._serialize_item(self.pdu_collection, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PDU-COLLECTION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize runtime_ip
+        if self.runtime_ip is not None:
+            serialized = ARObject._serialize_item(self.runtime_ip, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RUNTIME-IP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize runtime_port
+        if self.runtime_port is not None:
+            serialized = ARObject._serialize_item(self.runtime_port, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RUNTIME-PORT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize short_label
+        if self.short_label is not None:
+            serialized = ARObject._serialize_item(self.short_label, "Identifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SHORT-LABEL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SocketConnection":
         """Deserialize XML element to SocketConnection object.

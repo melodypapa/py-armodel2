@@ -44,6 +44,48 @@ class ClientServerInterface(PortInterface):
         super().__init__()
         self.operations: list[ClientServerOperation] = []
         self.possible_errors: list[ApplicationError] = []
+    def serialize(self) -> ET.Element:
+        """Serialize ClientServerInterface to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(ClientServerInterface, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize operations (list to container "OPERATIONS")
+        if self.operations:
+            wrapper = ET.Element("OPERATIONS")
+            for item in self.operations:
+                serialized = ARObject._serialize_item(item, "ClientServerOperation")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize possible_errors (list to container "POSSIBLE-ERRORS")
+        if self.possible_errors:
+            wrapper = ET.Element("POSSIBLE-ERRORS")
+            for item in self.possible_errors:
+                serialized = ARObject._serialize_item(item, "ApplicationError")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ClientServerInterface":
         """Deserialize XML element to ClientServerInterface object.

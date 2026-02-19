@@ -37,6 +37,46 @@ class DdsReliability(ARObject):
         super().__init__()
         self.reliability_kind: Optional[DdsReliabilityKindEnum] = None
         self.reliability_max: Optional[Float] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DdsReliability to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize reliability_kind
+        if self.reliability_kind is not None:
+            serialized = ARObject._serialize_item(self.reliability_kind, "DdsReliabilityKindEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RELIABILITY-KIND")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize reliability_max
+        if self.reliability_max is not None:
+            serialized = ARObject._serialize_item(self.reliability_max, "Float")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RELIABILITY-MAX")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DdsReliability":
         """Deserialize XML element to DdsReliability object.

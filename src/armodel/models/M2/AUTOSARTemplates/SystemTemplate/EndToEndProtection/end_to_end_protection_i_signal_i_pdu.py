@@ -44,6 +44,60 @@ class EndToEndProtectionISignalIPdu(ARObject):
         self.data_offset: Optional[Integer] = None
         self.i_signal_group_ref: Optional[ARRef] = None
         self.i_signal_i_pdu: Optional[ISignalIPdu] = None
+    def serialize(self) -> ET.Element:
+        """Serialize EndToEndProtectionISignalIPdu to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize data_offset
+        if self.data_offset is not None:
+            serialized = ARObject._serialize_item(self.data_offset, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DATA-OFFSET")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize i_signal_group_ref
+        if self.i_signal_group_ref is not None:
+            serialized = ARObject._serialize_item(self.i_signal_group_ref, "ISignalGroup")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("I-SIGNAL-GROUP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize i_signal_i_pdu
+        if self.i_signal_i_pdu is not None:
+            serialized = ARObject._serialize_item(self.i_signal_i_pdu, "ISignalIPdu")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("I-SIGNAL-I-PDU")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "EndToEndProtectionISignalIPdu":
         """Deserialize XML element to EndToEndProtectionISignalIPdu object.

@@ -34,6 +34,46 @@ class CompuRationalCoeffs(ARObject):
         super().__init__()
         self.compu_denominator: Optional[CompuNominatorDenominator] = None
         self.compu: Optional[CompuNominatorDenominator] = None
+    def serialize(self) -> ET.Element:
+        """Serialize CompuRationalCoeffs to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize compu_denominator
+        if self.compu_denominator is not None:
+            serialized = ARObject._serialize_item(self.compu_denominator, "CompuNominatorDenominator")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COMPU-DENOMINATOR")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize compu
+        if self.compu is not None:
+            serialized = ARObject._serialize_item(self.compu, "CompuNominatorDenominator")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COMPU")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "CompuRationalCoeffs":
         """Deserialize XML element to CompuRationalCoeffs object.

@@ -43,6 +43,88 @@ class StreamFilterRuleDataLinkLayer(ARObject):
         self.source_mac: Optional[StreamFilterMACAddress] = None
         self.vlan_id: Optional[PositiveInteger] = None
         self.vlan_priority: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize StreamFilterRuleDataLinkLayer to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize destination_mac
+        if self.destination_mac is not None:
+            serialized = ARObject._serialize_item(self.destination_mac, "StreamFilterMACAddress")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DESTINATION-MAC")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize ether_type
+        if self.ether_type is not None:
+            serialized = ARObject._serialize_item(self.ether_type, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ETHER-TYPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize source_mac
+        if self.source_mac is not None:
+            serialized = ARObject._serialize_item(self.source_mac, "StreamFilterMACAddress")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SOURCE-MAC")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize vlan_id
+        if self.vlan_id is not None:
+            serialized = ARObject._serialize_item(self.vlan_id, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VLAN-ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize vlan_priority
+        if self.vlan_priority is not None:
+            serialized = ARObject._serialize_item(self.vlan_priority, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VLAN-PRIORITY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "StreamFilterRuleDataLinkLayer":
         """Deserialize XML element to StreamFilterRuleDataLinkLayer object.

@@ -76,6 +76,170 @@ class GlobalTimeDomain(FibexElement):
         self.pdu_triggering_ref: Optional[ARRef] = None
         self.slaves: list[GlobalTimeSlave] = []
         self.sync_loss: Optional[TimeValue] = None
+    def serialize(self) -> ET.Element:
+        """Serialize GlobalTimeDomain to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(GlobalTimeDomain, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize debounce_time
+        if self.debounce_time is not None:
+            serialized = ARObject._serialize_item(self.debounce_time, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DEBOUNCE-TIME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize domain_id
+        if self.domain_id is not None:
+            serialized = ARObject._serialize_item(self.domain_id, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DOMAIN-ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize gateways (list to container "GATEWAYS")
+        if self.gateways:
+            wrapper = ET.Element("GATEWAYS")
+            for item in self.gateways:
+                serialized = ARObject._serialize_item(item, "GlobalTimeGateway")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize global_time
+        if self.global_time is not None:
+            serialized = ARObject._serialize_item(self.global_time, "AbstractGlobalTimeDomainProps")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("GLOBAL-TIME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize global_time_master
+        if self.global_time_master is not None:
+            serialized = ARObject._serialize_item(self.global_time_master, "GlobalTimeMaster")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("GLOBAL-TIME-MASTER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize global_time_subs (list to container "GLOBAL-TIME-SUBS")
+        if self.global_time_subs:
+            wrapper = ET.Element("GLOBAL-TIME-SUBS")
+            for item in self.global_time_subs:
+                serialized = ARObject._serialize_item(item, "GlobalTimeDomain")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize network
+        if self.network is not None:
+            serialized = ARObject._serialize_item(self.network, "NetworkSegmentIdentification")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NETWORK")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize offset_time
+        if self.offset_time is not None:
+            serialized = ARObject._serialize_item(self.offset_time, "GlobalTimeDomain")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("OFFSET-TIME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize pdu_triggering_ref
+        if self.pdu_triggering_ref is not None:
+            serialized = ARObject._serialize_item(self.pdu_triggering_ref, "PduTriggering")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PDU-TRIGGERING")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize slaves (list to container "SLAVES")
+        if self.slaves:
+            wrapper = ET.Element("SLAVES")
+            for item in self.slaves:
+                serialized = ARObject._serialize_item(item, "GlobalTimeSlave")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize sync_loss
+        if self.sync_loss is not None:
+            serialized = ARObject._serialize_item(self.sync_loss, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SYNC-LOSS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "GlobalTimeDomain":
         """Deserialize XML element to GlobalTimeDomain object.

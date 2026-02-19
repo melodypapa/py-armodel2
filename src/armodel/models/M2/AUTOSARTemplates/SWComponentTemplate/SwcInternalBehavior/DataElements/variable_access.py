@@ -44,6 +44,56 @@ class VariableAccess(AbstractAccessPoint):
         super().__init__()
         self.accessed_variable_ref: Optional[ARRef] = None
         self.scope: Optional[VariableAccessScopeEnum] = None
+    def serialize(self) -> ET.Element:
+        """Serialize VariableAccess to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(VariableAccess, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize accessed_variable_ref
+        if self.accessed_variable_ref is not None:
+            serialized = ARObject._serialize_item(self.accessed_variable_ref, "AutosarVariableRef")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ACCESSED-VARIABLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize scope
+        if self.scope is not None:
+            serialized = ARObject._serialize_item(self.scope, "VariableAccessScopeEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SCOPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "VariableAccess":
         """Deserialize XML element to VariableAccess object.

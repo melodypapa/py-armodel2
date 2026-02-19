@@ -38,6 +38,46 @@ class BusMirrorCanIdToCanIdMapping(ARObject):
         super().__init__()
         self.remapped_can_id: Optional[PositiveInteger] = None
         self.souce_can_id_ref: Optional[ARRef] = None
+    def serialize(self) -> ET.Element:
+        """Serialize BusMirrorCanIdToCanIdMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize remapped_can_id
+        if self.remapped_can_id is not None:
+            serialized = ARObject._serialize_item(self.remapped_can_id, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("REMAPPED-CAN-ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize souce_can_id_ref
+        if self.souce_can_id_ref is not None:
+            serialized = ARObject._serialize_item(self.souce_can_id_ref, "CanFrameTriggering")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SOUCE-CAN-ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "BusMirrorCanIdToCanIdMapping":
         """Deserialize XML element to BusMirrorCanIdToCanIdMapping object.

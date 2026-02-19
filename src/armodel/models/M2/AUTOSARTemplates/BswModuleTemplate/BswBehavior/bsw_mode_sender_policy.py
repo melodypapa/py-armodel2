@@ -46,6 +46,74 @@ class BswModeSenderPolicy(ARObject):
         self.enhanced_mode: Optional[Boolean] = None
         self.provided_mode_ref: Optional[ARRef] = None
         self.queue_length: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize BswModeSenderPolicy to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize ack_request_request
+        if self.ack_request_request is not None:
+            serialized = ARObject._serialize_item(self.ack_request_request, "BswModeSwitchAckRequest")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ACK-REQUEST-REQUEST")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize enhanced_mode
+        if self.enhanced_mode is not None:
+            serialized = ARObject._serialize_item(self.enhanced_mode, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ENHANCED-MODE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize provided_mode_ref
+        if self.provided_mode_ref is not None:
+            serialized = ARObject._serialize_item(self.provided_mode_ref, "ModeDeclarationGroup")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PROVIDED-MODE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize queue_length
+        if self.queue_length is not None:
+            serialized = ARObject._serialize_item(self.queue_length, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("QUEUE-LENGTH")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "BswModeSenderPolicy":
         """Deserialize XML element to BswModeSenderPolicy object.

@@ -46,6 +46,108 @@ class McFunction(ARElement):
         self.out_ref: Optional[ARRef] = None
         self.ref_calprm_set_ref: Optional[ARRef] = None
         self.sub_functions: list[McFunction] = []
+    def serialize(self) -> ET.Element:
+        """Serialize McFunction to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(McFunction, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize def_calprm_set_ref
+        if self.def_calprm_set_ref is not None:
+            serialized = ARObject._serialize_item(self.def_calprm_set_ref, "McFunctionDataRefSet")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DEF-CALPRM-SET")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize in_measurement_ref
+        if self.in_measurement_ref is not None:
+            serialized = ARObject._serialize_item(self.in_measurement_ref, "McFunctionDataRefSet")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IN-MEASUREMENT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize loc_ref
+        if self.loc_ref is not None:
+            serialized = ARObject._serialize_item(self.loc_ref, "McFunctionDataRefSet")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("LOC")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize out_ref
+        if self.out_ref is not None:
+            serialized = ARObject._serialize_item(self.out_ref, "McFunctionDataRefSet")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("OUT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize ref_calprm_set_ref
+        if self.ref_calprm_set_ref is not None:
+            serialized = ARObject._serialize_item(self.ref_calprm_set_ref, "McFunctionDataRefSet")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("REF-CALPRM-SET")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sub_functions (list to container "SUB-FUNCTIONS")
+        if self.sub_functions:
+            wrapper = ET.Element("SUB-FUNCTIONS")
+            for item in self.sub_functions:
+                serialized = ARObject._serialize_item(item, "McFunction")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "McFunction":
         """Deserialize XML element to McFunction object.

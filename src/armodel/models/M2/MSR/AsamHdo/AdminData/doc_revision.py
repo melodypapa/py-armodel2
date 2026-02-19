@@ -51,6 +51,112 @@ class DocRevision(ARObject):
         self.revision_label_p1: Optional[RevisionLabelString] = None
         self.revision_label_p2: Optional[RevisionLabelString] = None
         self.state: Optional[NameToken] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DocRevision to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize date
+        if self.date is not None:
+            serialized = ARObject._serialize_item(self.date, "DateTime")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DATE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize issued_by
+        if self.issued_by is not None:
+            serialized = ARObject._serialize_item(self.issued_by, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ISSUED-BY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize modifications (list to container "MODIFICATIONS")
+        if self.modifications:
+            wrapper = ET.Element("MODIFICATIONS")
+            for item in self.modifications:
+                serialized = ARObject._serialize_item(item, "Modification")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize revision_label_string
+        if self.revision_label_string is not None:
+            serialized = ARObject._serialize_item(self.revision_label_string, "RevisionLabelString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("REVISION-LABEL-STRING")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize revision_label_p1
+        if self.revision_label_p1 is not None:
+            serialized = ARObject._serialize_item(self.revision_label_p1, "RevisionLabelString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("REVISION-LABEL-P1")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize revision_label_p2
+        if self.revision_label_p2 is not None:
+            serialized = ARObject._serialize_item(self.revision_label_p2, "RevisionLabelString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("REVISION-LABEL-P2")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize state
+        if self.state is not None:
+            serialized = ARObject._serialize_item(self.state, "NameToken")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("STATE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DocRevision":
         """Deserialize XML element to DocRevision object.

@@ -37,6 +37,56 @@ class J1939NmCluster(NmCluster):
         super().__init__()
         self.address_claim: Optional[Boolean] = None
         self.uses_dynamic: Optional[Boolean] = None
+    def serialize(self) -> ET.Element:
+        """Serialize J1939NmCluster to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(J1939NmCluster, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize address_claim
+        if self.address_claim is not None:
+            serialized = ARObject._serialize_item(self.address_claim, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ADDRESS-CLAIM")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize uses_dynamic
+        if self.uses_dynamic is not None:
+            serialized = ARObject._serialize_item(self.uses_dynamic, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("USES-DYNAMIC")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "J1939NmCluster":
         """Deserialize XML element to J1939NmCluster object.

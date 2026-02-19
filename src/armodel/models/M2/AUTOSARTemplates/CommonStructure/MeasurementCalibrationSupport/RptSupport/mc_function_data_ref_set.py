@@ -38,6 +38,38 @@ class McFunctionDataRefSet(ARObject):
         super().__init__()
         self.flat_map_entries: list[FlatInstanceDescriptor] = []
         self.mc_data_instances: list[McDataInstance] = []
+    def serialize(self) -> ET.Element:
+        """Serialize McFunctionDataRefSet to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize flat_map_entries (list to container "FLAT-MAP-ENTRIES")
+        if self.flat_map_entries:
+            wrapper = ET.Element("FLAT-MAP-ENTRIES")
+            for item in self.flat_map_entries:
+                serialized = ARObject._serialize_item(item, "FlatInstanceDescriptor")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize mc_data_instances (list to container "MC-DATA-INSTANCES")
+        if self.mc_data_instances:
+            wrapper = ET.Element("MC-DATA-INSTANCES")
+            for item in self.mc_data_instances:
+                serialized = ARObject._serialize_item(item, "McDataInstance")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "McFunctionDataRefSet":
         """Deserialize XML element to McFunctionDataRefSet object.

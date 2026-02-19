@@ -44,6 +44,74 @@ class PduToFrameMapping(ARObject):
         self.pdu: Optional[Pdu] = None
         self.start_position: Optional[Integer] = None
         self.update: Optional[Integer] = None
+    def serialize(self) -> ET.Element:
+        """Serialize PduToFrameMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize packing_byte
+        if self.packing_byte is not None:
+            serialized = ARObject._serialize_item(self.packing_byte, "ByteOrderEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PACKING-BYTE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize pdu
+        if self.pdu is not None:
+            serialized = ARObject._serialize_item(self.pdu, "Pdu")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PDU")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize start_position
+        if self.start_position is not None:
+            serialized = ARObject._serialize_item(self.start_position, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("START-POSITION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize update
+        if self.update is not None:
+            serialized = ARObject._serialize_item(self.update, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("UPDATE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "PduToFrameMapping":
         """Deserialize XML element to PduToFrameMapping object.

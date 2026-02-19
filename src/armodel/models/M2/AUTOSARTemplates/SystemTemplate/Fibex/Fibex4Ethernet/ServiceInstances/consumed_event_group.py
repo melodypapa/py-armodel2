@@ -66,6 +66,142 @@ class ConsumedEventGroup(Identifiable):
         self.routing_group_refs: list[ARRef] = []
         self.sd_client_config: Optional[Any] = None
         self.sd_client_timer: Optional[SomeipSdClientEventGroupTimingConfig] = None
+    def serialize(self) -> ET.Element:
+        """Serialize ConsumedEventGroup to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(ConsumedEventGroup, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize application_endpoint
+        if self.application_endpoint is not None:
+            serialized = ARObject._serialize_item(self.application_endpoint, "ApplicationEndpoint")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("APPLICATION-ENDPOINT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize auto_require
+        if self.auto_require is not None:
+            serialized = ARObject._serialize_item(self.auto_require, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("AUTO-REQUIRE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize event_group
+        if self.event_group is not None:
+            serialized = ARObject._serialize_item(self.event_group, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("EVENT-GROUP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize event_multicasts (list to container "EVENT-MULTICASTS")
+        if self.event_multicasts:
+            wrapper = ET.Element("EVENT-MULTICASTS")
+            for item in self.event_multicasts:
+                serialized = ARObject._serialize_item(item, "ApplicationEndpoint")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize pdu_activation_routings (list to container "PDU-ACTIVATION-ROUTINGS")
+        if self.pdu_activation_routings:
+            wrapper = ET.Element("PDU-ACTIVATION-ROUTINGS")
+            for item in self.pdu_activation_routings:
+                serialized = ARObject._serialize_item(item, "PduActivationRoutingGroup")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize priority
+        if self.priority is not None:
+            serialized = ARObject._serialize_item(self.priority, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PRIORITY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize routing_group_refs (list to container "ROUTING-GROUPS")
+        if self.routing_group_refs:
+            wrapper = ET.Element("ROUTING-GROUPS")
+            for item in self.routing_group_refs:
+                serialized = ARObject._serialize_item(item, "SoAdRoutingGroup")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize sd_client_config
+        if self.sd_client_config is not None:
+            serialized = ARObject._serialize_item(self.sd_client_config, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SD-CLIENT-CONFIG")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sd_client_timer
+        if self.sd_client_timer is not None:
+            serialized = ARObject._serialize_item(self.sd_client_timer, "SomeipSdClientEventGroupTimingConfig")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SD-CLIENT-TIMER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ConsumedEventGroup":
         """Deserialize XML element to ConsumedEventGroup object.

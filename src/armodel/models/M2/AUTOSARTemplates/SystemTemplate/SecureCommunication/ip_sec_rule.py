@@ -77,6 +77,212 @@ class IPSecRule(Identifiable):
         self.remote_id: Optional[String] = None
         self.remote_ips: list[NetworkEndpoint] = []
         self.remote_port: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize IPSecRule to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(IPSecRule, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize direction
+        if self.direction is not None:
+            serialized = ARObject._serialize_item(self.direction, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DIRECTION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize header_type
+        if self.header_type is not None:
+            serialized = ARObject._serialize_item(self.header_type, "IPsecHeaderTypeEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("HEADER-TYPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize ip_protocol
+        if self.ip_protocol is not None:
+            serialized = ARObject._serialize_item(self.ip_protocol, "IPsecIpProtocolEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IP-PROTOCOL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize local_certificates (list to container "LOCAL-CERTIFICATES")
+        if self.local_certificates:
+            wrapper = ET.Element("LOCAL-CERTIFICATES")
+            for item in self.local_certificates:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize local_id
+        if self.local_id is not None:
+            serialized = ARObject._serialize_item(self.local_id, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("LOCAL-ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize local_port_range
+        if self.local_port_range is not None:
+            serialized = ARObject._serialize_item(self.local_port_range, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("LOCAL-PORT-RANGE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize mode
+        if self.mode is not None:
+            serialized = ARObject._serialize_item(self.mode, "IPsecModeEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MODE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize policy
+        if self.policy is not None:
+            serialized = ARObject._serialize_item(self.policy, "IPsecPolicyEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("POLICY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize pre_shared_key
+        if self.pre_shared_key is not None:
+            serialized = ARObject._serialize_item(self.pre_shared_key, "CryptoServiceKey")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PRE-SHARED-KEY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize priority
+        if self.priority is not None:
+            serialized = ARObject._serialize_item(self.priority, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PRIORITY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize remotes (list to container "REMOTES")
+        if self.remotes:
+            wrapper = ET.Element("REMOTES")
+            for item in self.remotes:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize remote_id
+        if self.remote_id is not None:
+            serialized = ARObject._serialize_item(self.remote_id, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("REMOTE-ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize remote_ips (list to container "REMOTE-IPS")
+        if self.remote_ips:
+            wrapper = ET.Element("REMOTE-IPS")
+            for item in self.remote_ips:
+                serialized = ARObject._serialize_item(item, "NetworkEndpoint")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize remote_port
+        if self.remote_port is not None:
+            serialized = ARObject._serialize_item(self.remote_port, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("REMOTE-PORT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "IPSecRule":
         """Deserialize XML element to IPSecRule object.

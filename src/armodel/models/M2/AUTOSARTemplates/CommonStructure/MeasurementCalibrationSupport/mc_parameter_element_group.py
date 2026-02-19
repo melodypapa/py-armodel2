@@ -43,6 +43,60 @@ class McParameterElementGroup(ARObject):
         self.ram_location_ref: Optional[ARRef] = None
         self.rom_location_ref: Optional[ARRef] = None
         self.short_label: Optional[Identifier] = None
+    def serialize(self) -> ET.Element:
+        """Serialize McParameterElementGroup to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize ram_location_ref
+        if self.ram_location_ref is not None:
+            serialized = ARObject._serialize_item(self.ram_location_ref, "VariableDataPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RAM-LOCATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize rom_location_ref
+        if self.rom_location_ref is not None:
+            serialized = ARObject._serialize_item(self.rom_location_ref, "ParameterDataPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ROM-LOCATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize short_label
+        if self.short_label is not None:
+            serialized = ARObject._serialize_item(self.short_label, "Identifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SHORT-LABEL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "McParameterElementGroup":
         """Deserialize XML element to McParameterElementGroup object.

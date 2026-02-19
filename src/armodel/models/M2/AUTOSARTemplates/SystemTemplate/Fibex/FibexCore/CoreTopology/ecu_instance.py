@@ -119,6 +119,332 @@ class EcuInstance(FibexElement):
         self.tcp_ip_props: Optional[EthTcpIpProps] = None
         self.v2x_supported: Optional[Any] = None
         self.wake_up_over_bus_supported: Optional[Boolean] = None
+    def serialize(self) -> ET.Element:
+        """Serialize EcuInstance to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(EcuInstance, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize associated_com_refs (list to container "ASSOCIATED-COMS")
+        if self.associated_com_refs:
+            wrapper = ET.Element("ASSOCIATED-COMS")
+            for item in self.associated_com_refs:
+                serialized = ARObject._serialize_item(item, "ISignalIPduGroup")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize associateds (list to container "ASSOCIATEDS")
+        if self.associateds:
+            wrapper = ET.Element("ASSOCIATEDS")
+            for item in self.associateds:
+                serialized = ARObject._serialize_item(item, "ConsumedProvidedServiceInstanceGroup")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize associated_pdur_refs (list to container "ASSOCIATED-PDURS")
+        if self.associated_pdur_refs:
+            wrapper = ET.Element("ASSOCIATED-PDURS")
+            for item in self.associated_pdur_refs:
+                serialized = ARObject._serialize_item(item, "PdurIPduGroup")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize channel
+        if self.channel is not None:
+            serialized = ARObject._serialize_item(self.channel, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CHANNEL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize client_id_range
+        if self.client_id_range is not None:
+            serialized = ARObject._serialize_item(self.client_id_range, "ClientIdRange")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CLIENT-ID-RANGE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize com
+        if self.com is not None:
+            serialized = ARObject._serialize_item(self.com, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COM")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize com_enable
+        if self.com_enable is not None:
+            serialized = ARObject._serialize_item(self.com_enable, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COM-ENABLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize comm_controllers (list to container "COMM-CONTROLLERS")
+        if self.comm_controllers:
+            wrapper = ET.Element("COMM-CONTROLLERS")
+            for item in self.comm_controllers:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize connectors (list to container "CONNECTORS")
+        if self.connectors:
+            wrapper = ET.Element("CONNECTORS")
+            for item in self.connectors:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize dlt_config
+        if self.dlt_config is not None:
+            serialized = ARObject._serialize_item(self.dlt_config, "DltConfig")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DLT-CONFIG")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize do_ip_config
+        if self.do_ip_config is not None:
+            serialized = ARObject._serialize_item(self.do_ip_config, "DoIpConfig")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DO-IP-CONFIG")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize ecu_task_proxies (list to container "ECU-TASK-PROXIES")
+        if self.ecu_task_proxies:
+            wrapper = ET.Element("ECU-TASK-PROXIES")
+            for item in self.ecu_task_proxies:
+                serialized = ARObject._serialize_item(item, "OsTaskProxy")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize eth_switch_port
+        if self.eth_switch_port is not None:
+            serialized = ARObject._serialize_item(self.eth_switch_port, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ETH-SWITCH-PORT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize firewall_rules (list to container "FIREWALL-RULES")
+        if self.firewall_rules:
+            wrapper = ET.Element("FIREWALL-RULES")
+            for item in self.firewall_rules:
+                serialized = ARObject._serialize_item(item, "StateDependentFirewall")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize partitions (list to container "PARTITIONS")
+        if self.partitions:
+            wrapper = ET.Element("PARTITIONS")
+            for item in self.partitions:
+                serialized = ARObject._serialize_item(item, "EcuPartition")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize pnc_nm_request
+        if self.pnc_nm_request is not None:
+            serialized = ARObject._serialize_item(self.pnc_nm_request, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PNC-NM-REQUEST")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize pnc_prepare
+        if self.pnc_prepare is not None:
+            serialized = ARObject._serialize_item(self.pnc_prepare, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PNC-PREPARE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize pnc
+        if self.pnc is not None:
+            serialized = ARObject._serialize_item(self.pnc, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PNC")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize pn_reset_time
+        if self.pn_reset_time is not None:
+            serialized = ARObject._serialize_item(self.pn_reset_time, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PN-RESET-TIME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sleep_mode
+        if self.sleep_mode is not None:
+            serialized = ARObject._serialize_item(self.sleep_mode, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SLEEP-MODE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize tcp_ip_icmp_props
+        if self.tcp_ip_icmp_props is not None:
+            serialized = ARObject._serialize_item(self.tcp_ip_icmp_props, "EthTcpIpIcmpProps")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TCP-IP-ICMP-PROPS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize tcp_ip_props
+        if self.tcp_ip_props is not None:
+            serialized = ARObject._serialize_item(self.tcp_ip_props, "EthTcpIpProps")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TCP-IP-PROPS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize v2x_supported
+        if self.v2x_supported is not None:
+            serialized = ARObject._serialize_item(self.v2x_supported, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("V2X-SUPPORTED")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize wake_up_over_bus_supported
+        if self.wake_up_over_bus_supported is not None:
+            serialized = ARObject._serialize_item(self.wake_up_over_bus_supported, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("WAKE-UP-OVER-BUS-SUPPORTED")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "EcuInstance":
         """Deserialize XML element to EcuInstance object.

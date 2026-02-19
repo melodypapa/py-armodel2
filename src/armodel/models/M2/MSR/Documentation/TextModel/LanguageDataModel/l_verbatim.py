@@ -27,6 +27,18 @@ class LVerbatim(ARObject):
     def __init__(self) -> None:
         """Initialize LVerbatim."""
         super().__init__()
+    def serialize(self) -> ET.Element:
+        """Serialize LVerbatim to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "LVerbatim":
         """Deserialize XML element to LVerbatim object.

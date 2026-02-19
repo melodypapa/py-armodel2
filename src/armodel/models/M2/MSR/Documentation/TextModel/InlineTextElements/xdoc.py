@@ -46,6 +46,112 @@ class Xdoc(SingleLanguageReferrable):
         self.publisher: Optional[String] = None
         self.state: Optional[String] = None
         self.url: Optional[Any] = None
+    def serialize(self) -> ET.Element:
+        """Serialize Xdoc to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(Xdoc, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize date
+        if self.date is not None:
+            serialized = ARObject._serialize_item(self.date, "DateTime")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DATE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize number
+        if self.number is not None:
+            serialized = ARObject._serialize_item(self.number, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NUMBER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize position
+        if self.position is not None:
+            serialized = ARObject._serialize_item(self.position, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("POSITION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize publisher
+        if self.publisher is not None:
+            serialized = ARObject._serialize_item(self.publisher, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PUBLISHER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize state
+        if self.state is not None:
+            serialized = ARObject._serialize_item(self.state, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("STATE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize url
+        if self.url is not None:
+            serialized = ARObject._serialize_item(self.url, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("URL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "Xdoc":
         """Deserialize XML element to Xdoc object.

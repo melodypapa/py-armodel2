@@ -101,6 +101,206 @@ class RunnableEntity(ExecutableEntity):
         self.symbol: Optional[CIdentifier] = None
         self.wait_points: list[WaitPoint] = []
         self.written_locals: list[VariableAccess] = []
+    def serialize(self) -> ET.Element:
+        """Serialize RunnableEntity to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(RunnableEntity, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize arguments (list to container "ARGUMENTS")
+        if self.arguments:
+            wrapper = ET.Element("ARGUMENTS")
+            for item in self.arguments:
+                serialized = ARObject._serialize_item(item, "RunnableEntity")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize asynchronous_servers (list to container "ASYNCHRONOUS-SERVERS")
+        if self.asynchronous_servers:
+            wrapper = ET.Element("ASYNCHRONOUS-SERVERS")
+            for item in self.asynchronous_servers:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize can_be_invoked
+        if self.can_be_invoked is not None:
+            serialized = ARObject._serialize_item(self.can_be_invoked, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CAN-BE-INVOKED")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize data_reads (list to container "DATA-READS")
+        if self.data_reads:
+            wrapper = ET.Element("DATA-READS")
+            for item in self.data_reads:
+                serialized = ARObject._serialize_item(item, "VariableAccess")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize data_receives (list to container "DATA-RECEIVES")
+        if self.data_receives:
+            wrapper = ET.Element("DATA-RECEIVES")
+            for item in self.data_receives:
+                serialized = ARObject._serialize_item(item, "VariableAccess")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize data_send_points (list to container "DATA-SEND-POINTS")
+        if self.data_send_points:
+            wrapper = ET.Element("DATA-SEND-POINTS")
+            for item in self.data_send_points:
+                serialized = ARObject._serialize_item(item, "VariableAccess")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize data_writes (list to container "DATA-WRITES")
+        if self.data_writes:
+            wrapper = ET.Element("DATA-WRITES")
+            for item in self.data_writes:
+                serialized = ARObject._serialize_item(item, "VariableAccess")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize external_refs (list to container "EXTERNALS")
+        if self.external_refs:
+            wrapper = ET.Element("EXTERNALS")
+            for item in self.external_refs:
+                serialized = ARObject._serialize_item(item, "ExternalTriggeringPoint")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize internal_refs (list to container "INTERNALS")
+        if self.internal_refs:
+            wrapper = ET.Element("INTERNALS")
+            for item in self.internal_refs:
+                serialized = ARObject._serialize_item(item, "InternalTriggeringPoint")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize mode_access_points (list to container "MODE-ACCESS-POINTS")
+        if self.mode_access_points:
+            wrapper = ET.Element("MODE-ACCESS-POINTS")
+            for item in self.mode_access_points:
+                serialized = ARObject._serialize_item(item, "ModeAccessPoint")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize mode_switch_points (list to container "MODE-SWITCH-POINTS")
+        if self.mode_switch_points:
+            wrapper = ET.Element("MODE-SWITCH-POINTS")
+            for item in self.mode_switch_points:
+                serialized = ARObject._serialize_item(item, "ModeSwitchPoint")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize parameter_accesses (list to container "PARAMETER-ACCESSES")
+        if self.parameter_accesses:
+            wrapper = ET.Element("PARAMETER-ACCESSES")
+            for item in self.parameter_accesses:
+                serialized = ARObject._serialize_item(item, "ParameterAccess")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize read_locals (list to container "READ-LOCALS")
+        if self.read_locals:
+            wrapper = ET.Element("READ-LOCALS")
+            for item in self.read_locals:
+                serialized = ARObject._serialize_item(item, "VariableAccess")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize server_call_points (list to container "SERVER-CALL-POINTS")
+        if self.server_call_points:
+            wrapper = ET.Element("SERVER-CALL-POINTS")
+            for item in self.server_call_points:
+                serialized = ARObject._serialize_item(item, "ServerCallPoint")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize symbol
+        if self.symbol is not None:
+            serialized = ARObject._serialize_item(self.symbol, "CIdentifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SYMBOL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize wait_points (list to container "WAIT-POINTS")
+        if self.wait_points:
+            wrapper = ET.Element("WAIT-POINTS")
+            for item in self.wait_points:
+                serialized = ARObject._serialize_item(item, "WaitPoint")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize written_locals (list to container "WRITTEN-LOCALS")
+        if self.written_locals:
+            wrapper = ET.Element("WRITTEN-LOCALS")
+            for item in self.written_locals:
+                serialized = ARObject._serialize_item(item, "VariableAccess")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "RunnableEntity":
         """Deserialize XML element to RunnableEntity object.

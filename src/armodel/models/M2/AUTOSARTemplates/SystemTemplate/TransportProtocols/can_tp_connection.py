@@ -86,6 +86,248 @@ class CanTpConnection(TpConnection):
         self.timeout_cs: Optional[TimeValue] = None
         self.tp_sdu: Optional[IPdu] = None
         self.transmitter: Optional[CanTpNode] = None
+    def serialize(self) -> ET.Element:
+        """Serialize CanTpConnection to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(CanTpConnection, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize addressing
+        if self.addressing is not None:
+            serialized = ARObject._serialize_item(self.addressing, "CanTpAddressingFormatType")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ADDRESSING")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize cancellation
+        if self.cancellation is not None:
+            serialized = ARObject._serialize_item(self.cancellation, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CANCELLATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize can_tp_channel
+        if self.can_tp_channel is not None:
+            serialized = ARObject._serialize_item(self.can_tp_channel, "CanTpChannel")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CAN-TP-CHANNEL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize data_pdu
+        if self.data_pdu is not None:
+            serialized = ARObject._serialize_item(self.data_pdu, "NPdu")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DATA-PDU")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize flow_control_pdu
+        if self.flow_control_pdu is not None:
+            serialized = ARObject._serialize_item(self.flow_control_pdu, "NPdu")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FLOW-CONTROL-PDU")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize max_block_size
+        if self.max_block_size is not None:
+            serialized = ARObject._serialize_item(self.max_block_size, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX-BLOCK-SIZE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize multicast
+        if self.multicast is not None:
+            serialized = ARObject._serialize_item(self.multicast, "CanTpAddress")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MULTICAST")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize padding
+        if self.padding is not None:
+            serialized = ARObject._serialize_item(self.padding, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PADDING")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize receivers (list to container "RECEIVERS")
+        if self.receivers:
+            wrapper = ET.Element("RECEIVERS")
+            for item in self.receivers:
+                serialized = ARObject._serialize_item(item, "CanTpNode")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize ta_type_type
+        if self.ta_type_type is not None:
+            serialized = ARObject._serialize_item(self.ta_type_type, "NetworkTargetAddressType")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TA-TYPE-TYPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize timeout_br
+        if self.timeout_br is not None:
+            serialized = ARObject._serialize_item(self.timeout_br, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIMEOUT-BR")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize timeout_bs
+        if self.timeout_bs is not None:
+            serialized = ARObject._serialize_item(self.timeout_bs, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIMEOUT-BS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize timeout_cr
+        if self.timeout_cr is not None:
+            serialized = ARObject._serialize_item(self.timeout_cr, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIMEOUT-CR")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize timeout_cs
+        if self.timeout_cs is not None:
+            serialized = ARObject._serialize_item(self.timeout_cs, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIMEOUT-CS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize tp_sdu
+        if self.tp_sdu is not None:
+            serialized = ARObject._serialize_item(self.tp_sdu, "IPdu")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TP-SDU")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize transmitter
+        if self.transmitter is not None:
+            serialized = ARObject._serialize_item(self.transmitter, "CanTpNode")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TRANSMITTER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "CanTpConnection":
         """Deserialize XML element to CanTpConnection object.

@@ -51,6 +51,58 @@ class SenderReceiverInterface(DataInterface):
         self.data_element_refs: list[ARRef] = []
         self.invalidation_policy_policies: list[InvalidationPolicy] = []
         self.meta_data_item_set_refs: list[ARRef] = []
+    def serialize(self) -> ET.Element:
+        """Serialize SenderReceiverInterface to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(SenderReceiverInterface, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize data_element_refs (list to container "DATA-ELEMENTS")
+        if self.data_element_refs:
+            wrapper = ET.Element("DATA-ELEMENTS")
+            for item in self.data_element_refs:
+                serialized = ARObject._serialize_item(item, "VariableDataPrototype")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize invalidation_policy_policies (list to container "INVALIDATION-POLICY-POLICIES")
+        if self.invalidation_policy_policies:
+            wrapper = ET.Element("INVALIDATION-POLICY-POLICIES")
+            for item in self.invalidation_policy_policies:
+                serialized = ARObject._serialize_item(item, "InvalidationPolicy")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize meta_data_item_set_refs (list to container "META-DATA-ITEM-SETS")
+        if self.meta_data_item_set_refs:
+            wrapper = ET.Element("META-DATA-ITEM-SETS")
+            for item in self.meta_data_item_set_refs:
+                serialized = ARObject._serialize_item(item, "MetaDataItemSet")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SenderReceiverInterface":
         """Deserialize XML element to SenderReceiverInterface object.

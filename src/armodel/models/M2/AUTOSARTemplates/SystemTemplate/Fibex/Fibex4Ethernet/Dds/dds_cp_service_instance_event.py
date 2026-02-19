@@ -43,6 +43,60 @@ class DdsCpServiceInstanceEvent(ARObject):
         self.dds_event_ref: Optional[ARRef] = None
         self.dds_event_qos: Optional[DdsCpQosProfile] = None
         self.dds_event_topic: Optional[DdsCpTopic] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DdsCpServiceInstanceEvent to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize dds_event_ref
+        if self.dds_event_ref is not None:
+            serialized = ARObject._serialize_item(self.dds_event_ref, "PduTriggering")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DDS-EVENT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize dds_event_qos
+        if self.dds_event_qos is not None:
+            serialized = ARObject._serialize_item(self.dds_event_qos, "DdsCpQosProfile")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DDS-EVENT-QOS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize dds_event_topic
+        if self.dds_event_topic is not None:
+            serialized = ARObject._serialize_item(self.dds_event_topic, "DdsCpTopic")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DDS-EVENT-TOPIC")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DdsCpServiceInstanceEvent":
         """Deserialize XML element to DdsCpServiceInstanceEvent object.

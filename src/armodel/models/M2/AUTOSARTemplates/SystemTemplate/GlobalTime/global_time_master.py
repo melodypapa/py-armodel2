@@ -51,6 +51,98 @@ class GlobalTimeMaster(Identifiable, ABC):
         self.immediate: Optional[TimeValue] = None
         self.is_system_wide: Optional[Boolean] = None
         self.sync_period: Optional[TimeValue] = None
+    def serialize(self) -> ET.Element:
+        """Serialize GlobalTimeMaster to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(GlobalTimeMaster, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize communication_connector
+        if self.communication_connector is not None:
+            serialized = ARObject._serialize_item(self.communication_connector, "CommunicationConnector")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COMMUNICATION-CONNECTOR")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize icv_secured
+        if self.icv_secured is not None:
+            serialized = ARObject._serialize_item(self.icv_secured, "GlobalTimeIcvSupportEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ICV-SECURED")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize immediate
+        if self.immediate is not None:
+            serialized = ARObject._serialize_item(self.immediate, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IMMEDIATE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize is_system_wide
+        if self.is_system_wide is not None:
+            serialized = ARObject._serialize_item(self.is_system_wide, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IS-SYSTEM-WIDE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sync_period
+        if self.sync_period is not None:
+            serialized = ARObject._serialize_item(self.sync_period, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SYNC-PERIOD")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "GlobalTimeMaster":
         """Deserialize XML element to GlobalTimeMaster object.

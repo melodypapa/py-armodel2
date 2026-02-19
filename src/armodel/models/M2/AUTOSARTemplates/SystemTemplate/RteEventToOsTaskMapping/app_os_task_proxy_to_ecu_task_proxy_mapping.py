@@ -42,6 +42,70 @@ class AppOsTaskProxyToEcuTaskProxyMapping(Identifiable):
         self.app_task_proxy: Optional[OsTaskProxy] = None
         self.ecu_task_proxy: Optional[OsTaskProxy] = None
         self.offset: Optional[Integer] = None
+    def serialize(self) -> ET.Element:
+        """Serialize AppOsTaskProxyToEcuTaskProxyMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(AppOsTaskProxyToEcuTaskProxyMapping, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize app_task_proxy
+        if self.app_task_proxy is not None:
+            serialized = ARObject._serialize_item(self.app_task_proxy, "OsTaskProxy")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("APP-TASK-PROXY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize ecu_task_proxy
+        if self.ecu_task_proxy is not None:
+            serialized = ARObject._serialize_item(self.ecu_task_proxy, "OsTaskProxy")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ECU-TASK-PROXY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize offset
+        if self.offset is not None:
+            serialized = ARObject._serialize_item(self.offset, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("OFFSET")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "AppOsTaskProxyToEcuTaskProxyMapping":
         """Deserialize XML element to AppOsTaskProxyToEcuTaskProxyMapping object.

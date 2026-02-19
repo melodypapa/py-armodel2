@@ -49,6 +49,98 @@ class LatencyTimingConstraint(TimingConstraint):
         self.minimum: Optional[MultidimensionalTime] = None
         self.nominal: Optional[MultidimensionalTime] = None
         self.scope: Optional[TimingDescriptionEvent] = None
+    def serialize(self) -> ET.Element:
+        """Serialize LatencyTimingConstraint to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(LatencyTimingConstraint, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize latency
+        if self.latency is not None:
+            serialized = ARObject._serialize_item(self.latency, "LatencyConstraintTypeEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("LATENCY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize maximum
+        if self.maximum is not None:
+            serialized = ARObject._serialize_item(self.maximum, "MultidimensionalTime")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAXIMUM")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize minimum
+        if self.minimum is not None:
+            serialized = ARObject._serialize_item(self.minimum, "MultidimensionalTime")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MINIMUM")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nominal
+        if self.nominal is not None:
+            serialized = ARObject._serialize_item(self.nominal, "MultidimensionalTime")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NOMINAL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize scope
+        if self.scope is not None:
+            serialized = ARObject._serialize_item(self.scope, "TimingDescriptionEvent")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SCOPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "LatencyTimingConstraint":
         """Deserialize XML element to LatencyTimingConstraint object.

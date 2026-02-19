@@ -47,6 +47,84 @@ class DataExchangePoint(ARElement):
         self.kind: DataExchangePoint = None
         self.referenced: Baseline = None
         self.specification_scope: Optional[SpecificationScope] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DataExchangePoint to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DataExchangePoint, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize data_format
+        if self.data_format is not None:
+            serialized = ARObject._serialize_item(self.data_format, "DataFormatTailoring")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DATA-FORMAT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize kind
+        if self.kind is not None:
+            serialized = ARObject._serialize_item(self.kind, "DataExchangePoint")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("KIND")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize referenced
+        if self.referenced is not None:
+            serialized = ARObject._serialize_item(self.referenced, "Baseline")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("REFERENCED")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize specification_scope
+        if self.specification_scope is not None:
+            serialized = ARObject._serialize_item(self.specification_scope, "SpecificationScope")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SPECIFICATION-SCOPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DataExchangePoint":
         """Deserialize XML element to DataExchangePoint object.

@@ -38,6 +38,56 @@ class DiagnosticMapping(DiagnosticCommonElement, ABC):
         super().__init__()
         self.provider: Optional[CpSoftwareCluster] = None
         self.requester: Optional[CpSoftwareCluster] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DiagnosticMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DiagnosticMapping, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize provider
+        if self.provider is not None:
+            serialized = ARObject._serialize_item(self.provider, "CpSoftwareCluster")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PROVIDER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize requester
+        if self.requester is not None:
+            serialized = ARObject._serialize_item(self.requester, "CpSoftwareCluster")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("REQUESTER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagnosticMapping":
         """Deserialize XML element to DiagnosticMapping object.

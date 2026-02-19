@@ -45,6 +45,84 @@ class DiagnosticSecurityAccess(DiagnosticServiceInstance):
         self.security_access: Optional[Any] = None
         self.security_delay: Optional[TimeValue] = None
         self.security_level: Optional[DiagnosticSecurityLevel] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DiagnosticSecurityAccess to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DiagnosticSecurityAccess, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize request_seed_id
+        if self.request_seed_id is not None:
+            serialized = ARObject._serialize_item(self.request_seed_id, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("REQUEST-SEED-ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize security_access
+        if self.security_access is not None:
+            serialized = ARObject._serialize_item(self.security_access, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SECURITY-ACCESS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize security_delay
+        if self.security_delay is not None:
+            serialized = ARObject._serialize_item(self.security_delay, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SECURITY-DELAY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize security_level
+        if self.security_level is not None:
+            serialized = ARObject._serialize_item(self.security_level, "DiagnosticSecurityLevel")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SECURITY-LEVEL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagnosticSecurityAccess":
         """Deserialize XML element to DiagnosticSecurityAccess object.

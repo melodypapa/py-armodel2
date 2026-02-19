@@ -40,6 +40,56 @@ class RtpTp(TransportProtocolConfiguration):
         super().__init__()
         self.ssrc: Optional[PositiveInteger] = None
         self.tcp_udp_config: Optional[TcpUdpConfig] = None
+    def serialize(self) -> ET.Element:
+        """Serialize RtpTp to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(RtpTp, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize ssrc
+        if self.ssrc is not None:
+            serialized = ARObject._serialize_item(self.ssrc, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SSRC")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize tcp_udp_config
+        if self.tcp_udp_config is not None:
+            serialized = ARObject._serialize_item(self.tcp_udp_config, "TcpUdpConfig")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TCP-UDP-CONFIG")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "RtpTp":
         """Deserialize XML element to RtpTp object.

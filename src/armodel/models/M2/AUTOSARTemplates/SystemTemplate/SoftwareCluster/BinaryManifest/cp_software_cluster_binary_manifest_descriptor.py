@@ -57,6 +57,96 @@ class CpSoftwareClusterBinaryManifestDescriptor(ARElement):
         self.requires: list[BinaryManifestRequireResource] = []
         self.resources: list[Any] = []
         self.software_cluster: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize CpSoftwareClusterBinaryManifestDescriptor to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(CpSoftwareClusterBinaryManifestDescriptor, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize cp_software_cluster
+        if self.cp_software_cluster is not None:
+            serialized = ARObject._serialize_item(self.cp_software_cluster, "CpSoftwareCluster")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CP-SOFTWARE-CLUSTER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize meta_data_fields (list to container "META-DATA-FIELDS")
+        if self.meta_data_fields:
+            wrapper = ET.Element("META-DATA-FIELDS")
+            for item in self.meta_data_fields:
+                serialized = ARObject._serialize_item(item, "BinaryManifestMetaDataField")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize provides (list to container "PROVIDES")
+        if self.provides:
+            wrapper = ET.Element("PROVIDES")
+            for item in self.provides:
+                serialized = ARObject._serialize_item(item, "BinaryManifestProvideResource")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize requires (list to container "REQUIRES")
+        if self.requires:
+            wrapper = ET.Element("REQUIRES")
+            for item in self.requires:
+                serialized = ARObject._serialize_item(item, "BinaryManifestRequireResource")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize resources (list to container "RESOURCES")
+        if self.resources:
+            wrapper = ET.Element("RESOURCES")
+            for item in self.resources:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize software_cluster
+        if self.software_cluster is not None:
+            serialized = ARObject._serialize_item(self.software_cluster, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SOFTWARE-CLUSTER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "CpSoftwareClusterBinaryManifestDescriptor":
         """Deserialize XML element to CpSoftwareClusterBinaryManifestDescriptor object.

@@ -49,6 +49,112 @@ class SwitchFlowMeteringEntry(Identifiable):
         self.coupling_flag: Optional[Boolean] = None
         self.excess_burst: Optional[PositiveInteger] = None
         self.excess: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SwitchFlowMeteringEntry to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(SwitchFlowMeteringEntry, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize color_mode
+        if self.color_mode is not None:
+            serialized = ARObject._serialize_item(self.color_mode, "FlowMeteringColorModeEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COLOR-MODE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize committed_burst
+        if self.committed_burst is not None:
+            serialized = ARObject._serialize_item(self.committed_burst, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COMMITTED-BURST")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize committed
+        if self.committed is not None:
+            serialized = ARObject._serialize_item(self.committed, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COMMITTED")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize coupling_flag
+        if self.coupling_flag is not None:
+            serialized = ARObject._serialize_item(self.coupling_flag, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COUPLING-FLAG")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize excess_burst
+        if self.excess_burst is not None:
+            serialized = ARObject._serialize_item(self.excess_burst, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("EXCESS-BURST")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize excess
+        if self.excess is not None:
+            serialized = ARObject._serialize_item(self.excess, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("EXCESS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SwitchFlowMeteringEntry":
         """Deserialize XML element to SwitchFlowMeteringEntry object.

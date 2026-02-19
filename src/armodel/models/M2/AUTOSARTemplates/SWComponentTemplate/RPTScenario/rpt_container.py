@@ -62,6 +62,114 @@ class RptContainer(Identifiable):
         self.rpt_hook: Optional[RptHook] = None
         self.rpt_impl_policy: Optional[RptImplPolicy] = None
         self.rpt_sw: Optional[RptSwPrototypingAccess] = None
+    def serialize(self) -> ET.Element:
+        """Serialize RptContainer to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(RptContainer, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize by_pass_points (list to container "BY-PASS-POINTS")
+        if self.by_pass_points:
+            wrapper = ET.Element("BY-PASS-POINTS")
+            for item in self.by_pass_points:
+                serialized = ARObject._serialize_item(item, "AtpFeature")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize explicit_rpts (list to container "EXPLICIT-RPTS")
+        if self.explicit_rpts:
+            wrapper = ET.Element("EXPLICIT-RPTS")
+            for item in self.explicit_rpts:
+                serialized = ARObject._serialize_item(item, "RptProfile")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize rpt_containers (list to container "RPT-CONTAINERS")
+        if self.rpt_containers:
+            wrapper = ET.Element("RPT-CONTAINERS")
+            for item in self.rpt_containers:
+                serialized = ARObject._serialize_item(item, "RptContainer")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize rpt_executable_entity
+        if self.rpt_executable_entity is not None:
+            serialized = ARObject._serialize_item(self.rpt_executable_entity, "RptExecutableEntity")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RPT-EXECUTABLE-ENTITY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize rpt_hook
+        if self.rpt_hook is not None:
+            serialized = ARObject._serialize_item(self.rpt_hook, "RptHook")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RPT-HOOK")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize rpt_impl_policy
+        if self.rpt_impl_policy is not None:
+            serialized = ARObject._serialize_item(self.rpt_impl_policy, "RptImplPolicy")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RPT-IMPL-POLICY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize rpt_sw
+        if self.rpt_sw is not None:
+            serialized = ARObject._serialize_item(self.rpt_sw, "RptSwPrototypingAccess")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RPT-SW")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "RptContainer":
         """Deserialize XML element to RptContainer object.

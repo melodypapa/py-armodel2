@@ -44,6 +44,60 @@ class OperationInAtomicSwcInstanceRef(ARObject, ABC):
         self.base: Optional[AtomicSwComponentType] = None
         self.context_port_ref: Optional[ARRef] = None
         self.target_operation: Optional[ClientServerOperation] = None
+    def serialize(self) -> ET.Element:
+        """Serialize OperationInAtomicSwcInstanceRef to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize base
+        if self.base is not None:
+            serialized = ARObject._serialize_item(self.base, "AtomicSwComponentType")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BASE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize context_port_ref
+        if self.context_port_ref is not None:
+            serialized = ARObject._serialize_item(self.context_port_ref, "PortPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CONTEXT-PORT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize target_operation
+        if self.target_operation is not None:
+            serialized = ARObject._serialize_item(self.target_operation, "ClientServerOperation")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TARGET-OPERATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "OperationInAtomicSwcInstanceRef":
         """Deserialize XML element to OperationInAtomicSwcInstanceRef object.

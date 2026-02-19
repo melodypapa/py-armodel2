@@ -42,6 +42,60 @@ class SenderRecArrayElementMapping(ARObject):
         self.complex_type: Optional[SenderRecCompositeTypeMapping] = None
         self.indexed_array: Optional[IndexedArrayElement] = None
         self.system_signal: Optional[SystemSignal] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SenderRecArrayElementMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize complex_type
+        if self.complex_type is not None:
+            serialized = ARObject._serialize_item(self.complex_type, "SenderRecCompositeTypeMapping")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COMPLEX-TYPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize indexed_array
+        if self.indexed_array is not None:
+            serialized = ARObject._serialize_item(self.indexed_array, "IndexedArrayElement")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("INDEXED-ARRAY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize system_signal
+        if self.system_signal is not None:
+            serialized = ARObject._serialize_item(self.system_signal, "SystemSignal")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SYSTEM-SIGNAL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SenderRecArrayElementMapping":
         """Deserialize XML element to SenderRecArrayElementMapping object.

@@ -84,6 +84,164 @@ class PncMapping(Describable):
         self.short_label: Optional[Identifier] = None
         self.vfc_refs: list[ARRef] = []
         self.wakeup_frame_refs: list[ARRef] = []
+    def serialize(self) -> ET.Element:
+        """Serialize PncMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(PncMapping, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize dynamic_pnc_refs (list to container "DYNAMIC-PNCS")
+        if self.dynamic_pnc_refs:
+            wrapper = ET.Element("DYNAMIC-PNCS")
+            for item in self.dynamic_pnc_refs:
+                serialized = ARObject._serialize_item(item, "ISignalIPduGroup")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize ident_ref
+        if self.ident_ref is not None:
+            serialized = ARObject._serialize_item(self.ident_ref, "PncMappingIdent")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IDENT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize physical_channels (list to container "PHYSICAL-CHANNELS")
+        if self.physical_channels:
+            wrapper = ET.Element("PHYSICAL-CHANNELS")
+            for item in self.physical_channels:
+                serialized = ARObject._serialize_item(item, "PhysicalChannel")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize pnc_consumeds (list to container "PNC-CONSUMEDS")
+        if self.pnc_consumeds:
+            wrapper = ET.Element("PNC-CONSUMEDS")
+            for item in self.pnc_consumeds:
+                serialized = ARObject._serialize_item(item, "ConsumedProvidedServiceInstanceGroup")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize pnc_group_refs (list to container "PNC-GROUPS")
+        if self.pnc_group_refs:
+            wrapper = ET.Element("PNC-GROUPS")
+            for item in self.pnc_group_refs:
+                serialized = ARObject._serialize_item(item, "ISignalIPduGroup")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize pnc_identifier
+        if self.pnc_identifier is not None:
+            serialized = ARObject._serialize_item(self.pnc_identifier, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PNC-IDENTIFIER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize pnc_pdur_group_refs (list to container "PNC-PDUR-GROUPS")
+        if self.pnc_pdur_group_refs:
+            wrapper = ET.Element("PNC-PDUR-GROUPS")
+            for item in self.pnc_pdur_group_refs:
+                serialized = ARObject._serialize_item(item, "PdurIPduGroup")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize pnc_wakeup
+        if self.pnc_wakeup is not None:
+            serialized = ARObject._serialize_item(self.pnc_wakeup, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PNC-WAKEUP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize relevant_fors (list to container "RELEVANT-FORS")
+        if self.relevant_fors:
+            wrapper = ET.Element("RELEVANT-FORS")
+            for item in self.relevant_fors:
+                serialized = ARObject._serialize_item(item, "EcuInstance")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize short_label
+        if self.short_label is not None:
+            serialized = ARObject._serialize_item(self.short_label, "Identifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SHORT-LABEL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize vfc_refs (list to container "VFCS")
+        if self.vfc_refs:
+            wrapper = ET.Element("VFCS")
+            for item in self.vfc_refs:
+                serialized = ARObject._serialize_item(item, "PortGroup")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize wakeup_frame_refs (list to container "WAKEUP-FRAMES")
+        if self.wakeup_frame_refs:
+            wrapper = ET.Element("WAKEUP-FRAMES")
+            for item in self.wakeup_frame_refs:
+                serialized = ARObject._serialize_item(item, "FrameTriggering")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "PncMapping":
         """Deserialize XML element to PncMapping object.

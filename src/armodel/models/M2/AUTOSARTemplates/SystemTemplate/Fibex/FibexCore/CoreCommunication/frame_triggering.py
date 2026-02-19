@@ -49,6 +49,62 @@ class FrameTriggering(Identifiable, ABC):
         self.frame: Optional[Frame] = None
         self.frame_ports: list[FramePort] = []
         self.pdu_triggering_refs: list[ARRef] = []
+    def serialize(self) -> ET.Element:
+        """Serialize FrameTriggering to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(FrameTriggering, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize frame
+        if self.frame is not None:
+            serialized = ARObject._serialize_item(self.frame, "Frame")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FRAME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize frame_ports (list to container "FRAME-PORTS")
+        if self.frame_ports:
+            wrapper = ET.Element("FRAME-PORTS")
+            for item in self.frame_ports:
+                serialized = ARObject._serialize_item(item, "FramePort")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize pdu_triggering_refs (list to container "PDU-TRIGGERINGS")
+        if self.pdu_triggering_refs:
+            wrapper = ET.Element("PDU-TRIGGERINGS")
+            for item in self.pdu_triggering_refs:
+                serialized = ARObject._serialize_item(item, "PduTriggering")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "FrameTriggering":
         """Deserialize XML element to FrameTriggering object.

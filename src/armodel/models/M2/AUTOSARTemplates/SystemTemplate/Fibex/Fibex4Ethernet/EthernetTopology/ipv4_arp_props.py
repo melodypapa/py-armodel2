@@ -40,6 +40,74 @@ class Ipv4ArpProps(ARObject):
         self.tcp_ip_arp_packet: Optional[Boolean] = None
         self.tcp_ip_arp: Optional[TimeValue] = None
         self.tcp_ip_arp_table: Optional[TimeValue] = None
+    def serialize(self) -> ET.Element:
+        """Serialize Ipv4ArpProps to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize tcp_ip_arp_num
+        if self.tcp_ip_arp_num is not None:
+            serialized = ARObject._serialize_item(self.tcp_ip_arp_num, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TCP-IP-ARP-NUM")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize tcp_ip_arp_packet
+        if self.tcp_ip_arp_packet is not None:
+            serialized = ARObject._serialize_item(self.tcp_ip_arp_packet, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TCP-IP-ARP-PACKET")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize tcp_ip_arp
+        if self.tcp_ip_arp is not None:
+            serialized = ARObject._serialize_item(self.tcp_ip_arp, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TCP-IP-ARP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize tcp_ip_arp_table
+        if self.tcp_ip_arp_table is not None:
+            serialized = ARObject._serialize_item(self.tcp_ip_arp_table, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TCP-IP-ARP-TABLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "Ipv4ArpProps":
         """Deserialize XML element to Ipv4ArpProps object.

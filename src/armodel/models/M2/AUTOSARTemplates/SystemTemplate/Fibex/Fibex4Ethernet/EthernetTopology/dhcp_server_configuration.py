@@ -37,6 +37,46 @@ class DhcpServerConfiguration(ARObject):
         super().__init__()
         self.ipv4_dhcp_server: Optional[Ipv4DhcpServerConfiguration] = None
         self.ipv6_dhcp_server: Optional[Ipv6DhcpServerConfiguration] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DhcpServerConfiguration to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize ipv4_dhcp_server
+        if self.ipv4_dhcp_server is not None:
+            serialized = ARObject._serialize_item(self.ipv4_dhcp_server, "Ipv4DhcpServerConfiguration")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IPV4-DHCP-SERVER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize ipv6_dhcp_server
+        if self.ipv6_dhcp_server is not None:
+            serialized = ARObject._serialize_item(self.ipv6_dhcp_server, "Ipv6DhcpServerConfiguration")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IPV6-DHCP-SERVER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DhcpServerConfiguration":
         """Deserialize XML element to DhcpServerConfiguration object.

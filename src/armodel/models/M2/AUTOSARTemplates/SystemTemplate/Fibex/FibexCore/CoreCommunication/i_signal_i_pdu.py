@@ -47,6 +47,66 @@ class ISignalIPdu(IPdu):
         self.i_pdu_timing: Optional[IPduTiming] = None
         self.i_signal_to_pdu_refs: list[ARRef] = []
         self.unused_bit: Optional[Integer] = None
+    def serialize(self) -> ET.Element:
+        """Serialize ISignalIPdu to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(ISignalIPdu, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize i_pdu_timing
+        if self.i_pdu_timing is not None:
+            serialized = ARObject._serialize_item(self.i_pdu_timing, "IPduTiming")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("I-PDU-TIMING")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize i_signal_to_pdu_refs (list to container "I-SIGNAL-TO-PDUS")
+        if self.i_signal_to_pdu_refs:
+            wrapper = ET.Element("I-SIGNAL-TO-PDUS")
+            for item in self.i_signal_to_pdu_refs:
+                serialized = ARObject._serialize_item(item, "ISignalToIPduMapping")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize unused_bit
+        if self.unused_bit is not None:
+            serialized = ARObject._serialize_item(self.unused_bit, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("UNUSED-BIT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ISignalIPdu":
         """Deserialize XML element to ISignalIPdu object.

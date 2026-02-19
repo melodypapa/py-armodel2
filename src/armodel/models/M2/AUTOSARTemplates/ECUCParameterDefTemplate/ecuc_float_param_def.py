@@ -41,6 +41,70 @@ class EcucFloatParamDef(EcucParameterDef):
         self.default_value: Optional[Float] = None
         self.max: Optional[Limit] = None
         self.min: Optional[Limit] = None
+    def serialize(self) -> ET.Element:
+        """Serialize EcucFloatParamDef to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(EcucFloatParamDef, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize default_value
+        if self.default_value is not None:
+            serialized = ARObject._serialize_item(self.default_value, "Float")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DEFAULT-VALUE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize max
+        if self.max is not None:
+            serialized = ARObject._serialize_item(self.max, "Limit")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize min
+        if self.min is not None:
+            serialized = ARObject._serialize_item(self.min, "Limit")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MIN")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "EcucFloatParamDef":
         """Deserialize XML element to EcucFloatParamDef object.

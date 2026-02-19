@@ -37,6 +37,46 @@ class BusMirrorChannel(ARObject):
         super().__init__()
         self.bus_mirror: Optional[PositiveInteger] = None
         self.channel: Optional[PhysicalChannel] = None
+    def serialize(self) -> ET.Element:
+        """Serialize BusMirrorChannel to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize bus_mirror
+        if self.bus_mirror is not None:
+            serialized = ARObject._serialize_item(self.bus_mirror, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BUS-MIRROR")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize channel
+        if self.channel is not None:
+            serialized = ARObject._serialize_item(self.channel, "PhysicalChannel")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CHANNEL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "BusMirrorChannel":
         """Deserialize XML element to BusMirrorChannel object.

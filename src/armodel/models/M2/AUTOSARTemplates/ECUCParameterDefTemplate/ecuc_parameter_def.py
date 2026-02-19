@@ -44,6 +44,70 @@ class EcucParameterDef(EcucCommonAttributes, ABC):
         self.derivation: Optional[EcucDerivationSpecification] = None
         self.symbolic_name: Optional[Boolean] = None
         self.with_auto: Optional[Boolean] = None
+    def serialize(self) -> ET.Element:
+        """Serialize EcucParameterDef to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(EcucParameterDef, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize derivation
+        if self.derivation is not None:
+            serialized = ARObject._serialize_item(self.derivation, "EcucDerivationSpecification")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DERIVATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize symbolic_name
+        if self.symbolic_name is not None:
+            serialized = ARObject._serialize_item(self.symbolic_name, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SYMBOLIC-NAME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize with_auto
+        if self.with_auto is not None:
+            serialized = ARObject._serialize_item(self.with_auto, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("WITH-AUTO")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "EcucParameterDef":
         """Deserialize XML element to EcucParameterDef object.

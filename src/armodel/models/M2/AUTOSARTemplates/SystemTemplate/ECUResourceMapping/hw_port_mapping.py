@@ -38,6 +38,46 @@ class HwPortMapping(ARObject):
         super().__init__()
         self.communication_connector: Optional[CommunicationConnector] = None
         self.hw_pin_group_ref: Optional[ARRef] = None
+    def serialize(self) -> ET.Element:
+        """Serialize HwPortMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize communication_connector
+        if self.communication_connector is not None:
+            serialized = ARObject._serialize_item(self.communication_connector, "CommunicationConnector")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COMMUNICATION-CONNECTOR")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize hw_pin_group_ref
+        if self.hw_pin_group_ref is not None:
+            serialized = ARObject._serialize_item(self.hw_pin_group_ref, "HwPinGroup")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("HW-PIN-GROUP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "HwPortMapping":
         """Deserialize XML element to HwPortMapping object.

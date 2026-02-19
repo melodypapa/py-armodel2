@@ -62,6 +62,214 @@ class Map(ARObject):
         self.onmouseover: Optional[String] = None
         self.onmouseup: Optional[String] = None
         self.title: Optional[String] = None
+    def serialize(self) -> ET.Element:
+        """Serialize Map to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize area
+        if self.area is not None:
+            serialized = ARObject._serialize_item(self.area, "Area")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("AREA")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize class_
+        if self.class_ is not None:
+            serialized = ARObject._serialize_item(self.class_, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CLASS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize name
+        if self.name is not None:
+            serialized = ARObject._serialize_item(self.name, "NameToken")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NAME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize onclick
+        if self.onclick is not None:
+            serialized = ARObject._serialize_item(self.onclick, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ONCLICK")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize ondblclick
+        if self.ondblclick is not None:
+            serialized = ARObject._serialize_item(self.ondblclick, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ONDBLCLICK")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize onkeydown
+        if self.onkeydown is not None:
+            serialized = ARObject._serialize_item(self.onkeydown, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ONKEYDOWN")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize onkeypress
+        if self.onkeypress is not None:
+            serialized = ARObject._serialize_item(self.onkeypress, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ONKEYPRESS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize onkeyup
+        if self.onkeyup is not None:
+            serialized = ARObject._serialize_item(self.onkeyup, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ONKEYUP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize onmousedown
+        if self.onmousedown is not None:
+            serialized = ARObject._serialize_item(self.onmousedown, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ONMOUSEDOWN")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize onmousemove
+        if self.onmousemove is not None:
+            serialized = ARObject._serialize_item(self.onmousemove, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ONMOUSEMOVE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize onmouseout
+        if self.onmouseout is not None:
+            serialized = ARObject._serialize_item(self.onmouseout, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ONMOUSEOUT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize onmouseover
+        if self.onmouseover is not None:
+            serialized = ARObject._serialize_item(self.onmouseover, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ONMOUSEOVER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize onmouseup
+        if self.onmouseup is not None:
+            serialized = ARObject._serialize_item(self.onmouseup, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ONMOUSEUP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize title
+        if self.title is not None:
+            serialized = ARObject._serialize_item(self.title, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TITLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "Map":
         """Deserialize XML element to Map object.

@@ -40,6 +40,52 @@ class EvaluatedVariantSet(ARElement):
         super().__init__()
         self.approval_status: NameToken = None
         self.evaluateds: list[PredefinedVariant] = []
+    def serialize(self) -> ET.Element:
+        """Serialize EvaluatedVariantSet to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(EvaluatedVariantSet, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize approval_status
+        if self.approval_status is not None:
+            serialized = ARObject._serialize_item(self.approval_status, "NameToken")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("APPROVAL-STATUS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize evaluateds (list to container "EVALUATEDS")
+        if self.evaluateds:
+            wrapper = ET.Element("EVALUATEDS")
+            for item in self.evaluateds:
+                serialized = ARObject._serialize_item(item, "PredefinedVariant")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "EvaluatedVariantSet":
         """Deserialize XML element to EvaluatedVariantSet object.

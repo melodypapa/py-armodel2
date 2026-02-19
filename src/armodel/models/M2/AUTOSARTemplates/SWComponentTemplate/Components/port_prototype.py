@@ -85,6 +85,112 @@ class PortPrototype(Identifiable, ABC):
         self.parameter_ports: list[ParameterPortAnnotation] = []
         self.sender_receivers: list[Any] = []
         self.trigger_port_annotation_refs: list[ARRef] = []
+    def serialize(self) -> ET.Element:
+        """Serialize PortPrototype to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(PortPrototype, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize client_servers (list to container "CLIENT-SERVERS")
+        if self.client_servers:
+            wrapper = ET.Element("CLIENT-SERVERS")
+            for item in self.client_servers:
+                serialized = ARObject._serialize_item(item, "ClientServerAnnotation")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize delegated_port
+        if self.delegated_port is not None:
+            serialized = ARObject._serialize_item(self.delegated_port, "DelegatedPortAnnotation")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DELEGATED-PORT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize io_hw_abstraction_server_annotations (list to container "IO-HW-ABSTRACTION-SERVER-ANNOTATIONS")
+        if self.io_hw_abstraction_server_annotations:
+            wrapper = ET.Element("IO-HW-ABSTRACTION-SERVER-ANNOTATIONS")
+            for item in self.io_hw_abstraction_server_annotations:
+                serialized = ARObject._serialize_item(item, "IoHwAbstractionServerAnnotation")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize mode_port_annotations (list to container "MODE-PORT-ANNOTATIONS")
+        if self.mode_port_annotations:
+            wrapper = ET.Element("MODE-PORT-ANNOTATIONS")
+            for item in self.mode_port_annotations:
+                serialized = ARObject._serialize_item(item, "ModePortAnnotation")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize nv_data_port_annotations (list to container "NV-DATA-PORT-ANNOTATIONS")
+        if self.nv_data_port_annotations:
+            wrapper = ET.Element("NV-DATA-PORT-ANNOTATIONS")
+            for item in self.nv_data_port_annotations:
+                serialized = ARObject._serialize_item(item, "NvDataPortAnnotation")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize parameter_ports (list to container "PARAMETER-PORTS")
+        if self.parameter_ports:
+            wrapper = ET.Element("PARAMETER-PORTS")
+            for item in self.parameter_ports:
+                serialized = ARObject._serialize_item(item, "ParameterPortAnnotation")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize sender_receivers (list to container "SENDER-RECEIVERS")
+        if self.sender_receivers:
+            wrapper = ET.Element("SENDER-RECEIVERS")
+            for item in self.sender_receivers:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize trigger_port_annotation_refs (list to container "TRIGGER-PORT-ANNOTATIONS")
+        if self.trigger_port_annotation_refs:
+            wrapper = ET.Element("TRIGGER-PORT-ANNOTATIONS")
+            for item in self.trigger_port_annotation_refs:
+                serialized = ARObject._serialize_item(item, "TriggerPortAnnotation")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "PortPrototype":
         """Deserialize XML element to PortPrototype object.

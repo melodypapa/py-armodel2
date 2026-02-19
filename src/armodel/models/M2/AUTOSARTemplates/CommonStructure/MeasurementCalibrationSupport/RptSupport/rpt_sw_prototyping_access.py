@@ -37,6 +37,60 @@ class RptSwPrototypingAccess(ARObject):
         self.rpt_hook_access: Optional[RptAccessEnum] = None
         self.rpt_read_access: Optional[RptAccessEnum] = None
         self.rpt_write_access: Optional[RptAccessEnum] = None
+    def serialize(self) -> ET.Element:
+        """Serialize RptSwPrototypingAccess to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize rpt_hook_access
+        if self.rpt_hook_access is not None:
+            serialized = ARObject._serialize_item(self.rpt_hook_access, "RptAccessEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RPT-HOOK-ACCESS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize rpt_read_access
+        if self.rpt_read_access is not None:
+            serialized = ARObject._serialize_item(self.rpt_read_access, "RptAccessEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RPT-READ-ACCESS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize rpt_write_access
+        if self.rpt_write_access is not None:
+            serialized = ARObject._serialize_item(self.rpt_write_access, "RptAccessEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RPT-WRITE-ACCESS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "RptSwPrototypingAccess":
         """Deserialize XML element to RptSwPrototypingAccess object.

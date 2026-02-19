@@ -85,6 +85,188 @@ class McDataInstance(Identifiable):
         self.rpt_impl_policy: Optional[RptImplPolicy] = None
         self.sub_elements: list[McDataInstance] = []
         self.symbol: Optional[SymbolString] = None
+    def serialize(self) -> ET.Element:
+        """Serialize McDataInstance to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(McDataInstance, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize array_size
+        if self.array_size is not None:
+            serialized = ARObject._serialize_item(self.array_size, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ARRAY-SIZE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize display_identifier
+        if self.display_identifier is not None:
+            serialized = ARObject._serialize_item(self.display_identifier, "McdIdentifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DISPLAY-IDENTIFIER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize flat_map_entry
+        if self.flat_map_entry is not None:
+            serialized = ARObject._serialize_item(self.flat_map_entry, "FlatInstanceDescriptor")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FLAT-MAP-ENTRY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize instance_in
+        if self.instance_in is not None:
+            serialized = ARObject._serialize_item(self.instance_in, "ImplementationElementInParameterInstanceRef")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("INSTANCE-IN")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize mc_data_access_details
+        if self.mc_data_access_details is not None:
+            serialized = ARObject._serialize_item(self.mc_data_access_details, "McDataAccessDetails")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MC-DATA-ACCESS-DETAILS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize mc_datas (list to container "MC-DATAS")
+        if self.mc_datas:
+            wrapper = ET.Element("MC-DATAS")
+            for item in self.mc_datas:
+                serialized = ARObject._serialize_item(item, "RoleBasedMcDataAssignment")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize resulting
+        if self.resulting is not None:
+            serialized = ARObject._serialize_item(self.resulting, "SwDataDefProps")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RESULTING")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize resulting_rpt_sw
+        if self.resulting_rpt_sw is not None:
+            serialized = ARObject._serialize_item(self.resulting_rpt_sw, "RptSwPrototypingAccess")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RESULTING-RPT-SW")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize role
+        if self.role is not None:
+            serialized = ARObject._serialize_item(self.role, "Identifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ROLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize rpt_impl_policy
+        if self.rpt_impl_policy is not None:
+            serialized = ARObject._serialize_item(self.rpt_impl_policy, "RptImplPolicy")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RPT-IMPL-POLICY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sub_elements (list to container "SUB-ELEMENTS")
+        if self.sub_elements:
+            wrapper = ET.Element("SUB-ELEMENTS")
+            for item in self.sub_elements:
+                serialized = ARObject._serialize_item(item, "McDataInstance")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize symbol
+        if self.symbol is not None:
+            serialized = ARObject._serialize_item(self.symbol, "SymbolString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SYMBOL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "McDataInstance":
         """Deserialize XML element to McDataInstance object.

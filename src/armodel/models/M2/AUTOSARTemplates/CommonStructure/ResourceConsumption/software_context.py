@@ -34,6 +34,46 @@ class SoftwareContext(ARObject):
         super().__init__()
         self.input: Optional[String] = None
         self.state: Optional[String] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SoftwareContext to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize input
+        if self.input is not None:
+            serialized = ARObject._serialize_item(self.input, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("INPUT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize state
+        if self.state is not None:
+            serialized = ARObject._serialize_item(self.state, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("STATE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SoftwareContext":
         """Deserialize XML element to SoftwareContext object.

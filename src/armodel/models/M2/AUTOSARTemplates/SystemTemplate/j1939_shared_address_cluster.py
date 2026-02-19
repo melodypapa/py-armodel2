@@ -35,6 +35,38 @@ class J1939SharedAddressCluster(Identifiable):
         """Initialize J1939SharedAddressCluster."""
         super().__init__()
         self.participatings: list[J1939Cluster] = []
+    def serialize(self) -> ET.Element:
+        """Serialize J1939SharedAddressCluster to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(J1939SharedAddressCluster, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize participatings (list to container "PARTICIPATINGS")
+        if self.participatings:
+            wrapper = ET.Element("PARTICIPATINGS")
+            for item in self.participatings:
+                serialized = ARObject._serialize_item(item, "J1939Cluster")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "J1939SharedAddressCluster":
         """Deserialize XML element to J1939SharedAddressCluster object.

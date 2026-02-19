@@ -39,6 +39,56 @@ class MsrQueryProps(ARObject):
         self.comment: Optional[String] = None
         self.msr_query_args: list[MsrQueryArg] = []
         self.msr_query_name: String = None
+    def serialize(self) -> ET.Element:
+        """Serialize MsrQueryProps to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize comment
+        if self.comment is not None:
+            serialized = ARObject._serialize_item(self.comment, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COMMENT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize msr_query_args (list to container "MSR-QUERY-ARGS")
+        if self.msr_query_args:
+            wrapper = ET.Element("MSR-QUERY-ARGS")
+            for item in self.msr_query_args:
+                serialized = ARObject._serialize_item(item, "MsrQueryArg")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize msr_query_name
+        if self.msr_query_name is not None:
+            serialized = ARObject._serialize_item(self.msr_query_name, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MSR-QUERY-NAME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "MsrQueryProps":
         """Deserialize XML element to MsrQueryProps object.

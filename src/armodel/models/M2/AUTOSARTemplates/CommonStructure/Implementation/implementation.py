@@ -100,6 +100,210 @@ class Implementation(ARElement, ABC):
         self.sw_version: Optional[RevisionLabelString] = None
         self.used_code_generator: Optional[String] = None
         self.vendor_id: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize Implementation to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(Implementation, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize build_action_manifest
+        if self.build_action_manifest is not None:
+            serialized = ARObject._serialize_item(self.build_action_manifest, "BuildActionManifest")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BUILD-ACTION-MANIFEST")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize code_descriptors (list to container "CODE-DESCRIPTORS")
+        if self.code_descriptors:
+            wrapper = ET.Element("CODE-DESCRIPTORS")
+            for item in self.code_descriptors:
+                serialized = ARObject._serialize_item(item, "Code")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize compilers (list to container "COMPILERS")
+        if self.compilers:
+            wrapper = ET.Element("COMPILERS")
+            for item in self.compilers:
+                serialized = ARObject._serialize_item(item, "Compiler")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize generated_refs (list to container "GENERATEDS")
+        if self.generated_refs:
+            wrapper = ET.Element("GENERATEDS")
+            for item in self.generated_refs:
+                serialized = ARObject._serialize_item(item, "DependencyOnArtifact")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize hw_elements (list to container "HW-ELEMENTS")
+        if self.hw_elements:
+            wrapper = ET.Element("HW-ELEMENTS")
+            for item in self.hw_elements:
+                serialized = ARObject._serialize_item(item, "HwElement")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize linkers (list to container "LINKERS")
+        if self.linkers:
+            wrapper = ET.Element("LINKERS")
+            for item in self.linkers:
+                serialized = ARObject._serialize_item(item, "Linker")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize mc_support
+        if self.mc_support is not None:
+            serialized = ARObject._serialize_item(self.mc_support, "McSupportData")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MC-SUPPORT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize programming
+        if self.programming is not None:
+            serialized = ARObject._serialize_item(self.programming, "ProgramminglanguageEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PROGRAMMING")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize required_artifact_refs (list to container "REQUIRED-ARTIFACTS")
+        if self.required_artifact_refs:
+            wrapper = ET.Element("REQUIRED-ARTIFACTS")
+            for item in self.required_artifact_refs:
+                serialized = ARObject._serialize_item(item, "DependencyOnArtifact")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize required_refs (list to container "REQUIREDS")
+        if self.required_refs:
+            wrapper = ET.Element("REQUIREDS")
+            for item in self.required_refs:
+                serialized = ARObject._serialize_item(item, "DependencyOnArtifact")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize resource
+        if self.resource is not None:
+            serialized = ARObject._serialize_item(self.resource, "ResourceConsumption")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RESOURCE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize swc_bsw_ref
+        if self.swc_bsw_ref is not None:
+            serialized = ARObject._serialize_item(self.swc_bsw_ref, "SwcBswMapping")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SWC-BSW")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_version
+        if self.sw_version is not None:
+            serialized = ARObject._serialize_item(self.sw_version, "RevisionLabelString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-VERSION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize used_code_generator
+        if self.used_code_generator is not None:
+            serialized = ARObject._serialize_item(self.used_code_generator, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("USED-CODE-GENERATOR")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize vendor_id
+        if self.vendor_id is not None:
+            serialized = ARObject._serialize_item(self.vendor_id, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VENDOR-ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "Implementation":
         """Deserialize XML element to Implementation object.

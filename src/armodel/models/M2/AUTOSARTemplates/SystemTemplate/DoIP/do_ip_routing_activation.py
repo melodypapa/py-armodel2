@@ -35,6 +35,38 @@ class DoIpRoutingActivation(Identifiable):
         """Initialize DoIpRoutingActivation."""
         super().__init__()
         self.do_ip_targets: list[DoIpLogicTargetAddressProps] = []
+    def serialize(self) -> ET.Element:
+        """Serialize DoIpRoutingActivation to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DoIpRoutingActivation, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize do_ip_targets (list to container "DO-IP-TARGETS")
+        if self.do_ip_targets:
+            wrapper = ET.Element("DO-IP-TARGETS")
+            for item in self.do_ip_targets:
+                serialized = ARObject._serialize_item(item, "DoIpLogicTargetAddressProps")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DoIpRoutingActivation":
         """Deserialize XML element to DoIpRoutingActivation object.

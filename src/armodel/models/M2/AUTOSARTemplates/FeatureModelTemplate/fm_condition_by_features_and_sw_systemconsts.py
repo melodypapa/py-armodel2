@@ -27,6 +27,18 @@ class FMConditionByFeaturesAndSwSystemconsts(ARObject):
     def __init__(self) -> None:
         """Initialize FMConditionByFeaturesAndSwSystemconsts."""
         super().__init__()
+    def serialize(self) -> ET.Element:
+        """Serialize FMConditionByFeaturesAndSwSystemconsts to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "FMConditionByFeaturesAndSwSystemconsts":
         """Deserialize XML element to FMConditionByFeaturesAndSwSystemconsts object.

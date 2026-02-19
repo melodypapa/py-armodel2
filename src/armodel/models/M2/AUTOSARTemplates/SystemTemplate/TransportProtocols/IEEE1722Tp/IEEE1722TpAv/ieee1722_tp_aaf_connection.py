@@ -58,6 +58,168 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
         self.pcm_bit_depth: Optional[PositiveInteger] = None
         self.sparse: Optional[Boolean] = None
         self.streams_per: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize IEEE1722TpAafConnection to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(IEEE1722TpAafConnection, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize aaf_aes3_data
+        if self.aaf_aes3_data is not None:
+            serialized = ARObject._serialize_item(self.aaf_aes3_data, "IEEE1722TpAafAes3DataTypeEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("AAF-AES3-DATA")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize aaf_format_enum
+        if self.aaf_format_enum is not None:
+            serialized = ARObject._serialize_item(self.aaf_format_enum, "IEEE1722TpAafFormatEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("AAF-FORMAT-ENUM")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize aaf_nominal_rate
+        if self.aaf_nominal_rate is not None:
+            serialized = ARObject._serialize_item(self.aaf_nominal_rate, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("AAF-NOMINAL-RATE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize aes3_data_type_h
+        if self.aes3_data_type_h is not None:
+            serialized = ARObject._serialize_item(self.aes3_data_type_h, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("AES3-DATA-TYPE-H")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize aes3_data_type_l
+        if self.aes3_data_type_l is not None:
+            serialized = ARObject._serialize_item(self.aes3_data_type_l, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("AES3-DATA-TYPE-L")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize channels_per
+        if self.channels_per is not None:
+            serialized = ARObject._serialize_item(self.channels_per, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CHANNELS-PER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize event_default
+        if self.event_default is not None:
+            serialized = ARObject._serialize_item(self.event_default, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("EVENT-DEFAULT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize pcm_bit_depth
+        if self.pcm_bit_depth is not None:
+            serialized = ARObject._serialize_item(self.pcm_bit_depth, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PCM-BIT-DEPTH")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sparse
+        if self.sparse is not None:
+            serialized = ARObject._serialize_item(self.sparse, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SPARSE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize streams_per
+        if self.streams_per is not None:
+            serialized = ARObject._serialize_item(self.streams_per, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("STREAMS-PER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "IEEE1722TpAafConnection":
         """Deserialize XML element to IEEE1722TpAafConnection object.

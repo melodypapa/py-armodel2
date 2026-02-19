@@ -48,6 +48,102 @@ class Colspec(ARObject):
         self.colsep: Optional[TableSeparatorString] = None
         self.colwidth: Optional[String] = None
         self.rowsep: Optional[TableSeparatorString] = None
+    def serialize(self) -> ET.Element:
+        """Serialize Colspec to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize align
+        if self.align is not None:
+            serialized = ARObject._serialize_item(self.align, "AlignEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ALIGN")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize colname
+        if self.colname is not None:
+            serialized = ARObject._serialize_item(self.colname, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COLNAME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize colnum
+        if self.colnum is not None:
+            serialized = ARObject._serialize_item(self.colnum, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COLNUM")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize colsep
+        if self.colsep is not None:
+            serialized = ARObject._serialize_item(self.colsep, "TableSeparatorString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COLSEP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize colwidth
+        if self.colwidth is not None:
+            serialized = ARObject._serialize_item(self.colwidth, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COLWIDTH")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize rowsep
+        if self.rowsep is not None:
+            serialized = ARObject._serialize_item(self.rowsep, "TableSeparatorString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ROWSEP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "Colspec":
         """Deserialize XML element to Colspec object.

@@ -50,6 +50,122 @@ class SupervisedEntityNeeds(ServiceNeeds):
         self.max_alive_cycle: Optional[TimeValue] = None
         self.min_alive_cycle: Optional[TimeValue] = None
         self.tolerated_failed: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SupervisedEntityNeeds to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(SupervisedEntityNeeds, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize activate_at_start
+        if self.activate_at_start is not None:
+            serialized = ARObject._serialize_item(self.activate_at_start, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ACTIVATE-AT-START")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize checkpointses (list to container "CHECKPOINTSES")
+        if self.checkpointses:
+            wrapper = ET.Element("CHECKPOINTSES")
+            for item in self.checkpointses:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize enable
+        if self.enable is not None:
+            serialized = ARObject._serialize_item(self.enable, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ENABLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize expected_alive
+        if self.expected_alive is not None:
+            serialized = ARObject._serialize_item(self.expected_alive, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("EXPECTED-ALIVE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize max_alive_cycle
+        if self.max_alive_cycle is not None:
+            serialized = ARObject._serialize_item(self.max_alive_cycle, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX-ALIVE-CYCLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize min_alive_cycle
+        if self.min_alive_cycle is not None:
+            serialized = ARObject._serialize_item(self.min_alive_cycle, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MIN-ALIVE-CYCLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize tolerated_failed
+        if self.tolerated_failed is not None:
+            serialized = ARObject._serialize_item(self.tolerated_failed, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TOLERATED-FAILED")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SupervisedEntityNeeds":
         """Deserialize XML element to SupervisedEntityNeeds object.

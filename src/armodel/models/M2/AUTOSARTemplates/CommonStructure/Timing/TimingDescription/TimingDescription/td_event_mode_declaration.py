@@ -45,6 +45,84 @@ class TDEventModeDeclaration(TDEventVfbPort):
         self.exit_mode: Optional[ModeDeclaration] = None
         self.mode_ref: Optional[ARRef] = None
         self.td_event_mode: Optional[Any] = None
+    def serialize(self) -> ET.Element:
+        """Serialize TDEventModeDeclaration to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(TDEventModeDeclaration, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize entry_mode
+        if self.entry_mode is not None:
+            serialized = ARObject._serialize_item(self.entry_mode, "ModeDeclaration")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ENTRY-MODE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize exit_mode
+        if self.exit_mode is not None:
+            serialized = ARObject._serialize_item(self.exit_mode, "ModeDeclaration")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("EXIT-MODE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize mode_ref
+        if self.mode_ref is not None:
+            serialized = ARObject._serialize_item(self.mode_ref, "ModeDeclarationGroup")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MODE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize td_event_mode
+        if self.td_event_mode is not None:
+            serialized = ARObject._serialize_item(self.td_event_mode, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TD-EVENT-MODE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "TDEventModeDeclaration":
         """Deserialize XML element to TDEventModeDeclaration object.

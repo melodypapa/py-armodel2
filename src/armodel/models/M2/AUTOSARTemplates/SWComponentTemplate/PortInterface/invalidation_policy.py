@@ -38,6 +38,46 @@ class InvalidationPolicy(ARObject):
         super().__init__()
         self.data_element_ref: Optional[ARRef] = None
         self.handle_invalid_enum: Optional[HandleInvalidEnum] = None
+    def serialize(self) -> ET.Element:
+        """Serialize InvalidationPolicy to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize data_element_ref
+        if self.data_element_ref is not None:
+            serialized = ARObject._serialize_item(self.data_element_ref, "VariableDataPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DATA-ELEMENT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize handle_invalid_enum
+        if self.handle_invalid_enum is not None:
+            serialized = ARObject._serialize_item(self.handle_invalid_enum, "HandleInvalidEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("HANDLE-INVALID-ENUM")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "InvalidationPolicy":
         """Deserialize XML element to InvalidationPolicy object.

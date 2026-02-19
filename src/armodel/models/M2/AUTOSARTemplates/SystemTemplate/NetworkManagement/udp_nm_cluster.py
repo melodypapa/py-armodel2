@@ -55,6 +55,168 @@ class UdpNmCluster(NmCluster):
         self.nm_repeat: Optional[TimeValue] = None
         self.nm_wait_bus: Optional[TimeValue] = None
         self.vlan: Optional[Any] = None
+    def serialize(self) -> ET.Element:
+        """Serialize UdpNmCluster to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(UdpNmCluster, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize nm_cbv_position
+        if self.nm_cbv_position is not None:
+            serialized = ARObject._serialize_item(self.nm_cbv_position, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-CBV-POSITION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nm_immediate
+        if self.nm_immediate is not None:
+            serialized = ARObject._serialize_item(self.nm_immediate, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-IMMEDIATE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nm_message
+        if self.nm_message is not None:
+            serialized = ARObject._serialize_item(self.nm_message, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-MESSAGE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nm_msg_cycle
+        if self.nm_msg_cycle is not None:
+            serialized = ARObject._serialize_item(self.nm_msg_cycle, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-MSG-CYCLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nm_network
+        if self.nm_network is not None:
+            serialized = ARObject._serialize_item(self.nm_network, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-NETWORK")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nm_nid_position
+        if self.nm_nid_position is not None:
+            serialized = ARObject._serialize_item(self.nm_nid_position, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-NID-POSITION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nm_remote
+        if self.nm_remote is not None:
+            serialized = ARObject._serialize_item(self.nm_remote, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-REMOTE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nm_repeat
+        if self.nm_repeat is not None:
+            serialized = ARObject._serialize_item(self.nm_repeat, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-REPEAT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize nm_wait_bus
+        if self.nm_wait_bus is not None:
+            serialized = ARObject._serialize_item(self.nm_wait_bus, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-WAIT-BUS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize vlan
+        if self.vlan is not None:
+            serialized = ARObject._serialize_item(self.vlan, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VLAN")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "UdpNmCluster":
         """Deserialize XML element to UdpNmCluster object.

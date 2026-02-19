@@ -122,6 +122,238 @@ class BswInternalBehavior(InternalBehavior):
         self.services: list[Any] = []
         self.trigger_direct_refs: list[ARRef] = []
         self.variation_point_proxies: list[VariationPointProxy] = []
+    def serialize(self) -> ET.Element:
+        """Serialize BswInternalBehavior to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(BswInternalBehavior, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize ar_typed_per_instance_memorie_refs (list to container "AR-TYPED-PER-INSTANCE-MEMORIES")
+        if self.ar_typed_per_instance_memorie_refs:
+            wrapper = ET.Element("AR-TYPED-PER-INSTANCE-MEMORIES")
+            for item in self.ar_typed_per_instance_memorie_refs:
+                serialized = ARObject._serialize_item(item, "VariableDataPrototype")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize bsw_per_instance_memory_policies (list to container "BSW-PER-INSTANCE-MEMORY-POLICIES")
+        if self.bsw_per_instance_memory_policies:
+            wrapper = ET.Element("BSW-PER-INSTANCE-MEMORY-POLICIES")
+            for item in self.bsw_per_instance_memory_policies:
+                serialized = ARObject._serialize_item(item, "BswPerInstanceMemoryPolicy")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize client_policies (list to container "CLIENT-POLICIES")
+        if self.client_policies:
+            wrapper = ET.Element("CLIENT-POLICIES")
+            for item in self.client_policies:
+                serialized = ARObject._serialize_item(item, "BswClientPolicy")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize distinguisheds (list to container "DISTINGUISHEDS")
+        if self.distinguisheds:
+            wrapper = ET.Element("DISTINGUISHEDS")
+            for item in self.distinguisheds:
+                serialized = ARObject._serialize_item(item, "BswDistinguishedPartition")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize entities (list to container "ENTITIES")
+        if self.entities:
+            wrapper = ET.Element("ENTITIES")
+            for item in self.entities:
+                serialized = ARObject._serialize_item(item, "BswModuleEntity")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize events (list to container "EVENTS")
+        if self.events:
+            wrapper = ET.Element("EVENTS")
+            for item in self.events:
+                serialized = ARObject._serialize_item(item, "BswEvent")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize exclusive_areas (list to container "EXCLUSIVE-AREAS")
+        if self.exclusive_areas:
+            wrapper = ET.Element("EXCLUSIVE-AREAS")
+            for item in self.exclusive_areas:
+                serialized = ARObject._serialize_item(item, "BswExclusiveAreaPolicy")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize included_data_type_set_refs (list to container "INCLUDED-DATA-TYPE-SETS")
+        if self.included_data_type_set_refs:
+            wrapper = ET.Element("INCLUDED-DATA-TYPE-SETS")
+            for item in self.included_data_type_set_refs:
+                serialized = ARObject._serialize_item(item, "IncludedDataTypeSet")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize included_modes (list to container "INCLUDED-MODES")
+        if self.included_modes:
+            wrapper = ET.Element("INCLUDED-MODES")
+            for item in self.included_modes:
+                serialized = ARObject._serialize_item(item, "IncludedModeDeclarationGroupSet")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize internal_refs (list to container "INTERNALS")
+        if self.internal_refs:
+            wrapper = ET.Element("INTERNALS")
+            for item in self.internal_refs:
+                serialized = ARObject._serialize_item(item, "BswInternalTriggeringPoint")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize mode_receivers (list to container "MODE-RECEIVERS")
+        if self.mode_receivers:
+            wrapper = ET.Element("MODE-RECEIVERS")
+            for item in self.mode_receivers:
+                serialized = ARObject._serialize_item(item, "BswModeReceiverPolicy")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize mode_senders (list to container "MODE-SENDERS")
+        if self.mode_senders:
+            wrapper = ET.Element("MODE-SENDERS")
+            for item in self.mode_senders:
+                serialized = ARObject._serialize_item(item, "BswModeSenderPolicy")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize parameter_policies (list to container "PARAMETER-POLICIES")
+        if self.parameter_policies:
+            wrapper = ET.Element("PARAMETER-POLICIES")
+            for item in self.parameter_policies:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize per_instances (list to container "PER-INSTANCES")
+        if self.per_instances:
+            wrapper = ET.Element("PER-INSTANCES")
+            for item in self.per_instances:
+                serialized = ARObject._serialize_item(item, "ParameterDataPrototype")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize reception_policies (list to container "RECEPTION-POLICIES")
+        if self.reception_policies:
+            wrapper = ET.Element("RECEPTION-POLICIES")
+            for item in self.reception_policies:
+                serialized = ARObject._serialize_item(item, "BswDataReceptionPolicy")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize released_trigger_refs (list to container "RELEASED-TRIGGERS")
+        if self.released_trigger_refs:
+            wrapper = ET.Element("RELEASED-TRIGGERS")
+            for item in self.released_trigger_refs:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize scheduler_names (list to container "SCHEDULER-NAMES")
+        if self.scheduler_names:
+            wrapper = ET.Element("SCHEDULER-NAMES")
+            for item in self.scheduler_names:
+                serialized = ARObject._serialize_item(item, "BswSchedulerNamePrefix")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize send_policies (list to container "SEND-POLICIES")
+        if self.send_policies:
+            wrapper = ET.Element("SEND-POLICIES")
+            for item in self.send_policies:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize services (list to container "SERVICES")
+        if self.services:
+            wrapper = ET.Element("SERVICES")
+            for item in self.services:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize trigger_direct_refs (list to container "TRIGGER-DIRECTS")
+        if self.trigger_direct_refs:
+            wrapper = ET.Element("TRIGGER-DIRECTS")
+            for item in self.trigger_direct_refs:
+                serialized = ARObject._serialize_item(item, "BswTriggerDirectImplementation")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize variation_point_proxies (list to container "VARIATION-POINT-PROXIES")
+        if self.variation_point_proxies:
+            wrapper = ET.Element("VARIATION-POINT-PROXIES")
+            for item in self.variation_point_proxies:
+                serialized = ARObject._serialize_item(item, "VariationPointProxy")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "BswInternalBehavior":
         """Deserialize XML element to BswInternalBehavior object.

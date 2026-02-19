@@ -40,6 +40,56 @@ class CpSoftwareClusterResourceToApplicationPartitionMapping(Identifiable):
         super().__init__()
         self.application: Optional[ApplicationPartition] = None
         self.resource: Optional[CpSoftwareCluster] = None
+    def serialize(self) -> ET.Element:
+        """Serialize CpSoftwareClusterResourceToApplicationPartitionMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(CpSoftwareClusterResourceToApplicationPartitionMapping, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize application
+        if self.application is not None:
+            serialized = ARObject._serialize_item(self.application, "ApplicationPartition")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("APPLICATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize resource
+        if self.resource is not None:
+            serialized = ARObject._serialize_item(self.resource, "CpSoftwareCluster")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RESOURCE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "CpSoftwareClusterResourceToApplicationPartitionMapping":
         """Deserialize XML element to CpSoftwareClusterResourceToApplicationPartitionMapping object.

@@ -44,6 +44,62 @@ class CpSoftwareCluster(ARElement):
         self.software_cluster: Optional[PositiveInteger] = None
         self.sw_components: list[Any] = []
         self.sw_composition_component_types: list[CompositionSwComponentType] = []
+    def serialize(self) -> ET.Element:
+        """Serialize CpSoftwareCluster to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(CpSoftwareCluster, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize software_cluster
+        if self.software_cluster is not None:
+            serialized = ARObject._serialize_item(self.software_cluster, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SOFTWARE-CLUSTER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_components (list to container "SW-COMPONENTS")
+        if self.sw_components:
+            wrapper = ET.Element("SW-COMPONENTS")
+            for item in self.sw_components:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize sw_composition_component_types (list to container "SW-COMPOSITION-COMPONENT-TYPES")
+        if self.sw_composition_component_types:
+            wrapper = ET.Element("SW-COMPOSITION-COMPONENT-TYPES")
+            for item in self.sw_composition_component_types:
+                serialized = ARObject._serialize_item(item, "CompositionSwComponentType")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "CpSoftwareCluster":
         """Deserialize XML element to CpSoftwareCluster object.

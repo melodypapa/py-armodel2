@@ -43,6 +43,60 @@ class PortGroupInSystemInstanceRef(ARObject):
         self.base: Optional[System] = None
         self.context: Optional[RootSwCompositionPrototype] = None
         self.target_ref: ARRef = None
+    def serialize(self) -> ET.Element:
+        """Serialize PortGroupInSystemInstanceRef to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize base
+        if self.base is not None:
+            serialized = ARObject._serialize_item(self.base, "System")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BASE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize context
+        if self.context is not None:
+            serialized = ARObject._serialize_item(self.context, "RootSwCompositionPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CONTEXT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize target_ref
+        if self.target_ref is not None:
+            serialized = ARObject._serialize_item(self.target_ref, "PortGroup")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TARGET")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "PortGroupInSystemInstanceRef":
         """Deserialize XML element to PortGroupInSystemInstanceRef object.

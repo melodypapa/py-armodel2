@@ -32,6 +32,32 @@ class DoIpEntity(ARObject):
         """Initialize DoIpEntity."""
         super().__init__()
         self.do_ip_entity_role_enum: Optional[DoIpEntityRoleEnum] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DoIpEntity to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize do_ip_entity_role_enum
+        if self.do_ip_entity_role_enum is not None:
+            serialized = ARObject._serialize_item(self.do_ip_entity_role_enum, "DoIpEntityRoleEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DO-IP-ENTITY-ROLE-ENUM")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DoIpEntity":
         """Deserialize XML element to DoIpEntity object.

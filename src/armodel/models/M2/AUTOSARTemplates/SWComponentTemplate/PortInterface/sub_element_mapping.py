@@ -40,6 +40,60 @@ class SubElementMapping(ARObject):
         self.first_element_ref: Optional[ARRef] = None
         self.second_element_ref: Optional[ARRef] = None
         self.text_table_ref: ARRef = None
+    def serialize(self) -> ET.Element:
+        """Serialize SubElementMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize first_element_ref
+        if self.first_element_ref is not None:
+            serialized = ARObject._serialize_item(self.first_element_ref, "SubElementRef")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FIRST-ELEMENT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize second_element_ref
+        if self.second_element_ref is not None:
+            serialized = ARObject._serialize_item(self.second_element_ref, "SubElementRef")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SECOND-ELEMENT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize text_table_ref
+        if self.text_table_ref is not None:
+            serialized = ARObject._serialize_item(self.text_table_ref, "TextTableMapping")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TEXT-TABLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SubElementMapping":
         """Deserialize XML element to SubElementMapping object.

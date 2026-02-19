@@ -33,6 +33,38 @@ class EOCExecutableEntityRefAbstract(Identifiable, ABC):
         """Initialize EOCExecutableEntityRefAbstract."""
         super().__init__()
         self.direct_successors: list[Any] = []
+    def serialize(self) -> ET.Element:
+        """Serialize EOCExecutableEntityRefAbstract to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(EOCExecutableEntityRefAbstract, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize direct_successors (list to container "DIRECT-SUCCESSORS")
+        if self.direct_successors:
+            wrapper = ET.Element("DIRECT-SUCCESSORS")
+            for item in self.direct_successors:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "EOCExecutableEntityRefAbstract":
         """Deserialize XML element to EOCExecutableEntityRefAbstract object.

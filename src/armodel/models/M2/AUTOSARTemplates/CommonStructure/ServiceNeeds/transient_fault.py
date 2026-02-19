@@ -32,6 +32,38 @@ class TransientFault(TracedFailure):
         """Initialize TransientFault."""
         super().__init__()
         self.possible_error_reactions: list[Any] = []
+    def serialize(self) -> ET.Element:
+        """Serialize TransientFault to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(TransientFault, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize possible_error_reactions (list to container "POSSIBLE-ERROR-REACTIONS")
+        if self.possible_error_reactions:
+            wrapper = ET.Element("POSSIBLE-ERROR-REACTIONS")
+            for item in self.possible_error_reactions:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "TransientFault":
         """Deserialize XML element to TransientFault object.

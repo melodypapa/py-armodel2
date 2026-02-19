@@ -50,6 +50,72 @@ class McSupportData(ARObject):
         self.mc_variables: list[McDataInstance] = []
         self.measurables: list[SwSystemconstantValueSet] = []
         self.rpt_support_data: Optional[RptSupportData] = None
+    def serialize(self) -> ET.Element:
+        """Serialize McSupportData to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize emulations (list to container "EMULATIONS")
+        if self.emulations:
+            wrapper = ET.Element("EMULATIONS")
+            for item in self.emulations:
+                serialized = ARObject._serialize_item(item, "McSwEmulationMethodSupport")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize mc_parameters (list to container "MC-PARAMETERS")
+        if self.mc_parameters:
+            wrapper = ET.Element("MC-PARAMETERS")
+            for item in self.mc_parameters:
+                serialized = ARObject._serialize_item(item, "McDataInstance")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize mc_variables (list to container "MC-VARIABLES")
+        if self.mc_variables:
+            wrapper = ET.Element("MC-VARIABLES")
+            for item in self.mc_variables:
+                serialized = ARObject._serialize_item(item, "McDataInstance")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize measurables (list to container "MEASURABLES")
+        if self.measurables:
+            wrapper = ET.Element("MEASURABLES")
+            for item in self.measurables:
+                serialized = ARObject._serialize_item(item, "SwSystemconstantValueSet")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize rpt_support_data
+        if self.rpt_support_data is not None:
+            serialized = ARObject._serialize_item(self.rpt_support_data, "RptSupportData")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RPT-SUPPORT-DATA")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "McSupportData":
         """Deserialize XML element to McSupportData object.

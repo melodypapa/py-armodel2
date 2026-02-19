@@ -44,6 +44,70 @@ class CommunicationCluster(ARObject, ABC):
         self.physical_channels: list[PhysicalChannel] = []
         self.protocol_name: Optional[String] = None
         self.protocol_version: Optional[String] = None
+    def serialize(self) -> ET.Element:
+        """Serialize CommunicationCluster to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize baudrate
+        if self.baudrate is not None:
+            serialized = ARObject._serialize_item(self.baudrate, "PositiveUnlimitedInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BAUDRATE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize physical_channels (list to container "PHYSICAL-CHANNELS")
+        if self.physical_channels:
+            wrapper = ET.Element("PHYSICAL-CHANNELS")
+            for item in self.physical_channels:
+                serialized = ARObject._serialize_item(item, "PhysicalChannel")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize protocol_name
+        if self.protocol_name is not None:
+            serialized = ARObject._serialize_item(self.protocol_name, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PROTOCOL-NAME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize protocol_version
+        if self.protocol_version is not None:
+            serialized = ARObject._serialize_item(self.protocol_version, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PROTOCOL-VERSION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "CommunicationCluster":
         """Deserialize XML element to CommunicationCluster object.

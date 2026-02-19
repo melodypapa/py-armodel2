@@ -38,6 +38,46 @@ class FMFormulaByFeaturesAndAttributes(ARObject, ABC):
         super().__init__()
         self.attribute: Optional[FMAttributeDef] = None
         self.feature: Optional[FMFeature] = None
+    def serialize(self) -> ET.Element:
+        """Serialize FMFormulaByFeaturesAndAttributes to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize attribute
+        if self.attribute is not None:
+            serialized = ARObject._serialize_item(self.attribute, "FMAttributeDef")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ATTRIBUTE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize feature
+        if self.feature is not None:
+            serialized = ARObject._serialize_item(self.feature, "FMFeature")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FEATURE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "FMFormulaByFeaturesAndAttributes":
         """Deserialize XML element to FMFormulaByFeaturesAndAttributes object.

@@ -38,6 +38,42 @@ class EcucQuery(Identifiable):
         """Initialize EcucQuery."""
         super().__init__()
         self.ecuc_query: Optional[EcucQueryExpression] = None
+    def serialize(self) -> ET.Element:
+        """Serialize EcucQuery to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(EcucQuery, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize ecuc_query
+        if self.ecuc_query is not None:
+            serialized = ARObject._serialize_item(self.ecuc_query, "EcucQueryExpression")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ECUC-QUERY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "EcucQuery":
         """Deserialize XML element to EcucQuery object.

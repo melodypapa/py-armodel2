@@ -34,6 +34,46 @@ class ReceptionComSpecProps(ARObject):
         super().__init__()
         self.data_update: Optional[TimeValue] = None
         self.timeout: Optional[TimeValue] = None
+    def serialize(self) -> ET.Element:
+        """Serialize ReceptionComSpecProps to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize data_update
+        if self.data_update is not None:
+            serialized = ARObject._serialize_item(self.data_update, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DATA-UPDATE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize timeout
+        if self.timeout is not None:
+            serialized = ARObject._serialize_item(self.timeout, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIMEOUT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ReceptionComSpecProps":
         """Deserialize XML element to ReceptionComSpecProps object.

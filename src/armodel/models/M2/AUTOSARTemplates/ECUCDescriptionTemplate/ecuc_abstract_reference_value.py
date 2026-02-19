@@ -44,6 +44,66 @@ class EcucAbstractReferenceValue(EcucIndexableValue, ABC):
         self.annotations: list[Annotation] = []
         self.definition_ref: Optional[ARRef] = None
         self.is_auto_value: Optional[Boolean] = None
+    def serialize(self) -> ET.Element:
+        """Serialize EcucAbstractReferenceValue to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(EcucAbstractReferenceValue, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize annotations (list to container "ANNOTATIONS")
+        if self.annotations:
+            wrapper = ET.Element("ANNOTATIONS")
+            for item in self.annotations:
+                serialized = ARObject._serialize_item(item, "Annotation")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize definition_ref
+        if self.definition_ref is not None:
+            serialized = ARObject._serialize_item(self.definition_ref, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DEFINITION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize is_auto_value
+        if self.is_auto_value is not None:
+            serialized = ARObject._serialize_item(self.is_auto_value, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IS-AUTO-VALUE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "EcucAbstractReferenceValue":
         """Deserialize XML element to EcucAbstractReferenceValue object.

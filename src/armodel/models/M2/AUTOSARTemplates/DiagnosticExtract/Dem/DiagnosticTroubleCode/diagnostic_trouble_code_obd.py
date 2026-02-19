@@ -45,6 +45,84 @@ class DiagnosticTroubleCodeObd(DiagnosticTroubleCode):
         self.dtc_props_props: Optional[DiagnosticTroubleCode] = None
         self.event_readiness: Optional[EventObdReadinessGroup] = None
         self.obd_dtc_value: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DiagnosticTroubleCodeObd to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DiagnosticTroubleCodeObd, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize consider_pto
+        if self.consider_pto is not None:
+            serialized = ARObject._serialize_item(self.consider_pto, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CONSIDER-PTO")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize dtc_props_props
+        if self.dtc_props_props is not None:
+            serialized = ARObject._serialize_item(self.dtc_props_props, "DiagnosticTroubleCode")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DTC-PROPS-PROPS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize event_readiness
+        if self.event_readiness is not None:
+            serialized = ARObject._serialize_item(self.event_readiness, "EventObdReadinessGroup")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("EVENT-READINESS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize obd_dtc_value
+        if self.obd_dtc_value is not None:
+            serialized = ARObject._serialize_item(self.obd_dtc_value, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("OBD-DTC-VALUE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagnosticTroubleCodeObd":
         """Deserialize XML element to DiagnosticTroubleCodeObd object.

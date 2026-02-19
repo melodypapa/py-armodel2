@@ -36,6 +36,60 @@ class HardwareConfiguration(ARObject):
         self.additional: Optional[String] = None
         self.processor_mode: Optional[String] = None
         self.processor_speed: Optional[String] = None
+    def serialize(self) -> ET.Element:
+        """Serialize HardwareConfiguration to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize additional
+        if self.additional is not None:
+            serialized = ARObject._serialize_item(self.additional, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ADDITIONAL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize processor_mode
+        if self.processor_mode is not None:
+            serialized = ARObject._serialize_item(self.processor_mode, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PROCESSOR-MODE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize processor_speed
+        if self.processor_speed is not None:
+            serialized = ARObject._serialize_item(self.processor_speed, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PROCESSOR-SPEED")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "HardwareConfiguration":
         """Deserialize XML element to HardwareConfiguration object.

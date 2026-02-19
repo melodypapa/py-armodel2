@@ -34,6 +34,46 @@ class ClientServerApplicationErrorMapping(ARObject):
         super().__init__()
         self.first_application: Optional[ApplicationError] = None
         self.second: Optional[ApplicationError] = None
+    def serialize(self) -> ET.Element:
+        """Serialize ClientServerApplicationErrorMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize first_application
+        if self.first_application is not None:
+            serialized = ARObject._serialize_item(self.first_application, "ApplicationError")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FIRST-APPLICATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize second
+        if self.second is not None:
+            serialized = ARObject._serialize_item(self.second, "ApplicationError")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SECOND")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ClientServerApplicationErrorMapping":
         """Deserialize XML element to ClientServerApplicationErrorMapping object.

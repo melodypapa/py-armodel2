@@ -40,6 +40,48 @@ class DdsCpConfig(ARElement):
         super().__init__()
         self.dds_domains: list[DdsCpDomain] = []
         self.dds_qos_profiles: list[DdsCpQosProfile] = []
+    def serialize(self) -> ET.Element:
+        """Serialize DdsCpConfig to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DdsCpConfig, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize dds_domains (list to container "DDS-DOMAINS")
+        if self.dds_domains:
+            wrapper = ET.Element("DDS-DOMAINS")
+            for item in self.dds_domains:
+                serialized = ARObject._serialize_item(item, "DdsCpDomain")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize dds_qos_profiles (list to container "DDS-QOS-PROFILES")
+        if self.dds_qos_profiles:
+            wrapper = ET.Element("DDS-QOS-PROFILES")
+            for item in self.dds_qos_profiles:
+                serialized = ARObject._serialize_item(item, "DdsCpQosProfile")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DdsCpConfig":
         """Deserialize XML element to DdsCpConfig object.

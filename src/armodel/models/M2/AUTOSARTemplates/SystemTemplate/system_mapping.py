@@ -134,6 +134,258 @@ class SystemMapping(Identifiable):
         self.sw_mapping_refs: list[ARRef] = []
         self.system_signal_group_to_refs: list[ARRef] = []
         self.system_signal_tos: list[SystemSignalToCommunicationResourceMapping] = []
+    def serialize(self) -> ET.Element:
+        """Serialize SystemMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(SystemMapping, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize applications (list to container "APPLICATIONS")
+        if self.applications:
+            wrapper = ET.Element("APPLICATIONS")
+            for item in self.applications:
+                serialized = ARObject._serialize_item(item, "ApplicationPartitionToEcuPartitionMapping")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize app_os_tasks (list to container "APP-OS-TASKS")
+        if self.app_os_tasks:
+            wrapper = ET.Element("APP-OS-TASKS")
+            for item in self.app_os_tasks:
+                serialized = ARObject._serialize_item(item, "AppOsTaskProxyToEcuTaskProxyMapping")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize coms (list to container "COMS")
+        if self.coms:
+            wrapper = ET.Element("COMS")
+            for item in self.coms:
+                serialized = ARObject._serialize_item(item, "ComManagementMapping")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize crypto_service_refs (list to container "CRYPTO-SERVICES")
+        if self.crypto_service_refs:
+            wrapper = ET.Element("CRYPTO-SERVICES")
+            for item in self.crypto_service_refs:
+                serialized = ARObject._serialize_item(item, "CryptoServiceMapping")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize data_mapping_refs (list to container "DATA-MAPPINGS")
+        if self.data_mapping_refs:
+            wrapper = ET.Element("DATA-MAPPINGS")
+            for item in self.data_mapping_refs:
+                serialized = ARObject._serialize_item(item, "DataMapping")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize dds_i_signal_tos (list to container "DDS-I-SIGNAL-TOS")
+        if self.dds_i_signal_tos:
+            wrapper = ET.Element("DDS-I-SIGNAL-TOS")
+            for item in self.dds_i_signal_tos:
+                serialized = ARObject._serialize_item(item, "DdsCpISignalToDdsTopicMapping")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize ecu_resource_refs (list to container "ECU-RESOURCES")
+        if self.ecu_resource_refs:
+            wrapper = ET.Element("ECU-RESOURCES")
+            for item in self.ecu_resource_refs:
+                serialized = ARObject._serialize_item(item, "ECUMapping")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize j1939_controllers (list to container "J1939-CONTROLLERS")
+        if self.j1939_controllers:
+            wrapper = ET.Element("J1939-CONTROLLERS")
+            for item in self.j1939_controllers:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize mapping_refs (list to container "MAPPINGS")
+        if self.mapping_refs:
+            wrapper = ET.Element("MAPPINGS")
+            for item in self.mapping_refs:
+                serialized = ARObject._serialize_item(item, "MappingConstraint")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize pnc_mapping_refs (list to container "PNC-MAPPINGS")
+        if self.pnc_mapping_refs:
+            wrapper = ET.Element("PNC-MAPPINGS")
+            for item in self.pnc_mapping_refs:
+                serialized = ARObject._serialize_item(item, "PncMapping")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize port_element_tos (list to container "PORT-ELEMENT-TOS")
+        if self.port_element_tos:
+            wrapper = ET.Element("PORT-ELEMENT-TOS")
+            for item in self.port_element_tos:
+                serialized = ARObject._serialize_item(item, "PortElementToCommunicationResourceMapping")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize resources (list to container "RESOURCES")
+        if self.resources:
+            wrapper = ET.Element("RESOURCES")
+            for item in self.resources:
+                serialized = ARObject._serialize_item(item, "EcuResourceEstimation")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize resource_tos (list to container "RESOURCE-TOS")
+        if self.resource_tos:
+            wrapper = ET.Element("RESOURCE-TOS")
+            for item in self.resource_tos:
+                serialized = ARObject._serialize_item(item, "CpSoftwareCluster")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize rte_event_in_systems (list to container "RTE-EVENT-IN-SYSTEMS")
+        if self.rte_event_in_systems:
+            wrapper = ET.Element("RTE-EVENT-IN-SYSTEMS")
+            for item in self.rte_event_in_systems:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize rte_event_to_oses (list to container "RTE-EVENT-TO-OSES")
+        if self.rte_event_to_oses:
+            wrapper = ET.Element("RTE-EVENT-TO-OSES")
+            for item in self.rte_event_to_oses:
+                serialized = ARObject._serialize_item(item, "RteEventInSystemToOsTaskProxyMapping")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize signal_paths (list to container "SIGNAL-PATHS")
+        if self.signal_paths:
+            wrapper = ET.Element("SIGNAL-PATHS")
+            for item in self.signal_paths:
+                serialized = ARObject._serialize_item(item, "SignalPathConstraint")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize software_clusters (list to container "SOFTWARE-CLUSTERS")
+        if self.software_clusters:
+            wrapper = ET.Element("SOFTWARE-CLUSTERS")
+            for item in self.software_clusters:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize sw_clusters (list to container "SW-CLUSTERS")
+        if self.sw_clusters:
+            wrapper = ET.Element("SW-CLUSTERS")
+            for item in self.sw_clusters:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize swc_tos (list to container "SWC-TOS")
+        if self.swc_tos:
+            wrapper = ET.Element("SWC-TOS")
+            for item in self.swc_tos:
+                serialized = ARObject._serialize_item(item, "SwcToApplicationPartitionMapping")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize sw_impl_mapping_refs (list to container "SW-IMPL-MAPPINGS")
+        if self.sw_impl_mapping_refs:
+            wrapper = ET.Element("SW-IMPL-MAPPINGS")
+            for item in self.sw_impl_mapping_refs:
+                serialized = ARObject._serialize_item(item, "SwcToImplMapping")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize sw_mapping_refs (list to container "SW-MAPPINGS")
+        if self.sw_mapping_refs:
+            wrapper = ET.Element("SW-MAPPINGS")
+            for item in self.sw_mapping_refs:
+                serialized = ARObject._serialize_item(item, "SwcToEcuMapping")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize system_signal_group_to_refs (list to container "SYSTEM-SIGNAL-GROUP-TOS")
+        if self.system_signal_group_to_refs:
+            wrapper = ET.Element("SYSTEM-SIGNAL-GROUP-TOS")
+            for item in self.system_signal_group_to_refs:
+                serialized = ARObject._serialize_item(item, "SystemSignalGroupToCommunicationResourceMapping")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize system_signal_tos (list to container "SYSTEM-SIGNAL-TOS")
+        if self.system_signal_tos:
+            wrapper = ET.Element("SYSTEM-SIGNAL-TOS")
+            for item in self.system_signal_tos:
+                serialized = ARObject._serialize_item(item, "SystemSignalToCommunicationResourceMapping")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SystemMapping":
         """Deserialize XML element to SystemMapping object.

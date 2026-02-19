@@ -63,6 +63,150 @@ class LinTpConnection(TpConnection):
         self.timeout_cr: Optional[TimeValue] = None
         self.timeout_cs: Optional[TimeValue] = None
         self.transmitter: Optional[LinTpNode] = None
+    def serialize(self) -> ET.Element:
+        """Serialize LinTpConnection to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(LinTpConnection, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize data_pdu
+        if self.data_pdu is not None:
+            serialized = ARObject._serialize_item(self.data_pdu, "NPdu")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DATA-PDU")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize flow_control
+        if self.flow_control is not None:
+            serialized = ARObject._serialize_item(self.flow_control, "NPdu")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FLOW-CONTROL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize lin_tp_n_sdu
+        if self.lin_tp_n_sdu is not None:
+            serialized = ARObject._serialize_item(self.lin_tp_n_sdu, "IPdu")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("LIN-TP-N-SDU")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize multicast
+        if self.multicast is not None:
+            serialized = ARObject._serialize_item(self.multicast, "TpAddress")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MULTICAST")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize receivers (list to container "RECEIVERS")
+        if self.receivers:
+            wrapper = ET.Element("RECEIVERS")
+            for item in self.receivers:
+                serialized = ARObject._serialize_item(item, "LinTpNode")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize timeout_as
+        if self.timeout_as is not None:
+            serialized = ARObject._serialize_item(self.timeout_as, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIMEOUT-AS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize timeout_cr
+        if self.timeout_cr is not None:
+            serialized = ARObject._serialize_item(self.timeout_cr, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIMEOUT-CR")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize timeout_cs
+        if self.timeout_cs is not None:
+            serialized = ARObject._serialize_item(self.timeout_cs, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIMEOUT-CS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize transmitter
+        if self.transmitter is not None:
+            serialized = ARObject._serialize_item(self.transmitter, "LinTpNode")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TRANSMITTER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "LinTpConnection":
         """Deserialize XML element to LinTpConnection object.

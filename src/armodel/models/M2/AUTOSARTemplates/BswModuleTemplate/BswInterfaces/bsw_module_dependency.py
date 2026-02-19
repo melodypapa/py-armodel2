@@ -43,6 +43,56 @@ class BswModuleDependency(Identifiable):
         super().__init__()
         self.target_module_id: Optional[PositiveInteger] = None
         self.target_module: Optional[BswModuleDescription] = None
+    def serialize(self) -> ET.Element:
+        """Serialize BswModuleDependency to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(BswModuleDependency, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize target_module_id
+        if self.target_module_id is not None:
+            serialized = ARObject._serialize_item(self.target_module_id, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TARGET-MODULE-ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize target_module
+        if self.target_module is not None:
+            serialized = ARObject._serialize_item(self.target_module, "BswModuleDescription")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TARGET-MODULE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "BswModuleDependency":
         """Deserialize XML element to BswModuleDependency object.

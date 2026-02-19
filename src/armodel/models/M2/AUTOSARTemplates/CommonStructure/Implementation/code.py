@@ -41,6 +41,48 @@ class Code(Identifiable):
         super().__init__()
         self.artifacts: list[AutosarEngineeringObject] = []
         self.callback_headers: list[ServiceNeeds] = []
+    def serialize(self) -> ET.Element:
+        """Serialize Code to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(Code, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize artifacts (list to container "ARTIFACTS")
+        if self.artifacts:
+            wrapper = ET.Element("ARTIFACTS")
+            for item in self.artifacts:
+                serialized = ARObject._serialize_item(item, "AutosarEngineeringObject")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize callback_headers (list to container "CALLBACK-HEADERS")
+        if self.callback_headers:
+            wrapper = ET.Element("CALLBACK-HEADERS")
+            for item in self.callback_headers:
+                serialized = ARObject._serialize_item(item, "ServiceNeeds")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "Code":
         """Deserialize XML element to Code object.

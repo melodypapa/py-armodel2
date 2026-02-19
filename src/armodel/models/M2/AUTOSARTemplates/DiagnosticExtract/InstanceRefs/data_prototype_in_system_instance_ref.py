@@ -57,6 +57,108 @@ class DataPrototypeInSystemInstanceRef(ARObject):
         self.context_root: Optional[RootSwCompositionPrototype] = None
         self.root_data_prototype_ref: Optional[ARRef] = None
         self.target_data_ref: Optional[ARRef] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DataPrototypeInSystemInstanceRef to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize base
+        if self.base is not None:
+            serialized = ARObject._serialize_item(self.base, "System")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BASE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize contexts (list to container "CONTEXTS")
+        if self.contexts:
+            wrapper = ET.Element("CONTEXTS")
+            for item in self.contexts:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize context_datas (list to container "CONTEXT-DATAS")
+        if self.context_datas:
+            wrapper = ET.Element("CONTEXT-DATAS")
+            for item in self.context_datas:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize context_port_ref
+        if self.context_port_ref is not None:
+            serialized = ARObject._serialize_item(self.context_port_ref, "PortPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CONTEXT-PORT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize context_root
+        if self.context_root is not None:
+            serialized = ARObject._serialize_item(self.context_root, "RootSwCompositionPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CONTEXT-ROOT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize root_data_prototype_ref
+        if self.root_data_prototype_ref is not None:
+            serialized = ARObject._serialize_item(self.root_data_prototype_ref, "AutosarDataPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ROOT-DATA-PROTOTYPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize target_data_ref
+        if self.target_data_ref is not None:
+            serialized = ARObject._serialize_item(self.target_data_ref, "DataPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TARGET-DATA")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DataPrototypeInSystemInstanceRef":
         """Deserialize XML element to DataPrototypeInSystemInstanceRef object.

@@ -37,6 +37,46 @@ class FMAttributeValue(ARObject):
         super().__init__()
         self.definition: Optional[FMAttributeDef] = None
         self.value: Optional[Numerical] = None
+    def serialize(self) -> ET.Element:
+        """Serialize FMAttributeValue to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize definition
+        if self.definition is not None:
+            serialized = ARObject._serialize_item(self.definition, "FMAttributeDef")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DEFINITION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize value
+        if self.value is not None:
+            serialized = ARObject._serialize_item(self.value, "Numerical")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VALUE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "FMAttributeValue":
         """Deserialize XML element to FMAttributeValue object.

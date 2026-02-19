@@ -45,6 +45,52 @@ class RoleBasedMcDataAssignment(ARObject):
         self.executions: list[RptExecutionContext] = []
         self.mc_data_instances: list[McDataInstance] = []
         self.role: Optional[Identifier] = None
+    def serialize(self) -> ET.Element:
+        """Serialize RoleBasedMcDataAssignment to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize executions (list to container "EXECUTIONS")
+        if self.executions:
+            wrapper = ET.Element("EXECUTIONS")
+            for item in self.executions:
+                serialized = ARObject._serialize_item(item, "RptExecutionContext")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize mc_data_instances (list to container "MC-DATA-INSTANCES")
+        if self.mc_data_instances:
+            wrapper = ET.Element("MC-DATA-INSTANCES")
+            for item in self.mc_data_instances:
+                serialized = ARObject._serialize_item(item, "McDataInstance")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize role
+        if self.role is not None:
+            serialized = ARObject._serialize_item(self.role, "Identifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ROLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "RoleBasedMcDataAssignment":
         """Deserialize XML element to RoleBasedMcDataAssignment object.

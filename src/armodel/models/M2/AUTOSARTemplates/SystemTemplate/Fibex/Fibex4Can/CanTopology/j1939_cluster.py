@@ -38,6 +38,60 @@ class J1939Cluster(ARObject):
         self.network_id: Optional[PositiveInteger] = None
         self.request2_support: Optional[Boolean] = None
         self.uses_address: Optional[Boolean] = None
+    def serialize(self) -> ET.Element:
+        """Serialize J1939Cluster to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize network_id
+        if self.network_id is not None:
+            serialized = ARObject._serialize_item(self.network_id, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NETWORK-ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize request2_support
+        if self.request2_support is not None:
+            serialized = ARObject._serialize_item(self.request2_support, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("REQUEST2-SUPPORT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize uses_address
+        if self.uses_address is not None:
+            serialized = ARObject._serialize_item(self.uses_address, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("USES-ADDRESS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "J1939Cluster":
         """Deserialize XML element to J1939Cluster object.

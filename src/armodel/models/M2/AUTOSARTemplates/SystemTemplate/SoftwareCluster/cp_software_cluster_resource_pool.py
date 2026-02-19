@@ -40,6 +40,48 @@ class CpSoftwareClusterResourcePool(ARElement):
         super().__init__()
         self.ecu_scopes: list[EcuInstance] = []
         self.resources: list[CpSoftwareCluster] = []
+    def serialize(self) -> ET.Element:
+        """Serialize CpSoftwareClusterResourcePool to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(CpSoftwareClusterResourcePool, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize ecu_scopes (list to container "ECU-SCOPES")
+        if self.ecu_scopes:
+            wrapper = ET.Element("ECU-SCOPES")
+            for item in self.ecu_scopes:
+                serialized = ARObject._serialize_item(item, "EcuInstance")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize resources (list to container "RESOURCES")
+        if self.resources:
+            wrapper = ET.Element("RESOURCES")
+            for item in self.resources:
+                serialized = ARObject._serialize_item(item, "CpSoftwareCluster")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "CpSoftwareClusterResourcePool":
         """Deserialize XML element to CpSoftwareClusterResourcePool object.

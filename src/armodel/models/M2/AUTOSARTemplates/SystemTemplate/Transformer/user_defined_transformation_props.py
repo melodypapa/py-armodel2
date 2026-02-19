@@ -30,6 +30,28 @@ class UserDefinedTransformationProps(TransformationProps):
     def __init__(self) -> None:
         """Initialize UserDefinedTransformationProps."""
         super().__init__()
+    def serialize(self) -> ET.Element:
+        """Serialize UserDefinedTransformationProps to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(UserDefinedTransformationProps, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "UserDefinedTransformationProps":
         """Deserialize XML element to UserDefinedTransformationProps object.

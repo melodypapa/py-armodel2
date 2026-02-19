@@ -41,6 +41,56 @@ class EndToEndProtectionVariablePrototype(ARObject):
         self.receiver_refs: list[ARRef] = []
         self.sender_ref: Optional[ARRef] = None
         self.short_label: Optional[Identifier] = None
+    def serialize(self) -> ET.Element:
+        """Serialize EndToEndProtectionVariablePrototype to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize receiver_refs (list to container "RECEIVERS")
+        if self.receiver_refs:
+            wrapper = ET.Element("RECEIVERS")
+            for item in self.receiver_refs:
+                serialized = ARObject._serialize_item(item, "VariableDataPrototype")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize sender_ref
+        if self.sender_ref is not None:
+            serialized = ARObject._serialize_item(self.sender_ref, "VariableDataPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SENDER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize short_label
+        if self.short_label is not None:
+            serialized = ARObject._serialize_item(self.short_label, "Identifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SHORT-LABEL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "EndToEndProtectionVariablePrototype":
         """Deserialize XML element to EndToEndProtectionVariablePrototype object.

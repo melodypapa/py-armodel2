@@ -53,6 +53,98 @@ class DataPrototypeMapping(ARObject):
         self.second_to_first: Optional[DataTransformation] = None
         self.sub_element_refs: list[ARRef] = []
         self.text_table_ref: ARRef = None
+    def serialize(self) -> ET.Element:
+        """Serialize DataPrototypeMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize first_data_ref
+        if self.first_data_ref is not None:
+            serialized = ARObject._serialize_item(self.first_data_ref, "AutosarDataPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FIRST-DATA")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize first_to_second
+        if self.first_to_second is not None:
+            serialized = ARObject._serialize_item(self.first_to_second, "DataTransformation")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FIRST-TO-SECOND")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize second_data_ref
+        if self.second_data_ref is not None:
+            serialized = ARObject._serialize_item(self.second_data_ref, "AutosarDataPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SECOND-DATA")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize second_to_first
+        if self.second_to_first is not None:
+            serialized = ARObject._serialize_item(self.second_to_first, "DataTransformation")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SECOND-TO-FIRST")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sub_element_refs (list to container "SUB-ELEMENTS")
+        if self.sub_element_refs:
+            wrapper = ET.Element("SUB-ELEMENTS")
+            for item in self.sub_element_refs:
+                serialized = ARObject._serialize_item(item, "SubElementMapping")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize text_table_ref
+        if self.text_table_ref is not None:
+            serialized = ARObject._serialize_item(self.text_table_ref, "TextTableMapping")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TEXT-TABLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DataPrototypeMapping":
         """Deserialize XML element to DataPrototypeMapping object.

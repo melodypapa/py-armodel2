@@ -51,6 +51,94 @@ class DiagnosticExtendedDataRecord(DiagnosticCommonElement):
         self.record_number: Optional[PositiveInteger] = None
         self.trigger: Optional[DiagnosticRecordTriggerEnum] = None
         self.update: Optional[Boolean] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DiagnosticExtendedDataRecord to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DiagnosticExtendedDataRecord, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize custom_trigger
+        if self.custom_trigger is not None:
+            serialized = ARObject._serialize_item(self.custom_trigger, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CUSTOM-TRIGGER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize record_elements (list to container "RECORD-ELEMENTS")
+        if self.record_elements:
+            wrapper = ET.Element("RECORD-ELEMENTS")
+            for item in self.record_elements:
+                serialized = ARObject._serialize_item(item, "DiagnosticParameter")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize record_number
+        if self.record_number is not None:
+            serialized = ARObject._serialize_item(self.record_number, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RECORD-NUMBER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize trigger
+        if self.trigger is not None:
+            serialized = ARObject._serialize_item(self.trigger, "DiagnosticRecordTriggerEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TRIGGER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize update
+        if self.update is not None:
+            serialized = ARObject._serialize_item(self.update, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("UPDATE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagnosticExtendedDataRecord":
         """Deserialize XML element to DiagnosticExtendedDataRecord object.

@@ -68,6 +68,118 @@ class ExecutionTime(Identifiable, ABC):
         self.included_librarie_refs: list[ARRef] = []
         self.memory_section_locations: list[MemorySectionLocation] = []
         self.software_context: Optional[SoftwareContext] = None
+    def serialize(self) -> ET.Element:
+        """Serialize ExecutionTime to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(ExecutionTime, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize exclusive_area
+        if self.exclusive_area is not None:
+            serialized = ARObject._serialize_item(self.exclusive_area, "ExclusiveArea")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("EXCLUSIVE-AREA")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize executable_entity
+        if self.executable_entity is not None:
+            serialized = ARObject._serialize_item(self.executable_entity, "ExecutableEntity")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("EXECUTABLE-ENTITY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize hardware
+        if self.hardware is not None:
+            serialized = ARObject._serialize_item(self.hardware, "HardwareConfiguration")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("HARDWARE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize hw_element
+        if self.hw_element is not None:
+            serialized = ARObject._serialize_item(self.hw_element, "HwElement")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("HW-ELEMENT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize included_librarie_refs (list to container "INCLUDED-LIBRARIES")
+        if self.included_librarie_refs:
+            wrapper = ET.Element("INCLUDED-LIBRARIES")
+            for item in self.included_librarie_refs:
+                serialized = ARObject._serialize_item(item, "DependencyOnArtifact")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize memory_section_locations (list to container "MEMORY-SECTION-LOCATIONS")
+        if self.memory_section_locations:
+            wrapper = ET.Element("MEMORY-SECTION-LOCATIONS")
+            for item in self.memory_section_locations:
+                serialized = ARObject._serialize_item(item, "MemorySectionLocation")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize software_context
+        if self.software_context is not None:
+            serialized = ARObject._serialize_item(self.software_context, "SoftwareContext")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SOFTWARE-CONTEXT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ExecutionTime":
         """Deserialize XML element to ExecutionTime object.

@@ -47,6 +47,56 @@ class AtomicSwComponentType(SwComponentType, ABC):
         super().__init__()
         self.internal_behavior: Optional[SwcInternalBehavior] = None
         self.symbol_props: Optional[SymbolProps] = None
+    def serialize(self) -> ET.Element:
+        """Serialize AtomicSwComponentType to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(AtomicSwComponentType, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize internal_behavior
+        if self.internal_behavior is not None:
+            serialized = ARObject._serialize_item(self.internal_behavior, "SwcInternalBehavior")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("INTERNAL-BEHAVIOR")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize symbol_props
+        if self.symbol_props is not None:
+            serialized = ARObject._serialize_item(self.symbol_props, "SymbolProps")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SYMBOL-PROPS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "AtomicSwComponentType":
         """Deserialize XML element to AtomicSwComponentType object.

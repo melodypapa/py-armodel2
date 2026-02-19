@@ -38,6 +38,38 @@ class FormulaExpression(ARObject, ABC):
         super().__init__()
         self.atp_reference_refs: list[ARRef] = []
         self.atp_string_refs: list[ARRef] = []
+    def serialize(self) -> ET.Element:
+        """Serialize FormulaExpression to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize atp_reference_refs (list to container "ATP-REFERENCES")
+        if self.atp_reference_refs:
+            wrapper = ET.Element("ATP-REFERENCES")
+            for item in self.atp_reference_refs:
+                serialized = ARObject._serialize_item(item, "Referrable")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize atp_string_refs (list to container "ATP-STRINGS")
+        if self.atp_string_refs:
+            wrapper = ET.Element("ATP-STRINGS")
+            for item in self.atp_string_refs:
+                serialized = ARObject._serialize_item(item, "Referrable")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "FormulaExpression":
         """Deserialize XML element to FormulaExpression object.

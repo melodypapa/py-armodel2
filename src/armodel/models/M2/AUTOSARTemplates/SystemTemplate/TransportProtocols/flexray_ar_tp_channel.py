@@ -81,6 +81,276 @@ class FlexrayArTpChannel(ARObject):
         self.timeout_bs: Optional[TimeValue] = None
         self.timeout_cr: Optional[TimeValue] = None
         self.tp_connections: list[FlexrayArTpConnection] = []
+    def serialize(self) -> ET.Element:
+        """Serialize FlexrayArTpChannel to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize ack_type
+        if self.ack_type is not None:
+            serialized = ARObject._serialize_item(self.ack_type, "FrArTpAckType")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ACK-TYPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize cancellation
+        if self.cancellation is not None:
+            serialized = ARObject._serialize_item(self.cancellation, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CANCELLATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize extended
+        if self.extended is not None:
+            serialized = ARObject._serialize_item(self.extended, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("EXTENDED")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize max_ar
+        if self.max_ar is not None:
+            serialized = ARObject._serialize_item(self.max_ar, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX-AR")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize max_as
+        if self.max_as is not None:
+            serialized = ARObject._serialize_item(self.max_as, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX-AS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize max_bs
+        if self.max_bs is not None:
+            serialized = ARObject._serialize_item(self.max_bs, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX-BS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize max_fc_wait
+        if self.max_fc_wait is not None:
+            serialized = ARObject._serialize_item(self.max_fc_wait, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX-FC-WAIT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize maximum_message
+        if self.maximum_message is not None:
+            serialized = ARObject._serialize_item(self.maximum_message, "MaximumMessageLengthType")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAXIMUM-MESSAGE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize max_retries
+        if self.max_retries is not None:
+            serialized = ARObject._serialize_item(self.max_retries, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX-RETRIES")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize minimum
+        if self.minimum is not None:
+            serialized = ARObject._serialize_item(self.minimum, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MINIMUM")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize multicast
+        if self.multicast is not None:
+            serialized = ARObject._serialize_item(self.multicast, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MULTICAST")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize n_pdus (list to container "N-PDUS")
+        if self.n_pdus:
+            wrapper = ET.Element("N-PDUS")
+            for item in self.n_pdus:
+                serialized = ARObject._serialize_item(item, "NPdu")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize time_br
+        if self.time_br is not None:
+            serialized = ARObject._serialize_item(self.time_br, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIME-BR")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize time_cs
+        if self.time_cs is not None:
+            serialized = ARObject._serialize_item(self.time_cs, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIME-CS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize timeout_ar
+        if self.timeout_ar is not None:
+            serialized = ARObject._serialize_item(self.timeout_ar, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIMEOUT-AR")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize timeout_as
+        if self.timeout_as is not None:
+            serialized = ARObject._serialize_item(self.timeout_as, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIMEOUT-AS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize timeout_bs
+        if self.timeout_bs is not None:
+            serialized = ARObject._serialize_item(self.timeout_bs, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIMEOUT-BS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize timeout_cr
+        if self.timeout_cr is not None:
+            serialized = ARObject._serialize_item(self.timeout_cr, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIMEOUT-CR")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize tp_connections (list to container "TP-CONNECTIONS")
+        if self.tp_connections:
+            wrapper = ET.Element("TP-CONNECTIONS")
+            for item in self.tp_connections:
+                serialized = ARObject._serialize_item(item, "FlexrayArTpConnection")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "FlexrayArTpChannel":
         """Deserialize XML element to FlexrayArTpChannel object.

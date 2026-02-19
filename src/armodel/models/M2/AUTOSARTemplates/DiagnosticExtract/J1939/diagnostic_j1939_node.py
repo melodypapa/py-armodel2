@@ -35,6 +35,42 @@ class DiagnosticJ1939Node(DiagnosticCommonElement):
         """Initialize DiagnosticJ1939Node."""
         super().__init__()
         self.nm_node: Optional[J1939NmNode] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DiagnosticJ1939Node to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DiagnosticJ1939Node, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize nm_node
+        if self.nm_node is not None:
+            serialized = ARObject._serialize_item(self.nm_node, "J1939NmNode")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NM-NODE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagnosticJ1939Node":
         """Deserialize XML element to DiagnosticJ1939Node object.

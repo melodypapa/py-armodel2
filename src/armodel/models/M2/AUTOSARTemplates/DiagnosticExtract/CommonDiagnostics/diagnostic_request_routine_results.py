@@ -37,6 +37,48 @@ class DiagnosticRequestRoutineResults(DiagnosticRoutineSubfunction):
         super().__init__()
         self.requests: list[DiagnosticParameter] = []
         self.responses: list[DiagnosticParameter] = []
+    def serialize(self) -> ET.Element:
+        """Serialize DiagnosticRequestRoutineResults to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DiagnosticRequestRoutineResults, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize requests (list to container "REQUESTS")
+        if self.requests:
+            wrapper = ET.Element("REQUESTS")
+            for item in self.requests:
+                serialized = ARObject._serialize_item(item, "DiagnosticParameter")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize responses (list to container "RESPONSES")
+        if self.responses:
+            wrapper = ET.Element("RESPONSES")
+            for item in self.responses:
+                serialized = ARObject._serialize_item(item, "DiagnosticParameter")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagnosticRequestRoutineResults":
         """Deserialize XML element to DiagnosticRequestRoutineResults object.

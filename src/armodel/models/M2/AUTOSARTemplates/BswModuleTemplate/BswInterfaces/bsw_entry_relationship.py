@@ -37,6 +37,60 @@ class BswEntryRelationship(ARObject):
         self.bsw_entry: Optional[BswEntryRelationship] = None
         self.from_: Optional[BswModuleEntry] = None
         self.to: Optional[BswModuleEntry] = None
+    def serialize(self) -> ET.Element:
+        """Serialize BswEntryRelationship to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize bsw_entry
+        if self.bsw_entry is not None:
+            serialized = ARObject._serialize_item(self.bsw_entry, "BswEntryRelationship")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BSW-ENTRY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize from_
+        if self.from_ is not None:
+            serialized = ARObject._serialize_item(self.from_, "BswModuleEntry")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FROM")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize to
+        if self.to is not None:
+            serialized = ARObject._serialize_item(self.to, "BswModuleEntry")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TO")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "BswEntryRelationship":
         """Deserialize XML element to BswEntryRelationship object.

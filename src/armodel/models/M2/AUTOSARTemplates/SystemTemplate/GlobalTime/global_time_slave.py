@@ -50,6 +50,112 @@ class GlobalTimeSlave(Identifiable, ABC):
         self.time_leap_future: Optional[TimeValue] = None
         self.time_leap: Optional[PositiveInteger] = None
         self.time_leap_past: Optional[TimeValue] = None
+    def serialize(self) -> ET.Element:
+        """Serialize GlobalTimeSlave to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(GlobalTimeSlave, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize communication_connector
+        if self.communication_connector is not None:
+            serialized = ARObject._serialize_item(self.communication_connector, "CommunicationConnector")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COMMUNICATION-CONNECTOR")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize follow_up_timeout_value
+        if self.follow_up_timeout_value is not None:
+            serialized = ARObject._serialize_item(self.follow_up_timeout_value, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FOLLOW-UP-TIMEOUT-VALUE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize icv_verification
+        if self.icv_verification is not None:
+            serialized = ARObject._serialize_item(self.icv_verification, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ICV-VERIFICATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize time_leap_future
+        if self.time_leap_future is not None:
+            serialized = ARObject._serialize_item(self.time_leap_future, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIME-LEAP-FUTURE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize time_leap
+        if self.time_leap is not None:
+            serialized = ARObject._serialize_item(self.time_leap, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIME-LEAP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize time_leap_past
+        if self.time_leap_past is not None:
+            serialized = ARObject._serialize_item(self.time_leap_past, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIME-LEAP-PAST")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "GlobalTimeSlave":
         """Deserialize XML element to GlobalTimeSlave object.

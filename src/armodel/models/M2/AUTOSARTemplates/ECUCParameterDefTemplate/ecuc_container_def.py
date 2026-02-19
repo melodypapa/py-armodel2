@@ -53,6 +53,90 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
         self.origin: Optional[String] = None
         self.post_build_variant: Optional[Boolean] = None
         self.requires_index: Optional[Boolean] = None
+    def serialize(self) -> ET.Element:
+        """Serialize EcucContainerDef to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(EcucContainerDef, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize destination_uris (list to container "DESTINATION-URIS")
+        if self.destination_uris:
+            wrapper = ET.Element("DESTINATION-URIS")
+            for item in self.destination_uris:
+                serialized = ARObject._serialize_item(item, "EcucDestinationUriDef")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize multiplicities (list to container "MULTIPLICITIES")
+        if self.multiplicities:
+            wrapper = ET.Element("MULTIPLICITIES")
+            for item in self.multiplicities:
+                serialized = ARObject._serialize_item(item, "EcucMultiplicityConfigurationClass")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize origin
+        if self.origin is not None:
+            serialized = ARObject._serialize_item(self.origin, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ORIGIN")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize post_build_variant
+        if self.post_build_variant is not None:
+            serialized = ARObject._serialize_item(self.post_build_variant, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("POST-BUILD-VARIANT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize requires_index
+        if self.requires_index is not None:
+            serialized = ARObject._serialize_item(self.requires_index, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("REQUIRES-INDEX")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "EcucContainerDef":
         """Deserialize XML element to EcucContainerDef object.

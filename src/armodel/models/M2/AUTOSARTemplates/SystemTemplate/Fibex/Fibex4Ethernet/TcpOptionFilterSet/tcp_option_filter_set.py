@@ -36,6 +36,38 @@ class TcpOptionFilterSet(ARElement):
         """Initialize TcpOptionFilterSet."""
         super().__init__()
         self.tcp_option_filter_list_refs: list[ARRef] = []
+    def serialize(self) -> ET.Element:
+        """Serialize TcpOptionFilterSet to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(TcpOptionFilterSet, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize tcp_option_filter_list_refs (list to container "TCP-OPTION-FILTER-LISTS")
+        if self.tcp_option_filter_list_refs:
+            wrapper = ET.Element("TCP-OPTION-FILTER-LISTS")
+            for item in self.tcp_option_filter_list_refs:
+                serialized = ARObject._serialize_item(item, "TcpOptionFilterList")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "TcpOptionFilterSet":
         """Deserialize XML element to TcpOptionFilterSet object.

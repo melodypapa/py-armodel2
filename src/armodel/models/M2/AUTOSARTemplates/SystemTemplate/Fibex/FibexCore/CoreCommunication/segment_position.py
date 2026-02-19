@@ -39,6 +39,60 @@ class SegmentPosition(ARObject):
         self.segment_byte: Optional[ByteOrderEnum] = None
         self.segment_length: Optional[Integer] = None
         self.segment: Optional[Integer] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SegmentPosition to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize segment_byte
+        if self.segment_byte is not None:
+            serialized = ARObject._serialize_item(self.segment_byte, "ByteOrderEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SEGMENT-BYTE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize segment_length
+        if self.segment_length is not None:
+            serialized = ARObject._serialize_item(self.segment_length, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SEGMENT-LENGTH")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize segment
+        if self.segment is not None:
+            serialized = ARObject._serialize_item(self.segment, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SEGMENT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SegmentPosition":
         """Deserialize XML element to SegmentPosition object.

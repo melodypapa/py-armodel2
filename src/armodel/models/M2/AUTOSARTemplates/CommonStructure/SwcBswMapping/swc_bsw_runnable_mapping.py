@@ -37,6 +37,46 @@ class SwcBswRunnableMapping(ARObject):
         super().__init__()
         self.bsw_entity: Optional[BswModuleEntity] = None
         self.swc_runnable: Optional[RunnableEntity] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SwcBswRunnableMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize bsw_entity
+        if self.bsw_entity is not None:
+            serialized = ARObject._serialize_item(self.bsw_entity, "BswModuleEntity")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BSW-ENTITY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize swc_runnable
+        if self.swc_runnable is not None:
+            serialized = ARObject._serialize_item(self.swc_runnable, "RunnableEntity")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SWC-RUNNABLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SwcBswRunnableMapping":
         """Deserialize XML element to SwcBswRunnableMapping object.

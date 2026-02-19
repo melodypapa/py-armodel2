@@ -52,6 +52,86 @@ class BusMirrorChannelMappingCan(BusMirrorChannelMapping):
         self.lin_pid_to_can_ids: list[BusMirrorLinPidToCanIdMapping] = []
         self.mirror_source_lin: Optional[PositiveInteger] = None
         self.mirror_status: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize BusMirrorChannelMappingCan to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(BusMirrorChannelMappingCan, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize can_id_ranges (list to container "CAN-ID-RANGES")
+        if self.can_id_ranges:
+            wrapper = ET.Element("CAN-ID-RANGES")
+            for item in self.can_id_ranges:
+                serialized = ARObject._serialize_item(item, "BusMirrorCanIdRangeMapping")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize can_id_to_can_ids (list to container "CAN-ID-TO-CAN-IDS")
+        if self.can_id_to_can_ids:
+            wrapper = ET.Element("CAN-ID-TO-CAN-IDS")
+            for item in self.can_id_to_can_ids:
+                serialized = ARObject._serialize_item(item, "BusMirrorCanIdToCanIdMapping")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize lin_pid_to_can_ids (list to container "LIN-PID-TO-CAN-IDS")
+        if self.lin_pid_to_can_ids:
+            wrapper = ET.Element("LIN-PID-TO-CAN-IDS")
+            for item in self.lin_pid_to_can_ids:
+                serialized = ARObject._serialize_item(item, "BusMirrorLinPidToCanIdMapping")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize mirror_source_lin
+        if self.mirror_source_lin is not None:
+            serialized = ARObject._serialize_item(self.mirror_source_lin, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MIRROR-SOURCE-LIN")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize mirror_status
+        if self.mirror_status is not None:
+            serialized = ARObject._serialize_item(self.mirror_status, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MIRROR-STATUS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "BusMirrorChannelMappingCan":
         """Deserialize XML element to BusMirrorChannelMappingCan object.

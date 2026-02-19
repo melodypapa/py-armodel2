@@ -40,6 +40,60 @@ class SomeipTpConnection(ARObject):
         self.tp_channel: Optional[SomeipTpChannel] = None
         self.tp_sdu_ref: Optional[ARRef] = None
         self.transport_pdu_ref: Optional[ARRef] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SomeipTpConnection to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize tp_channel
+        if self.tp_channel is not None:
+            serialized = ARObject._serialize_item(self.tp_channel, "SomeipTpChannel")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TP-CHANNEL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize tp_sdu_ref
+        if self.tp_sdu_ref is not None:
+            serialized = ARObject._serialize_item(self.tp_sdu_ref, "PduTriggering")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TP-SDU")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize transport_pdu_ref
+        if self.transport_pdu_ref is not None:
+            serialized = ARObject._serialize_item(self.transport_pdu_ref, "PduTriggering")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TRANSPORT-PDU")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SomeipTpConnection":
         """Deserialize XML element to SomeipTpConnection object.

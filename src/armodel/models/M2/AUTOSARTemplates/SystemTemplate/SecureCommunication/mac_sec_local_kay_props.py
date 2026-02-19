@@ -52,6 +52,98 @@ class MacSecLocalKayProps(ARObject):
         self.mka_participants: list[MacSecKayParticipant] = []
         self.role: Optional[MacSecRoleEnum] = None
         self.source_mac: Optional[MacAddressString] = None
+    def serialize(self) -> ET.Element:
+        """Serialize MacSecLocalKayProps to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize destination_mac
+        if self.destination_mac is not None:
+            serialized = ARObject._serialize_item(self.destination_mac, "MacAddressString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DESTINATION-MAC")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize global_kay_props
+        if self.global_kay_props is not None:
+            serialized = ARObject._serialize_item(self.global_kay_props, "MacSecGlobalKayProps")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("GLOBAL-KAY-PROPS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize key_server
+        if self.key_server is not None:
+            serialized = ARObject._serialize_item(self.key_server, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("KEY-SERVER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize mka_participants (list to container "MKA-PARTICIPANTS")
+        if self.mka_participants:
+            wrapper = ET.Element("MKA-PARTICIPANTS")
+            for item in self.mka_participants:
+                serialized = ARObject._serialize_item(item, "MacSecKayParticipant")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize role
+        if self.role is not None:
+            serialized = ARObject._serialize_item(self.role, "MacSecRoleEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ROLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize source_mac
+        if self.source_mac is not None:
+            serialized = ARObject._serialize_item(self.source_mac, "MacAddressString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SOURCE-MAC")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "MacSecLocalKayProps":
         """Deserialize XML element to MacSecLocalKayProps object.

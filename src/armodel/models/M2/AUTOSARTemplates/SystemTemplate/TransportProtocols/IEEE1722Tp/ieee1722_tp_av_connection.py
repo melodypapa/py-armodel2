@@ -42,6 +42,52 @@ class IEEE1722TpAvConnection(IEEE1722TpConnection, ABC):
         super().__init__()
         self.max_transit_time: Optional[TimeValue] = None
         self.sdu_refs: list[ARRef] = []
+    def serialize(self) -> ET.Element:
+        """Serialize IEEE1722TpAvConnection to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(IEEE1722TpAvConnection, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize max_transit_time
+        if self.max_transit_time is not None:
+            serialized = ARObject._serialize_item(self.max_transit_time, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX-TRANSIT-TIME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sdu_refs (list to container "SDUS")
+        if self.sdu_refs:
+            wrapper = ET.Element("SDUS")
+            for item in self.sdu_refs:
+                serialized = ARObject._serialize_item(item, "PduTriggering")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "IEEE1722TpAvConnection":
         """Deserialize XML element to IEEE1722TpAvConnection object.

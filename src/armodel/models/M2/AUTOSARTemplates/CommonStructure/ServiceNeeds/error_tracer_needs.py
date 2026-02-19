@@ -36,6 +36,38 @@ class ErrorTracerNeeds(ServiceNeeds):
         """Initialize ErrorTracerNeeds."""
         super().__init__()
         self.traced_failures: list[TracedFailure] = []
+    def serialize(self) -> ET.Element:
+        """Serialize ErrorTracerNeeds to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(ErrorTracerNeeds, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize traced_failures (list to container "TRACED-FAILURES")
+        if self.traced_failures:
+            wrapper = ET.Element("TRACED-FAILURES")
+            for item in self.traced_failures:
+                serialized = ARObject._serialize_item(item, "TracedFailure")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ErrorTracerNeeds":
         """Deserialize XML element to ErrorTracerNeeds object.

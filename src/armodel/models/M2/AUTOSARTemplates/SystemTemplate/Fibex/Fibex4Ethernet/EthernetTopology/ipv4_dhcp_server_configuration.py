@@ -44,6 +44,94 @@ class Ipv4DhcpServerConfiguration(Describable):
         self.default_lease: Optional[TimeValue] = None
         self.dns_servers: list[Ip4AddressString] = []
         self.network_mask: Optional[Ip4AddressString] = None
+    def serialize(self) -> ET.Element:
+        """Serialize Ipv4DhcpServerConfiguration to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(Ipv4DhcpServerConfiguration, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize address_range
+        if self.address_range is not None:
+            serialized = ARObject._serialize_item(self.address_range, "Ip4AddressString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ADDRESS-RANGE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize default_gateway
+        if self.default_gateway is not None:
+            serialized = ARObject._serialize_item(self.default_gateway, "Ip4AddressString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DEFAULT-GATEWAY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize default_lease
+        if self.default_lease is not None:
+            serialized = ARObject._serialize_item(self.default_lease, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DEFAULT-LEASE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize dns_servers (list to container "DNS-SERVERS")
+        if self.dns_servers:
+            wrapper = ET.Element("DNS-SERVERS")
+            for item in self.dns_servers:
+                serialized = ARObject._serialize_item(item, "Ip4AddressString")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize network_mask
+        if self.network_mask is not None:
+            serialized = ARObject._serialize_item(self.network_mask, "Ip4AddressString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NETWORK-MASK")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "Ipv4DhcpServerConfiguration":
         """Deserialize XML element to Ipv4DhcpServerConfiguration object.

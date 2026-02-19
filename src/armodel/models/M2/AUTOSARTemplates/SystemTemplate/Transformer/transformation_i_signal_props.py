@@ -41,6 +41,56 @@ class TransformationISignalProps(ARObject, ABC):
         self.cs_error_reaction: Optional[CSTransformerErrorReactionEnum] = None
         self.data_prototype_refs: list[ARRef] = []
         self.transformer: Optional[Any] = None
+    def serialize(self) -> ET.Element:
+        """Serialize TransformationISignalProps to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize cs_error_reaction
+        if self.cs_error_reaction is not None:
+            serialized = ARObject._serialize_item(self.cs_error_reaction, "CSTransformerErrorReactionEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CS-ERROR-REACTION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize data_prototype_refs (list to container "DATA-PROTOTYPES")
+        if self.data_prototype_refs:
+            wrapper = ET.Element("DATA-PROTOTYPES")
+            for item in self.data_prototype_refs:
+                serialized = ARObject._serialize_item(item, "DataPrototype")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize transformer
+        if self.transformer is not None:
+            serialized = ARObject._serialize_item(self.transformer, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TRANSFORMER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "TransformationISignalProps":
         """Deserialize XML element to TransformationISignalProps object.

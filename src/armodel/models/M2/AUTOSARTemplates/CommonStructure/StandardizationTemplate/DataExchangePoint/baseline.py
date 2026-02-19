@@ -42,6 +42,48 @@ class Baseline(ARObject):
         self.custom_sdg_defs: list[SdgDef] = []
         self.customs: list[Documentation] = []
         self.standards: list[String] = []
+    def serialize(self) -> ET.Element:
+        """Serialize Baseline to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize custom_sdg_defs (list to container "CUSTOM-SDG-DEFS")
+        if self.custom_sdg_defs:
+            wrapper = ET.Element("CUSTOM-SDG-DEFS")
+            for item in self.custom_sdg_defs:
+                serialized = ARObject._serialize_item(item, "SdgDef")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize customs (list to container "CUSTOMS")
+        if self.customs:
+            wrapper = ET.Element("CUSTOMS")
+            for item in self.customs:
+                serialized = ARObject._serialize_item(item, "Documentation")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize standards (list to container "STANDARDS")
+        if self.standards:
+            wrapper = ET.Element("STANDARDS")
+            for item in self.standards:
+                serialized = ARObject._serialize_item(item, "String")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "Baseline":
         """Deserialize XML element to Baseline object.

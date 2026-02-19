@@ -63,6 +63,88 @@ class ResourceConsumption(Identifiable):
         self.memory_sections: list[MemorySection] = []
         self.section_name_prefixes: list[SectionNamePrefix] = []
         self.stack_usages: list[StackUsage] = []
+    def serialize(self) -> ET.Element:
+        """Serialize ResourceConsumption to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(ResourceConsumption, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize access_count_set_refs (list to container "ACCESS-COUNT-SETS")
+        if self.access_count_set_refs:
+            wrapper = ET.Element("ACCESS-COUNT-SETS")
+            for item in self.access_count_set_refs:
+                serialized = ARObject._serialize_item(item, "AccessCountSet")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize execution_times (list to container "EXECUTION-TIMES")
+        if self.execution_times:
+            wrapper = ET.Element("EXECUTION-TIMES")
+            for item in self.execution_times:
+                serialized = ARObject._serialize_item(item, "ExecutionTime")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize heap_usages (list to container "HEAP-USAGES")
+        if self.heap_usages:
+            wrapper = ET.Element("HEAP-USAGES")
+            for item in self.heap_usages:
+                serialized = ARObject._serialize_item(item, "HeapUsage")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize memory_sections (list to container "MEMORY-SECTIONS")
+        if self.memory_sections:
+            wrapper = ET.Element("MEMORY-SECTIONS")
+            for item in self.memory_sections:
+                serialized = ARObject._serialize_item(item, "MemorySection")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize section_name_prefixes (list to container "SECTION-NAME-PREFIXES")
+        if self.section_name_prefixes:
+            wrapper = ET.Element("SECTION-NAME-PREFIXES")
+            for item in self.section_name_prefixes:
+                serialized = ARObject._serialize_item(item, "SectionNamePrefix")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize stack_usages (list to container "STACK-USAGES")
+        if self.stack_usages:
+            wrapper = ET.Element("STACK-USAGES")
+            for item in self.stack_usages:
+                serialized = ARObject._serialize_item(item, "StackUsage")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ResourceConsumption":
         """Deserialize XML element to ResourceConsumption object.

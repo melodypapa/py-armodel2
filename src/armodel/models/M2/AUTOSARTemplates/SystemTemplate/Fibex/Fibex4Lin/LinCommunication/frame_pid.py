@@ -35,6 +35,46 @@ class FramePid(ARObject):
         super().__init__()
         self.index: Optional[Integer] = None
         self.pid: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize FramePid to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize index
+        if self.index is not None:
+            serialized = ARObject._serialize_item(self.index, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("INDEX")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize pid
+        if self.pid is not None:
+            serialized = ARObject._serialize_item(self.pid, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "FramePid":
         """Deserialize XML element to FramePid object.

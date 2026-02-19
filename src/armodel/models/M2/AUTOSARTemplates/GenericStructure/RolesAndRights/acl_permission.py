@@ -57,6 +57,82 @@ class AclPermission(ARElement):
         self.acl_operations: list[AclOperation] = []
         self.acl_roles: list[AclRole] = []
         self.acl_scope: AclScopeEnum = None
+    def serialize(self) -> ET.Element:
+        """Serialize AclPermission to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(AclPermission, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize acl_contexts (list to container "ACL-CONTEXTS")
+        if self.acl_contexts:
+            wrapper = ET.Element("ACL-CONTEXTS")
+            for item in self.acl_contexts:
+                serialized = ARObject._serialize_item(item, "NameToken")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize acl_object_set_refs (list to container "ACL-OBJECT-SETS")
+        if self.acl_object_set_refs:
+            wrapper = ET.Element("ACL-OBJECT-SETS")
+            for item in self.acl_object_set_refs:
+                serialized = ARObject._serialize_item(item, "AclObjectSet")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize acl_operations (list to container "ACL-OPERATIONS")
+        if self.acl_operations:
+            wrapper = ET.Element("ACL-OPERATIONS")
+            for item in self.acl_operations:
+                serialized = ARObject._serialize_item(item, "AclOperation")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize acl_roles (list to container "ACL-ROLES")
+        if self.acl_roles:
+            wrapper = ET.Element("ACL-ROLES")
+            for item in self.acl_roles:
+                serialized = ARObject._serialize_item(item, "AclRole")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize acl_scope
+        if self.acl_scope is not None:
+            serialized = ARObject._serialize_item(self.acl_scope, "AclScopeEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ACL-SCOPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "AclPermission":
         """Deserialize XML element to AclPermission object.

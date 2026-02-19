@@ -58,6 +58,86 @@ class PduTriggering(Identifiable):
         self.i_signal_refs: list[ARRef] = []
         self.sec_oc_crypto_service: Optional[SecOcCryptoServiceMapping] = None
         self.trigger_i_pdu_send_refs: list[ARRef] = []
+    def serialize(self) -> ET.Element:
+        """Serialize PduTriggering to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(PduTriggering, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize i_pdu
+        if self.i_pdu is not None:
+            serialized = ARObject._serialize_item(self.i_pdu, "Pdu")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("I-PDU")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize i_pdu_ports (list to container "I-PDU-PORTS")
+        if self.i_pdu_ports:
+            wrapper = ET.Element("I-PDU-PORTS")
+            for item in self.i_pdu_ports:
+                serialized = ARObject._serialize_item(item, "IPduPort")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize i_signal_refs (list to container "I-SIGNALS")
+        if self.i_signal_refs:
+            wrapper = ET.Element("I-SIGNALS")
+            for item in self.i_signal_refs:
+                serialized = ARObject._serialize_item(item, "ISignalTriggering")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize sec_oc_crypto_service
+        if self.sec_oc_crypto_service is not None:
+            serialized = ARObject._serialize_item(self.sec_oc_crypto_service, "SecOcCryptoServiceMapping")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SEC-OC-CRYPTO-SERVICE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize trigger_i_pdu_send_refs (list to container "TRIGGER-I-PDU-SENDS")
+        if self.trigger_i_pdu_send_refs:
+            wrapper = ET.Element("TRIGGER-I-PDU-SENDS")
+            for item in self.trigger_i_pdu_send_refs:
+                serialized = ARObject._serialize_item(item, "TriggerIPduSendCondition")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "PduTriggering":
         """Deserialize XML element to PduTriggering object.

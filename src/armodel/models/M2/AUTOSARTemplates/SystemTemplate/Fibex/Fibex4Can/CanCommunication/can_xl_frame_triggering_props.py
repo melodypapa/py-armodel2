@@ -38,6 +38,74 @@ class CanXlFrameTriggeringProps(ARObject):
         self.priority_id: Optional[PositiveInteger] = None
         self.sdu_type: Optional[PositiveInteger] = None
         self.vcid: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize CanXlFrameTriggeringProps to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize acceptance_field
+        if self.acceptance_field is not None:
+            serialized = ARObject._serialize_item(self.acceptance_field, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ACCEPTANCE-FIELD")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize priority_id
+        if self.priority_id is not None:
+            serialized = ARObject._serialize_item(self.priority_id, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PRIORITY-ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sdu_type
+        if self.sdu_type is not None:
+            serialized = ARObject._serialize_item(self.sdu_type, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SDU-TYPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize vcid
+        if self.vcid is not None:
+            serialized = ARObject._serialize_item(self.vcid, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VCID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "CanXlFrameTriggeringProps":
         """Deserialize XML element to CanXlFrameTriggeringProps object.

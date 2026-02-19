@@ -49,6 +49,70 @@ class SwAxisGrouped(SwCalprmAxisTypeProps):
         self.shared_axis_type: Optional[ApplicationPrimitiveDataType] = None
         self.sw_axis_index: Optional[AxisIndexType] = None
         self.sw_calprm_ref_proxy_ref: ARRef = None
+    def serialize(self) -> ET.Element:
+        """Serialize SwAxisGrouped to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(SwAxisGrouped, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize shared_axis_type
+        if self.shared_axis_type is not None:
+            serialized = ARObject._serialize_item(self.shared_axis_type, "ApplicationPrimitiveDataType")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SHARED-AXIS-TYPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_axis_index
+        if self.sw_axis_index is not None:
+            serialized = ARObject._serialize_item(self.sw_axis_index, "AxisIndexType")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-AXIS-INDEX")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_calprm_ref_proxy_ref
+        if self.sw_calprm_ref_proxy_ref is not None:
+            serialized = ARObject._serialize_item(self.sw_calprm_ref_proxy_ref, "SwCalprmRefProxy")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-CALPRM-REF-PROXY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SwAxisGrouped":
         """Deserialize XML element to SwAxisGrouped object.

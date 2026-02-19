@@ -42,6 +42,102 @@ class EthTSynCrcFlags(ARObject):
         self.crc_precise: Optional[Boolean] = None
         self.crc_sequence_id: Optional[Boolean] = None
         self.crc_source_port: Optional[Boolean] = None
+    def serialize(self) -> ET.Element:
+        """Serialize EthTSynCrcFlags to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize crc_correction
+        if self.crc_correction is not None:
+            serialized = ARObject._serialize_item(self.crc_correction, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CRC-CORRECTION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize crc_domain
+        if self.crc_domain is not None:
+            serialized = ARObject._serialize_item(self.crc_domain, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CRC-DOMAIN")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize crc_message
+        if self.crc_message is not None:
+            serialized = ARObject._serialize_item(self.crc_message, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CRC-MESSAGE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize crc_precise
+        if self.crc_precise is not None:
+            serialized = ARObject._serialize_item(self.crc_precise, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CRC-PRECISE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize crc_sequence_id
+        if self.crc_sequence_id is not None:
+            serialized = ARObject._serialize_item(self.crc_sequence_id, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CRC-SEQUENCE-ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize crc_source_port
+        if self.crc_source_port is not None:
+            serialized = ARObject._serialize_item(self.crc_source_port, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CRC-SOURCE-PORT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "EthTSynCrcFlags":
         """Deserialize XML element to EthTSynCrcFlags object.

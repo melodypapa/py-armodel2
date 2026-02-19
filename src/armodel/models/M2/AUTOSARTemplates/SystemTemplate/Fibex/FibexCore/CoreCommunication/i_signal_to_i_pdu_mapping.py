@@ -58,6 +58,112 @@ class ISignalToIPduMapping(Identifiable):
         self.start_position: Optional[UnlimitedInteger] = None
         self.transfer_property_enum: Optional[TransferPropertyEnum] = None
         self.update: Optional[UnlimitedInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize ISignalToIPduMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(ISignalToIPduMapping, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize i_signal
+        if self.i_signal is not None:
+            serialized = ARObject._serialize_item(self.i_signal, "ISignal")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("I-SIGNAL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize i_signal_group_ref
+        if self.i_signal_group_ref is not None:
+            serialized = ARObject._serialize_item(self.i_signal_group_ref, "ISignalGroup")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("I-SIGNAL-GROUP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize packing_byte
+        if self.packing_byte is not None:
+            serialized = ARObject._serialize_item(self.packing_byte, "ByteOrderEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PACKING-BYTE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize start_position
+        if self.start_position is not None:
+            serialized = ARObject._serialize_item(self.start_position, "UnlimitedInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("START-POSITION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize transfer_property_enum
+        if self.transfer_property_enum is not None:
+            serialized = ARObject._serialize_item(self.transfer_property_enum, "TransferPropertyEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TRANSFER-PROPERTY-ENUM")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize update
+        if self.update is not None:
+            serialized = ARObject._serialize_item(self.update, "UnlimitedInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("UPDATE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ISignalToIPduMapping":
         """Deserialize XML element to ISignalToIPduMapping object.

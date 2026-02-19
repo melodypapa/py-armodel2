@@ -38,6 +38,46 @@ class SwRecordLayoutGroupContent(ARObject):
         super().__init__()
         self.sw_record_ref: Optional[ARRef] = None
         self.sw_record_layout_v: Optional[SwRecordLayoutV] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SwRecordLayoutGroupContent to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize sw_record_ref
+        if self.sw_record_ref is not None:
+            serialized = ARObject._serialize_item(self.sw_record_ref, "SwRecordLayoutGroup")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-RECORD")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_record_layout_v
+        if self.sw_record_layout_v is not None:
+            serialized = ARObject._serialize_item(self.sw_record_layout_v, "SwRecordLayoutV")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-RECORD-LAYOUT-V")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SwRecordLayoutGroupContent":
         """Deserialize XML element to SwRecordLayoutGroupContent object.

@@ -37,6 +37,56 @@ class DiagnosticComControl(DiagnosticServiceInstance):
         super().__init__()
         self.com_control: Optional[DiagnosticComControl] = None
         self.custom_sub: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DiagnosticComControl to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DiagnosticComControl, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize com_control
+        if self.com_control is not None:
+            serialized = ARObject._serialize_item(self.com_control, "DiagnosticComControl")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COM-CONTROL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize custom_sub
+        if self.custom_sub is not None:
+            serialized = ARObject._serialize_item(self.custom_sub, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CUSTOM-SUB")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagnosticComControl":
         """Deserialize XML element to DiagnosticComControl object.

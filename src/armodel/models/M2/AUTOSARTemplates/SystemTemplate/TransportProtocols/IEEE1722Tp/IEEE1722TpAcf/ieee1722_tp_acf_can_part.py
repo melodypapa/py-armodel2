@@ -54,6 +54,98 @@ class IEEE1722TpAcfCanPart(IEEE1722TpAcfBusPart):
         self.can_frame_tx_behavior: Optional[CanFrameTxBehaviorEnum] = None
         self.can_identifier: Optional[RxIdentifierRange] = None
         self.sdu_ref: Optional[ARRef] = None
+    def serialize(self) -> ET.Element:
+        """Serialize IEEE1722TpAcfCanPart to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(IEEE1722TpAcfCanPart, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize can_addressing
+        if self.can_addressing is not None:
+            serialized = ARObject._serialize_item(self.can_addressing, "CanAddressingModeType")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CAN-ADDRESSING")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize can_bit_rate_switch
+        if self.can_bit_rate_switch is not None:
+            serialized = ARObject._serialize_item(self.can_bit_rate_switch, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CAN-BIT-RATE-SWITCH")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize can_frame_tx_behavior
+        if self.can_frame_tx_behavior is not None:
+            serialized = ARObject._serialize_item(self.can_frame_tx_behavior, "CanFrameTxBehaviorEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CAN-FRAME-TX-BEHAVIOR")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize can_identifier
+        if self.can_identifier is not None:
+            serialized = ARObject._serialize_item(self.can_identifier, "RxIdentifierRange")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CAN-IDENTIFIER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sdu_ref
+        if self.sdu_ref is not None:
+            serialized = ARObject._serialize_item(self.sdu_ref, "PduTriggering")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SDU")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "IEEE1722TpAcfCanPart":
         """Deserialize XML element to IEEE1722TpAcfCanPart object.

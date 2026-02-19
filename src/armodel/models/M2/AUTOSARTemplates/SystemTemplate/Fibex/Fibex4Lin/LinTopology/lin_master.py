@@ -39,6 +39,56 @@ class LinMaster(ARObject):
         self.lin_slaves: list[LinSlaveConfig] = []
         self.time_base: Optional[TimeValue] = None
         self.time_base_jitter: Optional[TimeValue] = None
+    def serialize(self) -> ET.Element:
+        """Serialize LinMaster to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize lin_slaves (list to container "LIN-SLAVES")
+        if self.lin_slaves:
+            wrapper = ET.Element("LIN-SLAVES")
+            for item in self.lin_slaves:
+                serialized = ARObject._serialize_item(item, "LinSlaveConfig")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize time_base
+        if self.time_base is not None:
+            serialized = ARObject._serialize_item(self.time_base, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIME-BASE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize time_base_jitter
+        if self.time_base_jitter is not None:
+            serialized = ARObject._serialize_item(self.time_base_jitter, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIME-BASE-JITTER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "LinMaster":
         """Deserialize XML element to LinMaster object.

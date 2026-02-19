@@ -37,6 +37,46 @@ class DdsHistory(ARObject):
         super().__init__()
         self.history_kind: Optional[DdsHistoryKindEnum] = None
         self.history_order: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DdsHistory to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize history_kind
+        if self.history_kind is not None:
+            serialized = ARObject._serialize_item(self.history_kind, "DdsHistoryKindEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("HISTORY-KIND")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize history_order
+        if self.history_order is not None:
+            serialized = ARObject._serialize_item(self.history_order, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("HISTORY-ORDER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DdsHistory":
         """Deserialize XML element to DdsHistory object.

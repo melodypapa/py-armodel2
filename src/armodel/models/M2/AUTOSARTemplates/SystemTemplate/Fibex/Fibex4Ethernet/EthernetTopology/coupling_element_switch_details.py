@@ -52,6 +52,78 @@ class CouplingElementSwitchDetails(CouplingElementAbstractDetails):
         self.stream_gates: list[SwitchStreamGateEntry] = []
         self.switch_streams: list[Any] = []
         self.traffic_shapers: list[SwitchAsynchronousTrafficShaperGroupEntry] = []
+    def serialize(self) -> ET.Element:
+        """Serialize CouplingElementSwitchDetails to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(CouplingElementSwitchDetails, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize flow_meterings (list to container "FLOW-METERINGS")
+        if self.flow_meterings:
+            wrapper = ET.Element("FLOW-METERINGS")
+            for item in self.flow_meterings:
+                serialized = ARObject._serialize_item(item, "SwitchFlowMeteringEntry")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize stream_filters (list to container "STREAM-FILTERS")
+        if self.stream_filters:
+            wrapper = ET.Element("STREAM-FILTERS")
+            for item in self.stream_filters:
+                serialized = ARObject._serialize_item(item, "SwitchStreamFilterEntry")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize stream_gates (list to container "STREAM-GATES")
+        if self.stream_gates:
+            wrapper = ET.Element("STREAM-GATES")
+            for item in self.stream_gates:
+                serialized = ARObject._serialize_item(item, "SwitchStreamGateEntry")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize switch_streams (list to container "SWITCH-STREAMS")
+        if self.switch_streams:
+            wrapper = ET.Element("SWITCH-STREAMS")
+            for item in self.switch_streams:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize traffic_shapers (list to container "TRAFFIC-SHAPERS")
+        if self.traffic_shapers:
+            wrapper = ET.Element("TRAFFIC-SHAPERS")
+            for item in self.traffic_shapers:
+                serialized = ARObject._serialize_item(item, "SwitchAsynchronousTrafficShaperGroupEntry")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "CouplingElementSwitchDetails":
         """Deserialize XML element to CouplingElementSwitchDetails object.

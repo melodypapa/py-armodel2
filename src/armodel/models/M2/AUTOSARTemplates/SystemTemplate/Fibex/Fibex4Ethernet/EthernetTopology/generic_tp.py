@@ -37,6 +37,56 @@ class GenericTp(TransportProtocolConfiguration):
         super().__init__()
         self.tp_address: Optional[String] = None
         self.tp_technology: Optional[String] = None
+    def serialize(self) -> ET.Element:
+        """Serialize GenericTp to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(GenericTp, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize tp_address
+        if self.tp_address is not None:
+            serialized = ARObject._serialize_item(self.tp_address, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TP-ADDRESS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize tp_technology
+        if self.tp_technology is not None:
+            serialized = ARObject._serialize_item(self.tp_technology, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TP-TECHNOLOGY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "GenericTp":
         """Deserialize XML element to GenericTp object.

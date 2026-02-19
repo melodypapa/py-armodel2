@@ -49,6 +49,84 @@ class SenderReceiverToSignalMapping(DataMapping):
         self.sender_to_signal_ref: Optional[ARRef] = None
         self.signal_to_ref: Optional[ARRef] = None
         self.system_signal: Optional[SystemSignal] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SenderReceiverToSignalMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(SenderReceiverToSignalMapping, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize data_element_system_instance_ref
+        if self.data_element_system_instance_ref is not None:
+            serialized = ARObject._serialize_item(self.data_element_system_instance_ref, "VariableDataPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DATA-ELEMENT-SYSTEM-INSTANCE-REF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sender_to_signal_ref
+        if self.sender_to_signal_ref is not None:
+            serialized = ARObject._serialize_item(self.sender_to_signal_ref, "TextTableMapping")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SENDER-TO-SIGNAL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize signal_to_ref
+        if self.signal_to_ref is not None:
+            serialized = ARObject._serialize_item(self.signal_to_ref, "TextTableMapping")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SIGNAL-TO")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize system_signal
+        if self.system_signal is not None:
+            serialized = ARObject._serialize_item(self.system_signal, "SystemSignal")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SYSTEM-SIGNAL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SenderReceiverToSignalMapping":
         """Deserialize XML element to SenderReceiverToSignalMapping object.

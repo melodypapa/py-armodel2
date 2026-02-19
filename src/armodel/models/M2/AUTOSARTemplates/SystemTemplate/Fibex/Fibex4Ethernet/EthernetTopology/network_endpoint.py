@@ -53,6 +53,94 @@ class NetworkEndpoint(Identifiable):
         self.ip_sec_config: Optional[IPSecConfig] = None
         self.network_endpoints: list[NetworkEndpoint] = []
         self.priority: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize NetworkEndpoint to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(NetworkEndpoint, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize fully_qualified
+        if self.fully_qualified is not None:
+            serialized = ARObject._serialize_item(self.fully_qualified, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FULLY-QUALIFIED")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize infrastructure_services
+        if self.infrastructure_services is not None:
+            serialized = ARObject._serialize_item(self.infrastructure_services, "InfrastructureServices")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("INFRASTRUCTURE-SERVICES")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize ip_sec_config
+        if self.ip_sec_config is not None:
+            serialized = ARObject._serialize_item(self.ip_sec_config, "IPSecConfig")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IP-SEC-CONFIG")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize network_endpoints (list to container "NETWORK-ENDPOINTS")
+        if self.network_endpoints:
+            wrapper = ET.Element("NETWORK-ENDPOINTS")
+            for item in self.network_endpoints:
+                serialized = ARObject._serialize_item(item, "NetworkEndpoint")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize priority
+        if self.priority is not None:
+            serialized = ARObject._serialize_item(self.priority, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PRIORITY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "NetworkEndpoint":
         """Deserialize XML element to NetworkEndpoint object.

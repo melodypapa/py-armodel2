@@ -38,6 +38,74 @@ class VlanMembership(ARObject):
         self.dhcp_address: Optional[Any] = None
         self.send_activity: Optional[Any] = None
         self.vlan: Optional[Any] = None
+    def serialize(self) -> ET.Element:
+        """Serialize VlanMembership to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize default_priority
+        if self.default_priority is not None:
+            serialized = ARObject._serialize_item(self.default_priority, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DEFAULT-PRIORITY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize dhcp_address
+        if self.dhcp_address is not None:
+            serialized = ARObject._serialize_item(self.dhcp_address, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DHCP-ADDRESS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize send_activity
+        if self.send_activity is not None:
+            serialized = ARObject._serialize_item(self.send_activity, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SEND-ACTIVITY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize vlan
+        if self.vlan is not None:
+            serialized = ARObject._serialize_item(self.vlan, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VLAN")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "VlanMembership":
         """Deserialize XML element to VlanMembership object.

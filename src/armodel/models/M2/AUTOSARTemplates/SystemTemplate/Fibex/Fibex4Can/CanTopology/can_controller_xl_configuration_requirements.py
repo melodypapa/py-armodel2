@@ -65,6 +65,242 @@ class CanControllerXlConfigurationRequirements(ARObject):
         self.min_sync_jump: Optional[Float] = None
         self.min_trcv_delay: Optional[TimeValue] = None
         self.trcv_pwm_mode: Optional[Boolean] = None
+    def serialize(self) -> ET.Element:
+        """Serialize CanControllerXlConfigurationRequirements to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize error_signaling
+        if self.error_signaling is not None:
+            serialized = ARObject._serialize_item(self.error_signaling, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ERROR-SIGNALING")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize max_number_of_time_quanta_per
+        if self.max_number_of_time_quanta_per is not None:
+            serialized = ARObject._serialize_item(self.max_number_of_time_quanta_per, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX-NUMBER-OF-TIME-QUANTA-PER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize max_pwm_l
+        if self.max_pwm_l is not None:
+            serialized = ARObject._serialize_item(self.max_pwm_l, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX-PWM-L")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize max_pwm_o
+        if self.max_pwm_o is not None:
+            serialized = ARObject._serialize_item(self.max_pwm_o, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX-PWM-O")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize max_pwm_s
+        if self.max_pwm_s is not None:
+            serialized = ARObject._serialize_item(self.max_pwm_s, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX-PWM-S")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize max_sample
+        if self.max_sample is not None:
+            serialized = ARObject._serialize_item(self.max_sample, "Float")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX-SAMPLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize max_sync_jump
+        if self.max_sync_jump is not None:
+            serialized = ARObject._serialize_item(self.max_sync_jump, "Float")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX-SYNC-JUMP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize max_trcv_delay
+        if self.max_trcv_delay is not None:
+            serialized = ARObject._serialize_item(self.max_trcv_delay, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAX-TRCV-DELAY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize min_number_of_time_quanta_per
+        if self.min_number_of_time_quanta_per is not None:
+            serialized = ARObject._serialize_item(self.min_number_of_time_quanta_per, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MIN-NUMBER-OF-TIME-QUANTA-PER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize min_pwm_l
+        if self.min_pwm_l is not None:
+            serialized = ARObject._serialize_item(self.min_pwm_l, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MIN-PWM-L")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize min_pwm_o
+        if self.min_pwm_o is not None:
+            serialized = ARObject._serialize_item(self.min_pwm_o, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MIN-PWM-O")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize min_pwm_s
+        if self.min_pwm_s is not None:
+            serialized = ARObject._serialize_item(self.min_pwm_s, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MIN-PWM-S")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize min_sample_point
+        if self.min_sample_point is not None:
+            serialized = ARObject._serialize_item(self.min_sample_point, "Float")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MIN-SAMPLE-POINT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize min_sync_jump
+        if self.min_sync_jump is not None:
+            serialized = ARObject._serialize_item(self.min_sync_jump, "Float")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MIN-SYNC-JUMP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize min_trcv_delay
+        if self.min_trcv_delay is not None:
+            serialized = ARObject._serialize_item(self.min_trcv_delay, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MIN-TRCV-DELAY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize trcv_pwm_mode
+        if self.trcv_pwm_mode is not None:
+            serialized = ARObject._serialize_item(self.trcv_pwm_mode, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TRCV-PWM-MODE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "CanControllerXlConfigurationRequirements":
         """Deserialize XML element to CanControllerXlConfigurationRequirements object.

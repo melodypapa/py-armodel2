@@ -41,6 +41,70 @@ class DiagEventDebounceTimeBased(DiagEventDebounceAlgorithm):
         self.time_based_fdc: Optional[TimeValue] = None
         self.time_failed: Optional[TimeValue] = None
         self.time_passed: Optional[TimeValue] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DiagEventDebounceTimeBased to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DiagEventDebounceTimeBased, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize time_based_fdc
+        if self.time_based_fdc is not None:
+            serialized = ARObject._serialize_item(self.time_based_fdc, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIME-BASED-FDC")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize time_failed
+        if self.time_failed is not None:
+            serialized = ARObject._serialize_item(self.time_failed, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIME-FAILED")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize time_passed
+        if self.time_passed is not None:
+            serialized = ARObject._serialize_item(self.time_passed, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIME-PASSED")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagEventDebounceTimeBased":
         """Deserialize XML element to DiagEventDebounceTimeBased object.

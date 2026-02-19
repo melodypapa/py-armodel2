@@ -45,6 +45,80 @@ class SignalServiceTranslationEventProps(Identifiable):
         self.safe_translation: Optional[Boolean] = None
         self.secure: Optional[Boolean] = None
         self.translation_ref: Optional[ARRef] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SignalServiceTranslationEventProps to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(SignalServiceTranslationEventProps, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize element_propses (list to container "ELEMENT-PROPSES")
+        if self.element_propses:
+            wrapper = ET.Element("ELEMENT-PROPSES")
+            for item in self.element_propses:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize safe_translation
+        if self.safe_translation is not None:
+            serialized = ARObject._serialize_item(self.safe_translation, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SAFE-TRANSLATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize secure
+        if self.secure is not None:
+            serialized = ARObject._serialize_item(self.secure, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SECURE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize translation_ref
+        if self.translation_ref is not None:
+            serialized = ARObject._serialize_item(self.translation_ref, "VariableDataPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TRANSLATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SignalServiceTranslationEventProps":
         """Deserialize XML element to SignalServiceTranslationEventProps object.

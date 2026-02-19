@@ -40,6 +40,56 @@ class EthTcpIpIcmpProps(ARElement):
         super().__init__()
         self.icmp_v4_props: Optional[TcpIpIcmpv4Props] = None
         self.icmp_v6_props: Optional[TcpIpIcmpv6Props] = None
+    def serialize(self) -> ET.Element:
+        """Serialize EthTcpIpIcmpProps to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(EthTcpIpIcmpProps, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize icmp_v4_props
+        if self.icmp_v4_props is not None:
+            serialized = ARObject._serialize_item(self.icmp_v4_props, "TcpIpIcmpv4Props")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ICMP-V4-PROPS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize icmp_v6_props
+        if self.icmp_v6_props is not None:
+            serialized = ARObject._serialize_item(self.icmp_v6_props, "TcpIpIcmpv6Props")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ICMP-V6-PROPS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "EthTcpIpIcmpProps":
         """Deserialize XML element to EthTcpIpIcmpProps object.

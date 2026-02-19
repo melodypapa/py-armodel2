@@ -32,6 +32,38 @@ class CalibrationParameterValueSet(ARElement):
         """Initialize CalibrationParameterValueSet."""
         super().__init__()
         self.calibrations: list[Any] = []
+    def serialize(self) -> ET.Element:
+        """Serialize CalibrationParameterValueSet to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(CalibrationParameterValueSet, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize calibrations (list to container "CALIBRATIONS")
+        if self.calibrations:
+            wrapper = ET.Element("CALIBRATIONS")
+            for item in self.calibrations:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "CalibrationParameterValueSet":
         """Deserialize XML element to CalibrationParameterValueSet object.

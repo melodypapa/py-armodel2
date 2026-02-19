@@ -39,6 +39,66 @@ class CpSoftwareClusterToResourceMapping(Identifiable):
         self.provider: Optional[CpSoftwareCluster] = None
         self.requesters: list[CpSoftwareCluster] = []
         self.service: Optional[CpSoftwareCluster] = None
+    def serialize(self) -> ET.Element:
+        """Serialize CpSoftwareClusterToResourceMapping to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(CpSoftwareClusterToResourceMapping, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize provider
+        if self.provider is not None:
+            serialized = ARObject._serialize_item(self.provider, "CpSoftwareCluster")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PROVIDER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize requesters (list to container "REQUESTERS")
+        if self.requesters:
+            wrapper = ET.Element("REQUESTERS")
+            for item in self.requesters:
+                serialized = ARObject._serialize_item(item, "CpSoftwareCluster")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize service
+        if self.service is not None:
+            serialized = ARObject._serialize_item(self.service, "CpSoftwareCluster")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SERVICE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "CpSoftwareClusterToResourceMapping":
         """Deserialize XML element to CpSoftwareClusterToResourceMapping object.

@@ -86,6 +86,172 @@ class DocumentationBlock(ARObject):
         self.structured_req: Optional[StructuredReq] = None
         self.trace: Optional[TraceableText] = None
         self.verbatim: Optional[MultiLanguageVerbatim] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DocumentationBlock to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize def_list_ref
+        if self.def_list_ref is not None:
+            serialized = ARObject._serialize_item(self.def_list_ref, "DefList")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DEF-LIST")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize figure
+        if self.figure is not None:
+            serialized = ARObject._serialize_item(self.figure, "MlFigure")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FIGURE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize formula
+        if self.formula is not None:
+            serialized = ARObject._serialize_item(self.formula, "MlFormula")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FORMULA")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize labeled_list_label_ref
+        if self.labeled_list_label_ref is not None:
+            serialized = ARObject._serialize_item(self.labeled_list_label_ref, "LabeledList")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("LABELED-LIST-LABEL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize list_ref
+        if self.list_ref is not None:
+            serialized = ARObject._serialize_item(self.list_ref, "List")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("LIST")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize msr_query_p2
+        if self.msr_query_p2 is not None:
+            serialized = ARObject._serialize_item(self.msr_query_p2, "MsrQueryP2")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MSR-QUERY-P2")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize note
+        if self.note is not None:
+            serialized = ARObject._serialize_item(self.note, "Note")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("NOTE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize p
+        if self.p is not None:
+            serialized = ARObject._serialize_item(self.p, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("P")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize structured_req
+        if self.structured_req is not None:
+            serialized = ARObject._serialize_item(self.structured_req, "StructuredReq")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("STRUCTURED-REQ")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize trace
+        if self.trace is not None:
+            serialized = ARObject._serialize_item(self.trace, "TraceableText")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TRACE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize verbatim
+        if self.verbatim is not None:
+            serialized = ARObject._serialize_item(self.verbatim, "MultiLanguageVerbatim")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("VERBATIM")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DocumentationBlock":
         """Deserialize XML element to DocumentationBlock object.

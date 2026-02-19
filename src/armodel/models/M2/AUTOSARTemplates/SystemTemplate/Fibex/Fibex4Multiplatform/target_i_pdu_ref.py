@@ -38,6 +38,46 @@ class TargetIPduRef(ARObject):
         super().__init__()
         self.default_value_ref: Optional[ARRef] = None
         self.target_i_pdu_ref: Optional[ARRef] = None
+    def serialize(self) -> ET.Element:
+        """Serialize TargetIPduRef to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize default_value_ref
+        if self.default_value_ref is not None:
+            serialized = ARObject._serialize_item(self.default_value_ref, "PduMappingDefaultValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DEFAULT-VALUE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize target_i_pdu_ref
+        if self.target_i_pdu_ref is not None:
+            serialized = ARObject._serialize_item(self.target_i_pdu_ref, "PduTriggering")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TARGET-I-PDU")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "TargetIPduRef":
         """Deserialize XML element to TargetIPduRef object.

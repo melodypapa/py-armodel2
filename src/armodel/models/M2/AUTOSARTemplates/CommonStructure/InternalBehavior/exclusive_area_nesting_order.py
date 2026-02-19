@@ -36,6 +36,38 @@ class ExclusiveAreaNestingOrder(Referrable):
         """Initialize ExclusiveAreaNestingOrder."""
         super().__init__()
         self.exclusive_areas: list[ExclusiveArea] = []
+    def serialize(self) -> ET.Element:
+        """Serialize ExclusiveAreaNestingOrder to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(ExclusiveAreaNestingOrder, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize exclusive_areas (list to container "EXCLUSIVE-AREAS")
+        if self.exclusive_areas:
+            wrapper = ET.Element("EXCLUSIVE-AREAS")
+            for item in self.exclusive_areas:
+                serialized = ARObject._serialize_item(item, "ExclusiveArea")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ExclusiveAreaNestingOrder":
         """Deserialize XML element to ExclusiveAreaNestingOrder object.

@@ -41,6 +41,84 @@ class CanControllerConfiguration(AbstractCanCommunicationControllerAttributes):
         self.sync_jump_width: Optional[Integer] = None
         self.time_seg1: Optional[Integer] = None
         self.time_seg2: Optional[Integer] = None
+    def serialize(self) -> ET.Element:
+        """Serialize CanControllerConfiguration to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(CanControllerConfiguration, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize prop_seg
+        if self.prop_seg is not None:
+            serialized = ARObject._serialize_item(self.prop_seg, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PROP-SEG")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sync_jump_width
+        if self.sync_jump_width is not None:
+            serialized = ARObject._serialize_item(self.sync_jump_width, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SYNC-JUMP-WIDTH")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize time_seg1
+        if self.time_seg1 is not None:
+            serialized = ARObject._serialize_item(self.time_seg1, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIME-SEG1")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize time_seg2
+        if self.time_seg2 is not None:
+            serialized = ARObject._serialize_item(self.time_seg2, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIME-SEG2")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "CanControllerConfiguration":
         """Deserialize XML element to CanControllerConfiguration object.

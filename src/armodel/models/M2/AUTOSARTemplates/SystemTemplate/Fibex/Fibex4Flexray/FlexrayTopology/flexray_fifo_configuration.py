@@ -53,6 +53,126 @@ class FlexrayFifoConfiguration(ARObject):
         self.fifo_ranges: list[FlexrayFifoRange] = []
         self.msg_id_mask: Optional[Integer] = None
         self.msg_id_match: Optional[Integer] = None
+    def serialize(self) -> ET.Element:
+        """Serialize FlexrayFifoConfiguration to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize admit_without
+        if self.admit_without is not None:
+            serialized = ARObject._serialize_item(self.admit_without, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ADMIT-WITHOUT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize base_cycle
+        if self.base_cycle is not None:
+            serialized = ARObject._serialize_item(self.base_cycle, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BASE-CYCLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize channel
+        if self.channel is not None:
+            serialized = ARObject._serialize_item(self.channel, "FlexrayPhysicalChannel")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CHANNEL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize cycle_repetition
+        if self.cycle_repetition is not None:
+            serialized = ARObject._serialize_item(self.cycle_repetition, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CYCLE-REPETITION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize fifo_depth
+        if self.fifo_depth is not None:
+            serialized = ARObject._serialize_item(self.fifo_depth, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FIFO-DEPTH")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize fifo_ranges (list to container "FIFO-RANGES")
+        if self.fifo_ranges:
+            wrapper = ET.Element("FIFO-RANGES")
+            for item in self.fifo_ranges:
+                serialized = ARObject._serialize_item(item, "FlexrayFifoRange")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize msg_id_mask
+        if self.msg_id_mask is not None:
+            serialized = ARObject._serialize_item(self.msg_id_mask, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MSG-ID-MASK")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize msg_id_match
+        if self.msg_id_match is not None:
+            serialized = ARObject._serialize_item(self.msg_id_match, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MSG-ID-MATCH")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "FlexrayFifoConfiguration":
         """Deserialize XML element to FlexrayFifoConfiguration object.

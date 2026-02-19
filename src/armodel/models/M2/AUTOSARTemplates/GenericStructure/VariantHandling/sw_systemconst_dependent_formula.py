@@ -37,6 +37,46 @@ class SwSystemconstDependentFormula(ARObject, ABC):
         super().__init__()
         self.sysc: Optional[SwSystemconst] = None
         self.sysc_string: Optional[SwSystemconst] = None
+    def serialize(self) -> ET.Element:
+        """Serialize SwSystemconstDependentFormula to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize sysc
+        if self.sysc is not None:
+            serialized = ARObject._serialize_item(self.sysc, "SwSystemconst")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SYSC")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sysc_string
+        if self.sysc_string is not None:
+            serialized = ARObject._serialize_item(self.sysc_string, "SwSystemconst")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SYSC-STRING")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SwSystemconstDependentFormula":
         """Deserialize XML element to SwSystemconstDependentFormula object.

@@ -32,6 +32,28 @@ class ModeDrivenTransmissionModeCondition(ARObject):
         """Initialize ModeDrivenTransmissionModeCondition."""
         super().__init__()
         self.modes: list[ModeDeclaration] = []
+    def serialize(self) -> ET.Element:
+        """Serialize ModeDrivenTransmissionModeCondition to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize modes (list to container "MODES")
+        if self.modes:
+            wrapper = ET.Element("MODES")
+            for item in self.modes:
+                serialized = ARObject._serialize_item(item, "ModeDeclaration")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ModeDrivenTransmissionModeCondition":
         """Deserialize XML element to ModeDrivenTransmissionModeCondition object.

@@ -48,6 +48,80 @@ class DiagnosticDataIdentifier(DiagnosticAbstractDataIdentifier):
         self.did_size: Optional[PositiveInteger] = None
         self.represents_vin: Optional[Boolean] = None
         self.support_info_byte: Optional[DiagnosticSupportInfoByte] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DiagnosticDataIdentifier to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DiagnosticDataIdentifier, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize data_elements (list to container "DATA-ELEMENTS")
+        if self.data_elements:
+            wrapper = ET.Element("DATA-ELEMENTS")
+            for item in self.data_elements:
+                serialized = ARObject._serialize_item(item, "DiagnosticParameter")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize did_size
+        if self.did_size is not None:
+            serialized = ARObject._serialize_item(self.did_size, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DID-SIZE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize represents_vin
+        if self.represents_vin is not None:
+            serialized = ARObject._serialize_item(self.represents_vin, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("REPRESENTS-VIN")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize support_info_byte
+        if self.support_info_byte is not None:
+            serialized = ARObject._serialize_item(self.support_info_byte, "DiagnosticSupportInfoByte")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SUPPORT-INFO-BYTE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagnosticDataIdentifier":
         """Deserialize XML element to DiagnosticDataIdentifier object.

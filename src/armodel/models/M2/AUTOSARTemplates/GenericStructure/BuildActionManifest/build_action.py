@@ -49,6 +49,92 @@ class BuildAction(BuildActionEntity):
         self.modified_datas: list[BuildActionIoElement] = []
         self.predecessors: list[BuildAction] = []
         self.required: BuildActionEnvironment = None
+    def serialize(self) -> ET.Element:
+        """Serialize BuildAction to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(BuildAction, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize created_datas (list to container "CREATED-DATAS")
+        if self.created_datas:
+            wrapper = ET.Element("CREATED-DATAS")
+            for item in self.created_datas:
+                serialized = ARObject._serialize_item(item, "BuildActionIoElement")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize follow_up_actions (list to container "FOLLOW-UP-ACTIONS")
+        if self.follow_up_actions:
+            wrapper = ET.Element("FOLLOW-UP-ACTIONS")
+            for item in self.follow_up_actions:
+                serialized = ARObject._serialize_item(item, "BuildAction")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize input_datas (list to container "INPUT-DATAS")
+        if self.input_datas:
+            wrapper = ET.Element("INPUT-DATAS")
+            for item in self.input_datas:
+                serialized = ARObject._serialize_item(item, "BuildActionIoElement")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize modified_datas (list to container "MODIFIED-DATAS")
+        if self.modified_datas:
+            wrapper = ET.Element("MODIFIED-DATAS")
+            for item in self.modified_datas:
+                serialized = ARObject._serialize_item(item, "BuildActionIoElement")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize predecessors (list to container "PREDECESSORS")
+        if self.predecessors:
+            wrapper = ET.Element("PREDECESSORS")
+            for item in self.predecessors:
+                serialized = ARObject._serialize_item(item, "BuildAction")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize required
+        if self.required is not None:
+            serialized = ARObject._serialize_item(self.required, "BuildActionEnvironment")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("REQUIRED")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "BuildAction":
         """Deserialize XML element to BuildAction object.

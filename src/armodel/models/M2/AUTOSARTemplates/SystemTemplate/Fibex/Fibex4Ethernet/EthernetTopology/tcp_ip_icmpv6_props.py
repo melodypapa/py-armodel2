@@ -32,6 +32,32 @@ class TcpIpIcmpv6Props(ARObject):
         """Initialize TcpIpIcmpv6Props."""
         super().__init__()
         self.tcp_ip_icmp: Optional[Boolean] = None
+    def serialize(self) -> ET.Element:
+        """Serialize TcpIpIcmpv6Props to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize tcp_ip_icmp
+        if self.tcp_ip_icmp is not None:
+            serialized = ARObject._serialize_item(self.tcp_ip_icmp, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TCP-IP-ICMP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "TcpIpIcmpv6Props":
         """Deserialize XML element to TcpIpIcmpv6Props object.

@@ -70,6 +70,164 @@ class CanFrameTriggering(FrameTriggering):
         self.rx_identifier_range_range: Optional[RxIdentifierRange] = None
         self.rx_mask: Optional[PositiveInteger] = None
         self.tx_mask: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize CanFrameTriggering to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(CanFrameTriggering, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize absolutelies (list to container "ABSOLUTELIES")
+        if self.absolutelies:
+            wrapper = ET.Element("ABSOLUTELIES")
+            for item in self.absolutelies:
+                serialized = ARObject._serialize_item(item, "TtcanAbsolutelyScheduledTiming")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize can_addressing
+        if self.can_addressing is not None:
+            serialized = ARObject._serialize_item(self.can_addressing, "CanAddressingModeType")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CAN-ADDRESSING")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize can_frame_rx_behavior
+        if self.can_frame_rx_behavior is not None:
+            serialized = ARObject._serialize_item(self.can_frame_rx_behavior, "CanFrameRxBehaviorEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CAN-FRAME-RX-BEHAVIOR")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize can_frame_tx_behavior
+        if self.can_frame_tx_behavior is not None:
+            serialized = ARObject._serialize_item(self.can_frame_tx_behavior, "CanFrameTxBehaviorEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CAN-FRAME-TX-BEHAVIOR")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize can_xl_frame_ref
+        if self.can_xl_frame_ref is not None:
+            serialized = ARObject._serialize_item(self.can_xl_frame_ref, "CanXlFrameTriggeringProps")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CAN-XL-FRAME")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize identifier
+        if self.identifier is not None:
+            serialized = ARObject._serialize_item(self.identifier, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IDENTIFIER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize j1939requestable
+        if self.j1939requestable is not None:
+            serialized = ARObject._serialize_item(self.j1939requestable, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("J1939REQUESTABLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize rx_identifier_range_range
+        if self.rx_identifier_range_range is not None:
+            serialized = ARObject._serialize_item(self.rx_identifier_range_range, "RxIdentifierRange")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RX-IDENTIFIER-RANGE-RANGE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize rx_mask
+        if self.rx_mask is not None:
+            serialized = ARObject._serialize_item(self.rx_mask, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RX-MASK")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize tx_mask
+        if self.tx_mask is not None:
+            serialized = ARObject._serialize_item(self.tx_mask, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TX-MASK")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "CanFrameTriggering":
         """Deserialize XML element to CanFrameTriggering object.

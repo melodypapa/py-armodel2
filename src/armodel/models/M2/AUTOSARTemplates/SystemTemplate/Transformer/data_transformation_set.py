@@ -40,6 +40,48 @@ class DataTransformationSet(ARElement):
         super().__init__()
         self.datas: list[DataTransformation] = []
         self.transformation_technologies: list[TransformationTechnology] = []
+    def serialize(self) -> ET.Element:
+        """Serialize DataTransformationSet to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DataTransformationSet, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize datas (list to container "DATAS")
+        if self.datas:
+            wrapper = ET.Element("DATAS")
+            for item in self.datas:
+                serialized = ARObject._serialize_item(item, "DataTransformation")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize transformation_technologies (list to container "TRANSFORMATION-TECHNOLOGIES")
+        if self.transformation_technologies:
+            wrapper = ET.Element("TRANSFORMATION-TECHNOLOGIES")
+            for item in self.transformation_technologies:
+                serialized = ARObject._serialize_item(item, "TransformationTechnology")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DataTransformationSet":
         """Deserialize XML element to DataTransformationSet object.

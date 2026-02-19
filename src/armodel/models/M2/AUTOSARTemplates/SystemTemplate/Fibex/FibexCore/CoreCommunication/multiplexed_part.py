@@ -33,6 +33,28 @@ class MultiplexedPart(ARObject, ABC):
         """Initialize MultiplexedPart."""
         super().__init__()
         self.segment_positions: list[SegmentPosition] = []
+    def serialize(self) -> ET.Element:
+        """Serialize MultiplexedPart to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize segment_positions (list to container "SEGMENT-POSITIONS")
+        if self.segment_positions:
+            wrapper = ET.Element("SEGMENT-POSITIONS")
+            for item in self.segment_positions:
+                serialized = ARObject._serialize_item(item, "SegmentPosition")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "MultiplexedPart":
         """Deserialize XML element to MultiplexedPart object.

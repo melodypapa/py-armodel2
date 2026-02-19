@@ -32,6 +32,28 @@ class SwCalprmAxisSet(ARObject):
         """Initialize SwCalprmAxisSet."""
         super().__init__()
         self.sw_calprm_axises: list[SwCalprmAxis] = []
+    def serialize(self) -> ET.Element:
+        """Serialize SwCalprmAxisSet to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize sw_calprm_axises (list to container "SW-CALPRM-AXISES")
+        if self.sw_calprm_axises:
+            wrapper = ET.Element("SW-CALPRM-AXISES")
+            for item in self.sw_calprm_axises:
+                serialized = ARObject._serialize_item(item, "SwCalprmAxis")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SwCalprmAxisSet":
         """Deserialize XML element to SwCalprmAxisSet object.

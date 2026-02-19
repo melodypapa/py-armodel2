@@ -37,6 +37,38 @@ class DataFormatTailoring(ARObject):
         super().__init__()
         self.class_tailorings: list[ClassTailoring] = []
         self.constraints: list[ConstraintTailoring] = []
+    def serialize(self) -> ET.Element:
+        """Serialize DataFormatTailoring to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize class_tailorings (list to container "CLASS-TAILORINGS")
+        if self.class_tailorings:
+            wrapper = ET.Element("CLASS-TAILORINGS")
+            for item in self.class_tailorings:
+                serialized = ARObject._serialize_item(item, "ClassTailoring")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize constraints (list to container "CONSTRAINTS")
+        if self.constraints:
+            wrapper = ET.Element("CONSTRAINTS")
+            for item in self.constraints:
+                serialized = ARObject._serialize_item(item, "ConstraintTailoring")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DataFormatTailoring":
         """Deserialize XML element to DataFormatTailoring object.

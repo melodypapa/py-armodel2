@@ -36,6 +36,38 @@ class BuildActionEnvironment(Identifiable):
         """Initialize BuildActionEnvironment."""
         super().__init__()
         self.sdgs: list[Sdg] = []
+    def serialize(self) -> ET.Element:
+        """Serialize BuildActionEnvironment to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(BuildActionEnvironment, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize sdgs (list to container "SDGS")
+        if self.sdgs:
+            wrapper = ET.Element("SDGS")
+            for item in self.sdgs:
+                serialized = ARObject._serialize_item(item, "Sdg")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "BuildActionEnvironment":
         """Deserialize XML element to BuildActionEnvironment object.

@@ -50,6 +50,84 @@ class ModeInSwcInstanceRef(ARObject):
         self.context_mode_ref: Optional[ARRef] = None
         self.context_port_ref: Optional[ARRef] = None
         self.target_mode: Optional[ModeDeclaration] = None
+    def serialize(self) -> ET.Element:
+        """Serialize ModeInSwcInstanceRef to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize base
+        if self.base is not None:
+            serialized = ARObject._serialize_item(self.base, "SwComponentType")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BASE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize contexts (list to container "CONTEXTS")
+        if self.contexts:
+            wrapper = ET.Element("CONTEXTS")
+            for item in self.contexts:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize context_mode_ref
+        if self.context_mode_ref is not None:
+            serialized = ARObject._serialize_item(self.context_mode_ref, "ModeDeclarationGroup")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CONTEXT-MODE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize context_port_ref
+        if self.context_port_ref is not None:
+            serialized = ARObject._serialize_item(self.context_port_ref, "PortPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CONTEXT-PORT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize target_mode
+        if self.target_mode is not None:
+            serialized = ARObject._serialize_item(self.target_mode, "ModeDeclaration")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TARGET-MODE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ModeInSwcInstanceRef":
         """Deserialize XML element to ModeInSwcInstanceRef object.

@@ -42,6 +42,56 @@ class AnyInstanceRef(ARObject):
         self.base: AtpClassifier = None
         self.context_elements: list[AtpFeature] = []
         self.target: AtpFeature = None
+    def serialize(self) -> ET.Element:
+        """Serialize AnyInstanceRef to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize base
+        if self.base is not None:
+            serialized = ARObject._serialize_item(self.base, "AtpClassifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BASE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize context_elements (list to container "CONTEXT-ELEMENTS")
+        if self.context_elements:
+            wrapper = ET.Element("CONTEXT-ELEMENTS")
+            for item in self.context_elements:
+                serialized = ARObject._serialize_item(item, "AtpFeature")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize target
+        if self.target is not None:
+            serialized = ARObject._serialize_item(self.target, "AtpFeature")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TARGET")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "AnyInstanceRef":
         """Deserialize XML element to AnyInstanceRef object.

@@ -47,6 +47,68 @@ class CpSoftwareClusterMappingSet(ARElement):
         self.resource_tos: list[CpSoftwareCluster] = []
         self.software_clusters: list[Any] = []
         self.swc_tos: list[SwcToApplicationPartitionMapping] = []
+    def serialize(self) -> ET.Element:
+        """Serialize CpSoftwareClusterMappingSet to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(CpSoftwareClusterMappingSet, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize port_element_tos (list to container "PORT-ELEMENT-TOS")
+        if self.port_element_tos:
+            wrapper = ET.Element("PORT-ELEMENT-TOS")
+            for item in self.port_element_tos:
+                serialized = ARObject._serialize_item(item, "PortElementToCommunicationResourceMapping")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize resource_tos (list to container "RESOURCE-TOS")
+        if self.resource_tos:
+            wrapper = ET.Element("RESOURCE-TOS")
+            for item in self.resource_tos:
+                serialized = ARObject._serialize_item(item, "CpSoftwareCluster")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize software_clusters (list to container "SOFTWARE-CLUSTERS")
+        if self.software_clusters:
+            wrapper = ET.Element("SOFTWARE-CLUSTERS")
+            for item in self.software_clusters:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize swc_tos (list to container "SWC-TOS")
+        if self.swc_tos:
+            wrapper = ET.Element("SWC-TOS")
+            for item in self.swc_tos:
+                serialized = ARObject._serialize_item(item, "SwcToApplicationPartitionMapping")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "CpSoftwareClusterMappingSet":
         """Deserialize XML element to CpSoftwareClusterMappingSet object.

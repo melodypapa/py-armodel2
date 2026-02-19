@@ -40,6 +40,60 @@ class AbstractCanCluster(ARObject, ABC):
         self.bus_off_recovery: Optional[CanClusterBusOffRecovery] = None
         self.can_fd_baudrate: Optional[PositiveUnlimitedInteger] = None
         self.can_xl_baudrate: Optional[PositiveUnlimitedInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize AbstractCanCluster to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize bus_off_recovery
+        if self.bus_off_recovery is not None:
+            serialized = ARObject._serialize_item(self.bus_off_recovery, "CanClusterBusOffRecovery")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("BUS-OFF-RECOVERY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize can_fd_baudrate
+        if self.can_fd_baudrate is not None:
+            serialized = ARObject._serialize_item(self.can_fd_baudrate, "PositiveUnlimitedInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CAN-FD-BAUDRATE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize can_xl_baudrate
+        if self.can_xl_baudrate is not None:
+            serialized = ARObject._serialize_item(self.can_xl_baudrate, "PositiveUnlimitedInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CAN-XL-BAUDRATE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "AbstractCanCluster":
         """Deserialize XML element to AbstractCanCluster object.

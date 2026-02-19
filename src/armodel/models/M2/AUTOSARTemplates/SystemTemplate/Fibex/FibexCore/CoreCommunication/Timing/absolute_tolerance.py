@@ -32,6 +32,32 @@ class AbsoluteTolerance(ARObject):
         """Initialize AbsoluteTolerance."""
         super().__init__()
         self.absolute: Optional[TimeValue] = None
+    def serialize(self) -> ET.Element:
+        """Serialize AbsoluteTolerance to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize absolute
+        if self.absolute is not None:
+            serialized = ARObject._serialize_item(self.absolute, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ABSOLUTE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "AbsoluteTolerance":
         """Deserialize XML element to AbsoluteTolerance object.

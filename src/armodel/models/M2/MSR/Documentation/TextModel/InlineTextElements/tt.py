@@ -37,6 +37,60 @@ class Tt(ARObject):
         self.term: String = None
         self.tex_render: Optional[String] = None
         self.type: NameToken = None
+    def serialize(self) -> ET.Element:
+        """Serialize Tt to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize term
+        if self.term is not None:
+            serialized = ARObject._serialize_item(self.term, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TERM")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize tex_render
+        if self.tex_render is not None:
+            serialized = ARObject._serialize_item(self.tex_render, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TEX-RENDER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize type
+        if self.type is not None:
+            serialized = ARObject._serialize_item(self.type, "NameToken")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TYPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "Tt":
         """Deserialize XML element to Tt object.

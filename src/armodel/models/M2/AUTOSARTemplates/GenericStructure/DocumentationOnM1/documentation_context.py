@@ -40,6 +40,56 @@ class DocumentationContext(MultilanguageReferrable):
         super().__init__()
         self.feature: Optional[AtpFeature] = None
         self.identifiable: Optional[Identifiable] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DocumentationContext to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DocumentationContext, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize feature
+        if self.feature is not None:
+            serialized = ARObject._serialize_item(self.feature, "AtpFeature")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("FEATURE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize identifiable
+        if self.identifiable is not None:
+            serialized = ARObject._serialize_item(self.identifiable, "Identifiable")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IDENTIFIABLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DocumentationContext":
         """Deserialize XML element to DocumentationContext object.

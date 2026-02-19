@@ -40,6 +40,56 @@ class EthTcpIpProps(ARElement):
         super().__init__()
         self.tcp_props: Optional[TcpProps] = None
         self.udp_props: Optional[UdpProps] = None
+    def serialize(self) -> ET.Element:
+        """Serialize EthTcpIpProps to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(EthTcpIpProps, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize tcp_props
+        if self.tcp_props is not None:
+            serialized = ARObject._serialize_item(self.tcp_props, "TcpProps")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TCP-PROPS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize udp_props
+        if self.udp_props is not None:
+            serialized = ARObject._serialize_item(self.udp_props, "UdpProps")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("UDP-PROPS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "EthTcpIpProps":
         """Deserialize XML element to EthTcpIpProps object.

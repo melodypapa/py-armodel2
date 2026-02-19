@@ -47,6 +47,130 @@ class TtcanCommunicationController(ARObject):
         self.time_master: Optional[Integer] = None
         self.time_triggered: Optional[Integer] = None
         self.tx_enable: Optional[Integer] = None
+    def serialize(self) -> ET.Element:
+        """Serialize TtcanCommunicationController to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize appl_watchdog
+        if self.appl_watchdog is not None:
+            serialized = ARObject._serialize_item(self.appl_watchdog, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("APPL-WATCHDOG")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize expected_tx
+        if self.expected_tx is not None:
+            serialized = ARObject._serialize_item(self.expected_tx, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("EXPECTED-TX")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize external_clock
+        if self.external_clock is not None:
+            serialized = ARObject._serialize_item(self.external_clock, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("EXTERNAL-CLOCK")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize initial_ref_offset
+        if self.initial_ref_offset is not None:
+            serialized = ARObject._serialize_item(self.initial_ref_offset, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("INITIAL-REF-OFFSET")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize master
+        if self.master is not None:
+            serialized = ARObject._serialize_item(self.master, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MASTER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize time_master
+        if self.time_master is not None:
+            serialized = ARObject._serialize_item(self.time_master, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIME-MASTER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize time_triggered
+        if self.time_triggered is not None:
+            serialized = ARObject._serialize_item(self.time_triggered, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TIME-TRIGGERED")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize tx_enable
+        if self.tx_enable is not None:
+            serialized = ARObject._serialize_item(self.tx_enable, "Integer")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TX-ENABLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "TtcanCommunicationController":
         """Deserialize XML element to TtcanCommunicationController object.

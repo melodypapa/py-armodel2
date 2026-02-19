@@ -51,6 +51,80 @@ class LifeCycleInfoSet(ARElement):
         self.default_period: Optional[LifeCyclePeriod] = None
         self.life_cycle_infos: list[LifeCycleInfo] = []
         self.used_life_cycle: LifeCycleStateDefinitionGroup = None
+    def serialize(self) -> ET.Element:
+        """Serialize LifeCycleInfoSet to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(LifeCycleInfoSet, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize default_lc_state
+        if self.default_lc_state is not None:
+            serialized = ARObject._serialize_item(self.default_lc_state, "LifeCycleState")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DEFAULT-LC-STATE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize default_period
+        if self.default_period is not None:
+            serialized = ARObject._serialize_item(self.default_period, "LifeCyclePeriod")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DEFAULT-PERIOD")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize life_cycle_infos (list to container "LIFE-CYCLE-INFOS")
+        if self.life_cycle_infos:
+            wrapper = ET.Element("LIFE-CYCLE-INFOS")
+            for item in self.life_cycle_infos:
+                serialized = ARObject._serialize_item(item, "LifeCycleInfo")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize used_life_cycle
+        if self.used_life_cycle is not None:
+            serialized = ARObject._serialize_item(self.used_life_cycle, "LifeCycleStateDefinitionGroup")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("USED-LIFE-CYCLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "LifeCycleInfoSet":
         """Deserialize XML element to LifeCycleInfoSet object.

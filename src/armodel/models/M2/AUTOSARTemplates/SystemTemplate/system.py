@@ -91,6 +91,182 @@ class System(ARElement):
         self.sw_clusters: list[CpSoftwareCluster] = []
         self.systems: list[Chapter] = []
         self.system_version: Optional[RevisionLabelString] = None
+    def serialize(self) -> ET.Element:
+        """Serialize System to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(System, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize client_id_refs (list to container "CLIENT-IDS")
+        if self.client_id_refs:
+            wrapper = ET.Element("CLIENT-IDS")
+            for item in self.client_id_refs:
+                serialized = ARObject._serialize_item(item, "ClientIdDefinitionSet")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize container_i_pdu_header_byte
+        if self.container_i_pdu_header_byte is not None:
+            serialized = ARObject._serialize_item(self.container_i_pdu_header_byte, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CONTAINER-I-PDU-HEADER-BYTE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize ecu_extract_version
+        if self.ecu_extract_version is not None:
+            serialized = ARObject._serialize_item(self.ecu_extract_version, "RevisionLabelString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ECU-EXTRACT-VERSION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize fibex_elements (list to container "FIBEX-ELEMENTS")
+        if self.fibex_elements:
+            wrapper = ET.Element("FIBEX-ELEMENTS")
+            for item in self.fibex_elements:
+                serialized = ARObject._serialize_item(item, "FibexElement")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize interpolation_routines (list to container "INTERPOLATION-ROUTINES")
+        if self.interpolation_routines:
+            wrapper = ET.Element("INTERPOLATION-ROUTINES")
+            for item in self.interpolation_routines:
+                serialized = ARObject._serialize_item(item, "InterpolationRoutine")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize j1939_shared_addresses (list to container "J1939-SHARED-ADDRESSES")
+        if self.j1939_shared_addresses:
+            wrapper = ET.Element("J1939-SHARED-ADDRESSES")
+            for item in self.j1939_shared_addresses:
+                serialized = ARObject._serialize_item(item, "J1939SharedAddressCluster")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize mapping_refs (list to container "MAPPINGS")
+        if self.mapping_refs:
+            wrapper = ET.Element("MAPPINGS")
+            for item in self.mapping_refs:
+                serialized = ARObject._serialize_item(item, "SystemMapping")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize pnc_vector
+        if self.pnc_vector is not None:
+            serialized = ARObject._serialize_item(self.pnc_vector, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PNC-VECTOR")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize pnc_vector_offset
+        if self.pnc_vector_offset is not None:
+            serialized = ARObject._serialize_item(self.pnc_vector_offset, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("PNC-VECTOR-OFFSET")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize root_software
+        if self.root_software is not None:
+            serialized = ARObject._serialize_item(self.root_software, "RootSwCompositionPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ROOT-SOFTWARE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize sw_clusters (list to container "SW-CLUSTERS")
+        if self.sw_clusters:
+            wrapper = ET.Element("SW-CLUSTERS")
+            for item in self.sw_clusters:
+                serialized = ARObject._serialize_item(item, "CpSoftwareCluster")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize systems (list to container "SYSTEMS")
+        if self.systems:
+            wrapper = ET.Element("SYSTEMS")
+            for item in self.systems:
+                serialized = ARObject._serialize_item(item, "Chapter")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize system_version
+        if self.system_version is not None:
+            serialized = ARObject._serialize_item(self.system_version, "RevisionLabelString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SYSTEM-VERSION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "System":
         """Deserialize XML element to System object.

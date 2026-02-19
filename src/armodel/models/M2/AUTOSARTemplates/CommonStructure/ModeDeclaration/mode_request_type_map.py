@@ -42,6 +42,46 @@ class ModeRequestTypeMap(ARObject):
         super().__init__()
         self.implementation: Optional[AbstractImplementationDataType] = None
         self.mode_group_ref: Optional[ARRef] = None
+    def serialize(self) -> ET.Element:
+        """Serialize ModeRequestTypeMap to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize implementation
+        if self.implementation is not None:
+            serialized = ARObject._serialize_item(self.implementation, "AbstractImplementationDataType")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IMPLEMENTATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize mode_group_ref
+        if self.mode_group_ref is not None:
+            serialized = ARObject._serialize_item(self.mode_group_ref, "ModeDeclarationGroup")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MODE-GROUP")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ModeRequestTypeMap":
         """Deserialize XML element to ModeRequestTypeMap object.

@@ -104,6 +104,192 @@ class SwcInternalBehavior(InternalBehavior):
         self.shareds: list[ParameterDataPrototype] = []
         self.supports: Optional[Boolean] = None
         self.variation_point_proxies: list[VariationPointProxy] = []
+    def serialize(self) -> ET.Element:
+        """Serialize SwcInternalBehavior to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(SwcInternalBehavior, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize ar_typed_per_refs (list to container "AR-TYPED-PERS")
+        if self.ar_typed_per_refs:
+            wrapper = ET.Element("AR-TYPED-PERS")
+            for item in self.ar_typed_per_refs:
+                serialized = ARObject._serialize_item(item, "VariableDataPrototype")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize events (list to container "EVENTS")
+        if self.events:
+            wrapper = ET.Element("EVENTS")
+            for item in self.events:
+                serialized = ARObject._serialize_item(item, "RTEEvent")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize exclusive_areas (list to container "EXCLUSIVE-AREAS")
+        if self.exclusive_areas:
+            wrapper = ET.Element("EXCLUSIVE-AREAS")
+            for item in self.exclusive_areas:
+                serialized = ARObject._serialize_item(item, "SwcExclusiveAreaPolicy")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize explicit_inter_refs (list to container "EXPLICIT-INTERS")
+        if self.explicit_inter_refs:
+            wrapper = ET.Element("EXPLICIT-INTERS")
+            for item in self.explicit_inter_refs:
+                serialized = ARObject._serialize_item(item, "VariableDataPrototype")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize implicit_inter_refs (list to container "IMPLICIT-INTERS")
+        if self.implicit_inter_refs:
+            wrapper = ET.Element("IMPLICIT-INTERS")
+            for item in self.implicit_inter_refs:
+                serialized = ARObject._serialize_item(item, "VariableDataPrototype")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize included_data_type_set_refs (list to container "INCLUDED-DATA-TYPE-SETS")
+        if self.included_data_type_set_refs:
+            wrapper = ET.Element("INCLUDED-DATA-TYPE-SETS")
+            for item in self.included_data_type_set_refs:
+                serialized = ARObject._serialize_item(item, "IncludedDataTypeSet")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize included_modes (list to container "INCLUDED-MODES")
+        if self.included_modes:
+            wrapper = ET.Element("INCLUDED-MODES")
+            for item in self.included_modes:
+                serialized = ARObject._serialize_item(item, "IncludedModeDeclarationGroupSet")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize instantiation_data_defs (list to container "INSTANTIATION-DATA-DEFS")
+        if self.instantiation_data_defs:
+            wrapper = ET.Element("INSTANTIATION-DATA-DEFS")
+            for item in self.instantiation_data_defs:
+                serialized = ARObject._serialize_item(item, "InstantiationDataDefProps")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize per_instance_memories (list to container "PER-INSTANCE-MEMORIES")
+        if self.per_instance_memories:
+            wrapper = ET.Element("PER-INSTANCE-MEMORIES")
+            for item in self.per_instance_memories:
+                serialized = ARObject._serialize_item(item, "PerInstanceMemory")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize per_instances (list to container "PER-INSTANCES")
+        if self.per_instances:
+            wrapper = ET.Element("PER-INSTANCES")
+            for item in self.per_instances:
+                serialized = ARObject._serialize_item(item, "ParameterDataPrototype")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize port_api_options (list to container "PORT-API-OPTIONS")
+        if self.port_api_options:
+            wrapper = ET.Element("PORT-API-OPTIONS")
+            for item in self.port_api_options:
+                serialized = ARObject._serialize_item(item, "PortAPIOption")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize runnables (list to container "RUNNABLES")
+        if self.runnables:
+            wrapper = ET.Element("RUNNABLES")
+            for item in self.runnables:
+                serialized = ARObject._serialize_item(item, "RunnableEntity")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize services (list to container "SERVICES")
+        if self.services:
+            wrapper = ET.Element("SERVICES")
+            for item in self.services:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize shareds (list to container "SHAREDS")
+        if self.shareds:
+            wrapper = ET.Element("SHAREDS")
+            for item in self.shareds:
+                serialized = ARObject._serialize_item(item, "ParameterDataPrototype")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize supports
+        if self.supports is not None:
+            serialized = ARObject._serialize_item(self.supports, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SUPPORTS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize variation_point_proxies (list to container "VARIATION-POINT-PROXIES")
+        if self.variation_point_proxies:
+            wrapper = ET.Element("VARIATION-POINT-PROXIES")
+            for item in self.variation_point_proxies:
+                serialized = ARObject._serialize_item(item, "VariationPointProxy")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "SwcInternalBehavior":
         """Deserialize XML element to SwcInternalBehavior object.

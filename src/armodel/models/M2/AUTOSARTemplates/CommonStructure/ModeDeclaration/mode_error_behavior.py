@@ -38,6 +38,46 @@ class ModeErrorBehavior(ARObject):
         super().__init__()
         self.default_mode: Optional[ModeDeclaration] = None
         self.error_reaction: Optional[ModeErrorReactionPolicyEnum] = None
+    def serialize(self) -> ET.Element:
+        """Serialize ModeErrorBehavior to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize default_mode
+        if self.default_mode is not None:
+            serialized = ARObject._serialize_item(self.default_mode, "ModeDeclaration")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DEFAULT-MODE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize error_reaction
+        if self.error_reaction is not None:
+            serialized = ARObject._serialize_item(self.error_reaction, "ModeErrorReactionPolicyEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ERROR-REACTION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ModeErrorBehavior":
         """Deserialize XML element to ModeErrorBehavior object.

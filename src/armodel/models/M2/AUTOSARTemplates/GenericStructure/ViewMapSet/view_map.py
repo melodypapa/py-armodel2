@@ -43,6 +43,62 @@ class ViewMap(Identifiable):
         self.first_elements: list[AtpFeature] = []
         self.role: Optional[Identifier] = None
         self.second_elements: list[AtpFeature] = []
+    def serialize(self) -> ET.Element:
+        """Serialize ViewMap to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(ViewMap, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize first_elements (list to container "FIRST-ELEMENTS")
+        if self.first_elements:
+            wrapper = ET.Element("FIRST-ELEMENTS")
+            for item in self.first_elements:
+                serialized = ARObject._serialize_item(item, "AtpFeature")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize role
+        if self.role is not None:
+            serialized = ARObject._serialize_item(self.role, "Identifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ROLE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize second_elements (list to container "SECOND-ELEMENTS")
+        if self.second_elements:
+            wrapper = ET.Element("SECOND-ELEMENTS")
+            for item in self.second_elements:
+                serialized = ARObject._serialize_item(item, "AtpFeature")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ViewMap":
         """Deserialize XML element to ViewMap object.

@@ -37,6 +37,52 @@ class DiagnosticResponseOnEvent(DiagnosticServiceInstance):
         super().__init__()
         self.event_windows: list[DiagnosticEventWindow] = []
         self.response_on: Optional[Any] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DiagnosticResponseOnEvent to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DiagnosticResponseOnEvent, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize event_windows (list to container "EVENT-WINDOWS")
+        if self.event_windows:
+            wrapper = ET.Element("EVENT-WINDOWS")
+            for item in self.event_windows:
+                serialized = ARObject._serialize_item(item, "DiagnosticEventWindow")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize response_on
+        if self.response_on is not None:
+            serialized = ARObject._serialize_item(self.response_on, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("RESPONSE-ON")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagnosticResponseOnEvent":
         """Deserialize XML element to DiagnosticResponseOnEvent object.

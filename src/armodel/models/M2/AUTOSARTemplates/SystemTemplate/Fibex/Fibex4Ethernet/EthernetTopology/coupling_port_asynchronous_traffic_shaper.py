@@ -42,6 +42,70 @@ class CouplingPortAsynchronousTrafficShaper(Identifiable):
         self.committed_burst: Optional[PositiveInteger] = None
         self.committed: Optional[PositiveInteger] = None
         self.traffic_shaper: Optional[SwitchAsynchronousTrafficShaperGroupEntry] = None
+    def serialize(self) -> ET.Element:
+        """Serialize CouplingPortAsynchronousTrafficShaper to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(CouplingPortAsynchronousTrafficShaper, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize committed_burst
+        if self.committed_burst is not None:
+            serialized = ARObject._serialize_item(self.committed_burst, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COMMITTED-BURST")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize committed
+        if self.committed is not None:
+            serialized = ARObject._serialize_item(self.committed, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COMMITTED")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize traffic_shaper
+        if self.traffic_shaper is not None:
+            serialized = ARObject._serialize_item(self.traffic_shaper, "SwitchAsynchronousTrafficShaperGroupEntry")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TRAFFIC-SHAPER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "CouplingPortAsynchronousTrafficShaper":
         """Deserialize XML element to CouplingPortAsynchronousTrafficShaper object.

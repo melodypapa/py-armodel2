@@ -57,6 +57,150 @@ class Ipv6Configuration(NetworkEndpointAddress):
         self.ip_address_prefix: Optional[PositiveInteger] = None
         self.ipv6_address: Optional[Ip6AddressString] = None
         self.ipv6_address_source: Optional[Ipv6AddressSourceEnum] = None
+    def serialize(self) -> ET.Element:
+        """Serialize Ipv6Configuration to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(Ipv6Configuration, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize assignment
+        if self.assignment is not None:
+            serialized = ARObject._serialize_item(self.assignment, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ASSIGNMENT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize default_router
+        if self.default_router is not None:
+            serialized = ARObject._serialize_item(self.default_router, "Ip6AddressString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("DEFAULT-ROUTER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize dns_servers (list to container "DNS-SERVERS")
+        if self.dns_servers:
+            wrapper = ET.Element("DNS-SERVERS")
+            for item in self.dns_servers:
+                serialized = ARObject._serialize_item(item, "Ip6AddressString")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize enable_anycast
+        if self.enable_anycast is not None:
+            serialized = ARObject._serialize_item(self.enable_anycast, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ENABLE-ANYCAST")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize hop_count
+        if self.hop_count is not None:
+            serialized = ARObject._serialize_item(self.hop_count, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("HOP-COUNT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize ip_address_keep_enum
+        if self.ip_address_keep_enum is not None:
+            serialized = ARObject._serialize_item(self.ip_address_keep_enum, "IpAddressKeepEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IP-ADDRESS-KEEP-ENUM")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize ip_address_prefix
+        if self.ip_address_prefix is not None:
+            serialized = ARObject._serialize_item(self.ip_address_prefix, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IP-ADDRESS-PREFIX")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize ipv6_address
+        if self.ipv6_address is not None:
+            serialized = ARObject._serialize_item(self.ipv6_address, "Ip6AddressString")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IPV6-ADDRESS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize ipv6_address_source
+        if self.ipv6_address_source is not None:
+            serialized = ARObject._serialize_item(self.ipv6_address_source, "Ipv6AddressSourceEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("IPV6-ADDRESS-SOURCE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "Ipv6Configuration":
         """Deserialize XML element to Ipv6Configuration object.

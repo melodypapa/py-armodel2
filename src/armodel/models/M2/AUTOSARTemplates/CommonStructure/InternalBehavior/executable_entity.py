@@ -63,6 +63,110 @@ class ExecutableEntity(Identifiable, ABC):
         self.reentrancy_level_enum: Optional[ReentrancyLevelEnum] = None
         self.runs_insides: list[ExclusiveArea] = []
         self.sw_addr_method: Optional[SwAddrMethod] = None
+    def serialize(self) -> ET.Element:
+        """Serialize ExecutableEntity to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(ExecutableEntity, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize activations (list to container "ACTIVATIONS")
+        if self.activations:
+            wrapper = ET.Element("ACTIVATIONS")
+            for item in self.activations:
+                serialized = ARObject._serialize_item(item, "ExecutableEntity")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize can_enters (list to container "CAN-ENTERS")
+        if self.can_enters:
+            wrapper = ET.Element("CAN-ENTERS")
+            for item in self.can_enters:
+                serialized = ARObject._serialize_item(item, "ExclusiveArea")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize exclusive_area_nestings (list to container "EXCLUSIVE-AREA-NESTINGS")
+        if self.exclusive_area_nestings:
+            wrapper = ET.Element("EXCLUSIVE-AREA-NESTINGS")
+            for item in self.exclusive_area_nestings:
+                serialized = ARObject._serialize_item(item, "ExclusiveAreaNestingOrder")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize minimum_start
+        if self.minimum_start is not None:
+            serialized = ARObject._serialize_item(self.minimum_start, "TimeValue")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MINIMUM-START")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize reentrancy_level_enum
+        if self.reentrancy_level_enum is not None:
+            serialized = ARObject._serialize_item(self.reentrancy_level_enum, "ReentrancyLevelEnum")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("REENTRANCY-LEVEL-ENUM")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize runs_insides (list to container "RUNS-INSIDES")
+        if self.runs_insides:
+            wrapper = ET.Element("RUNS-INSIDES")
+            for item in self.runs_insides:
+                serialized = ARObject._serialize_item(item, "ExclusiveArea")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize sw_addr_method
+        if self.sw_addr_method is not None:
+            serialized = ARObject._serialize_item(self.sw_addr_method, "SwAddrMethod")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SW-ADDR-METHOD")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ExecutableEntity":
         """Deserialize XML element to ExecutableEntity object.

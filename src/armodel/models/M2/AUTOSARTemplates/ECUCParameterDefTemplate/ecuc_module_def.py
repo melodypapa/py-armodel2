@@ -49,6 +49,90 @@ class EcucModuleDef(EcucDefinitionElement):
         self.post_build_variant: Optional[Boolean] = None
         self.refined_module: Optional[EcucModuleDef] = None
         self.supporteds: list[Any] = []
+    def serialize(self) -> ET.Element:
+        """Serialize EcucModuleDef to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(EcucModuleDef, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize api_service_prefix
+        if self.api_service_prefix is not None:
+            serialized = ARObject._serialize_item(self.api_service_prefix, "CIdentifier")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("API-SERVICE-PREFIX")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize containers (list to container "CONTAINERS")
+        if self.containers:
+            wrapper = ET.Element("CONTAINERS")
+            for item in self.containers:
+                serialized = ARObject._serialize_item(item, "EcucContainerDef")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize post_build_variant
+        if self.post_build_variant is not None:
+            serialized = ARObject._serialize_item(self.post_build_variant, "Boolean")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("POST-BUILD-VARIANT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize refined_module
+        if self.refined_module is not None:
+            serialized = ARObject._serialize_item(self.refined_module, "EcucModuleDef")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("REFINED-MODULE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize supporteds (list to container "SUPPORTEDS")
+        if self.supporteds:
+            wrapper = ET.Element("SUPPORTEDS")
+            for item in self.supporteds:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "EcucModuleDef":
         """Deserialize XML element to EcucModuleDef object.

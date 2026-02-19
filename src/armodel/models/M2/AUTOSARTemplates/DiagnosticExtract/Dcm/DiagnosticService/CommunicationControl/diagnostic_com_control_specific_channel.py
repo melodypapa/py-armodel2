@@ -39,6 +39,60 @@ class DiagnosticComControlSpecificChannel(ARObject):
         self.specific_channel: Optional[CommunicationCluster] = None
         self.specific_physical: Optional[Any] = None
         self.subnet_number: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize DiagnosticComControlSpecificChannel to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # Serialize specific_channel
+        if self.specific_channel is not None:
+            serialized = ARObject._serialize_item(self.specific_channel, "CommunicationCluster")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SPECIFIC-CHANNEL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize specific_physical
+        if self.specific_physical is not None:
+            serialized = ARObject._serialize_item(self.specific_physical, "Any")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SPECIFIC-PHYSICAL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize subnet_number
+        if self.subnet_number is not None:
+            serialized = ARObject._serialize_item(self.subnet_number, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SUBNET-NUMBER")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "DiagnosticComControlSpecificChannel":
         """Deserialize XML element to DiagnosticComControlSpecificChannel object.

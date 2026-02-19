@@ -34,6 +34,48 @@ class ConsumedProvidedServiceInstanceGroup(FibexElement):
         super().__init__()
         self.consumed_services: list[Any] = []
         self.provided_services: list[Any] = []
+    def serialize(self) -> ET.Element:
+        """Serialize ConsumedProvidedServiceInstanceGroup to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(ConsumedProvidedServiceInstanceGroup, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize consumed_services (list to container "CONSUMED-SERVICES")
+        if self.consumed_services:
+            wrapper = ET.Element("CONSUMED-SERVICES")
+            for item in self.consumed_services:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize provided_services (list to container "PROVIDED-SERVICES")
+        if self.provided_services:
+            wrapper = ET.Element("PROVIDED-SERVICES")
+            for item in self.provided_services:
+                serialized = ARObject._serialize_item(item, "Any")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ConsumedProvidedServiceInstanceGroup":
         """Deserialize XML element to ConsumedProvidedServiceInstanceGroup object.

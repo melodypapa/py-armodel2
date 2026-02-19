@@ -49,6 +49,72 @@ class ISignalIPduGroup(FibexElement):
         self.contained_refs: list[ARRef] = []
         self.i_signal_i_pdus: list[ISignalIPdu] = []
         self.nm_pdus: list[NmPdu] = []
+    def serialize(self) -> ET.Element:
+        """Serialize ISignalIPduGroup to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(ISignalIPduGroup, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize communication
+        if self.communication is not None:
+            serialized = ARObject._serialize_item(self.communication, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("COMMUNICATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize contained_refs (list to container "CONTAINEDS")
+        if self.contained_refs:
+            wrapper = ET.Element("CONTAINEDS")
+            for item in self.contained_refs:
+                serialized = ARObject._serialize_item(item, "ISignalIPduGroup")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize i_signal_i_pdus (list to container "I-SIGNAL-I-PDUS")
+        if self.i_signal_i_pdus:
+            wrapper = ET.Element("I-SIGNAL-I-PDUS")
+            for item in self.i_signal_i_pdus:
+                serialized = ARObject._serialize_item(item, "ISignalIPdu")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize nm_pdus (list to container "NM-PDUS")
+        if self.nm_pdus:
+            wrapper = ET.Element("NM-PDUS")
+            for item in self.nm_pdus:
+                serialized = ARObject._serialize_item(item, "NmPdu")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ISignalIPduGroup":
         """Deserialize XML element to ISignalIPduGroup object.

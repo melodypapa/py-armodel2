@@ -43,6 +43,84 @@ class CryptoServiceNeeds(ServiceNeeds):
         self.algorithm_mode: Optional[String] = None
         self.crypto_key: Optional[String] = None
         self.maximum_key: Optional[PositiveInteger] = None
+    def serialize(self) -> ET.Element:
+        """Serialize CryptoServiceNeeds to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(CryptoServiceNeeds, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize algorithm_family
+        if self.algorithm_family is not None:
+            serialized = ARObject._serialize_item(self.algorithm_family, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ALGORITHM-FAMILY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize algorithm_mode
+        if self.algorithm_mode is not None:
+            serialized = ARObject._serialize_item(self.algorithm_mode, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("ALGORITHM-MODE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize crypto_key
+        if self.crypto_key is not None:
+            serialized = ARObject._serialize_item(self.crypto_key, "String")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("CRYPTO-KEY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize maximum_key
+        if self.maximum_key is not None:
+            serialized = ARObject._serialize_item(self.maximum_key, "PositiveInteger")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("MAXIMUM-KEY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "CryptoServiceNeeds":
         """Deserialize XML element to CryptoServiceNeeds object.

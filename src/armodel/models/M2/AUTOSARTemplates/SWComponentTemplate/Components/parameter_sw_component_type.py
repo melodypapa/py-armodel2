@@ -47,6 +47,58 @@ class ParameterSwComponentType(SwComponentType):
         self.constants: list[ConstantSpecification] = []
         self.data_type_refs: list[ARRef] = []
         self.instantiation_data_defs: list[InstantiationDataDefProps] = []
+    def serialize(self) -> ET.Element:
+        """Serialize ParameterSwComponentType to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = ARObject._get_xml_tag(self)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(ParameterSwComponentType, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize constants (list to container "CONSTANTS")
+        if self.constants:
+            wrapper = ET.Element("CONSTANTS")
+            for item in self.constants:
+                serialized = ARObject._serialize_item(item, "ConstantSpecification")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize data_type_refs (list to container "DATA-TYPES")
+        if self.data_type_refs:
+            wrapper = ET.Element("DATA-TYPES")
+            for item in self.data_type_refs:
+                serialized = ARObject._serialize_item(item, "DataTypeMappingSet")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize instantiation_data_defs (list to container "INSTANTIATION-DATA-DEFS")
+        if self.instantiation_data_defs:
+            wrapper = ET.Element("INSTANTIATION-DATA-DEFS")
+            for item in self.instantiation_data_defs:
+                serialized = ARObject._serialize_item(item, "InstantiationDataDefProps")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
     @classmethod
     def deserialize(cls, element: ET.Element) -> "ParameterSwComponentType":
         """Deserialize XML element to ParameterSwComponentType object.
