@@ -42,12 +42,12 @@ class MultiLanguagePlainText(ARObject):
         tag = ARObject._get_xml_tag(self)
         elem = ET.Element(tag)
 
-        # Serialize l10
+        # Serialize l10 - use L-10 (language-specific element with hyphen)
         if self.l10 is not None:
             serialized = ARObject._serialize_item(self.l10, "LPlainText")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("L10")
+                # Wrap with correct tag L-10 (language-specific)
+                wrapped = ET.Element("L-10")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -72,8 +72,8 @@ class MultiLanguagePlainText(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse l10
-        child = ARObject._find_child_element(element, "L10")
+        # Parse l10 - look for L-10 (language-specific element with hyphen)
+        child = ARObject._find_child_element(element, "L-10")
         if child is not None:
             l10_value = ARObject._deserialize_by_tag(child, "LPlainText")
             obj.l10 = l10_value

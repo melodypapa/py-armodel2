@@ -6,7 +6,7 @@
       "package": "M2::MSR::Documentation::TextModel::LanguageDataModel",
       "is_abstract": false,
       "atp_type": "atpMixedString",
-      "parent": null,
+      "parent": "LanguageSpecific",
       "bases": [
         "ARObject",
         "LanguageSpecific",

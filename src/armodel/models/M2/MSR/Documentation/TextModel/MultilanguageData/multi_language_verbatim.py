@@ -113,12 +113,12 @@ class MultiLanguageVerbatim(Paginateable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize l5
+        # Serialize l5 - use L-5 (language-specific element with hyphen)
         if self.l5 is not None:
             serialized = ARObject._serialize_item(self.l5, "LVerbatim")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("L5")
+                # Wrap with correct tag L-5 (language-specific)
+                wrapped = ET.Element("L-5")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -174,8 +174,8 @@ class MultiLanguageVerbatim(Paginateable):
             help_entry_value = child.text
             obj.help_entry = help_entry_value
 
-        # Parse l5
-        child = ARObject._find_child_element(element, "L5")
+        # Parse l5 - look for L-5 (language-specific element with hyphen)
+        child = ARObject._find_child_element(element, "L-5")
         if child is not None:
             l5_value = ARObject._deserialize_by_tag(child, "LVerbatim")
             obj.l5 = l5_value

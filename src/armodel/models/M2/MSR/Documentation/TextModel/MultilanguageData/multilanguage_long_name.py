@@ -44,12 +44,12 @@ class MultilanguageLongName(ARObject):
         tag = ARObject._get_xml_tag(self)
         elem = ET.Element(tag)
 
-        # Serialize l4
+        # Serialize l4 - use L-4 (language-specific element with hyphen)
         if self.l4 is not None:
             serialized = ARObject._serialize_item(self.l4, "LLongName")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("L4")
+                # Wrap with correct tag L-4 (language-specific)
+                wrapped = ET.Element("L-4")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -74,8 +74,8 @@ class MultilanguageLongName(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse l4
-        child = ARObject._find_child_element(element, "L4")
+        # Parse l4 - look for L-4 (language-specific element with hyphen)
+        child = ARObject._find_child_element(element, "L-4")
         if child is not None:
             l4_value = ARObject._deserialize_by_tag(child, "LLongName")
             obj.l4 = l4_value

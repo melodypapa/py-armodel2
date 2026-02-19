@@ -76,15 +76,15 @@
         }
       ],
       "attributes": {
-        "clientIds": {
+        "clientIdDefinitionSets": {
           "type": "ClientIdDefinitionSet",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": true,
           "note": "Set of Client Identifiers that are used for inter-ECU communication in the System."
         },
-        "containerIPduHeaderByte": {
-          "type": "any (ByteOrderEnumOrder)",
+        "containerIPduHeaderByteOrder": {
+          "type": "ByteOrderEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -104,14 +104,14 @@
           "is_ref": false,
           "note": "Reference to ASAM FIBEX elements specifying Topology. Elements used within a System Description shall from the System Element. order to describe a product-line, all Fibex be optional. atpVariation"
         },
-        "interpolationRoutines": {
-          "type": "InterpolationRoutine",
+        "interpolationRoutineMappingSets": {
+          "type": "InterpolationRoutineMappingSet",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "This reference identifies the InterpolationRoutineMapping Sets that are relevant in the context of the enclosing"
         },
-        "j1939SharedAddresses": {
+        "j1939SharedAddressClusters": {
           "type": "J1939SharedAddressCluster",
           "multiplicity": "*",
           "kind": "attribute",
@@ -125,7 +125,7 @@
           "is_ref": true,
           "note": "Aggregation of all mapping aspects (mapping of SW ECUs, mapping of data elements to mapping constraints). to support OEM / Tier 1 interaction and shared one common System this aggregation is atpVariation. The content of System be provided by several parties using for the SystemMapping. is not required when the System description for a network-only use-case. atpVariation 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },
-        "pncVector": {
+        "pncVectorLength": {
           "type": "PositiveInteger",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -139,7 +139,7 @@
           "is_ref": false,
           "note": "Absolute offset (with respect to the NM-PDU) of the request release information vector that in bytes as an index starting with 0."
         },
-        "rootSoftware": {
+        "rootSoftwareComposition": {
           "type": "RootSwCompositionPrototype",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -153,7 +153,7 @@
           "is_ref": false,
           "note": "CP Software Clusters of this System atpVariation"
         },
-        "systems": {
+        "systemDocumentations": {
           "type": "Chapter",
           "multiplicity": "*",
           "kind": "attribute",

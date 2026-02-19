@@ -45,12 +45,12 @@ class MultiLanguageOverviewParagraph(ARObject):
         tag = ARObject._get_xml_tag(self)
         elem = ET.Element(tag)
 
-        # Serialize l2
+        # Serialize l2 - use L-2 (language-specific element with hyphen)
         if self.l2 is not None:
             serialized = ARObject._serialize_item(self.l2, "LOverviewParagraph")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("L2")
+                # Wrap with correct tag L-2 (language-specific)
+                wrapped = ET.Element("L-2")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -75,8 +75,8 @@ class MultiLanguageOverviewParagraph(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse l2
-        child = ARObject._find_child_element(element, "L2")
+        # Parse l2 - look for L-2 (language-specific element with hyphen)
+        child = ARObject._find_child_element(element, "L-2")
         if child is not None:
             l2_value = ARObject._deserialize_by_tag(child, "LOverviewParagraph")
             obj.l2 = l2_value

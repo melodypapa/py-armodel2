@@ -74,12 +74,12 @@ class MultiLanguageParagraph(Paginateable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize l1
+        # Serialize l1 - use L-1 (language-specific element with hyphen)
         if self.l1 is not None:
             serialized = ARObject._serialize_item(self.l1, "LParagraph")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("L1")
+                # Wrap with correct tag L-1 (language-specific)
+                wrapped = ET.Element("L-1")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -109,8 +109,8 @@ class MultiLanguageParagraph(Paginateable):
             help_entry_value = child.text
             obj.help_entry = help_entry_value
 
-        # Parse l1
-        child = ARObject._find_child_element(element, "L1")
+        # Parse l1 - look for L-1 (language-specific element with hyphen)
+        child = ARObject._find_child_element(element, "L-1")
         if child is not None:
             l1_value = ARObject._deserialize_by_tag(child, "LParagraph")
             obj.l1 = l1_value

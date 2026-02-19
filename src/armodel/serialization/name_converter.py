@@ -22,7 +22,18 @@ class NameConverter:
             SwBaseType → SW-BASE-TYPE
             ImplementationDataType → IMPLEMENTATION-DATA-TYPE
             AUTOSAR → AUTOSAR (all caps stays as one word)
+            l1 → L-1 (language-specific element)
+            l2 → L-2 (language-specific element)
+            l4 → L-4 (language-specific element)
+            l5 → L-5 (language-specific element)
+            l10 → L-10 (language-specific element)
         """
+        # Handle language-specific elements (l1, l2, l3, l4, l5, l10)
+        if name in ['l1', 'l2', 'l3', 'l4', 'l5']:
+            return f"L-{name[1]}"
+        if name == 'l10':
+            return "L-10"
+
         # Handle snake_case attributes (existing logic)
         if '_' in name:
             # Remove private prefix
@@ -77,7 +88,18 @@ class NameConverter:
         Examples:
             SHORT-NAME → short_name
             SW-DATA-DEF-PROPS → sw_data_def_props
+            L-1 → l1 (language-specific element)
+            L-2 → l2 (language-specific element)
+            L-4 → l4 (language-specific element)
+            L-5 → l5 (language-specific element)
+            L-10 → l10 (language-specific element)
         """
+        # Handle language-specific elements (L-1, L-2, L-3, L-4, L-5, L-10)
+        if tag in ['L-1', 'L-2', 'L-3', 'L-4', 'L-5']:
+            return f"l{tag[2]}"
+        if tag == 'L-10':
+            return "l10"
+
         return tag.lower().replace('-', '_')
 
     @staticmethod
