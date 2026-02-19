@@ -453,15 +453,21 @@ class TestBaseTypeClass:
         autosar = AUTOSAR()
         reader.load_arxml(autosar, str(arxml_file))
 
-        # Find SwBaseType objects
+        # Find SwBaseType objects (recursively search nested packages)
         from armodel.models.M2.MSR.AsamHdo.BaseTypes.sw_base_type import SwBaseType
 
         base_types = []
-        for pkg in autosar.ar_packages:
-            if hasattr(pkg, 'elements') and pkg.elements:
-                for elem in pkg.elements:
-                    if isinstance(elem, SwBaseType):
-                        base_types.append(elem)
+        def find_in_packages(packages):
+            """Recursively search for SwBaseType in packages."""
+            for pkg in packages:
+                if hasattr(pkg, 'elements') and pkg.elements:
+                    for elem in pkg.elements:
+                        if isinstance(elem, SwBaseType):
+                            base_types.append(elem)
+                if hasattr(pkg, 'ar_packages') and pkg.ar_packages:
+                    find_in_packages(pkg.ar_packages)
+
+        find_in_packages(autosar.ar_packages)
 
         if base_types:
             print(f"\n✅ Found {len(base_types)} SwBaseType objects")
