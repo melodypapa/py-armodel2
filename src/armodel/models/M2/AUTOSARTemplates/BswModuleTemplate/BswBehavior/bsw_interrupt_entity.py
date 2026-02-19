@@ -51,14 +51,13 @@ class BswInterruptEntity(BswModuleEntity):
         Returns:
             Deserialized BswInterruptEntity object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(BswInterruptEntity, cls).deserialize(element)
 
         # Parse interrupt_category
         child = ARObject._find_child_element(element, "INTERRUPT-CATEGORY")
         if child is not None:
-            interrupt_category_value = child.text
+            interrupt_category_value = BswInterruptCategory.deserialize(child)
             obj.interrupt_category = interrupt_category_value
 
         # Parse interrupt_source

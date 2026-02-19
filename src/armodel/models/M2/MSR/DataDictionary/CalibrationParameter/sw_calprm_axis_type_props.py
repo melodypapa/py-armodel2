@@ -61,7 +61,7 @@ class SwCalprmAxisTypeProps(ARObject, ABC):
         # Parse monotony
         child = ARObject._find_child_element(element, "MONOTONY")
         if child is not None:
-            monotony_value = child.text
+            monotony_value = MonotonyEnum.deserialize(child)
             obj.monotony = monotony_value
 
         return obj

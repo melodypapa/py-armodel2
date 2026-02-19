@@ -45,14 +45,13 @@ class DiagnosticEcuResetClass(DiagnosticServiceClass):
         Returns:
             Deserialized DiagnosticEcuResetClass object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticEcuResetClass, cls).deserialize(element)
 
         # Parse respond_to
         child = ARObject._find_child_element(element, "RESPOND-TO")
         if child is not None:
-            respond_to_value = child.text
+            respond_to_value = DiagnosticResponseToEcuResetEnum.deserialize(child)
             obj.respond_to = respond_to_value
 
         return obj

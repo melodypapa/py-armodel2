@@ -61,11 +61,15 @@ class StreamFilterRuleIpTp(ARObject):
             destination_value = ARObject._deserialize_by_tag(child, "StreamFilterIpv6Address")
             obj.destination = destination_value
 
-        # Parse destination_ports (list)
+        # Parse destination_ports (list from container "DESTINATION-PORTS")
         obj.destination_ports = []
-        for child in ARObject._find_all_child_elements(element, "DESTINATION-PORTS"):
-            destination_ports_value = ARObject._deserialize_by_tag(child, "StreamFilterPortRange")
-            obj.destination_ports.append(destination_ports_value)
+        container = ARObject._find_child_element(element, "DESTINATION-PORTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.destination_ports.append(child_value)
 
         # Parse source
         child = ARObject._find_child_element(element, "SOURCE")
@@ -73,11 +77,15 @@ class StreamFilterRuleIpTp(ARObject):
             source_value = ARObject._deserialize_by_tag(child, "StreamFilterIpv6Address")
             obj.source = source_value
 
-        # Parse source_ports (list)
+        # Parse source_ports (list from container "SOURCE-PORTS")
         obj.source_ports = []
-        for child in ARObject._find_all_child_elements(element, "SOURCE-PORTS"):
-            source_ports_value = ARObject._deserialize_by_tag(child, "StreamFilterPortRange")
-            obj.source_ports.append(source_ports_value)
+        container = ARObject._find_child_element(element, "SOURCE-PORTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.source_ports.append(child_value)
 
         return obj
 

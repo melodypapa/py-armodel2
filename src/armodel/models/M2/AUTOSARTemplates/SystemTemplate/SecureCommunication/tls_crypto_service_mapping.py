@@ -57,21 +57,28 @@ class TlsCryptoServiceMapping(CryptoServiceMapping):
         Returns:
             Deserialized TlsCryptoServiceMapping object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TlsCryptoServiceMapping, cls).deserialize(element)
 
-        # Parse key_exchanges (list)
+        # Parse key_exchanges (list from container "KEY-EXCHANGES")
         obj.key_exchanges = []
-        for child in ARObject._find_all_child_elements(element, "KEY-EXCHANGES"):
-            key_exchanges_value = ARObject._deserialize_by_tag(child, "CryptoServicePrimitive")
-            obj.key_exchanges.append(key_exchanges_value)
+        container = ARObject._find_child_element(element, "KEY-EXCHANGES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.key_exchanges.append(child_value)
 
-        # Parse tls_cipher_suites (list)
+        # Parse tls_cipher_suites (list from container "TLS-CIPHER-SUITES")
         obj.tls_cipher_suites = []
-        for child in ARObject._find_all_child_elements(element, "TLS-CIPHER-SUITES"):
-            tls_cipher_suites_value = ARObject._deserialize_by_tag(child, "TlsCryptoCipherSuite")
-            obj.tls_cipher_suites.append(tls_cipher_suites_value)
+        container = ARObject._find_child_element(element, "TLS-CIPHER-SUITES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.tls_cipher_suites.append(child_value)
 
         # Parse use_client
         child = ARObject._find_child_element(element, "USE-CLIENT")

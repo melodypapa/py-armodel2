@@ -74,9 +74,8 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
         Returns:
             Deserialized NonqueuedReceiverComSpec object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(NonqueuedReceiverComSpec, cls).deserialize(element)
 
         # Parse alive_timeout
         child = ARObject._find_child_element(element, "ALIVE-TIMEOUT")
@@ -111,7 +110,7 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
         # Parse handle_timeout_enum
         child = ARObject._find_child_element(element, "HANDLE-TIMEOUT-ENUM")
         if child is not None:
-            handle_timeout_enum_value = child.text
+            handle_timeout_enum_value = HandleTimeoutEnum.deserialize(child)
             obj.handle_timeout_enum = handle_timeout_enum_value
 
         # Parse init_value

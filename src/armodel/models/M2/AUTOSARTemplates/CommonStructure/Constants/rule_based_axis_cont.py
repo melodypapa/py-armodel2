@@ -67,7 +67,7 @@ class RuleBasedAxisCont(ARObject):
         # Parse category
         child = ARObject._find_child_element(element, "CATEGORY")
         if child is not None:
-            category_value = child.text
+            category_value = CalprmAxisCategoryEnum.deserialize(child)
             obj.category = category_value
 
         # Parse rule_based

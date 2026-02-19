@@ -75,15 +75,18 @@ class SenderComSpec(PPortComSpec, ABC):
         Returns:
             Deserialized SenderComSpec object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SenderComSpec, cls).deserialize(element)
 
-        # Parse composite_networks (list)
+        # Parse composite_networks (list from container "COMPOSITE-NETWORKS")
         obj.composite_networks = []
-        for child in ARObject._find_all_child_elements(element, "COMPOSITE-NETWORKS"):
-            composite_networks_value = ARObject._deserialize_by_tag(child, "CompositeNetworkRepresentation")
-            obj.composite_networks.append(composite_networks_value)
+        container = ARObject._find_child_element(element, "COMPOSITE-NETWORKS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.composite_networks.append(child_value)
 
         # Parse data_element_ref
         child = ARObject._find_child_element(element, "DATA-ELEMENT")

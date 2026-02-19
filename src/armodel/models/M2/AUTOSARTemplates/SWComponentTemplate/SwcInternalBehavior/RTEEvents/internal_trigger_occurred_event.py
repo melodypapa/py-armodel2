@@ -46,9 +46,8 @@ class InternalTriggerOccurredEvent(RTEEvent):
         Returns:
             Deserialized InternalTriggerOccurredEvent object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(InternalTriggerOccurredEvent, cls).deserialize(element)
 
         # Parse event_source_ref
         child = ARObject._find_child_element(element, "EVENT-SOURCE")

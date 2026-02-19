@@ -51,9 +51,8 @@ class PdurIPduGroup(FibexElement):
         Returns:
             Deserialized PdurIPduGroup object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(PdurIPduGroup, cls).deserialize(element)
 
         # Parse communication
         child = ARObject._find_child_element(element, "COMMUNICATION")
@@ -61,11 +60,15 @@ class PdurIPduGroup(FibexElement):
             communication_value = child.text
             obj.communication = communication_value
 
-        # Parse i_pdu_refs (list)
+        # Parse i_pdu_refs (list from container "I-PDUS")
         obj.i_pdu_refs = []
-        for child in ARObject._find_all_child_elements(element, "I-PDUS"):
-            i_pdu_refs_value = ARObject._deserialize_by_tag(child, "PduTriggering")
-            obj.i_pdu_refs.append(i_pdu_refs_value)
+        container = ARObject._find_child_element(element, "I-PDUS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.i_pdu_refs.append(child_value)
 
         return obj
 

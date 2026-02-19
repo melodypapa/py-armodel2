@@ -64,9 +64,8 @@ class Ipv4Configuration(NetworkEndpointAddress):
         Returns:
             Deserialized Ipv4Configuration object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(Ipv4Configuration, cls).deserialize(element)
 
         # Parse assignment
         child = ARObject._find_child_element(element, "ASSIGNMENT")
@@ -80,16 +79,20 @@ class Ipv4Configuration(NetworkEndpointAddress):
             default_gateway_value = child.text
             obj.default_gateway = default_gateway_value
 
-        # Parse dns_servers (list)
+        # Parse dns_servers (list from container "DNS-SERVERS")
         obj.dns_servers = []
-        for child in ARObject._find_all_child_elements(element, "DNS-SERVERS"):
-            dns_servers_value = child.text
-            obj.dns_servers.append(dns_servers_value)
+        container = ARObject._find_child_element(element, "DNS-SERVERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.dns_servers.append(child_value)
 
         # Parse ip_address_keep_enum
         child = ARObject._find_child_element(element, "IP-ADDRESS-KEEP-ENUM")
         if child is not None:
-            ip_address_keep_enum_value = child.text
+            ip_address_keep_enum_value = IpAddressKeepEnum.deserialize(child)
             obj.ip_address_keep_enum = ip_address_keep_enum_value
 
         # Parse ipv4_address
@@ -101,7 +104,7 @@ class Ipv4Configuration(NetworkEndpointAddress):
         # Parse ipv4_address_source
         child = ARObject._find_child_element(element, "IPV4-ADDRESS-SOURCE")
         if child is not None:
-            ipv4_address_source_value = child.text
+            ipv4_address_source_value = Ipv4AddressSourceEnum.deserialize(child)
             obj.ipv4_address_source = ipv4_address_source_value
 
         # Parse network_mask

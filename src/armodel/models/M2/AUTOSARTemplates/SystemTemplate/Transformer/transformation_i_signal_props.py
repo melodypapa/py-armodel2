@@ -58,14 +58,18 @@ class TransformationISignalProps(ARObject, ABC):
         # Parse cs_error_reaction
         child = ARObject._find_child_element(element, "CS-ERROR-REACTION")
         if child is not None:
-            cs_error_reaction_value = child.text
+            cs_error_reaction_value = CSTransformerErrorReactionEnum.deserialize(child)
             obj.cs_error_reaction = cs_error_reaction_value
 
-        # Parse data_prototype_refs (list)
+        # Parse data_prototype_refs (list from container "DATA-PROTOTYPES")
         obj.data_prototype_refs = []
-        for child in ARObject._find_all_child_elements(element, "DATA-PROTOTYPES"):
-            data_prototype_refs_value = ARObject._deserialize_by_tag(child, "DataPrototype")
-            obj.data_prototype_refs.append(data_prototype_refs_value)
+        container = ARObject._find_child_element(element, "DATA-PROTOTYPES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.data_prototype_refs.append(child_value)
 
         # Parse transformer
         child = ARObject._find_child_element(element, "TRANSFORMER")

@@ -65,9 +65,8 @@ class UdpNmCluster(NmCluster):
         Returns:
             Deserialized UdpNmCluster object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(UdpNmCluster, cls).deserialize(element)
 
         # Parse nm_cbv_position
         child = ARObject._find_child_element(element, "NM-CBV-POSITION")

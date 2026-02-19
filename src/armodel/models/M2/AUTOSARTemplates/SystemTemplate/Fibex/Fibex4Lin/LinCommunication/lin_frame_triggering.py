@@ -50,9 +50,8 @@ class LinFrameTriggering(FrameTriggering):
         Returns:
             Deserialized LinFrameTriggering object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(LinFrameTriggering, cls).deserialize(element)
 
         # Parse identifier
         child = ARObject._find_child_element(element, "IDENTIFIER")
@@ -63,7 +62,7 @@ class LinFrameTriggering(FrameTriggering):
         # Parse lin_checksum
         child = ARObject._find_child_element(element, "LIN-CHECKSUM")
         if child is not None:
-            lin_checksum_value = child.text
+            lin_checksum_value = LinChecksumType.deserialize(child)
             obj.lin_checksum = lin_checksum_value
 
         return obj

@@ -53,9 +53,8 @@ class SwSystemconst(ARElement):
         Returns:
             Deserialized SwSystemconst object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SwSystemconst, cls).deserialize(element)
 
         # Parse sw_data_def
         child = ARObject._find_child_element(element, "SW-DATA-DEF")

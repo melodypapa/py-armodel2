@@ -47,15 +47,18 @@ class SystemSignalGroup(ARElement):
         Returns:
             Deserialized SystemSignalGroup object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SystemSignalGroup, cls).deserialize(element)
 
-        # Parse system_signals (list)
+        # Parse system_signals (list from container "SYSTEM-SIGNALS")
         obj.system_signals = []
-        for child in ARObject._find_all_child_elements(element, "SYSTEM-SIGNALS"):
-            system_signals_value = ARObject._deserialize_by_tag(child, "SystemSignal")
-            obj.system_signals.append(system_signals_value)
+        container = ARObject._find_child_element(element, "SYSTEM-SIGNALS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.system_signals.append(child_value)
 
         # Parse transforming
         child = ARObject._find_child_element(element, "TRANSFORMING")

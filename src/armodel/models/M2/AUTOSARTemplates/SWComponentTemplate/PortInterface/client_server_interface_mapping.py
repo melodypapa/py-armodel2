@@ -50,21 +50,28 @@ class ClientServerInterfaceMapping(PortInterfaceMapping):
         Returns:
             Deserialized ClientServerInterfaceMapping object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ClientServerInterfaceMapping, cls).deserialize(element)
 
-        # Parse error_mappings (list)
+        # Parse error_mappings (list from container "ERROR-MAPPINGS")
         obj.error_mappings = []
-        for child in ARObject._find_all_child_elements(element, "ERROR-MAPPINGS"):
-            error_mappings_value = ARObject._deserialize_by_tag(child, "ClientServerApplicationErrorMapping")
-            obj.error_mappings.append(error_mappings_value)
+        container = ARObject._find_child_element(element, "ERROR-MAPPINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.error_mappings.append(child_value)
 
-        # Parse operations (list)
+        # Parse operations (list from container "OPERATIONS")
         obj.operations = []
-        for child in ARObject._find_all_child_elements(element, "OPERATIONS"):
-            operations_value = ARObject._deserialize_by_tag(child, "ClientServerOperation")
-            obj.operations.append(operations_value)
+        container = ARObject._find_child_element(element, "OPERATIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.operations.append(child_value)
 
         return obj
 

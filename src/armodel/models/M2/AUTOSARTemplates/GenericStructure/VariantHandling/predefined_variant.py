@@ -51,27 +51,38 @@ class PredefinedVariant(ARElement):
         Returns:
             Deserialized PredefinedVariant object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(PredefinedVariant, cls).deserialize(element)
 
-        # Parse included_variants (list)
+        # Parse included_variants (list from container "INCLUDED-VARIANTS")
         obj.included_variants = []
-        for child in ARObject._find_all_child_elements(element, "INCLUDED-VARIANTS"):
-            included_variants_value = ARObject._deserialize_by_tag(child, "PredefinedVariant")
-            obj.included_variants.append(included_variants_value)
+        container = ARObject._find_child_element(element, "INCLUDED-VARIANTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.included_variants.append(child_value)
 
-        # Parse post_build_variants (list)
+        # Parse post_build_variants (list from container "POST-BUILD-VARIANTS")
         obj.post_build_variants = []
-        for child in ARObject._find_all_child_elements(element, "POST-BUILD-VARIANTS"):
-            post_build_variants_value = child.text
-            obj.post_build_variants.append(post_build_variants_value)
+        container = ARObject._find_child_element(element, "POST-BUILD-VARIANTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.post_build_variants.append(child_value)
 
-        # Parse sws (list)
+        # Parse sws (list from container "SWS")
         obj.sws = []
-        for child in ARObject._find_all_child_elements(element, "SWS"):
-            sws_value = ARObject._deserialize_by_tag(child, "SwSystemconstantValueSet")
-            obj.sws.append(sws_value)
+        container = ARObject._find_child_element(element, "SWS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sws.append(child_value)
 
         return obj
 

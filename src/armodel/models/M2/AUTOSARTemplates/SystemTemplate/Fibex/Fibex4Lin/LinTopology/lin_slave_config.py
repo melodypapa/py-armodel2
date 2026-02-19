@@ -102,11 +102,15 @@ class LinSlaveConfig(ARObject):
             initial_nad_value = child.text
             obj.initial_nad = initial_nad_value
 
-        # Parse lin_configurable_frames (list)
+        # Parse lin_configurable_frames (list from container "LIN-CONFIGURABLE-FRAMES")
         obj.lin_configurable_frames = []
-        for child in ARObject._find_all_child_elements(element, "LIN-CONFIGURABLE-FRAMES"):
-            lin_configurable_frames_value = ARObject._deserialize_by_tag(child, "LinConfigurableFrame")
-            obj.lin_configurable_frames.append(lin_configurable_frames_value)
+        container = ARObject._find_child_element(element, "LIN-CONFIGURABLE-FRAMES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.lin_configurable_frames.append(child_value)
 
         # Parse lin_error_response
         child = ARObject._find_child_element(element, "LIN-ERROR-RESPONSE")
@@ -114,11 +118,15 @@ class LinSlaveConfig(ARObject):
             lin_error_response_value = ARObject._deserialize_by_tag(child, "LinErrorResponse")
             obj.lin_error_response = lin_error_response_value
 
-        # Parse lin_ordereds (list)
+        # Parse lin_ordereds (list from container "LIN-ORDEREDS")
         obj.lin_ordereds = []
-        for child in ARObject._find_all_child_elements(element, "LIN-ORDEREDS"):
-            lin_ordereds_value = ARObject._deserialize_by_tag(child, "LinOrderedConfigurableFrame")
-            obj.lin_ordereds.append(lin_ordereds_value)
+        container = ARObject._find_child_element(element, "LIN-ORDEREDS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.lin_ordereds.append(child_value)
 
         # Parse protocol_version
         child = ARObject._find_child_element(element, "PROTOCOL-VERSION")

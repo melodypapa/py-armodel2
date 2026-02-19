@@ -47,9 +47,8 @@ class TDEventBswModule(TDEventBsw):
         Returns:
             Deserialized TDEventBswModule object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TDEventBswModule, cls).deserialize(element)
 
         # Parse bsw_module_entry_entry
         child = ARObject._find_child_element(element, "BSW-MODULE-ENTRY-ENTRY")

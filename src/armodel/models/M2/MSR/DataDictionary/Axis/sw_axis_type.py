@@ -50,9 +50,8 @@ class SwAxisType(ARElement):
         Returns:
             Deserialized SwAxisType object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SwAxisType, cls).deserialize(element)
 
         # Parse sw_generic_axis
         child = ARObject._find_child_element(element, "SW-GENERIC-AXIS")
@@ -60,11 +59,15 @@ class SwAxisType(ARElement):
             sw_generic_axis_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
             obj.sw_generic_axis = sw_generic_axis_value
 
-        # Parse sw_generic_axis_params (list)
+        # Parse sw_generic_axis_params (list from container "SW-GENERIC-AXIS-PARAMS")
         obj.sw_generic_axis_params = []
-        for child in ARObject._find_all_child_elements(element, "SW-GENERIC-AXIS-PARAMS"):
-            sw_generic_axis_params_value = ARObject._deserialize_by_tag(child, "SwGenericAxisParam")
-            obj.sw_generic_axis_params.append(sw_generic_axis_params_value)
+        container = ARObject._find_child_element(element, "SW-GENERIC-AXIS-PARAMS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sw_generic_axis_params.append(child_value)
 
         return obj
 

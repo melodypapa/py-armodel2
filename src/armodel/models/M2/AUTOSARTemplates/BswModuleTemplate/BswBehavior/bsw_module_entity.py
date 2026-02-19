@@ -83,39 +83,58 @@ class BswModuleEntity(ExecutableEntity, ABC):
         Returns:
             Deserialized BswModuleEntity object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(BswModuleEntity, cls).deserialize(element)
 
-        # Parse accessed_mode_refs (list)
+        # Parse accessed_mode_refs (list from container "ACCESSED-MODES")
         obj.accessed_mode_refs = []
-        for child in ARObject._find_all_child_elements(element, "ACCESSED-MODES"):
-            accessed_mode_refs_value = ARObject._deserialize_by_tag(child, "ModeDeclarationGroup")
-            obj.accessed_mode_refs.append(accessed_mode_refs_value)
+        container = ARObject._find_child_element(element, "ACCESSED-MODES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.accessed_mode_refs.append(child_value)
 
-        # Parse activation_point_refs (list)
+        # Parse activation_point_refs (list from container "ACTIVATION-POINTS")
         obj.activation_point_refs = []
-        for child in ARObject._find_all_child_elements(element, "ACTIVATION-POINTS"):
-            activation_point_refs_value = ARObject._deserialize_by_tag(child, "BswInternalTriggeringPoint")
-            obj.activation_point_refs.append(activation_point_refs_value)
+        container = ARObject._find_child_element(element, "ACTIVATION-POINTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.activation_point_refs.append(child_value)
 
-        # Parse call_points (list)
+        # Parse call_points (list from container "CALL-POINTS")
         obj.call_points = []
-        for child in ARObject._find_all_child_elements(element, "CALL-POINTS"):
-            call_points_value = ARObject._deserialize_by_tag(child, "BswModuleCallPoint")
-            obj.call_points.append(call_points_value)
+        container = ARObject._find_child_element(element, "CALL-POINTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.call_points.append(child_value)
 
-        # Parse data_receives (list)
+        # Parse data_receives (list from container "DATA-RECEIVES")
         obj.data_receives = []
-        for child in ARObject._find_all_child_elements(element, "DATA-RECEIVES"):
-            data_receives_value = ARObject._deserialize_by_tag(child, "BswVariableAccess")
-            obj.data_receives.append(data_receives_value)
+        container = ARObject._find_child_element(element, "DATA-RECEIVES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.data_receives.append(child_value)
 
-        # Parse data_send_points (list)
+        # Parse data_send_points (list from container "DATA-SEND-POINTS")
         obj.data_send_points = []
-        for child in ARObject._find_all_child_elements(element, "DATA-SEND-POINTS"):
-            data_send_points_value = ARObject._deserialize_by_tag(child, "BswVariableAccess")
-            obj.data_send_points.append(data_send_points_value)
+        container = ARObject._find_child_element(element, "DATA-SEND-POINTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.data_send_points.append(child_value)
 
         # Parse implemented
         child = ARObject._find_child_element(element, "IMPLEMENTED")
@@ -123,17 +142,25 @@ class BswModuleEntity(ExecutableEntity, ABC):
             implemented_value = ARObject._deserialize_by_tag(child, "BswModuleEntry")
             obj.implemented = implemented_value
 
-        # Parse issued_trigger_refs (list)
+        # Parse issued_trigger_refs (list from container "ISSUED-TRIGGERS")
         obj.issued_trigger_refs = []
-        for child in ARObject._find_all_child_elements(element, "ISSUED-TRIGGERS"):
-            issued_trigger_refs_value = ARObject._deserialize_by_tag(child, "Trigger")
-            obj.issued_trigger_refs.append(issued_trigger_refs_value)
+        container = ARObject._find_child_element(element, "ISSUED-TRIGGERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.issued_trigger_refs.append(child_value)
 
-        # Parse managed_mode_refs (list)
+        # Parse managed_mode_refs (list from container "MANAGED-MODES")
         obj.managed_mode_refs = []
-        for child in ARObject._find_all_child_elements(element, "MANAGED-MODES"):
-            managed_mode_refs_value = ARObject._deserialize_by_tag(child, "ModeDeclarationGroup")
-            obj.managed_mode_refs.append(managed_mode_refs_value)
+        container = ARObject._find_child_element(element, "MANAGED-MODES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.managed_mode_refs.append(child_value)
 
         # Parse scheduler_name
         child = ARObject._find_child_element(element, "SCHEDULER-NAME")

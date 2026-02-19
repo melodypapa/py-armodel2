@@ -64,15 +64,18 @@ class SwitchStreamIdentification(Identifiable):
         Returns:
             Deserialized SwitchStreamIdentification object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SwitchStreamIdentification, cls).deserialize(element)
 
-        # Parse egress_ports (list)
+        # Parse egress_ports (list from container "EGRESS-PORTS")
         obj.egress_ports = []
-        for child in ARObject._find_all_child_elements(element, "EGRESS-PORTS"):
-            egress_ports_value = ARObject._deserialize_by_tag(child, "CouplingPort")
-            obj.egress_ports.append(egress_ports_value)
+        container = ARObject._find_child_element(element, "EGRESS-PORTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.egress_ports.append(child_value)
 
         # Parse filter_action_block
         child = ARObject._find_child_element(element, "FILTER-ACTION-BLOCK")
@@ -98,11 +101,15 @@ class SwitchStreamIdentification(Identifiable):
             filter_action_vlan_value = child.text
             obj.filter_action_vlan = filter_action_vlan_value
 
-        # Parse ingress_ports (list)
+        # Parse ingress_ports (list from container "INGRESS-PORTS")
         obj.ingress_ports = []
-        for child in ARObject._find_all_child_elements(element, "INGRESS-PORTS"):
-            ingress_ports_value = ARObject._deserialize_by_tag(child, "CouplingPort")
-            obj.ingress_ports.append(ingress_ports_value)
+        container = ARObject._find_child_element(element, "INGRESS-PORTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.ingress_ports.append(child_value)
 
         # Parse stream_filter
         child = ARObject._find_child_element(element, "STREAM-FILTER")

@@ -65,16 +65,20 @@ class AdminData(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse doc_revisions (list)
+        # Parse doc_revisions (list from container "DOC-REVISIONS")
         obj.doc_revisions = []
-        for child in ARObject._find_all_child_elements(element, "DOC-REVISIONS"):
-            doc_revisions_value = ARObject._deserialize_by_tag(child, "DocRevision")
-            obj.doc_revisions.append(doc_revisions_value)
+        container = ARObject._find_child_element(element, "DOC-REVISIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.doc_revisions.append(child_value)
 
         # Parse language
         child = ARObject._find_child_element(element, "LANGUAGE")
         if child is not None:
-            language_value = child.text
+            language_value = LEnum.deserialize(child)
             obj.language = language_value
 
         # Parse sdg (list)

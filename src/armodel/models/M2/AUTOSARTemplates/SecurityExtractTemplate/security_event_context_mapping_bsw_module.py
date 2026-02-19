@@ -45,9 +45,8 @@ class SecurityEventContextMappingBswModule(SecurityEventContextMapping):
         Returns:
             Deserialized SecurityEventContextMappingBswModule object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SecurityEventContextMappingBswModule, cls).deserialize(element)
 
         # Parse affected_bsw
         child = ARObject._find_child_element(element, "AFFECTED-BSW")

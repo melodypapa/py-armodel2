@@ -50,9 +50,8 @@ class SecurityEventContextMapping(IdsMapping, ABC):
         Returns:
             Deserialized SecurityEventContextMapping object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SecurityEventContextMapping, cls).deserialize(element)
 
         # Parse filter_chain
         child = ARObject._find_child_element(element, "FILTER-CHAIN")
@@ -66,11 +65,15 @@ class SecurityEventContextMapping(IdsMapping, ABC):
             idsm_instance_value = ARObject._deserialize_by_tag(child, "IdsmInstance")
             obj.idsm_instance = idsm_instance_value
 
-        # Parse mapped_securities (list)
+        # Parse mapped_securities (list from container "MAPPED-SECURITIES")
         obj.mapped_securities = []
-        for child in ARObject._find_all_child_elements(element, "MAPPED-SECURITIES"):
-            mapped_securities_value = child.text
-            obj.mapped_securities.append(mapped_securities_value)
+        container = ARObject._find_child_element(element, "MAPPED-SECURITIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.mapped_securities.append(child_value)
 
         return obj
 

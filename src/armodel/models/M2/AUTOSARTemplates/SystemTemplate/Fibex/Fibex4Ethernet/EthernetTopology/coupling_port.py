@@ -93,14 +93,13 @@ class CouplingPort(Identifiable):
         Returns:
             Deserialized CouplingPort object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(CouplingPort, cls).deserialize(element)
 
         # Parse connection
         child = ARObject._find_child_element(element, "CONNECTION")
         if child is not None:
-            connection_value = child.text
+            connection_value = EthernetConnectionNegotiationEnum.deserialize(child)
             obj.connection = connection_value
 
         # Parse coupling_port_details
@@ -112,7 +111,7 @@ class CouplingPort(Identifiable):
         # Parse coupling_port_role_enum
         child = ARObject._find_child_element(element, "COUPLING-PORT-ROLE-ENUM")
         if child is not None:
-            coupling_port_role_enum_value = child.text
+            coupling_port_role_enum_value = CouplingPortRoleEnum.deserialize(child)
             obj.coupling_port_role_enum = coupling_port_role_enum_value
 
         # Parse default_vlan
@@ -124,25 +123,33 @@ class CouplingPort(Identifiable):
         # Parse mac_layer_type_enum
         child = ARObject._find_child_element(element, "MAC-LAYER-TYPE-ENUM")
         if child is not None:
-            mac_layer_type_enum_value = child.text
+            mac_layer_type_enum_value = EthernetMacLayerTypeEnum.deserialize(child)
             obj.mac_layer_type_enum = mac_layer_type_enum_value
 
-        # Parse mac_multicast_group_refs (list)
+        # Parse mac_multicast_group_refs (list from container "MAC-MULTICAST-GROUPS")
         obj.mac_multicast_group_refs = []
-        for child in ARObject._find_all_child_elements(element, "MAC-MULTICAST-GROUPS"):
-            mac_multicast_group_refs_value = ARObject._deserialize_by_tag(child, "MacMulticastGroup")
-            obj.mac_multicast_group_refs.append(mac_multicast_group_refs_value)
+        container = ARObject._find_child_element(element, "MAC-MULTICAST-GROUPS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.mac_multicast_group_refs.append(child_value)
 
-        # Parse mac_sec_propses (list)
+        # Parse mac_sec_propses (list from container "MAC-SEC-PROPSES")
         obj.mac_sec_propses = []
-        for child in ARObject._find_all_child_elements(element, "MAC-SEC-PROPSES"):
-            mac_sec_propses_value = ARObject._deserialize_by_tag(child, "MacSecProps")
-            obj.mac_sec_propses.append(mac_sec_propses_value)
+        container = ARObject._find_child_element(element, "MAC-SEC-PROPSES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.mac_sec_propses.append(child_value)
 
         # Parse physical_layer
         child = ARObject._find_child_element(element, "PHYSICAL-LAYER")
         if child is not None:
-            physical_layer_value = child.text
+            physical_layer_value = EthernetPhysicalLayerTypeEnum.deserialize(child)
             obj.physical_layer = physical_layer_value
 
         # Parse plca_props
@@ -151,11 +158,15 @@ class CouplingPort(Identifiable):
             plca_props_value = ARObject._deserialize_by_tag(child, "PlcaProps")
             obj.plca_props = plca_props_value
 
-        # Parse pnc_mapping_ident_refs (list)
+        # Parse pnc_mapping_ident_refs (list from container "PNC-MAPPING-IDENTS")
         obj.pnc_mapping_ident_refs = []
-        for child in ARObject._find_all_child_elements(element, "PNC-MAPPING-IDENTS"):
-            pnc_mapping_ident_refs_value = ARObject._deserialize_by_tag(child, "PncMappingIdent")
-            obj.pnc_mapping_ident_refs.append(pnc_mapping_ident_refs_value)
+        container = ARObject._find_child_element(element, "PNC-MAPPING-IDENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.pnc_mapping_ident_refs.append(child_value)
 
         # Parse receive_activity
         child = ARObject._find_child_element(element, "RECEIVE-ACTIVITY")
@@ -163,11 +174,15 @@ class CouplingPort(Identifiable):
             receive_activity_value = child.text
             obj.receive_activity = receive_activity_value
 
-        # Parse vlans (list)
+        # Parse vlans (list from container "VLANS")
         obj.vlans = []
-        for child in ARObject._find_all_child_elements(element, "VLANS"):
-            vlans_value = ARObject._deserialize_by_tag(child, "VlanMembership")
-            obj.vlans.append(vlans_value)
+        container = ARObject._find_child_element(element, "VLANS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.vlans.append(child_value)
 
         # Parse vlan_modifier
         child = ARObject._find_child_element(element, "VLAN-MODIFIER")

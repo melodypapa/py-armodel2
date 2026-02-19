@@ -46,9 +46,8 @@ class TDEventCom(TimingDescriptionEvent, ABC):
         Returns:
             Deserialized TDEventCom object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TDEventCom, cls).deserialize(element)
 
         # Parse ecu_instance
         child = ARObject._find_child_element(element, "ECU-INSTANCE")

@@ -54,7 +54,7 @@ class DdsHistory(ARObject):
         # Parse history_kind
         child = ARObject._find_child_element(element, "HISTORY-KIND")
         if child is not None:
-            history_kind_value = child.text
+            history_kind_value = DdsHistoryKindEnum.deserialize(child)
             obj.history_kind = history_kind_value
 
         # Parse history_order

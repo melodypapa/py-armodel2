@@ -86,32 +86,35 @@ class BswModuleEntry(ARElement):
         Returns:
             Deserialized BswModuleEntry object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(BswModuleEntry, cls).deserialize(element)
 
-        # Parse arguments (list)
+        # Parse arguments (list from container "ARGUMENTS")
         obj.arguments = []
-        for child in ARObject._find_all_child_elements(element, "ARGUMENTS"):
-            arguments_value = ARObject._deserialize_by_tag(child, "SwServiceArg")
-            obj.arguments.append(arguments_value)
+        container = ARObject._find_child_element(element, "ARGUMENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.arguments.append(child_value)
 
         # Parse bsw_entry_kind_enum
         child = ARObject._find_child_element(element, "BSW-ENTRY-KIND-ENUM")
         if child is not None:
-            bsw_entry_kind_enum_value = child.text
+            bsw_entry_kind_enum_value = BswEntryKindEnum.deserialize(child)
             obj.bsw_entry_kind_enum = bsw_entry_kind_enum_value
 
         # Parse call_type
         child = ARObject._find_child_element(element, "CALL-TYPE")
         if child is not None:
-            call_type_value = child.text
+            call_type_value = BswCallType.deserialize(child)
             obj.call_type = call_type_value
 
         # Parse execution
         child = ARObject._find_child_element(element, "EXECUTION")
         if child is not None:
-            execution_value = child.text
+            execution_value = BswExecutionContext.deserialize(child)
             obj.execution = execution_value
 
         # Parse function
@@ -141,7 +144,7 @@ class BswModuleEntry(ARElement):
         # Parse role
         child = ARObject._find_child_element(element, "ROLE")
         if child is not None:
-            role_value = child.text
+            role_value = ARObject._deserialize_by_tag(child, "Identifier")
             obj.role = role_value
 
         # Parse service_id
@@ -153,7 +156,7 @@ class BswModuleEntry(ARElement):
         # Parse sw_service_impl_policy
         child = ARObject._find_child_element(element, "SW-SERVICE-IMPL-POLICY")
         if child is not None:
-            sw_service_impl_policy_value = child.text
+            sw_service_impl_policy_value = SwServiceImplPolicyEnum.deserialize(child)
             obj.sw_service_impl_policy = sw_service_impl_policy_value
 
         return obj

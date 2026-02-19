@@ -45,15 +45,18 @@ class CpSoftwareClusterServiceResource(CpSoftwareClusterResource):
         Returns:
             Deserialized CpSoftwareClusterServiceResource object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(CpSoftwareClusterServiceResource, cls).deserialize(element)
 
-        # Parse resource_needses (list)
+        # Parse resource_needses (list from container "RESOURCE-NEEDSES")
         obj.resource_needses = []
-        for child in ARObject._find_all_child_elements(element, "RESOURCE-NEEDSES"):
-            resource_needses_value = ARObject._deserialize_by_tag(child, "EcucContainerValue")
-            obj.resource_needses.append(resource_needses_value)
+        container = ARObject._find_child_element(element, "RESOURCE-NEEDSES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.resource_needses.append(child_value)
 
         return obj
 

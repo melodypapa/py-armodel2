@@ -64,20 +64,19 @@ class ApplicationArrayElement(ApplicationCompositeElementDataPrototype):
         Returns:
             Deserialized ApplicationArrayElement object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ApplicationArrayElement, cls).deserialize(element)
 
         # Parse array_size_handling
         child = ARObject._find_child_element(element, "ARRAY-SIZE-HANDLING")
         if child is not None:
-            array_size_handling_value = child.text
+            array_size_handling_value = ArraySizeHandlingEnum.deserialize(child)
             obj.array_size_handling = array_size_handling_value
 
         # Parse array_size
         child = ARObject._find_child_element(element, "ARRAY-SIZE")
         if child is not None:
-            array_size_value = child.text
+            array_size_value = ArraySizeSemanticsEnum.deserialize(child)
             obj.array_size = array_size_value
 
         # Parse index_data_type

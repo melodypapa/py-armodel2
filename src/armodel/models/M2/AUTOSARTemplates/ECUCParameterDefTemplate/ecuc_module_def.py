@@ -59,21 +59,24 @@ class EcucModuleDef(EcucDefinitionElement):
         Returns:
             Deserialized EcucModuleDef object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(EcucModuleDef, cls).deserialize(element)
 
         # Parse api_service_prefix
         child = ARObject._find_child_element(element, "API-SERVICE-PREFIX")
         if child is not None:
-            api_service_prefix_value = child.text
+            api_service_prefix_value = ARObject._deserialize_by_tag(child, "CIdentifier")
             obj.api_service_prefix = api_service_prefix_value
 
-        # Parse containers (list)
+        # Parse containers (list from container "CONTAINERS")
         obj.containers = []
-        for child in ARObject._find_all_child_elements(element, "CONTAINERS"):
-            containers_value = ARObject._deserialize_by_tag(child, "EcucContainerDef")
-            obj.containers.append(containers_value)
+        container = ARObject._find_child_element(element, "CONTAINERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.containers.append(child_value)
 
         # Parse post_build_variant
         child = ARObject._find_child_element(element, "POST-BUILD-VARIANT")
@@ -87,11 +90,15 @@ class EcucModuleDef(EcucDefinitionElement):
             refined_module_value = ARObject._deserialize_by_tag(child, "EcucModuleDef")
             obj.refined_module = refined_module_value
 
-        # Parse supporteds (list)
+        # Parse supporteds (list from container "SUPPORTEDS")
         obj.supporteds = []
-        for child in ARObject._find_all_child_elements(element, "SUPPORTEDS"):
-            supporteds_value = child.text
-            obj.supporteds.append(supporteds_value)
+        container = ARObject._find_child_element(element, "SUPPORTEDS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.supporteds.append(child_value)
 
         return obj
 

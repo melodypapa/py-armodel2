@@ -46,9 +46,8 @@ class AtpPrototype(Identifiable, ABC):
         Returns:
             Deserialized AtpPrototype object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(AtpPrototype, cls).deserialize(element)
 
         # Parse atp_type
         child = ARObject._find_child_element(element, "ATP-TYPE")

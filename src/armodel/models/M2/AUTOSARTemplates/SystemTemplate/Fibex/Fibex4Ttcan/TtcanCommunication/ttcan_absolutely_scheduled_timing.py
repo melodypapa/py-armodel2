@@ -72,7 +72,7 @@ class TtcanAbsolutelyScheduledTiming(ARObject):
         # Parse trigger_ref
         child = ARObject._find_child_element(element, "TRIGGER")
         if child is not None:
-            trigger_ref_value = child.text
+            trigger_ref_value = TtcanTriggerType.deserialize(child)
             obj.trigger_ref = trigger_ref_value
 
         return obj

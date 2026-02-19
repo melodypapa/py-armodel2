@@ -70,9 +70,8 @@ class EcucDefinitionElement(Identifiable, ABC):
         Returns:
             Deserialized EcucDefinitionElement object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(EcucDefinitionElement, cls).deserialize(element)
 
         # Parse ecuc_cond
         child = ARObject._find_child_element(element, "ECUC-COND")
@@ -80,11 +79,15 @@ class EcucDefinitionElement(Identifiable, ABC):
             ecuc_cond_value = child.text
             obj.ecuc_cond = ecuc_cond_value
 
-        # Parse ecuc_validations (list)
+        # Parse ecuc_validations (list from container "ECUC-VALIDATIONS")
         obj.ecuc_validations = []
-        for child in ARObject._find_all_child_elements(element, "ECUC-VALIDATIONS"):
-            ecuc_validations_value = ARObject._deserialize_by_tag(child, "EcucValidationCondition")
-            obj.ecuc_validations.append(ecuc_validations_value)
+        container = ARObject._find_child_element(element, "ECUC-VALIDATIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.ecuc_validations.append(child_value)
 
         # Parse lower_multiplicity
         child = ARObject._find_child_element(element, "LOWER-MULTIPLICITY")
@@ -101,7 +104,7 @@ class EcucDefinitionElement(Identifiable, ABC):
         # Parse scope
         child = ARObject._find_child_element(element, "SCOPE")
         if child is not None:
-            scope_value = child.text
+            scope_value = EcucScopeEnum.deserialize(child)
             obj.scope = scope_value
 
         # Parse upper_multiplicity

@@ -70,21 +70,28 @@ class RptExecutableEntityEvent(Identifiable):
         Returns:
             Deserialized RptExecutableEntityEvent object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(RptExecutableEntityEvent, cls).deserialize(element)
 
-        # Parse executions (list)
+        # Parse executions (list from container "EXECUTIONS")
         obj.executions = []
-        for child in ARObject._find_all_child_elements(element, "EXECUTIONS"):
-            executions_value = ARObject._deserialize_by_tag(child, "RptExecutionContext")
-            obj.executions.append(executions_value)
+        container = ARObject._find_child_element(element, "EXECUTIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.executions.append(child_value)
 
-        # Parse mc_datas (list)
+        # Parse mc_datas (list from container "MC-DATAS")
         obj.mc_datas = []
-        for child in ARObject._find_all_child_elements(element, "MC-DATAS"):
-            mc_datas_value = ARObject._deserialize_by_tag(child, "RoleBasedMcDataAssignment")
-            obj.mc_datas.append(mc_datas_value)
+        container = ARObject._find_child_element(element, "MC-DATAS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.mc_datas.append(child_value)
 
         # Parse rpt_event_id
         child = ARObject._find_child_element(element, "RPT-EVENT-ID")
@@ -104,11 +111,15 @@ class RptExecutableEntityEvent(Identifiable):
             rpt_impl_policy_value = ARObject._deserialize_by_tag(child, "RptImplPolicy")
             obj.rpt_impl_policy = rpt_impl_policy_value
 
-        # Parse rpt_service_points (list)
+        # Parse rpt_service_points (list from container "RPT-SERVICE-POINTS")
         obj.rpt_service_points = []
-        for child in ARObject._find_all_child_elements(element, "RPT-SERVICE-POINTS"):
-            rpt_service_points_value = ARObject._deserialize_by_tag(child, "RptServicePoint")
-            obj.rpt_service_points.append(rpt_service_points_value)
+        container = ARObject._find_child_element(element, "RPT-SERVICE-POINTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.rpt_service_points.append(child_value)
 
         return obj
 

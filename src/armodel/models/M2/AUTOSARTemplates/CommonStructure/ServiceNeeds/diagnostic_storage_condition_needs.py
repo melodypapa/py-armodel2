@@ -45,14 +45,13 @@ class DiagnosticStorageConditionNeeds(DiagnosticCapabilityElement):
         Returns:
             Deserialized DiagnosticStorageConditionNeeds object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticStorageConditionNeeds, cls).deserialize(element)
 
         # Parse initial_status
         child = ARObject._find_child_element(element, "INITIAL-STATUS")
         if child is not None:
-            initial_status_value = child.text
+            initial_status_value = StorageConditionStatusEnum.deserialize(child)
             obj.initial_status = initial_status_value
 
         return obj

@@ -54,13 +54,13 @@ class AbstractEnumerationValueVariationPoint(ARObject, ABC):
         # Parse base
         child = ARObject._find_child_element(element, "BASE")
         if child is not None:
-            base_value = child.text
+            base_value = ARObject._deserialize_by_tag(child, "Identifier")
             obj.base = base_value
 
         # Parse enum_table_ref
         child = ARObject._find_child_element(element, "ENUM-TABLE")
         if child is not None:
-            enum_table_ref_value = child.text
+            enum_table_ref_value = ARObject._deserialize_by_tag(child, "Ref")
             obj.enum_table_ref = enum_table_ref_value
 
         return obj

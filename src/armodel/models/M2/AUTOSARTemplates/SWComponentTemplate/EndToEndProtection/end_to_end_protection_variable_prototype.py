@@ -55,11 +55,15 @@ class EndToEndProtectionVariablePrototype(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse receiver_refs (list)
+        # Parse receiver_refs (list from container "RECEIVERS")
         obj.receiver_refs = []
-        for child in ARObject._find_all_child_elements(element, "RECEIVERS"):
-            receiver_refs_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
-            obj.receiver_refs.append(receiver_refs_value)
+        container = ARObject._find_child_element(element, "RECEIVERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.receiver_refs.append(child_value)
 
         # Parse sender_ref
         child = ARObject._find_child_element(element, "SENDER")
@@ -70,7 +74,7 @@ class EndToEndProtectionVariablePrototype(ARObject):
         # Parse short_label
         child = ARObject._find_child_element(element, "SHORT-LABEL")
         if child is not None:
-            short_label_value = child.text
+            short_label_value = ARObject._deserialize_by_tag(child, "Identifier")
             obj.short_label = short_label_value
 
         return obj

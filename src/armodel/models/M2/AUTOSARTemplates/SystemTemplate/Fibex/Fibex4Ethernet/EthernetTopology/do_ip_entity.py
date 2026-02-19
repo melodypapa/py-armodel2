@@ -49,7 +49,7 @@ class DoIpEntity(ARObject):
         # Parse do_ip_entity_role_enum
         child = ARObject._find_child_element(element, "DO-IP-ENTITY-ROLE-ENUM")
         if child is not None:
-            do_ip_entity_role_enum_value = child.text
+            do_ip_entity_role_enum_value = DoIpEntityRoleEnum.deserialize(child)
             obj.do_ip_entity_role_enum = do_ip_entity_role_enum_value
 
         return obj

@@ -53,9 +53,8 @@ class DltContext(ARElement):
         Returns:
             Deserialized DltContext object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DltContext, cls).deserialize(element)
 
         # Parse context
         child = ARObject._find_child_element(element, "CONTEXT")
@@ -69,11 +68,15 @@ class DltContext(ARElement):
             context_id_value = child.text
             obj.context_id = context_id_value
 
-        # Parse dlt_messages (list)
+        # Parse dlt_messages (list from container "DLT-MESSAGES")
         obj.dlt_messages = []
-        for child in ARObject._find_all_child_elements(element, "DLT-MESSAGES"):
-            dlt_messages_value = ARObject._deserialize_by_tag(child, "DltMessage")
-            obj.dlt_messages.append(dlt_messages_value)
+        container = ARObject._find_child_element(element, "DLT-MESSAGES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.dlt_messages.append(child_value)
 
         return obj
 

@@ -98,7 +98,7 @@ class FlexrayArTpChannel(ARObject):
         # Parse ack_type
         child = ARObject._find_child_element(element, "ACK-TYPE")
         if child is not None:
-            ack_type_value = child.text
+            ack_type_value = FrArTpAckType.deserialize(child)
             obj.ack_type = ack_type_value
 
         # Parse cancellation
@@ -140,7 +140,7 @@ class FlexrayArTpChannel(ARObject):
         # Parse maximum_message
         child = ARObject._find_child_element(element, "MAXIMUM-MESSAGE")
         if child is not None:
-            maximum_message_value = child.text
+            maximum_message_value = MaximumMessageLengthType.deserialize(child)
             obj.maximum_message = maximum_message_value
 
         # Parse max_retries
@@ -161,11 +161,15 @@ class FlexrayArTpChannel(ARObject):
             multicast_value = child.text
             obj.multicast = multicast_value
 
-        # Parse n_pdus (list)
+        # Parse n_pdus (list from container "N-PDUS")
         obj.n_pdus = []
-        for child in ARObject._find_all_child_elements(element, "N-PDUS"):
-            n_pdus_value = ARObject._deserialize_by_tag(child, "NPdu")
-            obj.n_pdus.append(n_pdus_value)
+        container = ARObject._find_child_element(element, "N-PDUS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.n_pdus.append(child_value)
 
         # Parse time_br
         child = ARObject._find_child_element(element, "TIME-BR")
@@ -203,11 +207,15 @@ class FlexrayArTpChannel(ARObject):
             timeout_cr_value = child.text
             obj.timeout_cr = timeout_cr_value
 
-        # Parse tp_connections (list)
+        # Parse tp_connections (list from container "TP-CONNECTIONS")
         obj.tp_connections = []
-        for child in ARObject._find_all_child_elements(element, "TP-CONNECTIONS"):
-            tp_connections_value = ARObject._deserialize_by_tag(child, "FlexrayArTpConnection")
-            obj.tp_connections.append(tp_connections_value)
+        container = ARObject._find_child_element(element, "TP-CONNECTIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.tp_connections.append(child_value)
 
         return obj
 

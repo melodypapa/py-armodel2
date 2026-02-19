@@ -58,15 +58,18 @@ class ECUMapping(Identifiable):
         Returns:
             Deserialized ECUMapping object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ECUMapping, cls).deserialize(element)
 
-        # Parse comm_controllers (list)
+        # Parse comm_controllers (list from container "COMM-CONTROLLERS")
         obj.comm_controllers = []
-        for child in ARObject._find_all_child_elements(element, "COMM-CONTROLLERS"):
-            comm_controllers_value = child.text
-            obj.comm_controllers.append(comm_controllers_value)
+        container = ARObject._find_child_element(element, "COMM-CONTROLLERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.comm_controllers.append(child_value)
 
         # Parse ecu
         child = ARObject._find_child_element(element, "ECU")

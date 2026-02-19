@@ -51,33 +51,48 @@ class SynchronizationPointConstraint(TimingConstraint):
         Returns:
             Deserialized SynchronizationPointConstraint object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SynchronizationPointConstraint, cls).deserialize(element)
 
-        # Parse source_eecs (list)
+        # Parse source_eecs (list from container "SOURCE-EECS")
         obj.source_eecs = []
-        for child in ARObject._find_all_child_elements(element, "SOURCE-EECS"):
-            source_eecs_value = child.text
-            obj.source_eecs.append(source_eecs_value)
+        container = ARObject._find_child_element(element, "SOURCE-EECS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.source_eecs.append(child_value)
 
-        # Parse source_events (list)
+        # Parse source_events (list from container "SOURCE-EVENTS")
         obj.source_events = []
-        for child in ARObject._find_all_child_elements(element, "SOURCE-EVENTS"):
-            source_events_value = ARObject._deserialize_by_tag(child, "AbstractEvent")
-            obj.source_events.append(source_events_value)
+        container = ARObject._find_child_element(element, "SOURCE-EVENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.source_events.append(child_value)
 
-        # Parse target_eecs (list)
+        # Parse target_eecs (list from container "TARGET-EECS")
         obj.target_eecs = []
-        for child in ARObject._find_all_child_elements(element, "TARGET-EECS"):
-            target_eecs_value = child.text
-            obj.target_eecs.append(target_eecs_value)
+        container = ARObject._find_child_element(element, "TARGET-EECS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.target_eecs.append(child_value)
 
-        # Parse target_events (list)
+        # Parse target_events (list from container "TARGET-EVENTS")
         obj.target_events = []
-        for child in ARObject._find_all_child_elements(element, "TARGET-EVENTS"):
-            target_events_value = ARObject._deserialize_by_tag(child, "AbstractEvent")
-            obj.target_events.append(target_events_value)
+        container = ARObject._find_child_element(element, "TARGET-EVENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.target_events.append(child_value)
 
         return obj
 

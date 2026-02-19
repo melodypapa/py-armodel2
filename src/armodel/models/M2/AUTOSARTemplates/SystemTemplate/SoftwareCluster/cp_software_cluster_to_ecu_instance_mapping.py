@@ -55,9 +55,8 @@ class CpSoftwareClusterToEcuInstanceMapping(Identifiable):
         Returns:
             Deserialized CpSoftwareClusterToEcuInstanceMapping object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(CpSoftwareClusterToEcuInstanceMapping, cls).deserialize(element)
 
         # Parse ecu_instance
         child = ARObject._find_child_element(element, "ECU-INSTANCE")
@@ -71,11 +70,15 @@ class CpSoftwareClusterToEcuInstanceMapping(Identifiable):
             machine_id_value = child.text
             obj.machine_id = machine_id_value
 
-        # Parse sw_clusters (list)
+        # Parse sw_clusters (list from container "SW-CLUSTERS")
         obj.sw_clusters = []
-        for child in ARObject._find_all_child_elements(element, "SW-CLUSTERS"):
-            sw_clusters_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
-            obj.sw_clusters.append(sw_clusters_value)
+        container = ARObject._find_child_element(element, "SW-CLUSTERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sw_clusters.append(child_value)
 
         return obj
 

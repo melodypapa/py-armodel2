@@ -55,15 +55,18 @@ class RptComponent(Identifiable):
         Returns:
             Deserialized RptComponent object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(RptComponent, cls).deserialize(element)
 
-        # Parse mc_datas (list)
+        # Parse mc_datas (list from container "MC-DATAS")
         obj.mc_datas = []
-        for child in ARObject._find_all_child_elements(element, "MC-DATAS"):
-            mc_datas_value = ARObject._deserialize_by_tag(child, "RoleBasedMcDataAssignment")
-            obj.mc_datas.append(mc_datas_value)
+        container = ARObject._find_child_element(element, "MC-DATAS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.mc_datas.append(child_value)
 
         # Parse rp_impl_policy
         child = ARObject._find_child_element(element, "RP-IMPL-POLICY")
@@ -71,11 +74,15 @@ class RptComponent(Identifiable):
             rp_impl_policy_value = ARObject._deserialize_by_tag(child, "RptImplPolicy")
             obj.rp_impl_policy = rp_impl_policy_value
 
-        # Parse rpt_executable_entities (list)
+        # Parse rpt_executable_entities (list from container "RPT-EXECUTABLE-ENTITIES")
         obj.rpt_executable_entities = []
-        for child in ARObject._find_all_child_elements(element, "RPT-EXECUTABLE-ENTITIES"):
-            rpt_executable_entities_value = ARObject._deserialize_by_tag(child, "RptExecutableEntity")
-            obj.rpt_executable_entities.append(rpt_executable_entities_value)
+        container = ARObject._find_child_element(element, "RPT-EXECUTABLE-ENTITIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.rpt_executable_entities.append(child_value)
 
         return obj
 

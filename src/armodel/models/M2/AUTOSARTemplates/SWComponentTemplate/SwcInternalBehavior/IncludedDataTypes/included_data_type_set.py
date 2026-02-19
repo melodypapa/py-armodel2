@@ -51,16 +51,20 @@ class IncludedDataTypeSet(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse data_types (list)
+        # Parse data_types (list from container "DATA-TYPES")
         obj.data_types = []
-        for child in ARObject._find_all_child_elements(element, "DATA-TYPES"):
-            data_types_value = ARObject._deserialize_by_tag(child, "AutosarDataType")
-            obj.data_types.append(data_types_value)
+        container = ARObject._find_child_element(element, "DATA-TYPES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.data_types.append(child_value)
 
         # Parse literal_prefix
         child = ARObject._find_child_element(element, "LITERAL-PREFIX")
         if child is not None:
-            literal_prefix_value = child.text
+            literal_prefix_value = ARObject._deserialize_by_tag(child, "Identifier")
             obj.literal_prefix = literal_prefix_value
 
         return obj

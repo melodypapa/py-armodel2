@@ -74,9 +74,8 @@ class NmNode(Identifiable, ABC):
         Returns:
             Deserialized NmNode object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(NmNode, cls).deserialize(element)
 
         # Parse controller
         child = ARObject._find_child_element(element, "CONTROLLER")
@@ -93,7 +92,7 @@ class NmNode(Identifiable, ABC):
         # Parse nm_coordinator_role
         child = ARObject._find_child_element(element, "NM-COORDINATOR-ROLE")
         if child is not None:
-            nm_coordinator_role_value = child.text
+            nm_coordinator_role_value = NmCoordinatorRoleEnum.deserialize(child)
             obj.nm_coordinator_role = nm_coordinator_role_value
 
         # Parse nm_if_ecu
@@ -114,17 +113,25 @@ class NmNode(Identifiable, ABC):
             nm_passive_value = child.text
             obj.nm_passive = nm_passive_value
 
-        # Parse rx_nm_pdus (list)
+        # Parse rx_nm_pdus (list from container "RX-NM-PDUS")
         obj.rx_nm_pdus = []
-        for child in ARObject._find_all_child_elements(element, "RX-NM-PDUS"):
-            rx_nm_pdus_value = ARObject._deserialize_by_tag(child, "NmPdu")
-            obj.rx_nm_pdus.append(rx_nm_pdus_value)
+        container = ARObject._find_child_element(element, "RX-NM-PDUS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.rx_nm_pdus.append(child_value)
 
-        # Parse tx_nm_pdus (list)
+        # Parse tx_nm_pdus (list from container "TX-NM-PDUS")
         obj.tx_nm_pdus = []
-        for child in ARObject._find_all_child_elements(element, "TX-NM-PDUS"):
-            tx_nm_pdus_value = ARObject._deserialize_by_tag(child, "NmPdu")
-            obj.tx_nm_pdus.append(tx_nm_pdus_value)
+        container = ARObject._find_child_element(element, "TX-NM-PDUS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.tx_nm_pdus.append(child_value)
 
         return obj
 

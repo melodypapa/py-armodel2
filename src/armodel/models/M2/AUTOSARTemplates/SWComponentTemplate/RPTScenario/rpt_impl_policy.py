@@ -53,13 +53,13 @@ class RptImplPolicy(ARObject):
         # Parse rpt_enabler_impl
         child = ARObject._find_child_element(element, "RPT-ENABLER-IMPL")
         if child is not None:
-            rpt_enabler_impl_value = child.text
+            rpt_enabler_impl_value = RptEnablerImplTypeEnum.deserialize(child)
             obj.rpt_enabler_impl = rpt_enabler_impl_value
 
         # Parse rpt_preparation_enum
         child = ARObject._find_child_element(element, "RPT-PREPARATION-ENUM")
         if child is not None:
-            rpt_preparation_enum_value = child.text
+            rpt_preparation_enum_value = RptPreparationEnum.deserialize(child)
             obj.rpt_preparation_enum = rpt_preparation_enum_value
 
         return obj

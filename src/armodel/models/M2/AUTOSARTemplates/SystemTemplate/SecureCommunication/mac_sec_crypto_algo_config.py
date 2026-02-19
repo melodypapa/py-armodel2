@@ -62,7 +62,7 @@ class MacSecCryptoAlgoConfig(ARObject):
         # Parse capability
         child = ARObject._find_child_element(element, "CAPABILITY")
         if child is not None:
-            capability_value = child.text
+            capability_value = MacSecCapabilityEnum.deserialize(child)
             obj.capability = capability_value
 
         # Parse cipher_suite
@@ -74,7 +74,7 @@ class MacSecCryptoAlgoConfig(ARObject):
         # Parse confidentiality
         child = ARObject._find_child_element(element, "CONFIDENTIALITY")
         if child is not None:
-            confidentiality_value = child.text
+            confidentiality_value = MacSecConfidentialityOffsetEnum.deserialize(child)
             obj.confidentiality = confidentiality_value
 
         # Parse replay_protection

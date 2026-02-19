@@ -56,11 +56,15 @@ class SwcServiceDependencyInSystemInstanceRef(ARObject):
             context_root_sw_value = ARObject._deserialize_by_tag(child, "RootSwCompositionPrototype")
             obj.context_root_sw = context_root_sw_value
 
-        # Parse context_sw_prototypes (list)
+        # Parse context_sw_prototypes (list from container "CONTEXT-SW-PROTOTYPES")
         obj.context_sw_prototypes = []
-        for child in ARObject._find_all_child_elements(element, "CONTEXT-SW-PROTOTYPES"):
-            context_sw_prototypes_value = child.text
-            obj.context_sw_prototypes.append(context_sw_prototypes_value)
+        container = ARObject._find_child_element(element, "CONTEXT-SW-PROTOTYPES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.context_sw_prototypes.append(child_value)
 
         # Parse target_swc
         child = ARObject._find_child_element(element, "TARGET-SWC")

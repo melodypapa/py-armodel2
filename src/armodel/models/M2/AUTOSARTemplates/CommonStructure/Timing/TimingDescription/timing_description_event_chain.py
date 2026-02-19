@@ -54,9 +54,8 @@ class TimingDescriptionEventChain(TimingDescription):
         Returns:
             Deserialized TimingDescriptionEventChain object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TimingDescriptionEventChain, cls).deserialize(element)
 
         # Parse is_pipelining
         child = ARObject._find_child_element(element, "IS-PIPELINING")
@@ -70,11 +69,15 @@ class TimingDescriptionEventChain(TimingDescription):
             response_value = ARObject._deserialize_by_tag(child, "TimingDescriptionEvent")
             obj.response = response_value
 
-        # Parse segments (list)
+        # Parse segments (list from container "SEGMENTS")
         obj.segments = []
-        for child in ARObject._find_all_child_elements(element, "SEGMENTS"):
-            segments_value = ARObject._deserialize_by_tag(child, "TimingDescriptionEvent")
-            obj.segments.append(segments_value)
+        container = ARObject._find_child_element(element, "SEGMENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.segments.append(child_value)
 
         # Parse stimulus
         child = ARObject._find_child_element(element, "STIMULUS")

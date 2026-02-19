@@ -68,14 +68,18 @@ class Referrable(ARObject, ABC):
         # Parse short_name
         child = ARObject._find_child_element(element, "SHORT-NAME")
         if child is not None:
-            short_name_value = child.text
+            short_name_value = ARObject._deserialize_by_tag(child, "Identifier")
             obj.short_name = short_name_value
 
-        # Parse short_name_fragments (list)
+        # Parse short_name_fragments (list from container "SHORT-NAME-FRAGMENTS")
         obj.short_name_fragments = []
-        for child in ARObject._find_all_child_elements(element, "SHORT-NAME-FRAGMENTS"):
-            short_name_fragments_value = ARObject._deserialize_by_tag(child, "ShortNameFragment")
-            obj.short_name_fragments.append(short_name_fragments_value)
+        container = ARObject._find_child_element(element, "SHORT-NAME-FRAGMENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.short_name_fragments.append(child_value)
 
         return obj
 

@@ -66,9 +66,8 @@ class BswImplementation(Implementation):
         Returns:
             Deserialized BswImplementation object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(BswImplementation, cls).deserialize(element)
 
         # Parse ar_release
         child = ARObject._find_child_element(element, "AR-RELEASE")
@@ -82,29 +81,41 @@ class BswImplementation(Implementation):
             behavior_value = ARObject._deserialize_by_tag(child, "BswInternalBehavior")
             obj.behavior = behavior_value
 
-        # Parse preconfigureds (list)
+        # Parse preconfigureds (list from container "PRECONFIGUREDS")
         obj.preconfigureds = []
-        for child in ARObject._find_all_child_elements(element, "PRECONFIGUREDS"):
-            preconfigureds_value = child.text
-            obj.preconfigureds.append(preconfigureds_value)
+        container = ARObject._find_child_element(element, "PRECONFIGUREDS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.preconfigureds.append(child_value)
 
-        # Parse recommendeds (list)
+        # Parse recommendeds (list from container "RECOMMENDEDS")
         obj.recommendeds = []
-        for child in ARObject._find_all_child_elements(element, "RECOMMENDEDS"):
-            recommendeds_value = child.text
-            obj.recommendeds.append(recommendeds_value)
+        container = ARObject._find_child_element(element, "RECOMMENDEDS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.recommendeds.append(child_value)
 
         # Parse vendor_api_infix
         child = ARObject._find_child_element(element, "VENDOR-API-INFIX")
         if child is not None:
-            vendor_api_infix_value = child.text
+            vendor_api_infix_value = ARObject._deserialize_by_tag(child, "Identifier")
             obj.vendor_api_infix = vendor_api_infix_value
 
-        # Parse vendor_specifics (list)
+        # Parse vendor_specifics (list from container "VENDOR-SPECIFICS")
         obj.vendor_specifics = []
-        for child in ARObject._find_all_child_elements(element, "VENDOR-SPECIFICS"):
-            vendor_specifics_value = ARObject._deserialize_by_tag(child, "EcucModuleDef")
-            obj.vendor_specifics.append(vendor_specifics_value)
+        container = ARObject._find_child_element(element, "VENDOR-SPECIFICS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.vendor_specifics.append(child_value)
 
         return obj
 

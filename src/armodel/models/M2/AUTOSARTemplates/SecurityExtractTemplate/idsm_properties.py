@@ -50,21 +50,28 @@ class IdsmProperties(IdsCommonElement):
         Returns:
             Deserialized IdsmProperties object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(IdsmProperties, cls).deserialize(element)
 
-        # Parse rate_limitations (list)
+        # Parse rate_limitations (list from container "RATE-LIMITATIONS")
         obj.rate_limitations = []
-        for child in ARObject._find_all_child_elements(element, "RATE-LIMITATIONS"):
-            rate_limitations_value = ARObject._deserialize_by_tag(child, "IdsmRateLimitation")
-            obj.rate_limitations.append(rate_limitations_value)
+        container = ARObject._find_child_element(element, "RATE-LIMITATIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.rate_limitations.append(child_value)
 
-        # Parse traffic_limitations (list)
+        # Parse traffic_limitations (list from container "TRAFFIC-LIMITATIONS")
         obj.traffic_limitations = []
-        for child in ARObject._find_all_child_elements(element, "TRAFFIC-LIMITATIONS"):
-            traffic_limitations_value = ARObject._deserialize_by_tag(child, "IdsmTrafficLimitation")
-            obj.traffic_limitations.append(traffic_limitations_value)
+        container = ARObject._find_child_element(element, "TRAFFIC-LIMITATIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.traffic_limitations.append(child_value)
 
         return obj
 

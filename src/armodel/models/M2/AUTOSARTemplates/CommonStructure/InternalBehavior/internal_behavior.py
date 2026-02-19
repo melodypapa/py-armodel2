@@ -77,45 +77,68 @@ class InternalBehavior(Identifiable, ABC):
         Returns:
             Deserialized InternalBehavior object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(InternalBehavior, cls).deserialize(element)
 
-        # Parse constants (list)
+        # Parse constants (list from container "CONSTANTS")
         obj.constants = []
-        for child in ARObject._find_all_child_elements(element, "CONSTANTS"):
-            constants_value = ARObject._deserialize_by_tag(child, "ParameterDataPrototype")
-            obj.constants.append(constants_value)
+        container = ARObject._find_child_element(element, "CONSTANTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.constants.append(child_value)
 
-        # Parse constant_values (list)
+        # Parse constant_values (list from container "CONSTANT-VALUES")
         obj.constant_values = []
-        for child in ARObject._find_all_child_elements(element, "CONSTANT-VALUES"):
-            constant_values_value = ARObject._deserialize_by_tag(child, "ConstantSpecification")
-            obj.constant_values.append(constant_values_value)
+        container = ARObject._find_child_element(element, "CONSTANT-VALUES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.constant_values.append(child_value)
 
-        # Parse data_type_refs (list)
+        # Parse data_type_refs (list from container "DATA-TYPES")
         obj.data_type_refs = []
-        for child in ARObject._find_all_child_elements(element, "DATA-TYPES"):
-            data_type_refs_value = ARObject._deserialize_by_tag(child, "DataTypeMappingSet")
-            obj.data_type_refs.append(data_type_refs_value)
+        container = ARObject._find_child_element(element, "DATA-TYPES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.data_type_refs.append(child_value)
 
-        # Parse exclusive_areas (list)
+        # Parse exclusive_areas (list from container "EXCLUSIVE-AREAS")
         obj.exclusive_areas = []
-        for child in ARObject._find_all_child_elements(element, "EXCLUSIVE-AREAS"):
-            exclusive_areas_value = ARObject._deserialize_by_tag(child, "ExclusiveArea")
-            obj.exclusive_areas.append(exclusive_areas_value)
+        container = ARObject._find_child_element(element, "EXCLUSIVE-AREAS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.exclusive_areas.append(child_value)
 
-        # Parse exclusive_area_nestings (list)
+        # Parse exclusive_area_nestings (list from container "EXCLUSIVE-AREA-NESTINGS")
         obj.exclusive_area_nestings = []
-        for child in ARObject._find_all_child_elements(element, "EXCLUSIVE-AREA-NESTINGS"):
-            exclusive_area_nestings_value = ARObject._deserialize_by_tag(child, "ExclusiveAreaNestingOrder")
-            obj.exclusive_area_nestings.append(exclusive_area_nestings_value)
+        container = ARObject._find_child_element(element, "EXCLUSIVE-AREA-NESTINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.exclusive_area_nestings.append(child_value)
 
-        # Parse static_memorie_refs (list)
+        # Parse static_memorie_refs (list from container "STATIC-MEMORIES")
         obj.static_memorie_refs = []
-        for child in ARObject._find_all_child_elements(element, "STATIC-MEMORIES"):
-            static_memorie_refs_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
-            obj.static_memorie_refs.append(static_memorie_refs_value)
+        container = ARObject._find_child_element(element, "STATIC-MEMORIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.static_memorie_refs.append(child_value)
 
         return obj
 

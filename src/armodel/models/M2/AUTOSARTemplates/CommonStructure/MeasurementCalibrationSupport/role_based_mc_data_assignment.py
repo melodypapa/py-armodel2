@@ -59,22 +59,30 @@ class RoleBasedMcDataAssignment(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse executions (list)
+        # Parse executions (list from container "EXECUTIONS")
         obj.executions = []
-        for child in ARObject._find_all_child_elements(element, "EXECUTIONS"):
-            executions_value = ARObject._deserialize_by_tag(child, "RptExecutionContext")
-            obj.executions.append(executions_value)
+        container = ARObject._find_child_element(element, "EXECUTIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.executions.append(child_value)
 
-        # Parse mc_data_instances (list)
+        # Parse mc_data_instances (list from container "MC-DATA-INSTANCES")
         obj.mc_data_instances = []
-        for child in ARObject._find_all_child_elements(element, "MC-DATA-INSTANCES"):
-            mc_data_instances_value = ARObject._deserialize_by_tag(child, "McDataInstance")
-            obj.mc_data_instances.append(mc_data_instances_value)
+        container = ARObject._find_child_element(element, "MC-DATA-INSTANCES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.mc_data_instances.append(child_value)
 
         # Parse role
         child = ARObject._find_child_element(element, "ROLE")
         if child is not None:
-            role_value = child.text
+            role_value = ARObject._deserialize_by_tag(child, "Identifier")
             obj.role = role_value
 
         return obj

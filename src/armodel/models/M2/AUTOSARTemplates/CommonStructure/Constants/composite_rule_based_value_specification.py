@@ -55,21 +55,28 @@ class CompositeRuleBasedValueSpecification(AbstractRuleBasedValueSpecification):
         Returns:
             Deserialized CompositeRuleBasedValueSpecification object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(CompositeRuleBasedValueSpecification, cls).deserialize(element)
 
-        # Parse arguments (list)
+        # Parse arguments (list from container "ARGUMENTS")
         obj.arguments = []
-        for child in ARObject._find_all_child_elements(element, "ARGUMENTS"):
-            arguments_value = ARObject._deserialize_by_tag(child, "CompositeValueSpecification")
-            obj.arguments.append(arguments_value)
+        container = ARObject._find_child_element(element, "ARGUMENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.arguments.append(child_value)
 
-        # Parse compounds (list)
+        # Parse compounds (list from container "COMPOUNDS")
         obj.compounds = []
-        for child in ARObject._find_all_child_elements(element, "COMPOUNDS"):
-            compounds_value = child.text
-            obj.compounds.append(compounds_value)
+        container = ARObject._find_child_element(element, "COMPOUNDS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.compounds.append(child_value)
 
         # Parse max_size_to_fill
         child = ARObject._find_child_element(element, "MAX-SIZE-TO-FILL")
@@ -80,7 +87,7 @@ class CompositeRuleBasedValueSpecification(AbstractRuleBasedValueSpecification):
         # Parse rule
         child = ARObject._find_child_element(element, "RULE")
         if child is not None:
-            rule_value = child.text
+            rule_value = ARObject._deserialize_by_tag(child, "Identifier")
             obj.rule = rule_value
 
         return obj

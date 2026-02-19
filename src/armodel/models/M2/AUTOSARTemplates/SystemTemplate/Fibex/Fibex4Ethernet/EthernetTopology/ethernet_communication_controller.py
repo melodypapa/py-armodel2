@@ -73,16 +73,20 @@ class EthernetCommunicationController(ARObject):
             can_xl_config_value = child.text
             obj.can_xl_config = can_xl_config_value
 
-        # Parse coupling_ports (list)
+        # Parse coupling_ports (list from container "COUPLING-PORTS")
         obj.coupling_ports = []
-        for child in ARObject._find_all_child_elements(element, "COUPLING-PORTS"):
-            coupling_ports_value = ARObject._deserialize_by_tag(child, "CouplingPort")
-            obj.coupling_ports.append(coupling_ports_value)
+        container = ARObject._find_child_element(element, "COUPLING-PORTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.coupling_ports.append(child_value)
 
         # Parse mac_layer_type
         child = ARObject._find_child_element(element, "MAC-LAYER-TYPE")
         if child is not None:
-            mac_layer_type_value = child.text
+            mac_layer_type_value = EthernetMacLayerTypeEnum.deserialize(child)
             obj.mac_layer_type = mac_layer_type_value
 
         # Parse mac_unicast

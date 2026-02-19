@@ -52,7 +52,7 @@ class ShortNameFragment(ARObject):
         # Parse fragment
         child = ARObject._find_child_element(element, "FRAGMENT")
         if child is not None:
-            fragment_value = child.text
+            fragment_value = ARObject._deserialize_by_tag(child, "Identifier")
             obj.fragment = fragment_value
 
         # Parse role

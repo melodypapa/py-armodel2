@@ -45,9 +45,8 @@ class AssignNad(LinConfigurationEntry):
         Returns:
             Deserialized AssignNad object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(AssignNad, cls).deserialize(element)
 
         # Parse new_nad
         child = ARObject._find_child_element(element, "NEW-NAD")

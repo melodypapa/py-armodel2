@@ -68,45 +68,60 @@ class FMFeature(ARElement):
         Returns:
             Deserialized FMFeature object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(FMFeature, cls).deserialize(element)
 
-        # Parse attribute_defs (list)
+        # Parse attribute_defs (list from container "ATTRIBUTE-DEFS")
         obj.attribute_defs = []
-        for child in ARObject._find_all_child_elements(element, "ATTRIBUTE-DEFS"):
-            attribute_defs_value = ARObject._deserialize_by_tag(child, "FMAttributeDef")
-            obj.attribute_defs.append(attribute_defs_value)
+        container = ARObject._find_child_element(element, "ATTRIBUTE-DEFS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.attribute_defs.append(child_value)
 
-        # Parse decomposition_decompositions (list)
+        # Parse decomposition_decompositions (list from container "DECOMPOSITION-DECOMPOSITIONS")
         obj.decomposition_decompositions = []
-        for child in ARObject._find_all_child_elements(element, "DECOMPOSITION-DECOMPOSITIONS"):
-            decomposition_decompositions_value = ARObject._deserialize_by_tag(child, "FMFeature")
-            obj.decomposition_decompositions.append(decomposition_decompositions_value)
+        container = ARObject._find_child_element(element, "DECOMPOSITION-DECOMPOSITIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.decomposition_decompositions.append(child_value)
 
         # Parse maximum
         child = ARObject._find_child_element(element, "MAXIMUM")
         if child is not None:
-            maximum_value = child.text
+            maximum_value = BindingTimeEnum.deserialize(child)
             obj.maximum = maximum_value
 
         # Parse minimum
         child = ARObject._find_child_element(element, "MINIMUM")
         if child is not None:
-            minimum_value = child.text
+            minimum_value = BindingTimeEnum.deserialize(child)
             obj.minimum = minimum_value
 
-        # Parse relations (list)
+        # Parse relations (list from container "RELATIONS")
         obj.relations = []
-        for child in ARObject._find_all_child_elements(element, "RELATIONS"):
-            relations_value = ARObject._deserialize_by_tag(child, "FMFeatureRelation")
-            obj.relations.append(relations_value)
+        container = ARObject._find_child_element(element, "RELATIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.relations.append(child_value)
 
-        # Parse restrictions (list)
+        # Parse restrictions (list from container "RESTRICTIONS")
         obj.restrictions = []
-        for child in ARObject._find_all_child_elements(element, "RESTRICTIONS"):
-            restrictions_value = ARObject._deserialize_by_tag(child, "FMFeatureRestriction")
-            obj.restrictions.append(restrictions_value)
+        container = ARObject._find_child_element(element, "RESTRICTIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.restrictions.append(child_value)
 
         return obj
 

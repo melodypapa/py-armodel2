@@ -55,9 +55,8 @@ class CanControllerConfigurationRequirements(AbstractCanCommunicationControllerA
         Returns:
             Deserialized CanControllerConfigurationRequirements object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(CanControllerConfigurationRequirements, cls).deserialize(element)
 
         # Parse max_number_of_time_quanta_per
         child = ARObject._find_child_element(element, "MAX-NUMBER-OF-TIME-QUANTA-PER")

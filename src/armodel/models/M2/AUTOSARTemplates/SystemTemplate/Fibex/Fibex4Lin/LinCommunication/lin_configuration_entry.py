@@ -51,9 +51,8 @@ class LinConfigurationEntry(ScheduleTableEntry, ABC):
         Returns:
             Deserialized LinConfigurationEntry object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(LinConfigurationEntry, cls).deserialize(element)
 
         # Parse assigned
         child = ARObject._find_child_element(element, "ASSIGNED")

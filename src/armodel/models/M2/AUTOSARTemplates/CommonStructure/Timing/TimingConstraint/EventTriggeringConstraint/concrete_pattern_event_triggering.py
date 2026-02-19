@@ -51,15 +51,18 @@ class ConcretePatternEventTriggering(EventTriggeringConstraint):
         Returns:
             Deserialized ConcretePatternEventTriggering object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ConcretePatternEventTriggering, cls).deserialize(element)
 
-        # Parse offsets (list)
+        # Parse offsets (list from container "OFFSETS")
         obj.offsets = []
-        for child in ARObject._find_all_child_elements(element, "OFFSETS"):
-            offsets_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
-            obj.offsets.append(offsets_value)
+        container = ARObject._find_child_element(element, "OFFSETS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.offsets.append(child_value)
 
         # Parse pattern_jitter
         child = ARObject._find_child_element(element, "PATTERN-JITTER")

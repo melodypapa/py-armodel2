@@ -46,15 +46,18 @@ class ErrorTracerNeeds(ServiceNeeds):
         Returns:
             Deserialized ErrorTracerNeeds object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ErrorTracerNeeds, cls).deserialize(element)
 
-        # Parse traced_failures (list)
+        # Parse traced_failures (list from container "TRACED-FAILURES")
         obj.traced_failures = []
-        for child in ARObject._find_all_child_elements(element, "TRACED-FAILURES"):
-            traced_failures_value = ARObject._deserialize_by_tag(child, "TracedFailure")
-            obj.traced_failures.append(traced_failures_value)
+        container = ARObject._find_child_element(element, "TRACED-FAILURES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.traced_failures.append(child_value)
 
         return obj
 

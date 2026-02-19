@@ -64,11 +64,15 @@ class DltConfig(ARObject):
             dlt_ecu_value = ARObject._deserialize_by_tag(child, "DltEcu")
             obj.dlt_ecu = dlt_ecu_value
 
-        # Parse dlt_log_channels (list)
+        # Parse dlt_log_channels (list from container "DLT-LOG-CHANNELS")
         obj.dlt_log_channels = []
-        for child in ARObject._find_all_child_elements(element, "DLT-LOG-CHANNELS"):
-            dlt_log_channels_value = ARObject._deserialize_by_tag(child, "DltLogChannel")
-            obj.dlt_log_channels.append(dlt_log_channels_value)
+        container = ARObject._find_child_element(element, "DLT-LOG-CHANNELS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.dlt_log_channels.append(child_value)
 
         # Parse session_id
         child = ARObject._find_child_element(element, "SESSION-ID")

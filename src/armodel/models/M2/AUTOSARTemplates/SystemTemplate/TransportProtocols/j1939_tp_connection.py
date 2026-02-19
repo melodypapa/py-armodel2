@@ -77,9 +77,8 @@ class J1939TpConnection(TpConnection):
         Returns:
             Deserialized J1939TpConnection object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(J1939TpConnection, cls).deserialize(element)
 
         # Parse broadcast
         child = ARObject._find_child_element(element, "BROADCAST")
@@ -129,11 +128,15 @@ class J1939TpConnection(TpConnection):
             max_exp_bs_value = child.text
             obj.max_exp_bs = max_exp_bs_value
 
-        # Parse receivers (list)
+        # Parse receivers (list from container "RECEIVERS")
         obj.receivers = []
-        for child in ARObject._find_all_child_elements(element, "RECEIVERS"):
-            receivers_value = ARObject._deserialize_by_tag(child, "J1939TpNode")
-            obj.receivers.append(receivers_value)
+        container = ARObject._find_child_element(element, "RECEIVERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.receivers.append(child_value)
 
         # Parse retry
         child = ARObject._find_child_element(element, "RETRY")
@@ -141,11 +144,15 @@ class J1939TpConnection(TpConnection):
             retry_value = child.text
             obj.retry = retry_value
 
-        # Parse tp_pgs (list)
+        # Parse tp_pgs (list from container "TP-PGS")
         obj.tp_pgs = []
-        for child in ARObject._find_all_child_elements(element, "TP-PGS"):
-            tp_pgs_value = ARObject._deserialize_by_tag(child, "J1939TpPg")
-            obj.tp_pgs.append(tp_pgs_value)
+        container = ARObject._find_child_element(element, "TP-PGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.tp_pgs.append(child_value)
 
         # Parse transmitter
         child = ARObject._find_child_element(element, "TRANSMITTER")

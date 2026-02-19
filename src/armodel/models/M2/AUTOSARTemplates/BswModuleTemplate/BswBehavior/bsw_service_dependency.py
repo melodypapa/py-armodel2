@@ -56,21 +56,28 @@ class BswServiceDependency(ServiceDependency):
         Returns:
             Deserialized BswServiceDependency object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(BswServiceDependency, cls).deserialize(element)
 
-        # Parse assigned_datas (list)
+        # Parse assigned_datas (list from container "ASSIGNED-DATAS")
         obj.assigned_datas = []
-        for child in ARObject._find_all_child_elements(element, "ASSIGNED-DATAS"):
-            assigned_datas_value = child.text
-            obj.assigned_datas.append(assigned_datas_value)
+        container = ARObject._find_child_element(element, "ASSIGNED-DATAS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.assigned_datas.append(child_value)
 
-        # Parse assigned_entries (list)
+        # Parse assigned_entries (list from container "ASSIGNED-ENTRIES")
         obj.assigned_entries = []
-        for child in ARObject._find_all_child_elements(element, "ASSIGNED-ENTRIES"):
-            assigned_entries_value = ARObject._deserialize_by_tag(child, "RoleBasedBswModuleEntryAssignment")
-            obj.assigned_entries.append(assigned_entries_value)
+        container = ARObject._find_child_element(element, "ASSIGNED-ENTRIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.assigned_entries.append(child_value)
 
         # Parse ident
         child = ARObject._find_child_element(element, "IDENT")

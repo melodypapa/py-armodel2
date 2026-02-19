@@ -86,9 +86,8 @@ class SocketAddress(Identifiable):
         Returns:
             Deserialized SocketAddress object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SocketAddress, cls).deserialize(element)
 
         # Parse allowed_i_pv6_ext_ref
         child = ARObject._find_child_element(element, "ALLOWED-I-PV6-EXT")
@@ -126,11 +125,15 @@ class SocketAddress(Identifiable):
             flow_label_value = child.text
             obj.flow_label = flow_label_value
 
-        # Parse multicasts (list)
+        # Parse multicasts (list from container "MULTICASTS")
         obj.multicasts = []
-        for child in ARObject._find_all_child_elements(element, "MULTICASTS"):
-            multicasts_value = child.text
-            obj.multicasts.append(multicasts_value)
+        container = ARObject._find_child_element(element, "MULTICASTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.multicasts.append(child_value)
 
         # Parse path_mtu
         child = ARObject._find_child_element(element, "PATH-MTU")
@@ -144,16 +147,20 @@ class SocketAddress(Identifiable):
             pdu_collection_value = child.text
             obj.pdu_collection = pdu_collection_value
 
-        # Parse static_sockets (list)
+        # Parse static_sockets (list from container "STATIC-SOCKETS")
         obj.static_sockets = []
-        for child in ARObject._find_all_child_elements(element, "STATIC-SOCKETS"):
-            static_sockets_value = ARObject._deserialize_by_tag(child, "StaticSocketConnection")
-            obj.static_sockets.append(static_sockets_value)
+        container = ARObject._find_child_element(element, "STATIC-SOCKETS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.static_sockets.append(child_value)
 
         # Parse udp_checksum
         child = ARObject._find_child_element(element, "UDP-CHECKSUM")
         if child is not None:
-            udp_checksum_value = child.text
+            udp_checksum_value = UdpChecksumCalculationEnum.deserialize(child)
             obj.udp_checksum = udp_checksum_value
 
         return obj

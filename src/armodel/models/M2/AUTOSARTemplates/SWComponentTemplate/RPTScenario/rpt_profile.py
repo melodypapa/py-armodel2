@@ -55,9 +55,8 @@ class RptProfile(Identifiable):
         Returns:
             Deserialized RptProfile object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(RptProfile, cls).deserialize(element)
 
         # Parse max_service
         child = ARObject._find_child_element(element, "MAX-SERVICE")
@@ -74,13 +73,13 @@ class RptProfile(Identifiable):
         # Parse service_point
         child = ARObject._find_child_element(element, "SERVICE-POINT")
         if child is not None:
-            service_point_value = child.text
+            service_point_value = ARObject._deserialize_by_tag(child, "CIdentifier")
             obj.service_point = service_point_value
 
         # Parse stim_enabler
         child = ARObject._find_child_element(element, "STIM-ENABLER")
         if child is not None:
-            stim_enabler_value = child.text
+            stim_enabler_value = RptEnablerImplTypeEnum.deserialize(child)
             obj.stim_enabler = stim_enabler_value
 
         return obj

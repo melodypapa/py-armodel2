@@ -52,9 +52,8 @@ class IEEE1722TpAvConnection(IEEE1722TpConnection, ABC):
         Returns:
             Deserialized IEEE1722TpAvConnection object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(IEEE1722TpAvConnection, cls).deserialize(element)
 
         # Parse max_transit_time
         child = ARObject._find_child_element(element, "MAX-TRANSIT-TIME")
@@ -62,11 +61,15 @@ class IEEE1722TpAvConnection(IEEE1722TpConnection, ABC):
             max_transit_time_value = child.text
             obj.max_transit_time = max_transit_time_value
 
-        # Parse sdu_refs (list)
+        # Parse sdu_refs (list from container "SDUS")
         obj.sdu_refs = []
-        for child in ARObject._find_all_child_elements(element, "SDUS"):
-            sdu_refs_value = ARObject._deserialize_by_tag(child, "PduTriggering")
-            obj.sdu_refs.append(sdu_refs_value)
+        container = ARObject._find_child_element(element, "SDUS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sdu_refs.append(child_value)
 
         return obj
 

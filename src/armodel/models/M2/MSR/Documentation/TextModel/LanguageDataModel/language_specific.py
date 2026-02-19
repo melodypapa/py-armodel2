@@ -50,7 +50,7 @@ class LanguageSpecific(ARObject, ABC):
         # Parse l
         child = ARObject._find_child_element(element, "L")
         if child is not None:
-            l_value = child.text
+            l_value = LEnum.deserialize(child)
             obj.l = l_value
 
         return obj

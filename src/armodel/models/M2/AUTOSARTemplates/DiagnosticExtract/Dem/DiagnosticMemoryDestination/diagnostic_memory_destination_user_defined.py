@@ -50,15 +50,18 @@ class DiagnosticMemoryDestinationUserDefined(DiagnosticMemoryDestination):
         Returns:
             Deserialized DiagnosticMemoryDestinationUserDefined object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticMemoryDestinationUserDefined, cls).deserialize(element)
 
-        # Parse auth_roles (list)
+        # Parse auth_roles (list from container "AUTH-ROLES")
         obj.auth_roles = []
-        for child in ARObject._find_all_child_elements(element, "AUTH-ROLES"):
-            auth_roles_value = ARObject._deserialize_by_tag(child, "DiagnosticAuthRole")
-            obj.auth_roles.append(auth_roles_value)
+        container = ARObject._find_child_element(element, "AUTH-ROLES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.auth_roles.append(child_value)
 
         # Parse memory_id
         child = ARObject._find_child_element(element, "MEMORY-ID")

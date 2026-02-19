@@ -42,9 +42,8 @@ class DiagnosticCustomServiceInstance(DiagnosticServiceInstance):
         Returns:
             Deserialized DiagnosticCustomServiceInstance object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticCustomServiceInstance, cls).deserialize(element)
 
         # Parse custom_service
         child = ARObject._find_child_element(element, "CUSTOM-SERVICE")

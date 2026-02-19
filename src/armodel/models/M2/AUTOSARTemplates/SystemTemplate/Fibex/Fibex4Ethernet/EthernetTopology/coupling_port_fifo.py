@@ -49,9 +49,8 @@ class CouplingPortFifo(CouplingPortStructuralElement):
         Returns:
             Deserialized CouplingPortFifo object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(CouplingPortFifo, cls).deserialize(element)
 
         # Parse assigned_traffic
         child = ARObject._find_child_element(element, "ASSIGNED-TRAFFIC")

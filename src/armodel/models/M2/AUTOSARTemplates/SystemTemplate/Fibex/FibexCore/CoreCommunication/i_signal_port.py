@@ -62,9 +62,8 @@ class ISignalPort(CommConnectorPort):
         Returns:
             Deserialized ISignalPort object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ISignalPort, cls).deserialize(element)
 
         # Parse data_filter
         child = ARObject._find_child_element(element, "DATA-FILTER")
@@ -87,7 +86,7 @@ class ISignalPort(CommConnectorPort):
         # Parse handle_invalid_enum
         child = ARObject._find_child_element(element, "HANDLE-INVALID-ENUM")
         if child is not None:
-            handle_invalid_enum_value = child.text
+            handle_invalid_enum_value = HandleInvalidEnum.deserialize(child)
             obj.handle_invalid_enum = handle_invalid_enum_value
 
         # Parse timeout

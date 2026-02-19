@@ -68,20 +68,19 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
         Returns:
             Deserialized IEEE1722TpAafConnection object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(IEEE1722TpAafConnection, cls).deserialize(element)
 
         # Parse aaf_aes3_data
         child = ARObject._find_child_element(element, "AAF-AES3-DATA")
         if child is not None:
-            aaf_aes3_data_value = child.text
+            aaf_aes3_data_value = IEEE1722TpAafAes3DataTypeEnum.deserialize(child)
             obj.aaf_aes3_data = aaf_aes3_data_value
 
         # Parse aaf_format_enum
         child = ARObject._find_child_element(element, "AAF-FORMAT-ENUM")
         if child is not None:
-            aaf_format_enum_value = child.text
+            aaf_format_enum_value = IEEE1722TpAafFormatEnum.deserialize(child)
             obj.aaf_format_enum = aaf_format_enum_value
 
         # Parse aaf_nominal_rate

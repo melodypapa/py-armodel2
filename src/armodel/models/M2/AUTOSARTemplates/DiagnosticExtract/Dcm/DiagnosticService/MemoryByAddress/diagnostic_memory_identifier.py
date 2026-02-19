@@ -55,9 +55,8 @@ class DiagnosticMemoryIdentifier(DiagnosticCommonElement):
         Returns:
             Deserialized DiagnosticMemoryIdentifier object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticMemoryIdentifier, cls).deserialize(element)
 
         # Parse access
         child = ARObject._find_child_element(element, "ACCESS")

@@ -43,15 +43,18 @@ class EnumerationMappingTable(PackageableElement):
         Returns:
             Deserialized EnumerationMappingTable object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(EnumerationMappingTable, cls).deserialize(element)
 
-        # Parse entrie_refs (list)
+        # Parse entrie_refs (list from container "ENTRIES")
         obj.entrie_refs = []
-        for child in ARObject._find_all_child_elements(element, "ENTRIES"):
-            entrie_refs_value = child.text
-            obj.entrie_refs.append(entrie_refs_value)
+        container = ARObject._find_child_element(element, "ENTRIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.entrie_refs.append(child_value)
 
         return obj
 

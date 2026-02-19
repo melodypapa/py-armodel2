@@ -47,14 +47,13 @@ class IEEE1722TpAcfBusPart(Identifiable, ABC):
         Returns:
             Deserialized IEEE1722TpAcfBusPart object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(IEEE1722TpAcfBusPart, cls).deserialize(element)
 
         # Parse collection_trigger_ref
         child = ARObject._find_child_element(element, "COLLECTION-TRIGGER")
         if child is not None:
-            collection_trigger_ref_value = child.text
+            collection_trigger_ref_value = PduCollectionTriggerEnum.deserialize(child)
             obj.collection_trigger_ref = collection_trigger_ref_value
 
         return obj

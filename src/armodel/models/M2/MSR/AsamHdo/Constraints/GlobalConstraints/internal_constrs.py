@@ -66,7 +66,7 @@ class InternalConstrs(ARObject):
         # Parse lower_limit
         child = ARObject._find_child_element(element, "LOWER-LIMIT")
         if child is not None:
-            lower_limit_value = child.text
+            lower_limit_value = ARObject._deserialize_by_tag(child, "Limit")
             obj.lower_limit = lower_limit_value
 
         # Parse max_diff
@@ -84,19 +84,23 @@ class InternalConstrs(ARObject):
         # Parse monotony
         child = ARObject._find_child_element(element, "MONOTONY")
         if child is not None:
-            monotony_value = child.text
+            monotony_value = MonotonyEnum.deserialize(child)
             obj.monotony = monotony_value
 
-        # Parse scale_constrs (list)
+        # Parse scale_constrs (list from container "SCALE-CONSTRS")
         obj.scale_constrs = []
-        for child in ARObject._find_all_child_elements(element, "SCALE-CONSTRS"):
-            scale_constrs_value = ARObject._deserialize_by_tag(child, "ScaleConstr")
-            obj.scale_constrs.append(scale_constrs_value)
+        container = ARObject._find_child_element(element, "SCALE-CONSTRS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.scale_constrs.append(child_value)
 
         # Parse upper_limit
         child = ARObject._find_child_element(element, "UPPER-LIMIT")
         if child is not None:
-            upper_limit_value = child.text
+            upper_limit_value = ARObject._deserialize_by_tag(child, "Limit")
             obj.upper_limit = upper_limit_value
 
         return obj

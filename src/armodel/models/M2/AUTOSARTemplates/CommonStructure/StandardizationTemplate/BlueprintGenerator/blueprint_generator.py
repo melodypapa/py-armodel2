@@ -54,7 +54,7 @@ class BlueprintGenerator(ARObject):
         # Parse expression
         child = ARObject._find_child_element(element, "EXPRESSION")
         if child is not None:
-            expression_value = child.text
+            expression_value = ARObject._deserialize_by_tag(child, "VerbatimString")
             obj.expression = expression_value
 
         # Parse introduction

@@ -125,7 +125,7 @@ class Area(ARObject):
         # Parse nohref
         child = ARObject._find_child_element(element, "NOHREF")
         if child is not None:
-            nohref_value = child.text
+            nohref_value = AreaEnumNohref.deserialize(child)
             obj.nohref = nohref_value
 
         # Parse onblur
@@ -203,7 +203,7 @@ class Area(ARObject):
         # Parse shape
         child = ARObject._find_child_element(element, "SHAPE")
         if child is not None:
-            shape_value = child.text
+            shape_value = AreaEnumShape.deserialize(child)
             obj.shape = shape_value
 
         # Parse style

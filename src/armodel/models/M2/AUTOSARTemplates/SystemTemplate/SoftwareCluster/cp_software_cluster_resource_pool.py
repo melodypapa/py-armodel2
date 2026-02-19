@@ -50,21 +50,28 @@ class CpSoftwareClusterResourcePool(ARElement):
         Returns:
             Deserialized CpSoftwareClusterResourcePool object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(CpSoftwareClusterResourcePool, cls).deserialize(element)
 
-        # Parse ecu_scopes (list)
+        # Parse ecu_scopes (list from container "ECU-SCOPES")
         obj.ecu_scopes = []
-        for child in ARObject._find_all_child_elements(element, "ECU-SCOPES"):
-            ecu_scopes_value = ARObject._deserialize_by_tag(child, "EcuInstance")
-            obj.ecu_scopes.append(ecu_scopes_value)
+        container = ARObject._find_child_element(element, "ECU-SCOPES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.ecu_scopes.append(child_value)
 
-        # Parse resources (list)
+        # Parse resources (list from container "RESOURCES")
         obj.resources = []
-        for child in ARObject._find_all_child_elements(element, "RESOURCES"):
-            resources_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
-            obj.resources.append(resources_value)
+        container = ARObject._find_child_element(element, "RESOURCES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.resources.append(child_value)
 
         return obj
 

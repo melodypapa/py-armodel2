@@ -46,15 +46,18 @@ class BswEntryRelationshipSet(ARElement):
         Returns:
             Deserialized BswEntryRelationshipSet object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(BswEntryRelationshipSet, cls).deserialize(element)
 
-        # Parse bsw_entry_relationships (list)
+        # Parse bsw_entry_relationships (list from container "BSW-ENTRY-RELATIONSHIPS")
         obj.bsw_entry_relationships = []
-        for child in ARObject._find_all_child_elements(element, "BSW-ENTRY-RELATIONSHIPS"):
-            bsw_entry_relationships_value = ARObject._deserialize_by_tag(child, "BswEntryRelationship")
-            obj.bsw_entry_relationships.append(bsw_entry_relationships_value)
+        container = ARObject._find_child_element(element, "BSW-ENTRY-RELATIONSHIPS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.bsw_entry_relationships.append(child_value)
 
         return obj
 

@@ -72,27 +72,38 @@ class RptContainer(Identifiable):
         Returns:
             Deserialized RptContainer object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(RptContainer, cls).deserialize(element)
 
-        # Parse by_pass_points (list)
+        # Parse by_pass_points (list from container "BY-PASS-POINTS")
         obj.by_pass_points = []
-        for child in ARObject._find_all_child_elements(element, "BY-PASS-POINTS"):
-            by_pass_points_value = ARObject._deserialize_by_tag(child, "AtpFeature")
-            obj.by_pass_points.append(by_pass_points_value)
+        container = ARObject._find_child_element(element, "BY-PASS-POINTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.by_pass_points.append(child_value)
 
-        # Parse explicit_rpts (list)
+        # Parse explicit_rpts (list from container "EXPLICIT-RPTS")
         obj.explicit_rpts = []
-        for child in ARObject._find_all_child_elements(element, "EXPLICIT-RPTS"):
-            explicit_rpts_value = ARObject._deserialize_by_tag(child, "RptProfile")
-            obj.explicit_rpts.append(explicit_rpts_value)
+        container = ARObject._find_child_element(element, "EXPLICIT-RPTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.explicit_rpts.append(child_value)
 
-        # Parse rpt_containers (list)
+        # Parse rpt_containers (list from container "RPT-CONTAINERS")
         obj.rpt_containers = []
-        for child in ARObject._find_all_child_elements(element, "RPT-CONTAINERS"):
-            rpt_containers_value = ARObject._deserialize_by_tag(child, "RptContainer")
-            obj.rpt_containers.append(rpt_containers_value)
+        container = ARObject._find_child_element(element, "RPT-CONTAINERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.rpt_containers.append(child_value)
 
         # Parse rpt_executable_entity
         child = ARObject._find_child_element(element, "RPT-EXECUTABLE-ENTITY")

@@ -78,9 +78,8 @@ class ExecutionTime(Identifiable, ABC):
         Returns:
             Deserialized ExecutionTime object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ExecutionTime, cls).deserialize(element)
 
         # Parse exclusive_area
         child = ARObject._find_child_element(element, "EXCLUSIVE-AREA")
@@ -106,17 +105,25 @@ class ExecutionTime(Identifiable, ABC):
             hw_element_value = ARObject._deserialize_by_tag(child, "HwElement")
             obj.hw_element = hw_element_value
 
-        # Parse included_librarie_refs (list)
+        # Parse included_librarie_refs (list from container "INCLUDED-LIBRARIES")
         obj.included_librarie_refs = []
-        for child in ARObject._find_all_child_elements(element, "INCLUDED-LIBRARIES"):
-            included_librarie_refs_value = ARObject._deserialize_by_tag(child, "DependencyOnArtifact")
-            obj.included_librarie_refs.append(included_librarie_refs_value)
+        container = ARObject._find_child_element(element, "INCLUDED-LIBRARIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.included_librarie_refs.append(child_value)
 
-        # Parse memory_section_locations (list)
+        # Parse memory_section_locations (list from container "MEMORY-SECTION-LOCATIONS")
         obj.memory_section_locations = []
-        for child in ARObject._find_all_child_elements(element, "MEMORY-SECTION-LOCATIONS"):
-            memory_section_locations_value = ARObject._deserialize_by_tag(child, "MemorySectionLocation")
-            obj.memory_section_locations.append(memory_section_locations_value)
+        container = ARObject._find_child_element(element, "MEMORY-SECTION-LOCATIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.memory_section_locations.append(child_value)
 
         # Parse software_context
         child = ARObject._find_child_element(element, "SOFTWARE-CONTEXT")

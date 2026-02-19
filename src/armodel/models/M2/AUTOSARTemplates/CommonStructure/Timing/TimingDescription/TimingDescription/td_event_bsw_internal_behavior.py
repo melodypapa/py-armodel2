@@ -47,9 +47,8 @@ class TDEventBswInternalBehavior(TimingDescriptionEvent):
         Returns:
             Deserialized TDEventBswInternalBehavior object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TDEventBswInternalBehavior, cls).deserialize(element)
 
         # Parse bsw_module_entity_entity
         child = ARObject._find_child_element(element, "BSW-MODULE-ENTITY-ENTITY")

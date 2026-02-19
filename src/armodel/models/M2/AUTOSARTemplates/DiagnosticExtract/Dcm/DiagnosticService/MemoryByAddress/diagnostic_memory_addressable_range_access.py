@@ -43,15 +43,18 @@ class DiagnosticMemoryAddressableRangeAccess(DiagnosticMemoryByAddress, ABC):
         Returns:
             Deserialized DiagnosticMemoryAddressableRangeAccess object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticMemoryAddressableRangeAccess, cls).deserialize(element)
 
-        # Parse memory_ranges (list)
+        # Parse memory_ranges (list from container "MEMORY-RANGES")
         obj.memory_ranges = []
-        for child in ARObject._find_all_child_elements(element, "MEMORY-RANGES"):
-            memory_ranges_value = child.text
-            obj.memory_ranges.append(memory_ranges_value)
+        container = ARObject._find_child_element(element, "MEMORY-RANGES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.memory_ranges.append(child_value)
 
         return obj
 

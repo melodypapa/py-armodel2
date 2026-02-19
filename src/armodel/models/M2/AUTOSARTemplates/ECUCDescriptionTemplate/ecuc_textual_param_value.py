@@ -47,14 +47,13 @@ class EcucTextualParamValue(EcucParameterValue):
         Returns:
             Deserialized EcucTextualParamValue object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(EcucTextualParamValue, cls).deserialize(element)
 
         # Parse value
         child = ARObject._find_child_element(element, "VALUE")
         if child is not None:
-            value_value = child.text
+            value_value = ARObject._deserialize_by_tag(child, "VerbatimString")
             obj.value = value_value
 
         return obj

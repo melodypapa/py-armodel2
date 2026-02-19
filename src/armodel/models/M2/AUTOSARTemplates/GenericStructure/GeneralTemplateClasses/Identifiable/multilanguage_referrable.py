@@ -52,9 +52,8 @@ class MultilanguageReferrable(Referrable, ABC):
         Returns:
             Deserialized MultilanguageReferrable object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(MultilanguageReferrable, cls).deserialize(element)
 
         # Parse long_name
         child = ARObject._find_child_element(element, "LONG-NAME")

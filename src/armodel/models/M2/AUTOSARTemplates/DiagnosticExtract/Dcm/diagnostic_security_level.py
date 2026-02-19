@@ -54,9 +54,8 @@ class DiagnosticSecurityLevel(DiagnosticCommonElement):
         Returns:
             Deserialized DiagnosticSecurityLevel object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticSecurityLevel, cls).deserialize(element)
 
         # Parse access_data
         child = ARObject._find_child_element(element, "ACCESS-DATA")

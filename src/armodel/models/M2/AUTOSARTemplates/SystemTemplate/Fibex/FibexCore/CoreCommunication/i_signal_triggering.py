@@ -57,9 +57,8 @@ class ISignalTriggering(Identifiable):
         Returns:
             Deserialized ISignalTriggering object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ISignalTriggering, cls).deserialize(element)
 
         # Parse i_signal
         child = ARObject._find_child_element(element, "I-SIGNAL")
@@ -73,11 +72,15 @@ class ISignalTriggering(Identifiable):
             i_signal_group_ref_value = ARObject._deserialize_by_tag(child, "ISignalGroup")
             obj.i_signal_group_ref = i_signal_group_ref_value
 
-        # Parse i_signal_ports (list)
+        # Parse i_signal_ports (list from container "I-SIGNAL-PORTS")
         obj.i_signal_ports = []
-        for child in ARObject._find_all_child_elements(element, "I-SIGNAL-PORTS"):
-            i_signal_ports_value = ARObject._deserialize_by_tag(child, "ISignalPort")
-            obj.i_signal_ports.append(i_signal_ports_value)
+        container = ARObject._find_child_element(element, "I-SIGNAL-PORTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.i_signal_ports.append(child_value)
 
         return obj
 

@@ -60,9 +60,8 @@ class IEEE1722TpIidcConnection(IEEE1722TpAvConnection):
         Returns:
             Deserialized IEEE1722TpIidcConnection object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(IEEE1722TpIidcConnection, cls).deserialize(element)
 
         # Parse iidc_channel
         child = ARObject._find_child_element(element, "IIDC-CHANNEL")

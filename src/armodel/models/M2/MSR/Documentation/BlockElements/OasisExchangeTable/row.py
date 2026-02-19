@@ -50,9 +50,8 @@ class Row(Paginateable):
         Returns:
             Deserialized Row object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(Row, cls).deserialize(element)
 
         # Parse rowsep
         child = ARObject._find_child_element(element, "ROWSEP")
@@ -63,7 +62,7 @@ class Row(Paginateable):
         # Parse valign
         child = ARObject._find_child_element(element, "VALIGN")
         if child is not None:
-            valign_value = child.text
+            valign_value = ValignEnum.deserialize(child)
             obj.valign = valign_value
 
         return obj

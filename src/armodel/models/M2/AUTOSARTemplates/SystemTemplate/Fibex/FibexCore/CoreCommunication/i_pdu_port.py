@@ -55,14 +55,13 @@ class IPduPort(CommConnectorPort):
         Returns:
             Deserialized IPduPort object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(IPduPort, cls).deserialize(element)
 
         # Parse i_pdu_signal
         child = ARObject._find_child_element(element, "I-PDU-SIGNAL")
         if child is not None:
-            i_pdu_signal_value = child.text
+            i_pdu_signal_value = IPduSignalProcessingEnum.deserialize(child)
             obj.i_pdu_signal = i_pdu_signal_value
 
         # Parse rx_security

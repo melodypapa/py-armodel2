@@ -61,7 +61,7 @@ class AbstractValueRestriction(ARObject, ABC):
         # Parse max
         child = ARObject._find_child_element(element, "MAX")
         if child is not None:
-            max_value = child.text
+            max_value = ARObject._deserialize_by_tag(child, "Limit")
             obj.max = max_value
 
         # Parse max_length
@@ -73,7 +73,7 @@ class AbstractValueRestriction(ARObject, ABC):
         # Parse min
         child = ARObject._find_child_element(element, "MIN")
         if child is not None:
-            min_value = child.text
+            min_value = ARObject._deserialize_by_tag(child, "Limit")
             obj.min = min_value
 
         # Parse min_length

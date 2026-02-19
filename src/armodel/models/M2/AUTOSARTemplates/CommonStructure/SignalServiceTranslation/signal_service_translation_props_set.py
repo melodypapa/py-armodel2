@@ -42,15 +42,18 @@ class SignalServiceTranslationPropsSet(ARElement):
         Returns:
             Deserialized SignalServiceTranslationPropsSet object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SignalServiceTranslationPropsSet, cls).deserialize(element)
 
-        # Parse signal_service_propses (list)
+        # Parse signal_service_propses (list from container "SIGNAL-SERVICE-PROPSES")
         obj.signal_service_propses = []
-        for child in ARObject._find_all_child_elements(element, "SIGNAL-SERVICE-PROPSES"):
-            signal_service_propses_value = child.text
-            obj.signal_service_propses.append(signal_service_propses_value)
+        container = ARObject._find_child_element(element, "SIGNAL-SERVICE-PROPSES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.signal_service_propses.append(child_value)
 
         return obj
 

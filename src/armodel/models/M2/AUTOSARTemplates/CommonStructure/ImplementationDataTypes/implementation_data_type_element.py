@@ -71,26 +71,25 @@ class ImplementationDataTypeElement(AbstractImplementationDataTypeElement):
         Returns:
             Deserialized ImplementationDataTypeElement object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ImplementationDataTypeElement, cls).deserialize(element)
 
         # Parse array_impl_policy_enum
         child = ARObject._find_child_element(element, "ARRAY-IMPL-POLICY-ENUM")
         if child is not None:
-            array_impl_policy_enum_value = child.text
+            array_impl_policy_enum_value = ArrayImplPolicyEnum.deserialize(child)
             obj.array_impl_policy_enum = array_impl_policy_enum_value
 
         # Parse array_size
         child = ARObject._find_child_element(element, "ARRAY-SIZE")
         if child is not None:
-            array_size_value = child.text
+            array_size_value = ArraySizeSemanticsEnum.deserialize(child)
             obj.array_size = array_size_value
 
         # Parse array_size_handling
         child = ARObject._find_child_element(element, "ARRAY-SIZE-HANDLING")
         if child is not None:
-            array_size_handling_value = child.text
+            array_size_handling_value = ArraySizeHandlingEnum.deserialize(child)
             obj.array_size_handling = array_size_handling_value
 
         # Parse is_optional
@@ -99,11 +98,15 @@ class ImplementationDataTypeElement(AbstractImplementationDataTypeElement):
             is_optional_value = child.text
             obj.is_optional = is_optional_value
 
-        # Parse sub_elements (list)
+        # Parse sub_elements (list from container "SUB-ELEMENTS")
         obj.sub_elements = []
-        for child in ARObject._find_all_child_elements(element, "SUB-ELEMENTS"):
-            sub_elements_value = child.text
-            obj.sub_elements.append(sub_elements_value)
+        container = ARObject._find_child_element(element, "SUB-ELEMENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sub_elements.append(child_value)
 
         # Parse sw_data_def
         child = ARObject._find_child_element(element, "SW-DATA-DEF")

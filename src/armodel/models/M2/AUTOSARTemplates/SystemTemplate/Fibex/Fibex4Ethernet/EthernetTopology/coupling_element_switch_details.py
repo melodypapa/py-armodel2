@@ -62,39 +62,58 @@ class CouplingElementSwitchDetails(CouplingElementAbstractDetails):
         Returns:
             Deserialized CouplingElementSwitchDetails object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(CouplingElementSwitchDetails, cls).deserialize(element)
 
-        # Parse flow_meterings (list)
+        # Parse flow_meterings (list from container "FLOW-METERINGS")
         obj.flow_meterings = []
-        for child in ARObject._find_all_child_elements(element, "FLOW-METERINGS"):
-            flow_meterings_value = ARObject._deserialize_by_tag(child, "SwitchFlowMeteringEntry")
-            obj.flow_meterings.append(flow_meterings_value)
+        container = ARObject._find_child_element(element, "FLOW-METERINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.flow_meterings.append(child_value)
 
-        # Parse stream_filters (list)
+        # Parse stream_filters (list from container "STREAM-FILTERS")
         obj.stream_filters = []
-        for child in ARObject._find_all_child_elements(element, "STREAM-FILTERS"):
-            stream_filters_value = ARObject._deserialize_by_tag(child, "SwitchStreamFilterEntry")
-            obj.stream_filters.append(stream_filters_value)
+        container = ARObject._find_child_element(element, "STREAM-FILTERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.stream_filters.append(child_value)
 
-        # Parse stream_gates (list)
+        # Parse stream_gates (list from container "STREAM-GATES")
         obj.stream_gates = []
-        for child in ARObject._find_all_child_elements(element, "STREAM-GATES"):
-            stream_gates_value = ARObject._deserialize_by_tag(child, "SwitchStreamGateEntry")
-            obj.stream_gates.append(stream_gates_value)
+        container = ARObject._find_child_element(element, "STREAM-GATES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.stream_gates.append(child_value)
 
-        # Parse switch_streams (list)
+        # Parse switch_streams (list from container "SWITCH-STREAMS")
         obj.switch_streams = []
-        for child in ARObject._find_all_child_elements(element, "SWITCH-STREAMS"):
-            switch_streams_value = child.text
-            obj.switch_streams.append(switch_streams_value)
+        container = ARObject._find_child_element(element, "SWITCH-STREAMS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.switch_streams.append(child_value)
 
-        # Parse traffic_shapers (list)
+        # Parse traffic_shapers (list from container "TRAFFIC-SHAPERS")
         obj.traffic_shapers = []
-        for child in ARObject._find_all_child_elements(element, "TRAFFIC-SHAPERS"):
-            traffic_shapers_value = ARObject._deserialize_by_tag(child, "SwitchAsynchronousTrafficShaperGroupEntry")
-            obj.traffic_shapers.append(traffic_shapers_value)
+        container = ARObject._find_child_element(element, "TRAFFIC-SHAPERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.traffic_shapers.append(child_value)
 
         return obj
 

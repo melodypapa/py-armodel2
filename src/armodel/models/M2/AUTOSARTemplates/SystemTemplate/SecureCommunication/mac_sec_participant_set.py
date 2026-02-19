@@ -50,9 +50,8 @@ class MacSecParticipantSet(ARElement):
         Returns:
             Deserialized MacSecParticipantSet object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(MacSecParticipantSet, cls).deserialize(element)
 
         # Parse ethernet_cluster
         child = ARObject._find_child_element(element, "ETHERNET-CLUSTER")
@@ -60,11 +59,15 @@ class MacSecParticipantSet(ARElement):
             ethernet_cluster_value = ARObject._deserialize_by_tag(child, "EthernetCluster")
             obj.ethernet_cluster = ethernet_cluster_value
 
-        # Parse mka_participants (list)
+        # Parse mka_participants (list from container "MKA-PARTICIPANTS")
         obj.mka_participants = []
-        for child in ARObject._find_all_child_elements(element, "MKA-PARTICIPANTS"):
-            mka_participants_value = ARObject._deserialize_by_tag(child, "MacSecKayParticipant")
-            obj.mka_participants.append(mka_participants_value)
+        container = ARObject._find_child_element(element, "MKA-PARTICIPANTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.mka_participants.append(child_value)
 
         return obj
 

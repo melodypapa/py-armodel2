@@ -45,9 +45,8 @@ class Caption(MultilanguageReferrable):
         Returns:
             Deserialized Caption object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(Caption, cls).deserialize(element)
 
         # Parse desc
         child = ARObject._find_child_element(element, "DESC")

@@ -42,9 +42,8 @@ class TDEventSwcInternalBehaviorReference(TDEventSwc):
         Returns:
             Deserialized TDEventSwcInternalBehaviorReference object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TDEventSwcInternalBehaviorReference, cls).deserialize(element)
 
         # Parse referenced_td_event_swc
         child = ARObject._find_child_element(element, "REFERENCED-TD-EVENT-SWC")

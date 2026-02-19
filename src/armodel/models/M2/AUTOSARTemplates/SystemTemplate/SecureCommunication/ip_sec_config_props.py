@@ -72,20 +72,23 @@ class IPSecConfigProps(ARElement):
         Returns:
             Deserialized IPSecConfigProps object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(IPSecConfigProps, cls).deserialize(element)
 
-        # Parse ah_cipher_suites (list)
+        # Parse ah_cipher_suites (list from container "AH-CIPHER-SUITES")
         obj.ah_cipher_suites = []
-        for child in ARObject._find_all_child_elements(element, "AH-CIPHER-SUITES"):
-            ah_cipher_suites_value = child.text
-            obj.ah_cipher_suites.append(ah_cipher_suites_value)
+        container = ARObject._find_child_element(element, "AH-CIPHER-SUITES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.ah_cipher_suites.append(child_value)
 
         # Parse dpd_action
         child = ARObject._find_child_element(element, "DPD-ACTION")
         if child is not None:
-            dpd_action_value = child.text
+            dpd_action_value = IPsecDpdActionEnum.deserialize(child)
             obj.dpd_action = dpd_action_value
 
         # Parse dpd_delay
@@ -94,11 +97,15 @@ class IPSecConfigProps(ARElement):
             dpd_delay_value = child.text
             obj.dpd_delay = dpd_delay_value
 
-        # Parse esp_cipher_suites (list)
+        # Parse esp_cipher_suites (list from container "ESP-CIPHER-SUITES")
         obj.esp_cipher_suites = []
-        for child in ARObject._find_all_child_elements(element, "ESP-CIPHER-SUITES"):
-            esp_cipher_suites_value = child.text
-            obj.esp_cipher_suites.append(esp_cipher_suites_value)
+        container = ARObject._find_child_element(element, "ESP-CIPHER-SUITES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.esp_cipher_suites.append(child_value)
 
         # Parse ike_cipher_suite
         child = ARObject._find_child_element(element, "IKE-CIPHER-SUITE")

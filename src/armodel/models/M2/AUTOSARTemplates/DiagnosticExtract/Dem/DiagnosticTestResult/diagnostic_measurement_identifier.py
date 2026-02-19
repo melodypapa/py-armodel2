@@ -45,9 +45,8 @@ class DiagnosticMeasurementIdentifier(DiagnosticCommonElement):
         Returns:
             Deserialized DiagnosticMeasurementIdentifier object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticMeasurementIdentifier, cls).deserialize(element)
 
         # Parse obd_mid
         child = ARObject._find_child_element(element, "OBD-MID")

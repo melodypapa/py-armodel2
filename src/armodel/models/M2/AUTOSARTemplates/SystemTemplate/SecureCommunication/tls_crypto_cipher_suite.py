@@ -85,9 +85,8 @@ class TlsCryptoCipherSuite(Identifiable):
         Returns:
             Deserialized TlsCryptoCipherSuite object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TlsCryptoCipherSuite, cls).deserialize(element)
 
         # Parse authentication
         child = ARObject._find_child_element(element, "AUTHENTICATION")
@@ -113,11 +112,15 @@ class TlsCryptoCipherSuite(Identifiable):
             cipher_suite_value = child.text
             obj.cipher_suite = cipher_suite_value
 
-        # Parse elliptic_curves (list)
+        # Parse elliptic_curves (list from container "ELLIPTIC-CURVES")
         obj.elliptic_curves = []
-        for child in ARObject._find_all_child_elements(element, "ELLIPTIC-CURVES"):
-            elliptic_curves_value = ARObject._deserialize_by_tag(child, "CryptoEllipticCurveProps")
-            obj.elliptic_curves.append(elliptic_curves_value)
+        container = ARObject._find_child_element(element, "ELLIPTIC-CURVES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.elliptic_curves.append(child_value)
 
         # Parse encryption
         child = ARObject._find_child_element(element, "ENCRYPTION")
@@ -125,11 +128,15 @@ class TlsCryptoCipherSuite(Identifiable):
             encryption_value = ARObject._deserialize_by_tag(child, "CryptoServicePrimitive")
             obj.encryption = encryption_value
 
-        # Parse key_exchanges (list)
+        # Parse key_exchanges (list from container "KEY-EXCHANGES")
         obj.key_exchanges = []
-        for child in ARObject._find_all_child_elements(element, "KEY-EXCHANGES"):
-            key_exchanges_value = ARObject._deserialize_by_tag(child, "CryptoServicePrimitive")
-            obj.key_exchanges.append(key_exchanges_value)
+        container = ARObject._find_child_element(element, "KEY-EXCHANGES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.key_exchanges.append(child_value)
 
         # Parse priority
         child = ARObject._find_child_element(element, "PRIORITY")
@@ -155,16 +162,20 @@ class TlsCryptoCipherSuite(Identifiable):
             remote_value = child.text
             obj.remote = remote_value
 
-        # Parse signatures (list)
+        # Parse signatures (list from container "SIGNATURES")
         obj.signatures = []
-        for child in ARObject._find_all_child_elements(element, "SIGNATURES"):
-            signatures_value = ARObject._deserialize_by_tag(child, "CryptoSignatureScheme")
-            obj.signatures.append(signatures_value)
+        container = ARObject._find_child_element(element, "SIGNATURES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.signatures.append(child_value)
 
         # Parse version
         child = ARObject._find_child_element(element, "VERSION")
         if child is not None:
-            version_value = child.text
+            version_value = TlsVersionEnum.deserialize(child)
             obj.version = version_value
 
         return obj

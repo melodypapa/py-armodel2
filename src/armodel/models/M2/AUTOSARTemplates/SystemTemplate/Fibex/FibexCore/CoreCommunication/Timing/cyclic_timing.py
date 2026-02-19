@@ -47,9 +47,8 @@ class CyclicTiming(Describable):
         Returns:
             Deserialized CyclicTiming object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(CyclicTiming, cls).deserialize(element)
 
         # Parse time_offset
         child = ARObject._find_child_element(element, "TIME-OFFSET")

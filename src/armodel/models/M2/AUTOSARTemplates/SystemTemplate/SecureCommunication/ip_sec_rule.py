@@ -87,9 +87,8 @@ class IPSecRule(Identifiable):
         Returns:
             Deserialized IPSecRule object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(IPSecRule, cls).deserialize(element)
 
         # Parse direction
         child = ARObject._find_child_element(element, "DIRECTION")
@@ -100,20 +99,24 @@ class IPSecRule(Identifiable):
         # Parse header_type
         child = ARObject._find_child_element(element, "HEADER-TYPE")
         if child is not None:
-            header_type_value = child.text
+            header_type_value = IPsecHeaderTypeEnum.deserialize(child)
             obj.header_type = header_type_value
 
         # Parse ip_protocol
         child = ARObject._find_child_element(element, "IP-PROTOCOL")
         if child is not None:
-            ip_protocol_value = child.text
+            ip_protocol_value = IPsecIpProtocolEnum.deserialize(child)
             obj.ip_protocol = ip_protocol_value
 
-        # Parse local_certificates (list)
+        # Parse local_certificates (list from container "LOCAL-CERTIFICATES")
         obj.local_certificates = []
-        for child in ARObject._find_all_child_elements(element, "LOCAL-CERTIFICATES"):
-            local_certificates_value = child.text
-            obj.local_certificates.append(local_certificates_value)
+        container = ARObject._find_child_element(element, "LOCAL-CERTIFICATES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.local_certificates.append(child_value)
 
         # Parse local_id
         child = ARObject._find_child_element(element, "LOCAL-ID")
@@ -130,13 +133,13 @@ class IPSecRule(Identifiable):
         # Parse mode
         child = ARObject._find_child_element(element, "MODE")
         if child is not None:
-            mode_value = child.text
+            mode_value = IPsecModeEnum.deserialize(child)
             obj.mode = mode_value
 
         # Parse policy
         child = ARObject._find_child_element(element, "POLICY")
         if child is not None:
-            policy_value = child.text
+            policy_value = IPsecPolicyEnum.deserialize(child)
             obj.policy = policy_value
 
         # Parse pre_shared_key
@@ -151,11 +154,15 @@ class IPSecRule(Identifiable):
             priority_value = child.text
             obj.priority = priority_value
 
-        # Parse remotes (list)
+        # Parse remotes (list from container "REMOTES")
         obj.remotes = []
-        for child in ARObject._find_all_child_elements(element, "REMOTES"):
-            remotes_value = child.text
-            obj.remotes.append(remotes_value)
+        container = ARObject._find_child_element(element, "REMOTES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.remotes.append(child_value)
 
         # Parse remote_id
         child = ARObject._find_child_element(element, "REMOTE-ID")
@@ -163,11 +170,15 @@ class IPSecRule(Identifiable):
             remote_id_value = child.text
             obj.remote_id = remote_id_value
 
-        # Parse remote_ips (list)
+        # Parse remote_ips (list from container "REMOTE-IPS")
         obj.remote_ips = []
-        for child in ARObject._find_all_child_elements(element, "REMOTE-IPS"):
-            remote_ips_value = ARObject._deserialize_by_tag(child, "NetworkEndpoint")
-            obj.remote_ips.append(remote_ips_value)
+        container = ARObject._find_child_element(element, "REMOTE-IPS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.remote_ips.append(child_value)
 
         # Parse remote_port
         child = ARObject._find_child_element(element, "REMOTE-PORT")

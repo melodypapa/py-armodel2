@@ -54,9 +54,8 @@ class List(Paginateable):
         Returns:
             Deserialized List object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(List, cls).deserialize(element)
 
         # Parse item
         child = ARObject._find_child_element(element, "ITEM")
@@ -67,7 +66,7 @@ class List(Paginateable):
         # Parse type_ref
         child = ARObject._find_child_element(element, "TYPE")
         if child is not None:
-            type_ref_value = child.text
+            type_ref_value = ListEnum.deserialize(child)
             obj.type_ref = type_ref_value
 
         return obj

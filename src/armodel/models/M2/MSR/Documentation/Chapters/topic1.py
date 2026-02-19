@@ -50,9 +50,8 @@ class Topic1(Paginateable):
         Returns:
             Deserialized Topic1 object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(Topic1, cls).deserialize(element)
 
         # Parse help_entry
         child = ARObject._find_child_element(element, "HELP-ENTRY")

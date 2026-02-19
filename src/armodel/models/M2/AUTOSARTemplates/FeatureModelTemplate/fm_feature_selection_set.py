@@ -53,27 +53,38 @@ class FMFeatureSelectionSet(ARElement):
         Returns:
             Deserialized FMFeatureSelectionSet object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(FMFeatureSelectionSet, cls).deserialize(element)
 
-        # Parse feature_models (list)
+        # Parse feature_models (list from container "FEATURE-MODELS")
         obj.feature_models = []
-        for child in ARObject._find_all_child_elements(element, "FEATURE-MODELS"):
-            feature_models_value = ARObject._deserialize_by_tag(child, "FMFeatureModel")
-            obj.feature_models.append(feature_models_value)
+        container = ARObject._find_child_element(element, "FEATURE-MODELS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.feature_models.append(child_value)
 
-        # Parse include_refs (list)
+        # Parse include_refs (list from container "INCLUDES")
         obj.include_refs = []
-        for child in ARObject._find_all_child_elements(element, "INCLUDES"):
-            include_refs_value = ARObject._deserialize_by_tag(child, "FMFeatureSelectionSet")
-            obj.include_refs.append(include_refs_value)
+        container = ARObject._find_child_element(element, "INCLUDES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.include_refs.append(child_value)
 
-        # Parse selections (list)
+        # Parse selections (list from container "SELECTIONS")
         obj.selections = []
-        for child in ARObject._find_all_child_elements(element, "SELECTIONS"):
-            selections_value = ARObject._deserialize_by_tag(child, "FMFeatureSelection")
-            obj.selections.append(selections_value)
+        container = ARObject._find_child_element(element, "SELECTIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.selections.append(child_value)
 
         return obj
 

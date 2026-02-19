@@ -67,11 +67,15 @@ class EngineeringObject(ARObject, ABC):
             domain_value = child.text
             obj.domain = domain_value
 
-        # Parse revision_label_strings (list)
+        # Parse revision_label_strings (list from container "REVISION-LABEL-STRINGS")
         obj.revision_label_strings = []
-        for child in ARObject._find_all_child_elements(element, "REVISION-LABEL-STRINGS"):
-            revision_label_strings_value = child.text
-            obj.revision_label_strings.append(revision_label_strings_value)
+        container = ARObject._find_child_element(element, "REVISION-LABEL-STRINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.revision_label_strings.append(child_value)
 
         # Parse short_label
         child = ARObject._find_child_element(element, "SHORT-LABEL")

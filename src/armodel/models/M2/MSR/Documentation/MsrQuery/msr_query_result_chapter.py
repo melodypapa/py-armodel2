@@ -49,11 +49,15 @@ class MsrQueryResultChapter(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse chapters (list)
+        # Parse chapters (list from container "CHAPTERS")
         obj.chapters = []
-        for child in ARObject._find_all_child_elements(element, "CHAPTERS"):
-            chapters_value = ARObject._deserialize_by_tag(child, "Chapter")
-            obj.chapters.append(chapters_value)
+        container = ARObject._find_child_element(element, "CHAPTERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.chapters.append(child_value)
 
         return obj
 

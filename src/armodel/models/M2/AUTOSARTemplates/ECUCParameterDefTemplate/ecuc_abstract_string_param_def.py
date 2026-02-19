@@ -59,7 +59,7 @@ class EcucAbstractStringParamDef(ARObject, ABC):
         # Parse default_value
         child = ARObject._find_child_element(element, "DEFAULT-VALUE")
         if child is not None:
-            default_value_value = child.text
+            default_value_value = ARObject._deserialize_by_tag(child, "VerbatimString")
             obj.default_value = default_value_value
 
         # Parse max_length

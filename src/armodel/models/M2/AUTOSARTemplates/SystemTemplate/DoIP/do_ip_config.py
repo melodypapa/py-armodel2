@@ -51,11 +51,15 @@ class DoIpConfig(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse doip_interfaces (list)
+        # Parse doip_interfaces (list from container "DOIP-INTERFACES")
         obj.doip_interfaces = []
-        for child in ARObject._find_all_child_elements(element, "DOIP-INTERFACES"):
-            doip_interfaces_value = ARObject._deserialize_by_tag(child, "DoIpInterface")
-            obj.doip_interfaces.append(doip_interfaces_value)
+        container = ARObject._find_child_element(element, "DOIP-INTERFACES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.doip_interfaces.append(child_value)
 
         # Parse logic_address
         child = ARObject._find_child_element(element, "LOGIC-ADDRESS")

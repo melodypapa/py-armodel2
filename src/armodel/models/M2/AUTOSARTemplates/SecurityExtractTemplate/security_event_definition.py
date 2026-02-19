@@ -48,9 +48,8 @@ class SecurityEventDefinition(IdsCommonElement):
         Returns:
             Deserialized SecurityEventDefinition object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SecurityEventDefinition, cls).deserialize(element)
 
         # Parse event_symbol_name
         child = ARObject._find_child_element(element, "EVENT-SYMBOL-NAME")

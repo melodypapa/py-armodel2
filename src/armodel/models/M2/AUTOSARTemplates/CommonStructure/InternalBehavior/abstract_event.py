@@ -47,9 +47,8 @@ class AbstractEvent(Identifiable, ABC):
         Returns:
             Deserialized AbstractEvent object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(AbstractEvent, cls).deserialize(element)
 
         # Parse activation
         child = ARObject._find_child_element(element, "ACTIVATION")

@@ -71,11 +71,15 @@ class CouplingPortDetails(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse coupling_ports (list)
+        # Parse coupling_ports (list from container "COUPLING-PORTS")
         obj.coupling_ports = []
-        for child in ARObject._find_all_child_elements(element, "COUPLING-PORTS"):
-            coupling_ports_value = ARObject._deserialize_by_tag(child, "CouplingPortStructuralElement")
-            obj.coupling_ports.append(coupling_ports_value)
+        container = ARObject._find_child_element(element, "COUPLING-PORTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.coupling_ports.append(child_value)
 
         # Parse ethernet_priority
         child = ARObject._find_child_element(element, "ETHERNET-PRIORITY")
@@ -101,11 +105,15 @@ class CouplingPortDetails(ARObject):
             last_egress_value = ARObject._deserialize_by_tag(child, "CouplingPortScheduler")
             obj.last_egress = last_egress_value
 
-        # Parse rate_policies (list)
+        # Parse rate_policies (list from container "RATE-POLICIES")
         obj.rate_policies = []
-        for child in ARObject._find_all_child_elements(element, "RATE-POLICIES"):
-            rate_policies_value = ARObject._deserialize_by_tag(child, "CouplingPortRatePolicy")
-            obj.rate_policies.append(rate_policies_value)
+        container = ARObject._find_child_element(element, "RATE-POLICIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.rate_policies.append(child_value)
 
         return obj
 

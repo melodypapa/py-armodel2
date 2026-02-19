@@ -59,14 +59,13 @@ class LatencyTimingConstraint(TimingConstraint):
         Returns:
             Deserialized LatencyTimingConstraint object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(LatencyTimingConstraint, cls).deserialize(element)
 
         # Parse latency
         child = ARObject._find_child_element(element, "LATENCY")
         if child is not None:
-            latency_value = child.text
+            latency_value = LatencyConstraintTypeEnum.deserialize(child)
             obj.latency = latency_value
 
         # Parse maximum

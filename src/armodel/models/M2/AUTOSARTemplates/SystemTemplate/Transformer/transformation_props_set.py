@@ -45,15 +45,18 @@ class TransformationPropsSet(ARElement):
         Returns:
             Deserialized TransformationPropsSet object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TransformationPropsSet, cls).deserialize(element)
 
-        # Parse transformation_props_propses (list)
+        # Parse transformation_props_propses (list from container "TRANSFORMATION-PROPS-PROPSES")
         obj.transformation_props_propses = []
-        for child in ARObject._find_all_child_elements(element, "TRANSFORMATION-PROPS-PROPSES"):
-            transformation_props_propses_value = ARObject._deserialize_by_tag(child, "TransformationProps")
-            obj.transformation_props_propses.append(transformation_props_propses_value)
+        container = ARObject._find_child_element(element, "TRANSFORMATION-PROPS-PROPSES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.transformation_props_propses.append(child_value)
 
         return obj
 

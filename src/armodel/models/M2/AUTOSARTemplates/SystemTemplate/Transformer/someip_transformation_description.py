@@ -52,9 +52,8 @@ class SOMEIPTransformationDescription(TransformationDescription):
         Returns:
             Deserialized SOMEIPTransformationDescription object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SOMEIPTransformationDescription, cls).deserialize(element)
 
         # Parse alignment
         child = ARObject._find_child_element(element, "ALIGNMENT")
@@ -65,7 +64,7 @@ class SOMEIPTransformationDescription(TransformationDescription):
         # Parse byte_order
         child = ARObject._find_child_element(element, "BYTE-ORDER")
         if child is not None:
-            byte_order_value = child.text
+            byte_order_value = ByteOrderEnum.deserialize(child)
             obj.byte_order = byte_order_value
 
         # Parse interface_version

@@ -60,15 +60,18 @@ class ClassContentConditional(Identifiable):
         Returns:
             Deserialized ClassContentConditional object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ClassContentConditional, cls).deserialize(element)
 
-        # Parse attributes (list)
+        # Parse attributes (list from container "ATTRIBUTES")
         obj.attributes = []
-        for child in ARObject._find_all_child_elements(element, "ATTRIBUTES"):
-            attributes_value = ARObject._deserialize_by_tag(child, "AttributeTailoring")
-            obj.attributes.append(attributes_value)
+        container = ARObject._find_child_element(element, "ATTRIBUTES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.attributes.append(child_value)
 
         # Parse condition
         child = ARObject._find_child_element(element, "CONDITION")
@@ -76,17 +79,25 @@ class ClassContentConditional(Identifiable):
             condition_value = ARObject._deserialize_by_tag(child, "AbstractCondition")
             obj.condition = condition_value
 
-        # Parse constraints (list)
+        # Parse constraints (list from container "CONSTRAINTS")
         obj.constraints = []
-        for child in ARObject._find_all_child_elements(element, "CONSTRAINTS"):
-            constraints_value = ARObject._deserialize_by_tag(child, "ConstraintTailoring")
-            obj.constraints.append(constraints_value)
+        container = ARObject._find_child_element(element, "CONSTRAINTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.constraints.append(child_value)
 
-        # Parse sdg_tailorings (list)
+        # Parse sdg_tailorings (list from container "SDG-TAILORINGS")
         obj.sdg_tailorings = []
-        for child in ARObject._find_all_child_elements(element, "SDG-TAILORINGS"):
-            sdg_tailorings_value = ARObject._deserialize_by_tag(child, "SdgTailoring")
-            obj.sdg_tailorings.append(sdg_tailorings_value)
+        container = ARObject._find_child_element(element, "SDG-TAILORINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sdg_tailorings.append(child_value)
 
         return obj
 

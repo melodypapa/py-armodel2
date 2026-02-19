@@ -76,21 +76,28 @@ class ContainerIPdu(IPdu):
         Returns:
             Deserialized ContainerIPdu object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ContainerIPdu, cls).deserialize(element)
 
-        # Parse contained_i_pdu_propses (list)
+        # Parse contained_i_pdu_propses (list from container "CONTAINED-I-PDU-PROPSES")
         obj.contained_i_pdu_propses = []
-        for child in ARObject._find_all_child_elements(element, "CONTAINED-I-PDU-PROPSES"):
-            contained_i_pdu_propses_value = ARObject._deserialize_by_tag(child, "ContainedIPduProps")
-            obj.contained_i_pdu_propses.append(contained_i_pdu_propses_value)
+        container = ARObject._find_child_element(element, "CONTAINED-I-PDU-PROPSES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.contained_i_pdu_propses.append(child_value)
 
-        # Parse contained_pdu_refs (list)
+        # Parse contained_pdu_refs (list from container "CONTAINED-PDUS")
         obj.contained_pdu_refs = []
-        for child in ARObject._find_all_child_elements(element, "CONTAINED-PDUS"):
-            contained_pdu_refs_value = ARObject._deserialize_by_tag(child, "PduTriggering")
-            obj.contained_pdu_refs.append(contained_pdu_refs_value)
+        container = ARObject._find_child_element(element, "CONTAINED-PDUS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.contained_pdu_refs.append(child_value)
 
         # Parse container
         child = ARObject._find_child_element(element, "CONTAINER")
@@ -101,13 +108,13 @@ class ContainerIPdu(IPdu):
         # Parse container_trigger_ref
         child = ARObject._find_child_element(element, "CONTAINER-TRIGGER")
         if child is not None:
-            container_trigger_ref_value = child.text
+            container_trigger_ref_value = ContainerIPduTriggerEnum.deserialize(child)
             obj.container_trigger_ref = container_trigger_ref_value
 
         # Parse header_type
         child = ARObject._find_child_element(element, "HEADER-TYPE")
         if child is not None:
-            header_type_value = child.text
+            header_type_value = ContainerIPduHeaderTypeEnum.deserialize(child)
             obj.header_type = header_type_value
 
         # Parse minimum_rx
@@ -125,7 +132,7 @@ class ContainerIPdu(IPdu):
         # Parse rx_accept
         child = ARObject._find_child_element(element, "RX-ACCEPT")
         if child is not None:
-            rx_accept_value = child.text
+            rx_accept_value = RxAcceptContainedIPduEnum.deserialize(child)
             obj.rx_accept = rx_accept_value
 
         # Parse threshold_size

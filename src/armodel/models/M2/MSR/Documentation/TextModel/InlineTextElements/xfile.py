@@ -49,9 +49,8 @@ class Xfile(SingleLanguageReferrable):
         Returns:
             Deserialized Xfile object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(Xfile, cls).deserialize(element)
 
         # Parse tool
         child = ARObject._find_child_element(element, "TOOL")

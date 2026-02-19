@@ -56,9 +56,8 @@ class McFunction(ARElement):
         Returns:
             Deserialized McFunction object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(McFunction, cls).deserialize(element)
 
         # Parse def_calprm_set_ref
         child = ARObject._find_child_element(element, "DEF-CALPRM-SET")
@@ -90,11 +89,15 @@ class McFunction(ARElement):
             ref_calprm_set_ref_value = ARObject._deserialize_by_tag(child, "McFunctionDataRefSet")
             obj.ref_calprm_set_ref = ref_calprm_set_ref_value
 
-        # Parse sub_functions (list)
+        # Parse sub_functions (list from container "SUB-FUNCTIONS")
         obj.sub_functions = []
-        for child in ARObject._find_all_child_elements(element, "SUB-FUNCTIONS"):
-            sub_functions_value = ARObject._deserialize_by_tag(child, "McFunction")
-            obj.sub_functions.append(sub_functions_value)
+        container = ARObject._find_child_element(element, "SUB-FUNCTIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sub_functions.append(child_value)
 
         return obj
 

@@ -53,9 +53,8 @@ class Compiler(Identifiable):
         Returns:
             Deserialized Compiler object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(Compiler, cls).deserialize(element)
 
         # Parse name
         child = ARObject._find_child_element(element, "NAME")

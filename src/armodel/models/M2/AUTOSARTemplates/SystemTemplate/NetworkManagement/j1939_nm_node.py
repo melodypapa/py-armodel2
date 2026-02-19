@@ -51,14 +51,13 @@ class J1939NmNode(NmNode):
         Returns:
             Deserialized J1939NmNode object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(J1939NmNode, cls).deserialize(element)
 
         # Parse address
         child = ARObject._find_child_element(element, "ADDRESS")
         if child is not None:
-            address_value = child.text
+            address_value = J1939NmAddressConfigurationCapabilityEnum.deserialize(child)
             obj.address = address_value
 
         # Parse node_name

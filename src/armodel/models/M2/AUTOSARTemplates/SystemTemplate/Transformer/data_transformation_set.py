@@ -50,21 +50,28 @@ class DataTransformationSet(ARElement):
         Returns:
             Deserialized DataTransformationSet object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DataTransformationSet, cls).deserialize(element)
 
-        # Parse datas (list)
+        # Parse datas (list from container "DATAS")
         obj.datas = []
-        for child in ARObject._find_all_child_elements(element, "DATAS"):
-            datas_value = ARObject._deserialize_by_tag(child, "DataTransformation")
-            obj.datas.append(datas_value)
+        container = ARObject._find_child_element(element, "DATAS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.datas.append(child_value)
 
-        # Parse transformation_technologies (list)
+        # Parse transformation_technologies (list from container "TRANSFORMATION-TECHNOLOGIES")
         obj.transformation_technologies = []
-        for child in ARObject._find_all_child_elements(element, "TRANSFORMATION-TECHNOLOGIES"):
-            transformation_technologies_value = ARObject._deserialize_by_tag(child, "TransformationTechnology")
-            obj.transformation_technologies.append(transformation_technologies_value)
+        container = ARObject._find_child_element(element, "TRANSFORMATION-TECHNOLOGIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.transformation_technologies.append(child_value)
 
         return obj
 

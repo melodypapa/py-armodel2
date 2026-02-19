@@ -51,16 +51,20 @@ class TimeSyncClientConfiguration(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse ordered_masters (list)
+        # Parse ordered_masters (list from container "ORDERED-MASTERS")
         obj.ordered_masters = []
-        for child in ARObject._find_all_child_elements(element, "ORDERED-MASTERS"):
-            ordered_masters_value = ARObject._deserialize_by_tag(child, "OrderedMaster")
-            obj.ordered_masters.append(ordered_masters_value)
+        container = ARObject._find_child_element(element, "ORDERED-MASTERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.ordered_masters.append(child_value)
 
         # Parse time_sync
         child = ARObject._find_child_element(element, "TIME-SYNC")
         if child is not None:
-            time_sync_value = child.text
+            time_sync_value = TimeSyncTechnologyEnum.deserialize(child)
             obj.time_sync = time_sync_value
 
         return obj

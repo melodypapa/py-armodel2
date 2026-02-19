@@ -45,9 +45,8 @@ class TDEventFrClusterCycleStart(TDEventCycleStart):
         Returns:
             Deserialized TDEventFrClusterCycleStart object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TDEventFrClusterCycleStart, cls).deserialize(element)
 
         # Parse fr_cluster
         child = ARObject._find_child_element(element, "FR-CLUSTER")

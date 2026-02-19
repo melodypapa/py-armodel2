@@ -57,11 +57,15 @@ class SwAxisGeneric(ARObject):
             sw_axis_type_value = ARObject._deserialize_by_tag(child, "SwAxisType")
             obj.sw_axis_type = sw_axis_type_value
 
-        # Parse sw_generic_axis_params (list)
+        # Parse sw_generic_axis_params (list from container "SW-GENERIC-AXIS-PARAMS")
         obj.sw_generic_axis_params = []
-        for child in ARObject._find_all_child_elements(element, "SW-GENERIC-AXIS-PARAMS"):
-            sw_generic_axis_params_value = ARObject._deserialize_by_tag(child, "SwGenericAxisParam")
-            obj.sw_generic_axis_params.append(sw_generic_axis_params_value)
+        container = ARObject._find_child_element(element, "SW-GENERIC-AXIS-PARAMS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sw_generic_axis_params.append(child_value)
 
         return obj
 

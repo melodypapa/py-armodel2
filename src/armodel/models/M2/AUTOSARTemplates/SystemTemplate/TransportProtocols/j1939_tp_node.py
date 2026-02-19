@@ -47,9 +47,8 @@ class J1939TpNode(Identifiable):
         Returns:
             Deserialized J1939TpNode object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(J1939TpNode, cls).deserialize(element)
 
         # Parse connector
         child = ARObject._find_child_element(element, "CONNECTOR")

@@ -61,9 +61,8 @@ class GlobalTimeMaster(Identifiable, ABC):
         Returns:
             Deserialized GlobalTimeMaster object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(GlobalTimeMaster, cls).deserialize(element)
 
         # Parse communication_connector
         child = ARObject._find_child_element(element, "COMMUNICATION-CONNECTOR")
@@ -74,7 +73,7 @@ class GlobalTimeMaster(Identifiable, ABC):
         # Parse icv_secured
         child = ARObject._find_child_element(element, "ICV-SECURED")
         if child is not None:
-            icv_secured_value = child.text
+            icv_secured_value = GlobalTimeIcvSupportEnum.deserialize(child)
             obj.icv_secured = icv_secured_value
 
         # Parse immediate

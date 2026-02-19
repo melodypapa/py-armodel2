@@ -61,9 +61,8 @@ class ObdMonitorServiceNeeds(DiagnosticCapabilityElement):
         Returns:
             Deserialized ObdMonitorServiceNeeds object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ObdMonitorServiceNeeds, cls).deserialize(element)
 
         # Parse application_data
         child = ARObject._find_child_element(element, "APPLICATION-DATA")
@@ -86,7 +85,7 @@ class ObdMonitorServiceNeeds(DiagnosticCapabilityElement):
         # Parse update_kind
         child = ARObject._find_child_element(element, "UPDATE-KIND")
         if child is not None:
-            update_kind_value = child.text
+            update_kind_value = DiagnosticMonitorUpdateKindEnum.deserialize(child)
             obj.update_kind = update_kind_value
 
         return obj

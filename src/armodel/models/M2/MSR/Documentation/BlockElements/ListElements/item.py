@@ -48,9 +48,8 @@ class Item(Paginateable):
         Returns:
             Deserialized Item object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(Item, cls).deserialize(element)
 
         # Parse item_contents
         child = ARObject._find_child_element(element, "ITEM-CONTENTS")

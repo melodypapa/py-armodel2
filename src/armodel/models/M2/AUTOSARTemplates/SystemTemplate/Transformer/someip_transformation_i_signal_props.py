@@ -91,7 +91,7 @@ class SOMEIPTransformationISignalProps(ARObject):
         # Parse message_type
         child = ARObject._find_child_element(element, "MESSAGE-TYPE")
         if child is not None:
-            message_type_value = child.text
+            message_type_value = SOMEIPMessageTypeEnum.deserialize(child)
             obj.message_type = message_type_value
 
         # Parse size_of_array
@@ -118,11 +118,15 @@ class SOMEIPTransformationISignalProps(ARObject):
             size_of_union_value = child.text
             obj.size_of_union = size_of_union_value
 
-        # Parse tlv_data_id_refs (list)
+        # Parse tlv_data_id_refs (list from container "TLV-DATA-IDS")
         obj.tlv_data_id_refs = []
-        for child in ARObject._find_all_child_elements(element, "TLV-DATA-IDS"):
-            tlv_data_id_refs_value = ARObject._deserialize_by_tag(child, "TlvDataIdDefinitionSet")
-            obj.tlv_data_id_refs.append(tlv_data_id_refs_value)
+        container = ARObject._find_child_element(element, "TLV-DATA-IDS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.tlv_data_id_refs.append(child_value)
 
         return obj
 

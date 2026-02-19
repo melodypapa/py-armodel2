@@ -54,33 +54,48 @@ class DiagnosticComControlClass(DiagnosticServiceClass):
         Returns:
             Deserialized DiagnosticComControlClass object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticComControlClass, cls).deserialize(element)
 
-        # Parse all_channelses (list)
+        # Parse all_channelses (list from container "ALL-CHANNELSES")
         obj.all_channelses = []
-        for child in ARObject._find_all_child_elements(element, "ALL-CHANNELSES"):
-            all_channelses_value = ARObject._deserialize_by_tag(child, "CommunicationCluster")
-            obj.all_channelses.append(all_channelses_value)
+        container = ARObject._find_child_element(element, "ALL-CHANNELSES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.all_channelses.append(child_value)
 
-        # Parse all_physicals (list)
+        # Parse all_physicals (list from container "ALL-PHYSICALS")
         obj.all_physicals = []
-        for child in ARObject._find_all_child_elements(element, "ALL-PHYSICALS"):
-            all_physicals_value = child.text
-            obj.all_physicals.append(all_physicals_value)
+        container = ARObject._find_child_element(element, "ALL-PHYSICALS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.all_physicals.append(child_value)
 
-        # Parse specific_channels (list)
+        # Parse specific_channels (list from container "SPECIFIC-CHANNELS")
         obj.specific_channels = []
-        for child in ARObject._find_all_child_elements(element, "SPECIFIC-CHANNELS"):
-            specific_channels_value = ARObject._deserialize_by_tag(child, "DiagnosticComControl")
-            obj.specific_channels.append(specific_channels_value)
+        container = ARObject._find_child_element(element, "SPECIFIC-CHANNELS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.specific_channels.append(child_value)
 
-        # Parse sub_nodes (list)
+        # Parse sub_nodes (list from container "SUB-NODES")
         obj.sub_nodes = []
-        for child in ARObject._find_all_child_elements(element, "SUB-NODES"):
-            sub_nodes_value = ARObject._deserialize_by_tag(child, "DiagnosticComControl")
-            obj.sub_nodes.append(sub_nodes_value)
+        container = ARObject._find_child_element(element, "SUB-NODES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sub_nodes.append(child_value)
 
         return obj
 

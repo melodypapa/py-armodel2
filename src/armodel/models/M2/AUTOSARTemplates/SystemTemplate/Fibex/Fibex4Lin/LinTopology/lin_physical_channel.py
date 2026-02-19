@@ -50,9 +50,8 @@ class LinPhysicalChannel(PhysicalChannel):
         Returns:
             Deserialized LinPhysicalChannel object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(LinPhysicalChannel, cls).deserialize(element)
 
         # Parse bus_idle_timeout
         child = ARObject._find_child_element(element, "BUS-IDLE-TIMEOUT")
@@ -60,11 +59,15 @@ class LinPhysicalChannel(PhysicalChannel):
             bus_idle_timeout_value = child.text
             obj.bus_idle_timeout = bus_idle_timeout_value
 
-        # Parse schedule_tables (list)
+        # Parse schedule_tables (list from container "SCHEDULE-TABLES")
         obj.schedule_tables = []
-        for child in ARObject._find_all_child_elements(element, "SCHEDULE-TABLES"):
-            schedule_tables_value = ARObject._deserialize_by_tag(child, "LinScheduleTable")
-            obj.schedule_tables.append(schedule_tables_value)
+        container = ARObject._find_child_element(element, "SCHEDULE-TABLES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.schedule_tables.append(child_value)
 
         return obj
 

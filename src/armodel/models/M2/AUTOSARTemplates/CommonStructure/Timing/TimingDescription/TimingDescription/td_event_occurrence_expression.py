@@ -55,11 +55,15 @@ class TDEventOccurrenceExpression(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse arguments (list)
+        # Parse arguments (list from container "ARGUMENTS")
         obj.arguments = []
-        for child in ARObject._find_all_child_elements(element, "ARGUMENTS"):
-            arguments_value = ARObject._deserialize_by_tag(child, "AutosarOperationArgumentInstance")
-            obj.arguments.append(arguments_value)
+        container = ARObject._find_child_element(element, "ARGUMENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.arguments.append(child_value)
 
         # Parse formula
         child = ARObject._find_child_element(element, "FORMULA")
@@ -67,17 +71,25 @@ class TDEventOccurrenceExpression(ARObject):
             formula_value = child.text
             obj.formula = formula_value
 
-        # Parse modes (list)
+        # Parse modes (list from container "MODES")
         obj.modes = []
-        for child in ARObject._find_all_child_elements(element, "MODES"):
-            modes_value = ARObject._deserialize_by_tag(child, "TimingModeInstance")
-            obj.modes.append(modes_value)
+        container = ARObject._find_child_element(element, "MODES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.modes.append(child_value)
 
-        # Parse variables (list)
+        # Parse variables (list from container "VARIABLES")
         obj.variables = []
-        for child in ARObject._find_all_child_elements(element, "VARIABLES"):
-            variables_value = child.text
-            obj.variables.append(variables_value)
+        container = ARObject._find_child_element(element, "VARIABLES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.variables.append(child_value)
 
         return obj
 

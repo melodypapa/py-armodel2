@@ -45,14 +45,13 @@ class SecureOnBoardCommunicationNeeds(ServiceNeeds):
         Returns:
             Deserialized SecureOnBoardCommunicationNeeds object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SecureOnBoardCommunicationNeeds, cls).deserialize(element)
 
         # Parse verification
         child = ARObject._find_child_element(element, "VERIFICATION")
         if child is not None:
-            verification_value = child.text
+            verification_value = VerificationStatusIndicationModeEnum.deserialize(child)
             obj.verification = verification_value
 
         return obj

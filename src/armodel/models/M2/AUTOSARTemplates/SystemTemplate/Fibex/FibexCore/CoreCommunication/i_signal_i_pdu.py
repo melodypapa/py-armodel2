@@ -57,9 +57,8 @@ class ISignalIPdu(IPdu):
         Returns:
             Deserialized ISignalIPdu object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ISignalIPdu, cls).deserialize(element)
 
         # Parse i_pdu_timing
         child = ARObject._find_child_element(element, "I-PDU-TIMING")
@@ -67,11 +66,15 @@ class ISignalIPdu(IPdu):
             i_pdu_timing_value = ARObject._deserialize_by_tag(child, "IPduTiming")
             obj.i_pdu_timing = i_pdu_timing_value
 
-        # Parse i_signal_to_pdu_refs (list)
+        # Parse i_signal_to_pdu_refs (list from container "I-SIGNAL-TO-PDUS")
         obj.i_signal_to_pdu_refs = []
-        for child in ARObject._find_all_child_elements(element, "I-SIGNAL-TO-PDUS"):
-            i_signal_to_pdu_refs_value = ARObject._deserialize_by_tag(child, "ISignalToIPduMapping")
-            obj.i_signal_to_pdu_refs.append(i_signal_to_pdu_refs_value)
+        container = ARObject._find_child_element(element, "I-SIGNAL-TO-PDUS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.i_signal_to_pdu_refs.append(child_value)
 
         # Parse unused_bit
         child = ARObject._find_child_element(element, "UNUSED-BIT")

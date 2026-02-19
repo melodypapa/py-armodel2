@@ -49,21 +49,28 @@ class PortGroup(Identifiable):
         Returns:
             Deserialized PortGroup object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(PortGroup, cls).deserialize(element)
 
-        # Parse inner_group_refs (list)
+        # Parse inner_group_refs (list from container "INNER-GROUPS")
         obj.inner_group_refs = []
-        for child in ARObject._find_all_child_elements(element, "INNER-GROUPS"):
-            inner_group_refs_value = ARObject._deserialize_by_tag(child, "PortGroup")
-            obj.inner_group_refs.append(inner_group_refs_value)
+        container = ARObject._find_child_element(element, "INNER-GROUPS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.inner_group_refs.append(child_value)
 
-        # Parse outer_port_refs (list)
+        # Parse outer_port_refs (list from container "OUTER-PORTS")
         obj.outer_port_refs = []
-        for child in ARObject._find_all_child_elements(element, "OUTER-PORTS"):
-            outer_port_refs_value = ARObject._deserialize_by_tag(child, "PortPrototype")
-            obj.outer_port_refs.append(outer_port_refs_value)
+        container = ARObject._find_child_element(element, "OUTER-PORTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.outer_port_refs.append(child_value)
 
         return obj
 

@@ -60,9 +60,8 @@ class SupervisedEntityNeeds(ServiceNeeds):
         Returns:
             Deserialized SupervisedEntityNeeds object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SupervisedEntityNeeds, cls).deserialize(element)
 
         # Parse activate_at_start
         child = ARObject._find_child_element(element, "ACTIVATE-AT-START")
@@ -70,11 +69,15 @@ class SupervisedEntityNeeds(ServiceNeeds):
             activate_at_start_value = child.text
             obj.activate_at_start = activate_at_start_value
 
-        # Parse checkpointses (list)
+        # Parse checkpointses (list from container "CHECKPOINTSES")
         obj.checkpointses = []
-        for child in ARObject._find_all_child_elements(element, "CHECKPOINTSES"):
-            checkpointses_value = child.text
-            obj.checkpointses.append(checkpointses_value)
+        container = ARObject._find_child_element(element, "CHECKPOINTSES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.checkpointses.append(child_value)
 
         # Parse enable
         child = ARObject._find_child_element(element, "ENABLE")

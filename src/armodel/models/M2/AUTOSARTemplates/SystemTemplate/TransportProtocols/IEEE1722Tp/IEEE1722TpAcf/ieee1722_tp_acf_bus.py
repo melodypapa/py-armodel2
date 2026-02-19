@@ -51,15 +51,18 @@ class IEEE1722TpAcfBus(Identifiable, ABC):
         Returns:
             Deserialized IEEE1722TpAcfBus object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(IEEE1722TpAcfBus, cls).deserialize(element)
 
-        # Parse acf_parts (list)
+        # Parse acf_parts (list from container "ACF-PARTS")
         obj.acf_parts = []
-        for child in ARObject._find_all_child_elements(element, "ACF-PARTS"):
-            acf_parts_value = ARObject._deserialize_by_tag(child, "IEEE1722TpAcfBusPart")
-            obj.acf_parts.append(acf_parts_value)
+        container = ARObject._find_child_element(element, "ACF-PARTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.acf_parts.append(child_value)
 
         # Parse bus_id
         child = ARObject._find_child_element(element, "BUS-ID")

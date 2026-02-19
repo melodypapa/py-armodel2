@@ -49,15 +49,18 @@ class EcucValueCollection(ARElement):
         Returns:
             Deserialized EcucValueCollection object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(EcucValueCollection, cls).deserialize(element)
 
-        # Parse ecuc_values (list)
+        # Parse ecuc_values (list from container "ECUC-VALUES")
         obj.ecuc_values = []
-        for child in ARObject._find_all_child_elements(element, "ECUC-VALUES"):
-            ecuc_values_value = child.text
-            obj.ecuc_values.append(ecuc_values_value)
+        container = ARObject._find_child_element(element, "ECUC-VALUES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.ecuc_values.append(child_value)
 
         # Parse ecu_extract
         child = ARObject._find_child_element(element, "ECU-EXTRACT")

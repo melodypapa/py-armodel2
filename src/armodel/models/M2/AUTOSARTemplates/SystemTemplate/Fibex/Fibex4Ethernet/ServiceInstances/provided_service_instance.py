@@ -80,15 +80,18 @@ class ProvidedServiceInstance(AbstractServiceInstance):
         Returns:
             Deserialized ProvidedServiceInstance object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ProvidedServiceInstance, cls).deserialize(element)
 
-        # Parse allowed_services (list)
+        # Parse allowed_services (list from container "ALLOWED-SERVICES")
         obj.allowed_services = []
-        for child in ARObject._find_all_child_elements(element, "ALLOWED-SERVICES"):
-            allowed_services_value = ARObject._deserialize_by_tag(child, "NetworkEndpoint")
-            obj.allowed_services.append(allowed_services_value)
+        container = ARObject._find_child_element(element, "ALLOWED-SERVICES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.allowed_services.append(child_value)
 
         # Parse auto_available
         child = ARObject._find_child_element(element, "AUTO-AVAILABLE")
@@ -96,11 +99,15 @@ class ProvidedServiceInstance(AbstractServiceInstance):
             auto_available_value = child.text
             obj.auto_available = auto_available_value
 
-        # Parse event_handlers (list)
+        # Parse event_handlers (list from container "EVENT-HANDLERS")
         obj.event_handlers = []
-        for child in ARObject._find_all_child_elements(element, "EVENT-HANDLERS"):
-            event_handlers_value = ARObject._deserialize_by_tag(child, "EventHandler")
-            obj.event_handlers.append(event_handlers_value)
+        container = ARObject._find_child_element(element, "EVENT-HANDLERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.event_handlers.append(child_value)
 
         # Parse instance
         child = ARObject._find_child_element(element, "INSTANCE")
@@ -132,17 +139,25 @@ class ProvidedServiceInstance(AbstractServiceInstance):
             priority_value = child.text
             obj.priority = priority_value
 
-        # Parse remote_multicasts (list)
+        # Parse remote_multicasts (list from container "REMOTE-MULTICASTS")
         obj.remote_multicasts = []
-        for child in ARObject._find_all_child_elements(element, "REMOTE-MULTICASTS"):
-            remote_multicasts_value = ARObject._deserialize_by_tag(child, "ApplicationEndpoint")
-            obj.remote_multicasts.append(remote_multicasts_value)
+        container = ARObject._find_child_element(element, "REMOTE-MULTICASTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.remote_multicasts.append(child_value)
 
-        # Parse remote_unicasts (list)
+        # Parse remote_unicasts (list from container "REMOTE-UNICASTS")
         obj.remote_unicasts = []
-        for child in ARObject._find_all_child_elements(element, "REMOTE-UNICASTS"):
-            remote_unicasts_value = ARObject._deserialize_by_tag(child, "ApplicationEndpoint")
-            obj.remote_unicasts.append(remote_unicasts_value)
+        container = ARObject._find_child_element(element, "REMOTE-UNICASTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.remote_unicasts.append(child_value)
 
         # Parse sd_server_config
         child = ARObject._find_child_element(element, "SD-SERVER-CONFIG")

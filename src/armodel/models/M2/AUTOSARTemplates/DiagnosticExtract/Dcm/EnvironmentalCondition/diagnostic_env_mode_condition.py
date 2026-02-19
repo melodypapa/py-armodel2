@@ -42,9 +42,8 @@ class DiagnosticEnvModeCondition(DiagnosticEnvCompareCondition):
         Returns:
             Deserialized DiagnosticEnvModeCondition object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticEnvModeCondition, cls).deserialize(element)
 
         # Parse mode_element
         child = ARObject._find_child_element(element, "MODE-ELEMENT")

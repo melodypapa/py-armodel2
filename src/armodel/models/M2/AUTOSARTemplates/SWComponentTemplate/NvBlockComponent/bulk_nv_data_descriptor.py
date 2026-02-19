@@ -51,9 +51,8 @@ class BulkNvDataDescriptor(Identifiable):
         Returns:
             Deserialized BulkNvDataDescriptor object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(BulkNvDataDescriptor, cls).deserialize(element)
 
         # Parse bulk_nv_block_ref
         child = ARObject._find_child_element(element, "BULK-NV-BLOCK")
@@ -61,11 +60,15 @@ class BulkNvDataDescriptor(Identifiable):
             bulk_nv_block_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
             obj.bulk_nv_block_ref = bulk_nv_block_ref_value
 
-        # Parse nv_block_data_refs (list)
+        # Parse nv_block_data_refs (list from container "NV-BLOCK-DATAS")
         obj.nv_block_data_refs = []
-        for child in ARObject._find_all_child_elements(element, "NV-BLOCK-DATAS"):
-            nv_block_data_refs_value = ARObject._deserialize_by_tag(child, "NvBlockDataMapping")
-            obj.nv_block_data_refs.append(nv_block_data_refs_value)
+        container = ARObject._find_child_element(element, "NV-BLOCK-DATAS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.nv_block_data_refs.append(child_value)
 
         return obj
 

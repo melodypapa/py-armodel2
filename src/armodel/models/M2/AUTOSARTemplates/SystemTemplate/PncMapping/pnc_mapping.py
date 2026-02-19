@@ -94,15 +94,18 @@ class PncMapping(Describable):
         Returns:
             Deserialized PncMapping object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(PncMapping, cls).deserialize(element)
 
-        # Parse dynamic_pnc_refs (list)
+        # Parse dynamic_pnc_refs (list from container "DYNAMIC-PNCS")
         obj.dynamic_pnc_refs = []
-        for child in ARObject._find_all_child_elements(element, "DYNAMIC-PNCS"):
-            dynamic_pnc_refs_value = ARObject._deserialize_by_tag(child, "ISignalIPduGroup")
-            obj.dynamic_pnc_refs.append(dynamic_pnc_refs_value)
+        container = ARObject._find_child_element(element, "DYNAMIC-PNCS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.dynamic_pnc_refs.append(child_value)
 
         # Parse ident_ref
         child = ARObject._find_child_element(element, "IDENT")
@@ -110,23 +113,35 @@ class PncMapping(Describable):
             ident_ref_value = ARObject._deserialize_by_tag(child, "PncMappingIdent")
             obj.ident_ref = ident_ref_value
 
-        # Parse physical_channels (list)
+        # Parse physical_channels (list from container "PHYSICAL-CHANNELS")
         obj.physical_channels = []
-        for child in ARObject._find_all_child_elements(element, "PHYSICAL-CHANNELS"):
-            physical_channels_value = ARObject._deserialize_by_tag(child, "PhysicalChannel")
-            obj.physical_channels.append(physical_channels_value)
+        container = ARObject._find_child_element(element, "PHYSICAL-CHANNELS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.physical_channels.append(child_value)
 
-        # Parse pnc_consumeds (list)
+        # Parse pnc_consumeds (list from container "PNC-CONSUMEDS")
         obj.pnc_consumeds = []
-        for child in ARObject._find_all_child_elements(element, "PNC-CONSUMEDS"):
-            pnc_consumeds_value = ARObject._deserialize_by_tag(child, "ConsumedProvidedServiceInstanceGroup")
-            obj.pnc_consumeds.append(pnc_consumeds_value)
+        container = ARObject._find_child_element(element, "PNC-CONSUMEDS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.pnc_consumeds.append(child_value)
 
-        # Parse pnc_group_refs (list)
+        # Parse pnc_group_refs (list from container "PNC-GROUPS")
         obj.pnc_group_refs = []
-        for child in ARObject._find_all_child_elements(element, "PNC-GROUPS"):
-            pnc_group_refs_value = ARObject._deserialize_by_tag(child, "ISignalIPduGroup")
-            obj.pnc_group_refs.append(pnc_group_refs_value)
+        container = ARObject._find_child_element(element, "PNC-GROUPS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.pnc_group_refs.append(child_value)
 
         # Parse pnc_identifier
         child = ARObject._find_child_element(element, "PNC-IDENTIFIER")
@@ -134,11 +149,15 @@ class PncMapping(Describable):
             pnc_identifier_value = child.text
             obj.pnc_identifier = pnc_identifier_value
 
-        # Parse pnc_pdur_group_refs (list)
+        # Parse pnc_pdur_group_refs (list from container "PNC-PDUR-GROUPS")
         obj.pnc_pdur_group_refs = []
-        for child in ARObject._find_all_child_elements(element, "PNC-PDUR-GROUPS"):
-            pnc_pdur_group_refs_value = ARObject._deserialize_by_tag(child, "PdurIPduGroup")
-            obj.pnc_pdur_group_refs.append(pnc_pdur_group_refs_value)
+        container = ARObject._find_child_element(element, "PNC-PDUR-GROUPS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.pnc_pdur_group_refs.append(child_value)
 
         # Parse pnc_wakeup
         child = ARObject._find_child_element(element, "PNC-WAKEUP")
@@ -146,29 +165,41 @@ class PncMapping(Describable):
             pnc_wakeup_value = child.text
             obj.pnc_wakeup = pnc_wakeup_value
 
-        # Parse relevant_fors (list)
+        # Parse relevant_fors (list from container "RELEVANT-FORS")
         obj.relevant_fors = []
-        for child in ARObject._find_all_child_elements(element, "RELEVANT-FORS"):
-            relevant_fors_value = ARObject._deserialize_by_tag(child, "EcuInstance")
-            obj.relevant_fors.append(relevant_fors_value)
+        container = ARObject._find_child_element(element, "RELEVANT-FORS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.relevant_fors.append(child_value)
 
         # Parse short_label
         child = ARObject._find_child_element(element, "SHORT-LABEL")
         if child is not None:
-            short_label_value = child.text
+            short_label_value = ARObject._deserialize_by_tag(child, "Identifier")
             obj.short_label = short_label_value
 
-        # Parse vfc_refs (list)
+        # Parse vfc_refs (list from container "VFCS")
         obj.vfc_refs = []
-        for child in ARObject._find_all_child_elements(element, "VFCS"):
-            vfc_refs_value = ARObject._deserialize_by_tag(child, "PortGroup")
-            obj.vfc_refs.append(vfc_refs_value)
+        container = ARObject._find_child_element(element, "VFCS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.vfc_refs.append(child_value)
 
-        # Parse wakeup_frame_refs (list)
+        # Parse wakeup_frame_refs (list from container "WAKEUP-FRAMES")
         obj.wakeup_frame_refs = []
-        for child in ARObject._find_all_child_elements(element, "WAKEUP-FRAMES"):
-            wakeup_frame_refs_value = ARObject._deserialize_by_tag(child, "FrameTriggering")
-            obj.wakeup_frame_refs.append(wakeup_frame_refs_value)
+        container = ARObject._find_child_element(element, "WAKEUP-FRAMES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.wakeup_frame_refs.append(child_value)
 
         return obj
 

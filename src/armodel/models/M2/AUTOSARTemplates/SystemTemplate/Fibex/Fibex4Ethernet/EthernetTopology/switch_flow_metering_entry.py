@@ -59,14 +59,13 @@ class SwitchFlowMeteringEntry(Identifiable):
         Returns:
             Deserialized SwitchFlowMeteringEntry object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SwitchFlowMeteringEntry, cls).deserialize(element)
 
         # Parse color_mode
         child = ARObject._find_child_element(element, "COLOR-MODE")
         if child is not None:
-            color_mode_value = child.text
+            color_mode_value = FlowMeteringColorModeEnum.deserialize(child)
             obj.color_mode = color_mode_value
 
         # Parse committed_burst

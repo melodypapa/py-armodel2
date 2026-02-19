@@ -64,9 +64,8 @@ class CommunicationConnector(Identifiable, ABC):
         Returns:
             Deserialized CommunicationConnector object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(CommunicationConnector, cls).deserialize(element)
 
         # Parse comm_controller
         child = ARObject._find_child_element(element, "COMM-CONTROLLER")
@@ -86,22 +85,30 @@ class CommunicationConnector(Identifiable, ABC):
             dynamic_pnc_to_value = child.text
             obj.dynamic_pnc_to = dynamic_pnc_to_value
 
-        # Parse ecu_comm_ports (list)
+        # Parse ecu_comm_ports (list from container "ECU-COMM-PORTS")
         obj.ecu_comm_ports = []
-        for child in ARObject._find_all_child_elements(element, "ECU-COMM-PORTS"):
-            ecu_comm_ports_value = ARObject._deserialize_by_tag(child, "CommConnectorPort")
-            obj.ecu_comm_ports.append(ecu_comm_ports_value)
+        container = ARObject._find_child_element(element, "ECU-COMM-PORTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.ecu_comm_ports.append(child_value)
 
-        # Parse pnc_filter_arrays (list)
+        # Parse pnc_filter_arrays (list from container "PNC-FILTER-ARRAYS")
         obj.pnc_filter_arrays = []
-        for child in ARObject._find_all_child_elements(element, "PNC-FILTER-ARRAYS"):
-            pnc_filter_arrays_value = child.text
-            obj.pnc_filter_arrays.append(pnc_filter_arrays_value)
+        container = ARObject._find_child_element(element, "PNC-FILTER-ARRAYS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.pnc_filter_arrays.append(child_value)
 
         # Parse pnc_gateway_type_enum
         child = ARObject._find_child_element(element, "PNC-GATEWAY-TYPE-ENUM")
         if child is not None:
-            pnc_gateway_type_enum_value = child.text
+            pnc_gateway_type_enum_value = PncGatewayTypeEnum.deserialize(child)
             obj.pnc_gateway_type_enum = pnc_gateway_type_enum_value
 
         return obj

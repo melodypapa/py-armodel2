@@ -54,9 +54,8 @@ class Chapter(Paginateable):
         Returns:
             Deserialized Chapter object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(Chapter, cls).deserialize(element)
 
         # Parse chapter_model
         child = ARObject._find_child_element(element, "CHAPTER-MODEL")

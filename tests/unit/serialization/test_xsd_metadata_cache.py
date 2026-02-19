@@ -10,12 +10,19 @@ from armodel.serialization.xsd_metadata_cache import XSDBasedSchemaManager
 class TestXSDBasedSchemaManager:
     """Unit tests for XSDBasedSchemaManager class."""
 
+    @pytest.fixture(autouse=True)
+    def setup(self):
+        """Setup for all tests - ensure cache is cleared once at the start."""
+        manager = XSDBasedSchemaManager()
+        # Only clear if not already loaded to avoid unnecessary reloads
+        if not manager.is_loaded("00046"):
+            manager.clear_cache()
+        self.manager = manager
+
     @pytest.fixture
     def manager(self):
         """Get singleton instance of XSDBasedSchemaManager."""
-        manager = XSDBasedSchemaManager()
-        manager.clear_cache()  # Start with clean cache
-        return manager
+        return self.manager
 
     def test_singleton_pattern(self, manager):
         """Test that manager follows singleton pattern."""
@@ -134,8 +141,9 @@ class TestXSDBasedSchemaManager:
 
     def test_clear_cache(self, manager):
         """Test clearing the cache."""
-        # Load metadata
-        manager.get_metadata("00046")
+        # Ensure metadata is loaded
+        if not manager.is_loaded("00046"):
+            manager.get_metadata("00046")
         assert manager.is_loaded("00046") is True
 
         # Clear cache

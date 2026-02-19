@@ -45,15 +45,18 @@ class BinaryManifestResourceDefinition(Identifiable):
         Returns:
             Deserialized BinaryManifestResourceDefinition object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(BinaryManifestResourceDefinition, cls).deserialize(element)
 
-        # Parse item_definitions (list)
+        # Parse item_definitions (list from container "ITEM-DEFINITIONS")
         obj.item_definitions = []
-        for child in ARObject._find_all_child_elements(element, "ITEM-DEFINITIONS"):
-            item_definitions_value = ARObject._deserialize_by_tag(child, "BinaryManifestItem")
-            obj.item_definitions.append(item_definitions_value)
+        container = ARObject._find_child_element(element, "ITEM-DEFINITIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.item_definitions.append(child_value)
 
         return obj
 

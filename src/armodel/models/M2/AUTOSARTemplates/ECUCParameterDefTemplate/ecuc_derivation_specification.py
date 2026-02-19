@@ -59,11 +59,15 @@ class EcucDerivationSpecification(ARObject):
             calculation_value = child.text
             obj.calculation = calculation_value
 
-        # Parse ecuc_queries (list)
+        # Parse ecuc_queries (list from container "ECUC-QUERIES")
         obj.ecuc_queries = []
-        for child in ARObject._find_all_child_elements(element, "ECUC-QUERIES"):
-            ecuc_queries_value = ARObject._deserialize_by_tag(child, "EcucQuery")
-            obj.ecuc_queries.append(ecuc_queries_value)
+        container = ARObject._find_child_element(element, "ECUC-QUERIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.ecuc_queries.append(child_value)
 
         # Parse informal_formula
         child = ARObject._find_child_element(element, "INFORMAL-FORMULA")

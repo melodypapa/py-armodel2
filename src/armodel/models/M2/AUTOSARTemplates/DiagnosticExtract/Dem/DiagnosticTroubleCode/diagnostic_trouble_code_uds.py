@@ -67,9 +67,8 @@ class DiagnosticTroubleCodeUds(DiagnosticTroubleCode):
         Returns:
             Deserialized DiagnosticTroubleCodeUds object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticTroubleCodeUds, cls).deserialize(element)
 
         # Parse consider_pto
         child = ARObject._find_child_element(element, "CONSIDER-PTO")
@@ -104,7 +103,7 @@ class DiagnosticTroubleCodeUds(DiagnosticTroubleCode):
         # Parse severity
         child = ARObject._find_child_element(element, "SEVERITY")
         if child is not None:
-            severity_value = child.text
+            severity_value = DiagnosticUdsSeverityEnum.deserialize(child)
             obj.severity = severity_value
 
         # Parse uds_dtc_value
@@ -116,7 +115,7 @@ class DiagnosticTroubleCodeUds(DiagnosticTroubleCode):
         # Parse wwh_obd_dtc
         child = ARObject._find_child_element(element, "WWH-OBD-DTC")
         if child is not None:
-            wwh_obd_dtc_value = child.text
+            wwh_obd_dtc_value = DiagnosticWwhObdDtcClassEnum.deserialize(child)
             obj.wwh_obd_dtc = wwh_obd_dtc_value
 
         return obj

@@ -45,9 +45,8 @@ class BswOperationInvokedEvent(BswEvent):
         Returns:
             Deserialized BswOperationInvokedEvent object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(BswOperationInvokedEvent, cls).deserialize(element)
 
         # Parse entry
         child = ARObject._find_child_element(element, "ENTRY")

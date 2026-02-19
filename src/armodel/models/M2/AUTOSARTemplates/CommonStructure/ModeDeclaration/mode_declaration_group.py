@@ -68,9 +68,8 @@ class ModeDeclarationGroup(ARElement):
         Returns:
             Deserialized ModeDeclarationGroup object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ModeDeclarationGroup, cls).deserialize(element)
 
         # Parse initial_mode
         child = ARObject._find_child_element(element, "INITIAL-MODE")
@@ -78,11 +77,15 @@ class ModeDeclarationGroup(ARElement):
             initial_mode_value = ARObject._deserialize_by_tag(child, "ModeDeclaration")
             obj.initial_mode = initial_mode_value
 
-        # Parse modes (list)
+        # Parse modes (list from container "MODES")
         obj.modes = []
-        for child in ARObject._find_all_child_elements(element, "MODES"):
-            modes_value = ARObject._deserialize_by_tag(child, "ModeDeclaration")
-            obj.modes.append(modes_value)
+        container = ARObject._find_child_element(element, "MODES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.modes.append(child_value)
 
         # Parse mode_manager
         child = ARObject._find_child_element(element, "MODE-MANAGER")
@@ -90,11 +93,15 @@ class ModeDeclarationGroup(ARElement):
             mode_manager_value = ARObject._deserialize_by_tag(child, "ModeErrorBehavior")
             obj.mode_manager = mode_manager_value
 
-        # Parse mode_transition_mode_declaration_groups (list)
+        # Parse mode_transition_mode_declaration_groups (list from container "MODE-TRANSITION-MODE-DECLARATION-GROUPS")
         obj.mode_transition_mode_declaration_groups = []
-        for child in ARObject._find_all_child_elements(element, "MODE-TRANSITION-MODE-DECLARATION-GROUPS"):
-            mode_transition_mode_declaration_groups_value = ARObject._deserialize_by_tag(child, "ModeTransition")
-            obj.mode_transition_mode_declaration_groups.append(mode_transition_mode_declaration_groups_value)
+        container = ARObject._find_child_element(element, "MODE-TRANSITION-MODE-DECLARATION-GROUPS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.mode_transition_mode_declaration_groups.append(child_value)
 
         # Parse mode_user_error
         child = ARObject._find_child_element(element, "MODE-USER-ERROR")

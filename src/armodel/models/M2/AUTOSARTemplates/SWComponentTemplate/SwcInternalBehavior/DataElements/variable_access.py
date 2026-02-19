@@ -54,9 +54,8 @@ class VariableAccess(AbstractAccessPoint):
         Returns:
             Deserialized VariableAccess object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(VariableAccess, cls).deserialize(element)
 
         # Parse accessed_variable_ref
         child = ARObject._find_child_element(element, "ACCESSED-VARIABLE")
@@ -67,7 +66,7 @@ class VariableAccess(AbstractAccessPoint):
         # Parse scope
         child = ARObject._find_child_element(element, "SCOPE")
         if child is not None:
-            scope_value = child.text
+            scope_value = VariableAccessScopeEnum.deserialize(child)
             obj.scope = scope_value
 
         return obj

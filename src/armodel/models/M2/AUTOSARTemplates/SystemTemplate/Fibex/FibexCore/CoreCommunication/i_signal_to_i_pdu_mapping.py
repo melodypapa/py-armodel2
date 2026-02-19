@@ -68,9 +68,8 @@ class ISignalToIPduMapping(Identifiable):
         Returns:
             Deserialized ISignalToIPduMapping object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ISignalToIPduMapping, cls).deserialize(element)
 
         # Parse i_signal
         child = ARObject._find_child_element(element, "I-SIGNAL")
@@ -87,7 +86,7 @@ class ISignalToIPduMapping(Identifiable):
         # Parse packing_byte
         child = ARObject._find_child_element(element, "PACKING-BYTE")
         if child is not None:
-            packing_byte_value = child.text
+            packing_byte_value = ByteOrderEnum.deserialize(child)
             obj.packing_byte = packing_byte_value
 
         # Parse start_position
@@ -99,7 +98,7 @@ class ISignalToIPduMapping(Identifiable):
         # Parse transfer_property_enum
         child = ARObject._find_child_element(element, "TRANSFER-PROPERTY-ENUM")
         if child is not None:
-            transfer_property_enum_value = child.text
+            transfer_property_enum_value = TransferPropertyEnum.deserialize(child)
             obj.transfer_property_enum = transfer_property_enum_value
 
         # Parse update

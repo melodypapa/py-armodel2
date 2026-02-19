@@ -58,9 +58,8 @@ class SoConIPduIdentifier(Referrable):
         Returns:
             Deserialized SoConIPduIdentifier object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SoConIPduIdentifier, cls).deserialize(element)
 
         # Parse header_id
         child = ARObject._find_child_element(element, "HEADER-ID")
@@ -77,7 +76,7 @@ class SoConIPduIdentifier(Referrable):
         # Parse pdu_collection_trigger_ref
         child = ARObject._find_child_element(element, "PDU-COLLECTION-TRIGGER")
         if child is not None:
-            pdu_collection_trigger_ref_value = child.text
+            pdu_collection_trigger_ref_value = PduCollectionTriggerEnum.deserialize(child)
             obj.pdu_collection_trigger_ref = pdu_collection_trigger_ref_value
 
         # Parse pdu_triggering_ref

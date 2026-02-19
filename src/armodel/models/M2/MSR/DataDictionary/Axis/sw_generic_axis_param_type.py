@@ -45,9 +45,8 @@ class SwGenericAxisParamType(Identifiable):
         Returns:
             Deserialized SwGenericAxisParamType object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SwGenericAxisParamType, cls).deserialize(element)
 
         # Parse data_constr
         child = ARObject._find_child_element(element, "DATA-CONSTR")

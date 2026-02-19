@@ -50,9 +50,8 @@ class CycleRepetition(CommunicationCycle):
         Returns:
             Deserialized CycleRepetition object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(CycleRepetition, cls).deserialize(element)
 
         # Parse base_cycle
         child = ARObject._find_child_element(element, "BASE-CYCLE")
@@ -63,7 +62,7 @@ class CycleRepetition(CommunicationCycle):
         # Parse cycle_repetition
         child = ARObject._find_child_element(element, "CYCLE-REPETITION")
         if child is not None:
-            cycle_repetition_value = child.text
+            cycle_repetition_value = CycleRepetitionType.deserialize(child)
             obj.cycle_repetition = cycle_repetition_value
 
         return obj

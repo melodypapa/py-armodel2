@@ -67,9 +67,8 @@ class FlatInstanceDescriptor(Identifiable):
         Returns:
             Deserialized FlatInstanceDescriptor object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(FlatInstanceDescriptor, cls).deserialize(element)
 
         # Parse ecu_extract
         child = ARObject._find_child_element(element, "ECU-EXTRACT")
@@ -80,7 +79,7 @@ class FlatInstanceDescriptor(Identifiable):
         # Parse role
         child = ARObject._find_child_element(element, "ROLE")
         if child is not None:
-            role_value = child.text
+            role_value = ARObject._deserialize_by_tag(child, "Identifier")
             obj.role = role_value
 
         # Parse rte_plugin_props

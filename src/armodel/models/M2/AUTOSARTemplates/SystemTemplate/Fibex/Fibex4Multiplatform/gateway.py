@@ -61,9 +61,8 @@ class Gateway(FibexElement):
         Returns:
             Deserialized Gateway object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(Gateway, cls).deserialize(element)
 
         # Parse ecu
         child = ARObject._find_child_element(element, "ECU")
@@ -71,23 +70,35 @@ class Gateway(FibexElement):
             ecu_value = ARObject._deserialize_by_tag(child, "EcuInstance")
             obj.ecu = ecu_value
 
-        # Parse frame_mapping_refs (list)
+        # Parse frame_mapping_refs (list from container "FRAME-MAPPINGS")
         obj.frame_mapping_refs = []
-        for child in ARObject._find_all_child_elements(element, "FRAME-MAPPINGS"):
-            frame_mapping_refs_value = ARObject._deserialize_by_tag(child, "FrameMapping")
-            obj.frame_mapping_refs.append(frame_mapping_refs_value)
+        container = ARObject._find_child_element(element, "FRAME-MAPPINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.frame_mapping_refs.append(child_value)
 
-        # Parse i_pdu_mapping_refs (list)
+        # Parse i_pdu_mapping_refs (list from container "I-PDU-MAPPINGS")
         obj.i_pdu_mapping_refs = []
-        for child in ARObject._find_all_child_elements(element, "I-PDU-MAPPINGS"):
-            i_pdu_mapping_refs_value = ARObject._deserialize_by_tag(child, "IPduMapping")
-            obj.i_pdu_mapping_refs.append(i_pdu_mapping_refs_value)
+        container = ARObject._find_child_element(element, "I-PDU-MAPPINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.i_pdu_mapping_refs.append(child_value)
 
-        # Parse signal_mapping_refs (list)
+        # Parse signal_mapping_refs (list from container "SIGNAL-MAPPINGS")
         obj.signal_mapping_refs = []
-        for child in ARObject._find_all_child_elements(element, "SIGNAL-MAPPINGS"):
-            signal_mapping_refs_value = ARObject._deserialize_by_tag(child, "ISignalMapping")
-            obj.signal_mapping_refs.append(signal_mapping_refs_value)
+        container = ARObject._find_child_element(element, "SIGNAL-MAPPINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.signal_mapping_refs.append(child_value)
 
         return obj
 

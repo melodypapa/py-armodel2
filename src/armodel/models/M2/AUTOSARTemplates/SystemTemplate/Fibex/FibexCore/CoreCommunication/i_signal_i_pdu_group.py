@@ -59,9 +59,8 @@ class ISignalIPduGroup(FibexElement):
         Returns:
             Deserialized ISignalIPduGroup object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ISignalIPduGroup, cls).deserialize(element)
 
         # Parse communication
         child = ARObject._find_child_element(element, "COMMUNICATION")
@@ -69,23 +68,35 @@ class ISignalIPduGroup(FibexElement):
             communication_value = child.text
             obj.communication = communication_value
 
-        # Parse contained_refs (list)
+        # Parse contained_refs (list from container "CONTAINEDS")
         obj.contained_refs = []
-        for child in ARObject._find_all_child_elements(element, "CONTAINEDS"):
-            contained_refs_value = ARObject._deserialize_by_tag(child, "ISignalIPduGroup")
-            obj.contained_refs.append(contained_refs_value)
+        container = ARObject._find_child_element(element, "CONTAINEDS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.contained_refs.append(child_value)
 
-        # Parse i_signal_i_pdus (list)
+        # Parse i_signal_i_pdus (list from container "I-SIGNAL-I-PDUS")
         obj.i_signal_i_pdus = []
-        for child in ARObject._find_all_child_elements(element, "I-SIGNAL-I-PDUS"):
-            i_signal_i_pdus_value = ARObject._deserialize_by_tag(child, "ISignalIPdu")
-            obj.i_signal_i_pdus.append(i_signal_i_pdus_value)
+        container = ARObject._find_child_element(element, "I-SIGNAL-I-PDUS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.i_signal_i_pdus.append(child_value)
 
-        # Parse nm_pdus (list)
+        # Parse nm_pdus (list from container "NM-PDUS")
         obj.nm_pdus = []
-        for child in ARObject._find_all_child_elements(element, "NM-PDUS"):
-            nm_pdus_value = ARObject._deserialize_by_tag(child, "NmPdu")
-            obj.nm_pdus.append(nm_pdus_value)
+        container = ARObject._find_child_element(element, "NM-PDUS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.nm_pdus.append(child_value)
 
         return obj
 

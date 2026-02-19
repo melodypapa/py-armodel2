@@ -46,14 +46,13 @@ class SoAdRoutingGroup(FibexElement):
         Returns:
             Deserialized SoAdRoutingGroup object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SoAdRoutingGroup, cls).deserialize(element)
 
         # Parse event_group_ref
         child = ARObject._find_child_element(element, "EVENT-GROUP")
         if child is not None:
-            event_group_ref_value = child.text
+            event_group_ref_value = EventGroupControlTypeEnum.deserialize(child)
             obj.event_group_ref = event_group_ref_value
 
         return obj

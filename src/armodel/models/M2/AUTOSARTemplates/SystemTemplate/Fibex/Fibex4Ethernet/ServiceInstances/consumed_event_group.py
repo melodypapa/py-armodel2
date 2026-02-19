@@ -76,9 +76,8 @@ class ConsumedEventGroup(Identifiable):
         Returns:
             Deserialized ConsumedEventGroup object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ConsumedEventGroup, cls).deserialize(element)
 
         # Parse application_endpoint
         child = ARObject._find_child_element(element, "APPLICATION-ENDPOINT")
@@ -98,17 +97,25 @@ class ConsumedEventGroup(Identifiable):
             event_group_value = child.text
             obj.event_group = event_group_value
 
-        # Parse event_multicasts (list)
+        # Parse event_multicasts (list from container "EVENT-MULTICASTS")
         obj.event_multicasts = []
-        for child in ARObject._find_all_child_elements(element, "EVENT-MULTICASTS"):
-            event_multicasts_value = ARObject._deserialize_by_tag(child, "ApplicationEndpoint")
-            obj.event_multicasts.append(event_multicasts_value)
+        container = ARObject._find_child_element(element, "EVENT-MULTICASTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.event_multicasts.append(child_value)
 
-        # Parse pdu_activation_routings (list)
+        # Parse pdu_activation_routings (list from container "PDU-ACTIVATION-ROUTINGS")
         obj.pdu_activation_routings = []
-        for child in ARObject._find_all_child_elements(element, "PDU-ACTIVATION-ROUTINGS"):
-            pdu_activation_routings_value = ARObject._deserialize_by_tag(child, "PduActivationRoutingGroup")
-            obj.pdu_activation_routings.append(pdu_activation_routings_value)
+        container = ARObject._find_child_element(element, "PDU-ACTIVATION-ROUTINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.pdu_activation_routings.append(child_value)
 
         # Parse priority
         child = ARObject._find_child_element(element, "PRIORITY")
@@ -116,11 +123,15 @@ class ConsumedEventGroup(Identifiable):
             priority_value = child.text
             obj.priority = priority_value
 
-        # Parse routing_group_refs (list)
+        # Parse routing_group_refs (list from container "ROUTING-GROUPS")
         obj.routing_group_refs = []
-        for child in ARObject._find_all_child_elements(element, "ROUTING-GROUPS"):
-            routing_group_refs_value = ARObject._deserialize_by_tag(child, "SoAdRoutingGroup")
-            obj.routing_group_refs.append(routing_group_refs_value)
+        container = ARObject._find_child_element(element, "ROUTING-GROUPS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.routing_group_refs.append(child_value)
 
         # Parse sd_client_config
         child = ARObject._find_child_element(element, "SD-CLIENT-CONFIG")

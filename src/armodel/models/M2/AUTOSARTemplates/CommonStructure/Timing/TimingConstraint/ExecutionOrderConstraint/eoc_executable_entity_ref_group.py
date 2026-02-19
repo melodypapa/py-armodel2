@@ -68,21 +68,24 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
         Returns:
             Deserialized EOCExecutableEntityRefGroup object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(EOCExecutableEntityRefGroup, cls).deserialize(element)
 
         # Parse let_data_exchange
         child = ARObject._find_child_element(element, "LET-DATA-EXCHANGE")
         if child is not None:
-            let_data_exchange_value = child.text
+            let_data_exchange_value = LetDataExchangeParadigmEnum.deserialize(child)
             obj.let_data_exchange = let_data_exchange_value
 
-        # Parse let_intervals (list)
+        # Parse let_intervals (list from container "LET-INTERVALS")
         obj.let_intervals = []
-        for child in ARObject._find_all_child_elements(element, "LET-INTERVALS"):
-            let_intervals_value = ARObject._deserialize_by_tag(child, "TimingDescriptionEvent")
-            obj.let_intervals.append(let_intervals_value)
+        container = ARObject._find_child_element(element, "LET-INTERVALS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.let_intervals.append(child_value)
 
         # Parse max_cycle
         child = ARObject._find_child_element(element, "MAX-CYCLE")
@@ -108,17 +111,25 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
             max_slots_per_value = child.text
             obj.max_slots_per = max_slots_per_value
 
-        # Parse nested_elements (list)
+        # Parse nested_elements (list from container "NESTED-ELEMENTS")
         obj.nested_elements = []
-        for child in ARObject._find_all_child_elements(element, "NESTED-ELEMENTS"):
-            nested_elements_value = child.text
-            obj.nested_elements.append(nested_elements_value)
+        container = ARObject._find_child_element(element, "NESTED-ELEMENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.nested_elements.append(child_value)
 
-        # Parse successors (list)
+        # Parse successors (list from container "SUCCESSORS")
         obj.successors = []
-        for child in ARObject._find_all_child_elements(element, "SUCCESSORS"):
-            successors_value = child.text
-            obj.successors.append(successors_value)
+        container = ARObject._find_child_element(element, "SUCCESSORS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.successors.append(child_value)
 
         # Parse triggering_event
         child = ARObject._find_child_element(element, "TRIGGERING-EVENT")

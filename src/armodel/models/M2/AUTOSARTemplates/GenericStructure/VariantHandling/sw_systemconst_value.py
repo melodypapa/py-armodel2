@@ -58,11 +58,15 @@ class SwSystemconstValue(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse annotations (list)
+        # Parse annotations (list from container "ANNOTATIONS")
         obj.annotations = []
-        for child in ARObject._find_all_child_elements(element, "ANNOTATIONS"):
-            annotations_value = ARObject._deserialize_by_tag(child, "Annotation")
-            obj.annotations.append(annotations_value)
+        container = ARObject._find_child_element(element, "ANNOTATIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.annotations.append(child_value)
 
         # Parse sw_systemconst
         child = ARObject._find_child_element(element, "SW-SYSTEMCONST")

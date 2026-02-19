@@ -46,9 +46,8 @@ class ApplicationError(Identifiable):
         Returns:
             Deserialized ApplicationError object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ApplicationError, cls).deserialize(element)
 
         # Parse error_code
         child = ARObject._find_child_element(element, "ERROR-CODE")

@@ -45,14 +45,13 @@ class DiagnosticIndicator(DiagnosticCommonElement):
         Returns:
             Deserialized DiagnosticIndicator object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticIndicator, cls).deserialize(element)
 
         # Parse type
         child = ARObject._find_child_element(element, "TYPE")
         if child is not None:
-            type_value = child.text
+            type_value = DiagnosticIndicatorTypeEnum.deserialize(child)
             obj.type = type_value
 
         return obj

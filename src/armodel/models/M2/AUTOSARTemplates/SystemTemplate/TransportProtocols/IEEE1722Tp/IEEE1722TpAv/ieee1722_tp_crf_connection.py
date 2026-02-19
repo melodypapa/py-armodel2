@@ -58,9 +58,8 @@ class IEEE1722TpCrfConnection(IEEE1722TpAvConnection):
         Returns:
             Deserialized IEEE1722TpCrfConnection object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(IEEE1722TpCrfConnection, cls).deserialize(element)
 
         # Parse base_frequency
         child = ARObject._find_child_element(element, "BASE-FREQUENCY")
@@ -71,13 +70,13 @@ class IEEE1722TpCrfConnection(IEEE1722TpAvConnection):
         # Parse crf_pull_enum
         child = ARObject._find_child_element(element, "CRF-PULL-ENUM")
         if child is not None:
-            crf_pull_enum_value = child.text
+            crf_pull_enum_value = IEEE1722TpCrfPullEnum.deserialize(child)
             obj.crf_pull_enum = crf_pull_enum_value
 
         # Parse crf_type_enum
         child = ARObject._find_child_element(element, "CRF-TYPE-ENUM")
         if child is not None:
-            crf_type_enum_value = child.text
+            crf_type_enum_value = IEEE1722TpCrfTypeEnum.deserialize(child)
             obj.crf_type_enum = crf_type_enum_value
 
         # Parse frame_sync

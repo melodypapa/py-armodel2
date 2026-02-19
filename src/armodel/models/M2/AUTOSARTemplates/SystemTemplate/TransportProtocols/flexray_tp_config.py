@@ -65,39 +65,58 @@ class FlexrayTpConfig(TpConfig):
         Returns:
             Deserialized FlexrayTpConfig object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(FlexrayTpConfig, cls).deserialize(element)
 
-        # Parse pdu_pools (list)
+        # Parse pdu_pools (list from container "PDU-POOLS")
         obj.pdu_pools = []
-        for child in ARObject._find_all_child_elements(element, "PDU-POOLS"):
-            pdu_pools_value = ARObject._deserialize_by_tag(child, "FlexrayTpPduPool")
-            obj.pdu_pools.append(pdu_pools_value)
+        container = ARObject._find_child_element(element, "PDU-POOLS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.pdu_pools.append(child_value)
 
-        # Parse tp_addresses (list)
+        # Parse tp_addresses (list from container "TP-ADDRESSES")
         obj.tp_addresses = []
-        for child in ARObject._find_all_child_elements(element, "TP-ADDRESSES"):
-            tp_addresses_value = ARObject._deserialize_by_tag(child, "TpAddress")
-            obj.tp_addresses.append(tp_addresses_value)
+        container = ARObject._find_child_element(element, "TP-ADDRESSES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.tp_addresses.append(child_value)
 
-        # Parse tp_connections (list)
+        # Parse tp_connections (list from container "TP-CONNECTIONS")
         obj.tp_connections = []
-        for child in ARObject._find_all_child_elements(element, "TP-CONNECTIONS"):
-            tp_connections_value = ARObject._deserialize_by_tag(child, "FlexrayTpConnection")
-            obj.tp_connections.append(tp_connections_value)
+        container = ARObject._find_child_element(element, "TP-CONNECTIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.tp_connections.append(child_value)
 
-        # Parse tp_ecus (list)
+        # Parse tp_ecus (list from container "TP-ECUS")
         obj.tp_ecus = []
-        for child in ARObject._find_all_child_elements(element, "TP-ECUS"):
-            tp_ecus_value = ARObject._deserialize_by_tag(child, "FlexrayTpEcu")
-            obj.tp_ecus.append(tp_ecus_value)
+        container = ARObject._find_child_element(element, "TP-ECUS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.tp_ecus.append(child_value)
 
-        # Parse tp_nodes (list)
+        # Parse tp_nodes (list from container "TP-NODES")
         obj.tp_nodes = []
-        for child in ARObject._find_all_child_elements(element, "TP-NODES"):
-            tp_nodes_value = ARObject._deserialize_by_tag(child, "FlexrayTpNode")
-            obj.tp_nodes.append(tp_nodes_value)
+        container = ARObject._find_child_element(element, "TP-NODES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.tp_nodes.append(child_value)
 
         return obj
 

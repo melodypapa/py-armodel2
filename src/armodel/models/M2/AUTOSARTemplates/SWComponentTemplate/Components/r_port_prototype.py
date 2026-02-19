@@ -54,9 +54,8 @@ class RPortPrototype(AbstractRequiredPortPrototype):
         Returns:
             Deserialized RPortPrototype object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(RPortPrototype, cls).deserialize(element)
 
         # Parse may_be
         child = ARObject._find_child_element(element, "MAY-BE")

@@ -76,14 +76,18 @@ class TextTableMapping(ARObject):
         # Parse mapping_ref
         child = ARObject._find_child_element(element, "MAPPING")
         if child is not None:
-            mapping_ref_value = child.text
+            mapping_ref_value = MappingDirectionEnum.deserialize(child)
             obj.mapping_ref = mapping_ref_value
 
-        # Parse value_pairs (list)
+        # Parse value_pairs (list from container "VALUE-PAIRS")
         obj.value_pairs = []
-        for child in ARObject._find_all_child_elements(element, "VALUE-PAIRS"):
-            value_pairs_value = ARObject._deserialize_by_tag(child, "TextTableValuePair")
-            obj.value_pairs.append(value_pairs_value)
+        container = ARObject._find_child_element(element, "VALUE-PAIRS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.value_pairs.append(child_value)
 
         return obj
 

@@ -50,9 +50,8 @@ class DiagnosticIumpr(DiagnosticCommonElement):
         Returns:
             Deserialized DiagnosticIumpr object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticIumpr, cls).deserialize(element)
 
         # Parse event
         child = ARObject._find_child_element(element, "EVENT")
@@ -63,7 +62,7 @@ class DiagnosticIumpr(DiagnosticCommonElement):
         # Parse ratio_kind
         child = ARObject._find_child_element(element, "RATIO-KIND")
         if child is not None:
-            ratio_kind_value = child.text
+            ratio_kind_value = DiagnosticIumprKindEnum.deserialize(child)
             obj.ratio_kind = ratio_kind_value
 
         return obj

@@ -63,9 +63,8 @@ class BaseTypeDirectDefinition(BaseTypeDefinition):
         Returns:
             Deserialized BaseTypeDirectDefinition object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(BaseTypeDirectDefinition, cls).deserialize(element)
 
         # Parse base_type_encoding
         child = ARObject._find_child_element(element, "BASE-TYPE-ENCODING")
@@ -82,7 +81,7 @@ class BaseTypeDirectDefinition(BaseTypeDefinition):
         # Parse byte_order
         child = ARObject._find_child_element(element, "BYTE-ORDER")
         if child is not None:
-            byte_order_value = child.text
+            byte_order_value = ByteOrderEnum.deserialize(child)
             obj.byte_order = byte_order_value
 
         # Parse mem_alignment

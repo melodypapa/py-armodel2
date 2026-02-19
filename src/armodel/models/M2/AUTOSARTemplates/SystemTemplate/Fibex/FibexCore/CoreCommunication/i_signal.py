@@ -90,9 +90,8 @@ class ISignal(FibexElement):
         Returns:
             Deserialized ISignal object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ISignal, cls).deserialize(element)
 
         # Parse data
         child = ARObject._find_child_element(element, "DATA")
@@ -103,7 +102,7 @@ class ISignal(FibexElement):
         # Parse data_type_policy_enum
         child = ARObject._find_child_element(element, "DATA-TYPE-POLICY-ENUM")
         if child is not None:
-            data_type_policy_enum_value = child.text
+            data_type_policy_enum_value = DataTypePolicyEnum.deserialize(child)
             obj.data_type_policy_enum = data_type_policy_enum_value
 
         # Parse init_value
@@ -121,7 +120,7 @@ class ISignal(FibexElement):
         # Parse i_signal_type_enum
         child = ARObject._find_child_element(element, "I-SIGNAL-TYPE-ENUM")
         if child is not None:
-            i_signal_type_enum_value = child.text
+            i_signal_type_enum_value = ISignalTypeEnum.deserialize(child)
             obj.i_signal_type_enum = i_signal_type_enum_value
 
         # Parse length
@@ -148,11 +147,15 @@ class ISignal(FibexElement):
             timeout_value = ARObject._deserialize_by_tag(child, "ValueSpecification")
             obj.timeout = timeout_value
 
-        # Parse transformation_i_signals (list)
+        # Parse transformation_i_signals (list from container "TRANSFORMATION-I-SIGNALS")
         obj.transformation_i_signals = []
-        for child in ARObject._find_all_child_elements(element, "TRANSFORMATION-I-SIGNALS"):
-            transformation_i_signals_value = child.text
-            obj.transformation_i_signals.append(transformation_i_signals_value)
+        container = ARObject._find_child_element(element, "TRANSFORMATION-I-SIGNALS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.transformation_i_signals.append(child_value)
 
         return obj
 

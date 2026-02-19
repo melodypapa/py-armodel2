@@ -45,15 +45,18 @@ class DataDumpEntry(LinConfigurationEntry):
         Returns:
             Deserialized DataDumpEntry object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DataDumpEntry, cls).deserialize(element)
 
-        # Parse byte_values (list)
+        # Parse byte_values (list from container "BYTE-VALUES")
         obj.byte_values = []
-        for child in ARObject._find_all_child_elements(element, "BYTE-VALUES"):
-            byte_values_value = child.text
-            obj.byte_values.append(byte_values_value)
+        container = ARObject._find_child_element(element, "BYTE-VALUES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.byte_values.append(child_value)
 
         return obj
 

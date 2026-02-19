@@ -50,9 +50,8 @@ class EvaluatedVariantSet(ARElement):
         Returns:
             Deserialized EvaluatedVariantSet object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(EvaluatedVariantSet, cls).deserialize(element)
 
         # Parse approval_status
         child = ARObject._find_child_element(element, "APPROVAL-STATUS")
@@ -60,11 +59,15 @@ class EvaluatedVariantSet(ARElement):
             approval_status_value = child.text
             obj.approval_status = approval_status_value
 
-        # Parse evaluateds (list)
+        # Parse evaluateds (list from container "EVALUATEDS")
         obj.evaluateds = []
-        for child in ARObject._find_all_child_elements(element, "EVALUATEDS"):
-            evaluateds_value = ARObject._deserialize_by_tag(child, "PredefinedVariant")
-            obj.evaluateds.append(evaluateds_value)
+        container = ARObject._find_child_element(element, "EVALUATEDS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.evaluateds.append(child_value)
 
         return obj
 

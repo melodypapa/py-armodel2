@@ -59,14 +59,13 @@ class BusMirrorChannelMapping(FibexElement, ABC):
         Returns:
             Deserialized BusMirrorChannelMapping object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(BusMirrorChannelMapping, cls).deserialize(element)
 
         # Parse mirroring
         child = ARObject._find_child_element(element, "MIRRORING")
         if child is not None:
-            mirroring_value = child.text
+            mirroring_value = MirroringProtocolEnum.deserialize(child)
             obj.mirroring = mirroring_value
 
         # Parse source_channel
@@ -81,11 +80,15 @@ class BusMirrorChannelMapping(FibexElement, ABC):
             target_channel_value = ARObject._deserialize_by_tag(child, "BusMirrorChannel")
             obj.target_channel = target_channel_value
 
-        # Parse target_pdu_refs (list)
+        # Parse target_pdu_refs (list from container "TARGET-PDUS")
         obj.target_pdu_refs = []
-        for child in ARObject._find_all_child_elements(element, "TARGET-PDUS"):
-            target_pdu_refs_value = ARObject._deserialize_by_tag(child, "PduTriggering")
-            obj.target_pdu_refs.append(target_pdu_refs_value)
+        container = ARObject._find_child_element(element, "TARGET-PDUS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.target_pdu_refs.append(child_value)
 
         return obj
 

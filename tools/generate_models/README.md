@@ -37,19 +37,25 @@ generate_models/
 
 ```bash
 # From the tools directory
-python -m tools.generate_models <mapping.json> <hierarchy.json> <output_dir> [options]
+python -m tools.generate_models [options]
 
-# Example
-python -m tools.generate_models docs/json/mapping.json docs/json/hierarchy.json src/armodel/models/ --members
+# Example with defaults (uses default paths: docs/json/mapping.json, docs/json/hierarchy.json, src/armodel/models/M2)
+python -m tools.generate_models --members
+
+# Example with custom paths
+python -m tools.generate_models --mapping-file custom/mapping.json --hierarchy-file custom/hierarchy.json --output-dir custom/output --members
+
+# From project root (running from tools directory)
+python generate_models --members
 ```
 
 ### Arguments
 
-| Argument | Description |
-|----------|-------------|
-| `mapping_file` | Path to mapping.json file (required) |
-| `hierarchy_file` | Path to hierarchy.json file (required) |
-| `output_dir` | Output directory for generated files (required) |
+| Argument | Default | Description |
+|----------|---------|-------------|
+| `--mapping-file` | `docs/json/mapping.json` | Path to mapping.json file |
+| `--hierarchy-file` | `docs/json/hierarchy.json` | Path to hierarchy.json file |
+| `--output-dir` | `src/armodel/models/M2` | Output directory for generated files |
 
 ### Options
 

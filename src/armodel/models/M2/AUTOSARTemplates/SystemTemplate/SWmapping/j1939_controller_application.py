@@ -51,9 +51,8 @@ class J1939ControllerApplication(ARElement):
         Returns:
             Deserialized J1939ControllerApplication object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(J1939ControllerApplication, cls).deserialize(element)
 
         # Parse function_id
         child = ARObject._find_child_element(element, "FUNCTION-ID")

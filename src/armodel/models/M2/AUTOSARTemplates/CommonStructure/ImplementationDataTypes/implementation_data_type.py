@@ -68,9 +68,8 @@ class ImplementationDataType(AbstractImplementationDataType):
         Returns:
             Deserialized ImplementationDataType object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ImplementationDataType, cls).deserialize(element)
 
         # Parse dynamic_array_size_profile
         child = ARObject._find_child_element(element, "DYNAMIC-ARRAY-SIZE-PROFILE")
@@ -84,11 +83,15 @@ class ImplementationDataType(AbstractImplementationDataType):
             is_struct_with_optional_element_value = child.text
             obj.is_struct_with_optional_element = is_struct_with_optional_element_value
 
-        # Parse sub_elements (list)
+        # Parse sub_elements (list from container "SUB-ELEMENTS")
         obj.sub_elements = []
-        for child in ARObject._find_all_child_elements(element, "SUB-ELEMENTS"):
-            sub_elements_value = ARObject._deserialize_by_tag(child, "ImplementationDataTypeElement")
-            obj.sub_elements.append(sub_elements_value)
+        container = ARObject._find_child_element(element, "SUB-ELEMENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sub_elements.append(child_value)
 
         # Parse symbol_props
         child = ARObject._find_child_element(element, "SYMBOL-PROPS")

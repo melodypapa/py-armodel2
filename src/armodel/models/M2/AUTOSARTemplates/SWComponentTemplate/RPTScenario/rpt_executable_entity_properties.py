@@ -74,13 +74,13 @@ class RptExecutableEntityProperties(ARObject):
         # Parse rpt_execution_control
         child = ARObject._find_child_element(element, "RPT-EXECUTION-CONTROL")
         if child is not None:
-            rpt_execution_control_value = child.text
+            rpt_execution_control_value = RptExecutionControlEnum.deserialize(child)
             obj.rpt_execution_control = rpt_execution_control_value
 
         # Parse rpt_service_point_enum
         child = ARObject._find_child_element(element, "RPT-SERVICE-POINT-ENUM")
         if child is not None:
-            rpt_service_point_enum_value = child.text
+            rpt_service_point_enum_value = RptServicePointEnum.deserialize(child)
             obj.rpt_service_point_enum = rpt_service_point_enum_value
 
         return obj

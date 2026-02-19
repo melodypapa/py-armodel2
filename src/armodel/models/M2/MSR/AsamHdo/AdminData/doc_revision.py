@@ -77,11 +77,15 @@ class DocRevision(ARObject):
             issued_by_value = child.text
             obj.issued_by = issued_by_value
 
-        # Parse modifications (list)
+        # Parse modifications (list from container "MODIFICATIONS")
         obj.modifications = []
-        for child in ARObject._find_all_child_elements(element, "MODIFICATIONS"):
-            modifications_value = ARObject._deserialize_by_tag(child, "Modification")
-            obj.modifications.append(modifications_value)
+        container = ARObject._find_child_element(element, "MODIFICATIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.modifications.append(child_value)
 
         # Parse revision_label_string
         child = ARObject._find_child_element(element, "REVISION-LABEL-STRING")

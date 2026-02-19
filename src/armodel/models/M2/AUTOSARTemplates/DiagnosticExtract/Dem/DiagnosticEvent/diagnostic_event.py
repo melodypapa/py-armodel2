@@ -67,9 +67,8 @@ class DiagnosticEvent(DiagnosticCommonElement):
         Returns:
             Deserialized DiagnosticEvent object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticEvent, cls).deserialize(element)
 
         # Parse associated
         child = ARObject._find_child_element(element, "ASSOCIATED")
@@ -80,7 +79,7 @@ class DiagnosticEvent(DiagnosticCommonElement):
         # Parse clear_event
         child = ARObject._find_child_element(element, "CLEAR-EVENT")
         if child is not None:
-            clear_event_value = child.text
+            clear_event_value = DiagnosticClearEventAllowedBehaviorEnum.deserialize(child)
             obj.clear_event = clear_event_value
 
         # Parse confirmation
@@ -89,22 +88,26 @@ class DiagnosticEvent(DiagnosticCommonElement):
             confirmation_value = child.text
             obj.confirmation = confirmation_value
 
-        # Parse connecteds (list)
+        # Parse connecteds (list from container "CONNECTEDS")
         obj.connecteds = []
-        for child in ARObject._find_all_child_elements(element, "CONNECTEDS"):
-            connecteds_value = child.text
-            obj.connecteds.append(connecteds_value)
+        container = ARObject._find_child_element(element, "CONNECTEDS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.connecteds.append(child_value)
 
         # Parse event_clear
         child = ARObject._find_child_element(element, "EVENT-CLEAR")
         if child is not None:
-            event_clear_value = child.text
+            event_clear_value = DiagnosticEventClearAllowedEnum.deserialize(child)
             obj.event_clear = event_clear_value
 
         # Parse event_kind
         child = ARObject._find_child_element(element, "EVENT-KIND")
         if child is not None:
-            event_kind_value = child.text
+            event_kind_value = DiagnosticEventKindEnum.deserialize(child)
             obj.event_kind = event_kind_value
 
         # Parse prestorage

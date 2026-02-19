@@ -132,135 +132,218 @@ class BswInternalBehavior(InternalBehavior):
         Returns:
             Deserialized BswInternalBehavior object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(BswInternalBehavior, cls).deserialize(element)
 
-        # Parse ar_typed_per_instance_memorie_refs (list)
+        # Parse ar_typed_per_instance_memorie_refs (list from container "AR-TYPED-PER-INSTANCE-MEMORIES")
         obj.ar_typed_per_instance_memorie_refs = []
-        for child in ARObject._find_all_child_elements(element, "AR-TYPED-PER-INSTANCE-MEMORIES"):
-            ar_typed_per_instance_memorie_refs_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
-            obj.ar_typed_per_instance_memorie_refs.append(ar_typed_per_instance_memorie_refs_value)
+        container = ARObject._find_child_element(element, "AR-TYPED-PER-INSTANCE-MEMORIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.ar_typed_per_instance_memorie_refs.append(child_value)
 
-        # Parse bsw_per_instance_memory_policies (list)
+        # Parse bsw_per_instance_memory_policies (list from container "BSW-PER-INSTANCE-MEMORY-POLICIES")
         obj.bsw_per_instance_memory_policies = []
-        for child in ARObject._find_all_child_elements(element, "BSW-PER-INSTANCE-MEMORY-POLICIES"):
-            bsw_per_instance_memory_policies_value = ARObject._deserialize_by_tag(child, "BswPerInstanceMemoryPolicy")
-            obj.bsw_per_instance_memory_policies.append(bsw_per_instance_memory_policies_value)
+        container = ARObject._find_child_element(element, "BSW-PER-INSTANCE-MEMORY-POLICIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.bsw_per_instance_memory_policies.append(child_value)
 
-        # Parse client_policies (list)
+        # Parse client_policies (list from container "CLIENT-POLICIES")
         obj.client_policies = []
-        for child in ARObject._find_all_child_elements(element, "CLIENT-POLICIES"):
-            client_policies_value = ARObject._deserialize_by_tag(child, "BswClientPolicy")
-            obj.client_policies.append(client_policies_value)
+        container = ARObject._find_child_element(element, "CLIENT-POLICIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.client_policies.append(child_value)
 
-        # Parse distinguisheds (list)
+        # Parse distinguisheds (list from container "DISTINGUISHEDS")
         obj.distinguisheds = []
-        for child in ARObject._find_all_child_elements(element, "DISTINGUISHEDS"):
-            distinguisheds_value = ARObject._deserialize_by_tag(child, "BswDistinguishedPartition")
-            obj.distinguisheds.append(distinguisheds_value)
+        container = ARObject._find_child_element(element, "DISTINGUISHEDS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.distinguisheds.append(child_value)
 
-        # Parse entities (list)
+        # Parse entities (list from container "ENTITIES")
         obj.entities = []
-        for child in ARObject._find_all_child_elements(element, "ENTITIES"):
-            entities_value = ARObject._deserialize_by_tag(child, "BswModuleEntity")
-            obj.entities.append(entities_value)
+        container = ARObject._find_child_element(element, "ENTITIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.entities.append(child_value)
 
-        # Parse events (list)
+        # Parse events (list from container "EVENTS")
         obj.events = []
-        for child in ARObject._find_all_child_elements(element, "EVENTS"):
-            events_value = ARObject._deserialize_by_tag(child, "BswEvent")
-            obj.events.append(events_value)
+        container = ARObject._find_child_element(element, "EVENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.events.append(child_value)
 
-        # Parse exclusive_areas (list)
+        # Parse exclusive_areas (list from container "EXCLUSIVE-AREAS")
         obj.exclusive_areas = []
-        for child in ARObject._find_all_child_elements(element, "EXCLUSIVE-AREAS"):
-            exclusive_areas_value = ARObject._deserialize_by_tag(child, "BswExclusiveAreaPolicy")
-            obj.exclusive_areas.append(exclusive_areas_value)
+        container = ARObject._find_child_element(element, "EXCLUSIVE-AREAS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.exclusive_areas.append(child_value)
 
-        # Parse included_data_type_set_refs (list)
+        # Parse included_data_type_set_refs (list from container "INCLUDED-DATA-TYPE-SETS")
         obj.included_data_type_set_refs = []
-        for child in ARObject._find_all_child_elements(element, "INCLUDED-DATA-TYPE-SETS"):
-            included_data_type_set_refs_value = ARObject._deserialize_by_tag(child, "IncludedDataTypeSet")
-            obj.included_data_type_set_refs.append(included_data_type_set_refs_value)
+        container = ARObject._find_child_element(element, "INCLUDED-DATA-TYPE-SETS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.included_data_type_set_refs.append(child_value)
 
-        # Parse included_modes (list)
+        # Parse included_modes (list from container "INCLUDED-MODES")
         obj.included_modes = []
-        for child in ARObject._find_all_child_elements(element, "INCLUDED-MODES"):
-            included_modes_value = ARObject._deserialize_by_tag(child, "IncludedModeDeclarationGroupSet")
-            obj.included_modes.append(included_modes_value)
+        container = ARObject._find_child_element(element, "INCLUDED-MODES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.included_modes.append(child_value)
 
-        # Parse internal_refs (list)
+        # Parse internal_refs (list from container "INTERNALS")
         obj.internal_refs = []
-        for child in ARObject._find_all_child_elements(element, "INTERNALS"):
-            internal_refs_value = ARObject._deserialize_by_tag(child, "BswInternalTriggeringPoint")
-            obj.internal_refs.append(internal_refs_value)
+        container = ARObject._find_child_element(element, "INTERNALS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.internal_refs.append(child_value)
 
-        # Parse mode_receivers (list)
+        # Parse mode_receivers (list from container "MODE-RECEIVERS")
         obj.mode_receivers = []
-        for child in ARObject._find_all_child_elements(element, "MODE-RECEIVERS"):
-            mode_receivers_value = ARObject._deserialize_by_tag(child, "BswModeReceiverPolicy")
-            obj.mode_receivers.append(mode_receivers_value)
+        container = ARObject._find_child_element(element, "MODE-RECEIVERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.mode_receivers.append(child_value)
 
-        # Parse mode_senders (list)
+        # Parse mode_senders (list from container "MODE-SENDERS")
         obj.mode_senders = []
-        for child in ARObject._find_all_child_elements(element, "MODE-SENDERS"):
-            mode_senders_value = ARObject._deserialize_by_tag(child, "BswModeSenderPolicy")
-            obj.mode_senders.append(mode_senders_value)
+        container = ARObject._find_child_element(element, "MODE-SENDERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.mode_senders.append(child_value)
 
-        # Parse parameter_policies (list)
+        # Parse parameter_policies (list from container "PARAMETER-POLICIES")
         obj.parameter_policies = []
-        for child in ARObject._find_all_child_elements(element, "PARAMETER-POLICIES"):
-            parameter_policies_value = child.text
-            obj.parameter_policies.append(parameter_policies_value)
+        container = ARObject._find_child_element(element, "PARAMETER-POLICIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.parameter_policies.append(child_value)
 
-        # Parse per_instances (list)
+        # Parse per_instances (list from container "PER-INSTANCES")
         obj.per_instances = []
-        for child in ARObject._find_all_child_elements(element, "PER-INSTANCES"):
-            per_instances_value = ARObject._deserialize_by_tag(child, "ParameterDataPrototype")
-            obj.per_instances.append(per_instances_value)
+        container = ARObject._find_child_element(element, "PER-INSTANCES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.per_instances.append(child_value)
 
-        # Parse reception_policies (list)
+        # Parse reception_policies (list from container "RECEPTION-POLICIES")
         obj.reception_policies = []
-        for child in ARObject._find_all_child_elements(element, "RECEPTION-POLICIES"):
-            reception_policies_value = ARObject._deserialize_by_tag(child, "BswDataReceptionPolicy")
-            obj.reception_policies.append(reception_policies_value)
+        container = ARObject._find_child_element(element, "RECEPTION-POLICIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.reception_policies.append(child_value)
 
-        # Parse released_trigger_refs (list)
+        # Parse released_trigger_refs (list from container "RELEASED-TRIGGERS")
         obj.released_trigger_refs = []
-        for child in ARObject._find_all_child_elements(element, "RELEASED-TRIGGERS"):
-            released_trigger_refs_value = child.text
-            obj.released_trigger_refs.append(released_trigger_refs_value)
+        container = ARObject._find_child_element(element, "RELEASED-TRIGGERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.released_trigger_refs.append(child_value)
 
-        # Parse scheduler_names (list)
+        # Parse scheduler_names (list from container "SCHEDULER-NAMES")
         obj.scheduler_names = []
-        for child in ARObject._find_all_child_elements(element, "SCHEDULER-NAMES"):
-            scheduler_names_value = ARObject._deserialize_by_tag(child, "BswSchedulerNamePrefix")
-            obj.scheduler_names.append(scheduler_names_value)
+        container = ARObject._find_child_element(element, "SCHEDULER-NAMES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.scheduler_names.append(child_value)
 
-        # Parse send_policies (list)
+        # Parse send_policies (list from container "SEND-POLICIES")
         obj.send_policies = []
-        for child in ARObject._find_all_child_elements(element, "SEND-POLICIES"):
-            send_policies_value = child.text
-            obj.send_policies.append(send_policies_value)
+        container = ARObject._find_child_element(element, "SEND-POLICIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.send_policies.append(child_value)
 
-        # Parse services (list)
+        # Parse services (list from container "SERVICES")
         obj.services = []
-        for child in ARObject._find_all_child_elements(element, "SERVICES"):
-            services_value = child.text
-            obj.services.append(services_value)
+        container = ARObject._find_child_element(element, "SERVICES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.services.append(child_value)
 
-        # Parse trigger_direct_refs (list)
+        # Parse trigger_direct_refs (list from container "TRIGGER-DIRECTS")
         obj.trigger_direct_refs = []
-        for child in ARObject._find_all_child_elements(element, "TRIGGER-DIRECTS"):
-            trigger_direct_refs_value = ARObject._deserialize_by_tag(child, "BswTriggerDirectImplementation")
-            obj.trigger_direct_refs.append(trigger_direct_refs_value)
+        container = ARObject._find_child_element(element, "TRIGGER-DIRECTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.trigger_direct_refs.append(child_value)
 
-        # Parse variation_point_proxies (list)
+        # Parse variation_point_proxies (list from container "VARIATION-POINT-PROXIES")
         obj.variation_point_proxies = []
-        for child in ARObject._find_all_child_elements(element, "VARIATION-POINT-PROXIES"):
-            variation_point_proxies_value = ARObject._deserialize_by_tag(child, "VariationPointProxy")
-            obj.variation_point_proxies.append(variation_point_proxies_value)
+        container = ARObject._find_child_element(element, "VARIATION-POINT-PROXIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.variation_point_proxies.append(child_value)
 
         return obj
 

@@ -48,9 +48,8 @@ class EcucQuery(Identifiable):
         Returns:
             Deserialized EcucQuery object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(EcucQuery, cls).deserialize(element)
 
         # Parse ecuc_query
         child = ARObject._find_child_element(element, "ECUC-QUERY")

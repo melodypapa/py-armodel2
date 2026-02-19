@@ -49,7 +49,7 @@ class RunnableEntityArgument(ARObject):
         # Parse symbol
         child = ARObject._find_child_element(element, "SYMBOL")
         if child is not None:
-            symbol_value = child.text
+            symbol_value = ARObject._deserialize_by_tag(child, "CIdentifier")
             obj.symbol = symbol_value
 
         return obj

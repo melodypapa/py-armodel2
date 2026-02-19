@@ -66,39 +66,58 @@ class PhysicalChannel(Identifiable, ABC):
         Returns:
             Deserialized PhysicalChannel object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(PhysicalChannel, cls).deserialize(element)
 
-        # Parse comm_connectors (list)
+        # Parse comm_connectors (list from container "COMM-CONNECTORS")
         obj.comm_connectors = []
-        for child in ARObject._find_all_child_elements(element, "COMM-CONNECTORS"):
-            comm_connectors_value = ARObject._deserialize_by_tag(child, "CommunicationConnector")
-            obj.comm_connectors.append(comm_connectors_value)
+        container = ARObject._find_child_element(element, "COMM-CONNECTORS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.comm_connectors.append(child_value)
 
-        # Parse frame_triggering_refs (list)
+        # Parse frame_triggering_refs (list from container "FRAME-TRIGGERINGS")
         obj.frame_triggering_refs = []
-        for child in ARObject._find_all_child_elements(element, "FRAME-TRIGGERINGS"):
-            frame_triggering_refs_value = ARObject._deserialize_by_tag(child, "FrameTriggering")
-            obj.frame_triggering_refs.append(frame_triggering_refs_value)
+        container = ARObject._find_child_element(element, "FRAME-TRIGGERINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.frame_triggering_refs.append(child_value)
 
-        # Parse i_signal_refs (list)
+        # Parse i_signal_refs (list from container "I-SIGNALS")
         obj.i_signal_refs = []
-        for child in ARObject._find_all_child_elements(element, "I-SIGNALS"):
-            i_signal_refs_value = ARObject._deserialize_by_tag(child, "ISignalTriggering")
-            obj.i_signal_refs.append(i_signal_refs_value)
+        container = ARObject._find_child_element(element, "I-SIGNALS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.i_signal_refs.append(child_value)
 
-        # Parse manageds (list)
+        # Parse manageds (list from container "MANAGEDS")
         obj.manageds = []
-        for child in ARObject._find_all_child_elements(element, "MANAGEDS"):
-            manageds_value = ARObject._deserialize_by_tag(child, "PhysicalChannel")
-            obj.manageds.append(manageds_value)
+        container = ARObject._find_child_element(element, "MANAGEDS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.manageds.append(child_value)
 
-        # Parse pdu_triggering_refs (list)
+        # Parse pdu_triggering_refs (list from container "PDU-TRIGGERINGS")
         obj.pdu_triggering_refs = []
-        for child in ARObject._find_all_child_elements(element, "PDU-TRIGGERINGS"):
-            pdu_triggering_refs_value = ARObject._deserialize_by_tag(child, "PduTriggering")
-            obj.pdu_triggering_refs.append(pdu_triggering_refs_value)
+        container = ARObject._find_child_element(element, "PDU-TRIGGERINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.pdu_triggering_refs.append(child_value)
 
         return obj
 

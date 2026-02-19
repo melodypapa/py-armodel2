@@ -59,9 +59,8 @@ class SwAxisGrouped(SwCalprmAxisTypeProps):
         Returns:
             Deserialized SwAxisGrouped object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SwAxisGrouped, cls).deserialize(element)
 
         # Parse shared_axis_type
         child = ARObject._find_child_element(element, "SHARED-AXIS-TYPE")

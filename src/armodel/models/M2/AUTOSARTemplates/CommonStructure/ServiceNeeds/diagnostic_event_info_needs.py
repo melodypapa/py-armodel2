@@ -48,9 +48,8 @@ class DiagnosticEventInfoNeeds(DiagnosticCapabilityElement):
         Returns:
             Deserialized DiagnosticEventInfoNeeds object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticEventInfoNeeds, cls).deserialize(element)
 
         # Parse obd_dtc_number
         child = ARObject._find_child_element(element, "OBD-DTC-NUMBER")

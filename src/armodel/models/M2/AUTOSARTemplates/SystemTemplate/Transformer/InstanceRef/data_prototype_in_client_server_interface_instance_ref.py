@@ -58,9 +58,8 @@ class DataPrototypeInClientServerInterfaceInstanceRef(DataPrototypeInPortInterfa
         Returns:
             Deserialized DataPrototypeInClientServerInterfaceInstanceRef object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DataPrototypeInClientServerInterfaceInstanceRef, cls).deserialize(element)
 
         # Parse base
         child = ARObject._find_child_element(element, "BASE")
@@ -68,11 +67,15 @@ class DataPrototypeInClientServerInterfaceInstanceRef(DataPrototypeInPortInterfa
             base_value = ARObject._deserialize_by_tag(child, "ClientServerInterface")
             obj.base = base_value
 
-        # Parse context_datas (list)
+        # Parse context_datas (list from container "CONTEXT-DATAS")
         obj.context_datas = []
-        for child in ARObject._find_all_child_elements(element, "CONTEXT-DATAS"):
-            context_datas_value = child.text
-            obj.context_datas.append(context_datas_value)
+        container = ARObject._find_child_element(element, "CONTEXT-DATAS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.context_datas.append(child_value)
 
         # Parse root_data_prototype_in_cs_ref
         child = ARObject._find_child_element(element, "ROOT-DATA-PROTOTYPE-IN-CS")

@@ -54,19 +54,19 @@ class RptSwPrototypingAccess(ARObject):
         # Parse rpt_hook_access
         child = ARObject._find_child_element(element, "RPT-HOOK-ACCESS")
         if child is not None:
-            rpt_hook_access_value = child.text
+            rpt_hook_access_value = RptAccessEnum.deserialize(child)
             obj.rpt_hook_access = rpt_hook_access_value
 
         # Parse rpt_read_access
         child = ARObject._find_child_element(element, "RPT-READ-ACCESS")
         if child is not None:
-            rpt_read_access_value = child.text
+            rpt_read_access_value = RptAccessEnum.deserialize(child)
             obj.rpt_read_access = rpt_read_access_value
 
         # Parse rpt_write_access
         child = ARObject._find_child_element(element, "RPT-WRITE-ACCESS")
         if child is not None:
-            rpt_write_access_value = child.text
+            rpt_write_access_value = RptAccessEnum.deserialize(child)
             obj.rpt_write_access = rpt_write_access_value
 
         return obj

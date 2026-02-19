@@ -57,9 +57,8 @@ class SwcImplementation(Implementation):
         Returns:
             Deserialized SwcImplementation object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SwcImplementation, cls).deserialize(element)
 
         # Parse behavior
         child = ARObject._find_child_element(element, "BEHAVIOR")
@@ -67,11 +66,15 @@ class SwcImplementation(Implementation):
             behavior_value = ARObject._deserialize_by_tag(child, "SwcInternalBehavior")
             obj.behavior = behavior_value
 
-        # Parse per_instance_memories (list)
+        # Parse per_instance_memories (list from container "PER-INSTANCE-MEMORIES")
         obj.per_instance_memories = []
-        for child in ARObject._find_all_child_elements(element, "PER-INSTANCE-MEMORIES"):
-            per_instance_memories_value = ARObject._deserialize_by_tag(child, "PerInstanceMemory")
-            obj.per_instance_memories.append(per_instance_memories_value)
+        container = ARObject._find_child_element(element, "PER-INSTANCE-MEMORIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.per_instance_memories.append(child_value)
 
         # Parse required
         child = ARObject._find_child_element(element, "REQUIRED")

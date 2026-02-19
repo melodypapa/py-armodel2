@@ -55,15 +55,18 @@ class FlexrayFrameTriggering(FrameTriggering):
         Returns:
             Deserialized FlexrayFrameTriggering object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(FlexrayFrameTriggering, cls).deserialize(element)
 
-        # Parse absolutelies (list)
+        # Parse absolutelies (list from container "ABSOLUTELIES")
         obj.absolutelies = []
-        for child in ARObject._find_all_child_elements(element, "ABSOLUTELIES"):
-            absolutelies_value = ARObject._deserialize_by_tag(child, "FlexrayAbsolutelyScheduledTiming")
-            obj.absolutelies.append(absolutelies_value)
+        container = ARObject._find_child_element(element, "ABSOLUTELIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.absolutelies.append(child_value)
 
         # Parse allow_dynamic
         child = ARObject._find_child_element(element, "ALLOW-DYNAMIC")

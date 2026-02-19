@@ -46,9 +46,8 @@ class MacMulticastConfiguration(NetworkEndpointAddress):
         Returns:
             Deserialized MacMulticastConfiguration object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(MacMulticastConfiguration, cls).deserialize(element)
 
         # Parse mac_multicast_group_group_ref
         child = ARObject._find_child_element(element, "MAC-MULTICAST-GROUP-GROUP")

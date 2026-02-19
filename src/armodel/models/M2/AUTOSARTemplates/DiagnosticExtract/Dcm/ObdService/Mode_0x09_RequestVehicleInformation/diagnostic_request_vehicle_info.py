@@ -47,9 +47,8 @@ class DiagnosticRequestVehicleInfo(DiagnosticServiceInstance):
         Returns:
             Deserialized DiagnosticRequestVehicleInfo object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticRequestVehicleInfo, cls).deserialize(element)
 
         # Parse info_type
         child = ARObject._find_child_element(element, "INFO-TYPE")

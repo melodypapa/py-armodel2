@@ -45,15 +45,18 @@ class HwCategory(ARElement):
         Returns:
             Deserialized HwCategory object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(HwCategory, cls).deserialize(element)
 
-        # Parse hw_attribute_defs (list)
+        # Parse hw_attribute_defs (list from container "HW-ATTRIBUTE-DEFS")
         obj.hw_attribute_defs = []
-        for child in ARObject._find_all_child_elements(element, "HW-ATTRIBUTE-DEFS"):
-            hw_attribute_defs_value = ARObject._deserialize_by_tag(child, "HwAttributeDef")
-            obj.hw_attribute_defs.append(hw_attribute_defs_value)
+        container = ARObject._find_child_element(element, "HW-ATTRIBUTE-DEFS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.hw_attribute_defs.append(child_value)
 
         return obj
 

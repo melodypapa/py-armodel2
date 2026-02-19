@@ -54,32 +54,43 @@ class RptExecutableEntity(Identifiable):
         Returns:
             Deserialized RptExecutableEntity object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(RptExecutableEntity, cls).deserialize(element)
 
-        # Parse rpt_executable_entities (list)
+        # Parse rpt_executable_entities (list from container "RPT-EXECUTABLE-ENTITIES")
         obj.rpt_executable_entities = []
-        for child in ARObject._find_all_child_elements(element, "RPT-EXECUTABLE-ENTITIES"):
-            rpt_executable_entities_value = ARObject._deserialize_by_tag(child, "RptExecutableEntity")
-            obj.rpt_executable_entities.append(rpt_executable_entities_value)
+        container = ARObject._find_child_element(element, "RPT-EXECUTABLE-ENTITIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.rpt_executable_entities.append(child_value)
 
-        # Parse rpt_reads (list)
+        # Parse rpt_reads (list from container "RPT-READS")
         obj.rpt_reads = []
-        for child in ARObject._find_all_child_elements(element, "RPT-READS"):
-            rpt_reads_value = ARObject._deserialize_by_tag(child, "RoleBasedMcDataAssignment")
-            obj.rpt_reads.append(rpt_reads_value)
+        container = ARObject._find_child_element(element, "RPT-READS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.rpt_reads.append(child_value)
 
-        # Parse rpt_writes (list)
+        # Parse rpt_writes (list from container "RPT-WRITES")
         obj.rpt_writes = []
-        for child in ARObject._find_all_child_elements(element, "RPT-WRITES"):
-            rpt_writes_value = ARObject._deserialize_by_tag(child, "RoleBasedMcDataAssignment")
-            obj.rpt_writes.append(rpt_writes_value)
+        container = ARObject._find_child_element(element, "RPT-WRITES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.rpt_writes.append(child_value)
 
         # Parse symbol
         child = ARObject._find_child_element(element, "SYMBOL")
         if child is not None:
-            symbol_value = child.text
+            symbol_value = ARObject._deserialize_by_tag(child, "CIdentifier")
             obj.symbol = symbol_value
 
         return obj

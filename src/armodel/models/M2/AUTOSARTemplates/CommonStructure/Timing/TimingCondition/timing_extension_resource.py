@@ -52,27 +52,38 @@ class TimingExtensionResource(Identifiable):
         Returns:
             Deserialized TimingExtensionResource object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TimingExtensionResource, cls).deserialize(element)
 
-        # Parse timing_arguments (list)
+        # Parse timing_arguments (list from container "TIMING-ARGUMENTS")
         obj.timing_arguments = []
-        for child in ARObject._find_all_child_elements(element, "TIMING-ARGUMENTS"):
-            timing_arguments_value = ARObject._deserialize_by_tag(child, "AutosarOperationArgumentInstance")
-            obj.timing_arguments.append(timing_arguments_value)
+        container = ARObject._find_child_element(element, "TIMING-ARGUMENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.timing_arguments.append(child_value)
 
-        # Parse timing_modes (list)
+        # Parse timing_modes (list from container "TIMING-MODES")
         obj.timing_modes = []
-        for child in ARObject._find_all_child_elements(element, "TIMING-MODES"):
-            timing_modes_value = ARObject._deserialize_by_tag(child, "TimingModeInstance")
-            obj.timing_modes.append(timing_modes_value)
+        container = ARObject._find_child_element(element, "TIMING-MODES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.timing_modes.append(child_value)
 
-        # Parse timing_variables (list)
+        # Parse timing_variables (list from container "TIMING-VARIABLES")
         obj.timing_variables = []
-        for child in ARObject._find_all_child_elements(element, "TIMING-VARIABLES"):
-            timing_variables_value = child.text
-            obj.timing_variables.append(timing_variables_value)
+        container = ARObject._find_child_element(element, "TIMING-VARIABLES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.timing_variables.append(child_value)
 
         return obj
 

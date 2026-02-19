@@ -45,9 +45,8 @@ class BinaryManifestRequireResource(BinaryManifestResource):
         Returns:
             Deserialized BinaryManifestRequireResource object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(BinaryManifestRequireResource, cls).deserialize(element)
 
         # Parse connection_is
         child = ARObject._find_child_element(element, "CONNECTION-IS")

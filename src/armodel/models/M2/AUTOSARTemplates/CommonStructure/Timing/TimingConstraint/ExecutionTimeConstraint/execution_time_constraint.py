@@ -59,9 +59,8 @@ class ExecutionTimeConstraint(TimingConstraint):
         Returns:
             Deserialized ExecutionTimeConstraint object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ExecutionTimeConstraint, cls).deserialize(element)
 
         # Parse component
         child = ARObject._find_child_element(element, "COMPONENT")
@@ -78,7 +77,7 @@ class ExecutionTimeConstraint(TimingConstraint):
         # Parse execution_time
         child = ARObject._find_child_element(element, "EXECUTION-TIME")
         if child is not None:
-            execution_time_value = child.text
+            execution_time_value = ExecutionTimeTypeEnum.deserialize(child)
             obj.execution_time = execution_time_value
 
         # Parse maximum

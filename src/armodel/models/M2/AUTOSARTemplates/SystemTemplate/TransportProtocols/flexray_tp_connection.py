@@ -73,9 +73,8 @@ class FlexrayTpConnection(TpConnection):
         Returns:
             Deserialized FlexrayTpConnection object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(FlexrayTpConnection, cls).deserialize(element)
 
         # Parse bandwidth
         child = ARObject._find_child_element(element, "BANDWIDTH")
@@ -95,11 +94,15 @@ class FlexrayTpConnection(TpConnection):
             multicast_value = ARObject._deserialize_by_tag(child, "TpAddress")
             obj.multicast = multicast_value
 
-        # Parse receivers (list)
+        # Parse receivers (list from container "RECEIVERS")
         obj.receivers = []
-        for child in ARObject._find_all_child_elements(element, "RECEIVERS"):
-            receivers_value = ARObject._deserialize_by_tag(child, "FlexrayTpNode")
-            obj.receivers.append(receivers_value)
+        container = ARObject._find_child_element(element, "RECEIVERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.receivers.append(child_value)
 
         # Parse reversed_tp_sdu
         child = ARObject._find_child_element(element, "REVERSED-TP-SDU")

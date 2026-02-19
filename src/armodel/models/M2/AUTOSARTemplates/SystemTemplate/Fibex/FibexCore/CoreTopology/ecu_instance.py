@@ -129,27 +129,38 @@ class EcuInstance(FibexElement):
         Returns:
             Deserialized EcuInstance object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(EcuInstance, cls).deserialize(element)
 
-        # Parse associated_com_refs (list)
+        # Parse associated_com_refs (list from container "ASSOCIATED-COMS")
         obj.associated_com_refs = []
-        for child in ARObject._find_all_child_elements(element, "ASSOCIATED-COMS"):
-            associated_com_refs_value = ARObject._deserialize_by_tag(child, "ISignalIPduGroup")
-            obj.associated_com_refs.append(associated_com_refs_value)
+        container = ARObject._find_child_element(element, "ASSOCIATED-COMS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.associated_com_refs.append(child_value)
 
-        # Parse associateds (list)
+        # Parse associateds (list from container "ASSOCIATEDS")
         obj.associateds = []
-        for child in ARObject._find_all_child_elements(element, "ASSOCIATEDS"):
-            associateds_value = ARObject._deserialize_by_tag(child, "ConsumedProvidedServiceInstanceGroup")
-            obj.associateds.append(associateds_value)
+        container = ARObject._find_child_element(element, "ASSOCIATEDS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.associateds.append(child_value)
 
-        # Parse associated_pdur_refs (list)
+        # Parse associated_pdur_refs (list from container "ASSOCIATED-PDURS")
         obj.associated_pdur_refs = []
-        for child in ARObject._find_all_child_elements(element, "ASSOCIATED-PDURS"):
-            associated_pdur_refs_value = ARObject._deserialize_by_tag(child, "PdurIPduGroup")
-            obj.associated_pdur_refs.append(associated_pdur_refs_value)
+        container = ARObject._find_child_element(element, "ASSOCIATED-PDURS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.associated_pdur_refs.append(child_value)
 
         # Parse channel
         child = ARObject._find_child_element(element, "CHANNEL")
@@ -175,17 +186,25 @@ class EcuInstance(FibexElement):
             com_enable_value = child.text
             obj.com_enable = com_enable_value
 
-        # Parse comm_controllers (list)
+        # Parse comm_controllers (list from container "COMM-CONTROLLERS")
         obj.comm_controllers = []
-        for child in ARObject._find_all_child_elements(element, "COMM-CONTROLLERS"):
-            comm_controllers_value = child.text
-            obj.comm_controllers.append(comm_controllers_value)
+        container = ARObject._find_child_element(element, "COMM-CONTROLLERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.comm_controllers.append(child_value)
 
-        # Parse connectors (list)
+        # Parse connectors (list from container "CONNECTORS")
         obj.connectors = []
-        for child in ARObject._find_all_child_elements(element, "CONNECTORS"):
-            connectors_value = child.text
-            obj.connectors.append(connectors_value)
+        container = ARObject._find_child_element(element, "CONNECTORS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.connectors.append(child_value)
 
         # Parse dlt_config
         child = ARObject._find_child_element(element, "DLT-CONFIG")
@@ -199,11 +218,15 @@ class EcuInstance(FibexElement):
             do_ip_config_value = ARObject._deserialize_by_tag(child, "DoIpConfig")
             obj.do_ip_config = do_ip_config_value
 
-        # Parse ecu_task_proxies (list)
+        # Parse ecu_task_proxies (list from container "ECU-TASK-PROXIES")
         obj.ecu_task_proxies = []
-        for child in ARObject._find_all_child_elements(element, "ECU-TASK-PROXIES"):
-            ecu_task_proxies_value = ARObject._deserialize_by_tag(child, "OsTaskProxy")
-            obj.ecu_task_proxies.append(ecu_task_proxies_value)
+        container = ARObject._find_child_element(element, "ECU-TASK-PROXIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.ecu_task_proxies.append(child_value)
 
         # Parse eth_switch_port
         child = ARObject._find_child_element(element, "ETH-SWITCH-PORT")
@@ -211,17 +234,25 @@ class EcuInstance(FibexElement):
             eth_switch_port_value = child.text
             obj.eth_switch_port = eth_switch_port_value
 
-        # Parse firewall_rules (list)
+        # Parse firewall_rules (list from container "FIREWALL-RULES")
         obj.firewall_rules = []
-        for child in ARObject._find_all_child_elements(element, "FIREWALL-RULES"):
-            firewall_rules_value = ARObject._deserialize_by_tag(child, "StateDependentFirewall")
-            obj.firewall_rules.append(firewall_rules_value)
+        container = ARObject._find_child_element(element, "FIREWALL-RULES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.firewall_rules.append(child_value)
 
-        # Parse partitions (list)
+        # Parse partitions (list from container "PARTITIONS")
         obj.partitions = []
-        for child in ARObject._find_all_child_elements(element, "PARTITIONS"):
-            partitions_value = ARObject._deserialize_by_tag(child, "EcuPartition")
-            obj.partitions.append(partitions_value)
+        container = ARObject._find_child_element(element, "PARTITIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.partitions.append(child_value)
 
         # Parse pnc_nm_request
         child = ARObject._find_child_element(element, "PNC-NM-REQUEST")

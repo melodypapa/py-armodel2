@@ -63,17 +63,25 @@ class ReferenceBase(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse global_element_refs (list)
+        # Parse global_element_refs (list from container "GLOBAL-ELEMENTS")
         obj.global_element_refs = []
-        for child in ARObject._find_all_child_elements(element, "GLOBAL-ELEMENTS"):
-            global_element_refs_value = child.text
-            obj.global_element_refs.append(global_element_refs_value)
+        container = ARObject._find_child_element(element, "GLOBAL-ELEMENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.global_element_refs.append(child_value)
 
-        # Parse global_ins (list)
+        # Parse global_ins (list from container "GLOBAL-INS")
         obj.global_ins = []
-        for child in ARObject._find_all_child_elements(element, "GLOBAL-INS"):
-            global_ins_value = ARObject._deserialize_by_tag(child, "ARPackage")
-            obj.global_ins.append(global_ins_value)
+        container = ARObject._find_child_element(element, "GLOBAL-INS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.global_ins.append(child_value)
 
         # Parse is_default
         child = ARObject._find_child_element(element, "IS-DEFAULT")
@@ -90,7 +98,7 @@ class ReferenceBase(ARObject):
         # Parse short_label
         child = ARObject._find_child_element(element, "SHORT-LABEL")
         if child is not None:
-            short_label_value = child.text
+            short_label_value = ARObject._deserialize_by_tag(child, "Identifier")
             obj.short_label = short_label_value
 
         return obj

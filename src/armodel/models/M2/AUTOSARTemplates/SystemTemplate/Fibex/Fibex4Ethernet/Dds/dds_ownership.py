@@ -49,7 +49,7 @@ class DdsOwnership(ARObject):
         # Parse ownership_kind
         child = ARObject._find_child_element(element, "OWNERSHIP-KIND")
         if child is not None:
-            ownership_kind_value = child.text
+            ownership_kind_value = DdsOwnershipKindEnum.deserialize(child)
             obj.ownership_kind = ownership_kind_value
 
         return obj

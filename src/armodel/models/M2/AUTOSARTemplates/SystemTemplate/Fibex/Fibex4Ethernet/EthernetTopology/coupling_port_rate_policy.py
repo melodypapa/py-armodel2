@@ -79,11 +79,15 @@ class CouplingPortRatePolicy(ARObject):
             time_interval_value = child.text
             obj.time_interval = time_interval_value
 
-        # Parse v_lans (list)
+        # Parse v_lans (list from container "V-LANS")
         obj.v_lans = []
-        for child in ARObject._find_all_child_elements(element, "V-LANS"):
-            v_lans_value = child.text
-            obj.v_lans.append(v_lans_value)
+        container = ARObject._find_child_element(element, "V-LANS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.v_lans.append(child_value)
 
         return obj
 

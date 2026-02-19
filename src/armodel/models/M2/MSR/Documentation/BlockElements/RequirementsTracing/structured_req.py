@@ -85,15 +85,18 @@ class StructuredReq(Paginateable):
         Returns:
             Deserialized StructuredReq object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(StructuredReq, cls).deserialize(element)
 
-        # Parse applies_tos (list)
+        # Parse applies_tos (list from container "APPLIES-TOS")
         obj.applies_tos = []
-        for child in ARObject._find_all_child_elements(element, "APPLIES-TOS"):
-            applies_tos_value = child.text
-            obj.applies_tos.append(applies_tos_value)
+        container = ARObject._find_child_element(element, "APPLIES-TOS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.applies_tos.append(child_value)
 
         # Parse conflicts
         child = ARObject._find_child_element(element, "CONFLICTS")
@@ -149,11 +152,15 @@ class StructuredReq(Paginateable):
             supporting_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
             obj.supporting = supporting_value
 
-        # Parse tested_items (list)
+        # Parse tested_items (list from container "TESTED-ITEMS")
         obj.tested_items = []
-        for child in ARObject._find_all_child_elements(element, "TESTED-ITEMS"):
-            tested_items_value = ARObject._deserialize_by_tag(child, "Traceable")
-            obj.tested_items.append(tested_items_value)
+        container = ARObject._find_child_element(element, "TESTED-ITEMS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.tested_items.append(child_value)
 
         # Parse type
         child = ARObject._find_child_element(element, "TYPE")

@@ -48,9 +48,8 @@ class TimingDescriptionEvent(TimingDescription, ABC):
         Returns:
             Deserialized TimingDescriptionEvent object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TimingDescriptionEvent, cls).deserialize(element)
 
         # Parse clock_reference
         child = ARObject._find_child_element(element, "CLOCK-REFERENCE")

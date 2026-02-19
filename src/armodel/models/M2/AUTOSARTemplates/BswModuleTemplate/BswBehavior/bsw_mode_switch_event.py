@@ -45,14 +45,13 @@ class BswModeSwitchEvent(BswScheduleEvent):
         Returns:
             Deserialized BswModeSwitchEvent object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(BswModeSwitchEvent, cls).deserialize(element)
 
         # Parse activation
         child = ARObject._find_child_element(element, "ACTIVATION")
         if child is not None:
-            activation_value = child.text
+            activation_value = ModeActivationKind.deserialize(child)
             obj.activation = activation_value
 
         return obj

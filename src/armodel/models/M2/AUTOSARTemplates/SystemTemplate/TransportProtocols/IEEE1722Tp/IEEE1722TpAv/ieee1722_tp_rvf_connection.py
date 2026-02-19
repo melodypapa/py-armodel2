@@ -64,9 +64,8 @@ class IEEE1722TpRvfConnection(IEEE1722TpAvConnection):
         Returns:
             Deserialized IEEE1722TpRvfConnection object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(IEEE1722TpRvfConnection, cls).deserialize(element)
 
         # Parse rvf_active_pixels
         child = ARObject._find_child_element(element, "RVF-ACTIVE-PIXELS")
@@ -77,7 +76,7 @@ class IEEE1722TpRvfConnection(IEEE1722TpAvConnection):
         # Parse rvf_color_space
         child = ARObject._find_child_element(element, "RVF-COLOR-SPACE")
         if child is not None:
-            rvf_color_space_value = child.text
+            rvf_color_space_value = IEEE1722TpRvfColorSpaceEnum.deserialize(child)
             obj.rvf_color_space = rvf_color_space_value
 
         # Parse rvf_event_default
@@ -89,7 +88,7 @@ class IEEE1722TpRvfConnection(IEEE1722TpAvConnection):
         # Parse rvf_frame_rate
         child = ARObject._find_child_element(element, "RVF-FRAME-RATE")
         if child is not None:
-            rvf_frame_rate_value = child.text
+            rvf_frame_rate_value = IEEE1722TpRvfFrameRateEnum.deserialize(child)
             obj.rvf_frame_rate = rvf_frame_rate_value
 
         # Parse rvf_interlaced

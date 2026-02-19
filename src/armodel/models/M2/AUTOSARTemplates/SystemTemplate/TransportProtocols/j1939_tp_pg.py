@@ -77,11 +77,15 @@ class J1939TpPg(ARObject):
             requestable_value = child.text
             obj.requestable = requestable_value
 
-        # Parse sdus (list)
+        # Parse sdus (list from container "SDUS")
         obj.sdus = []
-        for child in ARObject._find_all_child_elements(element, "SDUS"):
-            sdus_value = ARObject._deserialize_by_tag(child, "IPdu")
-            obj.sdus.append(sdus_value)
+        container = ARObject._find_child_element(element, "SDUS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sdus.append(child_value)
 
         return obj
 

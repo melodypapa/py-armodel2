@@ -45,15 +45,18 @@ class IEEE1722TpConfig(TpConfig):
         Returns:
             Deserialized IEEE1722TpConfig object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(IEEE1722TpConfig, cls).deserialize(element)
 
-        # Parse tp_connections (list)
+        # Parse tp_connections (list from container "TP-CONNECTIONS")
         obj.tp_connections = []
-        for child in ARObject._find_all_child_elements(element, "TP-CONNECTIONS"):
-            tp_connections_value = ARObject._deserialize_by_tag(child, "IEEE1722TpConnection")
-            obj.tp_connections.append(tp_connections_value)
+        container = ARObject._find_child_element(element, "TP-CONNECTIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.tp_connections.append(child_value)
 
         return obj
 

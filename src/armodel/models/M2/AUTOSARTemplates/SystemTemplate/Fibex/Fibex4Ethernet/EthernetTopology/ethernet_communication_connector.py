@@ -58,9 +58,8 @@ class EthernetCommunicationConnector(CommunicationConnector):
         Returns:
             Deserialized EthernetCommunicationConnector object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(EthernetCommunicationConnector, cls).deserialize(element)
 
         # Parse eth_ip_props
         child = ARObject._find_child_element(element, "ETH-IP-PROPS")

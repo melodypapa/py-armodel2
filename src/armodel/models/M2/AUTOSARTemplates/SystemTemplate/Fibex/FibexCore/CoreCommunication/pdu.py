@@ -50,9 +50,8 @@ class Pdu(FibexElement, ABC):
         Returns:
             Deserialized Pdu object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(Pdu, cls).deserialize(element)
 
         # Parse has_dynamic
         child = ARObject._find_child_element(element, "HAS-DYNAMIC")

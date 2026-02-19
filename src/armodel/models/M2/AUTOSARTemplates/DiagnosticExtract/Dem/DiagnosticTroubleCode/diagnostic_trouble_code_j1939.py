@@ -59,9 +59,8 @@ class DiagnosticTroubleCodeJ1939(DiagnosticTroubleCode):
         Returns:
             Deserialized DiagnosticTroubleCodeJ1939 object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticTroubleCodeJ1939, cls).deserialize(element)
 
         # Parse dtc_props_props
         child = ARObject._find_child_element(element, "DTC-PROPS-PROPS")

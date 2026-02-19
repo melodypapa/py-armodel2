@@ -55,9 +55,8 @@ class TDEventISignal(TDEventCom):
         Returns:
             Deserialized TDEventISignal object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TDEventISignal, cls).deserialize(element)
 
         # Parse i_signal
         child = ARObject._find_child_element(element, "I-SIGNAL")
@@ -74,7 +73,7 @@ class TDEventISignal(TDEventCom):
         # Parse td_event_type_enum
         child = ARObject._find_child_element(element, "TD-EVENT-TYPE-ENUM")
         if child is not None:
-            td_event_type_enum_value = child.text
+            td_event_type_enum_value = TDEventISignalTypeEnum.deserialize(child)
             obj.td_event_type_enum = td_event_type_enum_value
 
         return obj

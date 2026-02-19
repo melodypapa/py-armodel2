@@ -46,14 +46,13 @@ class DiagnosticEnvCompareCondition(DiagnosticEnvConditionFormulaPart, ABC):
         Returns:
             Deserialized DiagnosticEnvCompareCondition object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticEnvCompareCondition, cls).deserialize(element)
 
         # Parse compare_type
         child = ARObject._find_child_element(element, "COMPARE-TYPE")
         if child is not None:
-            compare_type_value = child.text
+            compare_type_value = DiagnosticCompareTypeEnum.deserialize(child)
             obj.compare_type = compare_type_value
 
         return obj

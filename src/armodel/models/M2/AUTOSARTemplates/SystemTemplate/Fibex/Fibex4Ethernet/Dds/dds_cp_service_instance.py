@@ -63,9 +63,8 @@ class DdsCpServiceInstance(AbstractServiceInstance, ABC):
         Returns:
             Deserialized DdsCpServiceInstance object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DdsCpServiceInstance, cls).deserialize(element)
 
         # Parse dds_field_reply
         child = ARObject._find_child_element(element, "DDS-FIELD-REPLY")

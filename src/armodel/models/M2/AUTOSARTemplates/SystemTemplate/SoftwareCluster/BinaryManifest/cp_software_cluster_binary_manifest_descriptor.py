@@ -67,9 +67,8 @@ class CpSoftwareClusterBinaryManifestDescriptor(ARElement):
         Returns:
             Deserialized CpSoftwareClusterBinaryManifestDescriptor object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(CpSoftwareClusterBinaryManifestDescriptor, cls).deserialize(element)
 
         # Parse cp_software_cluster
         child = ARObject._find_child_element(element, "CP-SOFTWARE-CLUSTER")
@@ -77,29 +76,45 @@ class CpSoftwareClusterBinaryManifestDescriptor(ARElement):
             cp_software_cluster_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
             obj.cp_software_cluster = cp_software_cluster_value
 
-        # Parse meta_data_fields (list)
+        # Parse meta_data_fields (list from container "META-DATA-FIELDS")
         obj.meta_data_fields = []
-        for child in ARObject._find_all_child_elements(element, "META-DATA-FIELDS"):
-            meta_data_fields_value = ARObject._deserialize_by_tag(child, "BinaryManifestMetaDataField")
-            obj.meta_data_fields.append(meta_data_fields_value)
+        container = ARObject._find_child_element(element, "META-DATA-FIELDS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.meta_data_fields.append(child_value)
 
-        # Parse provides (list)
+        # Parse provides (list from container "PROVIDES")
         obj.provides = []
-        for child in ARObject._find_all_child_elements(element, "PROVIDES"):
-            provides_value = ARObject._deserialize_by_tag(child, "BinaryManifestProvideResource")
-            obj.provides.append(provides_value)
+        container = ARObject._find_child_element(element, "PROVIDES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.provides.append(child_value)
 
-        # Parse requires (list)
+        # Parse requires (list from container "REQUIRES")
         obj.requires = []
-        for child in ARObject._find_all_child_elements(element, "REQUIRES"):
-            requires_value = ARObject._deserialize_by_tag(child, "BinaryManifestRequireResource")
-            obj.requires.append(requires_value)
+        container = ARObject._find_child_element(element, "REQUIRES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.requires.append(child_value)
 
-        # Parse resources (list)
+        # Parse resources (list from container "RESOURCES")
         obj.resources = []
-        for child in ARObject._find_all_child_elements(element, "RESOURCES"):
-            resources_value = child.text
-            obj.resources.append(resources_value)
+        container = ARObject._find_child_element(element, "RESOURCES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.resources.append(child_value)
 
         # Parse software_cluster
         child = ARObject._find_child_element(element, "SOFTWARE-CLUSTER")

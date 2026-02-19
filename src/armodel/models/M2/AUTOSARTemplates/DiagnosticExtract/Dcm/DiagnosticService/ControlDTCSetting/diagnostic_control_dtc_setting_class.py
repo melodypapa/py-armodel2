@@ -45,9 +45,8 @@ class DiagnosticControlDTCSettingClass(DiagnosticServiceClass):
         Returns:
             Deserialized DiagnosticControlDTCSettingClass object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticControlDTCSettingClass, cls).deserialize(element)
 
         # Parse control_option
         child = ARObject._find_child_element(element, "CONTROL-OPTION")

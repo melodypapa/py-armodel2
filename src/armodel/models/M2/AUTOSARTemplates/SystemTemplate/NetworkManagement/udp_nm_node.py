@@ -48,9 +48,8 @@ class UdpNmNode(NmNode):
         Returns:
             Deserialized UdpNmNode object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(UdpNmNode, cls).deserialize(element)
 
         # Parse all_nm_messages
         child = ARObject._find_child_element(element, "ALL-NM-MESSAGES")

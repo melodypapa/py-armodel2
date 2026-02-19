@@ -44,9 +44,8 @@ class DiagnosticFunctionInhibitSource(Identifiable):
         Returns:
             Deserialized DiagnosticFunctionInhibitSource object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticFunctionInhibitSource, cls).deserialize(element)
 
         # Parse event
         child = ARObject._find_child_element(element, "EVENT")

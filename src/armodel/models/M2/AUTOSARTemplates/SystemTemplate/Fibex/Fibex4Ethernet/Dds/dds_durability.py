@@ -49,7 +49,7 @@ class DdsDurability(ARObject):
         # Parse durability_kind
         child = ARObject._find_child_element(element, "DURABILITY-KIND")
         if child is not None:
-            durability_kind_value = child.text
+            durability_kind_value = DdsDurabilityKindEnum.deserialize(child)
             obj.durability_kind = durability_kind_value
 
         return obj

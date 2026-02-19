@@ -40,11 +40,8 @@ class DiagnosticFimAliasEvent(DiagnosticAbstractAliasEvent):
         Returns:
             Deserialized DiagnosticFimAliasEvent object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
-
-        return obj
+        # Delegate to parent class to handle inherited attributes
+        return super(DiagnosticFimAliasEvent, cls).deserialize(element)
 
 
 

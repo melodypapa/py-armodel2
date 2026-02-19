@@ -1103,7 +1103,7 @@ class ARObject:
         return [elem for elem in parent if elem.tag.endswith(tag)]
 
     @staticmethod
-    def _deserialize_by_tag(element: ET.Element, class_name: str) -> "ARObject":
+    def _deserialize_by_tag(element: ET.Element, class_name: Optional[str] = None) -> Optional["ARObject"]:
         """Deserialize XML element using class name (for TYPE_CHECKING compatibility).
 
         This method is used when a class type is only available in TYPE_CHECKING blocks
@@ -1112,10 +1112,11 @@ class ARObject:
 
         Args:
             element: XML element to deserialize
-            class_name: Name of the class to deserialize to
+            class_name: Name of the class to deserialize to. If None, the class is
+                       determined from the element's XML tag name.
 
         Returns:
-            Deserialized object
+            Deserialized object, or None if the element cannot be deserialized
         """
         # Get the class from ModelFactory
         from armodel.serialization.model_factory import ModelFactory
@@ -1125,13 +1126,22 @@ class ARObject:
         if not factory.is_initialized():
             factory.load_mappings()
 
-        # Convert class name to XML tag
-        xml_tag = NameConverter.to_xml_tag(class_name)
+        # Determine the XML tag to use
+        if class_name is None:
+            # Use the element's tag directly
+            xml_tag = ARObject._strip_namespace(element.tag)
+        else:
+            # Convert class name to XML tag
+            xml_tag = NameConverter.to_xml_tag(class_name)
 
         # Get the class from the factory
         cls = factory.get_class(xml_tag)
         if cls is None:
-            raise ValueError(f"Unknown class: {class_name}")
+            # If class_name was provided, raise an error
+            if class_name is not None:
+                raise ValueError(f"Unknown class: {class_name}")
+            # Otherwise, just return None (skip this element)
+            return None
 
         # Call the deserialize method on the class
         return cls.deserialize(element)

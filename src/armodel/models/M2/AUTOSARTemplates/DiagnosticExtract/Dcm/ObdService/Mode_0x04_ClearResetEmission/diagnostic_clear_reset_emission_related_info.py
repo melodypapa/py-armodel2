@@ -42,9 +42,8 @@ class DiagnosticClearResetEmissionRelatedInfo(DiagnosticServiceInstance):
         Returns:
             Deserialized DiagnosticClearResetEmissionRelatedInfo object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticClearResetEmissionRelatedInfo, cls).deserialize(element)
 
         # Parse clear_reset
         child = ARObject._find_child_element(element, "CLEAR-RESET")

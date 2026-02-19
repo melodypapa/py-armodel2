@@ -64,14 +64,13 @@ class IEEE1722TpAcfCanPart(IEEE1722TpAcfBusPart):
         Returns:
             Deserialized IEEE1722TpAcfCanPart object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(IEEE1722TpAcfCanPart, cls).deserialize(element)
 
         # Parse can_addressing
         child = ARObject._find_child_element(element, "CAN-ADDRESSING")
         if child is not None:
-            can_addressing_value = child.text
+            can_addressing_value = CanAddressingModeType.deserialize(child)
             obj.can_addressing = can_addressing_value
 
         # Parse can_bit_rate_switch
@@ -83,7 +82,7 @@ class IEEE1722TpAcfCanPart(IEEE1722TpAcfBusPart):
         # Parse can_frame_tx_behavior
         child = ARObject._find_child_element(element, "CAN-FRAME-TX-BEHAVIOR")
         if child is not None:
-            can_frame_tx_behavior_value = child.text
+            can_frame_tx_behavior_value = CanFrameTxBehaviorEnum.deserialize(child)
             obj.can_frame_tx_behavior = can_frame_tx_behavior_value
 
         # Parse can_identifier

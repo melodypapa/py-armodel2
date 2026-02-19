@@ -53,21 +53,28 @@ class DataTypeMappingSet(ARElement):
         Returns:
             Deserialized DataTypeMappingSet object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DataTypeMappingSet, cls).deserialize(element)
 
-        # Parse data_type_maps (list)
+        # Parse data_type_maps (list from container "DATA-TYPE-MAPS")
         obj.data_type_maps = []
-        for child in ARObject._find_all_child_elements(element, "DATA-TYPE-MAPS"):
-            data_type_maps_value = ARObject._deserialize_by_tag(child, "DataTypeMap")
-            obj.data_type_maps.append(data_type_maps_value)
+        container = ARObject._find_child_element(element, "DATA-TYPE-MAPS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.data_type_maps.append(child_value)
 
-        # Parse mode_request_type_maps (list)
+        # Parse mode_request_type_maps (list from container "MODE-REQUEST-TYPE-MAPS")
         obj.mode_request_type_maps = []
-        for child in ARObject._find_all_child_elements(element, "MODE-REQUEST-TYPE-MAPS"):
-            mode_request_type_maps_value = ARObject._deserialize_by_tag(child, "ModeRequestTypeMap")
-            obj.mode_request_type_maps.append(mode_request_type_maps_value)
+        container = ARObject._find_child_element(element, "MODE-REQUEST-TYPE-MAPS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.mode_request_type_maps.append(child_value)
 
         return obj
 

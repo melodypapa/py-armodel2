@@ -56,23 +56,35 @@ class Baseline(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse custom_sdg_defs (list)
+        # Parse custom_sdg_defs (list from container "CUSTOM-SDG-DEFS")
         obj.custom_sdg_defs = []
-        for child in ARObject._find_all_child_elements(element, "CUSTOM-SDG-DEFS"):
-            custom_sdg_defs_value = ARObject._deserialize_by_tag(child, "SdgDef")
-            obj.custom_sdg_defs.append(custom_sdg_defs_value)
+        container = ARObject._find_child_element(element, "CUSTOM-SDG-DEFS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.custom_sdg_defs.append(child_value)
 
-        # Parse customs (list)
+        # Parse customs (list from container "CUSTOMS")
         obj.customs = []
-        for child in ARObject._find_all_child_elements(element, "CUSTOMS"):
-            customs_value = ARObject._deserialize_by_tag(child, "Documentation")
-            obj.customs.append(customs_value)
+        container = ARObject._find_child_element(element, "CUSTOMS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.customs.append(child_value)
 
-        # Parse standards (list)
+        # Parse standards (list from container "STANDARDS")
         obj.standards = []
-        for child in ARObject._find_all_child_elements(element, "STANDARDS"):
-            standards_value = child.text
-            obj.standards.append(standards_value)
+        container = ARObject._find_child_element(element, "STANDARDS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.standards.append(child_value)
 
         return obj
 

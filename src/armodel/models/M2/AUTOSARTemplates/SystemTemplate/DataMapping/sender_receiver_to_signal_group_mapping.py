@@ -56,9 +56,8 @@ class SenderReceiverToSignalGroupMapping(DataMapping):
         Returns:
             Deserialized SenderReceiverToSignalGroupMapping object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SenderReceiverToSignalGroupMapping, cls).deserialize(element)
 
         # Parse data_element_ref
         child = ARObject._find_child_element(element, "DATA-ELEMENT")

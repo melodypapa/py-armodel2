@@ -51,21 +51,24 @@ class PduActivationRoutingGroup(Identifiable):
         Returns:
             Deserialized PduActivationRoutingGroup object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(PduActivationRoutingGroup, cls).deserialize(element)
 
         # Parse event_group_ref
         child = ARObject._find_child_element(element, "EVENT-GROUP")
         if child is not None:
-            event_group_ref_value = child.text
+            event_group_ref_value = EventGroupControlTypeEnum.deserialize(child)
             obj.event_group_ref = event_group_ref_value
 
-        # Parse i_pdu_identifiers (list)
+        # Parse i_pdu_identifiers (list from container "I-PDU-IDENTIFIERS")
         obj.i_pdu_identifiers = []
-        for child in ARObject._find_all_child_elements(element, "I-PDU-IDENTIFIERS"):
-            i_pdu_identifiers_value = ARObject._deserialize_by_tag(child, "SoConIPduIdentifier")
-            obj.i_pdu_identifiers.append(i_pdu_identifiers_value)
+        container = ARObject._find_child_element(element, "I-PDU-IDENTIFIERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.i_pdu_identifiers.append(child_value)
 
         return obj
 

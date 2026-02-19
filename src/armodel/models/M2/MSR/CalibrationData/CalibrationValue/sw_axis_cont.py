@@ -75,7 +75,7 @@ class SwAxisCont(ARObject):
         # Parse category
         child = ARObject._find_child_element(element, "CATEGORY")
         if child is not None:
-            category_value = child.text
+            category_value = CalprmAxisCategoryEnum.deserialize(child)
             obj.category = category_value
 
         # Parse sw_arraysize_ref

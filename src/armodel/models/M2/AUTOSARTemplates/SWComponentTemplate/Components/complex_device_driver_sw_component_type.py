@@ -48,15 +48,18 @@ class ComplexDeviceDriverSwComponentType(AtomicSwComponentType):
         Returns:
             Deserialized ComplexDeviceDriverSwComponentType object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ComplexDeviceDriverSwComponentType, cls).deserialize(element)
 
-        # Parse hardwares (list)
+        # Parse hardwares (list from container "HARDWARES")
         obj.hardwares = []
-        for child in ARObject._find_all_child_elements(element, "HARDWARES"):
-            hardwares_value = ARObject._deserialize_by_tag(child, "HwDescriptionEntity")
-            obj.hardwares.append(hardwares_value)
+        container = ARObject._find_child_element(element, "HARDWARES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.hardwares.append(child_value)
 
         return obj
 

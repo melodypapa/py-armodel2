@@ -50,9 +50,8 @@ class DiagnosticParameterElement(Identifiable):
         Returns:
             Deserialized DiagnosticParameterElement object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticParameterElement, cls).deserialize(element)
 
         # Parse array_size
         child = ARObject._find_child_element(element, "ARRAY-SIZE")
@@ -60,11 +59,15 @@ class DiagnosticParameterElement(Identifiable):
             array_size_value = child.text
             obj.array_size = array_size_value
 
-        # Parse sub_elements (list)
+        # Parse sub_elements (list from container "SUB-ELEMENTS")
         obj.sub_elements = []
-        for child in ARObject._find_all_child_elements(element, "SUB-ELEMENTS"):
-            sub_elements_value = ARObject._deserialize_by_tag(child, "DiagnosticParameter")
-            obj.sub_elements.append(sub_elements_value)
+        container = ARObject._find_child_element(element, "SUB-ELEMENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sub_elements.append(child_value)
 
         return obj
 

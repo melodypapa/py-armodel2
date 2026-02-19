@@ -48,9 +48,8 @@ class Keyword(Identifiable):
         Returns:
             Deserialized Keyword object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(Keyword, cls).deserialize(element)
 
         # Parse abbr_name
         child = ARObject._find_child_element(element, "ABBR-NAME")
@@ -58,11 +57,15 @@ class Keyword(Identifiable):
             abbr_name_value = child.text
             obj.abbr_name = abbr_name_value
 
-        # Parse classifications (list)
+        # Parse classifications (list from container "CLASSIFICATIONS")
         obj.classifications = []
-        for child in ARObject._find_all_child_elements(element, "CLASSIFICATIONS"):
-            classifications_value = child.text
-            obj.classifications.append(classifications_value)
+        container = ARObject._find_child_element(element, "CLASSIFICATIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.classifications.append(child_value)
 
         return obj
 

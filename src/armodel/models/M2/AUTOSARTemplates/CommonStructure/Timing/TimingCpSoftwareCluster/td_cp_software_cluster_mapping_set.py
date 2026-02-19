@@ -42,15 +42,18 @@ class TDCpSoftwareClusterMappingSet(ARElement):
         Returns:
             Deserialized TDCpSoftwareClusterMappingSet object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TDCpSoftwareClusterMappingSet, cls).deserialize(element)
 
-        # Parse td_cp_softwares (list)
+        # Parse td_cp_softwares (list from container "TD-CP-SOFTWARES")
         obj.td_cp_softwares = []
-        for child in ARObject._find_all_child_elements(element, "TD-CP-SOFTWARES"):
-            td_cp_softwares_value = child.text
-            obj.td_cp_softwares.append(td_cp_softwares_value)
+        container = ARObject._find_child_element(element, "TD-CP-SOFTWARES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.td_cp_softwares.append(child_value)
 
         return obj
 

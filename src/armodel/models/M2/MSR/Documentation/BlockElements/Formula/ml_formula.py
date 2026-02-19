@@ -63,9 +63,8 @@ class MlFormula(Paginateable):
         Returns:
             Deserialized MlFormula object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(MlFormula, cls).deserialize(element)
 
         # Parse formula_caption
         child = ARObject._find_child_element(element, "FORMULA-CAPTION")
@@ -79,11 +78,15 @@ class MlFormula(Paginateable):
             generic_math_value = ARObject._deserialize_by_tag(child, "MultiLanguagePlainText")
             obj.generic_math = generic_math_value
 
-        # Parse l_graphics (list)
+        # Parse l_graphics (list from container "L-GRAPHICS")
         obj.l_graphics = []
-        for child in ARObject._find_all_child_elements(element, "L-GRAPHICS"):
-            l_graphics_value = ARObject._deserialize_by_tag(child, "LGraphic")
-            obj.l_graphics.append(l_graphics_value)
+        container = ARObject._find_child_element(element, "L-GRAPHICS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.l_graphics.append(child_value)
 
         # Parse tex_math
         child = ARObject._find_child_element(element, "TEX-MATH")

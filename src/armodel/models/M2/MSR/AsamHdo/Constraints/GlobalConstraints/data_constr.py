@@ -48,15 +48,18 @@ class DataConstr(ARElement):
         Returns:
             Deserialized DataConstr object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DataConstr, cls).deserialize(element)
 
-        # Parse data_constr_rules (list)
+        # Parse data_constr_rules (list from container "DATA-CONSTR-RULES")
         obj.data_constr_rules = []
-        for child in ARObject._find_all_child_elements(element, "DATA-CONSTR-RULES"):
-            data_constr_rules_value = ARObject._deserialize_by_tag(child, "DataConstrRule")
-            obj.data_constr_rules.append(data_constr_rules_value)
+        container = ARObject._find_child_element(element, "DATA-CONSTR-RULES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.data_constr_rules.append(child_value)
 
         return obj
 

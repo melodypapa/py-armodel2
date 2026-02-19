@@ -49,20 +49,19 @@ class Paginateable(DocumentViewSelectable, ABC):
         Returns:
             Deserialized Paginateable object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(Paginateable, cls).deserialize(element)
 
         # Parse break_
         child = ARObject._find_child_element(element, "BREAK")
         if child is not None:
-            break__value = child.text
+            break__value = ChapterEnumBreak.deserialize(child)
             obj.break_ = break__value
 
         # Parse keep_with
         child = ARObject._find_child_element(element, "KEEP-WITH")
         if child is not None:
-            keep_with_value = child.text
+            keep_with_value = KeepWithPreviousEnum.deserialize(child)
             obj.keep_with = keep_with_value
 
         return obj

@@ -55,15 +55,18 @@ class SignalServiceTranslationEventProps(Identifiable):
         Returns:
             Deserialized SignalServiceTranslationEventProps object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SignalServiceTranslationEventProps, cls).deserialize(element)
 
-        # Parse element_propses (list)
+        # Parse element_propses (list from container "ELEMENT-PROPSES")
         obj.element_propses = []
-        for child in ARObject._find_all_child_elements(element, "ELEMENT-PROPSES"):
-            element_propses_value = child.text
-            obj.element_propses.append(element_propses_value)
+        container = ARObject._find_child_element(element, "ELEMENT-PROPSES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.element_propses.append(child_value)
 
         # Parse safe_translation
         child = ARObject._find_child_element(element, "SAFE-TRANSLATION")

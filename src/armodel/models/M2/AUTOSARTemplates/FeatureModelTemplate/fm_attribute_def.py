@@ -50,9 +50,8 @@ class FMAttributeDef(Identifiable):
         Returns:
             Deserialized FMAttributeDef object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(FMAttributeDef, cls).deserialize(element)
 
         # Parse default_value
         child = ARObject._find_child_element(element, "DEFAULT-VALUE")
@@ -63,13 +62,13 @@ class FMAttributeDef(Identifiable):
         # Parse max
         child = ARObject._find_child_element(element, "MAX")
         if child is not None:
-            max_value = child.text
+            max_value = ARObject._deserialize_by_tag(child, "Limit")
             obj.max = max_value
 
         # Parse min
         child = ARObject._find_child_element(element, "MIN")
         if child is not None:
-            min_value = child.text
+            min_value = ARObject._deserialize_by_tag(child, "Limit")
             obj.min = min_value
 
         return obj

@@ -45,14 +45,13 @@ class BswInternalTriggeringPoint(Identifiable):
         Returns:
             Deserialized BswInternalTriggeringPoint object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(BswInternalTriggeringPoint, cls).deserialize(element)
 
         # Parse sw_impl_policy_enum
         child = ARObject._find_child_element(element, "SW-IMPL-POLICY-ENUM")
         if child is not None:
-            sw_impl_policy_enum_value = child.text
+            sw_impl_policy_enum_value = SwImplPolicyEnum.deserialize(child)
             obj.sw_impl_policy_enum = sw_impl_policy_enum_value
 
         return obj

@@ -58,9 +58,8 @@ class TDEventFrameEthernet(TDEventCom):
         Returns:
             Deserialized TDEventFrameEthernet object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TDEventFrameEthernet, cls).deserialize(element)
 
         # Parse static_socket
         child = ARObject._find_child_element(element, "STATIC-SOCKET")
@@ -74,17 +73,25 @@ class TDEventFrameEthernet(TDEventCom):
             td_event_type_value = ARObject._deserialize_by_tag(child, "TDEventFrameEthernet")
             obj.td_event_type = td_event_type_value
 
-        # Parse td_header_id_filters (list)
+        # Parse td_header_id_filters (list from container "TD-HEADER-ID-FILTERS")
         obj.td_header_id_filters = []
-        for child in ARObject._find_all_child_elements(element, "TD-HEADER-ID-FILTERS"):
-            td_header_id_filters_value = ARObject._deserialize_by_tag(child, "TDHeaderIdRange")
-            obj.td_header_id_filters.append(td_header_id_filters_value)
+        container = ARObject._find_child_element(element, "TD-HEADER-ID-FILTERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.td_header_id_filters.append(child_value)
 
-        # Parse td_pdu_triggering_refs (list)
+        # Parse td_pdu_triggering_refs (list from container "TD-PDU-TRIGGERINGS")
         obj.td_pdu_triggering_refs = []
-        for child in ARObject._find_all_child_elements(element, "TD-PDU-TRIGGERINGS"):
-            td_pdu_triggering_refs_value = ARObject._deserialize_by_tag(child, "PduTriggering")
-            obj.td_pdu_triggering_refs.append(td_pdu_triggering_refs_value)
+        container = ARObject._find_child_element(element, "TD-PDU-TRIGGERINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.td_pdu_triggering_refs.append(child_value)
 
         return obj
 

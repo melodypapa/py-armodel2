@@ -71,9 +71,8 @@ class PortElementToCommunicationResourceMapping(Identifiable):
         Returns:
             Deserialized PortElementToCommunicationResourceMapping object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(PortElementToCommunicationResourceMapping, cls).deserialize(element)
 
         # Parse client_server_instance_ref
         child = ARObject._find_child_element(element, "CLIENT-SERVER-INSTANCE-REF")

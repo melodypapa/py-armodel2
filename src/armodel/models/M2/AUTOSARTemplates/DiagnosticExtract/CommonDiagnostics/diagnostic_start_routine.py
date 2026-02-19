@@ -47,21 +47,28 @@ class DiagnosticStartRoutine(DiagnosticRoutineSubfunction):
         Returns:
             Deserialized DiagnosticStartRoutine object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticStartRoutine, cls).deserialize(element)
 
-        # Parse requests (list)
+        # Parse requests (list from container "REQUESTS")
         obj.requests = []
-        for child in ARObject._find_all_child_elements(element, "REQUESTS"):
-            requests_value = ARObject._deserialize_by_tag(child, "DiagnosticParameter")
-            obj.requests.append(requests_value)
+        container = ARObject._find_child_element(element, "REQUESTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.requests.append(child_value)
 
-        # Parse responses (list)
+        # Parse responses (list from container "RESPONSES")
         obj.responses = []
-        for child in ARObject._find_all_child_elements(element, "RESPONSES"):
-            responses_value = ARObject._deserialize_by_tag(child, "DiagnosticParameter")
-            obj.responses.append(responses_value)
+        container = ARObject._find_child_element(element, "RESPONSES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.responses.append(child_value)
 
         return obj
 

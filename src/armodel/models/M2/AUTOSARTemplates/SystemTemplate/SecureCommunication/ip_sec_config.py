@@ -60,11 +60,15 @@ class IPSecConfig(ARObject):
             ip_sec_config_value = ARObject._deserialize_by_tag(child, "IPSecConfigProps")
             obj.ip_sec_config = ip_sec_config_value
 
-        # Parse ip_sec_rules (list)
+        # Parse ip_sec_rules (list from container "IP-SEC-RULES")
         obj.ip_sec_rules = []
-        for child in ARObject._find_all_child_elements(element, "IP-SEC-RULES"):
-            ip_sec_rules_value = ARObject._deserialize_by_tag(child, "IPSecRule")
-            obj.ip_sec_rules.append(ip_sec_rules_value)
+        container = ARObject._find_child_element(element, "IP-SEC-RULES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.ip_sec_rules.append(child_value)
 
         return obj
 

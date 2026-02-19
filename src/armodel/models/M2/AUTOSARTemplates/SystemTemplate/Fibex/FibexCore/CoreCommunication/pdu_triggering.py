@@ -68,9 +68,8 @@ class PduTriggering(Identifiable):
         Returns:
             Deserialized PduTriggering object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(PduTriggering, cls).deserialize(element)
 
         # Parse i_pdu
         child = ARObject._find_child_element(element, "I-PDU")
@@ -78,17 +77,25 @@ class PduTriggering(Identifiable):
             i_pdu_value = ARObject._deserialize_by_tag(child, "Pdu")
             obj.i_pdu = i_pdu_value
 
-        # Parse i_pdu_ports (list)
+        # Parse i_pdu_ports (list from container "I-PDU-PORTS")
         obj.i_pdu_ports = []
-        for child in ARObject._find_all_child_elements(element, "I-PDU-PORTS"):
-            i_pdu_ports_value = ARObject._deserialize_by_tag(child, "IPduPort")
-            obj.i_pdu_ports.append(i_pdu_ports_value)
+        container = ARObject._find_child_element(element, "I-PDU-PORTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.i_pdu_ports.append(child_value)
 
-        # Parse i_signal_refs (list)
+        # Parse i_signal_refs (list from container "I-SIGNALS")
         obj.i_signal_refs = []
-        for child in ARObject._find_all_child_elements(element, "I-SIGNALS"):
-            i_signal_refs_value = ARObject._deserialize_by_tag(child, "ISignalTriggering")
-            obj.i_signal_refs.append(i_signal_refs_value)
+        container = ARObject._find_child_element(element, "I-SIGNALS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.i_signal_refs.append(child_value)
 
         # Parse sec_oc_crypto_service
         child = ARObject._find_child_element(element, "SEC-OC-CRYPTO-SERVICE")
@@ -96,11 +103,15 @@ class PduTriggering(Identifiable):
             sec_oc_crypto_service_value = ARObject._deserialize_by_tag(child, "SecOcCryptoServiceMapping")
             obj.sec_oc_crypto_service = sec_oc_crypto_service_value
 
-        # Parse trigger_i_pdu_send_refs (list)
+        # Parse trigger_i_pdu_send_refs (list from container "TRIGGER-I-PDU-SENDS")
         obj.trigger_i_pdu_send_refs = []
-        for child in ARObject._find_all_child_elements(element, "TRIGGER-I-PDU-SENDS"):
-            trigger_i_pdu_send_refs_value = ARObject._deserialize_by_tag(child, "TriggerIPduSendCondition")
-            obj.trigger_i_pdu_send_refs.append(trigger_i_pdu_send_refs_value)
+        container = ARObject._find_child_element(element, "TRIGGER-I-PDU-SENDS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.trigger_i_pdu_send_refs.append(child_value)
 
         return obj
 

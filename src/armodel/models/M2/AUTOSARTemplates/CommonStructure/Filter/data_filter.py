@@ -66,7 +66,7 @@ class DataFilter(ARObject):
         # Parse data_filter_type_enum
         child = ARObject._find_child_element(element, "DATA-FILTER-TYPE-ENUM")
         if child is not None:
-            data_filter_type_enum_value = child.text
+            data_filter_type_enum_value = DataFilterTypeEnum.deserialize(child)
             obj.data_filter_type_enum = data_filter_type_enum_value
 
         # Parse mask

@@ -58,9 +58,8 @@ class DiagnosticValueNeeds(DiagnosticCapabilityElement):
         Returns:
             Deserialized DiagnosticValueNeeds object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticValueNeeds, cls).deserialize(element)
 
         # Parse data_length
         child = ARObject._find_child_element(element, "DATA-LENGTH")
@@ -71,7 +70,7 @@ class DiagnosticValueNeeds(DiagnosticCapabilityElement):
         # Parse diagnostic_value_access
         child = ARObject._find_child_element(element, "DIAGNOSTIC-VALUE-ACCESS")
         if child is not None:
-            diagnostic_value_access_value = child.text
+            diagnostic_value_access_value = DiagnosticValueAccessEnum.deserialize(child)
             obj.diagnostic_value_access = diagnostic_value_access_value
 
         # Parse fixed_length
@@ -83,7 +82,7 @@ class DiagnosticValueNeeds(DiagnosticCapabilityElement):
         # Parse processing_style
         child = ARObject._find_child_element(element, "PROCESSING-STYLE")
         if child is not None:
-            processing_style_value = child.text
+            processing_style_value = DiagnosticProcessingStyleEnum.deserialize(child)
             obj.processing_style = processing_style_value
 
         return obj

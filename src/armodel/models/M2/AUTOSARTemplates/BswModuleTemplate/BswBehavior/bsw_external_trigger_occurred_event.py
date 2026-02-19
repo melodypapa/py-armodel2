@@ -46,9 +46,8 @@ class BswExternalTriggerOccurredEvent(BswScheduleEvent):
         Returns:
             Deserialized BswExternalTriggerOccurredEvent object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(BswExternalTriggerOccurredEvent, cls).deserialize(element)
 
         # Parse trigger_ref
         child = ARObject._find_child_element(element, "TRIGGER")

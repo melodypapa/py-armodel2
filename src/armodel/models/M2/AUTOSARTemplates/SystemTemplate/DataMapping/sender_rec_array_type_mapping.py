@@ -50,15 +50,18 @@ class SenderRecArrayTypeMapping(SenderRecCompositeTypeMapping):
         Returns:
             Deserialized SenderRecArrayTypeMapping object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SenderRecArrayTypeMapping, cls).deserialize(element)
 
-        # Parse array_elements (list)
+        # Parse array_elements (list from container "ARRAY-ELEMENTS")
         obj.array_elements = []
-        for child in ARObject._find_all_child_elements(element, "ARRAY-ELEMENTS"):
-            array_elements_value = child.text
-            obj.array_elements.append(array_elements_value)
+        container = ARObject._find_child_element(element, "ARRAY-ELEMENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.array_elements.append(child_value)
 
         # Parse sender_to_signal_ref
         child = ARObject._find_child_element(element, "SENDER-TO-SIGNAL")

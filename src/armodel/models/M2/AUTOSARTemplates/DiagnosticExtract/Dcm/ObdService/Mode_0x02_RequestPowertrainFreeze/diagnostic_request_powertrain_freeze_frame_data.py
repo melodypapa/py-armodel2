@@ -47,9 +47,8 @@ class DiagnosticRequestPowertrainFreezeFrameData(DiagnosticServiceInstance):
         Returns:
             Deserialized DiagnosticRequestPowertrainFreezeFrameData object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticRequestPowertrainFreezeFrameData, cls).deserialize(element)
 
         # Parse freeze_frame_freeze_frame
         child = ARObject._find_child_element(element, "FREEZE-FRAME-FREEZE-FRAME")

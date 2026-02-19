@@ -51,9 +51,8 @@ class DiagnosticEventPortMapping(DiagnosticSwMapping):
         Returns:
             Deserialized DiagnosticEventPortMapping object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticEventPortMapping, cls).deserialize(element)
 
         # Parse bsw_service
         child = ARObject._find_child_element(element, "BSW-SERVICE")

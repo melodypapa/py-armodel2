@@ -64,9 +64,8 @@ class SecuredIPdu(IPdu):
         Returns:
             Deserialized SecuredIPdu object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SecuredIPdu, cls).deserialize(element)
 
         # Parse authentication
         child = ARObject._find_child_element(element, "AUTHENTICATION")
@@ -107,7 +106,7 @@ class SecuredIPdu(IPdu):
         # Parse use_secured_pdu
         child = ARObject._find_child_element(element, "USE-SECURED-PDU")
         if child is not None:
-            use_secured_pdu_value = child.text
+            use_secured_pdu_value = SecuredPduHeaderEnum.deserialize(child)
             obj.use_secured_pdu = use_secured_pdu_value
 
         return obj

@@ -61,27 +61,38 @@ class SenderReceiverInterface(DataInterface):
         Returns:
             Deserialized SenderReceiverInterface object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SenderReceiverInterface, cls).deserialize(element)
 
-        # Parse data_element_refs (list)
+        # Parse data_element_refs (list from container "DATA-ELEMENTS")
         obj.data_element_refs = []
-        for child in ARObject._find_all_child_elements(element, "DATA-ELEMENTS"):
-            data_element_refs_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
-            obj.data_element_refs.append(data_element_refs_value)
+        container = ARObject._find_child_element(element, "DATA-ELEMENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.data_element_refs.append(child_value)
 
-        # Parse invalidation_policy_policies (list)
+        # Parse invalidation_policy_policies (list from container "INVALIDATION-POLICY-POLICIES")
         obj.invalidation_policy_policies = []
-        for child in ARObject._find_all_child_elements(element, "INVALIDATION-POLICY-POLICIES"):
-            invalidation_policy_policies_value = ARObject._deserialize_by_tag(child, "InvalidationPolicy")
-            obj.invalidation_policy_policies.append(invalidation_policy_policies_value)
+        container = ARObject._find_child_element(element, "INVALIDATION-POLICY-POLICIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.invalidation_policy_policies.append(child_value)
 
-        # Parse meta_data_item_set_refs (list)
+        # Parse meta_data_item_set_refs (list from container "META-DATA-ITEM-SETS")
         obj.meta_data_item_set_refs = []
-        for child in ARObject._find_all_child_elements(element, "META-DATA-ITEM-SETS"):
-            meta_data_item_set_refs_value = ARObject._deserialize_by_tag(child, "MetaDataItemSet")
-            obj.meta_data_item_set_refs.append(meta_data_item_set_refs_value)
+        container = ARObject._find_child_element(element, "META-DATA-ITEM-SETS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.meta_data_item_set_refs.append(child_value)
 
         return obj
 

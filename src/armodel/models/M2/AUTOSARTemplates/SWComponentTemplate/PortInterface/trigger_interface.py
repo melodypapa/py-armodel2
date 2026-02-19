@@ -47,15 +47,18 @@ class TriggerInterface(PortInterface):
         Returns:
             Deserialized TriggerInterface object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TriggerInterface, cls).deserialize(element)
 
-        # Parse trigger_refs (list)
+        # Parse trigger_refs (list from container "TRIGGERS")
         obj.trigger_refs = []
-        for child in ARObject._find_all_child_elements(element, "TRIGGERS"):
-            trigger_refs_value = ARObject._deserialize_by_tag(child, "Trigger")
-            obj.trigger_refs.append(trigger_refs_value)
+        container = ARObject._find_child_element(element, "TRIGGERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.trigger_refs.append(child_value)
 
         return obj
 

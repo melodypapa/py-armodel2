@@ -50,9 +50,8 @@ class TDEventOperation(TDEventVfbPort):
         Returns:
             Deserialized TDEventOperation object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TDEventOperation, cls).deserialize(element)
 
         # Parse operation
         child = ARObject._find_child_element(element, "OPERATION")
@@ -63,7 +62,7 @@ class TDEventOperation(TDEventVfbPort):
         # Parse td_event
         child = ARObject._find_child_element(element, "TD-EVENT")
         if child is not None:
-            td_event_value = child.text
+            td_event_value = TDEventOperationTypeEnum.deserialize(child)
             obj.td_event = td_event_value
 
         return obj

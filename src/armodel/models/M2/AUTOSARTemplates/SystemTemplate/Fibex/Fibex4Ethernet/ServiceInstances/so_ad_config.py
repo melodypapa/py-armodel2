@@ -51,17 +51,25 @@ class SoAdConfig(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse connections (list)
+        # Parse connections (list from container "CONNECTIONS")
         obj.connections = []
-        for child in ARObject._find_all_child_elements(element, "CONNECTIONS"):
-            connections_value = ARObject._deserialize_by_tag(child, "SocketConnection")
-            obj.connections.append(connections_value)
+        container = ARObject._find_child_element(element, "CONNECTIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.connections.append(child_value)
 
-        # Parse socket_addresses (list)
+        # Parse socket_addresses (list from container "SOCKET-ADDRESSES")
         obj.socket_addresses = []
-        for child in ARObject._find_all_child_elements(element, "SOCKET-ADDRESSES"):
-            socket_addresses_value = ARObject._deserialize_by_tag(child, "SocketAddress")
-            obj.socket_addresses.append(socket_addresses_value)
+        container = ARObject._find_child_element(element, "SOCKET-ADDRESSES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.socket_addresses.append(child_value)
 
         return obj
 

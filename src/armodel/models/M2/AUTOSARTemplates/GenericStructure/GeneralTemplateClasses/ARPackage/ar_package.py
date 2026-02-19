@@ -65,27 +65,38 @@ class ARPackage(CollectableElement):
         Returns:
             Deserialized ARPackage object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ARPackage, cls).deserialize(element)
 
-        # Parse ar_packages (list)
+        # Parse ar_packages (list from container "AR-PACKAGES")
         obj.ar_packages = []
-        for child in ARObject._find_all_child_elements(element, "AR-PACKAGES"):
-            ar_packages_value = ARObject._deserialize_by_tag(child, "ARPackage")
-            obj.ar_packages.append(ar_packages_value)
+        container = ARObject._find_child_element(element, "AR-PACKAGES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.ar_packages.append(child_value)
 
-        # Parse elements (list)
+        # Parse elements (list from container "ELEMENTS")
         obj.elements = []
-        for child in ARObject._find_all_child_elements(element, "ELEMENTS"):
-            elements_value = ARObject._deserialize_by_tag(child, "PackageableElement")
-            obj.elements.append(elements_value)
+        container = ARObject._find_child_element(element, "ELEMENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.elements.append(child_value)
 
-        # Parse reference_base_refs (list)
+        # Parse reference_base_refs (list from container "REFERENCE-BASES")
         obj.reference_base_refs = []
-        for child in ARObject._find_all_child_elements(element, "REFERENCE-BASES"):
-            reference_base_refs_value = ARObject._deserialize_by_tag(child, "ReferenceBase")
-            obj.reference_base_refs.append(reference_base_refs_value)
+        container = ARObject._find_child_element(element, "REFERENCE-BASES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.reference_base_refs.append(child_value)
 
         return obj
 

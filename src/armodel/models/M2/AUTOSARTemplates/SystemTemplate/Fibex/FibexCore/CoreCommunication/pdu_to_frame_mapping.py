@@ -61,7 +61,7 @@ class PduToFrameMapping(ARObject):
         # Parse packing_byte
         child = ARObject._find_child_element(element, "PACKING-BYTE")
         if child is not None:
-            packing_byte_value = child.text
+            packing_byte_value = ByteOrderEnum.deserialize(child)
             obj.packing_byte = packing_byte_value
 
         # Parse pdu

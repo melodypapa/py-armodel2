@@ -70,14 +70,18 @@ class McSwEmulationMethodSupport(ARObject):
         # Parse category
         child = ARObject._find_child_element(element, "CATEGORY")
         if child is not None:
-            category_value = child.text
+            category_value = ARObject._deserialize_by_tag(child, "Identifier")
             obj.category = category_value
 
-        # Parse element_groups (list)
+        # Parse element_groups (list from container "ELEMENT-GROUPS")
         obj.element_groups = []
-        for child in ARObject._find_all_child_elements(element, "ELEMENT-GROUPS"):
-            element_groups_value = ARObject._deserialize_by_tag(child, "McParameterElementGroup")
-            obj.element_groups.append(element_groups_value)
+        container = ARObject._find_child_element(element, "ELEMENT-GROUPS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.element_groups.append(child_value)
 
         # Parse reference_table_ref
         child = ARObject._find_child_element(element, "REFERENCE-TABLE")
@@ -88,7 +92,7 @@ class McSwEmulationMethodSupport(ARObject):
         # Parse short_label
         child = ARObject._find_child_element(element, "SHORT-LABEL")
         if child is not None:
-            short_label_value = child.text
+            short_label_value = ARObject._deserialize_by_tag(child, "Identifier")
             obj.short_label = short_label_value
 
         return obj

@@ -54,9 +54,8 @@ class EOCExecutableEntityRef(EOCExecutableEntityRefAbstract):
         Returns:
             Deserialized EOCExecutableEntityRef object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(EOCExecutableEntityRef, cls).deserialize(element)
 
         # Parse bsw_module
         child = ARObject._find_child_element(element, "BSW-MODULE")
@@ -76,11 +75,15 @@ class EOCExecutableEntityRef(EOCExecutableEntityRefAbstract):
             executable_entity_value = ARObject._deserialize_by_tag(child, "ExecutableEntity")
             obj.executable_entity = executable_entity_value
 
-        # Parse successors (list)
+        # Parse successors (list from container "SUCCESSORS")
         obj.successors = []
-        for child in ARObject._find_all_child_elements(element, "SUCCESSORS"):
-            successors_value = child.text
-            obj.successors.append(successors_value)
+        container = ARObject._find_child_element(element, "SUCCESSORS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.successors.append(child_value)
 
         return obj
 

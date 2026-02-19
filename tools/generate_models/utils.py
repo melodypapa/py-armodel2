@@ -46,8 +46,6 @@ def create_directory_structure(
         # Collect all exports for __all__
         exports = []
 
-        
-
         # Check if this package has primitive types and export them
         if package_path in package_data and "primitives" in package_data[package_path]:
             primitives = package_data[package_path]["primitives"]
@@ -76,7 +74,9 @@ def create_directory_structure(
                     # Convert package path to absolute import path
                     python_path = package_path.replace("::", ".")
                     module_path = f"armodel.models.{python_path}.{to_snake_case(class_name)}"
-                    init_content += f"    from {module_path} import (\n        {class_name},\n    )\n"
+                    init_content += (
+                        f"    from {module_path} import (\n        {class_name},\n    )\n"
+                    )
                     exports.append(class_name)
                 init_content += "\n"
 

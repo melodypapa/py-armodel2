@@ -74,39 +74,58 @@ class CompositionSwComponentType(SwComponentType):
         Returns:
             Deserialized CompositionSwComponentType object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(CompositionSwComponentType, cls).deserialize(element)
 
-        # Parse components (list)
+        # Parse components (list from container "COMPONENTS")
         obj.components = []
-        for child in ARObject._find_all_child_elements(element, "COMPONENTS"):
-            components_value = child.text
-            obj.components.append(components_value)
+        container = ARObject._find_child_element(element, "COMPONENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.components.append(child_value)
 
-        # Parse connectors (list)
+        # Parse connectors (list from container "CONNECTORS")
         obj.connectors = []
-        for child in ARObject._find_all_child_elements(element, "CONNECTORS"):
-            connectors_value = ARObject._deserialize_by_tag(child, "SwConnector")
-            obj.connectors.append(connectors_value)
+        container = ARObject._find_child_element(element, "CONNECTORS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.connectors.append(child_value)
 
-        # Parse constant_values (list)
+        # Parse constant_values (list from container "CONSTANT-VALUES")
         obj.constant_values = []
-        for child in ARObject._find_all_child_elements(element, "CONSTANT-VALUES"):
-            constant_values_value = ARObject._deserialize_by_tag(child, "ConstantSpecification")
-            obj.constant_values.append(constant_values_value)
+        container = ARObject._find_child_element(element, "CONSTANT-VALUES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.constant_values.append(child_value)
 
-        # Parse data_type_refs (list)
+        # Parse data_type_refs (list from container "DATA-TYPES")
         obj.data_type_refs = []
-        for child in ARObject._find_all_child_elements(element, "DATA-TYPES"):
-            data_type_refs_value = ARObject._deserialize_by_tag(child, "DataTypeMappingSet")
-            obj.data_type_refs.append(data_type_refs_value)
+        container = ARObject._find_child_element(element, "DATA-TYPES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.data_type_refs.append(child_value)
 
-        # Parse instantiation_rte_events (list)
+        # Parse instantiation_rte_events (list from container "INSTANTIATION-RTE-EVENTS")
         obj.instantiation_rte_events = []
-        for child in ARObject._find_all_child_elements(element, "INSTANTIATION-RTE-EVENTS"):
-            instantiation_rte_events_value = ARObject._deserialize_by_tag(child, "InstantiationRTEEventProps")
-            obj.instantiation_rte_events.append(instantiation_rte_events_value)
+        container = ARObject._find_child_element(element, "INSTANTIATION-RTE-EVENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.instantiation_rte_events.append(child_value)
 
         # Parse physical
         child = ARObject._find_child_element(element, "PHYSICAL")

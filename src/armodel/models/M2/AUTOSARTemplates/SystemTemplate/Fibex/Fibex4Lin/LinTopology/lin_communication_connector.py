@@ -58,9 +58,8 @@ class LinCommunicationConnector(CommunicationConnector):
         Returns:
             Deserialized LinCommunicationConnector object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(LinCommunicationConnector, cls).deserialize(element)
 
         # Parse initial_nad
         child = ARObject._find_child_element(element, "INITIAL-NAD")
@@ -68,17 +67,25 @@ class LinCommunicationConnector(CommunicationConnector):
             initial_nad_value = child.text
             obj.initial_nad = initial_nad_value
 
-        # Parse lin_configurable_frames (list)
+        # Parse lin_configurable_frames (list from container "LIN-CONFIGURABLE-FRAMES")
         obj.lin_configurable_frames = []
-        for child in ARObject._find_all_child_elements(element, "LIN-CONFIGURABLE-FRAMES"):
-            lin_configurable_frames_value = ARObject._deserialize_by_tag(child, "LinConfigurableFrame")
-            obj.lin_configurable_frames.append(lin_configurable_frames_value)
+        container = ARObject._find_child_element(element, "LIN-CONFIGURABLE-FRAMES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.lin_configurable_frames.append(child_value)
 
-        # Parse lin_ordereds (list)
+        # Parse lin_ordereds (list from container "LIN-ORDEREDS")
         obj.lin_ordereds = []
-        for child in ARObject._find_all_child_elements(element, "LIN-ORDEREDS"):
-            lin_ordereds_value = ARObject._deserialize_by_tag(child, "LinOrderedConfigurableFrame")
-            obj.lin_ordereds.append(lin_ordereds_value)
+        container = ARObject._find_child_element(element, "LIN-ORDEREDS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.lin_ordereds.append(child_value)
 
         # Parse schedule
         child = ARObject._find_child_element(element, "SCHEDULE")

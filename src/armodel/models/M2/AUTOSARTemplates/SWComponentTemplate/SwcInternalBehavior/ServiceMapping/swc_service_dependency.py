@@ -59,21 +59,28 @@ class SwcServiceDependency(ServiceDependency):
         Returns:
             Deserialized SwcServiceDependency object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SwcServiceDependency, cls).deserialize(element)
 
-        # Parse assigned_datas (list)
+        # Parse assigned_datas (list from container "ASSIGNED-DATAS")
         obj.assigned_datas = []
-        for child in ARObject._find_all_child_elements(element, "ASSIGNED-DATAS"):
-            assigned_datas_value = child.text
-            obj.assigned_datas.append(assigned_datas_value)
+        container = ARObject._find_child_element(element, "ASSIGNED-DATAS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.assigned_datas.append(child_value)
 
-        # Parse assigned_ports (list)
+        # Parse assigned_ports (list from container "ASSIGNED-PORTS")
         obj.assigned_ports = []
-        for child in ARObject._find_all_child_elements(element, "ASSIGNED-PORTS"):
-            assigned_ports_value = ARObject._deserialize_by_tag(child, "RoleBasedPortAssignment")
-            obj.assigned_ports.append(assigned_ports_value)
+        container = ARObject._find_child_element(element, "ASSIGNED-PORTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.assigned_ports.append(child_value)
 
         # Parse represented_port_ref
         child = ARObject._find_child_element(element, "REPRESENTED-PORT")

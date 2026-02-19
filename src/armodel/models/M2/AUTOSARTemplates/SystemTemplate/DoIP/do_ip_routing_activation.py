@@ -45,15 +45,18 @@ class DoIpRoutingActivation(Identifiable):
         Returns:
             Deserialized DoIpRoutingActivation object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DoIpRoutingActivation, cls).deserialize(element)
 
-        # Parse do_ip_targets (list)
+        # Parse do_ip_targets (list from container "DO-IP-TARGETS")
         obj.do_ip_targets = []
-        for child in ARObject._find_all_child_elements(element, "DO-IP-TARGETS"):
-            do_ip_targets_value = ARObject._deserialize_by_tag(child, "DoIpLogicTargetAddressProps")
-            obj.do_ip_targets.append(do_ip_targets_value)
+        container = ARObject._find_child_element(element, "DO-IP-TARGETS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.do_ip_targets.append(child_value)
 
         return obj
 

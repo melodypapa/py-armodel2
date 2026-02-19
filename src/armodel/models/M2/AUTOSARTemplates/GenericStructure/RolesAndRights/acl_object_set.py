@@ -67,20 +67,23 @@ class AclObjectSet(ARElement):
         Returns:
             Deserialized AclObjectSet object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(AclObjectSet, cls).deserialize(element)
 
-        # Parse acl_object_classe_refs (list)
+        # Parse acl_object_classe_refs (list from container "ACL-OBJECT-CLASSES")
         obj.acl_object_classe_refs = []
-        for child in ARObject._find_all_child_elements(element, "ACL-OBJECT-CLASSES"):
-            acl_object_classe_refs_value = child.text
-            obj.acl_object_classe_refs.append(acl_object_classe_refs_value)
+        container = ARObject._find_child_element(element, "ACL-OBJECT-CLASSES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.acl_object_classe_refs.append(child_value)
 
         # Parse acl_scope
         child = ARObject._find_child_element(element, "ACL-SCOPE")
         if child is not None:
-            acl_scope_value = child.text
+            acl_scope_value = AclScopeEnum.deserialize(child)
             obj.acl_scope = acl_scope_value
 
         # Parse collection_ref
@@ -89,17 +92,25 @@ class AclObjectSet(ARElement):
             collection_ref_value = ARObject._deserialize_by_tag(child, "Collection")
             obj.collection_ref = collection_ref_value
 
-        # Parse derived_froms (list)
+        # Parse derived_froms (list from container "DERIVED-FROMS")
         obj.derived_froms = []
-        for child in ARObject._find_all_child_elements(element, "DERIVED-FROMS"):
-            derived_froms_value = ARObject._deserialize_by_tag(child, "AtpBlueprint")
-            obj.derived_froms.append(derived_froms_value)
+        container = ARObject._find_child_element(element, "DERIVED-FROMS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.derived_froms.append(child_value)
 
-        # Parse engineerings (list)
+        # Parse engineerings (list from container "ENGINEERINGS")
         obj.engineerings = []
-        for child in ARObject._find_all_child_elements(element, "ENGINEERINGS"):
-            engineerings_value = ARObject._deserialize_by_tag(child, "AutosarEngineeringObject")
-            obj.engineerings.append(engineerings_value)
+        container = ARObject._find_child_element(element, "ENGINEERINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.engineerings.append(child_value)
 
         return obj
 

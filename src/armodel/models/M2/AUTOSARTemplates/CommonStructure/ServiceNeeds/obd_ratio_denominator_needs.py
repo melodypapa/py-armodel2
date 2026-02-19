@@ -45,14 +45,13 @@ class ObdRatioDenominatorNeeds(DiagnosticCapabilityElement):
         Returns:
             Deserialized ObdRatioDenominatorNeeds object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ObdRatioDenominatorNeeds, cls).deserialize(element)
 
         # Parse denominator
         child = ARObject._find_child_element(element, "DENOMINATOR")
         if child is not None:
-            denominator_value = child.text
+            denominator_value = DiagnosticDenominatorConditionEnum.deserialize(child)
             obj.denominator = denominator_value
 
         return obj

@@ -51,9 +51,8 @@ class PModeGroupInAtomicSwcInstanceRef(ModeGroupInAtomicSwcInstanceRef):
         Returns:
             Deserialized PModeGroupInAtomicSwcInstanceRef object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(PModeGroupInAtomicSwcInstanceRef, cls).deserialize(element)
 
         # Parse context_p_port_prototype
         child = ARObject._find_child_element(element, "CONTEXT-P-PORT-PROTOTYPE")

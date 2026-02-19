@@ -54,9 +54,8 @@ class DdsCpProvidedServiceInstance(DdsCpServiceInstance):
         Returns:
             Deserialized DdsCpProvidedServiceInstance object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DdsCpProvidedServiceInstance, cls).deserialize(element)
 
         # Parse local_unicast
         child = ARObject._find_child_element(element, "LOCAL-UNICAST")
@@ -70,17 +69,25 @@ class DdsCpProvidedServiceInstance(DdsCpServiceInstance):
             minor_version_value = child.text
             obj.minor_version = minor_version_value
 
-        # Parse provided_ddses (list)
+        # Parse provided_ddses (list from container "PROVIDED-DDSES")
         obj.provided_ddses = []
-        for child in ARObject._find_all_child_elements(element, "PROVIDED-DDSES"):
-            provided_ddses_value = ARObject._deserialize_by_tag(child, "DdsCpServiceInstance")
-            obj.provided_ddses.append(provided_ddses_value)
+        container = ARObject._find_child_element(element, "PROVIDED-DDSES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.provided_ddses.append(child_value)
 
-        # Parse static_remotes (list)
+        # Parse static_remotes (list from container "STATIC-REMOTES")
         obj.static_remotes = []
-        for child in ARObject._find_all_child_elements(element, "STATIC-REMOTES"):
-            static_remotes_value = ARObject._deserialize_by_tag(child, "ApplicationEndpoint")
-            obj.static_remotes.append(static_remotes_value)
+        container = ARObject._find_child_element(element, "STATIC-REMOTES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.static_remotes.append(child_value)
 
         return obj
 

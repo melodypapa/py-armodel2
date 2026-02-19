@@ -68,9 +68,8 @@ class MlFigure(Paginateable):
         Returns:
             Deserialized MlFigure object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(MlFigure, cls).deserialize(element)
 
         # Parse figure_caption
         child = ARObject._find_child_element(element, "FIGURE-CAPTION")
@@ -81,7 +80,7 @@ class MlFigure(Paginateable):
         # Parse frame
         child = ARObject._find_child_element(element, "FRAME")
         if child is not None:
-            frame_value = child.text
+            frame_value = FrameEnum.deserialize(child)
             obj.frame = frame_value
 
         # Parse help_entry
@@ -90,16 +89,20 @@ class MlFigure(Paginateable):
             help_entry_value = child.text
             obj.help_entry = help_entry_value
 
-        # Parse l_graphics (list)
+        # Parse l_graphics (list from container "L-GRAPHICS")
         obj.l_graphics = []
-        for child in ARObject._find_all_child_elements(element, "L-GRAPHICS"):
-            l_graphics_value = ARObject._deserialize_by_tag(child, "LGraphic")
-            obj.l_graphics.append(l_graphics_value)
+        container = ARObject._find_child_element(element, "L-GRAPHICS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.l_graphics.append(child_value)
 
         # Parse pgwide
         child = ARObject._find_child_element(element, "PGWIDE")
         if child is not None:
-            pgwide_value = child.text
+            pgwide_value = PgwideEnum.deserialize(child)
             obj.pgwide = pgwide_value
 
         # Parse verbatim

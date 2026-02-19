@@ -54,7 +54,7 @@ class SwcExclusiveAreaPolicy(ARObject):
         # Parse api_principle_enum
         child = ARObject._find_child_element(element, "API-PRINCIPLE-ENUM")
         if child is not None:
-            api_principle_enum_value = child.text
+            api_principle_enum_value = ApiPrincipleEnum.deserialize(child)
             obj.api_principle_enum = api_principle_enum_value
 
         # Parse exclusive_area

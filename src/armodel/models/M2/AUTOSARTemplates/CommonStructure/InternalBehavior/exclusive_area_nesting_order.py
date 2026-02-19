@@ -46,15 +46,18 @@ class ExclusiveAreaNestingOrder(Referrable):
         Returns:
             Deserialized ExclusiveAreaNestingOrder object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ExclusiveAreaNestingOrder, cls).deserialize(element)
 
-        # Parse exclusive_areas (list)
+        # Parse exclusive_areas (list from container "EXCLUSIVE-AREAS")
         obj.exclusive_areas = []
-        for child in ARObject._find_all_child_elements(element, "EXCLUSIVE-AREAS"):
-            exclusive_areas_value = ARObject._deserialize_by_tag(child, "ExclusiveArea")
-            obj.exclusive_areas.append(exclusive_areas_value)
+        container = ARObject._find_child_element(element, "EXCLUSIVE-AREAS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.exclusive_areas.append(child_value)
 
         return obj
 

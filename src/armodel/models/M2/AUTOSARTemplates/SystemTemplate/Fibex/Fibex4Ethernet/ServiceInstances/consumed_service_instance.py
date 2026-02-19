@@ -91,15 +91,18 @@ class ConsumedServiceInstance(AbstractServiceInstance):
         Returns:
             Deserialized ConsumedServiceInstance object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ConsumedServiceInstance, cls).deserialize(element)
 
-        # Parse allowed_services (list)
+        # Parse allowed_services (list from container "ALLOWED-SERVICES")
         obj.allowed_services = []
-        for child in ARObject._find_all_child_elements(element, "ALLOWED-SERVICES"):
-            allowed_services_value = ARObject._deserialize_by_tag(child, "NetworkEndpoint")
-            obj.allowed_services.append(allowed_services_value)
+        container = ARObject._find_child_element(element, "ALLOWED-SERVICES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.allowed_services.append(child_value)
 
         # Parse auto_require
         child = ARObject._find_child_element(element, "AUTO-REQUIRE")
@@ -107,17 +110,25 @@ class ConsumedServiceInstance(AbstractServiceInstance):
             auto_require_value = child.text
             obj.auto_require = auto_require_value
 
-        # Parse blocklisteds (list)
+        # Parse blocklisteds (list from container "BLOCKLISTEDS")
         obj.blocklisteds = []
-        for child in ARObject._find_all_child_elements(element, "BLOCKLISTEDS"):
-            blocklisteds_value = ARObject._deserialize_by_tag(child, "SomeipServiceVersion")
-            obj.blocklisteds.append(blocklisteds_value)
+        container = ARObject._find_child_element(element, "BLOCKLISTEDS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.blocklisteds.append(child_value)
 
-        # Parse consumed_event_group_refs (list)
+        # Parse consumed_event_group_refs (list from container "CONSUMED-EVENT-GROUPS")
         obj.consumed_event_group_refs = []
-        for child in ARObject._find_all_child_elements(element, "CONSUMED-EVENT-GROUPS"):
-            consumed_event_group_refs_value = ARObject._deserialize_by_tag(child, "ConsumedEventGroup")
-            obj.consumed_event_group_refs.append(consumed_event_group_refs_value)
+        container = ARObject._find_child_element(element, "CONSUMED-EVENT-GROUPS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.consumed_event_group_refs.append(child_value)
 
         # Parse event_multicast
         child = ARObject._find_child_element(element, "EVENT-MULTICAST")

@@ -62,7 +62,7 @@ class AttributeValueVariationPoint(ARObject, ABC):
         # Parse binding_time_enum
         child = ARObject._find_child_element(element, "BINDING-TIME-ENUM")
         if child is not None:
-            binding_time_enum_value = child.text
+            binding_time_enum_value = BindingTimeEnum.deserialize(child)
             obj.binding_time_enum = binding_time_enum_value
 
         # Parse blueprint_value

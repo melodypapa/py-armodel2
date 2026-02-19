@@ -76,27 +76,34 @@ class DltLogChannel(Identifiable):
         Returns:
             Deserialized DltLogChannel object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DltLogChannel, cls).deserialize(element)
 
-        # Parse applications (list)
+        # Parse applications (list from container "APPLICATIONS")
         obj.applications = []
-        for child in ARObject._find_all_child_elements(element, "APPLICATIONS"):
-            applications_value = ARObject._deserialize_by_tag(child, "DltContext")
-            obj.applications.append(applications_value)
+        container = ARObject._find_child_element(element, "APPLICATIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.applications.append(child_value)
 
         # Parse default_trace
         child = ARObject._find_child_element(element, "DEFAULT-TRACE")
         if child is not None:
-            default_trace_value = child.text
+            default_trace_value = DltDefaultTraceStateEnum.deserialize(child)
             obj.default_trace = default_trace_value
 
-        # Parse dlt_messages (list)
+        # Parse dlt_messages (list from container "DLT-MESSAGES")
         obj.dlt_messages = []
-        for child in ARObject._find_all_child_elements(element, "DLT-MESSAGES"):
-            dlt_messages_value = ARObject._deserialize_by_tag(child, "DltMessage")
-            obj.dlt_messages.append(dlt_messages_value)
+        container = ARObject._find_child_element(element, "DLT-MESSAGES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.dlt_messages.append(child_value)
 
         # Parse log_channel_id
         child = ARObject._find_child_element(element, "LOG-CHANNEL-ID")
@@ -107,7 +114,7 @@ class DltLogChannel(Identifiable):
         # Parse log_trace_default_log
         child = ARObject._find_child_element(element, "LOG-TRACE-DEFAULT-LOG")
         if child is not None:
-            log_trace_default_log_value = child.text
+            log_trace_default_log_value = LogTraceDefaultLogLevelEnum.deserialize(child)
             obj.log_trace_default_log = log_trace_default_log_value
 
         # Parse non_verbose

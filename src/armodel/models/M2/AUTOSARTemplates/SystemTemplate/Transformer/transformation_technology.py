@@ -68,9 +68,8 @@ class TransformationTechnology(Identifiable):
         Returns:
             Deserialized TransformationTechnology object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TransformationTechnology, cls).deserialize(element)
 
         # Parse buffer_properties
         child = ARObject._find_child_element(element, "BUFFER-PROPERTIES")
@@ -105,7 +104,7 @@ class TransformationTechnology(Identifiable):
         # Parse transformer
         child = ARObject._find_child_element(element, "TRANSFORMER")
         if child is not None:
-            transformer_value = child.text
+            transformer_value = TransformerClassEnum.deserialize(child)
             obj.transformer = transformer_value
 
         # Parse version

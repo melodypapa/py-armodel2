@@ -55,20 +55,19 @@ class ArgumentDataPrototype(AutosarDataPrototype):
         Returns:
             Deserialized ArgumentDataPrototype object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ArgumentDataPrototype, cls).deserialize(element)
 
         # Parse direction
         child = ARObject._find_child_element(element, "DIRECTION")
         if child is not None:
-            direction_value = child.text
+            direction_value = ArgumentDirectionEnum.deserialize(child)
             obj.direction = direction_value
 
         # Parse server_argument_impl
         child = ARObject._find_child_element(element, "SERVER-ARGUMENT-IMPL")
         if child is not None:
-            server_argument_impl_value = child.text
+            server_argument_impl_value = ServerArgumentImplPolicyEnum.deserialize(child)
             obj.server_argument_impl = server_argument_impl_value
 
         return obj

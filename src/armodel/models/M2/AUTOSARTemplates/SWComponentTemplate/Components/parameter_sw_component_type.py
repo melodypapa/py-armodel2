@@ -57,27 +57,38 @@ class ParameterSwComponentType(SwComponentType):
         Returns:
             Deserialized ParameterSwComponentType object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ParameterSwComponentType, cls).deserialize(element)
 
-        # Parse constants (list)
+        # Parse constants (list from container "CONSTANTS")
         obj.constants = []
-        for child in ARObject._find_all_child_elements(element, "CONSTANTS"):
-            constants_value = ARObject._deserialize_by_tag(child, "ConstantSpecification")
-            obj.constants.append(constants_value)
+        container = ARObject._find_child_element(element, "CONSTANTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.constants.append(child_value)
 
-        # Parse data_type_refs (list)
+        # Parse data_type_refs (list from container "DATA-TYPES")
         obj.data_type_refs = []
-        for child in ARObject._find_all_child_elements(element, "DATA-TYPES"):
-            data_type_refs_value = ARObject._deserialize_by_tag(child, "DataTypeMappingSet")
-            obj.data_type_refs.append(data_type_refs_value)
+        container = ARObject._find_child_element(element, "DATA-TYPES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.data_type_refs.append(child_value)
 
-        # Parse instantiation_data_defs (list)
+        # Parse instantiation_data_defs (list from container "INSTANTIATION-DATA-DEFS")
         obj.instantiation_data_defs = []
-        for child in ARObject._find_all_child_elements(element, "INSTANTIATION-DATA-DEFS"):
-            instantiation_data_defs_value = ARObject._deserialize_by_tag(child, "InstantiationDataDefProps")
-            obj.instantiation_data_defs.append(instantiation_data_defs_value)
+        container = ARObject._find_child_element(element, "INSTANTIATION-DATA-DEFS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.instantiation_data_defs.append(child_value)
 
         return obj
 

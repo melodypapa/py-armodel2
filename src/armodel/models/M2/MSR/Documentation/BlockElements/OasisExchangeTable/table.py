@@ -72,9 +72,8 @@ class Table(Paginateable):
         Returns:
             Deserialized Table object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(Table, cls).deserialize(element)
 
         # Parse colsep
         child = ARObject._find_child_element(element, "COLSEP")
@@ -85,13 +84,13 @@ class Table(Paginateable):
         # Parse float
         child = ARObject._find_child_element(element, "FLOAT")
         if child is not None:
-            float_value = child.text
+            float_value = FloatEnum.deserialize(child)
             obj.float = float_value
 
         # Parse frame
         child = ARObject._find_child_element(element, "FRAME")
         if child is not None:
-            frame_value = child.text
+            frame_value = FrameEnum.deserialize(child)
             obj.frame = frame_value
 
         # Parse help_entry

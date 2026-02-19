@@ -45,14 +45,13 @@ class CommunicationBufferLocking(SwcSupportedFeature):
         Returns:
             Deserialized CommunicationBufferLocking object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(CommunicationBufferLocking, cls).deserialize(element)
 
         # Parse support_buffer_locking
         child = ARObject._find_child_element(element, "SUPPORT-BUFFER-LOCKING")
         if child is not None:
-            support_buffer_locking_value = child.text
+            support_buffer_locking_value = SupportBufferLockingEnum.deserialize(child)
             obj.support_buffer_locking = support_buffer_locking_value
 
         return obj

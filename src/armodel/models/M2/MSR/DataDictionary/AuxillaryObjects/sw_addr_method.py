@@ -58,21 +58,24 @@ class SwAddrMethod(ARElement):
         Returns:
             Deserialized SwAddrMethod object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SwAddrMethod, cls).deserialize(element)
 
         # Parse memory
         child = ARObject._find_child_element(element, "MEMORY")
         if child is not None:
-            memory_value = child.text
+            memory_value = MemoryAllocationKeywordPolicyType.deserialize(child)
             obj.memory = memory_value
 
-        # Parse options (list)
+        # Parse options (list from container "OPTIONS")
         obj.options = []
-        for child in ARObject._find_all_child_elements(element, "OPTIONS"):
-            options_value = child.text
-            obj.options.append(options_value)
+        container = ARObject._find_child_element(element, "OPTIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.options.append(child_value)
 
         # Parse section
         child = ARObject._find_child_element(element, "SECTION")
@@ -83,7 +86,7 @@ class SwAddrMethod(ARElement):
         # Parse section_type
         child = ARObject._find_child_element(element, "SECTION-TYPE")
         if child is not None:
-            section_type_value = child.text
+            section_type_value = MemorySectionType.deserialize(child)
             obj.section_type = section_type_value
 
         return obj

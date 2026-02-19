@@ -60,9 +60,8 @@ class SenderReceiverAnnotation(GeneralAnnotation, ABC):
         Returns:
             Deserialized SenderReceiverAnnotation object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SenderReceiverAnnotation, cls).deserialize(element)
 
         # Parse computed
         child = ARObject._find_child_element(element, "COMPUTED")
@@ -79,13 +78,13 @@ class SenderReceiverAnnotation(GeneralAnnotation, ABC):
         # Parse limit_kind
         child = ARObject._find_child_element(element, "LIMIT-KIND")
         if child is not None:
-            limit_kind_value = child.text
+            limit_kind_value = DataLimitKindEnum.deserialize(child)
             obj.limit_kind = limit_kind_value
 
         # Parse processing_kind_enum
         child = ARObject._find_child_element(element, "PROCESSING-KIND-ENUM")
         if child is not None:
-            processing_kind_enum_value = child.text
+            processing_kind_enum_value = ProcessingKindEnum.deserialize(child)
             obj.processing_kind_enum = processing_kind_enum_value
 
         return obj

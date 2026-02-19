@@ -53,11 +53,15 @@ class AbstractVariationRestriction(ARObject, ABC):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse valid_bindings (list)
+        # Parse valid_bindings (list from container "VALID-BINDINGS")
         obj.valid_bindings = []
-        for child in ARObject._find_all_child_elements(element, "VALID-BINDINGS"):
-            valid_bindings_value = child.text
-            obj.valid_bindings.append(valid_bindings_value)
+        container = ARObject._find_child_element(element, "VALID-BINDINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.valid_bindings.append(child_value)
 
         # Parse variation
         child = ARObject._find_child_element(element, "VARIATION")

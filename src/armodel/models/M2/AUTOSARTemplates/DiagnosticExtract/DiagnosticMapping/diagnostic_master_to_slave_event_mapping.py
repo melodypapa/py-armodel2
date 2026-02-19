@@ -47,9 +47,8 @@ class DiagnosticMasterToSlaveEventMapping(DiagnosticMapping):
         Returns:
             Deserialized DiagnosticMasterToSlaveEventMapping object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticMasterToSlaveEventMapping, cls).deserialize(element)
 
         # Parse master_event
         child = ARObject._find_child_element(element, "MASTER-EVENT")

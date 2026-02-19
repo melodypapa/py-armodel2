@@ -53,17 +53,25 @@ class MetaDataItemSet(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse data_element_refs (list)
+        # Parse data_element_refs (list from container "DATA-ELEMENTS")
         obj.data_element_refs = []
-        for child in ARObject._find_all_child_elements(element, "DATA-ELEMENTS"):
-            data_element_refs_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
-            obj.data_element_refs.append(data_element_refs_value)
+        container = ARObject._find_child_element(element, "DATA-ELEMENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.data_element_refs.append(child_value)
 
-        # Parse meta_data_items (list)
+        # Parse meta_data_items (list from container "META-DATA-ITEMS")
         obj.meta_data_items = []
-        for child in ARObject._find_all_child_elements(element, "META-DATA-ITEMS"):
-            meta_data_items_value = ARObject._deserialize_by_tag(child, "MetaDataItem")
-            obj.meta_data_items.append(meta_data_items_value)
+        container = ARObject._find_child_element(element, "META-DATA-ITEMS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.meta_data_items.append(child_value)
 
         return obj
 

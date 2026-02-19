@@ -50,9 +50,8 @@ class SpecificationDocumentScope(SpecElementReference):
         Returns:
             Deserialized SpecificationDocumentScope object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SpecificationDocumentScope, cls).deserialize(element)
 
         # Parse custom_documentation
         child = ARObject._find_child_element(element, "CUSTOM-DOCUMENTATION")
@@ -60,11 +59,15 @@ class SpecificationDocumentScope(SpecElementReference):
             custom_documentation_value = ARObject._deserialize_by_tag(child, "Documentation")
             obj.custom_documentation = custom_documentation_value
 
-        # Parse documents (list)
+        # Parse documents (list from container "DOCUMENTS")
         obj.documents = []
-        for child in ARObject._find_all_child_elements(element, "DOCUMENTS"):
-            documents_value = ARObject._deserialize_by_tag(child, "DocumentElementScope")
-            obj.documents.append(documents_value)
+        container = ARObject._find_child_element(element, "DOCUMENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.documents.append(child_value)
 
         return obj
 

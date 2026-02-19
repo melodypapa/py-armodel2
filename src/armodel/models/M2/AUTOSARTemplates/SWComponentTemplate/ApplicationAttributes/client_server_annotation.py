@@ -45,9 +45,8 @@ class ClientServerAnnotation(GeneralAnnotation):
         Returns:
             Deserialized ClientServerAnnotation object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ClientServerAnnotation, cls).deserialize(element)
 
         # Parse operation
         child = ARObject._find_child_element(element, "OPERATION")

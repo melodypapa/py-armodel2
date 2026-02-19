@@ -46,15 +46,18 @@ class EcucChoiceReferenceDef(EcucAbstractInternalReferenceDef):
         Returns:
             Deserialized EcucChoiceReferenceDef object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(EcucChoiceReferenceDef, cls).deserialize(element)
 
-        # Parse destinations (list)
+        # Parse destinations (list from container "DESTINATIONS")
         obj.destinations = []
-        for child in ARObject._find_all_child_elements(element, "DESTINATIONS"):
-            destinations_value = ARObject._deserialize_by_tag(child, "EcucContainerDef")
-            obj.destinations.append(destinations_value)
+        container = ARObject._find_child_element(element, "DESTINATIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.destinations.append(child_value)
 
         return obj
 

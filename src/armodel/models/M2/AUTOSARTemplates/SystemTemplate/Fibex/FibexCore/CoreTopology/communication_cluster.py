@@ -64,11 +64,15 @@ class CommunicationCluster(ARObject, ABC):
             baudrate_value = child.text
             obj.baudrate = baudrate_value
 
-        # Parse physical_channels (list)
+        # Parse physical_channels (list from container "PHYSICAL-CHANNELS")
         obj.physical_channels = []
-        for child in ARObject._find_all_child_elements(element, "PHYSICAL-CHANNELS"):
-            physical_channels_value = ARObject._deserialize_by_tag(child, "PhysicalChannel")
-            obj.physical_channels.append(physical_channels_value)
+        container = ARObject._find_child_element(element, "PHYSICAL-CHANNELS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.physical_channels.append(child_value)
 
         # Parse protocol_name
         child = ARObject._find_child_element(element, "PROTOCOL-NAME")

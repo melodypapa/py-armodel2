@@ -45,15 +45,18 @@ class ServiceInstanceCollectionSet(FibexElement):
         Returns:
             Deserialized ServiceInstanceCollectionSet object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ServiceInstanceCollectionSet, cls).deserialize(element)
 
-        # Parse service_instances (list)
+        # Parse service_instances (list from container "SERVICE-INSTANCES")
         obj.service_instances = []
-        for child in ARObject._find_all_child_elements(element, "SERVICE-INSTANCES"):
-            service_instances_value = ARObject._deserialize_by_tag(child, "AbstractServiceInstance")
-            obj.service_instances.append(service_instances_value)
+        container = ARObject._find_child_element(element, "SERVICE-INSTANCES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.service_instances.append(child_value)
 
         return obj
 

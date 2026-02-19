@@ -52,9 +52,8 @@ class TDCpSoftwareClusterMapping(Identifiable):
         Returns:
             Deserialized TDCpSoftwareClusterMapping object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TDCpSoftwareClusterMapping, cls).deserialize(element)
 
         # Parse provider
         child = ARObject._find_child_element(element, "PROVIDER")
@@ -62,11 +61,15 @@ class TDCpSoftwareClusterMapping(Identifiable):
             provider_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
             obj.provider = provider_value
 
-        # Parse requestors (list)
+        # Parse requestors (list from container "REQUESTORS")
         obj.requestors = []
-        for child in ARObject._find_all_child_elements(element, "REQUESTORS"):
-            requestors_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
-            obj.requestors.append(requestors_value)
+        container = ARObject._find_child_element(element, "REQUESTORS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.requestors.append(child_value)
 
         # Parse timing
         child = ARObject._find_child_element(element, "TIMING")

@@ -48,9 +48,8 @@ class TimingEvent(RTEEvent):
         Returns:
             Deserialized TimingEvent object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TimingEvent, cls).deserialize(element)
 
         # Parse offset
         child = ARObject._find_child_element(element, "OFFSET")

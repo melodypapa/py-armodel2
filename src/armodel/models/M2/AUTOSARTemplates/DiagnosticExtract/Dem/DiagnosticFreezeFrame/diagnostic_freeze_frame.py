@@ -56,9 +56,8 @@ class DiagnosticFreezeFrame(DiagnosticCommonElement):
         Returns:
             Deserialized DiagnosticFreezeFrame object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticFreezeFrame, cls).deserialize(element)
 
         # Parse custom_trigger
         child = ARObject._find_child_element(element, "CUSTOM-TRIGGER")
@@ -75,7 +74,7 @@ class DiagnosticFreezeFrame(DiagnosticCommonElement):
         # Parse trigger
         child = ARObject._find_child_element(element, "TRIGGER")
         if child is not None:
-            trigger_value = child.text
+            trigger_value = DiagnosticRecordTriggerEnum.deserialize(child)
             obj.trigger = trigger_value
 
         # Parse update

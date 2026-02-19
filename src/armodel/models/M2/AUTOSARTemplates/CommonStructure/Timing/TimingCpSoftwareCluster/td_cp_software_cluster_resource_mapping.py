@@ -50,9 +50,8 @@ class TDCpSoftwareClusterResourceMapping(Identifiable):
         Returns:
             Deserialized TDCpSoftwareClusterResourceMapping object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TDCpSoftwareClusterResourceMapping, cls).deserialize(element)
 
         # Parse resource
         child = ARObject._find_child_element(element, "RESOURCE")

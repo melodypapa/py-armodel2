@@ -45,15 +45,18 @@ class RteEventInCompositionSeparation(Identifiable):
         Returns:
             Deserialized RteEventInCompositionSeparation object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(RteEventInCompositionSeparation, cls).deserialize(element)
 
-        # Parse rte_event_instance_refs (list)
+        # Parse rte_event_instance_refs (list from container "RTE-EVENT-INSTANCE-REFS")
         obj.rte_event_instance_refs = []
-        for child in ARObject._find_all_child_elements(element, "RTE-EVENT-INSTANCE-REFS"):
-            rte_event_instance_refs_value = ARObject._deserialize_by_tag(child, "RTEEvent")
-            obj.rte_event_instance_refs.append(rte_event_instance_refs_value)
+        container = ARObject._find_child_element(element, "RTE-EVENT-INSTANCE-REFS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.rte_event_instance_refs.append(child_value)
 
         return obj
 

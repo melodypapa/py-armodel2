@@ -95,9 +95,8 @@ class McDataInstance(Identifiable):
         Returns:
             Deserialized McDataInstance object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(McDataInstance, cls).deserialize(element)
 
         # Parse array_size
         child = ARObject._find_child_element(element, "ARRAY-SIZE")
@@ -129,11 +128,15 @@ class McDataInstance(Identifiable):
             mc_data_access_details_value = ARObject._deserialize_by_tag(child, "McDataAccessDetails")
             obj.mc_data_access_details = mc_data_access_details_value
 
-        # Parse mc_datas (list)
+        # Parse mc_datas (list from container "MC-DATAS")
         obj.mc_datas = []
-        for child in ARObject._find_all_child_elements(element, "MC-DATAS"):
-            mc_datas_value = ARObject._deserialize_by_tag(child, "RoleBasedMcDataAssignment")
-            obj.mc_datas.append(mc_datas_value)
+        container = ARObject._find_child_element(element, "MC-DATAS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.mc_datas.append(child_value)
 
         # Parse resulting
         child = ARObject._find_child_element(element, "RESULTING")
@@ -150,7 +153,7 @@ class McDataInstance(Identifiable):
         # Parse role
         child = ARObject._find_child_element(element, "ROLE")
         if child is not None:
-            role_value = child.text
+            role_value = ARObject._deserialize_by_tag(child, "Identifier")
             obj.role = role_value
 
         # Parse rpt_impl_policy
@@ -159,16 +162,20 @@ class McDataInstance(Identifiable):
             rpt_impl_policy_value = ARObject._deserialize_by_tag(child, "RptImplPolicy")
             obj.rpt_impl_policy = rpt_impl_policy_value
 
-        # Parse sub_elements (list)
+        # Parse sub_elements (list from container "SUB-ELEMENTS")
         obj.sub_elements = []
-        for child in ARObject._find_all_child_elements(element, "SUB-ELEMENTS"):
-            sub_elements_value = ARObject._deserialize_by_tag(child, "McDataInstance")
-            obj.sub_elements.append(sub_elements_value)
+        container = ARObject._find_child_element(element, "SUB-ELEMENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sub_elements.append(child_value)
 
         # Parse symbol
         child = ARObject._find_child_element(element, "SYMBOL")
         if child is not None:
-            symbol_value = child.text
+            symbol_value = ARObject._deserialize_by_tag(child, "SymbolString")
             obj.symbol = symbol_value
 
         return obj

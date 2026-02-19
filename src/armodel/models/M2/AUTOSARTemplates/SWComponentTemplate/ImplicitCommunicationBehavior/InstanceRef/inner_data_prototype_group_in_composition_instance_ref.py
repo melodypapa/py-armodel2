@@ -60,11 +60,15 @@ class InnerDataPrototypeGroupInCompositionInstanceRef(ARObject):
             base_value = ARObject._deserialize_by_tag(child, "CompositionSwComponentType")
             obj.base = base_value
 
-        # Parse context_sws (list)
+        # Parse context_sws (list from container "CONTEXT-SWS")
         obj.context_sws = []
-        for child in ARObject._find_all_child_elements(element, "CONTEXT-SWS"):
-            context_sws_value = child.text
-            obj.context_sws.append(context_sws_value)
+        container = ARObject._find_child_element(element, "CONTEXT-SWS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.context_sws.append(child_value)
 
         # Parse target_data_ref
         child = ARObject._find_child_element(element, "TARGET-DATA")

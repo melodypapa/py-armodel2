@@ -62,11 +62,15 @@ class FMFeatureDecomposition(ARObject):
             category_value = child.text
             obj.category = category_value
 
-        # Parse features (list)
+        # Parse features (list from container "FEATURES")
         obj.features = []
-        for child in ARObject._find_all_child_elements(element, "FEATURES"):
-            features_value = ARObject._deserialize_by_tag(child, "FMFeature")
-            obj.features.append(features_value)
+        container = ARObject._find_child_element(element, "FEATURES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.features.append(child_value)
 
         # Parse max
         child = ARObject._find_child_element(element, "MAX")

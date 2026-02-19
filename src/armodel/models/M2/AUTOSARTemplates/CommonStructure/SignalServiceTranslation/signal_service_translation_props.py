@@ -62,27 +62,38 @@ class SignalServiceTranslationProps(Identifiable):
         Returns:
             Deserialized SignalServiceTranslationProps object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SignalServiceTranslationProps, cls).deserialize(element)
 
-        # Parse control_refs (list)
+        # Parse control_refs (list from container "CONTROLS")
         obj.control_refs = []
-        for child in ARObject._find_all_child_elements(element, "CONTROLS"):
-            control_refs_value = ARObject._deserialize_by_tag(child, "ConsumedEventGroup")
-            obj.control_refs.append(control_refs_value)
+        container = ARObject._find_child_element(element, "CONTROLS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.control_refs.append(child_value)
 
-        # Parse control_pnc_refs (list)
+        # Parse control_pnc_refs (list from container "CONTROL-PNCS")
         obj.control_pnc_refs = []
-        for child in ARObject._find_all_child_elements(element, "CONTROL-PNCS"):
-            control_pnc_refs_value = ARObject._deserialize_by_tag(child, "PncMappingIdent")
-            obj.control_pnc_refs.append(control_pnc_refs_value)
+        container = ARObject._find_child_element(element, "CONTROL-PNCS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.control_pnc_refs.append(child_value)
 
-        # Parse control_provideds (list)
+        # Parse control_provideds (list from container "CONTROL-PROVIDEDS")
         obj.control_provideds = []
-        for child in ARObject._find_all_child_elements(element, "CONTROL-PROVIDEDS"):
-            control_provideds_value = ARObject._deserialize_by_tag(child, "EventHandler")
-            obj.control_provideds.append(control_provideds_value)
+        container = ARObject._find_child_element(element, "CONTROL-PROVIDEDS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.control_provideds.append(child_value)
 
         # Parse service_control
         child = ARObject._find_child_element(element, "SERVICE-CONTROL")
@@ -90,11 +101,15 @@ class SignalServiceTranslationProps(Identifiable):
             service_control_value = child.text
             obj.service_control = service_control_value
 
-        # Parse signal_service_event_propses (list)
+        # Parse signal_service_event_propses (list from container "SIGNAL-SERVICE-EVENT-PROPSES")
         obj.signal_service_event_propses = []
-        for child in ARObject._find_all_child_elements(element, "SIGNAL-SERVICE-EVENT-PROPSES"):
-            signal_service_event_propses_value = child.text
-            obj.signal_service_event_propses.append(signal_service_event_propses_value)
+        container = ARObject._find_child_element(element, "SIGNAL-SERVICE-EVENT-PROPSES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.signal_service_event_propses.append(child_value)
 
         return obj
 

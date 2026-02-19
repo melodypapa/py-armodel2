@@ -67,7 +67,7 @@ class GenericModelReference(ARObject):
         # Parse ref_ref
         child = ARObject._find_child_element(element, "REF")
         if child is not None:
-            ref_ref_value = child.text
+            ref_ref_value = ARObject._deserialize_by_tag(child, "Ref")
             obj.ref_ref = ref_ref_value
 
         return obj

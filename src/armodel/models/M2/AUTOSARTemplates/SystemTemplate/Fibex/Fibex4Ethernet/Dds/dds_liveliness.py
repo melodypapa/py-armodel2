@@ -60,7 +60,7 @@ class DdsLiveliness(ARObject):
         # Parse liveness_kind
         child = ARObject._find_child_element(element, "LIVENESS-KIND")
         if child is not None:
-            liveness_kind_value = child.text
+            liveness_kind_value = DdsLivenessKindEnum.deserialize(child)
             obj.liveness_kind = liveness_kind_value
 
         return obj

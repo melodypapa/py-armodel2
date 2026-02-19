@@ -79,9 +79,8 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
         Returns:
             Deserialized DiagnosticTroubleCodeProps object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticTroubleCodeProps, cls).deserialize(element)
 
         # Parse aging
         child = ARObject._find_child_element(element, "AGING")
@@ -95,17 +94,25 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
             diagnostic_memory_value = child.text
             obj.diagnostic_memory = diagnostic_memory_value
 
-        # Parse extended_datas (list)
+        # Parse extended_datas (list from container "EXTENDED-DATAS")
         obj.extended_datas = []
-        for child in ARObject._find_all_child_elements(element, "EXTENDED-DATAS"):
-            extended_datas_value = ARObject._deserialize_by_tag(child, "DiagnosticExtendedDataRecord")
-            obj.extended_datas.append(extended_datas_value)
+        container = ARObject._find_child_element(element, "EXTENDED-DATAS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.extended_datas.append(child_value)
 
-        # Parse freeze_frames (list)
+        # Parse freeze_frames (list from container "FREEZE-FRAMES")
         obj.freeze_frames = []
-        for child in ARObject._find_all_child_elements(element, "FREEZE-FRAMES"):
-            freeze_frames_value = ARObject._deserialize_by_tag(child, "DiagnosticFreezeFrame")
-            obj.freeze_frames.append(freeze_frames_value)
+        container = ARObject._find_child_element(element, "FREEZE-FRAMES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.freeze_frames.append(child_value)
 
         # Parse immediate_nv
         child = ARObject._find_child_element(element, "IMMEDIATE-NV")
@@ -134,7 +141,7 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
         # Parse significance
         child = ARObject._find_child_element(element, "SIGNIFICANCE")
         if child is not None:
-            significance_value = child.text
+            significance_value = DiagnosticSignificanceEnum.deserialize(child)
             obj.significance = significance_value
 
         # Parse snapshot

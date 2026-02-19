@@ -96,17 +96,25 @@ class PortAPIOption(ARObject):
             port_ref_value = ARObject._deserialize_by_tag(child, "PortPrototype")
             obj.port_ref = port_ref_value
 
-        # Parse port_arg_values (list)
+        # Parse port_arg_values (list from container "PORT-ARG-VALUES")
         obj.port_arg_values = []
-        for child in ARObject._find_all_child_elements(element, "PORT-ARG-VALUES"):
-            port_arg_values_value = ARObject._deserialize_by_tag(child, "PortDefinedArgumentValue")
-            obj.port_arg_values.append(port_arg_values_value)
+        container = ARObject._find_child_element(element, "PORT-ARG-VALUES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.port_arg_values.append(child_value)
 
-        # Parse supporteds (list)
+        # Parse supporteds (list from container "SUPPORTEDS")
         obj.supporteds = []
-        for child in ARObject._find_all_child_elements(element, "SUPPORTEDS"):
-            supporteds_value = ARObject._deserialize_by_tag(child, "SwcSupportedFeature")
-            obj.supporteds.append(supporteds_value)
+        container = ARObject._find_child_element(element, "SUPPORTEDS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.supporteds.append(child_value)
 
         # Parse transformer
         child = ARObject._find_child_element(element, "TRANSFORMER")

@@ -61,7 +61,7 @@ class InvalidationPolicy(ARObject):
         # Parse handle_invalid_enum
         child = ARObject._find_child_element(element, "HANDLE-INVALID-ENUM")
         if child is not None:
-            handle_invalid_enum_value = child.text
+            handle_invalid_enum_value = HandleInvalidEnum.deserialize(child)
             obj.handle_invalid_enum = handle_invalid_enum_value
 
         return obj

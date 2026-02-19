@@ -89,9 +89,8 @@ class EndToEndTransformationDescription(TransformationDescription):
         Returns:
             Deserialized EndToEndTransformationDescription object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(EndToEndTransformationDescription, cls).deserialize(element)
 
         # Parse clear_from_valid
         child = ARObject._find_child_element(element, "CLEAR-FROM-VALID")
@@ -114,7 +113,7 @@ class EndToEndTransformationDescription(TransformationDescription):
         # Parse data_id_mode
         child = ARObject._find_child_element(element, "DATA-ID-MODE")
         if child is not None:
-            data_id_mode_value = child.text
+            data_id_mode_value = DataIdModeEnum.deserialize(child)
             obj.data_id_mode = data_id_mode_value
 
         # Parse data_id_nibble
@@ -168,7 +167,7 @@ class EndToEndTransformationDescription(TransformationDescription):
         # Parse profile_behavior_behavior_enum
         child = ARObject._find_child_element(element, "PROFILE-BEHAVIOR-BEHAVIOR-ENUM")
         if child is not None:
-            profile_behavior_behavior_enum_value = child.text
+            profile_behavior_behavior_enum_value = EndToEndProfileBehaviorEnum.deserialize(child)
             obj.profile_behavior_behavior_enum = profile_behavior_behavior_enum_value
 
         # Parse profile_name

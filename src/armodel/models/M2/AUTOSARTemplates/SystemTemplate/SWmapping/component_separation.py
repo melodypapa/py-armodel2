@@ -46,14 +46,13 @@ class ComponentSeparation(MappingConstraint):
         Returns:
             Deserialized ComponentSeparation object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ComponentSeparation, cls).deserialize(element)
 
         # Parse mapping_scope_enum_ref
         child = ARObject._find_child_element(element, "MAPPING-SCOPE-ENUM")
         if child is not None:
-            mapping_scope_enum_ref_value = child.text
+            mapping_scope_enum_ref_value = MappingScopeEnum.deserialize(child)
             obj.mapping_scope_enum_ref = mapping_scope_enum_ref_value
 
         return obj

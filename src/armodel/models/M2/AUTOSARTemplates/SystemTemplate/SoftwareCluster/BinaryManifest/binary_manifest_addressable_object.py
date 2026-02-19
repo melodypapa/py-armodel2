@@ -49,9 +49,8 @@ class BinaryManifestAddressableObject(Identifiable, ABC):
         Returns:
             Deserialized BinaryManifestAddressableObject object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(BinaryManifestAddressableObject, cls).deserialize(element)
 
         # Parse address
         child = ARObject._find_child_element(element, "ADDRESS")
@@ -62,7 +61,7 @@ class BinaryManifestAddressableObject(Identifiable, ABC):
         # Parse symbol
         child = ARObject._find_child_element(element, "SYMBOL")
         if child is not None:
-            symbol_value = child.text
+            symbol_value = ARObject._deserialize_by_tag(child, "SymbolString")
             obj.symbol = symbol_value
 
         return obj

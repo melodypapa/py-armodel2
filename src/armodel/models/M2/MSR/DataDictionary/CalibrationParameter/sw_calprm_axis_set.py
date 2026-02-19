@@ -46,11 +46,15 @@ class SwCalprmAxisSet(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse sw_calprm_axises (list)
+        # Parse sw_calprm_axises (list from container "SW-CALPRM-AXISES")
         obj.sw_calprm_axises = []
-        for child in ARObject._find_all_child_elements(element, "SW-CALPRM-AXISES"):
-            sw_calprm_axises_value = ARObject._deserialize_by_tag(child, "SwCalprmAxis")
-            obj.sw_calprm_axises.append(sw_calprm_axises_value)
+        container = ARObject._find_child_element(element, "SW-CALPRM-AXISES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sw_calprm_axises.append(child_value)
 
         return obj
 

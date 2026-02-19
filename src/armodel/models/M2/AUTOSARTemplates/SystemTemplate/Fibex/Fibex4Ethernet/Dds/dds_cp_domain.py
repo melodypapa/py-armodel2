@@ -55,21 +55,28 @@ class DdsCpDomain(Identifiable):
         Returns:
             Deserialized DdsCpDomain object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DdsCpDomain, cls).deserialize(element)
 
-        # Parse dds_partitions (list)
+        # Parse dds_partitions (list from container "DDS-PARTITIONS")
         obj.dds_partitions = []
-        for child in ARObject._find_all_child_elements(element, "DDS-PARTITIONS"):
-            dds_partitions_value = ARObject._deserialize_by_tag(child, "DdsCpPartition")
-            obj.dds_partitions.append(dds_partitions_value)
+        container = ARObject._find_child_element(element, "DDS-PARTITIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.dds_partitions.append(child_value)
 
-        # Parse dds_topics (list)
+        # Parse dds_topics (list from container "DDS-TOPICS")
         obj.dds_topics = []
-        for child in ARObject._find_all_child_elements(element, "DDS-TOPICS"):
-            dds_topics_value = ARObject._deserialize_by_tag(child, "DdsCpTopic")
-            obj.dds_topics.append(dds_topics_value)
+        container = ARObject._find_child_element(element, "DDS-TOPICS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.dds_topics.append(child_value)
 
         # Parse domain_id
         child = ARObject._find_child_element(element, "DOMAIN-ID")

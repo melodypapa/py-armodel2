@@ -54,17 +54,25 @@ class McDataAccessDetails(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse rte_event_refs (list)
+        # Parse rte_event_refs (list from container "RTE-EVENT-REFS")
         obj.rte_event_refs = []
-        for child in ARObject._find_all_child_elements(element, "RTE-EVENT-REFS"):
-            rte_event_refs_value = ARObject._deserialize_by_tag(child, "RTEEvent")
-            obj.rte_event_refs.append(rte_event_refs_value)
+        container = ARObject._find_child_element(element, "RTE-EVENT-REFS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.rte_event_refs.append(child_value)
 
-        # Parse variable_accesses (list)
+        # Parse variable_accesses (list from container "VARIABLE-ACCESSES")
         obj.variable_accesses = []
-        for child in ARObject._find_all_child_elements(element, "VARIABLE-ACCESSES"):
-            variable_accesses_value = ARObject._deserialize_by_tag(child, "VariableAccess")
-            obj.variable_accesses.append(variable_accesses_value)
+        container = ARObject._find_child_element(element, "VARIABLE-ACCESSES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.variable_accesses.append(child_value)
 
         return obj
 

@@ -56,33 +56,48 @@ class BuildActionManifest(ARElement):
         Returns:
             Deserialized BuildActionManifest object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(BuildActionManifest, cls).deserialize(element)
 
-        # Parse build_actions (list)
+        # Parse build_actions (list from container "BUILD-ACTIONS")
         obj.build_actions = []
-        for child in ARObject._find_all_child_elements(element, "BUILD-ACTIONS"):
-            build_actions_value = ARObject._deserialize_by_tag(child, "BuildActionEnvironment")
-            obj.build_actions.append(build_actions_value)
+        container = ARObject._find_child_element(element, "BUILD-ACTIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.build_actions.append(child_value)
 
-        # Parse dynamic_actions (list)
+        # Parse dynamic_actions (list from container "DYNAMIC-ACTIONS")
         obj.dynamic_actions = []
-        for child in ARObject._find_all_child_elements(element, "DYNAMIC-ACTIONS"):
-            dynamic_actions_value = ARObject._deserialize_by_tag(child, "BuildAction")
-            obj.dynamic_actions.append(dynamic_actions_value)
+        container = ARObject._find_child_element(element, "DYNAMIC-ACTIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.dynamic_actions.append(child_value)
 
-        # Parse start_actions (list)
+        # Parse start_actions (list from container "START-ACTIONS")
         obj.start_actions = []
-        for child in ARObject._find_all_child_elements(element, "START-ACTIONS"):
-            start_actions_value = ARObject._deserialize_by_tag(child, "BuildAction")
-            obj.start_actions.append(start_actions_value)
+        container = ARObject._find_child_element(element, "START-ACTIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.start_actions.append(child_value)
 
-        # Parse tear_down_actions (list)
+        # Parse tear_down_actions (list from container "TEAR-DOWN-ACTIONS")
         obj.tear_down_actions = []
-        for child in ARObject._find_all_child_elements(element, "TEAR-DOWN-ACTIONS"):
-            tear_down_actions_value = ARObject._deserialize_by_tag(child, "BuildAction")
-            obj.tear_down_actions.append(tear_down_actions_value)
+        container = ARObject._find_child_element(element, "TEAR-DOWN-ACTIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.tear_down_actions.append(child_value)
 
         return obj
 

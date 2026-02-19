@@ -46,9 +46,8 @@ class FunctionInhibitionAvailabilityNeeds(ServiceNeeds):
         Returns:
             Deserialized FunctionInhibitionAvailabilityNeeds object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(FunctionInhibitionAvailabilityNeeds, cls).deserialize(element)
 
         # Parse controlled_fid
         child = ARObject._find_child_element(element, "CONTROLLED-FID")

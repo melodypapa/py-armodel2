@@ -48,9 +48,8 @@ class DiagnosticMapping(DiagnosticCommonElement, ABC):
         Returns:
             Deserialized DiagnosticMapping object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticMapping, cls).deserialize(element)
 
         # Parse provider
         child = ARObject._find_child_element(element, "PROVIDER")

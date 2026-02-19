@@ -53,14 +53,13 @@ class DataTransformation(Identifiable):
         Returns:
             Deserialized DataTransformation object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DataTransformation, cls).deserialize(element)
 
         # Parse data
         child = ARObject._find_child_element(element, "DATA")
         if child is not None:
-            data_value = child.text
+            data_value = DataTransformationKindEnum.deserialize(child)
             obj.data = data_value
 
         # Parse execute_despite
@@ -69,11 +68,15 @@ class DataTransformation(Identifiable):
             execute_despite_value = child.text
             obj.execute_despite = execute_despite_value
 
-        # Parse transformers (list)
+        # Parse transformers (list from container "TRANSFORMERS")
         obj.transformers = []
-        for child in ARObject._find_all_child_elements(element, "TRANSFORMERS"):
-            transformers_value = child.text
-            obj.transformers.append(transformers_value)
+        container = ARObject._find_child_element(element, "TRANSFORMERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.transformers.append(child_value)
 
         return obj
 

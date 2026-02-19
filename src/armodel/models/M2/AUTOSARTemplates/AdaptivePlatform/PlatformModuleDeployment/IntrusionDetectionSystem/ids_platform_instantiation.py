@@ -48,15 +48,18 @@ class IdsPlatformInstantiation(Identifiable, ABC):
         Returns:
             Deserialized IdsPlatformInstantiation object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(IdsPlatformInstantiation, cls).deserialize(element)
 
-        # Parse networks (list)
+        # Parse networks (list from container "NETWORKS")
         obj.networks = []
-        for child in ARObject._find_all_child_elements(element, "NETWORKS"):
-            networks_value = ARObject._deserialize_by_tag(child, "PlatformModuleEthernetEndpointConfiguration")
-            obj.networks.append(networks_value)
+        container = ARObject._find_child_element(element, "NETWORKS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.networks.append(child_value)
 
         # Parse time_base_resource
         child = ARObject._find_child_element(element, "TIME-BASE-RESOURCE")

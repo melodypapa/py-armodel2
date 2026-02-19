@@ -67,15 +67,18 @@ class ReceiverComSpec(RPortComSpec, ABC):
         Returns:
             Deserialized ReceiverComSpec object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ReceiverComSpec, cls).deserialize(element)
 
-        # Parse composite_networks (list)
+        # Parse composite_networks (list from container "COMPOSITE-NETWORKS")
         obj.composite_networks = []
-        for child in ARObject._find_all_child_elements(element, "COMPOSITE-NETWORKS"):
-            composite_networks_value = ARObject._deserialize_by_tag(child, "CompositeNetworkRepresentation")
-            obj.composite_networks.append(composite_networks_value)
+        container = ARObject._find_child_element(element, "COMPOSITE-NETWORKS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.composite_networks.append(child_value)
 
         # Parse data_element_ref
         child = ARObject._find_child_element(element, "DATA-ELEMENT")
@@ -101,11 +104,15 @@ class ReceiverComSpec(RPortComSpec, ABC):
             sync_counter_init_value = child.text
             obj.sync_counter_init = sync_counter_init_value
 
-        # Parse transformation_coms (list)
+        # Parse transformation_coms (list from container "TRANSFORMATION-COMS")
         obj.transformation_coms = []
-        for child in ARObject._find_all_child_elements(element, "TRANSFORMATION-COMS"):
-            transformation_coms_value = child.text
-            obj.transformation_coms.append(transformation_coms_value)
+        container = ARObject._find_child_element(element, "TRANSFORMATION-COMS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.transformation_coms.append(child_value)
 
         # Parse uses_end_to_end
         child = ARObject._find_child_element(element, "USES-END-TO-END")

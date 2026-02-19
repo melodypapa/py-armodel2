@@ -52,9 +52,8 @@ class DiagnosticDynamicallyDefineDataIdentifierClass(DiagnosticServiceClass):
         Returns:
             Deserialized DiagnosticDynamicallyDefineDataIdentifierClass object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticDynamicallyDefineDataIdentifierClass, cls).deserialize(element)
 
         # Parse check_per
         child = ARObject._find_child_element(element, "CHECK-PER")
@@ -65,14 +64,18 @@ class DiagnosticDynamicallyDefineDataIdentifierClass(DiagnosticServiceClass):
         # Parse configuration
         child = ARObject._find_child_element(element, "CONFIGURATION")
         if child is not None:
-            configuration_value = child.text
+            configuration_value = DiagnosticHandleDDDIConfigurationEnum.deserialize(child)
             obj.configuration = configuration_value
 
-        # Parse subfunctions (list)
+        # Parse subfunctions (list from container "SUBFUNCTIONS")
         obj.subfunctions = []
-        for child in ARObject._find_all_child_elements(element, "SUBFUNCTIONS"):
-            subfunctions_value = child.text
-            obj.subfunctions.append(subfunctions_value)
+        container = ARObject._find_child_element(element, "SUBFUNCTIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.subfunctions.append(child_value)
 
         return obj
 

@@ -88,11 +88,15 @@ class EcuResourceEstimation(ARObject):
             rte_resource_value = ARObject._deserialize_by_tag(child, "ResourceConsumption")
             obj.rte_resource = rte_resource_value
 
-        # Parse sw_comp_to_ecu_refs (list)
+        # Parse sw_comp_to_ecu_refs (list from container "SW-COMP-TO-ECUS")
         obj.sw_comp_to_ecu_refs = []
-        for child in ARObject._find_all_child_elements(element, "SW-COMP-TO-ECUS"):
-            sw_comp_to_ecu_refs_value = ARObject._deserialize_by_tag(child, "SwcToEcuMapping")
-            obj.sw_comp_to_ecu_refs.append(sw_comp_to_ecu_refs_value)
+        container = ARObject._find_child_element(element, "SW-COMP-TO-ECUS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sw_comp_to_ecu_refs.append(child_value)
 
         return obj
 

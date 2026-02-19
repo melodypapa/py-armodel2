@@ -83,9 +83,8 @@ class DoIpInterface(Identifiable):
         Returns:
             Deserialized DoIpInterface object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DoIpInterface, cls).deserialize(element)
 
         # Parse alive_check
         child = ARObject._find_child_element(element, "ALIVE-CHECK")
@@ -99,17 +98,25 @@ class DoIpInterface(Identifiable):
             doip_channel_value = ARObject._deserialize_by_tag(child, "DoIpTpConfig")
             obj.doip_channel = doip_channel_value
 
-        # Parse doip_connections (list)
+        # Parse doip_connections (list from container "DOIP-CONNECTIONS")
         obj.doip_connections = []
-        for child in ARObject._find_all_child_elements(element, "DOIP-CONNECTIONS"):
-            doip_connections_value = ARObject._deserialize_by_tag(child, "SocketConnection")
-            obj.doip_connections.append(doip_connections_value)
+        container = ARObject._find_child_element(element, "DOIP-CONNECTIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.doip_connections.append(child_value)
 
-        # Parse do_ip_routings (list)
+        # Parse do_ip_routings (list from container "DO-IP-ROUTINGS")
         obj.do_ip_routings = []
-        for child in ARObject._find_all_child_elements(element, "DO-IP-ROUTINGS"):
-            do_ip_routings_value = ARObject._deserialize_by_tag(child, "DoIpRoutingActivation")
-            obj.do_ip_routings.append(do_ip_routings_value)
+        container = ARObject._find_child_element(element, "DO-IP-ROUTINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.do_ip_routings.append(child_value)
 
         # Parse general_inactivity
         child = ARObject._find_child_element(element, "GENERAL-INACTIVITY")
@@ -141,11 +148,15 @@ class DoIpInterface(Identifiable):
             max_tester_value = child.text
             obj.max_tester = max_tester_value
 
-        # Parse sockets (list)
+        # Parse sockets (list from container "SOCKETS")
         obj.sockets = []
-        for child in ARObject._find_all_child_elements(element, "SOCKETS"):
-            sockets_value = ARObject._deserialize_by_tag(child, "StaticSocketConnection")
-            obj.sockets.append(sockets_value)
+        container = ARObject._find_child_element(element, "SOCKETS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sockets.append(child_value)
 
         # Parse use_mac_address
         child = ARObject._find_child_element(element, "USE-MAC-ADDRESS")

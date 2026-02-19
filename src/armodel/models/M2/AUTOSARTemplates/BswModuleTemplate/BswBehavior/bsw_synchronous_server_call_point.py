@@ -50,9 +50,8 @@ class BswSynchronousServerCallPoint(BswModuleCallPoint):
         Returns:
             Deserialized BswSynchronousServerCallPoint object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(BswSynchronousServerCallPoint, cls).deserialize(element)
 
         # Parse called_entry_entry
         child = ARObject._find_child_element(element, "CALLED-ENTRY-ENTRY")

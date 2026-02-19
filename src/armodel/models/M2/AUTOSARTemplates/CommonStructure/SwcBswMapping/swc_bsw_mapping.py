@@ -60,9 +60,8 @@ class SwcBswMapping(ARElement):
         Returns:
             Deserialized SwcBswMapping object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SwcBswMapping, cls).deserialize(element)
 
         # Parse bsw_behavior
         child = ARObject._find_child_element(element, "BSW-BEHAVIOR")
@@ -70,11 +69,15 @@ class SwcBswMapping(ARElement):
             bsw_behavior_value = ARObject._deserialize_by_tag(child, "BswInternalBehavior")
             obj.bsw_behavior = bsw_behavior_value
 
-        # Parse runnable_mapping_refs (list)
+        # Parse runnable_mapping_refs (list from container "RUNNABLE-MAPPINGS")
         obj.runnable_mapping_refs = []
-        for child in ARObject._find_all_child_elements(element, "RUNNABLE-MAPPINGS"):
-            runnable_mapping_refs_value = ARObject._deserialize_by_tag(child, "SwcBswRunnableMapping")
-            obj.runnable_mapping_refs.append(runnable_mapping_refs_value)
+        container = ARObject._find_child_element(element, "RUNNABLE-MAPPINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.runnable_mapping_refs.append(child_value)
 
         # Parse swc_behavior
         child = ARObject._find_child_element(element, "SWC-BEHAVIOR")
@@ -82,11 +85,15 @@ class SwcBswMapping(ARElement):
             swc_behavior_value = ARObject._deserialize_by_tag(child, "SwcInternalBehavior")
             obj.swc_behavior = swc_behavior_value
 
-        # Parse synchronizeds (list)
+        # Parse synchronizeds (list from container "SYNCHRONIZEDS")
         obj.synchronizeds = []
-        for child in ARObject._find_all_child_elements(element, "SYNCHRONIZEDS"):
-            synchronizeds_value = child.text
-            obj.synchronizeds.append(synchronizeds_value)
+        container = ARObject._find_child_element(element, "SYNCHRONIZEDS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.synchronizeds.append(child_value)
 
         return obj
 

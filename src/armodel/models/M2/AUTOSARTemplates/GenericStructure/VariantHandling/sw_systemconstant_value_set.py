@@ -50,15 +50,18 @@ class SwSystemconstantValueSet(ARElement):
         Returns:
             Deserialized SwSystemconstantValueSet object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SwSystemconstantValueSet, cls).deserialize(element)
 
-        # Parse sws (list)
+        # Parse sws (list from container "SWS")
         obj.sws = []
-        for child in ARObject._find_all_child_elements(element, "SWS"):
-            sws_value = ARObject._deserialize_by_tag(child, "SwSystemconstValue")
-            obj.sws.append(sws_value)
+        container = ARObject._find_child_element(element, "SWS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sws.append(child_value)
 
         return obj
 

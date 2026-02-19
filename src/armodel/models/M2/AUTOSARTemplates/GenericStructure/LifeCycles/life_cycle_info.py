@@ -97,11 +97,15 @@ class LifeCycleInfo(ARObject):
             remark_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
             obj.remark = remark_value
 
-        # Parse use_instead_refs (list)
+        # Parse use_instead_refs (list from container "USE-INSTEADS")
         obj.use_instead_refs = []
-        for child in ARObject._find_all_child_elements(element, "USE-INSTEADS"):
-            use_instead_refs_value = ARObject._deserialize_by_tag(child, "Referrable")
-            obj.use_instead_refs.append(use_instead_refs_value)
+        container = ARObject._find_child_element(element, "USE-INSTEADS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.use_instead_refs.append(child_value)
 
         return obj
 

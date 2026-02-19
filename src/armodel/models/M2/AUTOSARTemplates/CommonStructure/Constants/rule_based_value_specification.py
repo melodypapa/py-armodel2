@@ -70,7 +70,7 @@ class RuleBasedValueSpecification(ARObject):
         # Parse rule
         child = ARObject._find_child_element(element, "RULE")
         if child is not None:
-            rule_value = child.text
+            rule_value = ARObject._deserialize_by_tag(child, "Identifier")
             obj.rule = rule_value
 
         return obj

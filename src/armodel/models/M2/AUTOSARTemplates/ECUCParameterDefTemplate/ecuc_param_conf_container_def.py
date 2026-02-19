@@ -50,27 +50,38 @@ class EcucParamConfContainerDef(EcucContainerDef):
         Returns:
             Deserialized EcucParamConfContainerDef object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(EcucParamConfContainerDef, cls).deserialize(element)
 
-        # Parse parameters (list)
+        # Parse parameters (list from container "PARAMETERS")
         obj.parameters = []
-        for child in ARObject._find_all_child_elements(element, "PARAMETERS"):
-            parameters_value = ARObject._deserialize_by_tag(child, "EcucParameterDef")
-            obj.parameters.append(parameters_value)
+        container = ARObject._find_child_element(element, "PARAMETERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.parameters.append(child_value)
 
-        # Parse reference_refs (list)
+        # Parse reference_refs (list from container "REFERENCES")
         obj.reference_refs = []
-        for child in ARObject._find_all_child_elements(element, "REFERENCES"):
-            reference_refs_value = child.text
-            obj.reference_refs.append(reference_refs_value)
+        container = ARObject._find_child_element(element, "REFERENCES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.reference_refs.append(child_value)
 
-        # Parse sub_containers (list)
+        # Parse sub_containers (list from container "SUB-CONTAINERS")
         obj.sub_containers = []
-        for child in ARObject._find_all_child_elements(element, "SUB-CONTAINERS"):
-            sub_containers_value = ARObject._deserialize_by_tag(child, "EcucContainerDef")
-            obj.sub_containers.append(sub_containers_value)
+        container = ARObject._find_child_element(element, "SUB-CONTAINERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sub_containers.append(child_value)
 
         return obj
 

@@ -111,21 +111,28 @@ class RunnableEntity(ExecutableEntity):
         Returns:
             Deserialized RunnableEntity object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(RunnableEntity, cls).deserialize(element)
 
-        # Parse arguments (list)
+        # Parse arguments (list from container "ARGUMENTS")
         obj.arguments = []
-        for child in ARObject._find_all_child_elements(element, "ARGUMENTS"):
-            arguments_value = ARObject._deserialize_by_tag(child, "RunnableEntity")
-            obj.arguments.append(arguments_value)
+        container = ARObject._find_child_element(element, "ARGUMENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.arguments.append(child_value)
 
-        # Parse asynchronous_servers (list)
+        # Parse asynchronous_servers (list from container "ASYNCHRONOUS-SERVERS")
         obj.asynchronous_servers = []
-        for child in ARObject._find_all_child_elements(element, "ASYNCHRONOUS-SERVERS"):
-            asynchronous_servers_value = child.text
-            obj.asynchronous_servers.append(asynchronous_servers_value)
+        container = ARObject._find_child_element(element, "ASYNCHRONOUS-SERVERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.asynchronous_servers.append(child_value)
 
         # Parse can_be_invoked
         child = ARObject._find_child_element(element, "CAN-BE-INVOKED")
@@ -133,89 +140,141 @@ class RunnableEntity(ExecutableEntity):
             can_be_invoked_value = child.text
             obj.can_be_invoked = can_be_invoked_value
 
-        # Parse data_reads (list)
+        # Parse data_reads (list from container "DATA-READS")
         obj.data_reads = []
-        for child in ARObject._find_all_child_elements(element, "DATA-READS"):
-            data_reads_value = ARObject._deserialize_by_tag(child, "VariableAccess")
-            obj.data_reads.append(data_reads_value)
+        container = ARObject._find_child_element(element, "DATA-READS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.data_reads.append(child_value)
 
-        # Parse data_receives (list)
+        # Parse data_receives (list from container "DATA-RECEIVES")
         obj.data_receives = []
-        for child in ARObject._find_all_child_elements(element, "DATA-RECEIVES"):
-            data_receives_value = ARObject._deserialize_by_tag(child, "VariableAccess")
-            obj.data_receives.append(data_receives_value)
+        container = ARObject._find_child_element(element, "DATA-RECEIVES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.data_receives.append(child_value)
 
-        # Parse data_send_points (list)
+        # Parse data_send_points (list from container "DATA-SEND-POINTS")
         obj.data_send_points = []
-        for child in ARObject._find_all_child_elements(element, "DATA-SEND-POINTS"):
-            data_send_points_value = ARObject._deserialize_by_tag(child, "VariableAccess")
-            obj.data_send_points.append(data_send_points_value)
+        container = ARObject._find_child_element(element, "DATA-SEND-POINTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.data_send_points.append(child_value)
 
-        # Parse data_writes (list)
+        # Parse data_writes (list from container "DATA-WRITES")
         obj.data_writes = []
-        for child in ARObject._find_all_child_elements(element, "DATA-WRITES"):
-            data_writes_value = ARObject._deserialize_by_tag(child, "VariableAccess")
-            obj.data_writes.append(data_writes_value)
+        container = ARObject._find_child_element(element, "DATA-WRITES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.data_writes.append(child_value)
 
-        # Parse external_refs (list)
+        # Parse external_refs (list from container "EXTERNALS")
         obj.external_refs = []
-        for child in ARObject._find_all_child_elements(element, "EXTERNALS"):
-            external_refs_value = ARObject._deserialize_by_tag(child, "ExternalTriggeringPoint")
-            obj.external_refs.append(external_refs_value)
+        container = ARObject._find_child_element(element, "EXTERNALS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.external_refs.append(child_value)
 
-        # Parse internal_refs (list)
+        # Parse internal_refs (list from container "INTERNALS")
         obj.internal_refs = []
-        for child in ARObject._find_all_child_elements(element, "INTERNALS"):
-            internal_refs_value = ARObject._deserialize_by_tag(child, "InternalTriggeringPoint")
-            obj.internal_refs.append(internal_refs_value)
+        container = ARObject._find_child_element(element, "INTERNALS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.internal_refs.append(child_value)
 
-        # Parse mode_access_points (list)
+        # Parse mode_access_points (list from container "MODE-ACCESS-POINTS")
         obj.mode_access_points = []
-        for child in ARObject._find_all_child_elements(element, "MODE-ACCESS-POINTS"):
-            mode_access_points_value = ARObject._deserialize_by_tag(child, "ModeAccessPoint")
-            obj.mode_access_points.append(mode_access_points_value)
+        container = ARObject._find_child_element(element, "MODE-ACCESS-POINTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.mode_access_points.append(child_value)
 
-        # Parse mode_switch_points (list)
+        # Parse mode_switch_points (list from container "MODE-SWITCH-POINTS")
         obj.mode_switch_points = []
-        for child in ARObject._find_all_child_elements(element, "MODE-SWITCH-POINTS"):
-            mode_switch_points_value = ARObject._deserialize_by_tag(child, "ModeSwitchPoint")
-            obj.mode_switch_points.append(mode_switch_points_value)
+        container = ARObject._find_child_element(element, "MODE-SWITCH-POINTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.mode_switch_points.append(child_value)
 
-        # Parse parameter_accesses (list)
+        # Parse parameter_accesses (list from container "PARAMETER-ACCESSES")
         obj.parameter_accesses = []
-        for child in ARObject._find_all_child_elements(element, "PARAMETER-ACCESSES"):
-            parameter_accesses_value = ARObject._deserialize_by_tag(child, "ParameterAccess")
-            obj.parameter_accesses.append(parameter_accesses_value)
+        container = ARObject._find_child_element(element, "PARAMETER-ACCESSES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.parameter_accesses.append(child_value)
 
-        # Parse read_locals (list)
+        # Parse read_locals (list from container "READ-LOCALS")
         obj.read_locals = []
-        for child in ARObject._find_all_child_elements(element, "READ-LOCALS"):
-            read_locals_value = ARObject._deserialize_by_tag(child, "VariableAccess")
-            obj.read_locals.append(read_locals_value)
+        container = ARObject._find_child_element(element, "READ-LOCALS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.read_locals.append(child_value)
 
-        # Parse server_call_points (list)
+        # Parse server_call_points (list from container "SERVER-CALL-POINTS")
         obj.server_call_points = []
-        for child in ARObject._find_all_child_elements(element, "SERVER-CALL-POINTS"):
-            server_call_points_value = ARObject._deserialize_by_tag(child, "ServerCallPoint")
-            obj.server_call_points.append(server_call_points_value)
+        container = ARObject._find_child_element(element, "SERVER-CALL-POINTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.server_call_points.append(child_value)
 
         # Parse symbol
         child = ARObject._find_child_element(element, "SYMBOL")
         if child is not None:
-            symbol_value = child.text
+            symbol_value = ARObject._deserialize_by_tag(child, "CIdentifier")
             obj.symbol = symbol_value
 
-        # Parse wait_points (list)
+        # Parse wait_points (list from container "WAIT-POINTS")
         obj.wait_points = []
-        for child in ARObject._find_all_child_elements(element, "WAIT-POINTS"):
-            wait_points_value = ARObject._deserialize_by_tag(child, "WaitPoint")
-            obj.wait_points.append(wait_points_value)
+        container = ARObject._find_child_element(element, "WAIT-POINTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.wait_points.append(child_value)
 
-        # Parse written_locals (list)
+        # Parse written_locals (list from container "WRITTEN-LOCALS")
         obj.written_locals = []
-        for child in ARObject._find_all_child_elements(element, "WRITTEN-LOCALS"):
-            written_locals_value = ARObject._deserialize_by_tag(child, "VariableAccess")
-            obj.written_locals.append(written_locals_value)
+        container = ARObject._find_child_element(element, "WRITTEN-LOCALS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.written_locals.append(child_value)
 
         return obj
 

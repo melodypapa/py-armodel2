@@ -175,10 +175,12 @@ def build_complete_dependency_graph(package_data: Dict[str, Dict[str, Any]]) -> 
                         attr_type = attr_info["type"]
 
                         # Skip primitives, enums, "any" types, and self-references
-                        if (is_primitive_type(attr_type, package_data) or
-                            is_enum_type(attr_type, package_data) or
-                            attr_type.startswith("any (") or
-                            attr_type == class_name):
+                        if (
+                            is_primitive_type(attr_type, package_data)
+                            or is_enum_type(attr_type, package_data)
+                            or attr_type.startswith("any (")
+                            or attr_type == class_name
+                        ):
                             continue
 
                         # Add to dependencies

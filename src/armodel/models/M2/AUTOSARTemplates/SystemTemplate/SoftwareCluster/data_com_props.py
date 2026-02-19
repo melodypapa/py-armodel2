@@ -48,20 +48,19 @@ class DataComProps(CpSoftwareClusterCommunicationResourceProps):
         Returns:
             Deserialized DataComProps object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DataComProps, cls).deserialize(element)
 
         # Parse data
         child = ARObject._find_child_element(element, "DATA")
         if child is not None:
-            data_value = child.text
+            data_value = DataConsistencyPolicyEnum.deserialize(child)
             obj.data = data_value
 
         # Parse send_indication_enum
         child = ARObject._find_child_element(element, "SEND-INDICATION-ENUM")
         if child is not None:
-            send_indication_enum_value = child.text
+            send_indication_enum_value = SendIndicationEnum.deserialize(child)
             obj.send_indication_enum = send_indication_enum_value
 
         return obj

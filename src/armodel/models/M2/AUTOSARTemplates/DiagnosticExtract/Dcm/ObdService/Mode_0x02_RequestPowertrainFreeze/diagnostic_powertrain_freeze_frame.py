@@ -45,15 +45,18 @@ class DiagnosticPowertrainFreezeFrame(DiagnosticCommonElement):
         Returns:
             Deserialized DiagnosticPowertrainFreezeFrame object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticPowertrainFreezeFrame, cls).deserialize(element)
 
-        # Parse pids (list)
+        # Parse pids (list from container "PIDS")
         obj.pids = []
-        for child in ARObject._find_all_child_elements(element, "PIDS"):
-            pids_value = ARObject._deserialize_by_tag(child, "DiagnosticParameter")
-            obj.pids.append(pids_value)
+        container = ARObject._find_child_element(element, "PIDS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.pids.append(child_value)
 
         return obj
 

@@ -95,45 +95,68 @@ class NvBlockDescriptor(Identifiable):
         Returns:
             Deserialized NvBlockDescriptor object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(NvBlockDescriptor, cls).deserialize(element)
 
-        # Parse client_server_ports (list)
+        # Parse client_server_ports (list from container "CLIENT-SERVER-PORTS")
         obj.client_server_ports = []
-        for child in ARObject._find_all_child_elements(element, "CLIENT-SERVER-PORTS"):
-            client_server_ports_value = ARObject._deserialize_by_tag(child, "RoleBasedPortAssignment")
-            obj.client_server_ports.append(client_server_ports_value)
+        container = ARObject._find_child_element(element, "CLIENT-SERVER-PORTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.client_server_ports.append(child_value)
 
-        # Parse constant_values (list)
+        # Parse constant_values (list from container "CONSTANT-VALUES")
         obj.constant_values = []
-        for child in ARObject._find_all_child_elements(element, "CONSTANT-VALUES"):
-            constant_values_value = ARObject._deserialize_by_tag(child, "ConstantSpecification")
-            obj.constant_values.append(constant_values_value)
+        container = ARObject._find_child_element(element, "CONSTANT-VALUES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.constant_values.append(child_value)
 
-        # Parse data_type_refs (list)
+        # Parse data_type_refs (list from container "DATA-TYPES")
         obj.data_type_refs = []
-        for child in ARObject._find_all_child_elements(element, "DATA-TYPES"):
-            data_type_refs_value = ARObject._deserialize_by_tag(child, "DataTypeMappingSet")
-            obj.data_type_refs.append(data_type_refs_value)
+        container = ARObject._find_child_element(element, "DATA-TYPES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.data_type_refs.append(child_value)
 
-        # Parse instantiation_data_defs (list)
+        # Parse instantiation_data_defs (list from container "INSTANTIATION-DATA-DEFS")
         obj.instantiation_data_defs = []
-        for child in ARObject._find_all_child_elements(element, "INSTANTIATION-DATA-DEFS"):
-            instantiation_data_defs_value = ARObject._deserialize_by_tag(child, "InstantiationDataDefProps")
-            obj.instantiation_data_defs.append(instantiation_data_defs_value)
+        container = ARObject._find_child_element(element, "INSTANTIATION-DATA-DEFS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.instantiation_data_defs.append(child_value)
 
-        # Parse mode_switch_events (list)
+        # Parse mode_switch_events (list from container "MODE-SWITCH-EVENTS")
         obj.mode_switch_events = []
-        for child in ARObject._find_all_child_elements(element, "MODE-SWITCH-EVENTS"):
-            mode_switch_events_value = child.text
-            obj.mode_switch_events.append(mode_switch_events_value)
+        container = ARObject._find_child_element(element, "MODE-SWITCH-EVENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.mode_switch_events.append(child_value)
 
-        # Parse nv_block_data_refs (list)
+        # Parse nv_block_data_refs (list from container "NV-BLOCK-DATAS")
         obj.nv_block_data_refs = []
-        for child in ARObject._find_all_child_elements(element, "NV-BLOCK-DATAS"):
-            nv_block_data_refs_value = ARObject._deserialize_by_tag(child, "NvBlockDataMapping")
-            obj.nv_block_data_refs.append(nv_block_data_refs_value)
+        container = ARObject._find_child_element(element, "NV-BLOCK-DATAS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.nv_block_data_refs.append(child_value)
 
         # Parse nv_block_needs
         child = ARObject._find_child_element(element, "NV-BLOCK-NEEDS")
@@ -165,11 +188,15 @@ class NvBlockDescriptor(Identifiable):
             timing_event_value = ARObject._deserialize_by_tag(child, "TimingEvent")
             obj.timing_event = timing_event_value
 
-        # Parse writing_strategies (list)
+        # Parse writing_strategies (list from container "WRITING-STRATEGIES")
         obj.writing_strategies = []
-        for child in ARObject._find_all_child_elements(element, "WRITING-STRATEGIES"):
-            writing_strategies_value = child.text
-            obj.writing_strategies.append(writing_strategies_value)
+        container = ARObject._find_child_element(element, "WRITING-STRATEGIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.writing_strategies.append(child_value)
 
         return obj
 

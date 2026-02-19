@@ -47,9 +47,8 @@ class DiagnosticRoutineControl(DiagnosticServiceInstance):
         Returns:
             Deserialized DiagnosticRoutineControl object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticRoutineControl, cls).deserialize(element)
 
         # Parse routine
         child = ARObject._find_child_element(element, "ROUTINE")

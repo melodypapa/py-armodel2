@@ -50,7 +50,7 @@ class RestrictionWithSeverity(ARObject, ABC):
         # Parse severity
         child = ARObject._find_child_element(element, "SEVERITY")
         if child is not None:
-            severity_value = child.text
+            severity_value = SeverityEnum.deserialize(child)
             obj.severity = severity_value
 
         return obj

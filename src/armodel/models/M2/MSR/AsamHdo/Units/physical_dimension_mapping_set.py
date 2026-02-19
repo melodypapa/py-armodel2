@@ -45,15 +45,18 @@ class PhysicalDimensionMappingSet(ARElement):
         Returns:
             Deserialized PhysicalDimensionMappingSet object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(PhysicalDimensionMappingSet, cls).deserialize(element)
 
-        # Parse physicals (list)
+        # Parse physicals (list from container "PHYSICALS")
         obj.physicals = []
-        for child in ARObject._find_all_child_elements(element, "PHYSICALS"):
-            physicals_value = ARObject._deserialize_by_tag(child, "PhysicalDimension")
-            obj.physicals.append(physicals_value)
+        container = ARObject._find_child_element(element, "PHYSICALS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.physicals.append(child_value)
 
         return obj
 

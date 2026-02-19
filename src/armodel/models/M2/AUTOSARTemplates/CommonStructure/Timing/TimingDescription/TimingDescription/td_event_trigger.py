@@ -51,14 +51,13 @@ class TDEventTrigger(TDEventVfbPort):
         Returns:
             Deserialized TDEventTrigger object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TDEventTrigger, cls).deserialize(element)
 
         # Parse td_event_trigger_ref
         child = ARObject._find_child_element(element, "TD-EVENT-TRIGGER")
         if child is not None:
-            td_event_trigger_ref_value = child.text
+            td_event_trigger_ref_value = TDEventTriggerTypeEnum.deserialize(child)
             obj.td_event_trigger_ref = td_event_trigger_ref_value
 
         # Parse trigger_ref

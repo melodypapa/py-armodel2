@@ -57,33 +57,48 @@ class CpSoftwareClusterMappingSet(ARElement):
         Returns:
             Deserialized CpSoftwareClusterMappingSet object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(CpSoftwareClusterMappingSet, cls).deserialize(element)
 
-        # Parse port_element_tos (list)
+        # Parse port_element_tos (list from container "PORT-ELEMENT-TOS")
         obj.port_element_tos = []
-        for child in ARObject._find_all_child_elements(element, "PORT-ELEMENT-TOS"):
-            port_element_tos_value = ARObject._deserialize_by_tag(child, "PortElementToCommunicationResourceMapping")
-            obj.port_element_tos.append(port_element_tos_value)
+        container = ARObject._find_child_element(element, "PORT-ELEMENT-TOS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.port_element_tos.append(child_value)
 
-        # Parse resource_tos (list)
+        # Parse resource_tos (list from container "RESOURCE-TOS")
         obj.resource_tos = []
-        for child in ARObject._find_all_child_elements(element, "RESOURCE-TOS"):
-            resource_tos_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
-            obj.resource_tos.append(resource_tos_value)
+        container = ARObject._find_child_element(element, "RESOURCE-TOS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.resource_tos.append(child_value)
 
-        # Parse software_clusters (list)
+        # Parse software_clusters (list from container "SOFTWARE-CLUSTERS")
         obj.software_clusters = []
-        for child in ARObject._find_all_child_elements(element, "SOFTWARE-CLUSTERS"):
-            software_clusters_value = child.text
-            obj.software_clusters.append(software_clusters_value)
+        container = ARObject._find_child_element(element, "SOFTWARE-CLUSTERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.software_clusters.append(child_value)
 
-        # Parse swc_tos (list)
+        # Parse swc_tos (list from container "SWC-TOS")
         obj.swc_tos = []
-        for child in ARObject._find_all_child_elements(element, "SWC-TOS"):
-            swc_tos_value = ARObject._deserialize_by_tag(child, "SwcToApplicationPartitionMapping")
-            obj.swc_tos.append(swc_tos_value)
+        container = ARObject._find_child_element(element, "SWC-TOS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.swc_tos.append(child_value)
 
         return obj
 

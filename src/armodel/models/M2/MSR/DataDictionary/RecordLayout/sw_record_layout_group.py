@@ -80,7 +80,7 @@ class SwRecordLayoutGroup(ARObject):
         # Parse short_label
         child = ARObject._find_child_element(element, "SHORT-LABEL")
         if child is not None:
-            short_label_value = child.text
+            short_label_value = ARObject._deserialize_by_tag(child, "Identifier")
             obj.short_label = short_label_value
 
         # Parse sw_generic_axis_param

@@ -45,9 +45,8 @@ class DiagnosticJ1939Spn(DiagnosticCommonElement):
         Returns:
             Deserialized DiagnosticJ1939Spn object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticJ1939Spn, cls).deserialize(element)
 
         # Parse spn
         child = ARObject._find_child_element(element, "SPN")

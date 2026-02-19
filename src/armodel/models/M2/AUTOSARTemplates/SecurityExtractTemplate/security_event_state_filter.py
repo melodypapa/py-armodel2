@@ -45,15 +45,18 @@ class SecurityEventStateFilter(AbstractSecurityEventFilter):
         Returns:
             Deserialized SecurityEventStateFilter object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SecurityEventStateFilter, cls).deserialize(element)
 
-        # Parse block_if_states (list)
+        # Parse block_if_states (list from container "BLOCK-IF-STATES")
         obj.block_if_states = []
-        for child in ARObject._find_all_child_elements(element, "BLOCK-IF-STATES"):
-            block_if_states_value = ARObject._deserialize_by_tag(child, "BlockState")
-            obj.block_if_states.append(block_if_states_value)
+        container = ARObject._find_child_element(element, "BLOCK-IF-STATES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.block_if_states.append(child_value)
 
         return obj
 

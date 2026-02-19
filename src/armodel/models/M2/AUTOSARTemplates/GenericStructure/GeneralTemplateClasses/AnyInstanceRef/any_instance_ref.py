@@ -62,11 +62,15 @@ class AnyInstanceRef(ARObject):
             base_value = ARObject._deserialize_by_tag(child, "AtpClassifier")
             obj.base = base_value
 
-        # Parse context_elements (list)
+        # Parse context_elements (list from container "CONTEXT-ELEMENTS")
         obj.context_elements = []
-        for child in ARObject._find_all_child_elements(element, "CONTEXT-ELEMENTS"):
-            context_elements_value = ARObject._deserialize_by_tag(child, "AtpFeature")
-            obj.context_elements.append(context_elements_value)
+        container = ARObject._find_child_element(element, "CONTEXT-ELEMENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.context_elements.append(child_value)
 
         # Parse target
         child = ARObject._find_child_element(element, "TARGET")

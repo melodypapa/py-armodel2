@@ -56,23 +56,35 @@ class RptSupportData(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse executions (list)
+        # Parse executions (list from container "EXECUTIONS")
         obj.executions = []
-        for child in ARObject._find_all_child_elements(element, "EXECUTIONS"):
-            executions_value = ARObject._deserialize_by_tag(child, "RptExecutionContext")
-            obj.executions.append(executions_value)
+        container = ARObject._find_child_element(element, "EXECUTIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.executions.append(child_value)
 
-        # Parse rpt_components (list)
+        # Parse rpt_components (list from container "RPT-COMPONENTS")
         obj.rpt_components = []
-        for child in ARObject._find_all_child_elements(element, "RPT-COMPONENTS"):
-            rpt_components_value = ARObject._deserialize_by_tag(child, "RptComponent")
-            obj.rpt_components.append(rpt_components_value)
+        container = ARObject._find_child_element(element, "RPT-COMPONENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.rpt_components.append(child_value)
 
-        # Parse rpt_service_points (list)
+        # Parse rpt_service_points (list from container "RPT-SERVICE-POINTS")
         obj.rpt_service_points = []
-        for child in ARObject._find_all_child_elements(element, "RPT-SERVICE-POINTS"):
-            rpt_service_points_value = ARObject._deserialize_by_tag(child, "RptServicePoint")
-            obj.rpt_service_points.append(rpt_service_points_value)
+        container = ARObject._find_child_element(element, "RPT-SERVICE-POINTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.rpt_service_points.append(child_value)
 
         return obj
 

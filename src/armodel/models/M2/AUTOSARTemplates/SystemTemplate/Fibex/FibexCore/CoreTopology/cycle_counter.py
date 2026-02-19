@@ -45,9 +45,8 @@ class CycleCounter(CommunicationCycle):
         Returns:
             Deserialized CycleCounter object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(CycleCounter, cls).deserialize(element)
 
         # Parse cycle_counter
         child = ARObject._find_child_element(element, "CYCLE-COUNTER")

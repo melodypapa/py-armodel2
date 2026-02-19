@@ -47,9 +47,8 @@ class DiagnosticEcuReset(DiagnosticServiceInstance):
         Returns:
             Deserialized DiagnosticEcuReset object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticEcuReset, cls).deserialize(element)
 
         # Parse custom_sub
         child = ARObject._find_child_element(element, "CUSTOM-SUB")

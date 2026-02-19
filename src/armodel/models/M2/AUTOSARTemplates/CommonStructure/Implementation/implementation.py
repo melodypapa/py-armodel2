@@ -110,9 +110,8 @@ class Implementation(ARElement, ABC):
         Returns:
             Deserialized Implementation object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(Implementation, cls).deserialize(element)
 
         # Parse build_action_manifest
         child = ARObject._find_child_element(element, "BUILD-ACTION-MANIFEST")
@@ -120,35 +119,55 @@ class Implementation(ARElement, ABC):
             build_action_manifest_value = ARObject._deserialize_by_tag(child, "BuildActionManifest")
             obj.build_action_manifest = build_action_manifest_value
 
-        # Parse code_descriptors (list)
+        # Parse code_descriptors (list from container "CODE-DESCRIPTORS")
         obj.code_descriptors = []
-        for child in ARObject._find_all_child_elements(element, "CODE-DESCRIPTORS"):
-            code_descriptors_value = ARObject._deserialize_by_tag(child, "Code")
-            obj.code_descriptors.append(code_descriptors_value)
+        container = ARObject._find_child_element(element, "CODE-DESCRIPTORS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.code_descriptors.append(child_value)
 
-        # Parse compilers (list)
+        # Parse compilers (list from container "COMPILERS")
         obj.compilers = []
-        for child in ARObject._find_all_child_elements(element, "COMPILERS"):
-            compilers_value = ARObject._deserialize_by_tag(child, "Compiler")
-            obj.compilers.append(compilers_value)
+        container = ARObject._find_child_element(element, "COMPILERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.compilers.append(child_value)
 
-        # Parse generated_refs (list)
+        # Parse generated_refs (list from container "GENERATEDS")
         obj.generated_refs = []
-        for child in ARObject._find_all_child_elements(element, "GENERATEDS"):
-            generated_refs_value = ARObject._deserialize_by_tag(child, "DependencyOnArtifact")
-            obj.generated_refs.append(generated_refs_value)
+        container = ARObject._find_child_element(element, "GENERATEDS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.generated_refs.append(child_value)
 
-        # Parse hw_elements (list)
+        # Parse hw_elements (list from container "HW-ELEMENTS")
         obj.hw_elements = []
-        for child in ARObject._find_all_child_elements(element, "HW-ELEMENTS"):
-            hw_elements_value = ARObject._deserialize_by_tag(child, "HwElement")
-            obj.hw_elements.append(hw_elements_value)
+        container = ARObject._find_child_element(element, "HW-ELEMENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.hw_elements.append(child_value)
 
-        # Parse linkers (list)
+        # Parse linkers (list from container "LINKERS")
         obj.linkers = []
-        for child in ARObject._find_all_child_elements(element, "LINKERS"):
-            linkers_value = ARObject._deserialize_by_tag(child, "Linker")
-            obj.linkers.append(linkers_value)
+        container = ARObject._find_child_element(element, "LINKERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.linkers.append(child_value)
 
         # Parse mc_support
         child = ARObject._find_child_element(element, "MC-SUPPORT")
@@ -159,20 +178,28 @@ class Implementation(ARElement, ABC):
         # Parse programming
         child = ARObject._find_child_element(element, "PROGRAMMING")
         if child is not None:
-            programming_value = child.text
+            programming_value = ProgramminglanguageEnum.deserialize(child)
             obj.programming = programming_value
 
-        # Parse required_artifact_refs (list)
+        # Parse required_artifact_refs (list from container "REQUIRED-ARTIFACTS")
         obj.required_artifact_refs = []
-        for child in ARObject._find_all_child_elements(element, "REQUIRED-ARTIFACTS"):
-            required_artifact_refs_value = ARObject._deserialize_by_tag(child, "DependencyOnArtifact")
-            obj.required_artifact_refs.append(required_artifact_refs_value)
+        container = ARObject._find_child_element(element, "REQUIRED-ARTIFACTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.required_artifact_refs.append(child_value)
 
-        # Parse required_refs (list)
+        # Parse required_refs (list from container "REQUIREDS")
         obj.required_refs = []
-        for child in ARObject._find_all_child_elements(element, "REQUIREDS"):
-            required_refs_value = ARObject._deserialize_by_tag(child, "DependencyOnArtifact")
-            obj.required_refs.append(required_refs_value)
+        container = ARObject._find_child_element(element, "REQUIREDS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.required_refs.append(child_value)
 
         # Parse resource
         child = ARObject._find_child_element(element, "RESOURCE")

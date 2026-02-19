@@ -55,9 +55,8 @@ class TDEventIPdu(TDEventCom):
         Returns:
             Deserialized TDEventIPdu object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TDEventIPdu, cls).deserialize(element)
 
         # Parse i_pdu
         child = ARObject._find_child_element(element, "I-PDU")
@@ -74,7 +73,7 @@ class TDEventIPdu(TDEventCom):
         # Parse td_event_type
         child = ARObject._find_child_element(element, "TD-EVENT-TYPE")
         if child is not None:
-            td_event_type_value = child.text
+            td_event_type_value = TDEventIPduTypeEnum.deserialize(child)
             obj.td_event_type = td_event_type_value
 
         return obj

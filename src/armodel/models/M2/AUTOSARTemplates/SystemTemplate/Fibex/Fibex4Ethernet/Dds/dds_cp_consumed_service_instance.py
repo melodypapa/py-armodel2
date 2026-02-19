@@ -54,15 +54,18 @@ class DdsCpConsumedServiceInstance(DdsCpServiceInstance):
         Returns:
             Deserialized DdsCpConsumedServiceInstance object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DdsCpConsumedServiceInstance, cls).deserialize(element)
 
-        # Parse consumed_ddses (list)
+        # Parse consumed_ddses (list from container "CONSUMED-DDSES")
         obj.consumed_ddses = []
-        for child in ARObject._find_all_child_elements(element, "CONSUMED-DDSES"):
-            consumed_ddses_value = ARObject._deserialize_by_tag(child, "DdsCpServiceInstance")
-            obj.consumed_ddses.append(consumed_ddses_value)
+        container = ARObject._find_child_element(element, "CONSUMED-DDSES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.consumed_ddses.append(child_value)
 
         # Parse local_unicast
         child = ARObject._find_child_element(element, "LOCAL-UNICAST")

@@ -49,9 +49,8 @@ class DiagnosticFunctionIdentifierInhibit(DiagnosticCommonElement):
         Returns:
             Deserialized DiagnosticFunctionIdentifierInhibit object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticFunctionIdentifierInhibit, cls).deserialize(element)
 
         # Parse function
         child = ARObject._find_child_element(element, "FUNCTION")
@@ -62,14 +61,18 @@ class DiagnosticFunctionIdentifierInhibit(DiagnosticCommonElement):
         # Parse inhibition_mask
         child = ARObject._find_child_element(element, "INHIBITION-MASK")
         if child is not None:
-            inhibition_mask_value = child.text
+            inhibition_mask_value = DiagnosticInhibitionMaskEnum.deserialize(child)
             obj.inhibition_mask = inhibition_mask_value
 
-        # Parse inhibit_sources (list)
+        # Parse inhibit_sources (list from container "INHIBIT-SOURCES")
         obj.inhibit_sources = []
-        for child in ARObject._find_all_child_elements(element, "INHIBIT-SOURCES"):
-            inhibit_sources_value = child.text
-            obj.inhibit_sources.append(inhibit_sources_value)
+        container = ARObject._find_child_element(element, "INHIBIT-SOURCES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.inhibit_sources.append(child_value)
 
         return obj
 

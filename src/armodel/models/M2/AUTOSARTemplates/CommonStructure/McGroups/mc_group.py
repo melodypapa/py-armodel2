@@ -56,15 +56,18 @@ class McGroup(ARElement):
         Returns:
             Deserialized McGroup object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(McGroup, cls).deserialize(element)
 
-        # Parse mc_functions (list)
+        # Parse mc_functions (list from container "MC-FUNCTIONS")
         obj.mc_functions = []
-        for child in ARObject._find_all_child_elements(element, "MC-FUNCTIONS"):
-            mc_functions_value = ARObject._deserialize_by_tag(child, "McFunction")
-            obj.mc_functions.append(mc_functions_value)
+        container = ARObject._find_child_element(element, "MC-FUNCTIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.mc_functions.append(child_value)
 
         # Parse ref_calprm_set_ref
         child = ARObject._find_child_element(element, "REF-CALPRM-SET")
@@ -78,11 +81,15 @@ class McGroup(ARElement):
             ref_ref_value = ARObject._deserialize_by_tag(child, "McGroupDataRefSet")
             obj.ref_ref = ref_ref_value
 
-        # Parse sub_group_refs (list)
+        # Parse sub_group_refs (list from container "SUB-GROUPS")
         obj.sub_group_refs = []
-        for child in ARObject._find_all_child_elements(element, "SUB-GROUPS"):
-            sub_group_refs_value = ARObject._deserialize_by_tag(child, "McGroup")
-            obj.sub_group_refs.append(sub_group_refs_value)
+        container = ARObject._find_child_element(element, "SUB-GROUPS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sub_group_refs.append(child_value)
 
         return obj
 

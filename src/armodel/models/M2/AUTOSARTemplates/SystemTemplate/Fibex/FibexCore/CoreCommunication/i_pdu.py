@@ -47,9 +47,8 @@ class IPdu(Pdu, ABC):
         Returns:
             Deserialized IPdu object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(IPdu, cls).deserialize(element)
 
         # Parse contained_i_pdu_props
         child = ARObject._find_child_element(element, "CONTAINED-I-PDU-PROPS")

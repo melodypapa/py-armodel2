@@ -57,9 +57,8 @@ class DiagEventDebounceCounterBased(DiagEventDebounceAlgorithm):
         Returns:
             Deserialized DiagEventDebounceCounterBased object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagEventDebounceCounterBased, cls).deserialize(element)
 
         # Parse counter_based
         child = ARObject._find_child_element(element, "COUNTER-BASED")

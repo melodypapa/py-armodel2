@@ -49,7 +49,7 @@ class LimitValueVariationPoint(ARObject):
         # Parse interval_type_enum
         child = ARObject._find_child_element(element, "INTERVAL-TYPE-ENUM")
         if child is not None:
-            interval_type_enum_value = child.text
+            interval_type_enum_value = IntervalTypeEnum.deserialize(child)
             obj.interval_type_enum = interval_type_enum_value
 
         return obj

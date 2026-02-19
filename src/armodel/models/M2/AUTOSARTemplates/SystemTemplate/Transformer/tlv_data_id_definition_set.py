@@ -45,15 +45,18 @@ class TlvDataIdDefinitionSet(ARElement):
         Returns:
             Deserialized TlvDataIdDefinitionSet object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TlvDataIdDefinitionSet, cls).deserialize(element)
 
-        # Parse tlv_data_ids (list)
+        # Parse tlv_data_ids (list from container "TLV-DATA-IDS")
         obj.tlv_data_ids = []
-        for child in ARObject._find_all_child_elements(element, "TLV-DATA-IDS"):
-            tlv_data_ids_value = ARObject._deserialize_by_tag(child, "TlvDataIdDefinition")
-            obj.tlv_data_ids.append(tlv_data_ids_value)
+        container = ARObject._find_child_element(element, "TLV-DATA-IDS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.tlv_data_ids.append(child_value)
 
         return obj
 

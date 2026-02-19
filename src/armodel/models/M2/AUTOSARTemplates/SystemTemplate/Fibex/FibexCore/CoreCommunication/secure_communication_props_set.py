@@ -44,21 +44,28 @@ class SecureCommunicationPropsSet(FibexElement):
         Returns:
             Deserialized SecureCommunicationPropsSet object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SecureCommunicationPropsSet, cls).deserialize(element)
 
-        # Parse authentications (list)
+        # Parse authentications (list from container "AUTHENTICATIONS")
         obj.authentications = []
-        for child in ARObject._find_all_child_elements(element, "AUTHENTICATIONS"):
-            authentications_value = child.text
-            obj.authentications.append(authentications_value)
+        container = ARObject._find_child_element(element, "AUTHENTICATIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.authentications.append(child_value)
 
-        # Parse freshness_propses (list)
+        # Parse freshness_propses (list from container "FRESHNESS-PROPSES")
         obj.freshness_propses = []
-        for child in ARObject._find_all_child_elements(element, "FRESHNESS-PROPSES"):
-            freshness_propses_value = child.text
-            obj.freshness_propses.append(freshness_propses_value)
+        container = ARObject._find_child_element(element, "FRESHNESS-PROPSES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.freshness_propses.append(child_value)
 
         return obj
 

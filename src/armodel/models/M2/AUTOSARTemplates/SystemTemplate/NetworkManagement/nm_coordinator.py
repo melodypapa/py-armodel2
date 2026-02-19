@@ -78,11 +78,15 @@ class NmCoordinator(ARObject):
             nm_global_value = child.text
             obj.nm_global = nm_global_value
 
-        # Parse nm_nodes (list)
+        # Parse nm_nodes (list from container "NM-NODES")
         obj.nm_nodes = []
-        for child in ARObject._find_all_child_elements(element, "NM-NODES"):
-            nm_nodes_value = ARObject._deserialize_by_tag(child, "NmNode")
-            obj.nm_nodes.append(nm_nodes_value)
+        container = ARObject._find_child_element(element, "NM-NODES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.nm_nodes.append(child_value)
 
         return obj
 

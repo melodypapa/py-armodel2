@@ -53,9 +53,8 @@ class ServerCallPoint(AbstractAccessPoint, ABC):
         Returns:
             Deserialized ServerCallPoint object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ServerCallPoint, cls).deserialize(element)
 
         # Parse operation_instance_ref
         child = ARObject._find_child_element(element, "OPERATION-INSTANCE-REF")

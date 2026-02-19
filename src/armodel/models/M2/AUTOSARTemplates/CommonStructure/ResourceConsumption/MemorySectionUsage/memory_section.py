@@ -70,9 +70,8 @@ class MemorySection(Identifiable):
         Returns:
             Deserialized MemorySection object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(MemorySection, cls).deserialize(element)
 
         # Parse alignment
         child = ARObject._find_child_element(element, "ALIGNMENT")
@@ -80,17 +79,25 @@ class MemorySection(Identifiable):
             alignment_value = child.text
             obj.alignment = alignment_value
 
-        # Parse executable_entities (list)
+        # Parse executable_entities (list from container "EXECUTABLE-ENTITIES")
         obj.executable_entities = []
-        for child in ARObject._find_all_child_elements(element, "EXECUTABLE-ENTITIES"):
-            executable_entities_value = ARObject._deserialize_by_tag(child, "ExecutableEntity")
-            obj.executable_entities.append(executable_entities_value)
+        container = ARObject._find_child_element(element, "EXECUTABLE-ENTITIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.executable_entities.append(child_value)
 
-        # Parse options (list)
+        # Parse options (list from container "OPTIONS")
         obj.options = []
-        for child in ARObject._find_all_child_elements(element, "OPTIONS"):
-            options_value = child.text
-            obj.options.append(options_value)
+        container = ARObject._find_child_element(element, "OPTIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.options.append(child_value)
 
         # Parse prefix
         child = ARObject._find_child_element(element, "PREFIX")
@@ -113,7 +120,7 @@ class MemorySection(Identifiable):
         # Parse symbol
         child = ARObject._find_child_element(element, "SYMBOL")
         if child is not None:
-            symbol_value = child.text
+            symbol_value = ARObject._deserialize_by_tag(child, "Identifier")
             obj.symbol = symbol_value
 
         return obj

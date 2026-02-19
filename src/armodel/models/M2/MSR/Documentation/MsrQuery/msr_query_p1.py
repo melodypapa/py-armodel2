@@ -50,9 +50,8 @@ class MsrQueryP1(Paginateable):
         Returns:
             Deserialized MsrQueryP1 object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(MsrQueryP1, cls).deserialize(element)
 
         # Parse msr_query_props
         child = ARObject._find_child_element(element, "MSR-QUERY-PROPS")

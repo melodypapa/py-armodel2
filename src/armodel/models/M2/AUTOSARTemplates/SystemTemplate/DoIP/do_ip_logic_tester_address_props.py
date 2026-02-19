@@ -45,15 +45,18 @@ class DoIpLogicTesterAddressProps(AbstractDoIpLogicAddressProps):
         Returns:
             Deserialized DoIpLogicTesterAddressProps object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DoIpLogicTesterAddressProps, cls).deserialize(element)
 
-        # Parse do_ip_testers (list)
+        # Parse do_ip_testers (list from container "DO-IP-TESTERS")
         obj.do_ip_testers = []
-        for child in ARObject._find_all_child_elements(element, "DO-IP-TESTERS"):
-            do_ip_testers_value = ARObject._deserialize_by_tag(child, "DoIpRoutingActivation")
-            obj.do_ip_testers.append(do_ip_testers_value)
+        container = ARObject._find_child_element(element, "DO-IP-TESTERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.do_ip_testers.append(child_value)
 
         return obj
 

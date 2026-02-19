@@ -59,39 +59,58 @@ class BuildAction(BuildActionEntity):
         Returns:
             Deserialized BuildAction object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(BuildAction, cls).deserialize(element)
 
-        # Parse created_datas (list)
+        # Parse created_datas (list from container "CREATED-DATAS")
         obj.created_datas = []
-        for child in ARObject._find_all_child_elements(element, "CREATED-DATAS"):
-            created_datas_value = ARObject._deserialize_by_tag(child, "BuildActionIoElement")
-            obj.created_datas.append(created_datas_value)
+        container = ARObject._find_child_element(element, "CREATED-DATAS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.created_datas.append(child_value)
 
-        # Parse follow_up_actions (list)
+        # Parse follow_up_actions (list from container "FOLLOW-UP-ACTIONS")
         obj.follow_up_actions = []
-        for child in ARObject._find_all_child_elements(element, "FOLLOW-UP-ACTIONS"):
-            follow_up_actions_value = ARObject._deserialize_by_tag(child, "BuildAction")
-            obj.follow_up_actions.append(follow_up_actions_value)
+        container = ARObject._find_child_element(element, "FOLLOW-UP-ACTIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.follow_up_actions.append(child_value)
 
-        # Parse input_datas (list)
+        # Parse input_datas (list from container "INPUT-DATAS")
         obj.input_datas = []
-        for child in ARObject._find_all_child_elements(element, "INPUT-DATAS"):
-            input_datas_value = ARObject._deserialize_by_tag(child, "BuildActionIoElement")
-            obj.input_datas.append(input_datas_value)
+        container = ARObject._find_child_element(element, "INPUT-DATAS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.input_datas.append(child_value)
 
-        # Parse modified_datas (list)
+        # Parse modified_datas (list from container "MODIFIED-DATAS")
         obj.modified_datas = []
-        for child in ARObject._find_all_child_elements(element, "MODIFIED-DATAS"):
-            modified_datas_value = ARObject._deserialize_by_tag(child, "BuildActionIoElement")
-            obj.modified_datas.append(modified_datas_value)
+        container = ARObject._find_child_element(element, "MODIFIED-DATAS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.modified_datas.append(child_value)
 
-        # Parse predecessors (list)
+        # Parse predecessors (list from container "PREDECESSORS")
         obj.predecessors = []
-        for child in ARObject._find_all_child_elements(element, "PREDECESSORS"):
-            predecessors_value = ARObject._deserialize_by_tag(child, "BuildAction")
-            obj.predecessors.append(predecessors_value)
+        container = ARObject._find_child_element(element, "PREDECESSORS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.predecessors.append(child_value)
 
         # Parse required
         child = ARObject._find_child_element(element, "REQUIRED")

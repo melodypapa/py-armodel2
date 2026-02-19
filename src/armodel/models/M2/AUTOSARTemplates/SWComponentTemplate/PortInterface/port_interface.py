@@ -56,9 +56,8 @@ class PortInterface(ARElement, ABC):
         Returns:
             Deserialized PortInterface object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(PortInterface, cls).deserialize(element)
 
         # Parse is_service
         child = ARObject._find_child_element(element, "IS-SERVICE")
@@ -69,7 +68,7 @@ class PortInterface(ARElement, ABC):
         # Parse service_kind
         child = ARObject._find_child_element(element, "SERVICE-KIND")
         if child is not None:
-            service_kind_value = child.text
+            service_kind_value = ServiceProviderEnum.deserialize(child)
             obj.service_kind = service_kind_value
 
         return obj

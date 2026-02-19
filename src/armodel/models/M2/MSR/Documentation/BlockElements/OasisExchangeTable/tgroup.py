@@ -75,7 +75,7 @@ class Tgroup(ARObject):
         # Parse align
         child = ARObject._find_child_element(element, "ALIGN")
         if child is not None:
-            align_value = child.text
+            align_value = AlignEnum.deserialize(child)
             obj.align = align_value
 
         # Parse cols
@@ -90,11 +90,15 @@ class Tgroup(ARObject):
             colsep_value = child.text
             obj.colsep = colsep_value
 
-        # Parse colspecs (list)
+        # Parse colspecs (list from container "COLSPECS")
         obj.colspecs = []
-        for child in ARObject._find_all_child_elements(element, "COLSPECS"):
-            colspecs_value = ARObject._deserialize_by_tag(child, "Colspec")
-            obj.colspecs.append(colspecs_value)
+        container = ARObject._find_child_element(element, "COLSPECS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.colspecs.append(child_value)
 
         # Parse rowsep
         child = ARObject._find_child_element(element, "ROWSEP")

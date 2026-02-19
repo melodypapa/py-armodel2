@@ -144,147 +144,238 @@ class SystemMapping(Identifiable):
         Returns:
             Deserialized SystemMapping object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SystemMapping, cls).deserialize(element)
 
-        # Parse applications (list)
+        # Parse applications (list from container "APPLICATIONS")
         obj.applications = []
-        for child in ARObject._find_all_child_elements(element, "APPLICATIONS"):
-            applications_value = ARObject._deserialize_by_tag(child, "ApplicationPartitionToEcuPartitionMapping")
-            obj.applications.append(applications_value)
+        container = ARObject._find_child_element(element, "APPLICATIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.applications.append(child_value)
 
-        # Parse app_os_tasks (list)
+        # Parse app_os_tasks (list from container "APP-OS-TASKS")
         obj.app_os_tasks = []
-        for child in ARObject._find_all_child_elements(element, "APP-OS-TASKS"):
-            app_os_tasks_value = ARObject._deserialize_by_tag(child, "AppOsTaskProxyToEcuTaskProxyMapping")
-            obj.app_os_tasks.append(app_os_tasks_value)
+        container = ARObject._find_child_element(element, "APP-OS-TASKS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.app_os_tasks.append(child_value)
 
-        # Parse coms (list)
+        # Parse coms (list from container "COMS")
         obj.coms = []
-        for child in ARObject._find_all_child_elements(element, "COMS"):
-            coms_value = ARObject._deserialize_by_tag(child, "ComManagementMapping")
-            obj.coms.append(coms_value)
+        container = ARObject._find_child_element(element, "COMS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.coms.append(child_value)
 
-        # Parse crypto_service_refs (list)
+        # Parse crypto_service_refs (list from container "CRYPTO-SERVICES")
         obj.crypto_service_refs = []
-        for child in ARObject._find_all_child_elements(element, "CRYPTO-SERVICES"):
-            crypto_service_refs_value = ARObject._deserialize_by_tag(child, "CryptoServiceMapping")
-            obj.crypto_service_refs.append(crypto_service_refs_value)
+        container = ARObject._find_child_element(element, "CRYPTO-SERVICES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.crypto_service_refs.append(child_value)
 
-        # Parse data_mapping_refs (list)
+        # Parse data_mapping_refs (list from container "DATA-MAPPINGS")
         obj.data_mapping_refs = []
-        for child in ARObject._find_all_child_elements(element, "DATA-MAPPINGS"):
-            data_mapping_refs_value = ARObject._deserialize_by_tag(child, "DataMapping")
-            obj.data_mapping_refs.append(data_mapping_refs_value)
+        container = ARObject._find_child_element(element, "DATA-MAPPINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.data_mapping_refs.append(child_value)
 
-        # Parse dds_i_signal_tos (list)
+        # Parse dds_i_signal_tos (list from container "DDS-I-SIGNAL-TOS")
         obj.dds_i_signal_tos = []
-        for child in ARObject._find_all_child_elements(element, "DDS-I-SIGNAL-TOS"):
-            dds_i_signal_tos_value = ARObject._deserialize_by_tag(child, "DdsCpISignalToDdsTopicMapping")
-            obj.dds_i_signal_tos.append(dds_i_signal_tos_value)
+        container = ARObject._find_child_element(element, "DDS-I-SIGNAL-TOS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.dds_i_signal_tos.append(child_value)
 
-        # Parse ecu_resource_refs (list)
+        # Parse ecu_resource_refs (list from container "ECU-RESOURCES")
         obj.ecu_resource_refs = []
-        for child in ARObject._find_all_child_elements(element, "ECU-RESOURCES"):
-            ecu_resource_refs_value = ARObject._deserialize_by_tag(child, "ECUMapping")
-            obj.ecu_resource_refs.append(ecu_resource_refs_value)
+        container = ARObject._find_child_element(element, "ECU-RESOURCES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.ecu_resource_refs.append(child_value)
 
-        # Parse j1939_controllers (list)
+        # Parse j1939_controllers (list from container "J1939-CONTROLLERS")
         obj.j1939_controllers = []
-        for child in ARObject._find_all_child_elements(element, "J1939-CONTROLLERS"):
-            j1939_controllers_value = child.text
-            obj.j1939_controllers.append(j1939_controllers_value)
+        container = ARObject._find_child_element(element, "J1939-CONTROLLERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.j1939_controllers.append(child_value)
 
-        # Parse mapping_refs (list)
+        # Parse mapping_refs (list from container "MAPPINGS")
         obj.mapping_refs = []
-        for child in ARObject._find_all_child_elements(element, "MAPPINGS"):
-            mapping_refs_value = ARObject._deserialize_by_tag(child, "MappingConstraint")
-            obj.mapping_refs.append(mapping_refs_value)
+        container = ARObject._find_child_element(element, "MAPPINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.mapping_refs.append(child_value)
 
-        # Parse pnc_mapping_refs (list)
+        # Parse pnc_mapping_refs (list from container "PNC-MAPPINGS")
         obj.pnc_mapping_refs = []
-        for child in ARObject._find_all_child_elements(element, "PNC-MAPPINGS"):
-            pnc_mapping_refs_value = ARObject._deserialize_by_tag(child, "PncMapping")
-            obj.pnc_mapping_refs.append(pnc_mapping_refs_value)
+        container = ARObject._find_child_element(element, "PNC-MAPPINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.pnc_mapping_refs.append(child_value)
 
-        # Parse port_element_tos (list)
+        # Parse port_element_tos (list from container "PORT-ELEMENT-TOS")
         obj.port_element_tos = []
-        for child in ARObject._find_all_child_elements(element, "PORT-ELEMENT-TOS"):
-            port_element_tos_value = ARObject._deserialize_by_tag(child, "PortElementToCommunicationResourceMapping")
-            obj.port_element_tos.append(port_element_tos_value)
+        container = ARObject._find_child_element(element, "PORT-ELEMENT-TOS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.port_element_tos.append(child_value)
 
-        # Parse resources (list)
+        # Parse resources (list from container "RESOURCES")
         obj.resources = []
-        for child in ARObject._find_all_child_elements(element, "RESOURCES"):
-            resources_value = ARObject._deserialize_by_tag(child, "EcuResourceEstimation")
-            obj.resources.append(resources_value)
+        container = ARObject._find_child_element(element, "RESOURCES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.resources.append(child_value)
 
-        # Parse resource_tos (list)
+        # Parse resource_tos (list from container "RESOURCE-TOS")
         obj.resource_tos = []
-        for child in ARObject._find_all_child_elements(element, "RESOURCE-TOS"):
-            resource_tos_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
-            obj.resource_tos.append(resource_tos_value)
+        container = ARObject._find_child_element(element, "RESOURCE-TOS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.resource_tos.append(child_value)
 
-        # Parse rte_event_in_systems (list)
+        # Parse rte_event_in_systems (list from container "RTE-EVENT-IN-SYSTEMS")
         obj.rte_event_in_systems = []
-        for child in ARObject._find_all_child_elements(element, "RTE-EVENT-IN-SYSTEMS"):
-            rte_event_in_systems_value = child.text
-            obj.rte_event_in_systems.append(rte_event_in_systems_value)
+        container = ARObject._find_child_element(element, "RTE-EVENT-IN-SYSTEMS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.rte_event_in_systems.append(child_value)
 
-        # Parse rte_event_to_oses (list)
+        # Parse rte_event_to_oses (list from container "RTE-EVENT-TO-OSES")
         obj.rte_event_to_oses = []
-        for child in ARObject._find_all_child_elements(element, "RTE-EVENT-TO-OSES"):
-            rte_event_to_oses_value = ARObject._deserialize_by_tag(child, "RteEventInSystemToOsTaskProxyMapping")
-            obj.rte_event_to_oses.append(rte_event_to_oses_value)
+        container = ARObject._find_child_element(element, "RTE-EVENT-TO-OSES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.rte_event_to_oses.append(child_value)
 
-        # Parse signal_paths (list)
+        # Parse signal_paths (list from container "SIGNAL-PATHS")
         obj.signal_paths = []
-        for child in ARObject._find_all_child_elements(element, "SIGNAL-PATHS"):
-            signal_paths_value = ARObject._deserialize_by_tag(child, "SignalPathConstraint")
-            obj.signal_paths.append(signal_paths_value)
+        container = ARObject._find_child_element(element, "SIGNAL-PATHS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.signal_paths.append(child_value)
 
-        # Parse software_clusters (list)
+        # Parse software_clusters (list from container "SOFTWARE-CLUSTERS")
         obj.software_clusters = []
-        for child in ARObject._find_all_child_elements(element, "SOFTWARE-CLUSTERS"):
-            software_clusters_value = child.text
-            obj.software_clusters.append(software_clusters_value)
+        container = ARObject._find_child_element(element, "SOFTWARE-CLUSTERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.software_clusters.append(child_value)
 
-        # Parse sw_clusters (list)
+        # Parse sw_clusters (list from container "SW-CLUSTERS")
         obj.sw_clusters = []
-        for child in ARObject._find_all_child_elements(element, "SW-CLUSTERS"):
-            sw_clusters_value = child.text
-            obj.sw_clusters.append(sw_clusters_value)
+        container = ARObject._find_child_element(element, "SW-CLUSTERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sw_clusters.append(child_value)
 
-        # Parse swc_tos (list)
+        # Parse swc_tos (list from container "SWC-TOS")
         obj.swc_tos = []
-        for child in ARObject._find_all_child_elements(element, "SWC-TOS"):
-            swc_tos_value = ARObject._deserialize_by_tag(child, "SwcToApplicationPartitionMapping")
-            obj.swc_tos.append(swc_tos_value)
+        container = ARObject._find_child_element(element, "SWC-TOS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.swc_tos.append(child_value)
 
-        # Parse sw_impl_mapping_refs (list)
+        # Parse sw_impl_mapping_refs (list from container "SW-IMPL-MAPPINGS")
         obj.sw_impl_mapping_refs = []
-        for child in ARObject._find_all_child_elements(element, "SW-IMPL-MAPPINGS"):
-            sw_impl_mapping_refs_value = ARObject._deserialize_by_tag(child, "SwcToImplMapping")
-            obj.sw_impl_mapping_refs.append(sw_impl_mapping_refs_value)
+        container = ARObject._find_child_element(element, "SW-IMPL-MAPPINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sw_impl_mapping_refs.append(child_value)
 
-        # Parse sw_mapping_refs (list)
+        # Parse sw_mapping_refs (list from container "SW-MAPPINGS")
         obj.sw_mapping_refs = []
-        for child in ARObject._find_all_child_elements(element, "SW-MAPPINGS"):
-            sw_mapping_refs_value = ARObject._deserialize_by_tag(child, "SwcToEcuMapping")
-            obj.sw_mapping_refs.append(sw_mapping_refs_value)
+        container = ARObject._find_child_element(element, "SW-MAPPINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sw_mapping_refs.append(child_value)
 
-        # Parse system_signal_group_to_refs (list)
+        # Parse system_signal_group_to_refs (list from container "SYSTEM-SIGNAL-GROUP-TOS")
         obj.system_signal_group_to_refs = []
-        for child in ARObject._find_all_child_elements(element, "SYSTEM-SIGNAL-GROUP-TOS"):
-            system_signal_group_to_refs_value = ARObject._deserialize_by_tag(child, "SystemSignalGroupToCommunicationResourceMapping")
-            obj.system_signal_group_to_refs.append(system_signal_group_to_refs_value)
+        container = ARObject._find_child_element(element, "SYSTEM-SIGNAL-GROUP-TOS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.system_signal_group_to_refs.append(child_value)
 
-        # Parse system_signal_tos (list)
+        # Parse system_signal_tos (list from container "SYSTEM-SIGNAL-TOS")
         obj.system_signal_tos = []
-        for child in ARObject._find_all_child_elements(element, "SYSTEM-SIGNAL-TOS"):
-            system_signal_tos_value = ARObject._deserialize_by_tag(child, "SystemSignalToCommunicationResourceMapping")
-            obj.system_signal_tos.append(system_signal_tos_value)
+        container = ARObject._find_child_element(element, "SYSTEM-SIGNAL-TOS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.system_signal_tos.append(child_value)
 
         return obj
 

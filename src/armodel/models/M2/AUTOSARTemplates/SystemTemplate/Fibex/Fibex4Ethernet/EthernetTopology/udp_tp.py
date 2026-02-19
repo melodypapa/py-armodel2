@@ -45,9 +45,8 @@ class UdpTp(TcpUdpConfig):
         Returns:
             Deserialized UdpTp object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(UdpTp, cls).deserialize(element)
 
         # Parse udp_tp_port
         child = ARObject._find_child_element(element, "UDP-TP-PORT")

@@ -67,9 +67,8 @@ class DiagnosticMemoryDestination(DiagnosticCommonElement, ABC):
         Returns:
             Deserialized DiagnosticMemoryDestination object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticMemoryDestination, cls).deserialize(element)
 
         # Parse aging_requires
         child = ARObject._find_child_element(element, "AGING-REQUIRES")
@@ -104,7 +103,7 @@ class DiagnosticMemoryDestination(DiagnosticCommonElement, ABC):
         # Parse memory_entry
         child = ARObject._find_child_element(element, "MEMORY-ENTRY")
         if child is not None:
-            memory_entry_value = child.text
+            memory_entry_value = DiagnosticMemoryEntryStorageTriggerEnum.deserialize(child)
             obj.memory_entry = memory_entry_value
 
         # Parse status_bit

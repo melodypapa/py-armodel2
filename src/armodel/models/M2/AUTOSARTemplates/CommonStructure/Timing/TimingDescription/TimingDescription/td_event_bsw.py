@@ -46,9 +46,8 @@ class TDEventBsw(TimingDescriptionEvent, ABC):
         Returns:
             Deserialized TDEventBsw object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TDEventBsw, cls).deserialize(element)
 
         # Parse bsw_module_description
         child = ARObject._find_child_element(element, "BSW-MODULE-DESCRIPTION")

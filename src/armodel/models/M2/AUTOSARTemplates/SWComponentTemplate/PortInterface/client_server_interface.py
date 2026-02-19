@@ -54,21 +54,28 @@ class ClientServerInterface(PortInterface):
         Returns:
             Deserialized ClientServerInterface object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ClientServerInterface, cls).deserialize(element)
 
-        # Parse operations (list)
+        # Parse operations (list from container "OPERATIONS")
         obj.operations = []
-        for child in ARObject._find_all_child_elements(element, "OPERATIONS"):
-            operations_value = ARObject._deserialize_by_tag(child, "ClientServerOperation")
-            obj.operations.append(operations_value)
+        container = ARObject._find_child_element(element, "OPERATIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.operations.append(child_value)
 
-        # Parse possible_errors (list)
+        # Parse possible_errors (list from container "POSSIBLE-ERRORS")
         obj.possible_errors = []
-        for child in ARObject._find_all_child_elements(element, "POSSIBLE-ERRORS"):
-            possible_errors_value = ARObject._deserialize_by_tag(child, "ApplicationError")
-            obj.possible_errors.append(possible_errors_value)
+        container = ARObject._find_child_element(element, "POSSIBLE-ERRORS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.possible_errors.append(child_value)
 
         return obj
 

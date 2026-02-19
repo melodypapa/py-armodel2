@@ -76,15 +76,18 @@ class NmEcu(Identifiable):
         Returns:
             Deserialized NmEcu object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(NmEcu, cls).deserialize(element)
 
-        # Parse bus_dependent_nm_ecus (list)
+        # Parse bus_dependent_nm_ecus (list from container "BUS-DEPENDENT-NM-ECUS")
         obj.bus_dependent_nm_ecus = []
-        for child in ARObject._find_all_child_elements(element, "BUS-DEPENDENT-NM-ECUS"):
-            bus_dependent_nm_ecus_value = ARObject._deserialize_by_tag(child, "BusspecificNmEcu")
-            obj.bus_dependent_nm_ecus.append(bus_dependent_nm_ecus_value)
+        container = ARObject._find_child_element(element, "BUS-DEPENDENT-NM-ECUS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.bus_dependent_nm_ecus.append(child_value)
 
         # Parse ecu_instance
         child = ARObject._find_child_element(element, "ECU-INSTANCE")

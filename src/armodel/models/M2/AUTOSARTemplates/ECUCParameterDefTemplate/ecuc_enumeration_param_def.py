@@ -51,21 +51,24 @@ class EcucEnumerationParamDef(EcucParameterDef):
         Returns:
             Deserialized EcucEnumerationParamDef object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(EcucEnumerationParamDef, cls).deserialize(element)
 
         # Parse default_value
         child = ARObject._find_child_element(element, "DEFAULT-VALUE")
         if child is not None:
-            default_value_value = child.text
+            default_value_value = ARObject._deserialize_by_tag(child, "Identifier")
             obj.default_value = default_value_value
 
-        # Parse literals (list)
+        # Parse literals (list from container "LITERALS")
         obj.literals = []
-        for child in ARObject._find_all_child_elements(element, "LITERALS"):
-            literals_value = ARObject._deserialize_by_tag(child, "EcucEnumerationLiteralDef")
-            obj.literals.append(literals_value)
+        container = ARObject._find_child_element(element, "LITERALS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.literals.append(child_value)
 
         return obj
 

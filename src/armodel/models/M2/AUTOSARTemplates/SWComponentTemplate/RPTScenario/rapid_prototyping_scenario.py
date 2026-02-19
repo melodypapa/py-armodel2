@@ -58,9 +58,8 @@ class RapidPrototypingScenario(ARElement):
         Returns:
             Deserialized RapidPrototypingScenario object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(RapidPrototypingScenario, cls).deserialize(element)
 
         # Parse host_system
         child = ARObject._find_child_element(element, "HOST-SYSTEM")
@@ -68,17 +67,25 @@ class RapidPrototypingScenario(ARElement):
             host_system_value = ARObject._deserialize_by_tag(child, "System")
             obj.host_system = host_system_value
 
-        # Parse rpt_containers (list)
+        # Parse rpt_containers (list from container "RPT-CONTAINERS")
         obj.rpt_containers = []
-        for child in ARObject._find_all_child_elements(element, "RPT-CONTAINERS"):
-            rpt_containers_value = ARObject._deserialize_by_tag(child, "RptContainer")
-            obj.rpt_containers.append(rpt_containers_value)
+        container = ARObject._find_child_element(element, "RPT-CONTAINERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.rpt_containers.append(child_value)
 
-        # Parse rpt_profiles (list)
+        # Parse rpt_profiles (list from container "RPT-PROFILES")
         obj.rpt_profiles = []
-        for child in ARObject._find_all_child_elements(element, "RPT-PROFILES"):
-            rpt_profiles_value = ARObject._deserialize_by_tag(child, "RptProfile")
-            obj.rpt_profiles.append(rpt_profiles_value)
+        container = ARObject._find_child_element(element, "RPT-PROFILES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.rpt_profiles.append(child_value)
 
         # Parse rpt_system
         child = ARObject._find_child_element(element, "RPT-SYSTEM")

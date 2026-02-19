@@ -78,14 +78,13 @@ class Graphic(EngineeringObject):
         Returns:
             Deserialized Graphic object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(Graphic, cls).deserialize(element)
 
         # Parse editfit
         child = ARObject._find_child_element(element, "EDITFIT")
         if child is not None:
-            editfit_value = child.text
+            editfit_value = GraphicFitEnum.deserialize(child)
             obj.editfit = editfit_value
 
         # Parse edit_height
@@ -115,7 +114,7 @@ class Graphic(EngineeringObject):
         # Parse fit
         child = ARObject._find_child_element(element, "FIT")
         if child is not None:
-            fit_value = child.text
+            fit_value = GraphicFitEnum.deserialize(child)
             obj.fit = fit_value
 
         # Parse generator
@@ -133,7 +132,7 @@ class Graphic(EngineeringObject):
         # Parse html_fit
         child = ARObject._find_child_element(element, "HTML-FIT")
         if child is not None:
-            html_fit_value = child.text
+            html_fit_value = GraphicFitEnum.deserialize(child)
             obj.html_fit = html_fit_value
 
         # Parse html_height
@@ -157,7 +156,7 @@ class Graphic(EngineeringObject):
         # Parse notation
         child = ARObject._find_child_element(element, "NOTATION")
         if child is not None:
-            notation_value = child.text
+            notation_value = GraphicNotationEnum.deserialize(child)
             obj.notation = notation_value
 
         # Parse scale

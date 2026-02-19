@@ -50,9 +50,8 @@ class DiagnosticEnvConditionFormula(DiagnosticEnvConditionFormulaPart):
         Returns:
             Deserialized DiagnosticEnvConditionFormula object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticEnvConditionFormula, cls).deserialize(element)
 
         # Parse nrc_value
         child = ARObject._find_child_element(element, "NRC-VALUE")
@@ -63,7 +62,7 @@ class DiagnosticEnvConditionFormula(DiagnosticEnvConditionFormulaPart):
         # Parse op
         child = ARObject._find_child_element(element, "OP")
         if child is not None:
-            op_value = child.text
+            op_value = DiagnosticLogicalOperatorEnum.deserialize(child)
             obj.op = op_value
 
         return obj

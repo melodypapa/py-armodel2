@@ -49,9 +49,8 @@ class DiagnosticContributionSet(ARElement):
         Returns:
             Deserialized DiagnosticContributionSet object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticContributionSet, cls).deserialize(element)
 
         # Parse common
         child = ARObject._find_child_element(element, "COMMON")
@@ -59,17 +58,25 @@ class DiagnosticContributionSet(ARElement):
             common_value = child.text
             obj.common = common_value
 
-        # Parse elements (list)
+        # Parse elements (list from container "ELEMENTS")
         obj.elements = []
-        for child in ARObject._find_all_child_elements(element, "ELEMENTS"):
-            elements_value = child.text
-            obj.elements.append(elements_value)
+        container = ARObject._find_child_element(element, "ELEMENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.elements.append(child_value)
 
-        # Parse service_tables (list)
+        # Parse service_tables (list from container "SERVICE-TABLES")
         obj.service_tables = []
-        for child in ARObject._find_all_child_elements(element, "SERVICE-TABLES"):
-            service_tables_value = ARObject._deserialize_by_tag(child, "DiagnosticServiceTable")
-            obj.service_tables.append(service_tables_value)
+        container = ARObject._find_child_element(element, "SERVICE-TABLES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.service_tables.append(child_value)
 
         return obj
 

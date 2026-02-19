@@ -54,7 +54,7 @@ class DdsReliability(ARObject):
         # Parse reliability_kind
         child = ARObject._find_child_element(element, "RELIABILITY-KIND")
         if child is not None:
-            reliability_kind_value = child.text
+            reliability_kind_value = DdsReliabilityKindEnum.deserialize(child)
             obj.reliability_kind = reliability_kind_value
 
         # Parse reliability_max

@@ -46,15 +46,18 @@ class SdgDef(ARElement):
         Returns:
             Deserialized SdgDef object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SdgDef, cls).deserialize(element)
 
-        # Parse sdg_classes (list)
+        # Parse sdg_classes (list from container "SDG-CLASSES")
         obj.sdg_classes = []
-        for child in ARObject._find_all_child_elements(element, "SDG-CLASSES"):
-            sdg_classes_value = ARObject._deserialize_by_tag(child, "SdgClass")
-            obj.sdg_classes.append(sdg_classes_value)
+        container = ARObject._find_child_element(element, "SDG-CLASSES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sdg_classes.append(child_value)
 
         return obj
 

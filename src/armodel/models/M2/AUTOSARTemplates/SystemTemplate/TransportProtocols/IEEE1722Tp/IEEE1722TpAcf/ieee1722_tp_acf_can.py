@@ -42,9 +42,8 @@ class IEEE1722TpAcfCan(IEEE1722TpAcfBus):
         Returns:
             Deserialized IEEE1722TpAcfCan object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(IEEE1722TpAcfCan, cls).deserialize(element)
 
         # Parse message_type_message_type_enum
         child = ARObject._find_child_element(element, "MESSAGE-TYPE-MESSAGE-TYPE-ENUM")

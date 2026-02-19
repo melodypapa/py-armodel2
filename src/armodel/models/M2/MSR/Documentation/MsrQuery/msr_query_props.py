@@ -59,11 +59,15 @@ class MsrQueryProps(ARObject):
             comment_value = child.text
             obj.comment = comment_value
 
-        # Parse msr_query_args (list)
+        # Parse msr_query_args (list from container "MSR-QUERY-ARGS")
         obj.msr_query_args = []
-        for child in ARObject._find_all_child_elements(element, "MSR-QUERY-ARGS"):
-            msr_query_args_value = ARObject._deserialize_by_tag(child, "MsrQueryArg")
-            obj.msr_query_args.append(msr_query_args_value)
+        container = ARObject._find_child_element(element, "MSR-QUERY-ARGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.msr_query_args.append(child_value)
 
         # Parse msr_query_name
         child = ARObject._find_child_element(element, "MSR-QUERY-NAME")

@@ -67,19 +67,19 @@ class ScaleConstr(ARObject):
         # Parse lower_limit
         child = ARObject._find_child_element(element, "LOWER-LIMIT")
         if child is not None:
-            lower_limit_value = child.text
+            lower_limit_value = ARObject._deserialize_by_tag(child, "Limit")
             obj.lower_limit = lower_limit_value
 
         # Parse short_label
         child = ARObject._find_child_element(element, "SHORT-LABEL")
         if child is not None:
-            short_label_value = child.text
+            short_label_value = ARObject._deserialize_by_tag(child, "Identifier")
             obj.short_label = short_label_value
 
         # Parse upper_limit
         child = ARObject._find_child_element(element, "UPPER-LIMIT")
         if child is not None:
-            upper_limit_value = child.text
+            upper_limit_value = ARObject._deserialize_by_tag(child, "Limit")
             obj.upper_limit = upper_limit_value
 
         # Parse validity

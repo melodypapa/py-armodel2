@@ -47,14 +47,13 @@ class DiagnosticRoutineNeeds(DiagnosticCapabilityElement):
         Returns:
             Deserialized DiagnosticRoutineNeeds object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticRoutineNeeds, cls).deserialize(element)
 
         # Parse diag_routine
         child = ARObject._find_child_element(element, "DIAG-ROUTINE")
         if child is not None:
-            diag_routine_value = child.text
+            diag_routine_value = DiagnosticRoutineTypeEnum.deserialize(child)
             obj.diag_routine = diag_routine_value
 
         return obj

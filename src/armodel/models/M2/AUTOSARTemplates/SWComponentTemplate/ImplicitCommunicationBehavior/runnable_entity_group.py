@@ -49,21 +49,28 @@ class RunnableEntityGroup(Identifiable):
         Returns:
             Deserialized RunnableEntityGroup object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(RunnableEntityGroup, cls).deserialize(element)
 
-        # Parse runnable_entities (list)
+        # Parse runnable_entities (list from container "RUNNABLE-ENTITIES")
         obj.runnable_entities = []
-        for child in ARObject._find_all_child_elements(element, "RUNNABLE-ENTITIES"):
-            runnable_entities_value = ARObject._deserialize_by_tag(child, "RunnableEntity")
-            obj.runnable_entities.append(runnable_entities_value)
+        container = ARObject._find_child_element(element, "RUNNABLE-ENTITIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.runnable_entities.append(child_value)
 
-        # Parse runnable_entity_group_group_in_composition_instance_ref_refs (list)
+        # Parse runnable_entity_group_group_in_composition_instance_ref_refs (list from container "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REFS")
         obj.runnable_entity_group_group_in_composition_instance_ref_refs = []
-        for child in ARObject._find_all_child_elements(element, "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REFS"):
-            runnable_entity_group_group_in_composition_instance_ref_refs_value = ARObject._deserialize_by_tag(child, "RunnableEntityGroup")
-            obj.runnable_entity_group_group_in_composition_instance_ref_refs.append(runnable_entity_group_group_in_composition_instance_ref_refs_value)
+        container = ARObject._find_child_element(element, "RUNNABLE-ENTITY-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REFS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.runnable_entity_group_group_in_composition_instance_ref_refs.append(child_value)
 
         return obj
 

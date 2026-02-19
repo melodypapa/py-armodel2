@@ -63,9 +63,8 @@ class NetworkEndpoint(Identifiable):
         Returns:
             Deserialized NetworkEndpoint object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(NetworkEndpoint, cls).deserialize(element)
 
         # Parse fully_qualified
         child = ARObject._find_child_element(element, "FULLY-QUALIFIED")
@@ -85,11 +84,15 @@ class NetworkEndpoint(Identifiable):
             ip_sec_config_value = ARObject._deserialize_by_tag(child, "IPSecConfig")
             obj.ip_sec_config = ip_sec_config_value
 
-        # Parse network_endpoints (list)
+        # Parse network_endpoints (list from container "NETWORK-ENDPOINTS")
         obj.network_endpoints = []
-        for child in ARObject._find_all_child_elements(element, "NETWORK-ENDPOINTS"):
-            network_endpoints_value = ARObject._deserialize_by_tag(child, "NetworkEndpoint")
-            obj.network_endpoints.append(network_endpoints_value)
+        container = ARObject._find_child_element(element, "NETWORK-ENDPOINTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.network_endpoints.append(child_value)
 
         # Parse priority
         child = ARObject._find_child_element(element, "PRIORITY")

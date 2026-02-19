@@ -101,15 +101,18 @@ class System(ARElement):
         Returns:
             Deserialized System object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(System, cls).deserialize(element)
 
-        # Parse client_id_refs (list)
+        # Parse client_id_refs (list from container "CLIENT-IDS")
         obj.client_id_refs = []
-        for child in ARObject._find_all_child_elements(element, "CLIENT-IDS"):
-            client_id_refs_value = ARObject._deserialize_by_tag(child, "ClientIdDefinitionSet")
-            obj.client_id_refs.append(client_id_refs_value)
+        container = ARObject._find_child_element(element, "CLIENT-IDS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.client_id_refs.append(child_value)
 
         # Parse container_i_pdu_header_byte
         child = ARObject._find_child_element(element, "CONTAINER-I-PDU-HEADER-BYTE")
@@ -123,29 +126,45 @@ class System(ARElement):
             ecu_extract_version_value = child.text
             obj.ecu_extract_version = ecu_extract_version_value
 
-        # Parse fibex_elements (list)
+        # Parse fibex_elements (list from container "FIBEX-ELEMENTS")
         obj.fibex_elements = []
-        for child in ARObject._find_all_child_elements(element, "FIBEX-ELEMENTS"):
-            fibex_elements_value = ARObject._deserialize_by_tag(child, "FibexElement")
-            obj.fibex_elements.append(fibex_elements_value)
+        container = ARObject._find_child_element(element, "FIBEX-ELEMENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.fibex_elements.append(child_value)
 
-        # Parse interpolation_routines (list)
+        # Parse interpolation_routines (list from container "INTERPOLATION-ROUTINES")
         obj.interpolation_routines = []
-        for child in ARObject._find_all_child_elements(element, "INTERPOLATION-ROUTINES"):
-            interpolation_routines_value = ARObject._deserialize_by_tag(child, "InterpolationRoutine")
-            obj.interpolation_routines.append(interpolation_routines_value)
+        container = ARObject._find_child_element(element, "INTERPOLATION-ROUTINES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.interpolation_routines.append(child_value)
 
-        # Parse j1939_shared_addresses (list)
+        # Parse j1939_shared_addresses (list from container "J1939-SHARED-ADDRESSES")
         obj.j1939_shared_addresses = []
-        for child in ARObject._find_all_child_elements(element, "J1939-SHARED-ADDRESSES"):
-            j1939_shared_addresses_value = ARObject._deserialize_by_tag(child, "J1939SharedAddressCluster")
-            obj.j1939_shared_addresses.append(j1939_shared_addresses_value)
+        container = ARObject._find_child_element(element, "J1939-SHARED-ADDRESSES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.j1939_shared_addresses.append(child_value)
 
-        # Parse mapping_refs (list)
+        # Parse mapping_refs (list from container "MAPPINGS")
         obj.mapping_refs = []
-        for child in ARObject._find_all_child_elements(element, "MAPPINGS"):
-            mapping_refs_value = ARObject._deserialize_by_tag(child, "SystemMapping")
-            obj.mapping_refs.append(mapping_refs_value)
+        container = ARObject._find_child_element(element, "MAPPINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.mapping_refs.append(child_value)
 
         # Parse pnc_vector
         child = ARObject._find_child_element(element, "PNC-VECTOR")
@@ -165,17 +184,25 @@ class System(ARElement):
             root_software_value = ARObject._deserialize_by_tag(child, "RootSwCompositionPrototype")
             obj.root_software = root_software_value
 
-        # Parse sw_clusters (list)
+        # Parse sw_clusters (list from container "SW-CLUSTERS")
         obj.sw_clusters = []
-        for child in ARObject._find_all_child_elements(element, "SW-CLUSTERS"):
-            sw_clusters_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
-            obj.sw_clusters.append(sw_clusters_value)
+        container = ARObject._find_child_element(element, "SW-CLUSTERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sw_clusters.append(child_value)
 
-        # Parse systems (list)
+        # Parse systems (list from container "SYSTEMS")
         obj.systems = []
-        for child in ARObject._find_all_child_elements(element, "SYSTEMS"):
-            systems_value = ARObject._deserialize_by_tag(child, "Chapter")
-            obj.systems.append(systems_value)
+        container = ARObject._find_child_element(element, "SYSTEMS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.systems.append(child_value)
 
         # Parse system_version
         child = ARObject._find_child_element(element, "SYSTEM-VERSION")

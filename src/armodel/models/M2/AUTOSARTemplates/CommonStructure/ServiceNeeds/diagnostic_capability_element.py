@@ -55,15 +55,18 @@ class DiagnosticCapabilityElement(ServiceNeeds, ABC):
         Returns:
             Deserialized DiagnosticCapabilityElement object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticCapabilityElement, cls).deserialize(element)
 
-        # Parse audiences (list)
+        # Parse audiences (list from container "AUDIENCES")
         obj.audiences = []
-        for child in ARObject._find_all_child_elements(element, "AUDIENCES"):
-            audiences_value = child.text
-            obj.audiences.append(audiences_value)
+        container = ARObject._find_child_element(element, "AUDIENCES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.audiences.append(child_value)
 
         # Parse diag
         child = ARObject._find_child_element(element, "DIAG")

@@ -77,7 +77,7 @@ class SwPointerTargetProps(ARObject):
         # Parse target_category
         child = ARObject._find_child_element(element, "TARGET-CATEGORY")
         if child is not None:
-            target_category_value = child.text
+            target_category_value = ARObject._deserialize_by_tag(child, "Identifier")
             obj.target_category = target_category_value
 
         return obj

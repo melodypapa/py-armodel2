@@ -63,15 +63,18 @@ class StaticSocketConnection(Identifiable):
         Returns:
             Deserialized StaticSocketConnection object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(StaticSocketConnection, cls).deserialize(element)
 
-        # Parse i_pdu_identifiers (list)
+        # Parse i_pdu_identifiers (list from container "I-PDU-IDENTIFIERS")
         obj.i_pdu_identifiers = []
-        for child in ARObject._find_all_child_elements(element, "I-PDU-IDENTIFIERS"):
-            i_pdu_identifiers_value = ARObject._deserialize_by_tag(child, "SoConIPduIdentifier")
-            obj.i_pdu_identifiers.append(i_pdu_identifiers_value)
+        container = ARObject._find_child_element(element, "I-PDU-IDENTIFIERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.i_pdu_identifiers.append(child_value)
 
         # Parse remote_address
         child = ARObject._find_child_element(element, "REMOTE-ADDRESS")
@@ -88,7 +91,7 @@ class StaticSocketConnection(Identifiable):
         # Parse tcp_role
         child = ARObject._find_child_element(element, "TCP-ROLE")
         if child is not None:
-            tcp_role_value = child.text
+            tcp_role_value = TcpRoleEnum.deserialize(child)
             obj.tcp_role = tcp_role_value
 
         return obj

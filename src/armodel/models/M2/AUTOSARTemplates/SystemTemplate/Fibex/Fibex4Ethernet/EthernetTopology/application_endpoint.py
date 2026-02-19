@@ -66,15 +66,18 @@ class ApplicationEndpoint(Identifiable):
         Returns:
             Deserialized ApplicationEndpoint object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ApplicationEndpoint, cls).deserialize(element)
 
-        # Parse consumed_services (list)
+        # Parse consumed_services (list from container "CONSUMED-SERVICES")
         obj.consumed_services = []
-        for child in ARObject._find_all_child_elements(element, "CONSUMED-SERVICES"):
-            consumed_services_value = child.text
-            obj.consumed_services.append(consumed_services_value)
+        container = ARObject._find_child_element(element, "CONSUMED-SERVICES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.consumed_services.append(child_value)
 
         # Parse max_number_of
         child = ARObject._find_child_element(element, "MAX-NUMBER-OF")
@@ -94,11 +97,15 @@ class ApplicationEndpoint(Identifiable):
             priority_value = child.text
             obj.priority = priority_value
 
-        # Parse provided_services (list)
+        # Parse provided_services (list from container "PROVIDED-SERVICES")
         obj.provided_services = []
-        for child in ARObject._find_all_child_elements(element, "PROVIDED-SERVICES"):
-            provided_services_value = child.text
-            obj.provided_services.append(provided_services_value)
+        container = ARObject._find_child_element(element, "PROVIDED-SERVICES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.provided_services.append(child_value)
 
         # Parse tls_crypto_service
         child = ARObject._find_child_element(element, "TLS-CRYPTO-SERVICE")

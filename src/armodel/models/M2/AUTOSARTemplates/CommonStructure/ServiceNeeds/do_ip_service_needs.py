@@ -43,11 +43,8 @@ class DoIpServiceNeeds(ServiceNeeds, ABC):
         Returns:
             Deserialized DoIpServiceNeeds object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
-
-        return obj
+        # Delegate to parent class to handle inherited attributes
+        return super(DoIpServiceNeeds, cls).deserialize(element)
 
 
 

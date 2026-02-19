@@ -45,9 +45,8 @@ class DiagnosticJ1939Node(DiagnosticCommonElement):
         Returns:
             Deserialized DiagnosticJ1939Node object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticJ1939Node, cls).deserialize(element)
 
         # Parse nm_node
         child = ARObject._find_child_element(element, "NM-NODE")

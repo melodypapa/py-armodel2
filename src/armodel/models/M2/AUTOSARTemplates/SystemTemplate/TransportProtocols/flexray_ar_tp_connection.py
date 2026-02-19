@@ -64,9 +64,8 @@ class FlexrayArTpConnection(TpConnection):
         Returns:
             Deserialized FlexrayArTpConnection object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(FlexrayArTpConnection, cls).deserialize(element)
 
         # Parse connection_prio
         child = ARObject._find_child_element(element, "CONNECTION-PRIO")
@@ -98,11 +97,15 @@ class FlexrayArTpConnection(TpConnection):
             source_value = ARObject._deserialize_by_tag(child, "FlexrayArTpNode")
             obj.source = source_value
 
-        # Parse targets (list)
+        # Parse targets (list from container "TARGETS")
         obj.targets = []
-        for child in ARObject._find_all_child_elements(element, "TARGETS"):
-            targets_value = ARObject._deserialize_by_tag(child, "FlexrayArTpNode")
-            obj.targets.append(targets_value)
+        container = ARObject._find_child_element(element, "TARGETS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.targets.append(child_value)
 
         return obj
 

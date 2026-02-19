@@ -47,15 +47,18 @@ class DiagnosticSecureCodingMapping(DiagnosticMapping):
         Returns:
             Deserialized DiagnosticSecureCodingMapping object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticSecureCodingMapping, cls).deserialize(element)
 
-        # Parse data_identifiers (list)
+        # Parse data_identifiers (list from container "DATA-IDENTIFIERS")
         obj.data_identifiers = []
-        for child in ARObject._find_all_child_elements(element, "DATA-IDENTIFIERS"):
-            data_identifiers_value = child.text
-            obj.data_identifiers.append(data_identifiers_value)
+        container = ARObject._find_child_element(element, "DATA-IDENTIFIERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.data_identifiers.append(child_value)
 
         # Parse validation
         child = ARObject._find_child_element(element, "VALIDATION")

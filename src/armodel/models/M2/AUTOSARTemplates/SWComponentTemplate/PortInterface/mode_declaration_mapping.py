@@ -47,15 +47,18 @@ class ModeDeclarationMapping(Identifiable):
         Returns:
             Deserialized ModeDeclarationMapping object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ModeDeclarationMapping, cls).deserialize(element)
 
-        # Parse first_modes (list)
+        # Parse first_modes (list from container "FIRST-MODES")
         obj.first_modes = []
-        for child in ARObject._find_all_child_elements(element, "FIRST-MODES"):
-            first_modes_value = ARObject._deserialize_by_tag(child, "ModeDeclaration")
-            obj.first_modes.append(first_modes_value)
+        container = ARObject._find_child_element(element, "FIRST-MODES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.first_modes.append(child_value)
 
         # Parse second_mode
         child = ARObject._find_child_element(element, "SECOND-MODE")

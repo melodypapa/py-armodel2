@@ -59,9 +59,8 @@ class FlexrayNmCluster(NmCluster):
         Returns:
             Deserialized FlexrayNmCluster object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(FlexrayNmCluster, cls).deserialize(element)
 
         # Parse nm_car_wake_up
         child = ARObject._find_child_element(element, "NM-CAR-WAKE-UP")

@@ -50,20 +50,23 @@ class DiagnosticEcuInstanceProps(DiagnosticCommonElement):
         Returns:
             Deserialized DiagnosticEcuInstanceProps object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticEcuInstanceProps, cls).deserialize(element)
 
-        # Parse ecu_instances (list)
+        # Parse ecu_instances (list from container "ECU-INSTANCES")
         obj.ecu_instances = []
-        for child in ARObject._find_all_child_elements(element, "ECU-INSTANCES"):
-            ecu_instances_value = ARObject._deserialize_by_tag(child, "EcuInstance")
-            obj.ecu_instances.append(ecu_instances_value)
+        container = ARObject._find_child_element(element, "ECU-INSTANCES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.ecu_instances.append(child_value)
 
         # Parse obd_support
         child = ARObject._find_child_element(element, "OBD-SUPPORT")
         if child is not None:
-            obd_support_value = child.text
+            obd_support_value = DiagnosticObdSupportEnum.deserialize(child)
             obj.obd_support = obd_support_value
 
         return obj

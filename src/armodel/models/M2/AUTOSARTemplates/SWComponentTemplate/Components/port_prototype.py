@@ -95,15 +95,18 @@ class PortPrototype(Identifiable, ABC):
         Returns:
             Deserialized PortPrototype object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(PortPrototype, cls).deserialize(element)
 
-        # Parse client_servers (list)
+        # Parse client_servers (list from container "CLIENT-SERVERS")
         obj.client_servers = []
-        for child in ARObject._find_all_child_elements(element, "CLIENT-SERVERS"):
-            client_servers_value = ARObject._deserialize_by_tag(child, "ClientServerAnnotation")
-            obj.client_servers.append(client_servers_value)
+        container = ARObject._find_child_element(element, "CLIENT-SERVERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.client_servers.append(child_value)
 
         # Parse delegated_port
         child = ARObject._find_child_element(element, "DELEGATED-PORT")
@@ -111,41 +114,65 @@ class PortPrototype(Identifiable, ABC):
             delegated_port_value = ARObject._deserialize_by_tag(child, "DelegatedPortAnnotation")
             obj.delegated_port = delegated_port_value
 
-        # Parse io_hw_abstraction_server_annotations (list)
+        # Parse io_hw_abstraction_server_annotations (list from container "IO-HW-ABSTRACTION-SERVER-ANNOTATIONS")
         obj.io_hw_abstraction_server_annotations = []
-        for child in ARObject._find_all_child_elements(element, "IO-HW-ABSTRACTION-SERVER-ANNOTATIONS"):
-            io_hw_abstraction_server_annotations_value = ARObject._deserialize_by_tag(child, "IoHwAbstractionServerAnnotation")
-            obj.io_hw_abstraction_server_annotations.append(io_hw_abstraction_server_annotations_value)
+        container = ARObject._find_child_element(element, "IO-HW-ABSTRACTION-SERVER-ANNOTATIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.io_hw_abstraction_server_annotations.append(child_value)
 
-        # Parse mode_port_annotations (list)
+        # Parse mode_port_annotations (list from container "MODE-PORT-ANNOTATIONS")
         obj.mode_port_annotations = []
-        for child in ARObject._find_all_child_elements(element, "MODE-PORT-ANNOTATIONS"):
-            mode_port_annotations_value = ARObject._deserialize_by_tag(child, "ModePortAnnotation")
-            obj.mode_port_annotations.append(mode_port_annotations_value)
+        container = ARObject._find_child_element(element, "MODE-PORT-ANNOTATIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.mode_port_annotations.append(child_value)
 
-        # Parse nv_data_port_annotations (list)
+        # Parse nv_data_port_annotations (list from container "NV-DATA-PORT-ANNOTATIONS")
         obj.nv_data_port_annotations = []
-        for child in ARObject._find_all_child_elements(element, "NV-DATA-PORT-ANNOTATIONS"):
-            nv_data_port_annotations_value = ARObject._deserialize_by_tag(child, "NvDataPortAnnotation")
-            obj.nv_data_port_annotations.append(nv_data_port_annotations_value)
+        container = ARObject._find_child_element(element, "NV-DATA-PORT-ANNOTATIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.nv_data_port_annotations.append(child_value)
 
-        # Parse parameter_ports (list)
+        # Parse parameter_ports (list from container "PARAMETER-PORTS")
         obj.parameter_ports = []
-        for child in ARObject._find_all_child_elements(element, "PARAMETER-PORTS"):
-            parameter_ports_value = ARObject._deserialize_by_tag(child, "ParameterPortAnnotation")
-            obj.parameter_ports.append(parameter_ports_value)
+        container = ARObject._find_child_element(element, "PARAMETER-PORTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.parameter_ports.append(child_value)
 
-        # Parse sender_receivers (list)
+        # Parse sender_receivers (list from container "SENDER-RECEIVERS")
         obj.sender_receivers = []
-        for child in ARObject._find_all_child_elements(element, "SENDER-RECEIVERS"):
-            sender_receivers_value = child.text
-            obj.sender_receivers.append(sender_receivers_value)
+        container = ARObject._find_child_element(element, "SENDER-RECEIVERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sender_receivers.append(child_value)
 
-        # Parse trigger_port_annotation_refs (list)
+        # Parse trigger_port_annotation_refs (list from container "TRIGGER-PORT-ANNOTATIONS")
         obj.trigger_port_annotation_refs = []
-        for child in ARObject._find_all_child_elements(element, "TRIGGER-PORT-ANNOTATIONS"):
-            trigger_port_annotation_refs_value = ARObject._deserialize_by_tag(child, "TriggerPortAnnotation")
-            obj.trigger_port_annotation_refs.append(trigger_port_annotation_refs_value)
+        container = ARObject._find_child_element(element, "TRIGGER-PORT-ANNOTATIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.trigger_port_annotation_refs.append(child_value)
 
         return obj
 

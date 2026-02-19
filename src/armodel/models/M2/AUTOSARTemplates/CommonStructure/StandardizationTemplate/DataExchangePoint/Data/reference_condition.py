@@ -46,9 +46,8 @@ class ReferenceCondition(AttributeCondition):
         Returns:
             Deserialized ReferenceCondition object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ReferenceCondition, cls).deserialize(element)
 
         # Parse reference_ref
         child = ARObject._find_child_element(element, "REFERENCE")

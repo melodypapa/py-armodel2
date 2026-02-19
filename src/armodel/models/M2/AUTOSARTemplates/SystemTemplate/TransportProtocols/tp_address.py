@@ -45,9 +45,8 @@ class TpAddress(Identifiable):
         Returns:
             Deserialized TpAddress object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TpAddress, cls).deserialize(element)
 
         # Parse tp_address
         child = ARObject._find_child_element(element, "TP-ADDRESS")

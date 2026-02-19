@@ -50,9 +50,8 @@ class HwPinGroup(Identifiable):
         Returns:
             Deserialized HwPinGroup object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(HwPinGroup, cls).deserialize(element)
 
         # Parse hw_pin_group_content_ref
         child = ARObject._find_child_element(element, "HW-PIN-GROUP-CONTENT")

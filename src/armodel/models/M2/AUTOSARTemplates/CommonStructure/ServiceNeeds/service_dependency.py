@@ -67,7 +67,7 @@ class ServiceDependency(ARObject, ABC):
         # Parse diagnostic
         child = ARObject._find_child_element(element, "DIAGNOSTIC")
         if child is not None:
-            diagnostic_value = child.text
+            diagnostic_value = ServiceDiagnosticRelevanceEnum.deserialize(child)
             obj.diagnostic = diagnostic_value
 
         # Parse symbolic_name_props

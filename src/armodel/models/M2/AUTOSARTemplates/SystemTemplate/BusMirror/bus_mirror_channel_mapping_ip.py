@@ -45,9 +45,8 @@ class BusMirrorChannelMappingIp(BusMirrorChannelMapping):
         Returns:
             Deserialized BusMirrorChannelMappingIp object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(BusMirrorChannelMappingIp, cls).deserialize(element)
 
         # Parse transmission
         child = ARObject._find_child_element(element, "TRANSMISSION")

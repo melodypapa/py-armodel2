@@ -55,9 +55,8 @@ class ClientServerInterfaceToBswModuleEntryBlueprintMapping(ARElement):
         Returns:
             Deserialized ClientServerInterfaceToBswModuleEntryBlueprintMapping object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ClientServerInterfaceToBswModuleEntryBlueprintMapping, cls).deserialize(element)
 
         # Parse client_server
         child = ARObject._find_child_element(element, "CLIENT-SERVER")
@@ -71,11 +70,15 @@ class ClientServerInterfaceToBswModuleEntryBlueprintMapping(ARElement):
             operation_value = ARObject._deserialize_by_tag(child, "ClientServerOperation")
             obj.operation = operation_value
 
-        # Parse port_defined_arguments (list)
+        # Parse port_defined_arguments (list from container "PORT-DEFINED-ARGUMENTS")
         obj.port_defined_arguments = []
-        for child in ARObject._find_all_child_elements(element, "PORT-DEFINED-ARGUMENTS"):
-            port_defined_arguments_value = ARObject._deserialize_by_tag(child, "PortDefinedArgumentValue")
-            obj.port_defined_arguments.append(port_defined_arguments_value)
+        container = ARObject._find_child_element(element, "PORT-DEFINED-ARGUMENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.port_defined_arguments.append(child_value)
 
         return obj
 

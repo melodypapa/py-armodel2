@@ -54,11 +54,15 @@ class ClassTailoring(ARObject, ABC):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse class_contents (list)
+        # Parse class_contents (list from container "CLASS-CONTENTS")
         obj.class_contents = []
-        for child in ARObject._find_all_child_elements(element, "CLASS-CONTENTS"):
-            class_contents_value = ARObject._deserialize_by_tag(child, "ClassContentConditional")
-            obj.class_contents.append(class_contents_value)
+        container = ARObject._find_child_element(element, "CLASS-CONTENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.class_contents.append(child_value)
 
         # Parse multiplicity
         child = ARObject._find_child_element(element, "MULTIPLICITY")

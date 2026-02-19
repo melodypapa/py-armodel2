@@ -48,9 +48,8 @@ class AttributeTailoring(DataFormatElementScope, ABC):
         Returns:
             Deserialized AttributeTailoring object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(AttributeTailoring, cls).deserialize(element)
 
         # Parse multiplicity
         child = ARObject._find_child_element(element, "MULTIPLICITY")

@@ -53,9 +53,8 @@ class OsTaskProxy(ARElement):
         Returns:
             Deserialized OsTaskProxy object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(OsTaskProxy, cls).deserialize(element)
 
         # Parse period
         child = ARObject._find_child_element(element, "PERIOD")
@@ -66,7 +65,7 @@ class OsTaskProxy(ARElement):
         # Parse preemptability
         child = ARObject._find_child_element(element, "PREEMPTABILITY")
         if child is not None:
-            preemptability_value = child.text
+            preemptability_value = OsTaskPreemptabilityEnum.deserialize(child)
             obj.preemptability = preemptability_value
 
         # Parse priority

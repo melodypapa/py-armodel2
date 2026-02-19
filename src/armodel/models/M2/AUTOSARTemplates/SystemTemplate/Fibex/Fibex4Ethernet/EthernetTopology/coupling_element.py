@@ -67,9 +67,8 @@ class CouplingElement(FibexElement):
         Returns:
             Deserialized CouplingElement object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(CouplingElement, cls).deserialize(element)
 
         # Parse communication
         child = ARObject._find_child_element(element, "COMMUNICATION")
@@ -83,16 +82,20 @@ class CouplingElement(FibexElement):
             coupling_value = ARObject._deserialize_by_tag(child, "CouplingElement")
             obj.coupling = coupling_value
 
-        # Parse coupling_ports (list)
+        # Parse coupling_ports (list from container "COUPLING-PORTS")
         obj.coupling_ports = []
-        for child in ARObject._find_all_child_elements(element, "COUPLING-PORTS"):
-            coupling_ports_value = ARObject._deserialize_by_tag(child, "CouplingPort")
-            obj.coupling_ports.append(coupling_ports_value)
+        container = ARObject._find_child_element(element, "COUPLING-PORTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.coupling_ports.append(child_value)
 
         # Parse coupling_type
         child = ARObject._find_child_element(element, "COUPLING-TYPE")
         if child is not None:
-            coupling_type_value = child.text
+            coupling_type_value = CouplingElementEnum.deserialize(child)
             obj.coupling_type = coupling_type_value
 
         # Parse ecu_instance
@@ -101,11 +104,15 @@ class CouplingElement(FibexElement):
             ecu_instance_value = ARObject._deserialize_by_tag(child, "EcuInstance")
             obj.ecu_instance = ecu_instance_value
 
-        # Parse firewall_rules (list)
+        # Parse firewall_rules (list from container "FIREWALL-RULES")
         obj.firewall_rules = []
-        for child in ARObject._find_all_child_elements(element, "FIREWALL-RULES"):
-            firewall_rules_value = ARObject._deserialize_by_tag(child, "StateDependentFirewall")
-            obj.firewall_rules.append(firewall_rules_value)
+        container = ARObject._find_child_element(element, "FIREWALL-RULES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.firewall_rules.append(child_value)
 
         return obj
 

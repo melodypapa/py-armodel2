@@ -65,7 +65,7 @@ class Colspec(ARObject):
         # Parse align
         child = ARObject._find_child_element(element, "ALIGN")
         if child is not None:
-            align_value = child.text
+            align_value = AlignEnum.deserialize(child)
             obj.align = align_value
 
         # Parse colname

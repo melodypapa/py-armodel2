@@ -86,9 +86,8 @@ class GlobalTimeDomain(FibexElement):
         Returns:
             Deserialized GlobalTimeDomain object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(GlobalTimeDomain, cls).deserialize(element)
 
         # Parse debounce_time
         child = ARObject._find_child_element(element, "DEBOUNCE-TIME")
@@ -102,11 +101,15 @@ class GlobalTimeDomain(FibexElement):
             domain_id_value = child.text
             obj.domain_id = domain_id_value
 
-        # Parse gateways (list)
+        # Parse gateways (list from container "GATEWAYS")
         obj.gateways = []
-        for child in ARObject._find_all_child_elements(element, "GATEWAYS"):
-            gateways_value = ARObject._deserialize_by_tag(child, "GlobalTimeGateway")
-            obj.gateways.append(gateways_value)
+        container = ARObject._find_child_element(element, "GATEWAYS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.gateways.append(child_value)
 
         # Parse global_time
         child = ARObject._find_child_element(element, "GLOBAL-TIME")
@@ -120,11 +123,15 @@ class GlobalTimeDomain(FibexElement):
             global_time_master_value = ARObject._deserialize_by_tag(child, "GlobalTimeMaster")
             obj.global_time_master = global_time_master_value
 
-        # Parse global_time_subs (list)
+        # Parse global_time_subs (list from container "GLOBAL-TIME-SUBS")
         obj.global_time_subs = []
-        for child in ARObject._find_all_child_elements(element, "GLOBAL-TIME-SUBS"):
-            global_time_subs_value = ARObject._deserialize_by_tag(child, "GlobalTimeDomain")
-            obj.global_time_subs.append(global_time_subs_value)
+        container = ARObject._find_child_element(element, "GLOBAL-TIME-SUBS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.global_time_subs.append(child_value)
 
         # Parse network
         child = ARObject._find_child_element(element, "NETWORK")
@@ -144,11 +151,15 @@ class GlobalTimeDomain(FibexElement):
             pdu_triggering_ref_value = ARObject._deserialize_by_tag(child, "PduTriggering")
             obj.pdu_triggering_ref = pdu_triggering_ref_value
 
-        # Parse slaves (list)
+        # Parse slaves (list from container "SLAVES")
         obj.slaves = []
-        for child in ARObject._find_all_child_elements(element, "SLAVES"):
-            slaves_value = ARObject._deserialize_by_tag(child, "GlobalTimeSlave")
-            obj.slaves.append(slaves_value)
+        container = ARObject._find_child_element(element, "SLAVES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.slaves.append(child_value)
 
         # Parse sync_loss
         child = ARObject._find_child_element(element, "SYNC-LOSS")

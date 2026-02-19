@@ -40,11 +40,8 @@ class DiagnosticDataTransferClass(DiagnosticServiceClass):
         Returns:
             Deserialized DiagnosticDataTransferClass object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
-
-        return obj
+        # Delegate to parent class to handle inherited attributes
+        return super(DiagnosticDataTransferClass, cls).deserialize(element)
 
 
 

@@ -59,9 +59,8 @@ class FrameTriggering(Identifiable, ABC):
         Returns:
             Deserialized FrameTriggering object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(FrameTriggering, cls).deserialize(element)
 
         # Parse frame
         child = ARObject._find_child_element(element, "FRAME")
@@ -69,17 +68,25 @@ class FrameTriggering(Identifiable, ABC):
             frame_value = ARObject._deserialize_by_tag(child, "Frame")
             obj.frame = frame_value
 
-        # Parse frame_ports (list)
+        # Parse frame_ports (list from container "FRAME-PORTS")
         obj.frame_ports = []
-        for child in ARObject._find_all_child_elements(element, "FRAME-PORTS"):
-            frame_ports_value = ARObject._deserialize_by_tag(child, "FramePort")
-            obj.frame_ports.append(frame_ports_value)
+        container = ARObject._find_child_element(element, "FRAME-PORTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.frame_ports.append(child_value)
 
-        # Parse pdu_triggering_refs (list)
+        # Parse pdu_triggering_refs (list from container "PDU-TRIGGERINGS")
         obj.pdu_triggering_refs = []
-        for child in ARObject._find_all_child_elements(element, "PDU-TRIGGERINGS"):
-            pdu_triggering_refs_value = ARObject._deserialize_by_tag(child, "PduTriggering")
-            obj.pdu_triggering_refs.append(pdu_triggering_refs_value)
+        container = ARObject._find_child_element(element, "PDU-TRIGGERINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.pdu_triggering_refs.append(child_value)
 
         return obj
 

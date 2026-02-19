@@ -45,14 +45,13 @@ class FlexrayPhysicalChannel(PhysicalChannel):
         Returns:
             Deserialized FlexrayPhysicalChannel object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(FlexrayPhysicalChannel, cls).deserialize(element)
 
         # Parse channel_name
         child = ARObject._find_child_element(element, "CHANNEL-NAME")
         if child is not None:
-            channel_name_value = child.text
+            channel_name_value = FlexrayChannelName.deserialize(child)
             obj.channel_name = channel_name_value
 
         return obj

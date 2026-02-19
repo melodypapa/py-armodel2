@@ -58,21 +58,28 @@ class DiagnosticConnection(ARElement):
         Returns:
             Deserialized DiagnosticConnection object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticConnection, cls).deserialize(element)
 
-        # Parse functional_requests (list)
+        # Parse functional_requests (list from container "FUNCTIONAL-REQUESTS")
         obj.functional_requests = []
-        for child in ARObject._find_all_child_elements(element, "FUNCTIONAL-REQUESTS"):
-            functional_requests_value = ARObject._deserialize_by_tag(child, "TpConnectionIdent")
-            obj.functional_requests.append(functional_requests_value)
+        container = ARObject._find_child_element(element, "FUNCTIONAL-REQUESTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.functional_requests.append(child_value)
 
-        # Parse periodic_response_uudt_refs (list)
+        # Parse periodic_response_uudt_refs (list from container "PERIODIC-RESPONSE-UUDTS")
         obj.periodic_response_uudt_refs = []
-        for child in ARObject._find_all_child_elements(element, "PERIODIC-RESPONSE-UUDTS"):
-            periodic_response_uudt_refs_value = ARObject._deserialize_by_tag(child, "PduTriggering")
-            obj.periodic_response_uudt_refs.append(periodic_response_uudt_refs_value)
+        container = ARObject._find_child_element(element, "PERIODIC-RESPONSE-UUDTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.periodic_response_uudt_refs.append(child_value)
 
         # Parse physical_request
         child = ARObject._find_child_element(element, "PHYSICAL-REQUEST")

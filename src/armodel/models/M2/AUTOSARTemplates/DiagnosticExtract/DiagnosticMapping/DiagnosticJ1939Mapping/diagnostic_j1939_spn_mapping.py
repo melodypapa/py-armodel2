@@ -55,15 +55,18 @@ class DiagnosticJ1939SpnMapping(DiagnosticMapping):
         Returns:
             Deserialized DiagnosticJ1939SpnMapping object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticJ1939SpnMapping, cls).deserialize(element)
 
-        # Parse sending_nodes (list)
+        # Parse sending_nodes (list from container "SENDING-NODES")
         obj.sending_nodes = []
-        for child in ARObject._find_all_child_elements(element, "SENDING-NODES"):
-            sending_nodes_value = ARObject._deserialize_by_tag(child, "DiagnosticJ1939Node")
-            obj.sending_nodes.append(sending_nodes_value)
+        container = ARObject._find_child_element(element, "SENDING-NODES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sending_nodes.append(child_value)
 
         # Parse spn
         child = ARObject._find_child_element(element, "SPN")

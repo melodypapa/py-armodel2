@@ -49,9 +49,8 @@ class Field(AutosarDataPrototype):
         Returns:
             Deserialized Field object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(Field, cls).deserialize(element)
 
         # Parse has_getter
         child = ARObject._find_child_element(element, "HAS-GETTER")

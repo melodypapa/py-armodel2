@@ -52,16 +52,20 @@ class IncludedModeDeclarationGroupSet(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse mode_refs (list)
+        # Parse mode_refs (list from container "MODES")
         obj.mode_refs = []
-        for child in ARObject._find_all_child_elements(element, "MODES"):
-            mode_refs_value = ARObject._deserialize_by_tag(child, "ModeDeclarationGroup")
-            obj.mode_refs.append(mode_refs_value)
+        container = ARObject._find_child_element(element, "MODES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.mode_refs.append(child_value)
 
         # Parse prefix
         child = ARObject._find_child_element(element, "PREFIX")
         if child is not None:
-            prefix_value = child.text
+            prefix_value = ARObject._deserialize_by_tag(child, "Identifier")
             obj.prefix = prefix_value
 
         return obj

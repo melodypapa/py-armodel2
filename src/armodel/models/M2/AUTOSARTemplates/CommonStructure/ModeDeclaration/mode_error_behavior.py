@@ -61,7 +61,7 @@ class ModeErrorBehavior(ARObject):
         # Parse error_reaction
         child = ARObject._find_child_element(element, "ERROR-REACTION")
         if child is not None:
-            error_reaction_value = child.text
+            error_reaction_value = ModeErrorReactionPolicyEnum.deserialize(child)
             obj.error_reaction = error_reaction_value
 
         return obj

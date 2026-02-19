@@ -55,15 +55,18 @@ class CpSoftwareClusterResource(Identifiable, ABC):
         Returns:
             Deserialized CpSoftwareClusterResource object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(CpSoftwareClusterResource, cls).deserialize(element)
 
-        # Parse dependents (list)
+        # Parse dependents (list from container "DEPENDENTS")
         obj.dependents = []
-        for child in ARObject._find_all_child_elements(element, "DEPENDENTS"):
-            dependents_value = ARObject._deserialize_by_tag(child, "RoleBasedResourceDependency")
-            obj.dependents.append(dependents_value)
+        container = ARObject._find_child_element(element, "DEPENDENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.dependents.append(child_value)
 
         # Parse global_resource
         child = ARObject._find_child_element(element, "GLOBAL-RESOURCE")

@@ -91,11 +91,15 @@ class DataPrototypeMapping(ARObject):
             second_to_first_value = ARObject._deserialize_by_tag(child, "DataTransformation")
             obj.second_to_first = second_to_first_value
 
-        # Parse sub_element_refs (list)
+        # Parse sub_element_refs (list from container "SUB-ELEMENTS")
         obj.sub_element_refs = []
-        for child in ARObject._find_all_child_elements(element, "SUB-ELEMENTS"):
-            sub_element_refs_value = ARObject._deserialize_by_tag(child, "SubElementMapping")
-            obj.sub_element_refs.append(sub_element_refs_value)
+        container = ARObject._find_child_element(element, "SUB-ELEMENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sub_element_refs.append(child_value)
 
         # Parse text_table_ref
         child = ARObject._find_child_element(element, "TEXT-TABLE")

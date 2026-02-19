@@ -56,7 +56,7 @@ class SegmentPosition(ARObject):
         # Parse segment_byte
         child = ARObject._find_child_element(element, "SEGMENT-BYTE")
         if child is not None:
-            segment_byte_value = child.text
+            segment_byte_value = ByteOrderEnum.deserialize(child)
             obj.segment_byte = segment_byte_value
 
         # Parse segment_length

@@ -46,11 +46,15 @@ class FileInfoComment(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse sdgs (list)
+        # Parse sdgs (list from container "SDGS")
         obj.sdgs = []
-        for child in ARObject._find_all_child_elements(element, "SDGS"):
-            sdgs_value = ARObject._deserialize_by_tag(child, "Sdg")
-            obj.sdgs.append(sdgs_value)
+        container = ARObject._find_child_element(element, "SDGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sdgs.append(child_value)
 
         return obj
 

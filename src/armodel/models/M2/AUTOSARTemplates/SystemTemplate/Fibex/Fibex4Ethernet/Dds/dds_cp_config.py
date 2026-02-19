@@ -50,21 +50,28 @@ class DdsCpConfig(ARElement):
         Returns:
             Deserialized DdsCpConfig object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DdsCpConfig, cls).deserialize(element)
 
-        # Parse dds_domains (list)
+        # Parse dds_domains (list from container "DDS-DOMAINS")
         obj.dds_domains = []
-        for child in ARObject._find_all_child_elements(element, "DDS-DOMAINS"):
-            dds_domains_value = ARObject._deserialize_by_tag(child, "DdsCpDomain")
-            obj.dds_domains.append(dds_domains_value)
+        container = ARObject._find_child_element(element, "DDS-DOMAINS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.dds_domains.append(child_value)
 
-        # Parse dds_qos_profiles (list)
+        # Parse dds_qos_profiles (list from container "DDS-QOS-PROFILES")
         obj.dds_qos_profiles = []
-        for child in ARObject._find_all_child_elements(element, "DDS-QOS-PROFILES"):
-            dds_qos_profiles_value = ARObject._deserialize_by_tag(child, "DdsCpQosProfile")
-            obj.dds_qos_profiles.append(dds_qos_profiles_value)
+        container = ARObject._find_child_element(element, "DDS-QOS-PROFILES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.dds_qos_profiles.append(child_value)
 
         return obj
 

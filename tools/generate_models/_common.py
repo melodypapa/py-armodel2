@@ -110,12 +110,12 @@ def get_python_identifier_with_ref(name: str, is_ref: bool = False, multiplicity
 
     # If it's a reference, handle the suffix
     if is_ref:
-        if not identifier.endswith('_ref'):
+        if not identifier.endswith("_ref"):
             # For list types (multiplicity "*"), singularize first
             # This ensures "indications" becomes "indication" before adding "s" + "_ref"
             if multiplicity in ["*", "0..*"]:
                 # Remove trailing 's' to singularize (simple heuristic)
-                if identifier.endswith('s'):
+                if identifier.endswith("s"):
                     identifier = identifier[:-1]
                 # Add plural 's' and '_ref' suffix (combined as '_refs')
                 identifier = f"{identifier}_refs"
@@ -125,11 +125,41 @@ def get_python_identifier_with_ref(name: str, is_ref: bool = False, multiplicity
 
     # Check if the resulting identifier is a Python keyword
     python_keywords = {
-        "False", "None", "True", "and", "as", "assert", "async", "await",
-        "break", "class", "continue", "def", "del", "elif", "else", "except",
-        "finally", "for", "from", "global", "if", "import", "in", "is",
-        "lambda", "nonlocal", "not", "or", "pass", "raise", "return", "try",
-        "while", "with", "yield",
+        "False",
+        "None",
+        "True",
+        "and",
+        "as",
+        "assert",
+        "async",
+        "await",
+        "break",
+        "class",
+        "continue",
+        "def",
+        "del",
+        "elif",
+        "else",
+        "except",
+        "finally",
+        "for",
+        "from",
+        "global",
+        "if",
+        "import",
+        "in",
+        "is",
+        "lambda",
+        "nonlocal",
+        "not",
+        "or",
+        "pass",
+        "raise",
+        "return",
+        "try",
+        "while",
+        "with",
+        "yield",
     }
 
     # If it's a keyword, append underscore

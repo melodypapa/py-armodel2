@@ -63,21 +63,28 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
         Returns:
             Deserialized EcucContainerDef object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(EcucContainerDef, cls).deserialize(element)
 
-        # Parse destination_uris (list)
+        # Parse destination_uris (list from container "DESTINATION-URIS")
         obj.destination_uris = []
-        for child in ARObject._find_all_child_elements(element, "DESTINATION-URIS"):
-            destination_uris_value = ARObject._deserialize_by_tag(child, "EcucDestinationUriDef")
-            obj.destination_uris.append(destination_uris_value)
+        container = ARObject._find_child_element(element, "DESTINATION-URIS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.destination_uris.append(child_value)
 
-        # Parse multiplicities (list)
+        # Parse multiplicities (list from container "MULTIPLICITIES")
         obj.multiplicities = []
-        for child in ARObject._find_all_child_elements(element, "MULTIPLICITIES"):
-            multiplicities_value = ARObject._deserialize_by_tag(child, "EcucMultiplicityConfigurationClass")
-            obj.multiplicities.append(multiplicities_value)
+        container = ARObject._find_child_element(element, "MULTIPLICITIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.multiplicities.append(child_value)
 
         # Parse origin
         child = ARObject._find_child_element(element, "ORIGIN")

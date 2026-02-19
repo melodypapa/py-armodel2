@@ -47,15 +47,18 @@ class AliasNameSet(ARElement):
         Returns:
             Deserialized AliasNameSet object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(AliasNameSet, cls).deserialize(element)
 
-        # Parse alias_names (list)
+        # Parse alias_names (list from container "ALIAS-NAMES")
         obj.alias_names = []
-        for child in ARObject._find_all_child_elements(element, "ALIAS-NAMES"):
-            alias_names_value = ARObject._deserialize_by_tag(child, "AliasNameAssignment")
-            obj.alias_names.append(alias_names_value)
+        container = ARObject._find_child_element(element, "ALIAS-NAMES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.alias_names.append(child_value)
 
         return obj
 

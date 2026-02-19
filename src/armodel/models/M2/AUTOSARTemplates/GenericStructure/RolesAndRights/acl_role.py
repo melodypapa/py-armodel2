@@ -46,9 +46,8 @@ class AclRole(ARElement):
         Returns:
             Deserialized AclRole object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(AclRole, cls).deserialize(element)
 
         # Parse ldap_url
         child = ARObject._find_child_element(element, "LDAP-URL")

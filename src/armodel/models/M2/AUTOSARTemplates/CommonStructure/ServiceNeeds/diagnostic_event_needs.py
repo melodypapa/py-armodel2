@@ -60,15 +60,18 @@ class DiagnosticEventNeeds(DiagnosticCapabilityElement):
         Returns:
             Deserialized DiagnosticEventNeeds object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticEventNeeds, cls).deserialize(element)
 
-        # Parse deferring_fids (list)
+        # Parse deferring_fids (list from container "DEFERRING-FIDS")
         obj.deferring_fids = []
-        for child in ARObject._find_all_child_elements(element, "DEFERRING-FIDS"):
-            deferring_fids_value = ARObject._deserialize_by_tag(child, "FunctionInhibitionNeeds")
-            obj.deferring_fids.append(deferring_fids_value)
+        container = ARObject._find_child_element(element, "DEFERRING-FIDS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.deferring_fids.append(child_value)
 
         # Parse diag_event_debounce
         child = ARObject._find_child_element(element, "DIAG-EVENT-DEBOUNCE")
@@ -82,11 +85,15 @@ class DiagnosticEventNeeds(DiagnosticCapabilityElement):
             inhibiting_fid_value = ARObject._deserialize_by_tag(child, "FunctionInhibitionNeeds")
             obj.inhibiting_fid = inhibiting_fid_value
 
-        # Parse inhibitings (list)
+        # Parse inhibitings (list from container "INHIBITINGS")
         obj.inhibitings = []
-        for child in ARObject._find_all_child_elements(element, "INHIBITINGS"):
-            inhibitings_value = ARObject._deserialize_by_tag(child, "FunctionInhibitionNeeds")
-            obj.inhibitings.append(inhibitings_value)
+        container = ARObject._find_child_element(element, "INHIBITINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.inhibitings.append(child_value)
 
         # Parse prestored
         child = ARObject._find_child_element(element, "PRESTORED")

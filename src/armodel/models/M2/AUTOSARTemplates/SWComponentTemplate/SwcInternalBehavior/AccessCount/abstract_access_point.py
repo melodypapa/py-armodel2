@@ -47,14 +47,13 @@ class AbstractAccessPoint(Identifiable, ABC):
         Returns:
             Deserialized AbstractAccessPoint object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(AbstractAccessPoint, cls).deserialize(element)
 
         # Parse return_value
         child = ARObject._find_child_element(element, "RETURN-VALUE")
         if child is not None:
-            return_value_value = child.text
+            return_value_value = RteApiReturnValueProvisionEnum.deserialize(child)
             obj.return_value = return_value_value
 
         return obj

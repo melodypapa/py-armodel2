@@ -97,11 +97,15 @@ class FlexrayFifoConfiguration(ARObject):
             fifo_depth_value = child.text
             obj.fifo_depth = fifo_depth_value
 
-        # Parse fifo_ranges (list)
+        # Parse fifo_ranges (list from container "FIFO-RANGES")
         obj.fifo_ranges = []
-        for child in ARObject._find_all_child_elements(element, "FIFO-RANGES"):
-            fifo_ranges_value = ARObject._deserialize_by_tag(child, "FlexrayFifoRange")
-            obj.fifo_ranges.append(fifo_ranges_value)
+        container = ARObject._find_child_element(element, "FIFO-RANGES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.fifo_ranges.append(child_value)
 
         # Parse msg_id_mask
         child = ARObject._find_child_element(element, "MSG-ID-MASK")

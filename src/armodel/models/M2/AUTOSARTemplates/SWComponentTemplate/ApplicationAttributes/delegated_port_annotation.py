@@ -45,14 +45,13 @@ class DelegatedPortAnnotation(GeneralAnnotation):
         Returns:
             Deserialized DelegatedPortAnnotation object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DelegatedPortAnnotation, cls).deserialize(element)
 
         # Parse signal_fan
         child = ARObject._find_child_element(element, "SIGNAL-FAN")
         if child is not None:
-            signal_fan_value = child.text
+            signal_fan_value = SignalFanEnum.deserialize(child)
             obj.signal_fan = signal_fan_value
 
         return obj

@@ -55,9 +55,8 @@ class DiagnosticSession(DiagnosticCommonElement):
         Returns:
             Deserialized DiagnosticSession object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticSession, cls).deserialize(element)
 
         # Parse id
         child = ARObject._find_child_element(element, "ID")
@@ -68,7 +67,7 @@ class DiagnosticSession(DiagnosticCommonElement):
         # Parse jump_to_boot
         child = ARObject._find_child_element(element, "JUMP-TO-BOOT")
         if child is not None:
-            jump_to_boot_value = child.text
+            jump_to_boot_value = DiagnosticJumpToBootLoaderEnum.deserialize(child)
             obj.jump_to_boot = jump_to_boot_value
 
         # Parse p2_server_max

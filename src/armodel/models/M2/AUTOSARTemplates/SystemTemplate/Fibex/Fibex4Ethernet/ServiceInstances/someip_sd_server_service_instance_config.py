@@ -60,9 +60,8 @@ class SomeipSdServerServiceInstanceConfig(ARElement):
         Returns:
             Deserialized SomeipSdServerServiceInstanceConfig object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SomeipSdServerServiceInstanceConfig, cls).deserialize(element)
 
         # Parse initial_offer_behavior
         child = ARObject._find_child_element(element, "INITIAL-OFFER-BEHAVIOR")

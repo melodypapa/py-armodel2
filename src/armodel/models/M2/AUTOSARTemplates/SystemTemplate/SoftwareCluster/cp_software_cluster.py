@@ -54,9 +54,8 @@ class CpSoftwareCluster(ARElement):
         Returns:
             Deserialized CpSoftwareCluster object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(CpSoftwareCluster, cls).deserialize(element)
 
         # Parse software_cluster
         child = ARObject._find_child_element(element, "SOFTWARE-CLUSTER")
@@ -64,17 +63,25 @@ class CpSoftwareCluster(ARElement):
             software_cluster_value = child.text
             obj.software_cluster = software_cluster_value
 
-        # Parse sw_components (list)
+        # Parse sw_components (list from container "SW-COMPONENTS")
         obj.sw_components = []
-        for child in ARObject._find_all_child_elements(element, "SW-COMPONENTS"):
-            sw_components_value = child.text
-            obj.sw_components.append(sw_components_value)
+        container = ARObject._find_child_element(element, "SW-COMPONENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sw_components.append(child_value)
 
-        # Parse sw_composition_component_types (list)
+        # Parse sw_composition_component_types (list from container "SW-COMPOSITION-COMPONENT-TYPES")
         obj.sw_composition_component_types = []
-        for child in ARObject._find_all_child_elements(element, "SW-COMPOSITION-COMPONENT-TYPES"):
-            sw_composition_component_types_value = ARObject._deserialize_by_tag(child, "CompositionSwComponentType")
-            obj.sw_composition_component_types.append(sw_composition_component_types_value)
+        container = ARObject._find_child_element(element, "SW-COMPOSITION-COMPONENT-TYPES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sw_composition_component_types.append(child_value)
 
         return obj
 

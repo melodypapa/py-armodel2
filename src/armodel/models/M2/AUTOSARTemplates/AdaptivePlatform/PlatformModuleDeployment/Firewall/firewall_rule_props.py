@@ -56,17 +56,25 @@ class FirewallRuleProps(ARObject):
             action_value = child.text
             obj.action = action_value
 
-        # Parse matching_egresses (list)
+        # Parse matching_egresses (list from container "MATCHING-EGRESSES")
         obj.matching_egresses = []
-        for child in ARObject._find_all_child_elements(element, "MATCHING-EGRESSES"):
-            matching_egresses_value = ARObject._deserialize_by_tag(child, "FirewallRule")
-            obj.matching_egresses.append(matching_egresses_value)
+        container = ARObject._find_child_element(element, "MATCHING-EGRESSES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.matching_egresses.append(child_value)
 
-        # Parse matchings (list)
+        # Parse matchings (list from container "MATCHINGS")
         obj.matchings = []
-        for child in ARObject._find_all_child_elements(element, "MATCHINGS"):
-            matchings_value = ARObject._deserialize_by_tag(child, "FirewallRule")
-            obj.matchings.append(matchings_value)
+        container = ARObject._find_child_element(element, "MATCHINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.matchings.append(child_value)
 
         return obj
 

@@ -50,9 +50,8 @@ class ClientIdDefinition(Identifiable):
         Returns:
             Deserialized ClientIdDefinition object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ClientIdDefinition, cls).deserialize(element)
 
         # Parse client_id
         child = ARObject._find_child_element(element, "CLIENT-ID")

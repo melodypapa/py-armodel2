@@ -61,15 +61,18 @@ class EcucCommonAttributes(EcucDefinitionElement, ABC):
         Returns:
             Deserialized EcucCommonAttributes object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(EcucCommonAttributes, cls).deserialize(element)
 
-        # Parse multiplicities (list)
+        # Parse multiplicities (list from container "MULTIPLICITIES")
         obj.multiplicities = []
-        for child in ARObject._find_all_child_elements(element, "MULTIPLICITIES"):
-            multiplicities_value = ARObject._deserialize_by_tag(child, "EcucMultiplicityConfigurationClass")
-            obj.multiplicities.append(multiplicities_value)
+        container = ARObject._find_child_element(element, "MULTIPLICITIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.multiplicities.append(child_value)
 
         # Parse origin
         child = ARObject._find_child_element(element, "ORIGIN")
@@ -89,11 +92,15 @@ class EcucCommonAttributes(EcucDefinitionElement, ABC):
             requires_index_value = child.text
             obj.requires_index = requires_index_value
 
-        # Parse value_configs (list)
+        # Parse value_configs (list from container "VALUE-CONFIGS")
         obj.value_configs = []
-        for child in ARObject._find_all_child_elements(element, "VALUE-CONFIGS"):
-            value_configs_value = ARObject._deserialize_by_tag(child, "EcucValueConfigurationClass")
-            obj.value_configs.append(value_configs_value)
+        container = ARObject._find_child_element(element, "VALUE-CONFIGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.value_configs.append(child_value)
 
         return obj
 

@@ -41,11 +41,8 @@ class GeneralPurposeIPdu(IPdu):
         Returns:
             Deserialized GeneralPurposeIPdu object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
-
-        return obj
+        # Delegate to parent class to handle inherited attributes
+        return super(GeneralPurposeIPdu, cls).deserialize(element)
 
 
 

@@ -60,32 +60,39 @@ class SynchronizationTimingConstraint(TimingConstraint):
         Returns:
             Deserialized SynchronizationTimingConstraint object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SynchronizationTimingConstraint, cls).deserialize(element)
 
         # Parse event
         child = ARObject._find_child_element(element, "EVENT")
         if child is not None:
-            event_value = child.text
+            event_value = EventOccurrenceKindEnum.deserialize(child)
             obj.event = event_value
 
-        # Parse scopes (list)
+        # Parse scopes (list from container "SCOPES")
         obj.scopes = []
-        for child in ARObject._find_all_child_elements(element, "SCOPES"):
-            scopes_value = ARObject._deserialize_by_tag(child, "TimingDescriptionEvent")
-            obj.scopes.append(scopes_value)
+        container = ARObject._find_child_element(element, "SCOPES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.scopes.append(child_value)
 
-        # Parse scope_events (list)
+        # Parse scope_events (list from container "SCOPE-EVENTS")
         obj.scope_events = []
-        for child in ARObject._find_all_child_elements(element, "SCOPE-EVENTS"):
-            scope_events_value = ARObject._deserialize_by_tag(child, "TimingDescriptionEvent")
-            obj.scope_events.append(scope_events_value)
+        container = ARObject._find_child_element(element, "SCOPE-EVENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.scope_events.append(child_value)
 
         # Parse synchronization
         child = ARObject._find_child_element(element, "SYNCHRONIZATION")
         if child is not None:
-            synchronization_value = child.text
+            synchronization_value = SynchronizationTypeEnum.deserialize(child)
             obj.synchronization = synchronization_value
 
         # Parse tolerance

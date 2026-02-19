@@ -45,9 +45,8 @@ class TlsCryptoCipherSuiteProps(Identifiable):
         Returns:
             Deserialized TlsCryptoCipherSuiteProps object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TlsCryptoCipherSuiteProps, cls).deserialize(element)
 
         # Parse tcp_ip_tls_use
         child = ARObject._find_child_element(element, "TCP-IP-TLS-USE")

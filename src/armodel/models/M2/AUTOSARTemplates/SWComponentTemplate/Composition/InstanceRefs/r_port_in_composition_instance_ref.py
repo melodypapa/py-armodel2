@@ -48,9 +48,8 @@ class RPortInCompositionInstanceRef(PortInCompositionTypeInstanceRef):
         Returns:
             Deserialized RPortInCompositionInstanceRef object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(RPortInCompositionInstanceRef, cls).deserialize(element)
 
         # Parse context
         child = ARObject._find_child_element(element, "CONTEXT")

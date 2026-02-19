@@ -54,9 +54,8 @@ class Frame(FibexElement, ABC):
         Returns:
             Deserialized Frame object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(Frame, cls).deserialize(element)
 
         # Parse frame_length
         child = ARObject._find_child_element(element, "FRAME-LENGTH")
@@ -64,11 +63,15 @@ class Frame(FibexElement, ABC):
             frame_length_value = child.text
             obj.frame_length = frame_length_value
 
-        # Parse pdu_to_frame_refs (list)
+        # Parse pdu_to_frame_refs (list from container "PDU-TO-FRAMES")
         obj.pdu_to_frame_refs = []
-        for child in ARObject._find_all_child_elements(element, "PDU-TO-FRAMES"):
-            pdu_to_frame_refs_value = ARObject._deserialize_by_tag(child, "PduToFrameMapping")
-            obj.pdu_to_frame_refs.append(pdu_to_frame_refs_value)
+        container = ARObject._find_child_element(element, "PDU-TO-FRAMES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.pdu_to_frame_refs.append(child_value)
 
         return obj
 

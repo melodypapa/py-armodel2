@@ -69,21 +69,24 @@ class Collection(ARElement):
         Returns:
             Deserialized Collection object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(Collection, cls).deserialize(element)
 
         # Parse auto_collect_enum
         child = ARObject._find_child_element(element, "AUTO-COLLECT-ENUM")
         if child is not None:
-            auto_collect_enum_value = child.text
+            auto_collect_enum_value = AutoCollectEnum.deserialize(child)
             obj.auto_collect_enum = auto_collect_enum_value
 
-        # Parse collecteds (list)
+        # Parse collecteds (list from container "COLLECTEDS")
         obj.collecteds = []
-        for child in ARObject._find_all_child_elements(element, "COLLECTEDS"):
-            collecteds_value = ARObject._deserialize_by_tag(child, "AtpFeature")
-            obj.collecteds.append(collecteds_value)
+        container = ARObject._find_child_element(element, "COLLECTEDS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.collecteds.append(child_value)
 
         # Parse collection
         child = ARObject._find_child_element(element, "COLLECTION")
@@ -91,29 +94,41 @@ class Collection(ARElement):
             collection_value = child.text
             obj.collection = collection_value
 
-        # Parse elements (list)
+        # Parse elements (list from container "ELEMENTS")
         obj.elements = []
-        for child in ARObject._find_all_child_elements(element, "ELEMENTS"):
-            elements_value = ARObject._deserialize_by_tag(child, "Identifiable")
-            obj.elements.append(elements_value)
+        container = ARObject._find_child_element(element, "ELEMENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.elements.append(child_value)
 
         # Parse element_role
         child = ARObject._find_child_element(element, "ELEMENT-ROLE")
         if child is not None:
-            element_role_value = child.text
+            element_role_value = ARObject._deserialize_by_tag(child, "Identifier")
             obj.element_role = element_role_value
 
-        # Parse source_elements (list)
+        # Parse source_elements (list from container "SOURCE-ELEMENTS")
         obj.source_elements = []
-        for child in ARObject._find_all_child_elements(element, "SOURCE-ELEMENTS"):
-            source_elements_value = ARObject._deserialize_by_tag(child, "Identifiable")
-            obj.source_elements.append(source_elements_value)
+        container = ARObject._find_child_element(element, "SOURCE-ELEMENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.source_elements.append(child_value)
 
-        # Parse source_instances (list)
+        # Parse source_instances (list from container "SOURCE-INSTANCES")
         obj.source_instances = []
-        for child in ARObject._find_all_child_elements(element, "SOURCE-INSTANCES"):
-            source_instances_value = ARObject._deserialize_by_tag(child, "AtpFeature")
-            obj.source_instances.append(source_instances_value)
+        container = ARObject._find_child_element(element, "SOURCE-INSTANCES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.source_instances.append(child_value)
 
         return obj
 

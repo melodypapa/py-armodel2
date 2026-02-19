@@ -61,14 +61,13 @@ class DiagnosticDataElement(Identifiable):
         Returns:
             Deserialized DiagnosticDataElement object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticDataElement, cls).deserialize(element)
 
         # Parse array_size
         child = ARObject._find_child_element(element, "ARRAY-SIZE")
         if child is not None:
-            array_size_value = child.text
+            array_size_value = ArraySizeSemanticsEnum.deserialize(child)
             obj.array_size = array_size_value
 
         # Parse max_number_of

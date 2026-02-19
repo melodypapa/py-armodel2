@@ -55,9 +55,8 @@ class TDEventBswModeDeclaration(TDEventBsw):
         Returns:
             Deserialized TDEventBswModeDeclaration object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TDEventBswModeDeclaration, cls).deserialize(element)
 
         # Parse entry_mode
         child = ARObject._find_child_element(element, "ENTRY-MODE")

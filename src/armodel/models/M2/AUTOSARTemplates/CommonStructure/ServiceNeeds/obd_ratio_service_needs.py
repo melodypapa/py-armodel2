@@ -55,14 +55,13 @@ class ObdRatioServiceNeeds(DiagnosticCapabilityElement):
         Returns:
             Deserialized ObdRatioServiceNeeds object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ObdRatioServiceNeeds, cls).deserialize(element)
 
         # Parse connection_type
         child = ARObject._find_child_element(element, "CONNECTION-TYPE")
         if child is not None:
-            connection_type_value = child.text
+            connection_type_value = ObdRatioConnectionKindEnum.deserialize(child)
             obj.connection_type = connection_type_value
 
         # Parse rate_based_monitored_event

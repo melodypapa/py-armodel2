@@ -70,9 +70,8 @@ class EndToEndTransformationComSpecProps(TransformationComSpecProps):
         Returns:
             Deserialized EndToEndTransformationComSpecProps object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(EndToEndTransformationComSpecProps, cls).deserialize(element)
 
         # Parse clear_from_valid
         child = ARObject._find_child_element(element, "CLEAR-FROM-VALID")

@@ -47,9 +47,8 @@ class EcucReferenceValue(EcucAbstractReferenceValue):
         Returns:
             Deserialized EcucReferenceValue object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(EcucReferenceValue, cls).deserialize(element)
 
         # Parse value_ref
         child = ARObject._find_child_element(element, "VALUE")

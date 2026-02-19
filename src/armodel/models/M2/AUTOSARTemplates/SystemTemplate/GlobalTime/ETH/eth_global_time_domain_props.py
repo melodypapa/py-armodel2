@@ -62,9 +62,8 @@ class EthGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
         Returns:
             Deserialized EthGlobalTimeDomainProps object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(EthGlobalTimeDomainProps, cls).deserialize(element)
 
         # Parse crc_flags
         child = ARObject._find_child_element(element, "CRC-FLAGS")
@@ -84,16 +83,20 @@ class EthGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
             fup_data_id_list_value = child.text
             obj.fup_data_id_list = fup_data_id_list_value
 
-        # Parse manageds (list)
+        # Parse manageds (list from container "MANAGEDS")
         obj.manageds = []
-        for child in ARObject._find_all_child_elements(element, "MANAGEDS"):
-            manageds_value = child.text
-            obj.manageds.append(manageds_value)
+        container = ARObject._find_child_element(element, "MANAGEDS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.manageds.append(child_value)
 
         # Parse message
         child = ARObject._find_child_element(element, "MESSAGE")
         if child is not None:
-            message_value = child.text
+            message_value = EthGlobalTimeMessageFormatEnum.deserialize(child)
             obj.message = message_value
 
         # Parse vlan_priority

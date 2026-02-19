@@ -54,7 +54,7 @@ class ModeSwitchEventTriggeredActivity(ARObject):
         # Parse role
         child = ARObject._find_child_element(element, "ROLE")
         if child is not None:
-            role_value = child.text
+            role_value = ARObject._deserialize_by_tag(child, "Identifier")
             obj.role = role_value
 
         # Parse swc_mode_switch_event

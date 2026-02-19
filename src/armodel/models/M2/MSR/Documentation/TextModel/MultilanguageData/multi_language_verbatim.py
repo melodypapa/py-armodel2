@@ -61,9 +61,8 @@ class MultiLanguageVerbatim(Paginateable):
         Returns:
             Deserialized MultiLanguageVerbatim object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(MultiLanguageVerbatim, cls).deserialize(element)
 
         # Parse allow_break
         child = ARObject._find_child_element(element, "ALLOW-BREAK")
@@ -74,7 +73,7 @@ class MultiLanguageVerbatim(Paginateable):
         # Parse float
         child = ARObject._find_child_element(element, "FLOAT")
         if child is not None:
-            float_value = child.text
+            float_value = FloatEnum.deserialize(child)
             obj.float = float_value
 
         # Parse help_entry
@@ -92,7 +91,7 @@ class MultiLanguageVerbatim(Paginateable):
         # Parse pgwide
         child = ARObject._find_child_element(element, "PGWIDE")
         if child is not None:
-            pgwide_value = child.text
+            pgwide_value = PgwideEnum.deserialize(child)
             obj.pgwide = pgwide_value
 
         return obj

@@ -58,9 +58,8 @@ class ExecutionOrderConstraint(TimingConstraint):
         Returns:
             Deserialized ExecutionOrderConstraint object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ExecutionOrderConstraint, cls).deserialize(element)
 
         # Parse base
         child = ARObject._find_child_element(element, "BASE")
@@ -86,11 +85,15 @@ class ExecutionOrderConstraint(TimingConstraint):
             is_event_value = child.text
             obj.is_event = is_event_value
 
-        # Parse ordered_elements (list)
+        # Parse ordered_elements (list from container "ORDERED-ELEMENTS")
         obj.ordered_elements = []
-        for child in ARObject._find_all_child_elements(element, "ORDERED-ELEMENTS"):
-            ordered_elements_value = child.text
-            obj.ordered_elements.append(ordered_elements_value)
+        container = ARObject._find_child_element(element, "ORDERED-ELEMENTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.ordered_elements.append(child_value)
 
         # Parse permit_multiple
         child = ARObject._find_child_element(element, "PERMIT-MULTIPLE")

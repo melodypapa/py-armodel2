@@ -75,7 +75,7 @@ class EmphasisText(ARObject):
         # Parse font
         child = ARObject._find_child_element(element, "FONT")
         if child is not None:
-            font_value = child.text
+            font_value = EEnumFont.deserialize(child)
             obj.font = font_value
 
         # Parse sub
@@ -99,7 +99,7 @@ class EmphasisText(ARObject):
         # Parse type
         child = ARObject._find_child_element(element, "TYPE")
         if child is not None:
-            type_value = child.text
+            type_value = EEnum.deserialize(child)
             obj.type = type_value
 
         return obj

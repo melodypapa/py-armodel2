@@ -52,9 +52,8 @@ class ClientServerToSignalMapping(DataMapping):
         Returns:
             Deserialized ClientServerToSignalMapping object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ClientServerToSignalMapping, cls).deserialize(element)
 
         # Parse call_signal
         child = ARObject._find_child_element(element, "CALL-SIGNAL")

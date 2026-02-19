@@ -50,14 +50,13 @@ class GlobalTimeCanMaster(GlobalTimeMaster):
         Returns:
             Deserialized GlobalTimeCanMaster object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(GlobalTimeCanMaster, cls).deserialize(element)
 
         # Parse crc_secured
         child = ARObject._find_child_element(element, "CRC-SECURED")
         if child is not None:
-            crc_secured_value = child.text
+            crc_secured_value = GlobalTimeCrcSupportEnum.deserialize(child)
             obj.crc_secured = crc_secured_value
 
         # Parse sync

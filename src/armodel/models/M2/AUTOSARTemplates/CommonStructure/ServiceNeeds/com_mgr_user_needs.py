@@ -46,14 +46,13 @@ class ComMgrUserNeeds(ServiceNeeds):
         Returns:
             Deserialized ComMgrUserNeeds object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ComMgrUserNeeds, cls).deserialize(element)
 
         # Parse max_comm_mode_enum
         child = ARObject._find_child_element(element, "MAX-COMM-MODE-ENUM")
         if child is not None:
-            max_comm_mode_enum_value = child.text
+            max_comm_mode_enum_value = MaxCommModeEnum.deserialize(child)
             obj.max_comm_mode_enum = max_comm_mode_enum_value
 
         return obj

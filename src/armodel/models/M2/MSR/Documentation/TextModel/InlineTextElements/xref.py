@@ -96,55 +96,55 @@ class Xref(ARObject):
         # Parse resolution_policy_enum
         child = ARObject._find_child_element(element, "RESOLUTION-POLICY-ENUM")
         if child is not None:
-            resolution_policy_enum_value = child.text
+            resolution_policy_enum_value = ResolutionPolicyEnum.deserialize(child)
             obj.resolution_policy_enum = resolution_policy_enum_value
 
         # Parse show_content_enum
         child = ARObject._find_child_element(element, "SHOW-CONTENT-ENUM")
         if child is not None:
-            show_content_enum_value = child.text
+            show_content_enum_value = ShowContentEnum.deserialize(child)
             obj.show_content_enum = show_content_enum_value
 
         # Parse show_resource_alias
         child = ARObject._find_child_element(element, "SHOW-RESOURCE-ALIAS")
         if child is not None:
-            show_resource_alias_value = child.text
+            show_resource_alias_value = ShowResourceAliasNameEnum.deserialize(child)
             obj.show_resource_alias = show_resource_alias_value
 
         # Parse show_resource
         child = ARObject._find_child_element(element, "SHOW-RESOURCE")
         if child is not None:
-            show_resource_value = child.text
+            show_resource_value = ShowResourceTypeEnum.deserialize(child)
             obj.show_resource = show_resource_value
 
         # Parse show_resource_long
         child = ARObject._find_child_element(element, "SHOW-RESOURCE-LONG")
         if child is not None:
-            show_resource_long_value = child.text
+            show_resource_long_value = ShowResourceLongNameEnum.deserialize(child)
             obj.show_resource_long = show_resource_long_value
 
         # Parse show_resource_number
         child = ARObject._find_child_element(element, "SHOW-RESOURCE-NUMBER")
         if child is not None:
-            show_resource_number_value = child.text
+            show_resource_number_value = ShowResourceNumberEnum.deserialize(child)
             obj.show_resource_number = show_resource_number_value
 
         # Parse show_resource_page
         child = ARObject._find_child_element(element, "SHOW-RESOURCE-PAGE")
         if child is not None:
-            show_resource_page_value = child.text
+            show_resource_page_value = ShowResourcePageEnum.deserialize(child)
             obj.show_resource_page = show_resource_page_value
 
         # Parse show_resource_short
         child = ARObject._find_child_element(element, "SHOW-RESOURCE-SHORT")
         if child is not None:
-            show_resource_short_value = child.text
+            show_resource_short_value = ShowResourceShortNameEnum.deserialize(child)
             obj.show_resource_short = show_resource_short_value
 
         # Parse show_see
         child = ARObject._find_child_element(element, "SHOW-SEE")
         if child is not None:
-            show_see_value = child.text
+            show_see_value = ShowSeeEnum.deserialize(child)
             obj.show_see = show_see_value
 
         return obj

@@ -48,15 +48,18 @@ class AtpBlueprint(Identifiable, ABC):
         Returns:
             Deserialized AtpBlueprint object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(AtpBlueprint, cls).deserialize(element)
 
-        # Parse blueprint_policies (list)
+        # Parse blueprint_policies (list from container "BLUEPRINT-POLICIES")
         obj.blueprint_policies = []
-        for child in ARObject._find_all_child_elements(element, "BLUEPRINT-POLICIES"):
-            blueprint_policies_value = ARObject._deserialize_by_tag(child, "BlueprintPolicy")
-            obj.blueprint_policies.append(blueprint_policies_value)
+        container = ARObject._find_child_element(element, "BLUEPRINT-POLICIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.blueprint_policies.append(child_value)
 
         return obj
 

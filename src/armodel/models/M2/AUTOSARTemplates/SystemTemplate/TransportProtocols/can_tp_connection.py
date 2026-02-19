@@ -96,14 +96,13 @@ class CanTpConnection(TpConnection):
         Returns:
             Deserialized CanTpConnection object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(CanTpConnection, cls).deserialize(element)
 
         # Parse addressing
         child = ARObject._find_child_element(element, "ADDRESSING")
         if child is not None:
-            addressing_value = child.text
+            addressing_value = CanTpAddressingFormatType.deserialize(child)
             obj.addressing = addressing_value
 
         # Parse cancellation
@@ -148,16 +147,20 @@ class CanTpConnection(TpConnection):
             padding_value = child.text
             obj.padding = padding_value
 
-        # Parse receivers (list)
+        # Parse receivers (list from container "RECEIVERS")
         obj.receivers = []
-        for child in ARObject._find_all_child_elements(element, "RECEIVERS"):
-            receivers_value = ARObject._deserialize_by_tag(child, "CanTpNode")
-            obj.receivers.append(receivers_value)
+        container = ARObject._find_child_element(element, "RECEIVERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.receivers.append(child_value)
 
         # Parse ta_type_type
         child = ARObject._find_child_element(element, "TA-TYPE-TYPE")
         if child is not None:
-            ta_type_type_value = child.text
+            ta_type_type_value = NetworkTargetAddressType.deserialize(child)
             obj.ta_type_type = ta_type_type_value
 
         # Parse timeout_br

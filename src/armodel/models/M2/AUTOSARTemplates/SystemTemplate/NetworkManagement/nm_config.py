@@ -55,27 +55,38 @@ class NmConfig(FibexElement):
         Returns:
             Deserialized NmConfig object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(NmConfig, cls).deserialize(element)
 
-        # Parse nm_clusters (list)
+        # Parse nm_clusters (list from container "NM-CLUSTERS")
         obj.nm_clusters = []
-        for child in ARObject._find_all_child_elements(element, "NM-CLUSTERS"):
-            nm_clusters_value = ARObject._deserialize_by_tag(child, "NmCluster")
-            obj.nm_clusters.append(nm_clusters_value)
+        container = ARObject._find_child_element(element, "NM-CLUSTERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.nm_clusters.append(child_value)
 
-        # Parse nm_cluster_couplings (list)
+        # Parse nm_cluster_couplings (list from container "NM-CLUSTER-COUPLINGS")
         obj.nm_cluster_couplings = []
-        for child in ARObject._find_all_child_elements(element, "NM-CLUSTER-COUPLINGS"):
-            nm_cluster_couplings_value = ARObject._deserialize_by_tag(child, "NmClusterCoupling")
-            obj.nm_cluster_couplings.append(nm_cluster_couplings_value)
+        container = ARObject._find_child_element(element, "NM-CLUSTER-COUPLINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.nm_cluster_couplings.append(child_value)
 
-        # Parse nm_if_ecus (list)
+        # Parse nm_if_ecus (list from container "NM-IF-ECUS")
         obj.nm_if_ecus = []
-        for child in ARObject._find_all_child_elements(element, "NM-IF-ECUS"):
-            nm_if_ecus_value = ARObject._deserialize_by_tag(child, "NmEcu")
-            obj.nm_if_ecus.append(nm_if_ecus_value)
+        container = ARObject._find_child_element(element, "NM-IF-ECUS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.nm_if_ecus.append(child_value)
 
         return obj
 

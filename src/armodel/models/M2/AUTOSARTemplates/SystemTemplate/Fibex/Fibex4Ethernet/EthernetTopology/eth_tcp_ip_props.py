@@ -50,9 +50,8 @@ class EthTcpIpProps(ARElement):
         Returns:
             Deserialized EthTcpIpProps object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(EthTcpIpProps, cls).deserialize(element)
 
         # Parse tcp_props
         child = ARObject._find_child_element(element, "TCP-PROPS")

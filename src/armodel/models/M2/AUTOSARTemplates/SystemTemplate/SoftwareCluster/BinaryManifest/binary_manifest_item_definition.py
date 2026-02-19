@@ -53,15 +53,18 @@ class BinaryManifestItemDefinition(Identifiable):
         Returns:
             Deserialized BinaryManifestItemDefinition object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(BinaryManifestItemDefinition, cls).deserialize(element)
 
-        # Parse auxiliary_fields (list)
+        # Parse auxiliary_fields (list from container "AUXILIARY-FIELDS")
         obj.auxiliary_fields = []
-        for child in ARObject._find_all_child_elements(element, "AUXILIARY-FIELDS"):
-            auxiliary_fields_value = ARObject._deserialize_by_tag(child, "BinaryManifestItem")
-            obj.auxiliary_fields.append(auxiliary_fields_value)
+        container = ARObject._find_child_element(element, "AUXILIARY-FIELDS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.auxiliary_fields.append(child_value)
 
         # Parse is_optional
         child = ARObject._find_child_element(element, "IS-OPTIONAL")

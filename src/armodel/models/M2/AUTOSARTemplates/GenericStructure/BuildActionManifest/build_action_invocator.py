@@ -49,7 +49,7 @@ class BuildActionInvocator(ARObject):
         # Parse command
         child = ARObject._find_child_element(element, "COMMAND")
         if child is not None:
-            command_value = child.text
+            command_value = ARObject._deserialize_by_tag(child, "VerbatimString")
             obj.command = command_value
 
         return obj

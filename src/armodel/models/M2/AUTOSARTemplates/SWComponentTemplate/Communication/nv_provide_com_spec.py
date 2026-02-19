@@ -56,9 +56,8 @@ class NvProvideComSpec(PPortComSpec):
         Returns:
             Deserialized NvProvideComSpec object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(NvProvideComSpec, cls).deserialize(element)
 
         # Parse ram_block_init
         child = ARObject._find_child_element(element, "RAM-BLOCK-INIT")

@@ -42,9 +42,8 @@ class FMFeatureMapCondition(Identifiable):
         Returns:
             Deserialized FMFeatureMapCondition object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(FMFeatureMapCondition, cls).deserialize(element)
 
         # Parse fm_cond_and_attributes
         child = ARObject._find_child_element(element, "FM-COND-AND-ATTRIBUTES")

@@ -50,9 +50,8 @@ class DdsCpTopic(Identifiable):
         Returns:
             Deserialized DdsCpTopic object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DdsCpTopic, cls).deserialize(element)
 
         # Parse dds_partition
         child = ARObject._find_child_element(element, "DDS-PARTITION")

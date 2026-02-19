@@ -75,33 +75,48 @@ class SwComponentType(ARElement, ABC):
         Returns:
             Deserialized SwComponentType object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SwComponentType, cls).deserialize(element)
 
-        # Parse consistency_needses (list)
+        # Parse consistency_needses (list from container "CONSISTENCY-NEEDSES")
         obj.consistency_needses = []
-        for child in ARObject._find_all_child_elements(element, "CONSISTENCY-NEEDSES"):
-            consistency_needses_value = ARObject._deserialize_by_tag(child, "ConsistencyNeeds")
-            obj.consistency_needses.append(consistency_needses_value)
+        container = ARObject._find_child_element(element, "CONSISTENCY-NEEDSES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.consistency_needses.append(child_value)
 
-        # Parse port_refs (list)
+        # Parse port_refs (list from container "PORTS")
         obj.port_refs = []
-        for child in ARObject._find_all_child_elements(element, "PORTS"):
-            port_refs_value = ARObject._deserialize_by_tag(child, "PortPrototype")
-            obj.port_refs.append(port_refs_value)
+        container = ARObject._find_child_element(element, "PORTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.port_refs.append(child_value)
 
-        # Parse port_group_refs (list)
+        # Parse port_group_refs (list from container "PORT-GROUPS")
         obj.port_group_refs = []
-        for child in ARObject._find_all_child_elements(element, "PORT-GROUPS"):
-            port_group_refs_value = ARObject._deserialize_by_tag(child, "PortGroup")
-            obj.port_group_refs.append(port_group_refs_value)
+        container = ARObject._find_child_element(element, "PORT-GROUPS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.port_group_refs.append(child_value)
 
-        # Parse swc_mapping_refs (list)
+        # Parse swc_mapping_refs (list from container "SWC-MAPPINGS")
         obj.swc_mapping_refs = []
-        for child in ARObject._find_all_child_elements(element, "SWC-MAPPINGS"):
-            swc_mapping_refs_value = child.text
-            obj.swc_mapping_refs.append(swc_mapping_refs_value)
+        container = ARObject._find_child_element(element, "SWC-MAPPINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.swc_mapping_refs.append(child_value)
 
         # Parse sw_component_documentation
         child = ARObject._find_child_element(element, "SW-COMPONENT-DOCUMENTATION")
@@ -109,11 +124,15 @@ class SwComponentType(ARElement, ABC):
             sw_component_documentation_value = ARObject._deserialize_by_tag(child, "SwComponentDocumentation")
             obj.sw_component_documentation = sw_component_documentation_value
 
-        # Parse unit_group_refs (list)
+        # Parse unit_group_refs (list from container "UNIT-GROUPS")
         obj.unit_group_refs = []
-        for child in ARObject._find_all_child_elements(element, "UNIT-GROUPS"):
-            unit_group_refs_value = ARObject._deserialize_by_tag(child, "UnitGroup")
-            obj.unit_group_refs.append(unit_group_refs_value)
+        container = ARObject._find_child_element(element, "UNIT-GROUPS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.unit_group_refs.append(child_value)
 
         return obj
 

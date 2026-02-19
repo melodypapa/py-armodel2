@@ -63,14 +63,13 @@ class SwServiceArg(Identifiable):
         Returns:
             Deserialized SwServiceArg object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SwServiceArg, cls).deserialize(element)
 
         # Parse direction
         child = ARObject._find_child_element(element, "DIRECTION")
         if child is not None:
-            direction_value = child.text
+            direction_value = ArgumentDirectionEnum.deserialize(child)
             obj.direction = direction_value
 
         # Parse sw_arraysize_ref

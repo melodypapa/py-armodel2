@@ -64,29 +64,45 @@ class McSupportData(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse emulations (list)
+        # Parse emulations (list from container "EMULATIONS")
         obj.emulations = []
-        for child in ARObject._find_all_child_elements(element, "EMULATIONS"):
-            emulations_value = ARObject._deserialize_by_tag(child, "McSwEmulationMethodSupport")
-            obj.emulations.append(emulations_value)
+        container = ARObject._find_child_element(element, "EMULATIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.emulations.append(child_value)
 
-        # Parse mc_parameters (list)
+        # Parse mc_parameters (list from container "MC-PARAMETERS")
         obj.mc_parameters = []
-        for child in ARObject._find_all_child_elements(element, "MC-PARAMETERS"):
-            mc_parameters_value = ARObject._deserialize_by_tag(child, "McDataInstance")
-            obj.mc_parameters.append(mc_parameters_value)
+        container = ARObject._find_child_element(element, "MC-PARAMETERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.mc_parameters.append(child_value)
 
-        # Parse mc_variables (list)
+        # Parse mc_variables (list from container "MC-VARIABLES")
         obj.mc_variables = []
-        for child in ARObject._find_all_child_elements(element, "MC-VARIABLES"):
-            mc_variables_value = ARObject._deserialize_by_tag(child, "McDataInstance")
-            obj.mc_variables.append(mc_variables_value)
+        container = ARObject._find_child_element(element, "MC-VARIABLES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.mc_variables.append(child_value)
 
-        # Parse measurables (list)
+        # Parse measurables (list from container "MEASURABLES")
         obj.measurables = []
-        for child in ARObject._find_all_child_elements(element, "MEASURABLES"):
-            measurables_value = ARObject._deserialize_by_tag(child, "SwSystemconstantValueSet")
-            obj.measurables.append(measurables_value)
+        container = ARObject._find_child_element(element, "MEASURABLES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.measurables.append(child_value)
 
         # Parse rpt_support_data
         child = ARObject._find_child_element(element, "RPT-SUPPORT-DATA")

@@ -64,7 +64,7 @@ class SwTextProps(ARObject):
         # Parse array_size
         child = ARObject._find_child_element(element, "ARRAY-SIZE")
         if child is not None:
-            array_size_value = child.text
+            array_size_value = ArraySizeSemanticsEnum.deserialize(child)
             obj.array_size = array_size_value
 
         # Parse base_type

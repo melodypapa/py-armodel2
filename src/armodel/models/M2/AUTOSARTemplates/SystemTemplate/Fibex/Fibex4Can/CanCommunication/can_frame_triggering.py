@@ -80,32 +80,35 @@ class CanFrameTriggering(FrameTriggering):
         Returns:
             Deserialized CanFrameTriggering object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(CanFrameTriggering, cls).deserialize(element)
 
-        # Parse absolutelies (list)
+        # Parse absolutelies (list from container "ABSOLUTELIES")
         obj.absolutelies = []
-        for child in ARObject._find_all_child_elements(element, "ABSOLUTELIES"):
-            absolutelies_value = ARObject._deserialize_by_tag(child, "TtcanAbsolutelyScheduledTiming")
-            obj.absolutelies.append(absolutelies_value)
+        container = ARObject._find_child_element(element, "ABSOLUTELIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.absolutelies.append(child_value)
 
         # Parse can_addressing
         child = ARObject._find_child_element(element, "CAN-ADDRESSING")
         if child is not None:
-            can_addressing_value = child.text
+            can_addressing_value = CanAddressingModeType.deserialize(child)
             obj.can_addressing = can_addressing_value
 
         # Parse can_frame_rx_behavior
         child = ARObject._find_child_element(element, "CAN-FRAME-RX-BEHAVIOR")
         if child is not None:
-            can_frame_rx_behavior_value = child.text
+            can_frame_rx_behavior_value = CanFrameRxBehaviorEnum.deserialize(child)
             obj.can_frame_rx_behavior = can_frame_rx_behavior_value
 
         # Parse can_frame_tx_behavior
         child = ARObject._find_child_element(element, "CAN-FRAME-TX-BEHAVIOR")
         if child is not None:
-            can_frame_tx_behavior_value = child.text
+            can_frame_tx_behavior_value = CanFrameTxBehaviorEnum.deserialize(child)
             obj.can_frame_tx_behavior = can_frame_tx_behavior_value
 
         # Parse can_xl_frame_ref

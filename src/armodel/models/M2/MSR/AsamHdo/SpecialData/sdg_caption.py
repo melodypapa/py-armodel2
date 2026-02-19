@@ -45,9 +45,8 @@ class SdgCaption(MultilanguageReferrable):
         Returns:
             Deserialized SdgCaption object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(SdgCaption, cls).deserialize(element)
 
         # Parse desc
         child = ARObject._find_child_element(element, "DESC")

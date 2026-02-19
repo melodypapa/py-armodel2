@@ -50,9 +50,8 @@ class CpSwClusterResourceToDiagDataElemMapping(DiagnosticMapping):
         Returns:
             Deserialized CpSwClusterResourceToDiagDataElemMapping object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(CpSwClusterResourceToDiagDataElemMapping, cls).deserialize(element)
 
         # Parse cp_software_cluster
         child = ARObject._find_child_element(element, "CP-SOFTWARE-CLUSTER")

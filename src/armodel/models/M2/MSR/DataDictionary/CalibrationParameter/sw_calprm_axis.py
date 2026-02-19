@@ -69,7 +69,7 @@ class SwCalprmAxis(ARObject):
         # Parse category
         child = ARObject._find_child_element(element, "CATEGORY")
         if child is not None:
-            category_value = child.text
+            category_value = CalprmAxisCategoryEnum.deserialize(child)
             obj.category = category_value
 
         # Parse display_format_string
@@ -87,7 +87,7 @@ class SwCalprmAxis(ARObject):
         # Parse sw_calibration_access
         child = ARObject._find_child_element(element, "SW-CALIBRATION-ACCESS")
         if child is not None:
-            sw_calibration_access_value = child.text
+            sw_calibration_access_value = SwCalibrationAccessEnum.deserialize(child)
             obj.sw_calibration_access = sw_calibration_access_value
 
         # Parse sw_calprm_axis

@@ -96,9 +96,8 @@ class NvBlockNeeds(ServiceNeeds):
         Returns:
             Deserialized NvBlockNeeds object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(NvBlockNeeds, cls).deserialize(element)
 
         # Parse calc_ram_block
         child = ARObject._find_child_element(element, "CALC-RAM-BLOCK")
@@ -133,7 +132,7 @@ class NvBlockNeeds(ServiceNeeds):
         # Parse ram_block_status_control
         child = ARObject._find_child_element(element, "RAM-BLOCK-STATUS-CONTROL")
         if child is not None:
-            ram_block_status_control_value = child.text
+            ram_block_status_control_value = RamBlockStatusControlEnum.deserialize(child)
             obj.ram_block_status_control = ram_block_status_control_value
 
         # Parse readonly
@@ -229,7 +228,7 @@ class NvBlockNeeds(ServiceNeeds):
         # Parse writing_priority
         child = ARObject._find_child_element(element, "WRITING-PRIORITY")
         if child is not None:
-            writing_priority_value = child.text
+            writing_priority_value = NvBlockNeedsWritingPriorityEnum.deserialize(child)
             obj.writing_priority = writing_priority_value
 
         return obj

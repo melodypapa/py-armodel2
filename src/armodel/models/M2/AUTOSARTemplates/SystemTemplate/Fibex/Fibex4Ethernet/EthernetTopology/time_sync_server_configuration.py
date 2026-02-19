@@ -56,9 +56,8 @@ class TimeSyncServerConfiguration(Referrable):
         Returns:
             Deserialized TimeSyncServerConfiguration object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TimeSyncServerConfiguration, cls).deserialize(element)
 
         # Parse priority
         child = ARObject._find_child_element(element, "PRIORITY")
@@ -81,7 +80,7 @@ class TimeSyncServerConfiguration(Referrable):
         # Parse time_sync
         child = ARObject._find_child_element(element, "TIME-SYNC")
         if child is not None:
-            time_sync_value = child.text
+            time_sync_value = TimeSyncTechnologyEnum.deserialize(child)
             obj.time_sync = time_sync_value
 
         return obj

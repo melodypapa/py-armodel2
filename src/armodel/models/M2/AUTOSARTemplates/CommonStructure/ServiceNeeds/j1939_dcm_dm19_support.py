@@ -40,11 +40,8 @@ class J1939DcmDm19Support(ServiceNeeds):
         Returns:
             Deserialized J1939DcmDm19Support object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
-
-        return obj
+        # Delegate to parent class to handle inherited attributes
+        return super(J1939DcmDm19Support, cls).deserialize(element)
 
 
 

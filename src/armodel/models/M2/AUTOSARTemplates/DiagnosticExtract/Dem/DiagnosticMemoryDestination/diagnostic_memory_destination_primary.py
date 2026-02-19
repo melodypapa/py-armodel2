@@ -45,14 +45,13 @@ class DiagnosticMemoryDestinationPrimary(DiagnosticMemoryDestination):
         Returns:
             Deserialized DiagnosticMemoryDestinationPrimary object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticMemoryDestinationPrimary, cls).deserialize(element)
 
         # Parse type_of_dtc
         child = ARObject._find_child_element(element, "TYPE-OF-DTC")
         if child is not None:
-            type_of_dtc_value = child.text
+            type_of_dtc_value = DiagnosticTypeOfDtcSupportedEnum.deserialize(child)
             obj.type_of_dtc = type_of_dtc_value
 
         return obj

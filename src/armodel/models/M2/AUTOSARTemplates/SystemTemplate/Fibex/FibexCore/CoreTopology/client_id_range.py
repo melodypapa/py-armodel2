@@ -51,13 +51,13 @@ class ClientIdRange(ARObject):
         # Parse lower_limit
         child = ARObject._find_child_element(element, "LOWER-LIMIT")
         if child is not None:
-            lower_limit_value = child.text
+            lower_limit_value = ARObject._deserialize_by_tag(child, "Limit")
             obj.lower_limit = lower_limit_value
 
         # Parse upper_limit
         child = ARObject._find_child_element(element, "UPPER-LIMIT")
         if child is not None:
-            upper_limit_value = child.text
+            upper_limit_value = ARObject._deserialize_by_tag(child, "Limit")
             obj.upper_limit = upper_limit_value
 
         return obj

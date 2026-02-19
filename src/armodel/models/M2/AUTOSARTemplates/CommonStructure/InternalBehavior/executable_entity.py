@@ -73,27 +73,38 @@ class ExecutableEntity(Identifiable, ABC):
         Returns:
             Deserialized ExecutableEntity object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ExecutableEntity, cls).deserialize(element)
 
-        # Parse activations (list)
+        # Parse activations (list from container "ACTIVATIONS")
         obj.activations = []
-        for child in ARObject._find_all_child_elements(element, "ACTIVATIONS"):
-            activations_value = ARObject._deserialize_by_tag(child, "ExecutableEntity")
-            obj.activations.append(activations_value)
+        container = ARObject._find_child_element(element, "ACTIVATIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.activations.append(child_value)
 
-        # Parse can_enters (list)
+        # Parse can_enters (list from container "CAN-ENTERS")
         obj.can_enters = []
-        for child in ARObject._find_all_child_elements(element, "CAN-ENTERS"):
-            can_enters_value = ARObject._deserialize_by_tag(child, "ExclusiveArea")
-            obj.can_enters.append(can_enters_value)
+        container = ARObject._find_child_element(element, "CAN-ENTERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.can_enters.append(child_value)
 
-        # Parse exclusive_area_nestings (list)
+        # Parse exclusive_area_nestings (list from container "EXCLUSIVE-AREA-NESTINGS")
         obj.exclusive_area_nestings = []
-        for child in ARObject._find_all_child_elements(element, "EXCLUSIVE-AREA-NESTINGS"):
-            exclusive_area_nestings_value = ARObject._deserialize_by_tag(child, "ExclusiveAreaNestingOrder")
-            obj.exclusive_area_nestings.append(exclusive_area_nestings_value)
+        container = ARObject._find_child_element(element, "EXCLUSIVE-AREA-NESTINGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.exclusive_area_nestings.append(child_value)
 
         # Parse minimum_start
         child = ARObject._find_child_element(element, "MINIMUM-START")
@@ -104,14 +115,18 @@ class ExecutableEntity(Identifiable, ABC):
         # Parse reentrancy_level_enum
         child = ARObject._find_child_element(element, "REENTRANCY-LEVEL-ENUM")
         if child is not None:
-            reentrancy_level_enum_value = child.text
+            reentrancy_level_enum_value = ReentrancyLevelEnum.deserialize(child)
             obj.reentrancy_level_enum = reentrancy_level_enum_value
 
-        # Parse runs_insides (list)
+        # Parse runs_insides (list from container "RUNS-INSIDES")
         obj.runs_insides = []
-        for child in ARObject._find_all_child_elements(element, "RUNS-INSIDES"):
-            runs_insides_value = ARObject._deserialize_by_tag(child, "ExclusiveArea")
-            obj.runs_insides.append(runs_insides_value)
+        container = ARObject._find_child_element(element, "RUNS-INSIDES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.runs_insides.append(child_value)
 
         # Parse sw_addr_method
         child = ARObject._find_child_element(element, "SW-ADDR-METHOD")

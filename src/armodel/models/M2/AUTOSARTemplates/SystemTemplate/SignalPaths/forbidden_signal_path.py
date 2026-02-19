@@ -52,27 +52,38 @@ class ForbiddenSignalPath(SignalPathConstraint):
         Returns:
             Deserialized ForbiddenSignalPath object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ForbiddenSignalPath, cls).deserialize(element)
 
-        # Parse operations (list)
+        # Parse operations (list from container "OPERATIONS")
         obj.operations = []
-        for child in ARObject._find_all_child_elements(element, "OPERATIONS"):
-            operations_value = child.text
-            obj.operations.append(operations_value)
+        container = ARObject._find_child_element(element, "OPERATIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.operations.append(child_value)
 
-        # Parse physical_channels (list)
+        # Parse physical_channels (list from container "PHYSICAL-CHANNELS")
         obj.physical_channels = []
-        for child in ARObject._find_all_child_elements(element, "PHYSICAL-CHANNELS"):
-            physical_channels_value = ARObject._deserialize_by_tag(child, "PhysicalChannel")
-            obj.physical_channels.append(physical_channels_value)
+        container = ARObject._find_child_element(element, "PHYSICAL-CHANNELS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.physical_channels.append(child_value)
 
-        # Parse signals (list)
+        # Parse signals (list from container "SIGNALS")
         obj.signals = []
-        for child in ARObject._find_all_child_elements(element, "SIGNALS"):
-            signals_value = ARObject._deserialize_by_tag(child, "SwcToSwcSignal")
-            obj.signals.append(signals_value)
+        container = ARObject._find_child_element(element, "SIGNALS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.signals.append(child_value)
 
         return obj
 

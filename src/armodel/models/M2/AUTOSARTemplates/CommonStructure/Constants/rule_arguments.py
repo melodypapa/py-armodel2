@@ -72,7 +72,7 @@ class RuleArguments(ARObject):
         # Parse vt
         child = ARObject._find_child_element(element, "VT")
         if child is not None:
-            vt_value = child.text
+            vt_value = ARObject._deserialize_by_tag(child, "VerbatimString")
             obj.vt = vt_value
 
         # Parse vtf

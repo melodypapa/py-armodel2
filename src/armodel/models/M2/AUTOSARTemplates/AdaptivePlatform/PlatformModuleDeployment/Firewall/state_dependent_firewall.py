@@ -52,9 +52,8 @@ class StateDependentFirewall(ARElement):
         Returns:
             Deserialized StateDependentFirewall object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(StateDependentFirewall, cls).deserialize(element)
 
         # Parse default_action
         child = ARObject._find_child_element(element, "DEFAULT-ACTION")
@@ -62,17 +61,25 @@ class StateDependentFirewall(ARElement):
             default_action_value = child.text
             obj.default_action = default_action_value
 
-        # Parse firewall_rule_propses (list)
+        # Parse firewall_rule_propses (list from container "FIREWALL-RULE-PROPSES")
         obj.firewall_rule_propses = []
-        for child in ARObject._find_all_child_elements(element, "FIREWALL-RULE-PROPSES"):
-            firewall_rule_propses_value = ARObject._deserialize_by_tag(child, "FirewallRuleProps")
-            obj.firewall_rule_propses.append(firewall_rule_propses_value)
+        container = ARObject._find_child_element(element, "FIREWALL-RULE-PROPSES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.firewall_rule_propses.append(child_value)
 
-        # Parse firewall_states (list)
+        # Parse firewall_states (list from container "FIREWALL-STATES")
         obj.firewall_states = []
-        for child in ARObject._find_all_child_elements(element, "FIREWALL-STATES"):
-            firewall_states_value = ARObject._deserialize_by_tag(child, "ModeDeclaration")
-            obj.firewall_states.append(firewall_states_value)
+        container = ARObject._find_child_element(element, "FIREWALL-STATES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.firewall_states.append(child_value)
 
         return obj
 

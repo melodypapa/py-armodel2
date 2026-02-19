@@ -47,9 +47,8 @@ class AnalyzedExecutionTime(ExecutionTime):
         Returns:
             Deserialized AnalyzedExecutionTime object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(AnalyzedExecutionTime, cls).deserialize(element)
 
         # Parse best_case
         child = ARObject._find_child_element(element, "BEST-CASE")

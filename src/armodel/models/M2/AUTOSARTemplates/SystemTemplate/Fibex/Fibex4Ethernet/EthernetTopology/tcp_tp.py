@@ -62,9 +62,8 @@ class TcpTp(TcpUdpConfig):
         Returns:
             Deserialized TcpTp object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TcpTp, cls).deserialize(element)
 
         # Parse keep_alive
         child = ARObject._find_child_element(element, "KEEP-ALIVE")

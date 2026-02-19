@@ -54,7 +54,7 @@ class IndentSample(ARObject):
         # Parse item_label_pos_enum
         child = ARObject._find_child_element(element, "ITEM-LABEL-POS-ENUM")
         if child is not None:
-            item_label_pos_enum_value = child.text
+            item_label_pos_enum_value = ItemLabelPosEnum.deserialize(child)
             obj.item_label_pos_enum = item_label_pos_enum_value
 
         # Parse l2

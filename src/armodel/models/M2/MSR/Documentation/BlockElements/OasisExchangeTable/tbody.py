@@ -49,7 +49,7 @@ class Tbody(ARObject):
         # Parse valign
         child = ARObject._find_child_element(element, "VALIGN")
         if child is not None:
-            valign_value = child.text
+            valign_value = ValignEnum.deserialize(child)
             obj.valign = valign_value
 
         return obj

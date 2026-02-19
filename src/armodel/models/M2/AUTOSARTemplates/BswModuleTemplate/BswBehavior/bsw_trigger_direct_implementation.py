@@ -57,7 +57,7 @@ class BswTriggerDirectImplementation(ARObject):
         # Parse cat2_isr
         child = ARObject._find_child_element(element, "CAT2-ISR")
         if child is not None:
-            cat2_isr_value = child.text
+            cat2_isr_value = ARObject._deserialize_by_tag(child, "Identifier")
             obj.cat2_isr = cat2_isr_value
 
         # Parse mastered_trigger_ref
@@ -69,7 +69,7 @@ class BswTriggerDirectImplementation(ARObject):
         # Parse task
         child = ARObject._find_child_element(element, "TASK")
         if child is not None:
-            task_value = child.text
+            task_value = ARObject._deserialize_by_tag(child, "Identifier")
             obj.task = task_value
 
         return obj

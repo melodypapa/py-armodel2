@@ -50,9 +50,8 @@ class DiagnosticDemProvidedDataMapping(DiagnosticMapping):
         Returns:
             Deserialized DiagnosticDemProvidedDataMapping object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticDemProvidedDataMapping, cls).deserialize(element)
 
         # Parse data_element
         child = ARObject._find_child_element(element, "DATA-ELEMENT")

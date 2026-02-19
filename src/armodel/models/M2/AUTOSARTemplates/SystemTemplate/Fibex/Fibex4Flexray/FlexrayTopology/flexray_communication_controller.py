@@ -164,11 +164,15 @@ class FlexrayCommunicationController(ARObject):
             fall_back_internal_value = child.text
             obj.fall_back_internal = fall_back_internal_value
 
-        # Parse flexray_fifos (list)
+        # Parse flexray_fifos (list from container "FLEXRAY-FIFOS")
         obj.flexray_fifos = []
-        for child in ARObject._find_all_child_elements(element, "FLEXRAY-FIFOS"):
-            flexray_fifos_value = child.text
-            obj.flexray_fifos.append(flexray_fifos_value)
+        container = ARObject._find_child_element(element, "FLEXRAY-FIFOS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.flexray_fifos.append(child_value)
 
         # Parse key_slot_id
         child = ARObject._find_child_element(element, "KEY-SLOT-ID")

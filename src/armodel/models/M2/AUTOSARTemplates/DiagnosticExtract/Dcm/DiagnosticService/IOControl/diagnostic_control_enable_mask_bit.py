@@ -57,11 +57,15 @@ class DiagnosticControlEnableMaskBit(ARObject):
             bit_number_value = child.text
             obj.bit_number = bit_number_value
 
-        # Parse controlled_datas (list)
+        # Parse controlled_datas (list from container "CONTROLLED-DATAS")
         obj.controlled_datas = []
-        for child in ARObject._find_all_child_elements(element, "CONTROLLED-DATAS"):
-            controlled_datas_value = ARObject._deserialize_by_tag(child, "DiagnosticDataElement")
-            obj.controlled_datas.append(controlled_datas_value)
+        container = ARObject._find_child_element(element, "CONTROLLED-DATAS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.controlled_datas.append(child_value)
 
         return obj
 

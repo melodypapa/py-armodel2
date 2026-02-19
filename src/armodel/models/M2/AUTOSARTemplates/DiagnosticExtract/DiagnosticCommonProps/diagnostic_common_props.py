@@ -83,16 +83,20 @@ class DiagnosticCommonProps(ARObject):
             authentication_value = child.text
             obj.authentication = authentication_value
 
-        # Parse debounces (list)
+        # Parse debounces (list from container "DEBOUNCES")
         obj.debounces = []
-        for child in ARObject._find_all_child_elements(element, "DEBOUNCES"):
-            debounces_value = child.text
-            obj.debounces.append(debounces_value)
+        container = ARObject._find_child_element(element, "DEBOUNCES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.debounces.append(child_value)
 
         # Parse default
         child = ARObject._find_child_element(element, "DEFAULT")
         if child is not None:
-            default_value = child.text
+            default_value = ByteOrderEnum.deserialize(child)
             obj.default = default_value
 
         # Parse event
@@ -110,7 +114,7 @@ class DiagnosticCommonProps(ARObject):
         # Parse occurrence
         child = ARObject._find_child_element(element, "OCCURRENCE")
         if child is not None:
-            occurrence_value = child.text
+            occurrence_value = DiagnosticOccurrenceCounterProcessingEnum.deserialize(child)
             obj.occurrence = occurrence_value
 
         # Parse reset_confirmed

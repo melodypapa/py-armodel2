@@ -57,9 +57,8 @@ class DiagnosticAccessPermission(DiagnosticCommonElement):
         Returns:
             Deserialized DiagnosticAccessPermission object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DiagnosticAccessPermission, cls).deserialize(element)
 
         # Parse authentication
         child = ARObject._find_child_element(element, "AUTHENTICATION")
@@ -67,11 +66,15 @@ class DiagnosticAccessPermission(DiagnosticCommonElement):
             authentication_value = ARObject._deserialize_by_tag(child, "DiagnosticAuthRole")
             obj.authentication = authentication_value
 
-        # Parse diagnostic_sessions (list)
+        # Parse diagnostic_sessions (list from container "DIAGNOSTIC-SESSIONS")
         obj.diagnostic_sessions = []
-        for child in ARObject._find_all_child_elements(element, "DIAGNOSTIC-SESSIONS"):
-            diagnostic_sessions_value = ARObject._deserialize_by_tag(child, "DiagnosticSession")
-            obj.diagnostic_sessions.append(diagnostic_sessions_value)
+        container = ARObject._find_child_element(element, "DIAGNOSTIC-SESSIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.diagnostic_sessions.append(child_value)
 
         # Parse environmental
         child = ARObject._find_child_element(element, "ENVIRONMENTAL")
@@ -79,11 +82,15 @@ class DiagnosticAccessPermission(DiagnosticCommonElement):
             environmental_value = child.text
             obj.environmental = environmental_value
 
-        # Parse security_levels (list)
+        # Parse security_levels (list from container "SECURITY-LEVELS")
         obj.security_levels = []
-        for child in ARObject._find_all_child_elements(element, "SECURITY-LEVELS"):
-            security_levels_value = ARObject._deserialize_by_tag(child, "DiagnosticSecurityLevel")
-            obj.security_levels.append(security_levels_value)
+        container = ARObject._find_child_element(element, "SECURITY-LEVELS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.security_levels.append(child_value)
 
         return obj
 

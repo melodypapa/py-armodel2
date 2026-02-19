@@ -82,9 +82,8 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
         Returns:
             Deserialized IoHwAbstractionServerAnnotation object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(IoHwAbstractionServerAnnotation, cls).deserialize(element)
 
         # Parse age
         child = ARObject._find_child_element(element, "AGE")
@@ -119,13 +118,13 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
         # Parse filtering
         child = ARObject._find_child_element(element, "FILTERING")
         if child is not None:
-            filtering_value = child.text
+            filtering_value = FilterDebouncingEnum.deserialize(child)
             obj.filtering = filtering_value
 
         # Parse pulse_test
         child = ARObject._find_child_element(element, "PULSE-TEST")
         if child is not None:
-            pulse_test_value = child.text
+            pulse_test_value = PulseTestEnum.deserialize(child)
             obj.pulse_test = pulse_test_value
 
         # Parse trigger_ref

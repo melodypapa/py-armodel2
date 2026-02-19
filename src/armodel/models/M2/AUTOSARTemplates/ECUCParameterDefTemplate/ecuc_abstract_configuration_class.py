@@ -52,7 +52,7 @@ class EcucAbstractConfigurationClass(ARObject, ABC):
         # Parse config_class
         child = ARObject._find_child_element(element, "CONFIG-CLASS")
         if child is not None:
-            config_class_value = child.text
+            config_class_value = EcucConfigurationClassEnum.deserialize(child)
             obj.config_class = config_class_value
 
         # Parse config_variant

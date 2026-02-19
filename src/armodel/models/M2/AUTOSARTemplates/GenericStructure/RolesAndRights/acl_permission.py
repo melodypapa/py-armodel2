@@ -67,38 +67,53 @@ class AclPermission(ARElement):
         Returns:
             Deserialized AclPermission object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(AclPermission, cls).deserialize(element)
 
-        # Parse acl_contexts (list)
+        # Parse acl_contexts (list from container "ACL-CONTEXTS")
         obj.acl_contexts = []
-        for child in ARObject._find_all_child_elements(element, "ACL-CONTEXTS"):
-            acl_contexts_value = child.text
-            obj.acl_contexts.append(acl_contexts_value)
+        container = ARObject._find_child_element(element, "ACL-CONTEXTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.acl_contexts.append(child_value)
 
-        # Parse acl_object_set_refs (list)
+        # Parse acl_object_set_refs (list from container "ACL-OBJECT-SETS")
         obj.acl_object_set_refs = []
-        for child in ARObject._find_all_child_elements(element, "ACL-OBJECT-SETS"):
-            acl_object_set_refs_value = ARObject._deserialize_by_tag(child, "AclObjectSet")
-            obj.acl_object_set_refs.append(acl_object_set_refs_value)
+        container = ARObject._find_child_element(element, "ACL-OBJECT-SETS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.acl_object_set_refs.append(child_value)
 
-        # Parse acl_operations (list)
+        # Parse acl_operations (list from container "ACL-OPERATIONS")
         obj.acl_operations = []
-        for child in ARObject._find_all_child_elements(element, "ACL-OPERATIONS"):
-            acl_operations_value = ARObject._deserialize_by_tag(child, "AclOperation")
-            obj.acl_operations.append(acl_operations_value)
+        container = ARObject._find_child_element(element, "ACL-OPERATIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.acl_operations.append(child_value)
 
-        # Parse acl_roles (list)
+        # Parse acl_roles (list from container "ACL-ROLES")
         obj.acl_roles = []
-        for child in ARObject._find_all_child_elements(element, "ACL-ROLES"):
-            acl_roles_value = ARObject._deserialize_by_tag(child, "AclRole")
-            obj.acl_roles.append(acl_roles_value)
+        container = ARObject._find_child_element(element, "ACL-ROLES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.acl_roles.append(child_value)
 
         # Parse acl_scope
         child = ARObject._find_child_element(element, "ACL-SCOPE")
         if child is not None:
-            acl_scope_value = child.text
+            acl_scope_value = AclScopeEnum.deserialize(child)
             obj.acl_scope = acl_scope_value
 
         return obj

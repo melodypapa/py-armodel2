@@ -58,9 +58,8 @@ class Note(Paginateable):
         Returns:
             Deserialized Note object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(Note, cls).deserialize(element)
 
         # Parse label
         child = ARObject._find_child_element(element, "LABEL")
@@ -77,7 +76,7 @@ class Note(Paginateable):
         # Parse note_type
         child = ARObject._find_child_element(element, "NOTE-TYPE")
         if child is not None:
-            note_type_value = child.text
+            note_type_value = NoteTypeEnum.deserialize(child)
             obj.note_type = note_type_value
 
         return obj

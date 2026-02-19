@@ -74,7 +74,7 @@ class EthGlobalTimeManagedCouplingPort(ARObject):
         # Parse global_time_port_role
         child = ARObject._find_child_element(element, "GLOBAL-TIME-PORT-ROLE")
         if child is not None:
-            global_time_port_role_value = child.text
+            global_time_port_role_value = GlobalTimePortRoleEnum.deserialize(child)
             obj.global_time_port_role = global_time_port_role_value
 
         # Parse global_time_tx_period

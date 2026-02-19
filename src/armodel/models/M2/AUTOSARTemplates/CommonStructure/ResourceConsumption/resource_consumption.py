@@ -73,45 +73,68 @@ class ResourceConsumption(Identifiable):
         Returns:
             Deserialized ResourceConsumption object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ResourceConsumption, cls).deserialize(element)
 
-        # Parse access_count_set_refs (list)
+        # Parse access_count_set_refs (list from container "ACCESS-COUNT-SETS")
         obj.access_count_set_refs = []
-        for child in ARObject._find_all_child_elements(element, "ACCESS-COUNT-SETS"):
-            access_count_set_refs_value = ARObject._deserialize_by_tag(child, "AccessCountSet")
-            obj.access_count_set_refs.append(access_count_set_refs_value)
+        container = ARObject._find_child_element(element, "ACCESS-COUNT-SETS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.access_count_set_refs.append(child_value)
 
-        # Parse execution_times (list)
+        # Parse execution_times (list from container "EXECUTION-TIMES")
         obj.execution_times = []
-        for child in ARObject._find_all_child_elements(element, "EXECUTION-TIMES"):
-            execution_times_value = ARObject._deserialize_by_tag(child, "ExecutionTime")
-            obj.execution_times.append(execution_times_value)
+        container = ARObject._find_child_element(element, "EXECUTION-TIMES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.execution_times.append(child_value)
 
-        # Parse heap_usages (list)
+        # Parse heap_usages (list from container "HEAP-USAGES")
         obj.heap_usages = []
-        for child in ARObject._find_all_child_elements(element, "HEAP-USAGES"):
-            heap_usages_value = ARObject._deserialize_by_tag(child, "HeapUsage")
-            obj.heap_usages.append(heap_usages_value)
+        container = ARObject._find_child_element(element, "HEAP-USAGES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.heap_usages.append(child_value)
 
-        # Parse memory_sections (list)
+        # Parse memory_sections (list from container "MEMORY-SECTIONS")
         obj.memory_sections = []
-        for child in ARObject._find_all_child_elements(element, "MEMORY-SECTIONS"):
-            memory_sections_value = ARObject._deserialize_by_tag(child, "MemorySection")
-            obj.memory_sections.append(memory_sections_value)
+        container = ARObject._find_child_element(element, "MEMORY-SECTIONS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.memory_sections.append(child_value)
 
-        # Parse section_name_prefixes (list)
+        # Parse section_name_prefixes (list from container "SECTION-NAME-PREFIXES")
         obj.section_name_prefixes = []
-        for child in ARObject._find_all_child_elements(element, "SECTION-NAME-PREFIXES"):
-            section_name_prefixes_value = ARObject._deserialize_by_tag(child, "SectionNamePrefix")
-            obj.section_name_prefixes.append(section_name_prefixes_value)
+        container = ARObject._find_child_element(element, "SECTION-NAME-PREFIXES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.section_name_prefixes.append(child_value)
 
-        # Parse stack_usages (list)
+        # Parse stack_usages (list from container "STACK-USAGES")
         obj.stack_usages = []
-        for child in ARObject._find_all_child_elements(element, "STACK-USAGES"):
-            stack_usages_value = ARObject._deserialize_by_tag(child, "StackUsage")
-            obj.stack_usages.append(stack_usages_value)
+        container = ARObject._find_child_element(element, "STACK-USAGES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.stack_usages.append(child_value)
 
         return obj
 

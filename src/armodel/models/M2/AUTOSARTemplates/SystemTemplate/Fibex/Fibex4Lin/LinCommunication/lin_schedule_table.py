@@ -53,27 +53,30 @@ class LinScheduleTable(Identifiable):
         Returns:
             Deserialized LinScheduleTable object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(LinScheduleTable, cls).deserialize(element)
 
         # Parse resume_position
         child = ARObject._find_child_element(element, "RESUME-POSITION")
         if child is not None:
-            resume_position_value = child.text
+            resume_position_value = ResumePosition.deserialize(child)
             obj.resume_position = resume_position_value
 
         # Parse run_mode
         child = ARObject._find_child_element(element, "RUN-MODE")
         if child is not None:
-            run_mode_value = child.text
+            run_mode_value = RunMode.deserialize(child)
             obj.run_mode = run_mode_value
 
-        # Parse table_entries (list)
+        # Parse table_entries (list from container "TABLE-ENTRIES")
         obj.table_entries = []
-        for child in ARObject._find_all_child_elements(element, "TABLE-ENTRIES"):
-            table_entries_value = ARObject._deserialize_by_tag(child, "ScheduleTableEntry")
-            obj.table_entries.append(table_entries_value)
+        container = ARObject._find_child_element(element, "TABLE-ENTRIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.table_entries.append(child_value)
 
         return obj
 

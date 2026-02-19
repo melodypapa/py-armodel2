@@ -68,11 +68,15 @@ class AtpInstanceRef(ARObject, ABC):
             atp_base_value = ARObject._deserialize_by_tag(child, "AtpClassifier")
             obj.atp_base = atp_base_value
 
-        # Parse atp_context_refs (list)
+        # Parse atp_context_refs (list from container "ATP-CONTEXTS")
         obj.atp_context_refs = []
-        for child in ARObject._find_all_child_elements(element, "ATP-CONTEXTS"):
-            atp_context_refs_value = ARObject._deserialize_by_tag(child, "AtpPrototype")
-            obj.atp_context_refs.append(atp_context_refs_value)
+        container = ARObject._find_child_element(element, "ATP-CONTEXTS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.atp_context_refs.append(child_value)
 
         # Parse atp_target
         child = ARObject._find_child_element(element, "ATP-TARGET")

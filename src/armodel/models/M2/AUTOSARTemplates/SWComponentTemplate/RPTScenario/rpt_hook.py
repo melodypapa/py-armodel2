@@ -62,7 +62,7 @@ class RptHook(ARObject):
         # Parse code_label
         child = ARObject._find_child_element(element, "CODE-LABEL")
         if child is not None:
-            code_label_value = child.text
+            code_label_value = ARObject._deserialize_by_tag(child, "CIdentifier")
             obj.code_label = code_label_value
 
         # Parse mcd_identifier
@@ -77,11 +77,15 @@ class RptHook(ARObject):
             rpt_ar_hook_value = ARObject._deserialize_by_tag(child, "AtpFeature")
             obj.rpt_ar_hook = rpt_ar_hook_value
 
-        # Parse sdgs (list)
+        # Parse sdgs (list from container "SDGS")
         obj.sdgs = []
-        for child in ARObject._find_all_child_elements(element, "SDGS"):
-            sdgs_value = ARObject._deserialize_by_tag(child, "Sdg")
-            obj.sdgs.append(sdgs_value)
+        container = ARObject._find_child_element(element, "SDGS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.sdgs.append(child_value)
 
         return obj
 
