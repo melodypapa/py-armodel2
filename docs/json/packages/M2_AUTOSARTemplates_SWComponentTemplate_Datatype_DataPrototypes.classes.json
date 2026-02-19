@@ -336,7 +336,7 @@
           "is_ref": false,
           "note": "The way how the size of the array is handled."
         },
-        "arraySize": {
+        "arraySizeSemantics": {
           "type": "ArraySizeSemanticsEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -350,7 +350,7 @@
           "is_ref": false,
           "note": "This reference can be taken to assign a CompuMethod of TEXTTABLE to the array. The texttable entries textual value to an index number such that with that index number is represented by a"
         },
-        "maxNumberOf": {
+        "maxNumberOfElements": {
           "type": "PositiveInteger",
           "multiplicity": "0..1",
           "kind": "attribute",

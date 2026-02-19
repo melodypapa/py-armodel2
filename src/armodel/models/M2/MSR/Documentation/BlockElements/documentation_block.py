@@ -9,7 +9,7 @@ References:
 JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
@@ -20,19 +20,22 @@ from armodel.models.M2.MSR.Documentation.BlockElements.Figure.ml_figure import (
 from armodel.models.M2.MSR.Documentation.BlockElements.Formula.ml_formula import (
     MlFormula,
 )
+from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_language_paragraph import (
+    MultiLanguageParagraph,
+)
 from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_language_verbatim import (
     MultiLanguageVerbatim,
 )
 
 if TYPE_CHECKING:
+    from armodel.models.M2.MSR.Documentation.BlockElements.ListElements.ar_list import (
+        ARList,
+    )
     from armodel.models.M2.MSR.Documentation.BlockElements.ListElements.def_list import (
         DefList,
     )
     from armodel.models.M2.MSR.Documentation.BlockElements.ListElements.labeled_list import (
         LabeledList,
-    )
-    from armodel.models.M2.MSR.Documentation.BlockElements.ListElements.list import (
-        List,
     )
     from armodel.models.M2.MSR.Documentation.MsrQuery.msr_query_p2 import (
         MsrQueryP2,
@@ -65,10 +68,10 @@ class DocumentationBlock(ARObject):
     figure: Optional[MlFigure]
     formula: Optional[MlFormula]
     labeled_list_label_ref: Optional[ARRef]
-    list_ref: Optional[ARRef]
     msr_query_p2: Optional[MsrQueryP2]
     note: Optional[Note]
-    p: Optional[Any]
+    p: list[MultiLanguageParagraph]
+    list: list[ARList]
     structured_req: Optional[StructuredReq]
     trace: Optional[TraceableText]
     verbatim: Optional[MultiLanguageVerbatim]
@@ -79,10 +82,10 @@ class DocumentationBlock(ARObject):
         self.figure: Optional[MlFigure] = None
         self.formula: Optional[MlFormula] = None
         self.labeled_list_label_ref: Optional[ARRef] = None
-        self.list_ref: Optional[ARRef] = None
         self.msr_query_p2: Optional[MsrQueryP2] = None
         self.note: Optional[Note] = None
-        self.p: Optional[Any] = None
+        self.p: list[MultiLanguageParagraph] = []
+        self.list: list[ARList] = []
         self.structured_req: Optional[StructuredReq] = None
         self.trace: Optional[TraceableText] = None
         self.verbatim: Optional[MultiLanguageVerbatim] = None
@@ -153,20 +156,6 @@ class DocumentationBlock(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize list_ref
-        if self.list_ref is not None:
-            serialized = ARObject._serialize_item(self.list_ref, "List")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LIST-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
-
         # Serialize msr_query_p2
         if self.msr_query_p2 is not None:
             serialized = ARObject._serialize_item(self.msr_query_p2, "MsrQueryP2")
@@ -195,12 +184,26 @@ class DocumentationBlock(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize p
-        if self.p is not None:
-            serialized = ARObject._serialize_item(self.p, "Any")
+        # Serialize p (list)
+        for item in self.p:
+            serialized = ARObject._serialize_item(item, "MultiLanguageParagraph")
             if serialized is not None:
-                # Wrap with correct tag
+                # For non-container lists, wrap with correct tag
                 wrapped = ET.Element("P")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize list (list)
+        for item in self.list:
+            serialized = ARObject._serialize_item(item, "ARList")
+            if serialized is not None:
+                # For non-container lists, wrap with correct tag
+                wrapped = ET.Element("LIST")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -291,12 +294,6 @@ class DocumentationBlock(ARObject):
             labeled_list_label_ref_value = ARRef.deserialize(child)
             obj.labeled_list_label_ref = labeled_list_label_ref_value
 
-        # Parse list_ref
-        child = ARObject._find_child_element(element, "LIST-REF")
-        if child is not None:
-            list_ref_value = ARRef.deserialize(child)
-            obj.list_ref = list_ref_value
-
         # Parse msr_query_p2
         child = ARObject._find_child_element(element, "MSR-QUERY-P2")
         if child is not None:
@@ -309,11 +306,17 @@ class DocumentationBlock(ARObject):
             note_value = ARObject._deserialize_by_tag(child, "Note")
             obj.note = note_value
 
-        # Parse p
-        child = ARObject._find_child_element(element, "P")
-        if child is not None:
-            p_value = child.text
-            obj.p = p_value
+        # Parse p (list)
+        obj.p = []
+        for child in ARObject._find_all_child_elements(element, "P"):
+            p_value = ARObject._deserialize_by_tag(child, "MultiLanguageParagraph")
+            obj.p.append(p_value)
+
+        # Parse list (list)
+        obj.list = []
+        for child in ARObject._find_all_child_elements(element, "LIST"):
+            list_value = ARObject._deserialize_by_tag(child, "ARList")
+            obj.list.append(list_value)
 
         # Parse structured_req
         child = ARObject._find_child_element(element, "STRUCTURED-REQ")

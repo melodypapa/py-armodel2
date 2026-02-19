@@ -985,7 +985,7 @@
                     <APPLICATION-RECORD-ELEMENT>
                       <SHORT-NAME>Posn</SHORT-NAME>
                       <DESC>
-                        <L-2 L="EN"/>
+                        <L-2 L="EN" />
                       </DESC>
                       <TYPE-TREF BASE="ApplicationDataTypes" DEST="APPLICATION-PRIMITIVE-DATA-TYPE">Perc7</TYPE-TREF>
                     </APPLICATION-RECORD-ELEMENT>

@@ -1,6 +1,6 @@
 version: 1.0.0
 generated_from: docs/json/mapping.json
-generated_at: '2026-02-17T17:30:26.396161'
+generated_at: '2026-02-19T21:54:38.595446'
 metadata:
   total_classes: 1937
   total_packages: 637
@@ -1518,7 +1518,6 @@ xml_tag_mappings:
   COMPU-SCALES: CompuScales
   COMPU-SCALE-CONTENTS: CompuScaleContents
   COMPU-CONST-TEXT-CONTENT: CompuConstTextContent
-  VT: CompuConstTextContent
   COMPU-CONST-NUMERIC-CONTENT: CompuConstNumericContent
   COMPU-RATIONAL-COEFFS: CompuRationalCoeffs
   COMPU-CONST: CompuConst
@@ -1555,7 +1554,7 @@ xml_tag_mappings:
   TRACEABLE-TEXT: TraceableText
   TRACEABLE: Traceable
   ML-FORMULA: MlFormula
-  LIST: List
+  LIST: ARList
   ITEM: Item
   LABELED-LIST: LabeledList
   LABELED-ITEM: LabeledItem
@@ -1710,7 +1709,6 @@ class_import_paths:
   AbstractVariationRestriction: armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ModelRestrictionTypes.abstract_variation_restriction
   AbstractMultiplicityRestriction: armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ModelRestrictionTypes.abstract_multiplicity_restriction
   ARObject: armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object
-  ARRef: armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref
   BuildActionManifest: armodel.models.M2.AUTOSARTemplates.GenericStructure.BuildActionManifest.build_action_manifest
   BuildAction: armodel.models.M2.AUTOSARTemplates.GenericStructure.BuildActionManifest.build_action
   BuildActionIoElement: armodel.models.M2.AUTOSARTemplates.GenericStructure.BuildActionManifest.build_action_io_element
@@ -3180,7 +3178,7 @@ class_import_paths:
   TraceableText: armodel.models.M2.MSR.Documentation.BlockElements.RequirementsTracing.traceable_text
   Traceable: armodel.models.M2.MSR.Documentation.BlockElements.RequirementsTracing.traceable
   MlFormula: armodel.models.M2.MSR.Documentation.BlockElements.Formula.ml_formula
-  List: armodel.models.M2.MSR.Documentation.BlockElements.ListElements.list
+  ARList: armodel.models.M2.MSR.Documentation.BlockElements.ListElements.ar_list
   Item: armodel.models.M2.MSR.Documentation.BlockElements.ListElements.item
   LabeledList: armodel.models.M2.MSR.Documentation.BlockElements.ListElements.labeled_list
   LabeledItem: armodel.models.M2.MSR.Documentation.BlockElements.ListElements.labeled_item

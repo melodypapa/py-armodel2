@@ -51,6 +51,9 @@ skip_classes:
   - "LVerbatim"
   - "MixedContentForUnitNames"
 
+  # Item requires custom serialization - item_contents (DocumentationBlock) is serialized as direct children of ITEM, not wrapped in ITEM-CONTENTS
+  - "Item"
+
 # Force TYPE_CHECKING Imports
 # These types will always be imported inside TYPE_CHECKING blocks to prevent circular imports.
 # This is needed when the automatic circular import detection doesn't catch all cases,

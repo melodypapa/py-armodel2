@@ -121,6 +121,7 @@ def generate_class_code(
         # For other classes, we need to check attribute types first to determine imports
         # Collect attribute types for imports
         attribute_types = {}
+        has_xml_attribute = False
         if include_members and package_path in package_data:
             class_info = package_data[package_path].get("classes", [])
             for cls in class_info:
@@ -136,6 +137,8 @@ def generate_class_code(
                             "is_ref": is_ref,
                             "kind": kind,
                         }
+                        if kind == "xml_attribute":
+                            has_xml_attribute = True
                     break
 
         # Check if we need Any type
@@ -154,9 +157,15 @@ def generate_class_code(
         else:
             basic_import = "from typing import TYPE_CHECKING, Optional\n"
         base_import = "import xml.etree.ElementTree as ET\n"
+        
+        # Add xml_attribute import if needed
+        decorator_import = ""
+        if has_xml_attribute:
+            decorator_import = "from armodel.serialization.decorators import xml_attribute\n"
+        
         code = f'''"""{docstring}"""
 
-{future_import}{basic_import}{base_import}
+{future_import}{basic_import}{base_import}{decorator_import}
 '''
 
     # Add parent class import
@@ -392,6 +401,7 @@ class {class_name}:
             attr_type = attr_info["type"]
             multiplicity = attr_info["multiplicity"]
             is_ref = attr_info.get("is_ref", False)
+            kind = attr_info.get("kind", "attribute")
 
             # Determine Python type
             python_type = get_python_type(attr_type, multiplicity, package_data, is_ref)
@@ -399,8 +409,13 @@ class {class_name}:
             # Get Python identifier with Ref suffix if needed
             python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity)
 
-            # Add class-level annotation
-            code += f"    {python_name}: {python_type}\n"
+            # For xml_attribute, use private field with property
+            if kind == "xml_attribute":
+                private_name = f"_{python_name}"
+                code += f"    {private_name}: {python_type}\n"
+            else:
+                # Add class-level annotation
+                code += f"    {python_name}: {python_type}\n"
 
     code += f'''    def __init__(self) -> None:
         """Initialize {class_name}."""\n'''
@@ -416,6 +431,7 @@ class {class_name}:
             attr_type = attr_info["type"]
             multiplicity = attr_info["multiplicity"]
             is_ref = attr_info.get("is_ref", False)
+            kind = attr_info.get("kind", "attribute")
 
             # Determine Python type
             python_type = get_python_type(attr_type, multiplicity, package_data, is_ref)
@@ -433,8 +449,41 @@ class {class_name}:
 
             # Get Python identifier with Ref suffix if needed
             python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity)
-            attr_code = f"        self.{python_name}: {python_type} = {initial_value}\n"
-            code += attr_code
+            
+            # For xml_attribute, use private field
+            if kind == "xml_attribute":
+                private_name = f"_{python_name}"
+                attr_code = f"        self.{private_name}: {python_type} = {initial_value}\n"
+                code += attr_code
+            else:
+                attr_code = f"        self.{python_name}: {python_type} = {initial_value}\n"
+                code += attr_code
+
+    # Add property decorators for xml_attribute attributes
+    if attribute_types:
+        for attr_name, attr_info in attribute_types.items():
+            attr_type = attr_info["type"]
+            multiplicity = attr_info["multiplicity"]
+            is_ref = attr_info.get("is_ref", False)
+            kind = attr_info.get("kind", "attribute")
+
+            if kind == "xml_attribute":
+                python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity)
+                private_name = f"_{python_name}"
+                # Add @xml_attribute decorator import comment
+                # Generate property with xml_attribute decorator
+                code += f'''    @property
+    @xml_attribute
+    def {python_name}(self) -> {attr_type}:
+        """Get {python_name} XML attribute."""
+        return self.{private_name}
+
+    @{python_name}.setter
+    def {python_name}(self, value: {attr_type}) -> None:
+        """Set {python_name} XML attribute."""
+        self.{private_name} = value
+
+'''
 
     # Add blank line between __init__ and serialize/deserialize methods
     code += "\n"
@@ -545,8 +594,16 @@ def _generate_deserialize_method(
             if attr_type.startswith("any ("):
                 effective_type = "Any"
 
-            # Generate parsing code based on type and multiplicity
-            if multiplicity == "*":
+            # Handle xml_attribute - parse from XML attributes, not child elements
+            if kind == "xml_attribute":
+                attribute_value = f'element.attrib["{xml_tag}"]'
+                code += f'''        # Parse {python_name} from XML attribute
+        if "{xml_tag}" in element.attrib:
+            {_generate_value_extraction_code_for_attribute(effective_type, attribute_value, package_data, python_name, is_ref)}
+            obj.{python_name} = {python_name}_value
+
+'''
+            elif multiplicity == "*":
                 # List type
                 # Check if the XML tag ends with "S" (plural form like PACKAGES, ELEMENTS)
                 # If so, it's a container element and we need to iterate its children
@@ -648,6 +705,71 @@ def _generate_value_extraction_code(
         # Use ARObject._deserialize_by_tag to avoid TYPE_CHECKING issues
         # This doesn't require the type to be imported at runtime
         return f'''{value_var} = ARObject._deserialize_by_tag({element_var}, "{attr_type}")'''
+
+
+def _generate_value_extraction_code_for_attribute(
+    attr_type: str, attribute_value: str, package_data: Dict[str, Dict[str, Any]], var_name: str, is_ref: bool = False
+) -> str:
+    """Generate code to extract value from XML attribute.
+
+    Args:
+        attr_type: AUTOSAR type name
+        attribute_value: String containing the XML attribute value (e.g., "element.attrib['TAG']")
+        package_data: Package data dictionary
+        var_name: Variable name to store the result
+        is_ref: Whether this is a reference type (should use ARRef.deserialize)
+
+    Returns:
+        Generated code for value extraction
+    """
+    value_var = f"{var_name}_value"
+
+    # Handle reference types (ARRef)
+    if is_ref:
+        # Use ARRef.deserialize() for reference types - need to create a fake element
+        return f'''from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
+        fake_elem = ET.Element("FAKE")
+        fake_elem.text = {attribute_value}
+        {value_var} = ARRef.deserialize(fake_elem)'''
+
+    # Handle primitive types
+    if is_primitive_type(attr_type, package_data):
+        # Check if this primitive has attributes (e.g., Limit has interval_type)
+        # If it has attributes, we need to deserialize it as an object
+        has_attributes = False
+        for package_path, data in package_data.items():
+            if "primitives" in data:
+                for prim in data["primitives"]:
+                    if prim["name"] == attr_type:
+                        # Check if primitive has attributes
+                        if "attributes" in prim and prim["attributes"]:
+                            has_attributes = True
+                        break
+                if has_attributes:
+                    break
+
+        if has_attributes:
+            # Use deserialize for primitives with attributes - need to create a fake element
+            return f'''fake_elem = ET.Element("FAKE")
+            fake_elem.text = {attribute_value}
+            {value_var} = ARObject._deserialize_by_tag(fake_elem, "{attr_type}")'''
+        else:
+            # Simple primitive - just use the string value directly
+            return f"""{value_var} = {attribute_value}"""
+
+    # Handle enum types
+    elif is_enum_type(attr_type, package_data):
+        # Create enum value from string
+        return f"""{value_var} = {attr_type}({attribute_value})"""
+
+    # Handle Any type (polymorphic)
+    elif attr_type == "Any":
+        return f"""{value_var} = {attribute_value}"""
+
+    # Handle class types (should not happen for XML attributes)
+    else:
+        # Just use the string value
+        return f"""{value_var} = {attribute_value}"""
 
 
 def _generate_ar_object_methods() -> str:
@@ -1424,8 +1546,14 @@ def _generate_serialize_method(
             if attr_type.startswith("any ("):
                 effective_type = "Any"
 
-            # Generate serialization code based on type and multiplicity
-            if multiplicity == "*":
+            # Handle xml_attribute - serialize as XML attribute, not child element
+            if kind == "xml_attribute":
+                code += f'''        # Serialize {python_name} as XML attribute
+        if self.{python_name} is not None:
+            elem.attrib["{xml_tag}"] = str(self.{python_name})
+
+'''
+            elif multiplicity == "*":
                 # List type
                 # Check if the XML tag ends with "S" (plural form like PACKAGES, ELEMENTS)
                 # If so, it's a container element and we need to create a wrapper

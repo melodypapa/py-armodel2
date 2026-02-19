@@ -110,13 +110,6 @@
           "is_ref": true,
           "note": "This represents a labeled list. atpVariation"
         },
-        "list": {
-          "type": "List",
-          "multiplicity": "0..1",
-          "kind": "ref",
-          "is_ref": true,
-          "note": "This represents numbered or unnumbered list. atpVariation"
-        },
         "msrQueryP2": {
           "type": "MsrQueryP2",
           "multiplicity": "0..1",
@@ -132,11 +125,18 @@
           "note": "This represents a note in the text flow."
         },
         "p": {
-          "type": "any (MultiLanguage)",
-          "multiplicity": "0..1",
+          "type": "MultiLanguageParagraph",
+          "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
-          "note": "This is one particular paragraph."
+          "note": "This is one particular paragraph. Multiple paragraphs can appear in mixed content."
+        },
+        "list": {
+          "type": "ARList",
+          "multiplicity": "*",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This represents numbered or unnumbered list. atpVariation"
         },
         "structuredReq": {
           "type": "StructuredReq",
