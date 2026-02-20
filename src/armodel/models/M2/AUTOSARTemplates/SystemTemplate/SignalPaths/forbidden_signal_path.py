@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SignalPaths.signal_path_c
     SignalPathConstraint,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.physical_channel import (
     PhysicalChannel,
 )
@@ -34,13 +35,13 @@ class ForbiddenSignalPath(SignalPathConstraint):
         return False
 
     operations: list[Any]
-    physical_channels: list[PhysicalChannel]
+    physical_channel_refs: list[ARRef]
     signals: list[SwcToSwcSignal]
     def __init__(self) -> None:
         """Initialize ForbiddenSignalPath."""
         super().__init__()
         self.operations: list[Any] = []
-        self.physical_channels: list[PhysicalChannel] = []
+        self.physical_channel_refs: list[ARRef] = []
         self.signals: list[SwcToSwcSignal] = []
 
     def serialize(self) -> ET.Element:
@@ -73,13 +74,20 @@ class ForbiddenSignalPath(SignalPathConstraint):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize physical_channels (list to container "PHYSICAL-CHANNELS")
-        if self.physical_channels:
-            wrapper = ET.Element("PHYSICAL-CHANNELS")
-            for item in self.physical_channels:
+        # Serialize physical_channel_refs (list to container "PHYSICAL-CHANNEL-REFS")
+        if self.physical_channel_refs:
+            wrapper = ET.Element("PHYSICAL-CHANNEL-REFS")
+            for item in self.physical_channel_refs:
                 serialized = ARObject._serialize_item(item, "PhysicalChannel")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("PHYSICAL-CHANNEL-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -118,15 +126,21 @@ class ForbiddenSignalPath(SignalPathConstraint):
                 if child_value is not None:
                     obj.operations.append(child_value)
 
-        # Parse physical_channels (list from container "PHYSICAL-CHANNELS")
-        obj.physical_channels = []
-        container = ARObject._find_child_element(element, "PHYSICAL-CHANNELS")
+        # Parse physical_channel_refs (list from container "PHYSICAL-CHANNEL-REFS")
+        obj.physical_channel_refs = []
+        container = ARObject._find_child_element(element, "PHYSICAL-CHANNEL-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.physical_channels.append(child_value)
+                    obj.physical_channel_refs.append(child_value)
 
         # Parse signals (list from container "SIGNALS")
         obj.signals = []

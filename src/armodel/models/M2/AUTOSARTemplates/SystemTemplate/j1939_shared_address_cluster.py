@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Can.CanTopology.j1939_cluster import (
     J1939Cluster,
 )
@@ -30,11 +31,11 @@ class J1939SharedAddressCluster(Identifiable):
         """
         return False
 
-    participatings: list[J1939Cluster]
+    participating_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize J1939SharedAddressCluster."""
         super().__init__()
-        self.participatings: list[J1939Cluster] = []
+        self.participating_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize J1939SharedAddressCluster to XML element.
@@ -56,13 +57,20 @@ class J1939SharedAddressCluster(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize participatings (list to container "PARTICIPATINGS")
-        if self.participatings:
-            wrapper = ET.Element("PARTICIPATINGS")
-            for item in self.participatings:
+        # Serialize participating_refs (list to container "PARTICIPATING-REFS")
+        if self.participating_refs:
+            wrapper = ET.Element("PARTICIPATING-REFS")
+            for item in self.participating_refs:
                 serialized = ARObject._serialize_item(item, "J1939Cluster")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("PARTICIPATING-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -81,15 +89,21 @@ class J1939SharedAddressCluster(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(J1939SharedAddressCluster, cls).deserialize(element)
 
-        # Parse participatings (list from container "PARTICIPATINGS")
-        obj.participatings = []
-        container = ARObject._find_child_element(element, "PARTICIPATINGS")
+        # Parse participating_refs (list from container "PARTICIPATING-REFS")
+        obj.participating_refs = []
+        container = ARObject._find_child_element(element, "PARTICIPATING-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.participatings.append(child_value)
+                    obj.participating_refs.append(child_value)
 
         return obj
 

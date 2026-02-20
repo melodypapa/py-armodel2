@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingExtensions.
     TimingExtension,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswImplementation.bsw_implementation import (
     BswImplementation,
 )
@@ -30,11 +31,11 @@ class BswCompositionTiming(TimingExtension):
         """
         return False
 
-    implementations: list[BswImplementation]
+    implementation_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize BswCompositionTiming."""
         super().__init__()
-        self.implementations: list[BswImplementation] = []
+        self.implementation_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize BswCompositionTiming to XML element.
@@ -56,13 +57,20 @@ class BswCompositionTiming(TimingExtension):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize implementations (list to container "IMPLEMENTATIONS")
-        if self.implementations:
-            wrapper = ET.Element("IMPLEMENTATIONS")
-            for item in self.implementations:
+        # Serialize implementation_refs (list to container "IMPLEMENTATION-REFS")
+        if self.implementation_refs:
+            wrapper = ET.Element("IMPLEMENTATION-REFS")
+            for item in self.implementation_refs:
                 serialized = ARObject._serialize_item(item, "BswImplementation")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("IMPLEMENTATION-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -81,15 +89,21 @@ class BswCompositionTiming(TimingExtension):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswCompositionTiming, cls).deserialize(element)
 
-        # Parse implementations (list from container "IMPLEMENTATIONS")
-        obj.implementations = []
-        container = ARObject._find_child_element(element, "IMPLEMENTATIONS")
+        # Parse implementation_refs (list from container "IMPLEMENTATION-REFS")
+        obj.implementation_refs = []
+        container = ARObject._find_child_element(element, "IMPLEMENTATION-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.implementations.append(child_value)
+                    obj.implementation_refs.append(child_value)
 
         return obj
 

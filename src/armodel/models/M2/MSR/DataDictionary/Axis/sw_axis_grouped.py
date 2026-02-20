@@ -40,13 +40,13 @@ class SwAxisGrouped(SwCalprmAxisTypeProps):
         """
         return False
 
-    shared_axis_type: Optional[ApplicationPrimitiveDataType]
+    shared_axis_type_ref: Optional[ARRef]
     sw_axis_index: Optional[AxisIndexType]
     sw_calprm_ref_proxy_ref: ARRef
     def __init__(self) -> None:
         """Initialize SwAxisGrouped."""
         super().__init__()
-        self.shared_axis_type: Optional[ApplicationPrimitiveDataType] = None
+        self.shared_axis_type_ref: Optional[ARRef] = None
         self.sw_axis_index: Optional[AxisIndexType] = None
         self.sw_calprm_ref_proxy_ref: ARRef = None
 
@@ -70,12 +70,12 @@ class SwAxisGrouped(SwCalprmAxisTypeProps):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize shared_axis_type
-        if self.shared_axis_type is not None:
-            serialized = ARObject._serialize_item(self.shared_axis_type, "ApplicationPrimitiveDataType")
+        # Serialize shared_axis_type_ref
+        if self.shared_axis_type_ref is not None:
+            serialized = ARObject._serialize_item(self.shared_axis_type_ref, "ApplicationPrimitiveDataType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SHARED-AXIS-TYPE")
+                wrapped = ET.Element("SHARED-AXIS-TYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -127,11 +127,11 @@ class SwAxisGrouped(SwCalprmAxisTypeProps):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwAxisGrouped, cls).deserialize(element)
 
-        # Parse shared_axis_type
-        child = ARObject._find_child_element(element, "SHARED-AXIS-TYPE")
+        # Parse shared_axis_type_ref
+        child = ARObject._find_child_element(element, "SHARED-AXIS-TYPE-REF")
         if child is not None:
-            shared_axis_type_value = ARObject._deserialize_by_tag(child, "ApplicationPrimitiveDataType")
-            obj.shared_axis_type = shared_axis_type_value
+            shared_axis_type_ref_value = ARRef.deserialize(child)
+            obj.shared_axis_type_ref = shared_axis_type_ref_value
 
         # Parse sw_axis_index
         child = ARObject._find_child_element(element, "SW-AXIS-INDEX")

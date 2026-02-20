@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.composition_sw_component_type import (
     CompositionSwComponentType,
 )
@@ -30,15 +31,15 @@ class RunnableEntityInCompositionInstanceRef(ARObject):
         """
         return False
 
-    base: Optional[CompositionSwComponentType]
-    context_sws: list[Any]
-    target_runnable: Optional[RunnableEntity]
+    base_ref: Optional[ARRef]
+    context_sw_refs: list[Any]
+    target_runnable_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize RunnableEntityInCompositionInstanceRef."""
         super().__init__()
-        self.base: Optional[CompositionSwComponentType] = None
-        self.context_sws: list[Any] = []
-        self.target_runnable: Optional[RunnableEntity] = None
+        self.base_ref: Optional[ARRef] = None
+        self.context_sw_refs: list[Any] = []
+        self.target_runnable_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize RunnableEntityInCompositionInstanceRef to XML element.
@@ -50,12 +51,12 @@ class RunnableEntityInCompositionInstanceRef(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize base
-        if self.base is not None:
-            serialized = ARObject._serialize_item(self.base, "CompositionSwComponentType")
+        # Serialize base_ref
+        if self.base_ref is not None:
+            serialized = ARObject._serialize_item(self.base_ref, "CompositionSwComponentType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("BASE")
+                wrapped = ET.Element("BASE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -64,22 +65,29 @@ class RunnableEntityInCompositionInstanceRef(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize context_sws (list to container "CONTEXT-SWS")
-        if self.context_sws:
-            wrapper = ET.Element("CONTEXT-SWS")
-            for item in self.context_sws:
+        # Serialize context_sw_refs (list to container "CONTEXT-SW-REFS")
+        if self.context_sw_refs:
+            wrapper = ET.Element("CONTEXT-SW-REFS")
+            for item in self.context_sw_refs:
                 serialized = ARObject._serialize_item(item, "Any")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("CONTEXT-SW-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize target_runnable
-        if self.target_runnable is not None:
-            serialized = ARObject._serialize_item(self.target_runnable, "RunnableEntity")
+        # Serialize target_runnable_ref
+        if self.target_runnable_ref is not None:
+            serialized = ARObject._serialize_item(self.target_runnable_ref, "RunnableEntity")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TARGET-RUNNABLE")
+                wrapped = ET.Element("TARGET-RUNNABLE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -104,27 +112,33 @@ class RunnableEntityInCompositionInstanceRef(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse base
-        child = ARObject._find_child_element(element, "BASE")
+        # Parse base_ref
+        child = ARObject._find_child_element(element, "BASE-REF")
         if child is not None:
-            base_value = ARObject._deserialize_by_tag(child, "CompositionSwComponentType")
-            obj.base = base_value
+            base_ref_value = ARRef.deserialize(child)
+            obj.base_ref = base_ref_value
 
-        # Parse context_sws (list from container "CONTEXT-SWS")
-        obj.context_sws = []
-        container = ARObject._find_child_element(element, "CONTEXT-SWS")
+        # Parse context_sw_refs (list from container "CONTEXT-SW-REFS")
+        obj.context_sw_refs = []
+        container = ARObject._find_child_element(element, "CONTEXT-SW-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.context_sws.append(child_value)
+                    obj.context_sw_refs.append(child_value)
 
-        # Parse target_runnable
-        child = ARObject._find_child_element(element, "TARGET-RUNNABLE")
+        # Parse target_runnable_ref
+        child = ARObject._find_child_element(element, "TARGET-RUNNABLE-REF")
         if child is not None:
-            target_runnable_value = ARObject._deserialize_by_tag(child, "RunnableEntity")
-            obj.target_runnable = target_runnable_value
+            target_runnable_ref_value = ARRef.deserialize(child)
+            obj.target_runnable_ref = target_runnable_ref_value
 
         return obj
 

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement import (
     NmCoordinatorRoleEnum,
 )
@@ -47,25 +48,25 @@ class NmNode(Identifiable, ABC):
         """
         return True
 
-    controller: Optional[Any]
+    controller_ref: Optional[Any]
     nm_coord_cluster: Optional[PositiveInteger]
     nm_coordinator_role: Optional[NmCoordinatorRoleEnum]
-    nm_if_ecu: Optional[NmEcu]
+    nm_if_ecu_ref: Optional[ARRef]
     nm_node_id: Optional[Integer]
     nm_passive: Optional[Boolean]
-    rx_nm_pdus: list[NmPdu]
-    tx_nm_pdus: list[NmPdu]
+    rx_nm_pdu_refs: list[ARRef]
+    tx_nm_pdu_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize NmNode."""
         super().__init__()
-        self.controller: Optional[Any] = None
+        self.controller_ref: Optional[Any] = None
         self.nm_coord_cluster: Optional[PositiveInteger] = None
         self.nm_coordinator_role: Optional[NmCoordinatorRoleEnum] = None
-        self.nm_if_ecu: Optional[NmEcu] = None
+        self.nm_if_ecu_ref: Optional[ARRef] = None
         self.nm_node_id: Optional[Integer] = None
         self.nm_passive: Optional[Boolean] = None
-        self.rx_nm_pdus: list[NmPdu] = []
-        self.tx_nm_pdus: list[NmPdu] = []
+        self.rx_nm_pdu_refs: list[ARRef] = []
+        self.tx_nm_pdu_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize NmNode to XML element.
@@ -87,12 +88,12 @@ class NmNode(Identifiable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize controller
-        if self.controller is not None:
-            serialized = ARObject._serialize_item(self.controller, "Any")
+        # Serialize controller_ref
+        if self.controller_ref is not None:
+            serialized = ARObject._serialize_item(self.controller_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONTROLLER")
+                wrapped = ET.Element("CONTROLLER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -129,12 +130,12 @@ class NmNode(Identifiable, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize nm_if_ecu
-        if self.nm_if_ecu is not None:
-            serialized = ARObject._serialize_item(self.nm_if_ecu, "NmEcu")
+        # Serialize nm_if_ecu_ref
+        if self.nm_if_ecu_ref is not None:
+            serialized = ARObject._serialize_item(self.nm_if_ecu_ref, "NmEcu")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("NM-IF-ECU")
+                wrapped = ET.Element("NM-IF-ECU-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -171,23 +172,37 @@ class NmNode(Identifiable, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize rx_nm_pdus (list to container "RX-NM-PDUS")
-        if self.rx_nm_pdus:
-            wrapper = ET.Element("RX-NM-PDUS")
-            for item in self.rx_nm_pdus:
+        # Serialize rx_nm_pdu_refs (list to container "RX-NM-PDU-REFS")
+        if self.rx_nm_pdu_refs:
+            wrapper = ET.Element("RX-NM-PDU-REFS")
+            for item in self.rx_nm_pdu_refs:
                 serialized = ARObject._serialize_item(item, "NmPdu")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("RX-NM-PDU-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize tx_nm_pdus (list to container "TX-NM-PDUS")
-        if self.tx_nm_pdus:
-            wrapper = ET.Element("TX-NM-PDUS")
-            for item in self.tx_nm_pdus:
+        # Serialize tx_nm_pdu_refs (list to container "TX-NM-PDU-REFS")
+        if self.tx_nm_pdu_refs:
+            wrapper = ET.Element("TX-NM-PDU-REFS")
+            for item in self.tx_nm_pdu_refs:
                 serialized = ARObject._serialize_item(item, "NmPdu")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("TX-NM-PDU-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -206,11 +221,11 @@ class NmNode(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(NmNode, cls).deserialize(element)
 
-        # Parse controller
-        child = ARObject._find_child_element(element, "CONTROLLER")
+        # Parse controller_ref
+        child = ARObject._find_child_element(element, "CONTROLLER-REF")
         if child is not None:
-            controller_value = child.text
-            obj.controller = controller_value
+            controller_ref_value = ARRef.deserialize(child)
+            obj.controller_ref = controller_ref_value
 
         # Parse nm_coord_cluster
         child = ARObject._find_child_element(element, "NM-COORD-CLUSTER")
@@ -224,11 +239,11 @@ class NmNode(Identifiable, ABC):
             nm_coordinator_role_value = NmCoordinatorRoleEnum.deserialize(child)
             obj.nm_coordinator_role = nm_coordinator_role_value
 
-        # Parse nm_if_ecu
-        child = ARObject._find_child_element(element, "NM-IF-ECU")
+        # Parse nm_if_ecu_ref
+        child = ARObject._find_child_element(element, "NM-IF-ECU-REF")
         if child is not None:
-            nm_if_ecu_value = ARObject._deserialize_by_tag(child, "NmEcu")
-            obj.nm_if_ecu = nm_if_ecu_value
+            nm_if_ecu_ref_value = ARRef.deserialize(child)
+            obj.nm_if_ecu_ref = nm_if_ecu_ref_value
 
         # Parse nm_node_id
         child = ARObject._find_child_element(element, "NM-NODE-ID")
@@ -242,25 +257,37 @@ class NmNode(Identifiable, ABC):
             nm_passive_value = child.text
             obj.nm_passive = nm_passive_value
 
-        # Parse rx_nm_pdus (list from container "RX-NM-PDUS")
-        obj.rx_nm_pdus = []
-        container = ARObject._find_child_element(element, "RX-NM-PDUS")
+        # Parse rx_nm_pdu_refs (list from container "RX-NM-PDU-REFS")
+        obj.rx_nm_pdu_refs = []
+        container = ARObject._find_child_element(element, "RX-NM-PDU-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.rx_nm_pdus.append(child_value)
+                    obj.rx_nm_pdu_refs.append(child_value)
 
-        # Parse tx_nm_pdus (list from container "TX-NM-PDUS")
-        obj.tx_nm_pdus = []
-        container = ARObject._find_child_element(element, "TX-NM-PDUS")
+        # Parse tx_nm_pdu_refs (list from container "TX-NM-PDU-REFS")
+        obj.tx_nm_pdu_refs = []
+        container = ARObject._find_child_element(element, "TX-NM-PDU-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.tx_nm_pdus.append(child_value)
+                    obj.tx_nm_pdu_refs.append(child_value)
 
         return obj
 

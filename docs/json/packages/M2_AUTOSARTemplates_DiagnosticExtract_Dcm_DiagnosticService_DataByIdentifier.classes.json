@@ -39,8 +39,8 @@
         "readClass": {
           "type": "any (DiagnosticReadDataBy)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference substantiates that abstract reference in the serviceClass for this specific concrete class. reference represents the ability to access among all DiagnosticReadDataBy the given context."
         }
       }
@@ -83,8 +83,8 @@
         "writeClass": {
           "type": "any (DiagnosticWriteDataBy)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference substantiates that abstract reference in the serviceClass for this specific concrete class. reference represents the ability to access among all DiagnosticWriteDataBy the given context."
         }
       }
@@ -169,8 +169,8 @@
         "dataIdentifier": {
           "type": "DiagnosticAbstractDataIdentifier",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the linked DiagnosticDataIdentifier."
         }
       }
@@ -256,8 +256,8 @@
         "readScaling": {
           "type": "any (DiagnosticReadScaling)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference substantiates that abstract reference in the role serviceClass for this specific concrete class. reference represents the ability to access among all DiagnosticReadScalingData the given context."
         }
       }

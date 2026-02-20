@@ -262,8 +262,8 @@
         "possibleErrors": {
           "type": "ApplicationError",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Possible errors that may by raised by the referring"
         }
       }
@@ -340,8 +340,8 @@
         "dataElements": {
           "type": "VariableDataPrototype",
           "multiplicity": "*",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "The data elements of this SenderReceiverInterface."
         },
         "invalidationPolicyPolicies": {
@@ -354,8 +354,8 @@
         "metaDataItemSets": {
           "type": "MetaDataItemSet",
           "multiplicity": "*",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "This aggregation defines fixed sets of meta-data items with dataElements of the enclosing Sender"
         }
       }
@@ -1111,8 +1111,8 @@
         "firstToSecond": {
           "type": "DataTransformation",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference defines the need to execute the Data <Mip>_<transformerId> functions of the chain when communicating from the Data the Data also specifies the reverse Data functions of chain (i.e. from the DataPrototype the DataPrototype the referenced Data symmetric, i.e. attribute Data set to"
         },
         "secondData": {
@@ -1125,8 +1125,8 @@
         "secondToFirst": {
           "type": "DataTransformation",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This defines the need to execute the reverse Data <Mip>_Inv_<transformerId> functions of transformation chain when communicating from the the Data"
         },
         "subElements": {
@@ -1230,22 +1230,22 @@
         "firstOperation": {
           "type": "ClientServerOperation",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "First to-be-mapped ClientServerOperation of a Client"
         },
         "firstToSecond": {
           "type": "DataTransformation",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference indicates that a DataTransformation is in the context of the ClientServerOperation"
         },
         "second": {
           "type": "ClientServerOperation",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Second to-be-mapped ClientServerOperation of a Client"
         }
       }
@@ -1279,15 +1279,15 @@
         "firstApplication": {
           "type": "ApplicationError",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the first ApplicationError in the context of ClientServerApplicationErrorMapping."
         },
         "second": {
           "type": "ApplicationError",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the second ApplicationError in the of the ClientServerApplicationErrorMapping."
         }
       }
@@ -1415,15 +1415,15 @@
         "firstModes": {
           "type": "ModeDeclaration",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the first ModeDeclaration of the Mode reference has the multiplicity 1 to support use cases where e.g. one mode of the is mapped to several modes of the mode"
         },
         "secondMode": {
           "type": "ModeDeclaration",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the second ModeDeclaration of the Mode"
         }
       }

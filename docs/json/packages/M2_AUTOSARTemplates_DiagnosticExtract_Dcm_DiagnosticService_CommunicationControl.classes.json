@@ -38,8 +38,8 @@
         "comControl": {
           "type": "DiagnosticComControl",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference substantiates that abstract reference in the reference represents the ability to access among all DiagnosticComControl in the"
         },
         "customSub": {
@@ -80,15 +80,15 @@
         "specificChannel": {
           "type": "CommunicationCluster",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the affected CommunicationCluster in the"
         },
         "specificPhysical": {
           "type": "any (EthernetPhysical)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the affected specific EthernetPhysical Channel."
         },
         "subnetNumber": {
@@ -137,15 +137,15 @@
         "allChannelses": {
           "type": "CommunicationCluster",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference represents the semantics that all available be affected. It is still necessary to refer to because there could CommunicationClusters in the System Extract not subject to the service \"communication to the applicable CommunicationClusters it made sure that only the affected Communication accessed."
         },
         "allPhysicals": {
           "type": "any (EthernetPhysical)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference represents the semantics that all available channels shall be affected. It is still necessary to refer to because there could VLANs (and thus private EthernetPhysical the System Extract that are not subject to \"communication control\". to the applicable EthernetPhysicalChannels it made sure that only the affected EthernetPhysical accessed."
         },
         "specificChannels": {
@@ -193,8 +193,8 @@
         "subNode": {
           "type": "any (EthernetPhysical)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the affected sub-node EthernetPhysical Channel."
         }
       }

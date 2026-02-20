@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_definition
     EcucDefinitionElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     String,
@@ -40,7 +41,7 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
         """
         return True
 
-    destination_uris: list[EcucDestinationUriDef]
+    destination_uri_refs: list[ARRef]
     multiplicities: list[EcucMultiplicityConfigurationClass]
     origin: Optional[String]
     post_build_variant: Optional[Boolean]
@@ -48,7 +49,7 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
     def __init__(self) -> None:
         """Initialize EcucContainerDef."""
         super().__init__()
-        self.destination_uris: list[EcucDestinationUriDef] = []
+        self.destination_uri_refs: list[ARRef] = []
         self.multiplicities: list[EcucMultiplicityConfigurationClass] = []
         self.origin: Optional[String] = None
         self.post_build_variant: Optional[Boolean] = None
@@ -74,13 +75,20 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize destination_uris (list to container "DESTINATION-URIS")
-        if self.destination_uris:
-            wrapper = ET.Element("DESTINATION-URIS")
-            for item in self.destination_uris:
+        # Serialize destination_uri_refs (list to container "DESTINATION-URI-REFS")
+        if self.destination_uri_refs:
+            wrapper = ET.Element("DESTINATION-URI-REFS")
+            for item in self.destination_uri_refs:
                 serialized = ARObject._serialize_item(item, "EcucDestinationUriDef")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("DESTINATION-URI-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -151,15 +159,21 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucContainerDef, cls).deserialize(element)
 
-        # Parse destination_uris (list from container "DESTINATION-URIS")
-        obj.destination_uris = []
-        container = ARObject._find_child_element(element, "DESTINATION-URIS")
+        # Parse destination_uri_refs (list from container "DESTINATION-URI-REFS")
+        obj.destination_uri_refs = []
+        container = ARObject._find_child_element(element, "DESTINATION-URI-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.destination_uris.append(child_value)
+                    obj.destination_uri_refs.append(child_value)
 
         # Parse multiplicities (list from container "MULTIPLICITIES")
         obj.multiplicities = []

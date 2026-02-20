@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
     TimeValue,
@@ -32,7 +33,7 @@ class CouplingPortRatePolicy(ARObject):
     policy_action: Optional[CouplingPortRatePolicy]
     priority: Optional[PositiveInteger]
     time_interval: Optional[TimeValue]
-    v_lans: list[Any]
+    v_lan_refs: list[Any]
     def __init__(self) -> None:
         """Initialize CouplingPortRatePolicy."""
         super().__init__()
@@ -40,7 +41,7 @@ class CouplingPortRatePolicy(ARObject):
         self.policy_action: Optional[CouplingPortRatePolicy] = None
         self.priority: Optional[PositiveInteger] = None
         self.time_interval: Optional[TimeValue] = None
-        self.v_lans: list[Any] = []
+        self.v_lan_refs: list[Any] = []
 
     def serialize(self) -> ET.Element:
         """Serialize CouplingPortRatePolicy to XML element.
@@ -108,13 +109,20 @@ class CouplingPortRatePolicy(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize v_lans (list to container "V-LANS")
-        if self.v_lans:
-            wrapper = ET.Element("V-LANS")
-            for item in self.v_lans:
+        # Serialize v_lan_refs (list to container "V-LAN-REFS")
+        if self.v_lan_refs:
+            wrapper = ET.Element("V-LAN-REFS")
+            for item in self.v_lan_refs:
                 serialized = ARObject._serialize_item(item, "Any")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("V-LAN-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -158,15 +166,21 @@ class CouplingPortRatePolicy(ARObject):
             time_interval_value = child.text
             obj.time_interval = time_interval_value
 
-        # Parse v_lans (list from container "V-LANS")
-        obj.v_lans = []
-        container = ARObject._find_child_element(element, "V-LANS")
+        # Parse v_lan_refs (list from container "V-LAN-REFS")
+        obj.v_lan_refs = []
+        container = ARObject._find_child_element(element, "V-LAN-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.v_lans.append(child_value)
+                    obj.v_lan_refs.append(child_value)
 
         return obj
 

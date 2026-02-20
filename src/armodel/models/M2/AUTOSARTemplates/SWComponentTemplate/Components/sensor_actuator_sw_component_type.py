@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.atomic_sw
     AtomicSwComponentType,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_description_entity import (
     HwDescriptionEntity,
 )
@@ -32,11 +33,11 @@ class SensorActuatorSwComponentType(AtomicSwComponentType):
         """
         return False
 
-    sensor_actuator: Optional[HwDescriptionEntity]
+    sensor_actuator_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SensorActuatorSwComponentType."""
         super().__init__()
-        self.sensor_actuator: Optional[HwDescriptionEntity] = None
+        self.sensor_actuator_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize SensorActuatorSwComponentType to XML element.
@@ -58,12 +59,12 @@ class SensorActuatorSwComponentType(AtomicSwComponentType):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize sensor_actuator
-        if self.sensor_actuator is not None:
-            serialized = ARObject._serialize_item(self.sensor_actuator, "HwDescriptionEntity")
+        # Serialize sensor_actuator_ref
+        if self.sensor_actuator_ref is not None:
+            serialized = ARObject._serialize_item(self.sensor_actuator_ref, "HwDescriptionEntity")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SENSOR-ACTUATOR")
+                wrapped = ET.Element("SENSOR-ACTUATOR-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -87,11 +88,11 @@ class SensorActuatorSwComponentType(AtomicSwComponentType):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SensorActuatorSwComponentType, cls).deserialize(element)
 
-        # Parse sensor_actuator
-        child = ARObject._find_child_element(element, "SENSOR-ACTUATOR")
+        # Parse sensor_actuator_ref
+        child = ARObject._find_child_element(element, "SENSOR-ACTUATOR-REF")
         if child is not None:
-            sensor_actuator_value = ARObject._deserialize_by_tag(child, "HwDescriptionEntity")
-            obj.sensor_actuator = sensor_actuator_value
+            sensor_actuator_ref_value = ARRef.deserialize(child)
+            obj.sensor_actuator_ref = sensor_actuator_ref_value
 
         return obj
 

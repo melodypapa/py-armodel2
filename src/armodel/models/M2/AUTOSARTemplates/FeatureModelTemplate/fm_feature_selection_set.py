@@ -34,13 +34,13 @@ class FMFeatureSelectionSet(ARElement):
         """
         return False
 
-    feature_models: list[FMFeatureModel]
+    feature_model_refs: list[ARRef]
     include_refs: list[ARRef]
     selections: list[FMFeatureSelection]
     def __init__(self) -> None:
         """Initialize FMFeatureSelectionSet."""
         super().__init__()
-        self.feature_models: list[FMFeatureModel] = []
+        self.feature_model_refs: list[ARRef] = []
         self.include_refs: list[ARRef] = []
         self.selections: list[FMFeatureSelection] = []
 
@@ -64,13 +64,20 @@ class FMFeatureSelectionSet(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize feature_models (list to container "FEATURE-MODELS")
-        if self.feature_models:
-            wrapper = ET.Element("FEATURE-MODELS")
-            for item in self.feature_models:
+        # Serialize feature_model_refs (list to container "FEATURE-MODEL-REFS")
+        if self.feature_model_refs:
+            wrapper = ET.Element("FEATURE-MODEL-REFS")
+            for item in self.feature_model_refs:
                 serialized = ARObject._serialize_item(item, "FMFeatureModel")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("FEATURE-MODEL-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -116,15 +123,21 @@ class FMFeatureSelectionSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FMFeatureSelectionSet, cls).deserialize(element)
 
-        # Parse feature_models (list from container "FEATURE-MODELS")
-        obj.feature_models = []
-        container = ARObject._find_child_element(element, "FEATURE-MODELS")
+        # Parse feature_model_refs (list from container "FEATURE-MODEL-REFS")
+        obj.feature_model_refs = []
+        container = ARObject._find_child_element(element, "FEATURE-MODEL-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.feature_models.append(child_value)
+                    obj.feature_model_refs.append(child_value)
 
         # Parse include_refs (list from container "INCLUDE-REFS")
         obj.include_refs = []

@@ -16,6 +16,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_ele
     FibexElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DataMapping import (
     DataTypePolicyEnum,
 )
@@ -57,27 +58,27 @@ class ISignal(FibexElement):
         """
         return False
 
-    data: Optional[DataTransformation]
+    data_ref: Optional[ARRef]
     data_type_policy_enum: Optional[DataTypePolicyEnum]
     init_value: Optional[ValueSpecification]
     i_signal_props: Optional[ISignalProps]
     i_signal_type_enum: Optional[ISignalTypeEnum]
     length: Optional[UnlimitedInteger]
     network: Optional[SwDataDefProps]
-    system_signal: Optional[SystemSignal]
+    system_signal_ref: Optional[ARRef]
     timeout: Optional[ValueSpecification]
     transformation_i_signals: list[Any]
     def __init__(self) -> None:
         """Initialize ISignal."""
         super().__init__()
-        self.data: Optional[DataTransformation] = None
+        self.data_ref: Optional[ARRef] = None
         self.data_type_policy_enum: Optional[DataTypePolicyEnum] = None
         self.init_value: Optional[ValueSpecification] = None
         self.i_signal_props: Optional[ISignalProps] = None
         self.i_signal_type_enum: Optional[ISignalTypeEnum] = None
         self.length: Optional[UnlimitedInteger] = None
         self.network: Optional[SwDataDefProps] = None
-        self.system_signal: Optional[SystemSignal] = None
+        self.system_signal_ref: Optional[ARRef] = None
         self.timeout: Optional[ValueSpecification] = None
         self.transformation_i_signals: list[Any] = []
 
@@ -101,12 +102,12 @@ class ISignal(FibexElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize data
-        if self.data is not None:
-            serialized = ARObject._serialize_item(self.data, "DataTransformation")
+        # Serialize data_ref
+        if self.data_ref is not None:
+            serialized = ARObject._serialize_item(self.data_ref, "DataTransformation")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DATA")
+                wrapped = ET.Element("DATA-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -199,12 +200,12 @@ class ISignal(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize system_signal
-        if self.system_signal is not None:
-            serialized = ARObject._serialize_item(self.system_signal, "SystemSignal")
+        # Serialize system_signal_ref
+        if self.system_signal_ref is not None:
+            serialized = ARObject._serialize_item(self.system_signal_ref, "SystemSignal")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SYSTEM-SIGNAL")
+                wrapped = ET.Element("SYSTEM-SIGNAL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -252,11 +253,11 @@ class ISignal(FibexElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ISignal, cls).deserialize(element)
 
-        # Parse data
-        child = ARObject._find_child_element(element, "DATA")
+        # Parse data_ref
+        child = ARObject._find_child_element(element, "DATA-REF")
         if child is not None:
-            data_value = ARObject._deserialize_by_tag(child, "DataTransformation")
-            obj.data = data_value
+            data_ref_value = ARRef.deserialize(child)
+            obj.data_ref = data_ref_value
 
         # Parse data_type_policy_enum
         child = ARObject._find_child_element(element, "DATA-TYPE-POLICY-ENUM")
@@ -294,11 +295,11 @@ class ISignal(FibexElement):
             network_value = ARObject._deserialize_by_tag(child, "SwDataDefProps")
             obj.network = network_value
 
-        # Parse system_signal
-        child = ARObject._find_child_element(element, "SYSTEM-SIGNAL")
+        # Parse system_signal_ref
+        child = ARObject._find_child_element(element, "SYSTEM-SIGNAL-REF")
         if child is not None:
-            system_signal_value = ARObject._deserialize_by_tag(child, "SystemSignal")
-            obj.system_signal = system_signal_value
+            system_signal_ref_value = ARRef.deserialize(child)
+            obj.system_signal_ref = system_signal_ref_value
 
         # Parse timeout
         child = ARObject._find_child_element(element, "TIMEOUT")

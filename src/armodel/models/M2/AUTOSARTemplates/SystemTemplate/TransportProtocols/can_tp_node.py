@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
     TimeValue,
@@ -34,21 +35,21 @@ class CanTpNode(Identifiable):
         """
         return False
 
-    connector: Optional[Any]
+    connector_ref: Optional[Any]
     max_fc_wait: Optional[Integer]
     st_min: Optional[TimeValue]
     timeout_ar: Optional[TimeValue]
     timeout_as: Optional[TimeValue]
-    tp_address: Optional[CanTpAddress]
+    tp_address_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize CanTpNode."""
         super().__init__()
-        self.connector: Optional[Any] = None
+        self.connector_ref: Optional[Any] = None
         self.max_fc_wait: Optional[Integer] = None
         self.st_min: Optional[TimeValue] = None
         self.timeout_ar: Optional[TimeValue] = None
         self.timeout_as: Optional[TimeValue] = None
-        self.tp_address: Optional[CanTpAddress] = None
+        self.tp_address_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize CanTpNode to XML element.
@@ -70,12 +71,12 @@ class CanTpNode(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize connector
-        if self.connector is not None:
-            serialized = ARObject._serialize_item(self.connector, "Any")
+        # Serialize connector_ref
+        if self.connector_ref is not None:
+            serialized = ARObject._serialize_item(self.connector_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONNECTOR")
+                wrapped = ET.Element("CONNECTOR-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -140,12 +141,12 @@ class CanTpNode(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize tp_address
-        if self.tp_address is not None:
-            serialized = ARObject._serialize_item(self.tp_address, "CanTpAddress")
+        # Serialize tp_address_ref
+        if self.tp_address_ref is not None:
+            serialized = ARObject._serialize_item(self.tp_address_ref, "CanTpAddress")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TP-ADDRESS")
+                wrapped = ET.Element("TP-ADDRESS-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -169,11 +170,11 @@ class CanTpNode(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CanTpNode, cls).deserialize(element)
 
-        # Parse connector
-        child = ARObject._find_child_element(element, "CONNECTOR")
+        # Parse connector_ref
+        child = ARObject._find_child_element(element, "CONNECTOR-REF")
         if child is not None:
-            connector_value = child.text
-            obj.connector = connector_value
+            connector_ref_value = ARRef.deserialize(child)
+            obj.connector_ref = connector_ref_value
 
         # Parse max_fc_wait
         child = ARObject._find_child_element(element, "MAX-FC-WAIT")
@@ -199,11 +200,11 @@ class CanTpNode(Identifiable):
             timeout_as_value = child.text
             obj.timeout_as = timeout_as_value
 
-        # Parse tp_address
-        child = ARObject._find_child_element(element, "TP-ADDRESS")
+        # Parse tp_address_ref
+        child = ARObject._find_child_element(element, "TP-ADDRESS-REF")
         if child is not None:
-            tp_address_value = ARObject._deserialize_by_tag(child, "CanTpAddress")
-            obj.tp_address = tp_address_value
+            tp_address_ref_value = ARRef.deserialize(child)
+            obj.tp_address_ref = tp_address_ref_value
 
         return obj
 

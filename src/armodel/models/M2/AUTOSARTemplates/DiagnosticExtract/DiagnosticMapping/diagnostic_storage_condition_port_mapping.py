@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
     DiagnosticSwMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
 class DiagnosticStorageConditionPortMapping(DiagnosticSwMapping):
@@ -27,14 +28,14 @@ class DiagnosticStorageConditionPortMapping(DiagnosticSwMapping):
         """
         return False
 
-    diagnostic_storage: Optional[Any]
-    swc_flat_service: Optional[Any]
+    diagnostic_storage_ref: Optional[Any]
+    swc_flat_service_ref: Optional[Any]
     swc_service: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticStorageConditionPortMapping."""
         super().__init__()
-        self.diagnostic_storage: Optional[Any] = None
-        self.swc_flat_service: Optional[Any] = None
+        self.diagnostic_storage_ref: Optional[Any] = None
+        self.swc_flat_service_ref: Optional[Any] = None
         self.swc_service: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
@@ -57,12 +58,12 @@ class DiagnosticStorageConditionPortMapping(DiagnosticSwMapping):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize diagnostic_storage
-        if self.diagnostic_storage is not None:
-            serialized = ARObject._serialize_item(self.diagnostic_storage, "Any")
+        # Serialize diagnostic_storage_ref
+        if self.diagnostic_storage_ref is not None:
+            serialized = ARObject._serialize_item(self.diagnostic_storage_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DIAGNOSTIC-STORAGE")
+                wrapped = ET.Element("DIAGNOSTIC-STORAGE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -71,12 +72,12 @@ class DiagnosticStorageConditionPortMapping(DiagnosticSwMapping):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize swc_flat_service
-        if self.swc_flat_service is not None:
-            serialized = ARObject._serialize_item(self.swc_flat_service, "Any")
+        # Serialize swc_flat_service_ref
+        if self.swc_flat_service_ref is not None:
+            serialized = ARObject._serialize_item(self.swc_flat_service_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SWC-FLAT-SERVICE")
+                wrapped = ET.Element("SWC-FLAT-SERVICE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -114,17 +115,17 @@ class DiagnosticStorageConditionPortMapping(DiagnosticSwMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticStorageConditionPortMapping, cls).deserialize(element)
 
-        # Parse diagnostic_storage
-        child = ARObject._find_child_element(element, "DIAGNOSTIC-STORAGE")
+        # Parse diagnostic_storage_ref
+        child = ARObject._find_child_element(element, "DIAGNOSTIC-STORAGE-REF")
         if child is not None:
-            diagnostic_storage_value = child.text
-            obj.diagnostic_storage = diagnostic_storage_value
+            diagnostic_storage_ref_value = ARRef.deserialize(child)
+            obj.diagnostic_storage_ref = diagnostic_storage_ref_value
 
-        # Parse swc_flat_service
-        child = ARObject._find_child_element(element, "SWC-FLAT-SERVICE")
+        # Parse swc_flat_service_ref
+        child = ARObject._find_child_element(element, "SWC-FLAT-SERVICE-REF")
         if child is not None:
-            swc_flat_service_value = child.text
-            obj.swc_flat_service = swc_flat_service_value
+            swc_flat_service_ref_value = ARRef.deserialize(child)
+            obj.swc_flat_service_ref = swc_flat_service_ref_value
 
         # Parse swc_service
         child = ARObject._find_child_element(element, "SWC-SERVICE")

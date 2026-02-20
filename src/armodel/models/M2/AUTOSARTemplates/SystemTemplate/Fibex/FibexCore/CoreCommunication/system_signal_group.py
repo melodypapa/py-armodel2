@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.system_signal import (
     SystemSignal,
 )
@@ -30,13 +31,13 @@ class SystemSignalGroup(ARElement):
         """
         return False
 
-    system_signals: list[SystemSignal]
-    transforming: Optional[SystemSignal]
+    system_signal_refs: list[ARRef]
+    transforming_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SystemSignalGroup."""
         super().__init__()
-        self.system_signals: list[SystemSignal] = []
-        self.transforming: Optional[SystemSignal] = None
+        self.system_signal_refs: list[ARRef] = []
+        self.transforming_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize SystemSignalGroup to XML element.
@@ -58,22 +59,29 @@ class SystemSignalGroup(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize system_signals (list to container "SYSTEM-SIGNALS")
-        if self.system_signals:
-            wrapper = ET.Element("SYSTEM-SIGNALS")
-            for item in self.system_signals:
+        # Serialize system_signal_refs (list to container "SYSTEM-SIGNAL-REFS")
+        if self.system_signal_refs:
+            wrapper = ET.Element("SYSTEM-SIGNAL-REFS")
+            for item in self.system_signal_refs:
                 serialized = ARObject._serialize_item(item, "SystemSignal")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("SYSTEM-SIGNAL-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize transforming
-        if self.transforming is not None:
-            serialized = ARObject._serialize_item(self.transforming, "SystemSignal")
+        # Serialize transforming_ref
+        if self.transforming_ref is not None:
+            serialized = ARObject._serialize_item(self.transforming_ref, "SystemSignal")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TRANSFORMING")
+                wrapped = ET.Element("TRANSFORMING-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -97,21 +105,27 @@ class SystemSignalGroup(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SystemSignalGroup, cls).deserialize(element)
 
-        # Parse system_signals (list from container "SYSTEM-SIGNALS")
-        obj.system_signals = []
-        container = ARObject._find_child_element(element, "SYSTEM-SIGNALS")
+        # Parse system_signal_refs (list from container "SYSTEM-SIGNAL-REFS")
+        obj.system_signal_refs = []
+        container = ARObject._find_child_element(element, "SYSTEM-SIGNAL-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.system_signals.append(child_value)
+                    obj.system_signal_refs.append(child_value)
 
-        # Parse transforming
-        child = ARObject._find_child_element(element, "TRANSFORMING")
+        # Parse transforming_ref
+        child = ARObject._find_child_element(element, "TRANSFORMING-REF")
         if child is not None:
-            transforming_value = ARObject._deserialize_by_tag(child, "SystemSignal")
-            obj.transforming = transforming_value
+            transforming_ref_value = ARRef.deserialize(child)
+            obj.transforming_ref = transforming_ref_value
 
         return obj
 

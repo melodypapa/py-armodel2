@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols import (
     FrArTpAckType,
     MaximumMessageLengthType,
@@ -51,7 +52,7 @@ class FlexrayArTpChannel(ARObject):
     max_retries: Optional[Integer]
     minimum: Optional[TimeValue]
     multicast: Optional[Boolean]
-    n_pdus: list[NPdu]
+    n_pdu_refs: list[ARRef]
     time_br: Optional[TimeValue]
     time_cs: Optional[TimeValue]
     timeout_ar: Optional[TimeValue]
@@ -73,7 +74,7 @@ class FlexrayArTpChannel(ARObject):
         self.max_retries: Optional[Integer] = None
         self.minimum: Optional[TimeValue] = None
         self.multicast: Optional[Boolean] = None
-        self.n_pdus: list[NPdu] = []
+        self.n_pdu_refs: list[ARRef] = []
         self.time_br: Optional[TimeValue] = None
         self.time_cs: Optional[TimeValue] = None
         self.timeout_ar: Optional[TimeValue] = None
@@ -246,13 +247,20 @@ class FlexrayArTpChannel(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize n_pdus (list to container "N-PDUS")
-        if self.n_pdus:
-            wrapper = ET.Element("N-PDUS")
-            for item in self.n_pdus:
+        # Serialize n_pdu_refs (list to container "N-PDU-REFS")
+        if self.n_pdu_refs:
+            wrapper = ET.Element("N-PDU-REFS")
+            for item in self.n_pdu_refs:
                 serialized = ARObject._serialize_item(item, "NPdu")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("N-PDU-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -432,15 +440,21 @@ class FlexrayArTpChannel(ARObject):
             multicast_value = child.text
             obj.multicast = multicast_value
 
-        # Parse n_pdus (list from container "N-PDUS")
-        obj.n_pdus = []
-        container = ARObject._find_child_element(element, "N-PDUS")
+        # Parse n_pdu_refs (list from container "N-PDU-REFS")
+        obj.n_pdu_refs = []
+        container = ARObject._find_child_element(element, "N-PDU-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.n_pdus.append(child_value)
+                    obj.n_pdu_refs.append(child_value)
 
         # Parse time_br
         child = ARObject._find_child_element(element, "TIME-BR")

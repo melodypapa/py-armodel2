@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.application_data_type import (
     ApplicationDataType,
 )
@@ -34,13 +35,13 @@ class DataTypeMap(ARObject):
         """
         return False
 
-    application_data_type: Optional[ApplicationDataType]
-    implementation: Optional[AbstractImplementationDataType]
+    application_data_type_ref: Optional[ARRef]
+    implementation_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DataTypeMap."""
         super().__init__()
-        self.application_data_type: Optional[ApplicationDataType] = None
-        self.implementation: Optional[AbstractImplementationDataType] = None
+        self.application_data_type_ref: Optional[ARRef] = None
+        self.implementation_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DataTypeMap to XML element.
@@ -52,12 +53,12 @@ class DataTypeMap(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize application_data_type
-        if self.application_data_type is not None:
-            serialized = ARObject._serialize_item(self.application_data_type, "ApplicationDataType")
+        # Serialize application_data_type_ref
+        if self.application_data_type_ref is not None:
+            serialized = ARObject._serialize_item(self.application_data_type_ref, "ApplicationDataType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("APPLICATION-DATA-TYPE")
+                wrapped = ET.Element("APPLICATION-DATA-TYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -66,12 +67,12 @@ class DataTypeMap(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize implementation
-        if self.implementation is not None:
-            serialized = ARObject._serialize_item(self.implementation, "AbstractImplementationDataType")
+        # Serialize implementation_ref
+        if self.implementation_ref is not None:
+            serialized = ARObject._serialize_item(self.implementation_ref, "AbstractImplementationDataType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("IMPLEMENTATION")
+                wrapped = ET.Element("IMPLEMENTATION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -96,17 +97,17 @@ class DataTypeMap(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse application_data_type
-        child = ARObject._find_child_element(element, "APPLICATION-DATA-TYPE")
+        # Parse application_data_type_ref
+        child = ARObject._find_child_element(element, "APPLICATION-DATA-TYPE-REF")
         if child is not None:
-            application_data_type_value = ARObject._deserialize_by_tag(child, "ApplicationDataType")
-            obj.application_data_type = application_data_type_value
+            application_data_type_ref_value = ARRef.deserialize(child)
+            obj.application_data_type_ref = application_data_type_ref_value
 
-        # Parse implementation
-        child = ARObject._find_child_element(element, "IMPLEMENTATION")
+        # Parse implementation_ref
+        child = ARObject._find_child_element(element, "IMPLEMENTATION-REF")
         if child is not None:
-            implementation_value = ARObject._deserialize_by_tag(child, "AbstractImplementationDataType")
-            obj.implementation = implementation_value
+            implementation_ref_value = ARRef.deserialize(child)
+            obj.implementation_ref = implementation_ref_value
 
         return obj
 

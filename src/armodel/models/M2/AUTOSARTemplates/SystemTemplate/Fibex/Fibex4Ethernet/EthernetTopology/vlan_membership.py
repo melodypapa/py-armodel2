@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -30,14 +31,14 @@ class VlanMembership(ARObject):
     default_priority: Optional[PositiveInteger]
     dhcp_address: Optional[Any]
     send_activity: Optional[Any]
-    vlan: Optional[Any]
+    vlan_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize VlanMembership."""
         super().__init__()
         self.default_priority: Optional[PositiveInteger] = None
         self.dhcp_address: Optional[Any] = None
         self.send_activity: Optional[Any] = None
-        self.vlan: Optional[Any] = None
+        self.vlan_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize VlanMembership to XML element.
@@ -91,12 +92,12 @@ class VlanMembership(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize vlan
-        if self.vlan is not None:
-            serialized = ARObject._serialize_item(self.vlan, "Any")
+        # Serialize vlan_ref
+        if self.vlan_ref is not None:
+            serialized = ARObject._serialize_item(self.vlan_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("VLAN")
+                wrapped = ET.Element("VLAN-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -139,11 +140,11 @@ class VlanMembership(ARObject):
             send_activity_value = child.text
             obj.send_activity = send_activity_value
 
-        # Parse vlan
-        child = ARObject._find_child_element(element, "VLAN")
+        # Parse vlan_ref
+        child = ARObject._find_child_element(element, "VLAN-REF")
         if child is not None:
-            vlan_value = child.text
-            obj.vlan = vlan_value
+            vlan_ref_value = ARRef.deserialize(child)
+            obj.vlan_ref = vlan_ref_value
 
         return obj
 

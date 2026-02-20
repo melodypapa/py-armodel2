@@ -59,8 +59,8 @@
         "controlProvideds": {
           "type": "EventHandler",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the provided event group (aka Event which is automatically available when service translationStart."
         },
         "serviceControl": {

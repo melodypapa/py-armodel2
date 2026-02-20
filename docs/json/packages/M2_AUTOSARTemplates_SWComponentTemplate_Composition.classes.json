@@ -92,8 +92,8 @@
         "constantValues": {
           "type": "ConstantSpecification",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the ConstantSpecificationMapping to be applied for initValues of PPortComSpecs and 719 Document ID 673: AUTOSAR_CP_TPS_DiagnosticExtractTemplate Template R23-11"
         },
         "dataTypes": {
@@ -113,8 +113,8 @@
         "physical": {
           "type": "PhysicalDimension",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the PhysicalDimensionMappingSet that is applicable in context of the enclosing in the be taken into the assessment of the compatibility of the context of creation of a the scope of the"
         }
       }
@@ -442,15 +442,15 @@
         "providedOuter": {
           "type": "AbstractProvidedPortPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the provided outer delegation Port Prototype of the PassThroughSwConnector."
         },
         "requiredOuter": {
           "type": "AbstractRequiredPortPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the required outer delegation Port Prototype of the PassThroughSwConnector."
         }
       }

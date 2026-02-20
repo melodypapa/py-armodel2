@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
 )
@@ -37,12 +38,12 @@ class WaitPoint(Identifiable):
         return False
 
     timeout: Optional[TimeValue]
-    trigger: Optional[RTEEvent]
+    trigger_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize WaitPoint."""
         super().__init__()
         self.timeout: Optional[TimeValue] = None
-        self.trigger: Optional[RTEEvent] = None
+        self.trigger_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize WaitPoint to XML element.
@@ -78,12 +79,12 @@ class WaitPoint(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize trigger
-        if self.trigger is not None:
-            serialized = ARObject._serialize_item(self.trigger, "RTEEvent")
+        # Serialize trigger_ref
+        if self.trigger_ref is not None:
+            serialized = ARObject._serialize_item(self.trigger_ref, "RTEEvent")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TRIGGER")
+                wrapped = ET.Element("TRIGGER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -113,11 +114,11 @@ class WaitPoint(Identifiable):
             timeout_value = child.text
             obj.timeout = timeout_value
 
-        # Parse trigger
-        child = ARObject._find_child_element(element, "TRIGGER")
+        # Parse trigger_ref
+        child = ARObject._find_child_element(element, "TRIGGER-REF")
         if child is not None:
-            trigger_value = ARObject._deserialize_by_tag(child, "RTEEvent")
-            obj.trigger = trigger_value
+            trigger_ref_value = ARRef.deserialize(child)
+            obj.trigger_ref = trigger_ref_value
 
         return obj
 

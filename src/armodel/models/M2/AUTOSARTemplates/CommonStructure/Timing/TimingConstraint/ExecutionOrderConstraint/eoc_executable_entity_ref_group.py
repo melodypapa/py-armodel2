@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.
     EOCExecutableEntityRefAbstract,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.ExecutionOrderConstraint import (
     LetDataExchangeParadigmEnum,
 )
@@ -38,26 +39,26 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
         return False
 
     let_data_exchange: Optional[LetDataExchangeParadigmEnum]
-    let_intervals: list[TimingDescriptionEvent]
+    let_interval_refs: list[ARRef]
     max_cycle: Optional[PositiveInteger]
     max_cycles: Optional[Integer]
     max_slots: Optional[Integer]
     max_slots_per: Optional[PositiveInteger]
-    nested_elements: list[Any]
-    successors: list[Any]
-    triggering_event: Optional[TimingDescriptionEvent]
+    nested_element_refs: list[Any]
+    successor_refs: list[Any]
+    triggering_event_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize EOCExecutableEntityRefGroup."""
         super().__init__()
         self.let_data_exchange: Optional[LetDataExchangeParadigmEnum] = None
-        self.let_intervals: list[TimingDescriptionEvent] = []
+        self.let_interval_refs: list[ARRef] = []
         self.max_cycle: Optional[PositiveInteger] = None
         self.max_cycles: Optional[Integer] = None
         self.max_slots: Optional[Integer] = None
         self.max_slots_per: Optional[PositiveInteger] = None
-        self.nested_elements: list[Any] = []
-        self.successors: list[Any] = []
-        self.triggering_event: Optional[TimingDescriptionEvent] = None
+        self.nested_element_refs: list[Any] = []
+        self.successor_refs: list[Any] = []
+        self.triggering_event_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize EOCExecutableEntityRefGroup to XML element.
@@ -93,13 +94,20 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize let_intervals (list to container "LET-INTERVALS")
-        if self.let_intervals:
-            wrapper = ET.Element("LET-INTERVALS")
-            for item in self.let_intervals:
+        # Serialize let_interval_refs (list to container "LET-INTERVAL-REFS")
+        if self.let_interval_refs:
+            wrapper = ET.Element("LET-INTERVAL-REFS")
+            for item in self.let_interval_refs:
                 serialized = ARObject._serialize_item(item, "TimingDescriptionEvent")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("LET-INTERVAL-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -159,32 +167,46 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize nested_elements (list to container "NESTED-ELEMENTS")
-        if self.nested_elements:
-            wrapper = ET.Element("NESTED-ELEMENTS")
-            for item in self.nested_elements:
+        # Serialize nested_element_refs (list to container "NESTED-ELEMENT-REFS")
+        if self.nested_element_refs:
+            wrapper = ET.Element("NESTED-ELEMENT-REFS")
+            for item in self.nested_element_refs:
                 serialized = ARObject._serialize_item(item, "Any")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("NESTED-ELEMENT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize successors (list to container "SUCCESSORS")
-        if self.successors:
-            wrapper = ET.Element("SUCCESSORS")
-            for item in self.successors:
+        # Serialize successor_refs (list to container "SUCCESSOR-REFS")
+        if self.successor_refs:
+            wrapper = ET.Element("SUCCESSOR-REFS")
+            for item in self.successor_refs:
                 serialized = ARObject._serialize_item(item, "Any")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("SUCCESSOR-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize triggering_event
-        if self.triggering_event is not None:
-            serialized = ARObject._serialize_item(self.triggering_event, "TimingDescriptionEvent")
+        # Serialize triggering_event_ref
+        if self.triggering_event_ref is not None:
+            serialized = ARObject._serialize_item(self.triggering_event_ref, "TimingDescriptionEvent")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TRIGGERING-EVENT")
+                wrapped = ET.Element("TRIGGERING-EVENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -214,15 +236,21 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
             let_data_exchange_value = LetDataExchangeParadigmEnum.deserialize(child)
             obj.let_data_exchange = let_data_exchange_value
 
-        # Parse let_intervals (list from container "LET-INTERVALS")
-        obj.let_intervals = []
-        container = ARObject._find_child_element(element, "LET-INTERVALS")
+        # Parse let_interval_refs (list from container "LET-INTERVAL-REFS")
+        obj.let_interval_refs = []
+        container = ARObject._find_child_element(element, "LET-INTERVAL-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.let_intervals.append(child_value)
+                    obj.let_interval_refs.append(child_value)
 
         # Parse max_cycle
         child = ARObject._find_child_element(element, "MAX-CYCLE")
@@ -248,31 +276,43 @@ class EOCExecutableEntityRefGroup(EOCExecutableEntityRefAbstract):
             max_slots_per_value = child.text
             obj.max_slots_per = max_slots_per_value
 
-        # Parse nested_elements (list from container "NESTED-ELEMENTS")
-        obj.nested_elements = []
-        container = ARObject._find_child_element(element, "NESTED-ELEMENTS")
+        # Parse nested_element_refs (list from container "NESTED-ELEMENT-REFS")
+        obj.nested_element_refs = []
+        container = ARObject._find_child_element(element, "NESTED-ELEMENT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.nested_elements.append(child_value)
+                    obj.nested_element_refs.append(child_value)
 
-        # Parse successors (list from container "SUCCESSORS")
-        obj.successors = []
-        container = ARObject._find_child_element(element, "SUCCESSORS")
+        # Parse successor_refs (list from container "SUCCESSOR-REFS")
+        obj.successor_refs = []
+        container = ARObject._find_child_element(element, "SUCCESSOR-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.successors.append(child_value)
+                    obj.successor_refs.append(child_value)
 
-        # Parse triggering_event
-        child = ARObject._find_child_element(element, "TRIGGERING-EVENT")
+        # Parse triggering_event_ref
+        child = ARObject._find_child_element(element, "TRIGGERING-EVENT-REF")
         if child is not None:
-            triggering_event_value = ARObject._deserialize_by_tag(child, "TimingDescriptionEvent")
-            obj.triggering_event = triggering_event_value
+            triggering_event_ref_value = ARRef.deserialize(child)
+            obj.triggering_event_ref = triggering_event_ref_value
 
         return obj
 

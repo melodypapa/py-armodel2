@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticConditio
     DiagnosticConditionGroup,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
 class DiagnosticStorageConditionGroup(DiagnosticConditionGroup):
@@ -27,11 +28,11 @@ class DiagnosticStorageConditionGroup(DiagnosticConditionGroup):
         """
         return False
 
-    storages: list[Any]
+    storage_refs: list[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticStorageConditionGroup."""
         super().__init__()
-        self.storages: list[Any] = []
+        self.storage_refs: list[Any] = []
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticStorageConditionGroup to XML element.
@@ -53,13 +54,20 @@ class DiagnosticStorageConditionGroup(DiagnosticConditionGroup):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize storages (list to container "STORAGES")
-        if self.storages:
-            wrapper = ET.Element("STORAGES")
-            for item in self.storages:
+        # Serialize storage_refs (list to container "STORAGE-REFS")
+        if self.storage_refs:
+            wrapper = ET.Element("STORAGE-REFS")
+            for item in self.storage_refs:
                 serialized = ARObject._serialize_item(item, "Any")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("STORAGE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -78,15 +86,21 @@ class DiagnosticStorageConditionGroup(DiagnosticConditionGroup):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticStorageConditionGroup, cls).deserialize(element)
 
-        # Parse storages (list from container "STORAGES")
-        obj.storages = []
-        container = ARObject._find_child_element(element, "STORAGES")
+        # Parse storage_refs (list from container "STORAGE-REFS")
+        obj.storage_refs = []
+        container = ARObject._find_child_element(element, "STORAGE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.storages.append(child_value)
+                    obj.storage_refs.append(child_value)
 
         return obj
 

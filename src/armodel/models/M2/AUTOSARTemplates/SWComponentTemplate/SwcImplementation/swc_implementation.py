@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation.implement
     Implementation,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -38,13 +39,13 @@ class SwcImplementation(Implementation):
         """
         return False
 
-    behavior: Optional[SwcInternalBehavior]
+    behavior_ref: Optional[ARRef]
     per_instance_memories: list[PerInstanceMemory]
     required: Optional[String]
     def __init__(self) -> None:
         """Initialize SwcImplementation."""
         super().__init__()
-        self.behavior: Optional[SwcInternalBehavior] = None
+        self.behavior_ref: Optional[ARRef] = None
         self.per_instance_memories: list[PerInstanceMemory] = []
         self.required: Optional[String] = None
 
@@ -68,12 +69,12 @@ class SwcImplementation(Implementation):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize behavior
-        if self.behavior is not None:
-            serialized = ARObject._serialize_item(self.behavior, "SwcInternalBehavior")
+        # Serialize behavior_ref
+        if self.behavior_ref is not None:
+            serialized = ARObject._serialize_item(self.behavior_ref, "SwcInternalBehavior")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("BEHAVIOR")
+                wrapped = ET.Element("BEHAVIOR-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -121,11 +122,11 @@ class SwcImplementation(Implementation):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwcImplementation, cls).deserialize(element)
 
-        # Parse behavior
-        child = ARObject._find_child_element(element, "BEHAVIOR")
+        # Parse behavior_ref
+        child = ARObject._find_child_element(element, "BEHAVIOR-REF")
         if child is not None:
-            behavior_value = ARObject._deserialize_by_tag(child, "SwcInternalBehavior")
-            obj.behavior = behavior_value
+            behavior_ref_value = ARRef.deserialize(child)
+            obj.behavior_ref = behavior_ref_value
 
         # Parse per_instance_memories (list from container "PER-INSTANCE-MEMORIES")
         obj.per_instance_memories = []

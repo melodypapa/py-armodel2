@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_module_entry import (
     BswModuleEntry,
 )
@@ -29,14 +30,14 @@ class BswEntryRelationship(ARObject):
         return False
 
     bsw_entry: Optional[BswEntryRelationship]
-    from_: Optional[BswModuleEntry]
-    to: Optional[BswModuleEntry]
+    from_ref: Optional[ARRef]
+    to_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize BswEntryRelationship."""
         super().__init__()
         self.bsw_entry: Optional[BswEntryRelationship] = None
-        self.from_: Optional[BswModuleEntry] = None
-        self.to: Optional[BswModuleEntry] = None
+        self.from_ref: Optional[ARRef] = None
+        self.to_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize BswEntryRelationship to XML element.
@@ -62,12 +63,12 @@ class BswEntryRelationship(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize from_
-        if self.from_ is not None:
-            serialized = ARObject._serialize_item(self.from_, "BswModuleEntry")
+        # Serialize from_ref
+        if self.from_ref is not None:
+            serialized = ARObject._serialize_item(self.from_ref, "BswModuleEntry")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("FROM")
+                wrapped = ET.Element("FROM-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -76,12 +77,12 @@ class BswEntryRelationship(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize to
-        if self.to is not None:
-            serialized = ARObject._serialize_item(self.to, "BswModuleEntry")
+        # Serialize to_ref
+        if self.to_ref is not None:
+            serialized = ARObject._serialize_item(self.to_ref, "BswModuleEntry")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TO")
+                wrapped = ET.Element("TO-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -112,17 +113,17 @@ class BswEntryRelationship(ARObject):
             bsw_entry_value = ARObject._deserialize_by_tag(child, "BswEntryRelationship")
             obj.bsw_entry = bsw_entry_value
 
-        # Parse from_
-        child = ARObject._find_child_element(element, "FROM")
+        # Parse from_ref
+        child = ARObject._find_child_element(element, "FROM-REF")
         if child is not None:
-            from__value = ARObject._deserialize_by_tag(child, "BswModuleEntry")
-            obj.from_ = from__value
+            from_ref_value = ARRef.deserialize(child)
+            obj.from_ref = from_ref_value
 
-        # Parse to
-        child = ARObject._find_child_element(element, "TO")
+        # Parse to_ref
+        child = ARObject._find_child_element(element, "TO-REF")
         if child is not None:
-            to_value = ARObject._deserialize_by_tag(child, "BswModuleEntry")
-            obj.to = to_value
+            to_ref_value = ARRef.deserialize(child)
+            obj.to_ref = to_ref_value
 
         return obj
 

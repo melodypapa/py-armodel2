@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements import (
     Superscript,
 )
@@ -68,7 +69,7 @@ class MixedContentForParagraph(ARObject, ABC):
     std: Std
     sub: Superscript
     sup: Superscript
-    trace: Traceable
+    trace_ref: ARRef
     tt: Tt
     xdoc: Xdoc
     xfile: Xfile
@@ -84,7 +85,7 @@ class MixedContentForParagraph(ARObject, ABC):
         self.std: Std = None
         self.sub: Superscript = None
         self.sup: Superscript = None
-        self.trace: Traceable = None
+        self.trace_ref: ARRef = None
         self.tt: Tt = None
         self.xdoc: Xdoc = None
         self.xfile: Xfile = None
@@ -199,12 +200,12 @@ class MixedContentForParagraph(ARObject, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize trace
-        if self.trace is not None:
-            serialized = ARObject._serialize_item(self.trace, "Traceable")
+        # Serialize trace_ref
+        if self.trace_ref is not None:
+            serialized = ARObject._serialize_item(self.trace_ref, "Traceable")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TRACE")
+                wrapped = ET.Element("TRACE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -341,11 +342,11 @@ class MixedContentForParagraph(ARObject, ABC):
             sup_value = child.text
             obj.sup = sup_value
 
-        # Parse trace
-        child = ARObject._find_child_element(element, "TRACE")
+        # Parse trace_ref
+        child = ARObject._find_child_element(element, "TRACE-REF")
         if child is not None:
-            trace_value = ARObject._deserialize_by_tag(child, "Traceable")
-            obj.trace = trace_value
+            trace_ref_value = ARRef.deserialize(child)
+            obj.trace_ref = trace_ref_value
 
         # Parse tt
         child = ARObject._find_child_element(element, "TT")

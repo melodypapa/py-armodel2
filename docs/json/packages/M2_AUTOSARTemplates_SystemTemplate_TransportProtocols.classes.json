@@ -151,8 +151,8 @@
         "communicationCluster": {
           "type": "CommunicationCluster",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "A TpConfig is existing always in the context of exactly one"
         }
       }
@@ -420,57 +420,57 @@
         "directTpSdu": {
           "type": "IPdu",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the IPdu that is segmented by the Transport"
         },
         "multicast": {
           "type": "TpAddress",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "TP address for 1:n connections."
         },
         "receivers": {
           "type": "FlexrayTpNode",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The target of the TP connection."
         },
         "reversedTpSdu": {
           "type": "IPdu",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the IPdu that is segmented by the Transport"
         },
         "rxPduPool": {
           "type": "FlexrayTpPduPool",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "A connection has a reference to a set of NPdus (FrTpRx are defined for receiving data via this constraint is valid only for the System In case this connection is applied to the rxPduPool holds the actually received case this connection is applied to the receiver holds the actually sent NPdus."
         },
         "tpConnection": {
           "type": "FlexrayTpConnection",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the connection control."
         },
         "transmitter": {
           "type": "FlexrayTpNode",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The source of the TP connection."
         },
         "txPduPool": {
           "type": "FlexrayTpPduPool",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "A connection has a reference to a set of NPdus (FrTpTx are defined for sending data via this constraint is valid only for the System In case this connection is applied to the txPduPool holds the actually sent case this connection is applied to the receiver holds the actually received NPdus."
         }
       }
@@ -507,8 +507,8 @@
         "nPdus": {
           "type": "NPdu",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to NPdus that are part of the PduPool."
         }
       }
@@ -545,15 +545,15 @@
         "connectors": {
           "type": "any (Communication)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Association to one or more physical connectors (max"
         },
         "tpAddress": {
           "type": "TpAddress",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the TP Address that is used by the TpNode."
         }
       }
@@ -601,8 +601,8 @@
         "ecuInstance": {
           "type": "EcuInstance",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Connection to the ECUInstance in the Topology"
         },
         "fullDuplex": {
@@ -776,8 +776,8 @@
         "nPdus": {
           "type": "NPdu",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "A FlexRayTpChannel references a set of NPdus. These"
         },
         "timeBr": {
@@ -863,15 +863,15 @@
         "connectors": {
           "type": "any (FlexrayCommunication)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Association to one or more physical connectors (max of connectors for FlexRay: 2). System Description this reference is mandatory. In Extract this reference is optional (references to are not part of the ECU Extract shall be"
         },
         "tpAddress": {
           "type": "TpAddress",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the TP Address that is used by the TpNode."
         }
       }
@@ -913,36 +913,36 @@
         "directTpSdu": {
           "type": "IPdu",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the IPdu that is segmented by the Transport"
         },
         "multicast": {
           "type": "TpAddress",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "TP address for 1:n connections."
         },
         "reversedTpSdu": {
           "type": "IPdu",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the IPdu that is segmented by the Transport"
         },
         "source": {
           "type": "FlexrayArTpNode",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The source of the TP connection."
         },
         "targets": {
           "type": "FlexrayArTpNode",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The target of the TP connection."
         }
       }
@@ -1099,22 +1099,22 @@
         "canTpChannel": {
           "type": "CanTpChannel",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the CanTpChannel on which this CanTp realized."
         },
         "dataPdu": {
           "type": "NPdu",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to an Data NPdu."
         },
         "flowControlPdu": {
           "type": "NPdu",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the Flow Control NPdu."
         },
         "maxBlockSize": {
@@ -1127,8 +1127,8 @@
         "multicast": {
           "type": "CanTpAddress",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "TP address for 1:n connections."
         },
         "padding": {
@@ -1141,8 +1141,8 @@
         "receivers": {
           "type": "CanTpNode",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The target of the TP connection."
         },
         "taTypeType": {
@@ -1183,15 +1183,15 @@
         "tpSdu": {
           "type": "IPdu",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to an IPdu that is segmented by the Transport"
         },
         "transmitter": {
           "type": "CanTpNode",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The source of the TP connection."
         }
       }
@@ -1270,8 +1270,8 @@
         "ecuInstance": {
           "type": "EcuInstance",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Connection to the ECUInstance in the Topology"
         }
       }
@@ -1308,8 +1308,8 @@
         "connector": {
           "type": "any (Communication)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Association to a CommunicationConnector in the"
         },
         "maxFcWait": {
@@ -1343,8 +1343,8 @@
         "tpAddress": {
           "type": "CanTpAddress",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the TP Address that is used by the TpNode."
         }
       }
@@ -1437,8 +1437,8 @@
         "connector": {
           "type": "any (Communication)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Association to a CommunicationConnector in the"
         },
         "dropNot": {
@@ -1472,8 +1472,8 @@
         "tpAddress": {
           "type": "TpAddress",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the TP Address that is used by the TpNode."
         }
       }
@@ -1508,36 +1508,36 @@
         "dataPdu": {
           "type": "NPdu",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to an NPdu (Single Frame, First Frame or"
         },
         "flowControl": {
           "type": "NPdu",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the Flow Control NPdu."
         },
         "linTpNSdu": {
           "type": "IPdu",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the IPdu that is segmented by the Transport"
         },
         "multicast": {
           "type": "TpAddress",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "TP address for 1:n connections."
         },
         "receivers": {
           "type": "LinTpNode",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The target of the TP connection."
         },
         "timeoutAs": {
@@ -1564,8 +1564,8 @@
         "transmitter": {
           "type": "LinTpNode",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The source of the TP connection."
         }
       }
@@ -1726,8 +1726,8 @@
         "tpChannel": {
           "type": "SomeipTpChannel",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Assignment of configuration properties valid for this"
         },
         "tpSdu": {
@@ -1905,8 +1905,8 @@
         "dataPdu": {
           "type": "NPdu",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Data Message (TP.DT) used by CMDT and BAM."
         },
         "dynamicBs": {
@@ -1940,8 +1940,8 @@
         "receivers": {
           "type": "J1939TpNode",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The target of the TP connection."
         },
         "retry": {
@@ -1961,8 +1961,8 @@
         "transmitter": {
           "type": "J1939TpNode",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The source of the TP connection."
         }
       }
@@ -1996,8 +1996,8 @@
         "directPdu": {
           "type": "NPdu",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "In case of variable length IPdus (with system signals of"
         },
         "pgn": {
@@ -2017,8 +2017,8 @@
         "sdus": {
           "type": "IPdu",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to IPdus that are segmented by the Transport"
         }
       }
@@ -2055,15 +2055,15 @@
         "connector": {
           "type": "any (Communication)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Association to a CommunicationConnector in the"
         },
         "tpAddress": {
           "type": "TpAddress",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the TP Address that is used by the TpNode."
         }
       }

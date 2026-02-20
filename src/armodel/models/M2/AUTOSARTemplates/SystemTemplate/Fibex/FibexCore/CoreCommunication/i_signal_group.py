@@ -38,15 +38,15 @@ class ISignalGroup(FibexElement):
         """
         return False
 
-    com_based: Optional[DataTransformation]
-    i_signals: list[ISignal]
+    com_based_ref: Optional[ARRef]
+    i_signal_refs: list[ARRef]
     system_signal_group_ref: Optional[ARRef]
     transformation_i_signals: list[Any]
     def __init__(self) -> None:
         """Initialize ISignalGroup."""
         super().__init__()
-        self.com_based: Optional[DataTransformation] = None
-        self.i_signals: list[ISignal] = []
+        self.com_based_ref: Optional[ARRef] = None
+        self.i_signal_refs: list[ARRef] = []
         self.system_signal_group_ref: Optional[ARRef] = None
         self.transformation_i_signals: list[Any] = []
 
@@ -70,12 +70,12 @@ class ISignalGroup(FibexElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize com_based
-        if self.com_based is not None:
-            serialized = ARObject._serialize_item(self.com_based, "DataTransformation")
+        # Serialize com_based_ref
+        if self.com_based_ref is not None:
+            serialized = ARObject._serialize_item(self.com_based_ref, "DataTransformation")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("COM-BASED")
+                wrapped = ET.Element("COM-BASED-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -84,13 +84,20 @@ class ISignalGroup(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize i_signals (list to container "I-SIGNALS")
-        if self.i_signals:
-            wrapper = ET.Element("I-SIGNALS")
-            for item in self.i_signals:
+        # Serialize i_signal_refs (list to container "I-SIGNAL-REFS")
+        if self.i_signal_refs:
+            wrapper = ET.Element("I-SIGNAL-REFS")
+            for item in self.i_signal_refs:
                 serialized = ARObject._serialize_item(item, "ISignal")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("I-SIGNAL-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -133,21 +140,27 @@ class ISignalGroup(FibexElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ISignalGroup, cls).deserialize(element)
 
-        # Parse com_based
-        child = ARObject._find_child_element(element, "COM-BASED")
+        # Parse com_based_ref
+        child = ARObject._find_child_element(element, "COM-BASED-REF")
         if child is not None:
-            com_based_value = ARObject._deserialize_by_tag(child, "DataTransformation")
-            obj.com_based = com_based_value
+            com_based_ref_value = ARRef.deserialize(child)
+            obj.com_based_ref = com_based_ref_value
 
-        # Parse i_signals (list from container "I-SIGNALS")
-        obj.i_signals = []
-        container = ARObject._find_child_element(element, "I-SIGNALS")
+        # Parse i_signal_refs (list from container "I-SIGNAL-REFS")
+        obj.i_signal_refs = []
+        container = ARObject._find_child_element(element, "I-SIGNAL-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.i_signals.append(child_value)
+                    obj.i_signal_refs.append(child_value)
 
         # Parse system_signal_group_ref
         child = ARObject._find_child_element(element, "SYSTEM-SIGNAL-GROUP-REF")

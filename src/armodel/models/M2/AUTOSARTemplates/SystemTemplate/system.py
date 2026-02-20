@@ -68,14 +68,14 @@ class System(ARElement):
     client_id_definition_set_refs: list[ARRef]
     container_i_pdu_header_byte_order: Optional[ByteOrderEnum]
     ecu_extract_version: Optional[RevisionLabelString]
-    fibex_elements: list[FibexElement]
-    interpolation_routine_mapping_sets: list[InterpolationRoutineMappingSet]
+    fibex_element_refs: list[ARRef]
+    interpolation_routine_mapping_set_refs: list[ARRef]
     j1939_shared_address_clusters: list[J1939SharedAddressCluster]
     mapping_refs: list[ARRef]
     pnc_vector_length: Optional[PositiveInteger]
     pnc_vector_offset: Optional[PositiveInteger]
     root_software_composition: Optional[RootSwCompositionPrototype]
-    sw_clusters: list[CpSoftwareCluster]
+    sw_cluster_refs: list[ARRef]
     system_documentations: list[Chapter]
     system_version: Optional[RevisionLabelString]
     def __init__(self) -> None:
@@ -84,14 +84,14 @@ class System(ARElement):
         self.client_id_definition_set_refs: list[ARRef] = []
         self.container_i_pdu_header_byte_order: Optional[ByteOrderEnum] = None
         self.ecu_extract_version: Optional[RevisionLabelString] = None
-        self.fibex_elements: list[FibexElement] = []
-        self.interpolation_routine_mapping_sets: list[InterpolationRoutineMappingSet] = []
+        self.fibex_element_refs: list[ARRef] = []
+        self.interpolation_routine_mapping_set_refs: list[ARRef] = []
         self.j1939_shared_address_clusters: list[J1939SharedAddressCluster] = []
         self.mapping_refs: list[ARRef] = []
         self.pnc_vector_length: Optional[PositiveInteger] = None
         self.pnc_vector_offset: Optional[PositiveInteger] = None
         self.root_software_composition: Optional[RootSwCompositionPrototype] = None
-        self.sw_clusters: list[CpSoftwareCluster] = []
+        self.sw_cluster_refs: list[ARRef] = []
         self.system_documentations: list[Chapter] = []
         self.system_version: Optional[RevisionLabelString] = None
 
@@ -160,23 +160,37 @@ class System(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize fibex_elements (list to container "FIBEX-ELEMENTS")
-        if self.fibex_elements:
-            wrapper = ET.Element("FIBEX-ELEMENTS")
-            for item in self.fibex_elements:
+        # Serialize fibex_element_refs (list to container "FIBEX-ELEMENT-REFS")
+        if self.fibex_element_refs:
+            wrapper = ET.Element("FIBEX-ELEMENT-REFS")
+            for item in self.fibex_element_refs:
                 serialized = ARObject._serialize_item(item, "FibexElement")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("FIBEX-ELEMENT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize interpolation_routine_mapping_sets (list to container "INTERPOLATION-ROUTINE-MAPPING-SETS")
-        if self.interpolation_routine_mapping_sets:
-            wrapper = ET.Element("INTERPOLATION-ROUTINE-MAPPING-SETS")
-            for item in self.interpolation_routine_mapping_sets:
+        # Serialize interpolation_routine_mapping_set_refs (list to container "INTERPOLATION-ROUTINE-MAPPING-SET-REFS")
+        if self.interpolation_routine_mapping_set_refs:
+            wrapper = ET.Element("INTERPOLATION-ROUTINE-MAPPING-SET-REFS")
+            for item in self.interpolation_routine_mapping_set_refs:
                 serialized = ARObject._serialize_item(item, "InterpolationRoutineMappingSet")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("INTERPOLATION-ROUTINE-MAPPING-SET-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -249,13 +263,20 @@ class System(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sw_clusters (list to container "SW-CLUSTERS")
-        if self.sw_clusters:
-            wrapper = ET.Element("SW-CLUSTERS")
-            for item in self.sw_clusters:
+        # Serialize sw_cluster_refs (list to container "SW-CLUSTER-REFS")
+        if self.sw_cluster_refs:
+            wrapper = ET.Element("SW-CLUSTER-REFS")
+            for item in self.sw_cluster_refs:
                 serialized = ARObject._serialize_item(item, "CpSoftwareCluster")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("SW-CLUSTER-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -326,25 +347,37 @@ class System(ARElement):
             ecu_extract_version_value = child.text
             obj.ecu_extract_version = ecu_extract_version_value
 
-        # Parse fibex_elements (list from container "FIBEX-ELEMENTS")
-        obj.fibex_elements = []
-        container = ARObject._find_child_element(element, "FIBEX-ELEMENTS")
+        # Parse fibex_element_refs (list from container "FIBEX-ELEMENT-REFS")
+        obj.fibex_element_refs = []
+        container = ARObject._find_child_element(element, "FIBEX-ELEMENT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.fibex_elements.append(child_value)
+                    obj.fibex_element_refs.append(child_value)
 
-        # Parse interpolation_routine_mapping_sets (list from container "INTERPOLATION-ROUTINE-MAPPING-SETS")
-        obj.interpolation_routine_mapping_sets = []
-        container = ARObject._find_child_element(element, "INTERPOLATION-ROUTINE-MAPPING-SETS")
+        # Parse interpolation_routine_mapping_set_refs (list from container "INTERPOLATION-ROUTINE-MAPPING-SET-REFS")
+        obj.interpolation_routine_mapping_set_refs = []
+        container = ARObject._find_child_element(element, "INTERPOLATION-ROUTINE-MAPPING-SET-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.interpolation_routine_mapping_sets.append(child_value)
+                    obj.interpolation_routine_mapping_set_refs.append(child_value)
 
         # Parse j1939_shared_address_clusters (list from container "J1939-SHARED-ADDRESS-CLUSTERS")
         obj.j1939_shared_address_clusters = []
@@ -390,15 +423,21 @@ class System(ARElement):
             root_software_composition_value = ARObject._deserialize_by_tag(child, "RootSwCompositionPrototype")
             obj.root_software_composition = root_software_composition_value
 
-        # Parse sw_clusters (list from container "SW-CLUSTERS")
-        obj.sw_clusters = []
-        container = ARObject._find_child_element(element, "SW-CLUSTERS")
+        # Parse sw_cluster_refs (list from container "SW-CLUSTER-REFS")
+        obj.sw_cluster_refs = []
+        container = ARObject._find_child_element(element, "SW-CLUSTER-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.sw_clusters.append(child_value)
+                    obj.sw_cluster_refs.append(child_value)
 
         # Parse system_documentations (list from container "SYSTEM-DOCUMENTATIONS")
         obj.system_documentations = []

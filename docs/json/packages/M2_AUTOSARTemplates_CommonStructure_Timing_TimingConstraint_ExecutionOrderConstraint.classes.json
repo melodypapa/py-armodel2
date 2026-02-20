@@ -36,8 +36,8 @@
         "base": {
           "type": "CompositionSwComponentType",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Specifies the composition SW-C type playing the role of a"
         },
         "executionOrder": {
@@ -117,8 +117,8 @@
         "directSuccessors": {
           "type": "any (EOCExecutableEntity)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The direct successor of an executable entity or a group of entities."
         }
       }
@@ -163,8 +163,8 @@
         "letIntervals": {
           "type": "TimingDescriptionEvent",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This association references the TimingDescriptionEvent that plays the role of a LET interval the executable the group are assigned to."
         },
         "maxCycle": {
@@ -198,22 +198,22 @@
         "nestedElements": {
           "type": "any (EOCExecutableEntity)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This association is used to establish hierarchies of EOCEER Groups and References."
         },
         "successors": {
           "type": "any (EOCExecutableEntity)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The logical successor of an executable entity or a group executable entities."
         },
         "triggeringEvent": {
           "type": "TimingDescriptionEvent",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "In case of a Repetitive Execution Order Constraint this the timing description event cycle."
         }
       }
@@ -251,8 +251,8 @@
         "bswModule": {
           "type": "BswImplementation",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Specifies the BSW module instance the BSW module belongs to."
         },
         "component": {
@@ -265,15 +265,15 @@
         "executableEntity": {
           "type": "ExecutableEntity",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The ExecutableEntity whose execution order is restricted contraint."
         },
         "successors": {
           "type": "any (EOCExecutableEntity)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The logical successor of an executable entity or a group executable entities."
         }
       }
@@ -311,8 +311,8 @@
         "bswModule": {
           "type": "BswImplementation",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Specifies the BSW module instance the BSW event is to."
         },
         "component": {
@@ -325,15 +325,15 @@
         "event": {
           "type": "AbstractEvent",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The AbstractEvent (event) whose execution order is the contraint."
         },
         "successors": {
           "type": "any (EOCExecutableEntity)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The logical successor of an executable entity or a group executable entities."
         }
       }

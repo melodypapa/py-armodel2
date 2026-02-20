@@ -46,13 +46,13 @@ class ClientServerOperation(Identifiable):
 
     argument_refs: list[ARRef]
     diag_arg_integrity: Optional[Boolean]
-    possible_errors: list[ApplicationError]
+    possible_error_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize ClientServerOperation."""
         super().__init__()
         self.argument_refs: list[ARRef] = []
         self.diag_arg_integrity: Optional[Boolean] = None
-        self.possible_errors: list[ApplicationError] = []
+        self.possible_error_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize ClientServerOperation to XML element.
@@ -105,13 +105,20 @@ class ClientServerOperation(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize possible_errors (list to container "POSSIBLE-ERRORS")
-        if self.possible_errors:
-            wrapper = ET.Element("POSSIBLE-ERRORS")
-            for item in self.possible_errors:
+        # Serialize possible_error_refs (list to container "POSSIBLE-ERROR-REFS")
+        if self.possible_error_refs:
+            wrapper = ET.Element("POSSIBLE-ERROR-REFS")
+            for item in self.possible_error_refs:
                 serialized = ARObject._serialize_item(item, "ApplicationError")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("POSSIBLE-ERROR-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -152,15 +159,21 @@ class ClientServerOperation(Identifiable):
             diag_arg_integrity_value = child.text
             obj.diag_arg_integrity = diag_arg_integrity_value
 
-        # Parse possible_errors (list from container "POSSIBLE-ERRORS")
-        obj.possible_errors = []
-        container = ARObject._find_child_element(element, "POSSIBLE-ERRORS")
+        # Parse possible_error_refs (list from container "POSSIBLE-ERROR-REFS")
+        obj.possible_error_refs = []
+        container = ARObject._find_child_element(element, "POSSIBLE-ERROR-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.possible_errors.append(child_value)
+                    obj.possible_error_refs.append(child_value)
 
         return obj
 

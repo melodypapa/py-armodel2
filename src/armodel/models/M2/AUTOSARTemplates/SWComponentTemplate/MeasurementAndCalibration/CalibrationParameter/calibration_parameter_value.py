@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.FlatMap.flat_instance_descriptor import (
     FlatInstanceDescriptor,
 )
@@ -36,13 +37,13 @@ class CalibrationParameterValue(ARObject):
 
     appl_init_value: Optional[ValueSpecification]
     impl_init_value: Optional[ValueSpecification]
-    initialized: Optional[FlatInstanceDescriptor]
+    initialized_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize CalibrationParameterValue."""
         super().__init__()
         self.appl_init_value: Optional[ValueSpecification] = None
         self.impl_init_value: Optional[ValueSpecification] = None
-        self.initialized: Optional[FlatInstanceDescriptor] = None
+        self.initialized_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize CalibrationParameterValue to XML element.
@@ -82,12 +83,12 @@ class CalibrationParameterValue(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize initialized
-        if self.initialized is not None:
-            serialized = ARObject._serialize_item(self.initialized, "FlatInstanceDescriptor")
+        # Serialize initialized_ref
+        if self.initialized_ref is not None:
+            serialized = ARObject._serialize_item(self.initialized_ref, "FlatInstanceDescriptor")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("INITIALIZED")
+                wrapped = ET.Element("INITIALIZED-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -124,11 +125,11 @@ class CalibrationParameterValue(ARObject):
             impl_init_value_value = ARObject._deserialize_by_tag(child, "ValueSpecification")
             obj.impl_init_value = impl_init_value_value
 
-        # Parse initialized
-        child = ARObject._find_child_element(element, "INITIALIZED")
+        # Parse initialized_ref
+        child = ARObject._find_child_element(element, "INITIALIZED-REF")
         if child is not None:
-            initialized_value = ARObject._deserialize_by_tag(child, "FlatInstanceDescriptor")
-            obj.initialized = initialized_value
+            initialized_ref_value = ARRef.deserialize(child)
+            obj.initialized_ref = initialized_ref_value
 
         return obj
 

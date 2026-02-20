@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.ObdService.Mode_0x08_RequestControlOfOnBoard.diagnostic_test_routine_identifier import (
     DiagnosticTestRoutineIdentifier,
 )
@@ -30,13 +31,13 @@ class DiagnosticRequestControlOfOnBoardDevice(DiagnosticServiceInstance):
         """
         return False
 
-    request_control: Optional[Any]
-    test_id_identifier: Optional[DiagnosticTestRoutineIdentifier]
+    request_control_ref: Optional[Any]
+    test_id_identifier_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DiagnosticRequestControlOfOnBoardDevice."""
         super().__init__()
-        self.request_control: Optional[Any] = None
-        self.test_id_identifier: Optional[DiagnosticTestRoutineIdentifier] = None
+        self.request_control_ref: Optional[Any] = None
+        self.test_id_identifier_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticRequestControlOfOnBoardDevice to XML element.
@@ -58,12 +59,12 @@ class DiagnosticRequestControlOfOnBoardDevice(DiagnosticServiceInstance):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize request_control
-        if self.request_control is not None:
-            serialized = ARObject._serialize_item(self.request_control, "Any")
+        # Serialize request_control_ref
+        if self.request_control_ref is not None:
+            serialized = ARObject._serialize_item(self.request_control_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("REQUEST-CONTROL")
+                wrapped = ET.Element("REQUEST-CONTROL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -72,12 +73,12 @@ class DiagnosticRequestControlOfOnBoardDevice(DiagnosticServiceInstance):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize test_id_identifier
-        if self.test_id_identifier is not None:
-            serialized = ARObject._serialize_item(self.test_id_identifier, "DiagnosticTestRoutineIdentifier")
+        # Serialize test_id_identifier_ref
+        if self.test_id_identifier_ref is not None:
+            serialized = ARObject._serialize_item(self.test_id_identifier_ref, "DiagnosticTestRoutineIdentifier")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TEST-ID-IDENTIFIER")
+                wrapped = ET.Element("TEST-ID-IDENTIFIER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -101,17 +102,17 @@ class DiagnosticRequestControlOfOnBoardDevice(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticRequestControlOfOnBoardDevice, cls).deserialize(element)
 
-        # Parse request_control
-        child = ARObject._find_child_element(element, "REQUEST-CONTROL")
+        # Parse request_control_ref
+        child = ARObject._find_child_element(element, "REQUEST-CONTROL-REF")
         if child is not None:
-            request_control_value = child.text
-            obj.request_control = request_control_value
+            request_control_ref_value = ARRef.deserialize(child)
+            obj.request_control_ref = request_control_ref_value
 
-        # Parse test_id_identifier
-        child = ARObject._find_child_element(element, "TEST-ID-IDENTIFIER")
+        # Parse test_id_identifier_ref
+        child = ARObject._find_child_element(element, "TEST-ID-IDENTIFIER-REF")
         if child is not None:
-            test_id_identifier_value = ARObject._deserialize_by_tag(child, "DiagnosticTestRoutineIdentifier")
-            obj.test_id_identifier = test_id_identifier_value
+            test_id_identifier_ref_value = ARRef.deserialize(child)
+            obj.test_id_identifier_ref = test_id_identifier_ref_value
 
         return obj
 

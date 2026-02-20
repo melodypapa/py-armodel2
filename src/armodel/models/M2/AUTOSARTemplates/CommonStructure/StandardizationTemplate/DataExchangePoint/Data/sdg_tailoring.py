@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
     RestrictionWithSeverity,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.SpecialDataDef.sdg_class import (
     SdgClass,
 )
@@ -30,11 +31,11 @@ class SdgTailoring(RestrictionWithSeverity):
         """
         return False
 
-    sdg_class: Optional[SdgClass]
+    sdg_class_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SdgTailoring."""
         super().__init__()
-        self.sdg_class: Optional[SdgClass] = None
+        self.sdg_class_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize SdgTailoring to XML element.
@@ -56,12 +57,12 @@ class SdgTailoring(RestrictionWithSeverity):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize sdg_class
-        if self.sdg_class is not None:
-            serialized = ARObject._serialize_item(self.sdg_class, "SdgClass")
+        # Serialize sdg_class_ref
+        if self.sdg_class_ref is not None:
+            serialized = ARObject._serialize_item(self.sdg_class_ref, "SdgClass")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SDG-CLASS")
+                wrapped = ET.Element("SDG-CLASS-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -85,11 +86,11 @@ class SdgTailoring(RestrictionWithSeverity):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SdgTailoring, cls).deserialize(element)
 
-        # Parse sdg_class
-        child = ARObject._find_child_element(element, "SDG-CLASS")
+        # Parse sdg_class_ref
+        child = ARObject._find_child_element(element, "SDG-CLASS-REF")
         if child is not None:
-            sdg_class_value = ARObject._deserialize_by_tag(child, "SdgClass")
-            obj.sdg_class = sdg_class_value
+            sdg_class_ref_value = ARRef.deserialize(child)
+            obj.sdg_class_ref = sdg_class_ref_value
 
         return obj
 

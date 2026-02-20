@@ -31,8 +31,8 @@
         "dataTypes": {
           "type": "AutosarDataType",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "AutosarDataType belonging to the includedDataTypeSet"
         },
         "literalPrefix": {

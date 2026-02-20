@@ -35,14 +35,14 @@ class McGroup(ARElement):
         """
         return False
 
-    mc_functions: list[McFunction]
+    mc_function_refs: list[ARRef]
     ref_calprm_set_ref: Optional[ARRef]
     ref_ref: Optional[ARRef]
     sub_group_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize McGroup."""
         super().__init__()
-        self.mc_functions: list[McFunction] = []
+        self.mc_function_refs: list[ARRef] = []
         self.ref_calprm_set_ref: Optional[ARRef] = None
         self.ref_ref: Optional[ARRef] = None
         self.sub_group_refs: list[ARRef] = []
@@ -67,13 +67,20 @@ class McGroup(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize mc_functions (list to container "MC-FUNCTIONS")
-        if self.mc_functions:
-            wrapper = ET.Element("MC-FUNCTIONS")
-            for item in self.mc_functions:
+        # Serialize mc_function_refs (list to container "MC-FUNCTION-REFS")
+        if self.mc_function_refs:
+            wrapper = ET.Element("MC-FUNCTION-REFS")
+            for item in self.mc_function_refs:
                 serialized = ARObject._serialize_item(item, "McFunction")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("MC-FUNCTION-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -137,15 +144,21 @@ class McGroup(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(McGroup, cls).deserialize(element)
 
-        # Parse mc_functions (list from container "MC-FUNCTIONS")
-        obj.mc_functions = []
-        container = ARObject._find_child_element(element, "MC-FUNCTIONS")
+        # Parse mc_function_refs (list from container "MC-FUNCTION-REFS")
+        obj.mc_function_refs = []
+        container = ARObject._find_child_element(element, "MC-FUNCTION-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.mc_functions.append(child_value)
+                    obj.mc_function_refs.append(child_value)
 
         # Parse ref_calprm_set_ref
         child = ARObject._find_child_element(element, "REF-CALPRM-SET-REF")

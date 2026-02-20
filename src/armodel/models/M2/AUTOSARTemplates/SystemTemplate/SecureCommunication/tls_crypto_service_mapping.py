@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.crypt
     CryptoServiceMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -36,14 +37,14 @@ class TlsCryptoServiceMapping(CryptoServiceMapping):
         """
         return False
 
-    key_exchanges: list[CryptoServicePrimitive]
+    key_exchange_refs: list[ARRef]
     tls_cipher_suites: list[TlsCryptoCipherSuite]
     use_client: Optional[Boolean]
     use_security: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize TlsCryptoServiceMapping."""
         super().__init__()
-        self.key_exchanges: list[CryptoServicePrimitive] = []
+        self.key_exchange_refs: list[ARRef] = []
         self.tls_cipher_suites: list[TlsCryptoCipherSuite] = []
         self.use_client: Optional[Boolean] = None
         self.use_security: Optional[Boolean] = None
@@ -68,13 +69,20 @@ class TlsCryptoServiceMapping(CryptoServiceMapping):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize key_exchanges (list to container "KEY-EXCHANGES")
-        if self.key_exchanges:
-            wrapper = ET.Element("KEY-EXCHANGES")
-            for item in self.key_exchanges:
+        # Serialize key_exchange_refs (list to container "KEY-EXCHANGE-REFS")
+        if self.key_exchange_refs:
+            wrapper = ET.Element("KEY-EXCHANGE-REFS")
+            for item in self.key_exchange_refs:
                 serialized = ARObject._serialize_item(item, "CryptoServicePrimitive")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("KEY-EXCHANGE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -131,15 +139,21 @@ class TlsCryptoServiceMapping(CryptoServiceMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TlsCryptoServiceMapping, cls).deserialize(element)
 
-        # Parse key_exchanges (list from container "KEY-EXCHANGES")
-        obj.key_exchanges = []
-        container = ARObject._find_child_element(element, "KEY-EXCHANGES")
+        # Parse key_exchange_refs (list from container "KEY-EXCHANGE-REFS")
+        obj.key_exchange_refs = []
+        container = ARObject._find_child_element(element, "KEY-EXCHANGE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.key_exchanges.append(child_value)
+                    obj.key_exchange_refs.append(child_value)
 
         # Parse tls_cipher_suites (list from container "TLS-CIPHER-SUITES")
         obj.tls_cipher_suites = []

@@ -33,22 +33,22 @@
         "base": {
           "type": "System",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the base of the InstanceRef"
         },
         "contexts": {
           "type": "any (SwComponent)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Tags: xml.sequenceOffset=30"
         },
         "contextDatas": {
           "type": "any (ApplicationComposite)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Tags: xml.sequenceOffset=50"
         },
         "contextPort": {
@@ -61,8 +61,8 @@
         "contextRoot": {
           "type": "RootSwCompositionPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Tags: xml.sequenceOffset=20"
         },
         "rootDataPrototype": {
@@ -117,22 +117,22 @@
         "contextRootSw": {
           "type": "RootSwCompositionPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": ""
         },
         "contextSwPrototypes": {
           "type": "any (SwComponent)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "ref"
         },
         "targetSwc": {
           "type": "any (SwcService)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": ""
         }
       }
@@ -168,15 +168,15 @@
         "base": {
           "type": "System",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Stereotypes: atpDerived"
         },
         "context": {
           "type": "RootSwCompositionPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Tags: xml.sequenceOffset=20"
         },
         "contextModeGroup": {
@@ -189,15 +189,15 @@
         "contextPPortPrototype": {
           "type": "AbstractProvidedPortPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Tags: xml.sequenceOffset=40"
         },
         "targetMode": {
           "type": "ModeDeclaration",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Tags: xml.sequenceOffset=60"
         }
       }

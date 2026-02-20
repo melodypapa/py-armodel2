@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTestResult.diagnostic_test_result import (
     DiagnosticTestResult,
 )
@@ -30,13 +31,13 @@ class DiagnosticRequestOnBoardMonitoringTestResults(DiagnosticServiceInstance):
         """
         return False
 
-    diagnostic_test_results: list[DiagnosticTestResult]
-    request_on: Optional[Any]
+    diagnostic_test_result_refs: list[ARRef]
+    request_on_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticRequestOnBoardMonitoringTestResults."""
         super().__init__()
-        self.diagnostic_test_results: list[DiagnosticTestResult] = []
-        self.request_on: Optional[Any] = None
+        self.diagnostic_test_result_refs: list[ARRef] = []
+        self.request_on_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticRequestOnBoardMonitoringTestResults to XML element.
@@ -58,22 +59,29 @@ class DiagnosticRequestOnBoardMonitoringTestResults(DiagnosticServiceInstance):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize diagnostic_test_results (list to container "DIAGNOSTIC-TEST-RESULTS")
-        if self.diagnostic_test_results:
-            wrapper = ET.Element("DIAGNOSTIC-TEST-RESULTS")
-            for item in self.diagnostic_test_results:
+        # Serialize diagnostic_test_result_refs (list to container "DIAGNOSTIC-TEST-RESULT-REFS")
+        if self.diagnostic_test_result_refs:
+            wrapper = ET.Element("DIAGNOSTIC-TEST-RESULT-REFS")
+            for item in self.diagnostic_test_result_refs:
                 serialized = ARObject._serialize_item(item, "DiagnosticTestResult")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("DIAGNOSTIC-TEST-RESULT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize request_on
-        if self.request_on is not None:
-            serialized = ARObject._serialize_item(self.request_on, "Any")
+        # Serialize request_on_ref
+        if self.request_on_ref is not None:
+            serialized = ARObject._serialize_item(self.request_on_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("REQUEST-ON")
+                wrapped = ET.Element("REQUEST-ON-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -97,21 +105,27 @@ class DiagnosticRequestOnBoardMonitoringTestResults(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticRequestOnBoardMonitoringTestResults, cls).deserialize(element)
 
-        # Parse diagnostic_test_results (list from container "DIAGNOSTIC-TEST-RESULTS")
-        obj.diagnostic_test_results = []
-        container = ARObject._find_child_element(element, "DIAGNOSTIC-TEST-RESULTS")
+        # Parse diagnostic_test_result_refs (list from container "DIAGNOSTIC-TEST-RESULT-REFS")
+        obj.diagnostic_test_result_refs = []
+        container = ARObject._find_child_element(element, "DIAGNOSTIC-TEST-RESULT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.diagnostic_test_results.append(child_value)
+                    obj.diagnostic_test_result_refs.append(child_value)
 
-        # Parse request_on
-        child = ARObject._find_child_element(element, "REQUEST-ON")
+        # Parse request_on_ref
+        child = ARObject._find_child_element(element, "REQUEST-ON-REF")
         if child is not None:
-            request_on_value = child.text
-            obj.request_on = request_on_value
+            request_on_ref_value = ARRef.deserialize(child)
+            obj.request_on_ref = request_on_ref_value
 
         return obj
 

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
     CouplingPortStructuralElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -34,12 +35,12 @@ class CouplingPortShaper(CouplingPortStructuralElement):
         return False
 
     idle_slope: Optional[PositiveInteger]
-    predecessor_fifo: CouplingPortFifo
+    predecessor_fifo_ref: ARRef
     def __init__(self) -> None:
         """Initialize CouplingPortShaper."""
         super().__init__()
         self.idle_slope: Optional[PositiveInteger] = None
-        self.predecessor_fifo: CouplingPortFifo = None
+        self.predecessor_fifo_ref: ARRef = None
 
     def serialize(self) -> ET.Element:
         """Serialize CouplingPortShaper to XML element.
@@ -75,12 +76,12 @@ class CouplingPortShaper(CouplingPortStructuralElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize predecessor_fifo
-        if self.predecessor_fifo is not None:
-            serialized = ARObject._serialize_item(self.predecessor_fifo, "CouplingPortFifo")
+        # Serialize predecessor_fifo_ref
+        if self.predecessor_fifo_ref is not None:
+            serialized = ARObject._serialize_item(self.predecessor_fifo_ref, "CouplingPortFifo")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PREDECESSOR-FIFO")
+                wrapped = ET.Element("PREDECESSOR-FIFO-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -110,11 +111,11 @@ class CouplingPortShaper(CouplingPortStructuralElement):
             idle_slope_value = child.text
             obj.idle_slope = idle_slope_value
 
-        # Parse predecessor_fifo
-        child = ARObject._find_child_element(element, "PREDECESSOR-FIFO")
+        # Parse predecessor_fifo_ref
+        child = ARObject._find_child_element(element, "PREDECESSOR-FIFO-REF")
         if child is not None:
-            predecessor_fifo_value = ARObject._deserialize_by_tag(child, "CouplingPortFifo")
-            obj.predecessor_fifo = predecessor_fifo_value
+            predecessor_fifo_ref_value = ARRef.deserialize(child)
+            obj.predecessor_fifo_ref = predecessor_fifo_ref_value
 
         return obj
 

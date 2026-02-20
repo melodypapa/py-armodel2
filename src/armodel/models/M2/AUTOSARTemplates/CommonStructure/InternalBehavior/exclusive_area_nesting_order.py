@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Referrable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.exclusive_area import (
     ExclusiveArea,
 )
@@ -31,11 +32,11 @@ class ExclusiveAreaNestingOrder(Referrable):
         """
         return False
 
-    exclusive_areas: list[ExclusiveArea]
+    exclusive_area_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize ExclusiveAreaNestingOrder."""
         super().__init__()
-        self.exclusive_areas: list[ExclusiveArea] = []
+        self.exclusive_area_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize ExclusiveAreaNestingOrder to XML element.
@@ -57,13 +58,20 @@ class ExclusiveAreaNestingOrder(Referrable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize exclusive_areas (list to container "EXCLUSIVE-AREAS")
-        if self.exclusive_areas:
-            wrapper = ET.Element("EXCLUSIVE-AREAS")
-            for item in self.exclusive_areas:
+        # Serialize exclusive_area_refs (list to container "EXCLUSIVE-AREA-REFS")
+        if self.exclusive_area_refs:
+            wrapper = ET.Element("EXCLUSIVE-AREA-REFS")
+            for item in self.exclusive_area_refs:
                 serialized = ARObject._serialize_item(item, "ExclusiveArea")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("EXCLUSIVE-AREA-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -82,15 +90,21 @@ class ExclusiveAreaNestingOrder(Referrable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ExclusiveAreaNestingOrder, cls).deserialize(element)
 
-        # Parse exclusive_areas (list from container "EXCLUSIVE-AREAS")
-        obj.exclusive_areas = []
-        container = ARObject._find_child_element(element, "EXCLUSIVE-AREAS")
+        # Parse exclusive_area_refs (list from container "EXCLUSIVE-AREA-REFS")
+        obj.exclusive_area_refs = []
+        container = ARObject._find_child_element(element, "EXCLUSIVE-AREA-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.exclusive_areas.append(child_value)
+                    obj.exclusive_area_refs.append(child_value)
 
         return obj
 

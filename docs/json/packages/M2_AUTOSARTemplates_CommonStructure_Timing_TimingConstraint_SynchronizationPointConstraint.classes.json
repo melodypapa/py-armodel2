@@ -36,30 +36,30 @@
         "sourceEecs": {
           "type": "any (EOCExecutableEntity)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The source executable entities cluster containing the entities that shall finish execution before the"
         },
         "sourceEvents": {
           "type": "AbstractEvent",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
-          "note": "The executable entities — referenced by their events — finish execution before the synchronization"
+          "kind": "ref",
+          "is_ref": true,
+          "note": "The executable entities \u2014 referenced by their events \u2014 finish execution before the synchronization"
         },
         "targetEecs": {
           "type": "any (EOCExecutableEntity)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The target executable entities cluster containing the entities that shall start execution after the"
         },
         "targetEvents": {
           "type": "AbstractEvent",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
-          "note": "The executable entities — referenced by their events — start execution after the synchronization point."
+          "kind": "ref",
+          "is_ref": true,
+          "note": "The executable entities \u2014 referenced by their events \u2014 start execution after the synchronization point."
         }
       }
     }

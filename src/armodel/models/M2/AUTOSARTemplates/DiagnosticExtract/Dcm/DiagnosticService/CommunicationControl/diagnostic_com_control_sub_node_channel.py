@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
 class DiagnosticComControlSubNodeChannel(ARObject):
@@ -24,11 +25,11 @@ class DiagnosticComControlSubNodeChannel(ARObject):
         """
         return False
 
-    sub_node: Optional[Any]
+    sub_node_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticComControlSubNodeChannel."""
         super().__init__()
-        self.sub_node: Optional[Any] = None
+        self.sub_node_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticComControlSubNodeChannel to XML element.
@@ -40,12 +41,12 @@ class DiagnosticComControlSubNodeChannel(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize sub_node
-        if self.sub_node is not None:
-            serialized = ARObject._serialize_item(self.sub_node, "Any")
+        # Serialize sub_node_ref
+        if self.sub_node_ref is not None:
+            serialized = ARObject._serialize_item(self.sub_node_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SUB-NODE")
+                wrapped = ET.Element("SUB-NODE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -70,11 +71,11 @@ class DiagnosticComControlSubNodeChannel(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse sub_node
-        child = ARObject._find_child_element(element, "SUB-NODE")
+        # Parse sub_node_ref
+        child = ARObject._find_child_element(element, "SUB-NODE-REF")
         if child is not None:
-            sub_node_value = child.text
-            obj.sub_node = sub_node_value
+            sub_node_ref_value = ARRef.deserialize(child)
+            obj.sub_node_ref = sub_node_ref_value
 
         return obj
 

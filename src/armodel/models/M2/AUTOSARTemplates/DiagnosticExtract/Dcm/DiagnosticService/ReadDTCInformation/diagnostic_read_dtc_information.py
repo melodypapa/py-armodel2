@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
 class DiagnosticReadDTCInformation(DiagnosticServiceInstance):
@@ -27,11 +28,11 @@ class DiagnosticReadDTCInformation(DiagnosticServiceInstance):
         """
         return False
 
-    read: Optional[Any]
+    read_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticReadDTCInformation."""
         super().__init__()
-        self.read: Optional[Any] = None
+        self.read_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticReadDTCInformation to XML element.
@@ -53,12 +54,12 @@ class DiagnosticReadDTCInformation(DiagnosticServiceInstance):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize read
-        if self.read is not None:
-            serialized = ARObject._serialize_item(self.read, "Any")
+        # Serialize read_ref
+        if self.read_ref is not None:
+            serialized = ARObject._serialize_item(self.read_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("READ")
+                wrapped = ET.Element("READ-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -82,11 +83,11 @@ class DiagnosticReadDTCInformation(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticReadDTCInformation, cls).deserialize(element)
 
-        # Parse read
-        child = ARObject._find_child_element(element, "READ")
+        # Parse read_ref
+        child = ARObject._find_child_element(element, "READ-REF")
         if child is not None:
-            read_value = child.text
-            obj.read = read_value
+            read_ref_value = ARRef.deserialize(child)
+            obj.read_ref = read_ref_value
 
         return obj
 

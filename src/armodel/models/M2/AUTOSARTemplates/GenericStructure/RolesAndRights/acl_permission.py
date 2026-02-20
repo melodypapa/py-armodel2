@@ -46,16 +46,16 @@ class AclPermission(ARElement):
 
     acl_contexts: list[NameToken]
     acl_object_set_refs: list[ARRef]
-    acl_operations: list[AclOperation]
-    acl_roles: list[AclRole]
+    acl_operation_refs: list[ARRef]
+    acl_role_refs: list[ARRef]
     acl_scope: AclScopeEnum
     def __init__(self) -> None:
         """Initialize AclPermission."""
         super().__init__()
         self.acl_contexts: list[NameToken] = []
         self.acl_object_set_refs: list[ARRef] = []
-        self.acl_operations: list[AclOperation] = []
-        self.acl_roles: list[AclRole] = []
+        self.acl_operation_refs: list[ARRef] = []
+        self.acl_role_refs: list[ARRef] = []
         self.acl_scope: AclScopeEnum = None
 
     def serialize(self) -> ET.Element:
@@ -105,23 +105,37 @@ class AclPermission(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize acl_operations (list to container "ACL-OPERATIONS")
-        if self.acl_operations:
-            wrapper = ET.Element("ACL-OPERATIONS")
-            for item in self.acl_operations:
+        # Serialize acl_operation_refs (list to container "ACL-OPERATION-REFS")
+        if self.acl_operation_refs:
+            wrapper = ET.Element("ACL-OPERATION-REFS")
+            for item in self.acl_operation_refs:
                 serialized = ARObject._serialize_item(item, "AclOperation")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("ACL-OPERATION-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize acl_roles (list to container "ACL-ROLES")
-        if self.acl_roles:
-            wrapper = ET.Element("ACL-ROLES")
-            for item in self.acl_roles:
+        # Serialize acl_role_refs (list to container "ACL-ROLE-REFS")
+        if self.acl_role_refs:
+            wrapper = ET.Element("ACL-ROLE-REFS")
+            for item in self.acl_role_refs:
                 serialized = ARObject._serialize_item(item, "AclRole")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("ACL-ROLE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -180,25 +194,37 @@ class AclPermission(ARElement):
                 if child_value is not None:
                     obj.acl_object_set_refs.append(child_value)
 
-        # Parse acl_operations (list from container "ACL-OPERATIONS")
-        obj.acl_operations = []
-        container = ARObject._find_child_element(element, "ACL-OPERATIONS")
+        # Parse acl_operation_refs (list from container "ACL-OPERATION-REFS")
+        obj.acl_operation_refs = []
+        container = ARObject._find_child_element(element, "ACL-OPERATION-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.acl_operations.append(child_value)
+                    obj.acl_operation_refs.append(child_value)
 
-        # Parse acl_roles (list from container "ACL-ROLES")
-        obj.acl_roles = []
-        container = ARObject._find_child_element(element, "ACL-ROLES")
+        # Parse acl_role_refs (list from container "ACL-ROLE-REFS")
+        obj.acl_role_refs = []
+        container = ARObject._find_child_element(element, "ACL-ROLE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.acl_roles.append(child_value)
+                    obj.acl_role_refs.append(child_value)
 
         # Parse acl_scope
         child = ARObject._find_child_element(element, "ACL-SCOPE")

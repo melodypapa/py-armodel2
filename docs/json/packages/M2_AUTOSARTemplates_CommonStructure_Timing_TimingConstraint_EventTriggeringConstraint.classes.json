@@ -48,8 +48,8 @@
         "event": {
           "type": "TimingDescriptionEvent",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The referenced timing event"
         }
       }
@@ -218,7 +218,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "The maximum deviation of the time interval’s starting the beginning of the given period. This only applicable in conjunction with the"
+          "note": "The maximum deviation of the time interval\u2019s starting the beginning of the given period. This only applicable in conjunction with the"
         },
         "patternLength": {
           "type": "MultidimensionalTime",
@@ -295,7 +295,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "The maximum deviation of the time interval’s starting the beginning of the given period. This only applicable in conjunction with the"
+          "note": "The maximum deviation of the time interval\u2019s starting the beginning of the given period. This only applicable in conjunction with the"
         },
         "patternLength": {
           "type": "MultidimensionalTime",

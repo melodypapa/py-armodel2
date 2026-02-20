@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -30,12 +31,12 @@ class LinConfigurableFrame(ARObject):
         """
         return False
 
-    frame: Optional[LinFrame]
+    frame_ref: Optional[ARRef]
     message_id: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize LinConfigurableFrame."""
         super().__init__()
-        self.frame: Optional[LinFrame] = None
+        self.frame_ref: Optional[ARRef] = None
         self.message_id: Optional[PositiveInteger] = None
 
     def serialize(self) -> ET.Element:
@@ -48,12 +49,12 @@ class LinConfigurableFrame(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize frame
-        if self.frame is not None:
-            serialized = ARObject._serialize_item(self.frame, "LinFrame")
+        # Serialize frame_ref
+        if self.frame_ref is not None:
+            serialized = ARObject._serialize_item(self.frame_ref, "LinFrame")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("FRAME")
+                wrapped = ET.Element("FRAME-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -92,11 +93,11 @@ class LinConfigurableFrame(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse frame
-        child = ARObject._find_child_element(element, "FRAME")
+        # Parse frame_ref
+        child = ARObject._find_child_element(element, "FRAME-REF")
         if child is not None:
-            frame_value = ARObject._deserialize_by_tag(child, "LinFrame")
-            obj.frame = frame_value
+            frame_ref_value = ARRef.deserialize(child)
+            obj.frame_ref = frame_ref_value
 
         # Parse message_id
         child = ARObject._find_child_element(element, "MESSAGE-ID")

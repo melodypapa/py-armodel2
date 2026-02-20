@@ -39,8 +39,8 @@
         "applicationEndpoint": {
           "type": "ApplicationEndpoint",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Defines the application endpoint where the events of the group are received in case of multicast reception. 1228 Document ID 62: AUTOSAR_CP_TPS_SoftwareComponentTemplate Template R23-11"
         },
         "autoRequire": {
@@ -60,8 +60,8 @@
         "eventMulticasts": {
           "type": "ApplicationEndpoint",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference defines the multicast address or a address resource where the events of the event received. multicast address is determined via configuration at runtime via service discovery this reference the multicast address over which the events will multicast address is determined at runtime via this reference shall be used to define local multicast address resources, i.e. in the TcpIp module in which the multicast stored at runtime. Please note that in this case address may be defined as ANY UDP port IP address since the multicast address will be runtime. If several multicast addresses are be used the ConsumedEventGroup shall different ApplicationEndpoint objects to reserve resources in the configuration. atpVariation"
         },
         "pduActivationRoutings": {
@@ -95,8 +95,8 @@
         "sdClientTimer": {
           "type": "SomeipSdClientEventGroupTimingConfig",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Client Timing configuration settings that are EventGroup specific. atpVariation"
         }
       }
@@ -141,8 +141,8 @@
         "allowedServices": {
           "type": "NetworkEndpoint",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "NetworkEndpoint on which the ProvidedServiceInstance is communicating with this ConsumedService allowed to be located so that the ACL check in is successful and the connection is be established. atpVariation"
         },
         "autoRequire": {
@@ -169,8 +169,8 @@
         "eventMulticast": {
           "type": "ApplicationEndpoint",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Multicast Address that is used by the client to subscribe the server: This enables the multicast subscription atpVariation"
         },
         "instance": {
@@ -197,8 +197,8 @@
         "providedService": {
           "type": "any (ProvidedService)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to a providedServiceInstance to get the instanceIdentifier information from the ProvidedService 1228 Document ID 62: AUTOSAR_CP_TPS_SoftwareComponentTemplate Template R23-11"
         },
         "remoteUnicast": {
@@ -218,8 +218,8 @@
         "sdClientTimer": {
           "type": "SomeipSdClientServiceInstanceConfig",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Client specific configuration settings relevant for the SOME/IP service discovery. atpVariation"
         },
         "serviceIdentifier": {
@@ -278,8 +278,8 @@
         "allowedServices": {
           "type": "NetworkEndpoint",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "NetworkEndpoints on which the ConsumedService that are communicating with this Provided allowed to be located so that the in the ServiceDiscovery is successful and the allowed to be established. atpVariation"
         },
         "autoAvailable": {
@@ -334,15 +334,15 @@
         "remoteMulticasts": {
           "type": "ApplicationEndpoint",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference defines the remote multicast subscribed of service consumers. This reference shall be used if the remote address of the clients is the configuration and not at runtime. atpVariation"
         },
         "remoteUnicasts": {
           "type": "ApplicationEndpoint",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference defines the remote addresses of service This reference shall ONLY be used if the of the clients is determined from the not at runtime. atpVariation 1228 Document ID 62: AUTOSAR_CP_TPS_SoftwareComponentTemplate Template R23-11"
         },
         "sdServerConfig": {
@@ -355,8 +355,8 @@
         "sdServerTimer": {
           "type": "any (SomeipSdServer)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Server specific configuration settings relevant for the SOME/IP service discovery. atpVariation"
         },
         "serviceIdentifier": {
@@ -463,8 +463,8 @@
         "connector": {
           "type": "any (EthernetCommunication)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Association to a CommunicationConnector in the description. This reference shall be used if the an IP unicast address for an is part of the model."
         },
         "differentiated": {
@@ -484,8 +484,8 @@
         "multicasts": {
           "type": "any (EthernetCommunication)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Association to a CommunicationConnector in the topology description. This reference shall be used if the an IP multicast address, i.e. if ApplicationEndpoint references a describes an IP Address in the IP Such a SocketAddress contains those Ecus (via the multicastConnector the model that will receive multicast the SocketAddress that is defined by the and NetworkEndpoint, Address and UDP Port combination."
         },
         "pathMtu": {
@@ -667,8 +667,8 @@
         "iPduIdentifiers": {
           "type": "SoConIPduIdentifier",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "PduIdentifiers assigned for transmission over Udp in case the referencing PduActivationRoutingGroup is"
         }
       }
@@ -820,8 +820,8 @@
         "eventMulticast": {
           "type": "ApplicationEndpoint",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Multicast Address that is used for event communication in IP-Multicast case. It is the destination address to server sends the multicast event messages if is exceeded. is transmitted in the SD-SubscribeEvent to client (answer to SD-Subscribe atpVariation"
         },
         "multicast": {
@@ -855,8 +855,8 @@
         "sdServerEg": {
           "type": "SomeipSdServerEventGroupTimingConfig",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Server Timing configuration settings that are EventGroup specific. atpVariation"
         }
       }
@@ -1165,15 +1165,15 @@
         "consumedServices": {
           "type": "any (ConsumedService)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference assigns a set of ProvidedServiceInstances to the ConsumedProvidedServiceInstanceGroup. atpVariation"
         },
         "providedServices": {
           "type": "any (ProvidedService)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference assigns a set of ConsumedService Instances to the ConsumedProvidedServiceInstance atpVariation"
         }
       }
@@ -1210,15 +1210,15 @@
         "iPduIdentifiers": {
           "type": "SoConIPduIdentifier",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Assignment of IPduIdentifiers that are transmitted over SocketConnection. atpVariation 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate R23-11"
         },
         "remoteAddress": {
           "type": "SocketAddress",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "RemoteAddress of the static SocketConnection."
         },
         "tcpConnect": {

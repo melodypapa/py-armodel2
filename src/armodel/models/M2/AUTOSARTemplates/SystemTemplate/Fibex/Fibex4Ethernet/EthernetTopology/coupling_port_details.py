@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.coupling_port_rate_policy import (
     CouplingPortRatePolicy,
 )
@@ -46,7 +47,7 @@ class CouplingPortDetails(ARObject):
     ethernet_priority: EthernetPriorityRegeneration
     ethernet_traffic: CouplingPortTrafficClassAssignment
     global_time_coupling: Optional[GlobalTimeCouplingPortProps]
-    last_egress: Optional[CouplingPortScheduler]
+    last_egress_ref: Optional[ARRef]
     rate_policies: list[CouplingPortRatePolicy]
     def __init__(self) -> None:
         """Initialize CouplingPortDetails."""
@@ -55,7 +56,7 @@ class CouplingPortDetails(ARObject):
         self.ethernet_priority: EthernetPriorityRegeneration = None
         self.ethernet_traffic: CouplingPortTrafficClassAssignment = None
         self.global_time_coupling: Optional[GlobalTimeCouplingPortProps] = None
-        self.last_egress: Optional[CouplingPortScheduler] = None
+        self.last_egress_ref: Optional[ARRef] = None
         self.rate_policies: list[CouplingPortRatePolicy] = []
 
     def serialize(self) -> ET.Element:
@@ -120,12 +121,12 @@ class CouplingPortDetails(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize last_egress
-        if self.last_egress is not None:
-            serialized = ARObject._serialize_item(self.last_egress, "CouplingPortScheduler")
+        # Serialize last_egress_ref
+        if self.last_egress_ref is not None:
+            serialized = ARObject._serialize_item(self.last_egress_ref, "CouplingPortScheduler")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("LAST-EGRESS")
+                wrapped = ET.Element("LAST-EGRESS-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -188,11 +189,11 @@ class CouplingPortDetails(ARObject):
             global_time_coupling_value = ARObject._deserialize_by_tag(child, "GlobalTimeCouplingPortProps")
             obj.global_time_coupling = global_time_coupling_value
 
-        # Parse last_egress
-        child = ARObject._find_child_element(element, "LAST-EGRESS")
+        # Parse last_egress_ref
+        child = ARObject._find_child_element(element, "LAST-EGRESS-REF")
         if child is not None:
-            last_egress_value = ARObject._deserialize_by_tag(child, "CouplingPortScheduler")
-            obj.last_egress = last_egress_value
+            last_egress_ref_value = ARRef.deserialize(child)
+            obj.last_egress_ref = last_egress_ref_value
 
         # Parse rate_policies (list from container "RATE-POLICIES")
         obj.rate_policies = []

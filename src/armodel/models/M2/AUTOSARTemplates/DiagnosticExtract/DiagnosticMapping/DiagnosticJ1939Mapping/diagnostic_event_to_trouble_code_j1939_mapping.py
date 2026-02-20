@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
     DiagnosticMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_event import (
     DiagnosticEvent,
 )
@@ -33,13 +34,13 @@ class DiagnosticEventToTroubleCodeJ1939Mapping(DiagnosticMapping):
         """
         return False
 
-    diagnostic_event: Optional[DiagnosticEvent]
-    trouble_code: Optional[DiagnosticTroubleCode]
+    diagnostic_event_ref: Optional[ARRef]
+    trouble_code_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DiagnosticEventToTroubleCodeJ1939Mapping."""
         super().__init__()
-        self.diagnostic_event: Optional[DiagnosticEvent] = None
-        self.trouble_code: Optional[DiagnosticTroubleCode] = None
+        self.diagnostic_event_ref: Optional[ARRef] = None
+        self.trouble_code_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticEventToTroubleCodeJ1939Mapping to XML element.
@@ -61,12 +62,12 @@ class DiagnosticEventToTroubleCodeJ1939Mapping(DiagnosticMapping):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize diagnostic_event
-        if self.diagnostic_event is not None:
-            serialized = ARObject._serialize_item(self.diagnostic_event, "DiagnosticEvent")
+        # Serialize diagnostic_event_ref
+        if self.diagnostic_event_ref is not None:
+            serialized = ARObject._serialize_item(self.diagnostic_event_ref, "DiagnosticEvent")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DIAGNOSTIC-EVENT")
+                wrapped = ET.Element("DIAGNOSTIC-EVENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -75,12 +76,12 @@ class DiagnosticEventToTroubleCodeJ1939Mapping(DiagnosticMapping):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize trouble_code
-        if self.trouble_code is not None:
-            serialized = ARObject._serialize_item(self.trouble_code, "DiagnosticTroubleCode")
+        # Serialize trouble_code_ref
+        if self.trouble_code_ref is not None:
+            serialized = ARObject._serialize_item(self.trouble_code_ref, "DiagnosticTroubleCode")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TROUBLE-CODE")
+                wrapped = ET.Element("TROUBLE-CODE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -104,17 +105,17 @@ class DiagnosticEventToTroubleCodeJ1939Mapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticEventToTroubleCodeJ1939Mapping, cls).deserialize(element)
 
-        # Parse diagnostic_event
-        child = ARObject._find_child_element(element, "DIAGNOSTIC-EVENT")
+        # Parse diagnostic_event_ref
+        child = ARObject._find_child_element(element, "DIAGNOSTIC-EVENT-REF")
         if child is not None:
-            diagnostic_event_value = ARObject._deserialize_by_tag(child, "DiagnosticEvent")
-            obj.diagnostic_event = diagnostic_event_value
+            diagnostic_event_ref_value = ARRef.deserialize(child)
+            obj.diagnostic_event_ref = diagnostic_event_ref_value
 
-        # Parse trouble_code
-        child = ARObject._find_child_element(element, "TROUBLE-CODE")
+        # Parse trouble_code_ref
+        child = ARObject._find_child_element(element, "TROUBLE-CODE-REF")
         if child is not None:
-            trouble_code_value = ARObject._deserialize_by_tag(child, "DiagnosticTroubleCode")
-            obj.trouble_code = trouble_code_value
+            trouble_code_ref_value = ARRef.deserialize(child)
+            obj.trouble_code_ref = trouble_code_ref_value
 
         return obj
 

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
     DiagnosticMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Fim.diagnostic_fim_event_group import (
     DiagnosticFimEventGroup,
 )
@@ -30,13 +31,13 @@ class DiagnosticFimAliasEventGroupMapping(DiagnosticMapping):
         """
         return False
 
-    actual_event: Optional[DiagnosticFimEventGroup]
-    alias_event: Optional[Any]
+    actual_event_ref: Optional[ARRef]
+    alias_event_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticFimAliasEventGroupMapping."""
         super().__init__()
-        self.actual_event: Optional[DiagnosticFimEventGroup] = None
-        self.alias_event: Optional[Any] = None
+        self.actual_event_ref: Optional[ARRef] = None
+        self.alias_event_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticFimAliasEventGroupMapping to XML element.
@@ -58,12 +59,12 @@ class DiagnosticFimAliasEventGroupMapping(DiagnosticMapping):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize actual_event
-        if self.actual_event is not None:
-            serialized = ARObject._serialize_item(self.actual_event, "DiagnosticFimEventGroup")
+        # Serialize actual_event_ref
+        if self.actual_event_ref is not None:
+            serialized = ARObject._serialize_item(self.actual_event_ref, "DiagnosticFimEventGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ACTUAL-EVENT")
+                wrapped = ET.Element("ACTUAL-EVENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -72,12 +73,12 @@ class DiagnosticFimAliasEventGroupMapping(DiagnosticMapping):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize alias_event
-        if self.alias_event is not None:
-            serialized = ARObject._serialize_item(self.alias_event, "Any")
+        # Serialize alias_event_ref
+        if self.alias_event_ref is not None:
+            serialized = ARObject._serialize_item(self.alias_event_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ALIAS-EVENT")
+                wrapped = ET.Element("ALIAS-EVENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -101,17 +102,17 @@ class DiagnosticFimAliasEventGroupMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticFimAliasEventGroupMapping, cls).deserialize(element)
 
-        # Parse actual_event
-        child = ARObject._find_child_element(element, "ACTUAL-EVENT")
+        # Parse actual_event_ref
+        child = ARObject._find_child_element(element, "ACTUAL-EVENT-REF")
         if child is not None:
-            actual_event_value = ARObject._deserialize_by_tag(child, "DiagnosticFimEventGroup")
-            obj.actual_event = actual_event_value
+            actual_event_ref_value = ARRef.deserialize(child)
+            obj.actual_event_ref = actual_event_ref_value
 
-        # Parse alias_event
-        child = ARObject._find_child_element(element, "ALIAS-EVENT")
+        # Parse alias_event_ref
+        child = ARObject._find_child_element(element, "ALIAS-EVENT-REF")
         if child is not None:
-            alias_event_value = child.text
-            obj.alias_event = alias_event_value
+            alias_event_ref_value = ARRef.deserialize(child)
+            obj.alias_event_ref = alias_event_ref_value
 
         return obj
 

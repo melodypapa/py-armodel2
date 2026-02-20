@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.application_partition import (
     ApplicationPartition,
 )
@@ -33,13 +34,13 @@ class CpSoftwareClusterToApplicationPartitionMapping(Identifiable):
         """
         return False
 
-    applications: list[ApplicationPartition]
-    software_cluster: Optional[CpSoftwareCluster]
+    application_refs: list[ARRef]
+    software_cluster_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterToApplicationPartitionMapping."""
         super().__init__()
-        self.applications: list[ApplicationPartition] = []
-        self.software_cluster: Optional[CpSoftwareCluster] = None
+        self.application_refs: list[ARRef] = []
+        self.software_cluster_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize CpSoftwareClusterToApplicationPartitionMapping to XML element.
@@ -61,22 +62,29 @@ class CpSoftwareClusterToApplicationPartitionMapping(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize applications (list to container "APPLICATIONS")
-        if self.applications:
-            wrapper = ET.Element("APPLICATIONS")
-            for item in self.applications:
+        # Serialize application_refs (list to container "APPLICATION-REFS")
+        if self.application_refs:
+            wrapper = ET.Element("APPLICATION-REFS")
+            for item in self.application_refs:
                 serialized = ARObject._serialize_item(item, "ApplicationPartition")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("APPLICATION-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize software_cluster
-        if self.software_cluster is not None:
-            serialized = ARObject._serialize_item(self.software_cluster, "CpSoftwareCluster")
+        # Serialize software_cluster_ref
+        if self.software_cluster_ref is not None:
+            serialized = ARObject._serialize_item(self.software_cluster_ref, "CpSoftwareCluster")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SOFTWARE-CLUSTER")
+                wrapped = ET.Element("SOFTWARE-CLUSTER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -100,21 +108,27 @@ class CpSoftwareClusterToApplicationPartitionMapping(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CpSoftwareClusterToApplicationPartitionMapping, cls).deserialize(element)
 
-        # Parse applications (list from container "APPLICATIONS")
-        obj.applications = []
-        container = ARObject._find_child_element(element, "APPLICATIONS")
+        # Parse application_refs (list from container "APPLICATION-REFS")
+        obj.application_refs = []
+        container = ARObject._find_child_element(element, "APPLICATION-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.applications.append(child_value)
+                    obj.application_refs.append(child_value)
 
-        # Parse software_cluster
-        child = ARObject._find_child_element(element, "SOFTWARE-CLUSTER")
+        # Parse software_cluster_ref
+        child = ARObject._find_child_element(element, "SOFTWARE-CLUSTER-REF")
         if child is not None:
-            software_cluster_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
-            obj.software_cluster = software_cluster_value
+            software_cluster_ref_value = ARRef.deserialize(child)
+            obj.software_cluster_ref = software_cluster_ref_value
 
         return obj
 

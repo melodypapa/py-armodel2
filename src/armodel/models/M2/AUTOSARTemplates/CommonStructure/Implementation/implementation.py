@@ -67,11 +67,11 @@ class Implementation(ARElement, ABC):
         """
         return True
 
-    build_action_manifest: Optional[BuildActionManifest]
+    build_action_manifest_ref: Optional[ARRef]
     code_descriptors: list[Code]
     compilers: list[Compiler]
     generated_refs: list[ARRef]
-    hw_elements: list[HwElement]
+    hw_element_refs: list[ARRef]
     linkers: list[Linker]
     mc_support: Optional[McSupportData]
     programming: Optional[ProgramminglanguageEnum]
@@ -85,11 +85,11 @@ class Implementation(ARElement, ABC):
     def __init__(self) -> None:
         """Initialize Implementation."""
         super().__init__()
-        self.build_action_manifest: Optional[BuildActionManifest] = None
+        self.build_action_manifest_ref: Optional[ARRef] = None
         self.code_descriptors: list[Code] = []
         self.compilers: list[Compiler] = []
         self.generated_refs: list[ARRef] = []
-        self.hw_elements: list[HwElement] = []
+        self.hw_element_refs: list[ARRef] = []
         self.linkers: list[Linker] = []
         self.mc_support: Optional[McSupportData] = None
         self.programming: Optional[ProgramminglanguageEnum] = None
@@ -121,12 +121,12 @@ class Implementation(ARElement, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize build_action_manifest
-        if self.build_action_manifest is not None:
-            serialized = ARObject._serialize_item(self.build_action_manifest, "BuildActionManifest")
+        # Serialize build_action_manifest_ref
+        if self.build_action_manifest_ref is not None:
+            serialized = ARObject._serialize_item(self.build_action_manifest_ref, "BuildActionManifest")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("BUILD-ACTION-MANIFEST")
+                wrapped = ET.Element("BUILD-ACTION-MANIFEST-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -172,13 +172,20 @@ class Implementation(ARElement, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize hw_elements (list to container "HW-ELEMENTS")
-        if self.hw_elements:
-            wrapper = ET.Element("HW-ELEMENTS")
-            for item in self.hw_elements:
+        # Serialize hw_element_refs (list to container "HW-ELEMENT-REFS")
+        if self.hw_element_refs:
+            wrapper = ET.Element("HW-ELEMENT-REFS")
+            for item in self.hw_element_refs:
                 serialized = ARObject._serialize_item(item, "HwElement")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("HW-ELEMENT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -339,11 +346,11 @@ class Implementation(ARElement, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Implementation, cls).deserialize(element)
 
-        # Parse build_action_manifest
-        child = ARObject._find_child_element(element, "BUILD-ACTION-MANIFEST")
+        # Parse build_action_manifest_ref
+        child = ARObject._find_child_element(element, "BUILD-ACTION-MANIFEST-REF")
         if child is not None:
-            build_action_manifest_value = ARObject._deserialize_by_tag(child, "BuildActionManifest")
-            obj.build_action_manifest = build_action_manifest_value
+            build_action_manifest_ref_value = ARRef.deserialize(child)
+            obj.build_action_manifest_ref = build_action_manifest_ref_value
 
         # Parse code_descriptors (list from container "CODE-DESCRIPTORS")
         obj.code_descriptors = []
@@ -381,15 +388,21 @@ class Implementation(ARElement, ABC):
                 if child_value is not None:
                     obj.generated_refs.append(child_value)
 
-        # Parse hw_elements (list from container "HW-ELEMENTS")
-        obj.hw_elements = []
-        container = ARObject._find_child_element(element, "HW-ELEMENTS")
+        # Parse hw_element_refs (list from container "HW-ELEMENT-REFS")
+        obj.hw_element_refs = []
+        container = ARObject._find_child_element(element, "HW-ELEMENT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.hw_elements.append(child_value)
+                    obj.hw_element_refs.append(child_value)
 
         # Parse linkers (list from container "LINKERS")
         obj.linkers = []

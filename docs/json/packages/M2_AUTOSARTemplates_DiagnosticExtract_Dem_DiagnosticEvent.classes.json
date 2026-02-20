@@ -145,8 +145,8 @@
         "indicator": {
           "type": "DiagnosticIndicator",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the used indicator."
         },
         "indicatorFailure": {
@@ -194,8 +194,8 @@
         "event": {
           "type": "DiagnosticEvent",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference represents the DiagnosticEvent that the IUMPR computation."
         },
         "ratioKind": {
@@ -243,8 +243,8 @@
         "iumprs": {
           "type": "DiagnosticIumpr",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference collects DiagnosticIumpr to a Diagnostic"
         },
         "iumprGroup": {
@@ -327,8 +327,8 @@
         "iumprs": {
           "type": "DiagnosticIumpr",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference collects DiagnosticIumpr to a Diagnostic"
         }
       }
@@ -410,15 +410,15 @@
         "actualEvent": {
           "type": "DiagnosticEvent",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the reference to the actual diagnostic"
         },
         "aliasEventEvent": {
           "type": "any (DiagnosticFimAlias)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the reference to the alias event."
         }
       }

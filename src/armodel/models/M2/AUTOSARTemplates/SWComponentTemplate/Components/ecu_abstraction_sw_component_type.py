@@ -16,6 +16,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.atomic_sw
     AtomicSwComponentType,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_description_entity import (
     HwDescriptionEntity,
 )
@@ -33,11 +34,11 @@ class EcuAbstractionSwComponentType(AtomicSwComponentType):
         """
         return False
 
-    hardwares: list[HwDescriptionEntity]
+    hardware_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize EcuAbstractionSwComponentType."""
         super().__init__()
-        self.hardwares: list[HwDescriptionEntity] = []
+        self.hardware_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize EcuAbstractionSwComponentType to XML element.
@@ -59,13 +60,20 @@ class EcuAbstractionSwComponentType(AtomicSwComponentType):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize hardwares (list to container "HARDWARES")
-        if self.hardwares:
-            wrapper = ET.Element("HARDWARES")
-            for item in self.hardwares:
+        # Serialize hardware_refs (list to container "HARDWARE-REFS")
+        if self.hardware_refs:
+            wrapper = ET.Element("HARDWARE-REFS")
+            for item in self.hardware_refs:
                 serialized = ARObject._serialize_item(item, "HwDescriptionEntity")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("HARDWARE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -84,15 +92,21 @@ class EcuAbstractionSwComponentType(AtomicSwComponentType):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcuAbstractionSwComponentType, cls).deserialize(element)
 
-        # Parse hardwares (list from container "HARDWARES")
-        obj.hardwares = []
-        container = ARObject._find_child_element(element, "HARDWARES")
+        # Parse hardware_refs (list from container "HARDWARE-REFS")
+        obj.hardware_refs = []
+        container = ARObject._find_child_element(element, "HARDWARE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.hardwares.append(child_value)
+                    obj.hardware_refs.append(child_value)
 
         return obj
 

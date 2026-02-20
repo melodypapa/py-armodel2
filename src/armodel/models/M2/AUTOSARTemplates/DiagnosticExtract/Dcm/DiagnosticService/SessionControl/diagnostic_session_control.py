@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.diagnostic_session import (
     DiagnosticSession,
 )
@@ -30,13 +31,13 @@ class DiagnosticSessionControl(DiagnosticServiceInstance):
         """
         return False
 
-    diagnostic_session_session: Optional[DiagnosticSession]
-    session_control: Optional[DiagnosticSession]
+    diagnostic_session_session_ref: Optional[ARRef]
+    session_control_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DiagnosticSessionControl."""
         super().__init__()
-        self.diagnostic_session_session: Optional[DiagnosticSession] = None
-        self.session_control: Optional[DiagnosticSession] = None
+        self.diagnostic_session_session_ref: Optional[ARRef] = None
+        self.session_control_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticSessionControl to XML element.
@@ -58,12 +59,12 @@ class DiagnosticSessionControl(DiagnosticServiceInstance):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize diagnostic_session_session
-        if self.diagnostic_session_session is not None:
-            serialized = ARObject._serialize_item(self.diagnostic_session_session, "DiagnosticSession")
+        # Serialize diagnostic_session_session_ref
+        if self.diagnostic_session_session_ref is not None:
+            serialized = ARObject._serialize_item(self.diagnostic_session_session_ref, "DiagnosticSession")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DIAGNOSTIC-SESSION-SESSION")
+                wrapped = ET.Element("DIAGNOSTIC-SESSION-SESSION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -72,12 +73,12 @@ class DiagnosticSessionControl(DiagnosticServiceInstance):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize session_control
-        if self.session_control is not None:
-            serialized = ARObject._serialize_item(self.session_control, "DiagnosticSession")
+        # Serialize session_control_ref
+        if self.session_control_ref is not None:
+            serialized = ARObject._serialize_item(self.session_control_ref, "DiagnosticSession")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SESSION-CONTROL")
+                wrapped = ET.Element("SESSION-CONTROL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -101,17 +102,17 @@ class DiagnosticSessionControl(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticSessionControl, cls).deserialize(element)
 
-        # Parse diagnostic_session_session
-        child = ARObject._find_child_element(element, "DIAGNOSTIC-SESSION-SESSION")
+        # Parse diagnostic_session_session_ref
+        child = ARObject._find_child_element(element, "DIAGNOSTIC-SESSION-SESSION-REF")
         if child is not None:
-            diagnostic_session_session_value = ARObject._deserialize_by_tag(child, "DiagnosticSession")
-            obj.diagnostic_session_session = diagnostic_session_session_value
+            diagnostic_session_session_ref_value = ARRef.deserialize(child)
+            obj.diagnostic_session_session_ref = diagnostic_session_session_ref_value
 
-        # Parse session_control
-        child = ARObject._find_child_element(element, "SESSION-CONTROL")
+        # Parse session_control_ref
+        child = ARObject._find_child_element(element, "SESSION-CONTROL-REF")
         if child is not None:
-            session_control_value = ARObject._deserialize_by_tag(child, "DiagnosticSession")
-            obj.session_control = session_control_value
+            session_control_ref_value = ARRef.deserialize(child)
+            obj.session_control_ref = session_control_ref_value
 
         return obj
 

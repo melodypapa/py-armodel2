@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime import (
     GlobalTimeIcvSupportEnum,
 )
@@ -38,7 +39,7 @@ class GlobalTimeMaster(Identifiable, ABC):
         """
         return True
 
-    communication_connector: Optional[CommunicationConnector]
+    communication_connector_ref: Optional[ARRef]
     icv_secured: Optional[GlobalTimeIcvSupportEnum]
     immediate: Optional[TimeValue]
     is_system_wide: Optional[Boolean]
@@ -46,7 +47,7 @@ class GlobalTimeMaster(Identifiable, ABC):
     def __init__(self) -> None:
         """Initialize GlobalTimeMaster."""
         super().__init__()
-        self.communication_connector: Optional[CommunicationConnector] = None
+        self.communication_connector_ref: Optional[ARRef] = None
         self.icv_secured: Optional[GlobalTimeIcvSupportEnum] = None
         self.immediate: Optional[TimeValue] = None
         self.is_system_wide: Optional[Boolean] = None
@@ -72,12 +73,12 @@ class GlobalTimeMaster(Identifiable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize communication_connector
-        if self.communication_connector is not None:
-            serialized = ARObject._serialize_item(self.communication_connector, "CommunicationConnector")
+        # Serialize communication_connector_ref
+        if self.communication_connector_ref is not None:
+            serialized = ARObject._serialize_item(self.communication_connector_ref, "CommunicationConnector")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("COMMUNICATION-CONNECTOR")
+                wrapped = ET.Element("COMMUNICATION-CONNECTOR-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -157,11 +158,11 @@ class GlobalTimeMaster(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(GlobalTimeMaster, cls).deserialize(element)
 
-        # Parse communication_connector
-        child = ARObject._find_child_element(element, "COMMUNICATION-CONNECTOR")
+        # Parse communication_connector_ref
+        child = ARObject._find_child_element(element, "COMMUNICATION-CONNECTOR-REF")
         if child is not None:
-            communication_connector_value = ARObject._deserialize_by_tag(child, "CommunicationConnector")
-            obj.communication_connector = communication_connector_value
+            communication_connector_ref_value = ARRef.deserialize(child)
+            obj.communication_connector_ref = communication_connector_ref_value
 
         # Parse icv_secured
         child = ARObject._find_child_element(element, "ICV-SECURED")

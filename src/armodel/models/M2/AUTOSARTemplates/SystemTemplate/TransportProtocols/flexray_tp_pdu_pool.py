@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.n_pdu import (
     NPdu,
 )
@@ -30,11 +31,11 @@ class FlexrayTpPduPool(Identifiable):
         """
         return False
 
-    n_pdus: list[NPdu]
+    n_pdu_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize FlexrayTpPduPool."""
         super().__init__()
-        self.n_pdus: list[NPdu] = []
+        self.n_pdu_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize FlexrayTpPduPool to XML element.
@@ -56,13 +57,20 @@ class FlexrayTpPduPool(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize n_pdus (list to container "N-PDUS")
-        if self.n_pdus:
-            wrapper = ET.Element("N-PDUS")
-            for item in self.n_pdus:
+        # Serialize n_pdu_refs (list to container "N-PDU-REFS")
+        if self.n_pdu_refs:
+            wrapper = ET.Element("N-PDU-REFS")
+            for item in self.n_pdu_refs:
                 serialized = ARObject._serialize_item(item, "NPdu")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("N-PDU-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -81,15 +89,21 @@ class FlexrayTpPduPool(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FlexrayTpPduPool, cls).deserialize(element)
 
-        # Parse n_pdus (list from container "N-PDUS")
-        obj.n_pdus = []
-        container = ARObject._find_child_element(element, "N-PDUS")
+        # Parse n_pdu_refs (list from container "N-PDU-REFS")
+        obj.n_pdu_refs = []
+        container = ARObject._find_child_element(element, "N-PDU-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.n_pdus.append(child_value)
+                    obj.n_pdu_refs.append(child_value)
 
         return obj
 

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
     CpSoftwareCluster,
 )
@@ -33,13 +34,13 @@ class TDCpSoftwareClusterResourceMapping(Identifiable):
         """
         return False
 
-    resource: Optional[CpSoftwareCluster]
-    timing: Optional[TimingDescription]
+    resource_ref: Optional[ARRef]
+    timing_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize TDCpSoftwareClusterResourceMapping."""
         super().__init__()
-        self.resource: Optional[CpSoftwareCluster] = None
-        self.timing: Optional[TimingDescription] = None
+        self.resource_ref: Optional[ARRef] = None
+        self.timing_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize TDCpSoftwareClusterResourceMapping to XML element.
@@ -61,12 +62,12 @@ class TDCpSoftwareClusterResourceMapping(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize resource
-        if self.resource is not None:
-            serialized = ARObject._serialize_item(self.resource, "CpSoftwareCluster")
+        # Serialize resource_ref
+        if self.resource_ref is not None:
+            serialized = ARObject._serialize_item(self.resource_ref, "CpSoftwareCluster")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("RESOURCE")
+                wrapped = ET.Element("RESOURCE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -75,12 +76,12 @@ class TDCpSoftwareClusterResourceMapping(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize timing
-        if self.timing is not None:
-            serialized = ARObject._serialize_item(self.timing, "TimingDescription")
+        # Serialize timing_ref
+        if self.timing_ref is not None:
+            serialized = ARObject._serialize_item(self.timing_ref, "TimingDescription")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TIMING")
+                wrapped = ET.Element("TIMING-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -104,17 +105,17 @@ class TDCpSoftwareClusterResourceMapping(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDCpSoftwareClusterResourceMapping, cls).deserialize(element)
 
-        # Parse resource
-        child = ARObject._find_child_element(element, "RESOURCE")
+        # Parse resource_ref
+        child = ARObject._find_child_element(element, "RESOURCE-REF")
         if child is not None:
-            resource_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
-            obj.resource = resource_value
+            resource_ref_value = ARRef.deserialize(child)
+            obj.resource_ref = resource_ref_value
 
-        # Parse timing
-        child = ARObject._find_child_element(element, "TIMING")
+        # Parse timing_ref
+        child = ARObject._find_child_element(element, "TIMING-REF")
         if child is not None:
-            timing_value = ARObject._deserialize_by_tag(child, "TimingDescription")
-            obj.timing = timing_value
+            timing_ref_value = ARRef.deserialize(child)
+            obj.timing_ref = timing_ref_value
 
         return obj
 

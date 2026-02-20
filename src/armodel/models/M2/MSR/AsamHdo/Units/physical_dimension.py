@@ -32,9 +32,9 @@ class PhysicalDimension(ARElement):
 
     current_exp: Optional[Numerical]
     length_exp: Optional[Numerical]
-    luminous: Optional[Numerical]
+    luminous_intensity_exp: Optional[Numerical]
     mass_exp: Optional[Numerical]
-    molar_amount: Optional[Numerical]
+    molar_amount_exp: Optional[Numerical]
     temperature_exp: Optional[Numerical]
     time_exp: Optional[Numerical]
     def __init__(self) -> None:
@@ -42,9 +42,9 @@ class PhysicalDimension(ARElement):
         super().__init__()
         self.current_exp: Optional[Numerical] = None
         self.length_exp: Optional[Numerical] = None
-        self.luminous: Optional[Numerical] = None
+        self.luminous_intensity_exp: Optional[Numerical] = None
         self.mass_exp: Optional[Numerical] = None
-        self.molar_amount: Optional[Numerical] = None
+        self.molar_amount_exp: Optional[Numerical] = None
         self.temperature_exp: Optional[Numerical] = None
         self.time_exp: Optional[Numerical] = None
 
@@ -96,12 +96,12 @@ class PhysicalDimension(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize luminous
-        if self.luminous is not None:
-            serialized = ARObject._serialize_item(self.luminous, "Numerical")
+        # Serialize luminous_intensity_exp
+        if self.luminous_intensity_exp is not None:
+            serialized = ARObject._serialize_item(self.luminous_intensity_exp, "Numerical")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("LUMINOUS")
+                wrapped = ET.Element("LUMINOUS-INTENSITY-EXP")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -124,12 +124,12 @@ class PhysicalDimension(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize molar_amount
-        if self.molar_amount is not None:
-            serialized = ARObject._serialize_item(self.molar_amount, "Numerical")
+        # Serialize molar_amount_exp
+        if self.molar_amount_exp is not None:
+            serialized = ARObject._serialize_item(self.molar_amount_exp, "Numerical")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("MOLAR-AMOUNT")
+                wrapped = ET.Element("MOLAR-AMOUNT-EXP")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -193,11 +193,11 @@ class PhysicalDimension(ARElement):
             length_exp_value = child.text
             obj.length_exp = length_exp_value
 
-        # Parse luminous
-        child = ARObject._find_child_element(element, "LUMINOUS")
+        # Parse luminous_intensity_exp
+        child = ARObject._find_child_element(element, "LUMINOUS-INTENSITY-EXP")
         if child is not None:
-            luminous_value = child.text
-            obj.luminous = luminous_value
+            luminous_intensity_exp_value = child.text
+            obj.luminous_intensity_exp = luminous_intensity_exp_value
 
         # Parse mass_exp
         child = ARObject._find_child_element(element, "MASS-EXP")
@@ -205,11 +205,11 @@ class PhysicalDimension(ARElement):
             mass_exp_value = child.text
             obj.mass_exp = mass_exp_value
 
-        # Parse molar_amount
-        child = ARObject._find_child_element(element, "MOLAR-AMOUNT")
+        # Parse molar_amount_exp
+        child = ARObject._find_child_element(element, "MOLAR-AMOUNT-EXP")
         if child is not None:
-            molar_amount_value = child.text
-            obj.molar_amount = molar_amount_value
+            molar_amount_exp_value = child.text
+            obj.molar_amount_exp = molar_amount_exp_value
 
         # Parse temperature_exp
         child = ARObject._find_child_element(element, "TEMPERATURE-EXP")

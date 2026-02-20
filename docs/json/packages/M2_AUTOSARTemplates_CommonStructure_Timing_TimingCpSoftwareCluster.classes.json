@@ -74,22 +74,22 @@
         "provider": {
           "type": "CpSoftwareCluster",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This is the software cluster that provides the temporal and"
         },
         "requestors": {
           "type": "CpSoftwareCluster",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This is the software cluster that requests the temporal resource."
         },
         "timing": {
           "type": "TimingDescription",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The timing description representing the temporal and resource."
         }
       }
@@ -126,15 +126,15 @@
         "resource": {
           "type": "CpSoftwareCluster",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The specific resource identification assigned to the and dynamic resource."
         },
         "timing": {
           "type": "TimingDescription",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The timing description representing the temporal and resource."
         }
       }

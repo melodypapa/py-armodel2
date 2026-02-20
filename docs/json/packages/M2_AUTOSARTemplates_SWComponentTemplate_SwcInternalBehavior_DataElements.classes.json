@@ -270,8 +270,8 @@
         "contextDatas": {
           "type": "any (AbstractImplementation)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This is a context in case there are subelements with explicit types. The reference has to be ordered to reflect the nested structure."
         },
         "portPrototype": {
@@ -291,8 +291,8 @@
         "targetData": {
           "type": "any (AbstractImplementation)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference points to the target ImplementationData TypeElement."
         }
       }
@@ -326,8 +326,8 @@
         "contextDatas": {
           "type": "any (AbstractImplementation)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This is a context in case there are subelements with explicit types. The reference has to be ordered to reflect the nested structure."
         },
         "portPrototype": {
@@ -340,15 +340,15 @@
         "rootParameter": {
           "type": "ParameterDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This refers to the ParameterDataPrototype typed by the implementationDataType in which the target can be"
         },
         "targetData": {
           "type": "any (AbstractImplementation)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference points to the target ImplementationData TypeElement."
         }
       }

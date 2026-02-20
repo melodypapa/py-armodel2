@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_ele
     FibexElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
 class ConsumedProvidedServiceInstanceGroup(FibexElement):
@@ -27,13 +28,13 @@ class ConsumedProvidedServiceInstanceGroup(FibexElement):
         """
         return False
 
-    consumed_services: list[Any]
-    provided_services: list[Any]
+    consumed_service_refs: list[Any]
+    provided_service_refs: list[Any]
     def __init__(self) -> None:
         """Initialize ConsumedProvidedServiceInstanceGroup."""
         super().__init__()
-        self.consumed_services: list[Any] = []
-        self.provided_services: list[Any] = []
+        self.consumed_service_refs: list[Any] = []
+        self.provided_service_refs: list[Any] = []
 
     def serialize(self) -> ET.Element:
         """Serialize ConsumedProvidedServiceInstanceGroup to XML element.
@@ -55,23 +56,37 @@ class ConsumedProvidedServiceInstanceGroup(FibexElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize consumed_services (list to container "CONSUMED-SERVICES")
-        if self.consumed_services:
-            wrapper = ET.Element("CONSUMED-SERVICES")
-            for item in self.consumed_services:
+        # Serialize consumed_service_refs (list to container "CONSUMED-SERVICE-REFS")
+        if self.consumed_service_refs:
+            wrapper = ET.Element("CONSUMED-SERVICE-REFS")
+            for item in self.consumed_service_refs:
                 serialized = ARObject._serialize_item(item, "Any")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("CONSUMED-SERVICE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize provided_services (list to container "PROVIDED-SERVICES")
-        if self.provided_services:
-            wrapper = ET.Element("PROVIDED-SERVICES")
-            for item in self.provided_services:
+        # Serialize provided_service_refs (list to container "PROVIDED-SERVICE-REFS")
+        if self.provided_service_refs:
+            wrapper = ET.Element("PROVIDED-SERVICE-REFS")
+            for item in self.provided_service_refs:
                 serialized = ARObject._serialize_item(item, "Any")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("PROVIDED-SERVICE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -90,25 +105,37 @@ class ConsumedProvidedServiceInstanceGroup(FibexElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ConsumedProvidedServiceInstanceGroup, cls).deserialize(element)
 
-        # Parse consumed_services (list from container "CONSUMED-SERVICES")
-        obj.consumed_services = []
-        container = ARObject._find_child_element(element, "CONSUMED-SERVICES")
+        # Parse consumed_service_refs (list from container "CONSUMED-SERVICE-REFS")
+        obj.consumed_service_refs = []
+        container = ARObject._find_child_element(element, "CONSUMED-SERVICE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.consumed_services.append(child_value)
+                    obj.consumed_service_refs.append(child_value)
 
-        # Parse provided_services (list from container "PROVIDED-SERVICES")
-        obj.provided_services = []
-        container = ARObject._find_child_element(element, "PROVIDED-SERVICES")
+        # Parse provided_service_refs (list from container "PROVIDED-SERVICE-REFS")
+        obj.provided_service_refs = []
+        container = ARObject._find_child_element(element, "PROVIDED-SERVICE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.provided_services.append(child_value)
+                    obj.provided_service_refs.append(child_value)
 
         return obj
 

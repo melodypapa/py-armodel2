@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     MultilanguageReferrable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from abc import ABC, abstractmethod
 
 
@@ -29,11 +30,11 @@ class Traceable(MultilanguageReferrable, ABC):
         """
         return True
 
-    traces: list[Traceable]
+    trace_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize Traceable."""
         super().__init__()
-        self.traces: list[Traceable] = []
+        self.trace_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize Traceable to XML element.
@@ -55,13 +56,20 @@ class Traceable(MultilanguageReferrable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize traces (list to container "TRACES")
-        if self.traces:
-            wrapper = ET.Element("TRACES")
-            for item in self.traces:
+        # Serialize trace_refs (list to container "TRACE-REFS")
+        if self.trace_refs:
+            wrapper = ET.Element("TRACE-REFS")
+            for item in self.trace_refs:
                 serialized = ARObject._serialize_item(item, "Traceable")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("TRACE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -80,15 +88,21 @@ class Traceable(MultilanguageReferrable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Traceable, cls).deserialize(element)
 
-        # Parse traces (list from container "TRACES")
-        obj.traces = []
-        container = ARObject._find_child_element(element, "TRACES")
+        # Parse trace_refs (list from container "TRACE-REFS")
+        obj.trace_refs = []
+        container = ARObject._find_child_element(element, "TRACE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.traces.append(child_value)
+                    obj.trace_refs.append(child_value)
 
         return obj
 

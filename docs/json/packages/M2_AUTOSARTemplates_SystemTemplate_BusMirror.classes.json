@@ -110,8 +110,8 @@
         "channel": {
           "type": "PhysicalChannel",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to PhysicalChannel that is used in the bus sourceChannel or targetChannel. atpVariation"
         }
       }

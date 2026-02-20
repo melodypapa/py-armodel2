@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_element import (
     HwElement,
 )
@@ -30,13 +31,13 @@ class MemorySectionLocation(ARObject):
         """
         return False
 
-    provided_memory: Optional[HwElement]
-    software: Optional[MemorySection]
+    provided_memory_ref: Optional[ARRef]
+    software_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize MemorySectionLocation."""
         super().__init__()
-        self.provided_memory: Optional[HwElement] = None
-        self.software: Optional[MemorySection] = None
+        self.provided_memory_ref: Optional[ARRef] = None
+        self.software_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize MemorySectionLocation to XML element.
@@ -48,12 +49,12 @@ class MemorySectionLocation(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize provided_memory
-        if self.provided_memory is not None:
-            serialized = ARObject._serialize_item(self.provided_memory, "HwElement")
+        # Serialize provided_memory_ref
+        if self.provided_memory_ref is not None:
+            serialized = ARObject._serialize_item(self.provided_memory_ref, "HwElement")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PROVIDED-MEMORY")
+                wrapped = ET.Element("PROVIDED-MEMORY-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -62,12 +63,12 @@ class MemorySectionLocation(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize software
-        if self.software is not None:
-            serialized = ARObject._serialize_item(self.software, "MemorySection")
+        # Serialize software_ref
+        if self.software_ref is not None:
+            serialized = ARObject._serialize_item(self.software_ref, "MemorySection")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SOFTWARE")
+                wrapped = ET.Element("SOFTWARE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -92,17 +93,17 @@ class MemorySectionLocation(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse provided_memory
-        child = ARObject._find_child_element(element, "PROVIDED-MEMORY")
+        # Parse provided_memory_ref
+        child = ARObject._find_child_element(element, "PROVIDED-MEMORY-REF")
         if child is not None:
-            provided_memory_value = ARObject._deserialize_by_tag(child, "HwElement")
-            obj.provided_memory = provided_memory_value
+            provided_memory_ref_value = ARRef.deserialize(child)
+            obj.provided_memory_ref = provided_memory_ref_value
 
-        # Parse software
-        child = ARObject._find_child_element(element, "SOFTWARE")
+        # Parse software_ref
+        child = ARObject._find_child_element(element, "SOFTWARE-REF")
         if child is not None:
-            software_value = ARObject._deserialize_by_tag(child, "MemorySection")
-            obj.software = software_value
+            software_ref_value = ARRef.deserialize(child)
+            obj.software_ref = software_ref_value
 
         return obj
 

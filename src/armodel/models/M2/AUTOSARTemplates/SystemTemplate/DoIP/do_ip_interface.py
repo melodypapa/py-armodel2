@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -45,15 +46,15 @@ class DoIpInterface(Identifiable):
         return False
 
     alive_check: Optional[TimeValue]
-    doip_channel: Optional[DoIpTpConfig]
-    doip_connections: list[SocketConnection]
+    doip_channel_ref: Optional[ARRef]
+    doip_connection_refs: list[ARRef]
     do_ip_routings: list[DoIpRoutingActivation]
     general_inactivity: Optional[TimeValue]
     initial_inactivity: Optional[TimeValue]
     initial_vehicle: Optional[TimeValue]
     is_activation_line: Optional[Boolean]
     max_tester: Optional[PositiveInteger]
-    sockets: list[StaticSocketConnection]
+    socket_refs: list[ARRef]
     use_mac_address: Optional[Boolean]
     use_vehicle: Optional[Boolean]
     vehicle: Optional[TimeValue]
@@ -61,15 +62,15 @@ class DoIpInterface(Identifiable):
         """Initialize DoIpInterface."""
         super().__init__()
         self.alive_check: Optional[TimeValue] = None
-        self.doip_channel: Optional[DoIpTpConfig] = None
-        self.doip_connections: list[SocketConnection] = []
+        self.doip_channel_ref: Optional[ARRef] = None
+        self.doip_connection_refs: list[ARRef] = []
         self.do_ip_routings: list[DoIpRoutingActivation] = []
         self.general_inactivity: Optional[TimeValue] = None
         self.initial_inactivity: Optional[TimeValue] = None
         self.initial_vehicle: Optional[TimeValue] = None
         self.is_activation_line: Optional[Boolean] = None
         self.max_tester: Optional[PositiveInteger] = None
-        self.sockets: list[StaticSocketConnection] = []
+        self.socket_refs: list[ARRef] = []
         self.use_mac_address: Optional[Boolean] = None
         self.use_vehicle: Optional[Boolean] = None
         self.vehicle: Optional[TimeValue] = None
@@ -108,12 +109,12 @@ class DoIpInterface(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize doip_channel
-        if self.doip_channel is not None:
-            serialized = ARObject._serialize_item(self.doip_channel, "DoIpTpConfig")
+        # Serialize doip_channel_ref
+        if self.doip_channel_ref is not None:
+            serialized = ARObject._serialize_item(self.doip_channel_ref, "DoIpTpConfig")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DOIP-CHANNEL")
+                wrapped = ET.Element("DOIP-CHANNEL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -122,13 +123,20 @@ class DoIpInterface(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize doip_connections (list to container "DOIP-CONNECTIONS")
-        if self.doip_connections:
-            wrapper = ET.Element("DOIP-CONNECTIONS")
-            for item in self.doip_connections:
+        # Serialize doip_connection_refs (list to container "DOIP-CONNECTION-REFS")
+        if self.doip_connection_refs:
+            wrapper = ET.Element("DOIP-CONNECTION-REFS")
+            for item in self.doip_connection_refs:
                 serialized = ARObject._serialize_item(item, "SocketConnection")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("DOIP-CONNECTION-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -212,13 +220,20 @@ class DoIpInterface(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sockets (list to container "SOCKETS")
-        if self.sockets:
-            wrapper = ET.Element("SOCKETS")
-            for item in self.sockets:
+        # Serialize socket_refs (list to container "SOCKET-REFS")
+        if self.socket_refs:
+            wrapper = ET.Element("SOCKET-REFS")
+            for item in self.socket_refs:
                 serialized = ARObject._serialize_item(item, "StaticSocketConnection")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("SOCKET-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -285,21 +300,27 @@ class DoIpInterface(Identifiable):
             alive_check_value = child.text
             obj.alive_check = alive_check_value
 
-        # Parse doip_channel
-        child = ARObject._find_child_element(element, "DOIP-CHANNEL")
+        # Parse doip_channel_ref
+        child = ARObject._find_child_element(element, "DOIP-CHANNEL-REF")
         if child is not None:
-            doip_channel_value = ARObject._deserialize_by_tag(child, "DoIpTpConfig")
-            obj.doip_channel = doip_channel_value
+            doip_channel_ref_value = ARRef.deserialize(child)
+            obj.doip_channel_ref = doip_channel_ref_value
 
-        # Parse doip_connections (list from container "DOIP-CONNECTIONS")
-        obj.doip_connections = []
-        container = ARObject._find_child_element(element, "DOIP-CONNECTIONS")
+        # Parse doip_connection_refs (list from container "DOIP-CONNECTION-REFS")
+        obj.doip_connection_refs = []
+        container = ARObject._find_child_element(element, "DOIP-CONNECTION-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.doip_connections.append(child_value)
+                    obj.doip_connection_refs.append(child_value)
 
         # Parse do_ip_routings (list from container "DO-IP-ROUTINGS")
         obj.do_ip_routings = []
@@ -341,15 +362,21 @@ class DoIpInterface(Identifiable):
             max_tester_value = child.text
             obj.max_tester = max_tester_value
 
-        # Parse sockets (list from container "SOCKETS")
-        obj.sockets = []
-        container = ARObject._find_child_element(element, "SOCKETS")
+        # Parse socket_refs (list from container "SOCKET-REFS")
+        obj.socket_refs = []
+        container = ARObject._find_child_element(element, "SOCKET-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.sockets.append(child_value)
+                    obj.socket_refs.append(child_value)
 
         # Parse use_mac_address
         child = ARObject._find_child_element(element, "USE-MAC-ADDRESS")

@@ -38,22 +38,22 @@
         "sendingNodes": {
           "type": "DiagnosticJ1939Node",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This additional reference has a supporting role in that it sending nodes of a given SPN. It is positively a given SPN is sent by more than one node. the reference targets the Diagnostic semantics of the reference is bound to that is in turn referenced by the"
         },
         "spn": {
           "type": "DiagnosticJ1939Spn",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference goes to the SPN that shall be associated SystemSignal."
         },
         "systemSignal": {
           "type": "SystemSignal",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference goes to the SystemSignal that shall be"
         }
       }
@@ -96,8 +96,8 @@
         "node": {
           "type": "DiagnosticJ1939Node",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the mapped DiagnosticJ1939Node."
         },
         "swComponentPrototypeCompositionInstanceRef": {
@@ -146,15 +146,15 @@
         "diagnosticEvent": {
           "type": "DiagnosticEvent",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to a DiagnosticEvent to which a J1939 Code is assigned."
         },
         "troubleCode": {
           "type": "DiagnosticTroubleCode",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to a J1939 Diagnostic Trouble Code to which a DiagnosticEvent is assigned."
         }
       }

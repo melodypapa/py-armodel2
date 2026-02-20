@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
     DiagnosticSwMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
 class DiagnosticFimFunctionMapping(DiagnosticSwMapping):
@@ -27,16 +28,16 @@ class DiagnosticFimFunctionMapping(DiagnosticSwMapping):
         """
         return False
 
-    mapped_bsw: Optional[Any]
-    mapped_flat_swc: Optional[Any]
-    mapped: Optional[Any]
+    mapped_bsw_ref: Optional[Any]
+    mapped_flat_swc_ref: Optional[Any]
+    mapped_ref: Optional[Any]
     mapped_swc: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticFimFunctionMapping."""
         super().__init__()
-        self.mapped_bsw: Optional[Any] = None
-        self.mapped_flat_swc: Optional[Any] = None
-        self.mapped: Optional[Any] = None
+        self.mapped_bsw_ref: Optional[Any] = None
+        self.mapped_flat_swc_ref: Optional[Any] = None
+        self.mapped_ref: Optional[Any] = None
         self.mapped_swc: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
@@ -59,12 +60,12 @@ class DiagnosticFimFunctionMapping(DiagnosticSwMapping):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize mapped_bsw
-        if self.mapped_bsw is not None:
-            serialized = ARObject._serialize_item(self.mapped_bsw, "Any")
+        # Serialize mapped_bsw_ref
+        if self.mapped_bsw_ref is not None:
+            serialized = ARObject._serialize_item(self.mapped_bsw_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("MAPPED-BSW")
+                wrapped = ET.Element("MAPPED-BSW-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -73,12 +74,12 @@ class DiagnosticFimFunctionMapping(DiagnosticSwMapping):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize mapped_flat_swc
-        if self.mapped_flat_swc is not None:
-            serialized = ARObject._serialize_item(self.mapped_flat_swc, "Any")
+        # Serialize mapped_flat_swc_ref
+        if self.mapped_flat_swc_ref is not None:
+            serialized = ARObject._serialize_item(self.mapped_flat_swc_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("MAPPED-FLAT-SWC")
+                wrapped = ET.Element("MAPPED-FLAT-SWC-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -87,12 +88,12 @@ class DiagnosticFimFunctionMapping(DiagnosticSwMapping):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize mapped
-        if self.mapped is not None:
-            serialized = ARObject._serialize_item(self.mapped, "Any")
+        # Serialize mapped_ref
+        if self.mapped_ref is not None:
+            serialized = ARObject._serialize_item(self.mapped_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("MAPPED")
+                wrapped = ET.Element("MAPPED-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -130,23 +131,23 @@ class DiagnosticFimFunctionMapping(DiagnosticSwMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticFimFunctionMapping, cls).deserialize(element)
 
-        # Parse mapped_bsw
-        child = ARObject._find_child_element(element, "MAPPED-BSW")
+        # Parse mapped_bsw_ref
+        child = ARObject._find_child_element(element, "MAPPED-BSW-REF")
         if child is not None:
-            mapped_bsw_value = child.text
-            obj.mapped_bsw = mapped_bsw_value
+            mapped_bsw_ref_value = ARRef.deserialize(child)
+            obj.mapped_bsw_ref = mapped_bsw_ref_value
 
-        # Parse mapped_flat_swc
-        child = ARObject._find_child_element(element, "MAPPED-FLAT-SWC")
+        # Parse mapped_flat_swc_ref
+        child = ARObject._find_child_element(element, "MAPPED-FLAT-SWC-REF")
         if child is not None:
-            mapped_flat_swc_value = child.text
-            obj.mapped_flat_swc = mapped_flat_swc_value
+            mapped_flat_swc_ref_value = ARRef.deserialize(child)
+            obj.mapped_flat_swc_ref = mapped_flat_swc_ref_value
 
-        # Parse mapped
-        child = ARObject._find_child_element(element, "MAPPED")
+        # Parse mapped_ref
+        child = ARObject._find_child_element(element, "MAPPED-REF")
         if child is not None:
-            mapped_value = child.text
-            obj.mapped = mapped_value
+            mapped_ref_value = ARRef.deserialize(child)
+            obj.mapped_ref = mapped_ref_value
 
         # Parse mapped_swc
         child = ARObject._find_child_element(element, "MAPPED-SWC")

@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
     ApplicationCompositeElementDataPrototype,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes import (
     ArraySizeSemanticsEnum,
 )
@@ -45,14 +46,14 @@ class ApplicationArrayElement(ApplicationCompositeElementDataPrototype):
 
     array_size_handling: Optional[ArraySizeHandlingEnum]
     array_size_semantics: Optional[ArraySizeSemanticsEnum]
-    index_data_type: Optional[ApplicationPrimitiveDataType]
+    index_data_type_ref: Optional[ARRef]
     max_number_of_elements: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize ApplicationArrayElement."""
         super().__init__()
         self.array_size_handling: Optional[ArraySizeHandlingEnum] = None
         self.array_size_semantics: Optional[ArraySizeSemanticsEnum] = None
-        self.index_data_type: Optional[ApplicationPrimitiveDataType] = None
+        self.index_data_type_ref: Optional[ARRef] = None
         self.max_number_of_elements: Optional[PositiveInteger] = None
 
     def serialize(self) -> ET.Element:
@@ -103,12 +104,12 @@ class ApplicationArrayElement(ApplicationCompositeElementDataPrototype):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize index_data_type
-        if self.index_data_type is not None:
-            serialized = ARObject._serialize_item(self.index_data_type, "ApplicationPrimitiveDataType")
+        # Serialize index_data_type_ref
+        if self.index_data_type_ref is not None:
+            serialized = ARObject._serialize_item(self.index_data_type_ref, "ApplicationPrimitiveDataType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("INDEX-DATA-TYPE")
+                wrapped = ET.Element("INDEX-DATA-TYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -158,11 +159,11 @@ class ApplicationArrayElement(ApplicationCompositeElementDataPrototype):
             array_size_semantics_value = ArraySizeSemanticsEnum.deserialize(child)
             obj.array_size_semantics = array_size_semantics_value
 
-        # Parse index_data_type
-        child = ARObject._find_child_element(element, "INDEX-DATA-TYPE")
+        # Parse index_data_type_ref
+        child = ARObject._find_child_element(element, "INDEX-DATA-TYPE-REF")
         if child is not None:
-            index_data_type_value = ARObject._deserialize_by_tag(child, "ApplicationPrimitiveDataType")
-            obj.index_data_type = index_data_type_value
+            index_data_type_ref_value = ARRef.deserialize(child)
+            obj.index_data_type_ref = index_data_type_ref_value
 
         # Parse max_number_of_elements
         child = ARObject._find_child_element(element, "MAX-NUMBER-OF-ELEMENTS")

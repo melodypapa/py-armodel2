@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.
     TimingConstraint,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.timing_description_event import (
     TimingDescriptionEvent,
 )
@@ -31,11 +32,11 @@ class EventTriggeringConstraint(TimingConstraint, ABC):
         """
         return True
 
-    event: Optional[TimingDescriptionEvent]
+    event_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize EventTriggeringConstraint."""
         super().__init__()
-        self.event: Optional[TimingDescriptionEvent] = None
+        self.event_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize EventTriggeringConstraint to XML element.
@@ -57,12 +58,12 @@ class EventTriggeringConstraint(TimingConstraint, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize event
-        if self.event is not None:
-            serialized = ARObject._serialize_item(self.event, "TimingDescriptionEvent")
+        # Serialize event_ref
+        if self.event_ref is not None:
+            serialized = ARObject._serialize_item(self.event_ref, "TimingDescriptionEvent")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("EVENT")
+                wrapped = ET.Element("EVENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -86,11 +87,11 @@ class EventTriggeringConstraint(TimingConstraint, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EventTriggeringConstraint, cls).deserialize(element)
 
-        # Parse event
-        child = ARObject._find_child_element(element, "EVENT")
+        # Parse event_ref
+        child = ARObject._find_child_element(element, "EVENT-REF")
         if child is not None:
-            event_value = ARObject._deserialize_by_tag(child, "TimingDescriptionEvent")
-            obj.event = event_value
+            event_ref_value = ARRef.deserialize(child)
+            obj.event_ref = event_ref_value
 
         return obj
 

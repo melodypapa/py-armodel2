@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     Integer,
@@ -36,7 +37,7 @@ class FlexrayFifoConfiguration(ARObject):
 
     admit_without: Optional[Boolean]
     base_cycle: Optional[Integer]
-    channel: Optional[FlexrayPhysicalChannel]
+    channel_ref: Optional[ARRef]
     cycle_repetition: Optional[Integer]
     fifo_depth: Optional[Integer]
     fifo_ranges: list[FlexrayFifoRange]
@@ -47,7 +48,7 @@ class FlexrayFifoConfiguration(ARObject):
         super().__init__()
         self.admit_without: Optional[Boolean] = None
         self.base_cycle: Optional[Integer] = None
-        self.channel: Optional[FlexrayPhysicalChannel] = None
+        self.channel_ref: Optional[ARRef] = None
         self.cycle_repetition: Optional[Integer] = None
         self.fifo_depth: Optional[Integer] = None
         self.fifo_ranges: list[FlexrayFifoRange] = []
@@ -92,12 +93,12 @@ class FlexrayFifoConfiguration(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize channel
-        if self.channel is not None:
-            serialized = ARObject._serialize_item(self.channel, "FlexrayPhysicalChannel")
+        # Serialize channel_ref
+        if self.channel_ref is not None:
+            serialized = ARObject._serialize_item(self.channel_ref, "FlexrayPhysicalChannel")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CHANNEL")
+                wrapped = ET.Element("CHANNEL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -200,11 +201,11 @@ class FlexrayFifoConfiguration(ARObject):
             base_cycle_value = child.text
             obj.base_cycle = base_cycle_value
 
-        # Parse channel
-        child = ARObject._find_child_element(element, "CHANNEL")
+        # Parse channel_ref
+        child = ARObject._find_child_element(element, "CHANNEL-REF")
         if child is not None:
-            channel_value = ARObject._deserialize_by_tag(child, "FlexrayPhysicalChannel")
-            obj.channel = channel_value
+            channel_ref_value = ARRef.deserialize(child)
+            obj.channel_ref = channel_ref_value
 
         # Parse cycle_repetition
         child = ARObject._find_child_element(element, "CYCLE-REPETITION")

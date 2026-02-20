@@ -223,8 +223,8 @@
         "communication": {
           "type": "EthernetCluster",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This relationship defines to which cluster the Coupling belongs."
         },
         "coupling": {
@@ -251,15 +251,15 @@
         "ecuInstance": {
           "type": "EcuInstance",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Optional reference to the ECU where the Coupling located."
         },
         "firewallRules": {
           "type": "StateDependentFirewall",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Firewall rules defined in the context of a Coupling"
         }
       }
@@ -318,8 +318,8 @@
         "defaultVlan": {
           "type": "any (EthernetPhysical)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The vLanIdentifier of the referenced VLAN is the (port VLAN ID). A Port VLAN ID is a default that is assigned to an access CouplingPort to VLAN segment to which this port is if a CouplingPort has not been any VLAN memberships, the virtual VLAN ID (pvid) becomes the default VLAN the ports connection. is added for incoming untagged the port (ingress tagging). For outgoing this identifier, the tag is removed at the untagging, depending on the Vlan"
         },
         "macLayerTypeEnum": {
@@ -381,15 +381,15 @@
         "vlanModifier": {
           "type": "any (EthernetPhysical)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "All incoming messages at this CouplingPort shall be with this VLAN Id. This tagging is performed the message already has a VLAN tag untagged, an existing VLAN tag will be overwritten. is XOR with CoupligPort.defaultVlan. 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate R23-11"
         },
         "wakeupSleep": {
           "type": "any (EthernetWakeupSleep)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Optional reference to EthernetWakeupSleepOnDataline Config."
         }
       }
@@ -444,8 +444,8 @@
         "vlan": {
           "type": "any (EthernetPhysical)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "References a channel that represents a VLAN or an channel."
         }
       }
@@ -479,15 +479,15 @@
         "firstPort": {
           "type": "CouplingPort",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the first CouplingPort that is connected via 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate R23-11"
         },
         "nodePorts": {
           "type": "CouplingPort",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to a number of CouplingPorts that are the CouplingPortConnection. This be used to describe a 10BASE-T1S where several CouplingPorts of connected via atpVariation"
         },
         "plcaLocalNode": {
@@ -507,8 +507,8 @@
         "secondPort": {
           "type": "CouplingPort",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the second CouplingPort that is connected CouplingPortConnection."
         }
       }
@@ -547,8 +547,8 @@
         "canXlConfig": {
           "type": "any (AbstractCan)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "If the Ethernet frames handled by this Ethernet"
         },
         "couplingPorts": {
@@ -629,8 +629,8 @@
         "ethIpProps": {
           "type": "EthIpProps",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "EcuInstance specific IP attributes."
         },
         "maximum": {
@@ -720,8 +720,8 @@
         "lastEgress": {
           "type": "CouplingPortScheduler",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Defines which CouplingPortScheduler is the last in the port structure."
         },
         "ratePolicies": {
@@ -811,8 +811,8 @@
         "predecessors": {
           "type": "CouplingPortStructuralElement",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Ordered List of predecessor inputs. The first element has the highest priority. The following elements have"
         }
       }
@@ -857,8 +857,8 @@
         "predecessorFifo": {
           "type": "CouplingPortFifo",
           "multiplicity": "1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Defines the CouplingPortFifo which provides the input to"
         }
       }
@@ -973,8 +973,8 @@
         "vLans": {
           "type": "any (EthernetPhysical)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Defines the VLANs this rate policy shall be limited on. If VLAN is given this rate policy is not considering VLAN"
         }
       }
@@ -1368,8 +1368,8 @@
         "egressPorts": {
           "type": "CouplingPort",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the CouplingPort to be taken into account as role for this SwitchStreamIdentification."
         },
         "filterActionBlock": {
@@ -1403,8 +1403,8 @@
         "ingressPorts": {
           "type": "CouplingPort",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the CouplingPort to be taken into account as role for this SwitchStreamIdentification."
         },
         "streamFilter": {
@@ -1805,8 +1805,8 @@
         "egressPorts": {
           "type": "CouplingPort",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the egress ports used as the target of the to modify the egress port."
         },
         "modification": {
@@ -1850,8 +1850,8 @@
         "asynchronous": {
           "type": "CouplingPort",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the Asynchronous Traffic Shaper (ATS). Tags: atp.Status=candidate Shaper"
         },
         "filterPriority": {
@@ -1864,8 +1864,8 @@
         "flowMetering": {
           "type": "SwitchFlowMeteringEntry",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to a Flow Metering Entry. atp.Status=candidate"
         },
         "maxSduSize": {
@@ -1878,8 +1878,8 @@
         "streamGate": {
           "type": "SwitchStreamGateEntry",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to a Stream Gate Entry."
         },
         "stream": {
@@ -3106,8 +3106,8 @@
         "networkEndpointEndpoint": {
           "type": "NetworkEndpoint",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the network address."
         },
         "priority": {
@@ -3127,8 +3127,8 @@
         "tlsCryptoService": {
           "type": "TlsCryptoServiceMapping",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the applicable TlsCryptoService Mapping that adds the ability for TLS-based encryption enclosing ApplicationEndpoint."
         },
         "tpConfigurationConfiguration": {
@@ -4119,8 +4119,8 @@
         "timeSyncServerConfiguration": {
           "type": "TimeSyncServerConfiguration",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to a master (Time Sync Server)."
         }
       }
@@ -4242,8 +4242,8 @@
         "trafficShaper": {
           "type": "SwitchAsynchronousTrafficShaperGroupEntry",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the Traffic Shaper Group this Asynchronous Traffic Shaper is part of. atp.Status=candidate"
         }
       }

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specific
     ValueSpecification,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.constant_specification import (
     ConstantSpecification,
 )
@@ -30,11 +31,11 @@ class ConstantReference(ValueSpecification):
         """
         return False
 
-    constant: Optional[ConstantSpecification]
+    constant_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ConstantReference."""
         super().__init__()
-        self.constant: Optional[ConstantSpecification] = None
+        self.constant_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize ConstantReference to XML element.
@@ -56,12 +57,12 @@ class ConstantReference(ValueSpecification):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize constant
-        if self.constant is not None:
-            serialized = ARObject._serialize_item(self.constant, "ConstantSpecification")
+        # Serialize constant_ref
+        if self.constant_ref is not None:
+            serialized = ARObject._serialize_item(self.constant_ref, "ConstantSpecification")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONSTANT")
+                wrapped = ET.Element("CONSTANT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -85,11 +86,11 @@ class ConstantReference(ValueSpecification):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ConstantReference, cls).deserialize(element)
 
-        # Parse constant
-        child = ARObject._find_child_element(element, "CONSTANT")
+        # Parse constant_ref
+        child = ARObject._find_child_element(element, "CONSTANT-REF")
         if child is not None:
-            constant_value = ARObject._deserialize_by_tag(child, "ConstantSpecification")
-            obj.constant = constant_value
+            constant_ref_value = ARRef.deserialize(child)
+            obj.constant_ref = constant_ref_value
 
         return obj
 

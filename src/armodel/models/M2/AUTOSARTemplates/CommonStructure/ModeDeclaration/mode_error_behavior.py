@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration import (
     ModeErrorReactionPolicyEnum,
 )
@@ -31,12 +32,12 @@ class ModeErrorBehavior(ARObject):
         """
         return False
 
-    default_mode: Optional[ModeDeclaration]
+    default_mode_ref: Optional[ARRef]
     error_reaction: Optional[ModeErrorReactionPolicyEnum]
     def __init__(self) -> None:
         """Initialize ModeErrorBehavior."""
         super().__init__()
-        self.default_mode: Optional[ModeDeclaration] = None
+        self.default_mode_ref: Optional[ARRef] = None
         self.error_reaction: Optional[ModeErrorReactionPolicyEnum] = None
 
     def serialize(self) -> ET.Element:
@@ -49,12 +50,12 @@ class ModeErrorBehavior(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize default_mode
-        if self.default_mode is not None:
-            serialized = ARObject._serialize_item(self.default_mode, "ModeDeclaration")
+        # Serialize default_mode_ref
+        if self.default_mode_ref is not None:
+            serialized = ARObject._serialize_item(self.default_mode_ref, "ModeDeclaration")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DEFAULT-MODE")
+                wrapped = ET.Element("DEFAULT-MODE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -93,11 +94,11 @@ class ModeErrorBehavior(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse default_mode
-        child = ARObject._find_child_element(element, "DEFAULT-MODE")
+        # Parse default_mode_ref
+        child = ARObject._find_child_element(element, "DEFAULT-MODE-REF")
         if child is not None:
-            default_mode_value = ARObject._deserialize_by_tag(child, "ModeDeclaration")
-            obj.default_mode = default_mode_value
+            default_mode_ref_value = ARRef.deserialize(child)
+            obj.default_mode_ref = default_mode_ref_value
 
         # Parse error_reaction
         child = ARObject._find_child_element(element, "ERROR-REACTION")

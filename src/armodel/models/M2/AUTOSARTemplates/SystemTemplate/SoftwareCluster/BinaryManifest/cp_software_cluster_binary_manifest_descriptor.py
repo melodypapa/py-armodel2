@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -42,7 +43,7 @@ class CpSoftwareClusterBinaryManifestDescriptor(ARElement):
         """
         return False
 
-    cp_software_cluster: Optional[CpSoftwareCluster]
+    cp_software_cluster_ref: Optional[ARRef]
     meta_data_fields: list[BinaryManifestMetaDataField]
     provides: list[BinaryManifestProvideResource]
     requires: list[BinaryManifestRequireResource]
@@ -51,7 +52,7 @@ class CpSoftwareClusterBinaryManifestDescriptor(ARElement):
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterBinaryManifestDescriptor."""
         super().__init__()
-        self.cp_software_cluster: Optional[CpSoftwareCluster] = None
+        self.cp_software_cluster_ref: Optional[ARRef] = None
         self.meta_data_fields: list[BinaryManifestMetaDataField] = []
         self.provides: list[BinaryManifestProvideResource] = []
         self.requires: list[BinaryManifestRequireResource] = []
@@ -78,12 +79,12 @@ class CpSoftwareClusterBinaryManifestDescriptor(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize cp_software_cluster
-        if self.cp_software_cluster is not None:
-            serialized = ARObject._serialize_item(self.cp_software_cluster, "CpSoftwareCluster")
+        # Serialize cp_software_cluster_ref
+        if self.cp_software_cluster_ref is not None:
+            serialized = ARObject._serialize_item(self.cp_software_cluster_ref, "CpSoftwareCluster")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CP-SOFTWARE-CLUSTER")
+                wrapped = ET.Element("CP-SOFTWARE-CLUSTER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -161,11 +162,11 @@ class CpSoftwareClusterBinaryManifestDescriptor(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CpSoftwareClusterBinaryManifestDescriptor, cls).deserialize(element)
 
-        # Parse cp_software_cluster
-        child = ARObject._find_child_element(element, "CP-SOFTWARE-CLUSTER")
+        # Parse cp_software_cluster_ref
+        child = ARObject._find_child_element(element, "CP-SOFTWARE-CLUSTER-REF")
         if child is not None:
-            cp_software_cluster_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
-            obj.cp_software_cluster = cp_software_cluster_value
+            cp_software_cluster_ref_value = ARRef.deserialize(child)
+            obj.cp_software_cluster_ref = cp_software_cluster_ref_value
 
         # Parse meta_data_fields (list from container "META-DATA-FIELDS")
         obj.meta_data_fields = []

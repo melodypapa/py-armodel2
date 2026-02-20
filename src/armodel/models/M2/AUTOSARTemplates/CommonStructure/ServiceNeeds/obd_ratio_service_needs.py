@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_
     DiagnosticCapabilityElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
     ObdRatioConnectionKindEnum,
 )
@@ -37,14 +38,14 @@ class ObdRatioServiceNeeds(DiagnosticCapabilityElement):
         return False
 
     connection_type: Optional[ObdRatioConnectionKindEnum]
-    rate_based_monitored_event: Optional[DiagnosticEventNeeds]
-    used_fid: Optional[FunctionInhibitionNeeds]
+    rate_based_monitored_event_ref: Optional[ARRef]
+    used_fid_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ObdRatioServiceNeeds."""
         super().__init__()
         self.connection_type: Optional[ObdRatioConnectionKindEnum] = None
-        self.rate_based_monitored_event: Optional[DiagnosticEventNeeds] = None
-        self.used_fid: Optional[FunctionInhibitionNeeds] = None
+        self.rate_based_monitored_event_ref: Optional[ARRef] = None
+        self.used_fid_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize ObdRatioServiceNeeds to XML element.
@@ -80,12 +81,12 @@ class ObdRatioServiceNeeds(DiagnosticCapabilityElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize rate_based_monitored_event
-        if self.rate_based_monitored_event is not None:
-            serialized = ARObject._serialize_item(self.rate_based_monitored_event, "DiagnosticEventNeeds")
+        # Serialize rate_based_monitored_event_ref
+        if self.rate_based_monitored_event_ref is not None:
+            serialized = ARObject._serialize_item(self.rate_based_monitored_event_ref, "DiagnosticEventNeeds")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("RATE-BASED-MONITORED-EVENT")
+                wrapped = ET.Element("RATE-BASED-MONITORED-EVENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -94,12 +95,12 @@ class ObdRatioServiceNeeds(DiagnosticCapabilityElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize used_fid
-        if self.used_fid is not None:
-            serialized = ARObject._serialize_item(self.used_fid, "FunctionInhibitionNeeds")
+        # Serialize used_fid_ref
+        if self.used_fid_ref is not None:
+            serialized = ARObject._serialize_item(self.used_fid_ref, "FunctionInhibitionNeeds")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("USED-FID")
+                wrapped = ET.Element("USED-FID-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -129,17 +130,17 @@ class ObdRatioServiceNeeds(DiagnosticCapabilityElement):
             connection_type_value = ObdRatioConnectionKindEnum.deserialize(child)
             obj.connection_type = connection_type_value
 
-        # Parse rate_based_monitored_event
-        child = ARObject._find_child_element(element, "RATE-BASED-MONITORED-EVENT")
+        # Parse rate_based_monitored_event_ref
+        child = ARObject._find_child_element(element, "RATE-BASED-MONITORED-EVENT-REF")
         if child is not None:
-            rate_based_monitored_event_value = ARObject._deserialize_by_tag(child, "DiagnosticEventNeeds")
-            obj.rate_based_monitored_event = rate_based_monitored_event_value
+            rate_based_monitored_event_ref_value = ARRef.deserialize(child)
+            obj.rate_based_monitored_event_ref = rate_based_monitored_event_ref_value
 
-        # Parse used_fid
-        child = ARObject._find_child_element(element, "USED-FID")
+        # Parse used_fid_ref
+        child = ARObject._find_child_element(element, "USED-FID-REF")
         if child is not None:
-            used_fid_value = ARObject._deserialize_by_tag(child, "FunctionInhibitionNeeds")
-            obj.used_fid = used_fid_value
+            used_fid_ref_value = ARRef.deserialize(child)
+            obj.used_fid_ref = used_fid_ref_value
 
         return obj
 

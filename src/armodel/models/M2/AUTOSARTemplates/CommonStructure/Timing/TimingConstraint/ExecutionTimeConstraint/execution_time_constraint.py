@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.
     TimingConstraint,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.ExecutionTimeConstraint import (
     ExecutionTimeTypeEnum,
 )
@@ -37,7 +38,7 @@ class ExecutionTimeConstraint(TimingConstraint):
         return False
 
     component: Optional[Any]
-    executable_entity: Optional[ExecutableEntity]
+    executable_entity_ref: Optional[ARRef]
     execution_time: Optional[ExecutionTimeTypeEnum]
     maximum: Optional[MultidimensionalTime]
     minimum: Optional[MultidimensionalTime]
@@ -45,7 +46,7 @@ class ExecutionTimeConstraint(TimingConstraint):
         """Initialize ExecutionTimeConstraint."""
         super().__init__()
         self.component: Optional[Any] = None
-        self.executable_entity: Optional[ExecutableEntity] = None
+        self.executable_entity_ref: Optional[ARRef] = None
         self.execution_time: Optional[ExecutionTimeTypeEnum] = None
         self.maximum: Optional[MultidimensionalTime] = None
         self.minimum: Optional[MultidimensionalTime] = None
@@ -84,12 +85,12 @@ class ExecutionTimeConstraint(TimingConstraint):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize executable_entity
-        if self.executable_entity is not None:
-            serialized = ARObject._serialize_item(self.executable_entity, "ExecutableEntity")
+        # Serialize executable_entity_ref
+        if self.executable_entity_ref is not None:
+            serialized = ARObject._serialize_item(self.executable_entity_ref, "ExecutableEntity")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("EXECUTABLE-ENTITY")
+                wrapped = ET.Element("EXECUTABLE-ENTITY-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -161,11 +162,11 @@ class ExecutionTimeConstraint(TimingConstraint):
             component_value = child.text
             obj.component = component_value
 
-        # Parse executable_entity
-        child = ARObject._find_child_element(element, "EXECUTABLE-ENTITY")
+        # Parse executable_entity_ref
+        child = ARObject._find_child_element(element, "EXECUTABLE-ENTITY-REF")
         if child is not None:
-            executable_entity_value = ARObject._deserialize_by_tag(child, "ExecutableEntity")
-            obj.executable_entity = executable_entity_value
+            executable_entity_ref_value = ARRef.deserialize(child)
+            obj.executable_entity_ref = executable_entity_ref_value
 
         # Parse execution_time
         child = ARObject._find_child_element(element, "EXECUTION-TIME")

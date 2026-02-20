@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_parameter import (
     DiagnosticParameter,
 )
@@ -27,13 +28,13 @@ class DiagnosticParameterElementAccess(ARObject):
         """
         return False
 
-    context_elements: list[DiagnosticParameter]
-    target_element: Optional[DiagnosticParameter]
+    context_element_refs: list[ARRef]
+    target_element_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DiagnosticParameterElementAccess."""
         super().__init__()
-        self.context_elements: list[DiagnosticParameter] = []
-        self.target_element: Optional[DiagnosticParameter] = None
+        self.context_element_refs: list[ARRef] = []
+        self.target_element_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticParameterElementAccess to XML element.
@@ -45,22 +46,29 @@ class DiagnosticParameterElementAccess(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize context_elements (list to container "CONTEXT-ELEMENTS")
-        if self.context_elements:
-            wrapper = ET.Element("CONTEXT-ELEMENTS")
-            for item in self.context_elements:
+        # Serialize context_element_refs (list to container "CONTEXT-ELEMENT-REFS")
+        if self.context_element_refs:
+            wrapper = ET.Element("CONTEXT-ELEMENT-REFS")
+            for item in self.context_element_refs:
                 serialized = ARObject._serialize_item(item, "DiagnosticParameter")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("CONTEXT-ELEMENT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize target_element
-        if self.target_element is not None:
-            serialized = ARObject._serialize_item(self.target_element, "DiagnosticParameter")
+        # Serialize target_element_ref
+        if self.target_element_ref is not None:
+            serialized = ARObject._serialize_item(self.target_element_ref, "DiagnosticParameter")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TARGET-ELEMENT")
+                wrapped = ET.Element("TARGET-ELEMENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -85,21 +93,27 @@ class DiagnosticParameterElementAccess(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse context_elements (list from container "CONTEXT-ELEMENTS")
-        obj.context_elements = []
-        container = ARObject._find_child_element(element, "CONTEXT-ELEMENTS")
+        # Parse context_element_refs (list from container "CONTEXT-ELEMENT-REFS")
+        obj.context_element_refs = []
+        container = ARObject._find_child_element(element, "CONTEXT-ELEMENT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.context_elements.append(child_value)
+                    obj.context_element_refs.append(child_value)
 
-        # Parse target_element
-        child = ARObject._find_child_element(element, "TARGET-ELEMENT")
+        # Parse target_element_ref
+        child = ARObject._find_child_element(element, "TARGET-ELEMENT-REF")
         if child is not None:
-            target_element_value = ARObject._deserialize_by_tag(child, "DiagnosticParameter")
-            obj.target_element = target_element_value
+            target_element_ref_value = ARRef.deserialize(child)
+            obj.target_element_ref = target_element_ref_value
 
         return obj
 

@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     ByteOrderEnum,
 )
@@ -34,14 +35,14 @@ class PduToFrameMapping(ARObject):
         return False
 
     packing_byte: Optional[ByteOrderEnum]
-    pdu: Optional[Pdu]
+    pdu_ref: Optional[ARRef]
     start_position: Optional[Integer]
     update: Optional[Integer]
     def __init__(self) -> None:
         """Initialize PduToFrameMapping."""
         super().__init__()
         self.packing_byte: Optional[ByteOrderEnum] = None
-        self.pdu: Optional[Pdu] = None
+        self.pdu_ref: Optional[ARRef] = None
         self.start_position: Optional[Integer] = None
         self.update: Optional[Integer] = None
 
@@ -69,12 +70,12 @@ class PduToFrameMapping(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize pdu
-        if self.pdu is not None:
-            serialized = ARObject._serialize_item(self.pdu, "Pdu")
+        # Serialize pdu_ref
+        if self.pdu_ref is not None:
+            serialized = ARObject._serialize_item(self.pdu_ref, "Pdu")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PDU")
+                wrapped = ET.Element("PDU-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -133,11 +134,11 @@ class PduToFrameMapping(ARObject):
             packing_byte_value = ByteOrderEnum.deserialize(child)
             obj.packing_byte = packing_byte_value
 
-        # Parse pdu
-        child = ARObject._find_child_element(element, "PDU")
+        # Parse pdu_ref
+        child = ARObject._find_child_element(element, "PDU-REF")
         if child is not None:
-            pdu_value = ARObject._deserialize_by_tag(child, "Pdu")
-            obj.pdu = pdu_value
+            pdu_ref_value = ARRef.deserialize(child)
+            obj.pdu_ref = pdu_ref_value
 
         # Parse start_position
         child = ARObject._find_child_element(element, "START-POSITION")

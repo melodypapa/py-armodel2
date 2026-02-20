@@ -44,22 +44,22 @@
         "diagnosticSessions": {
           "type": "DiagnosticSession",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the associated DiagnosticSessions atpSplitable"
         },
         "environmental": {
           "type": "any (Diagnostic)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the environmental conditions associated"
         },
         "securityLevels": {
           "type": "DiagnosticSecurityLevel",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the associated DiagnosticSecurityLevels"
         }
       }
@@ -109,7 +109,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "This attribute represents the ability to define whether this diagnostic session allows to jump to Bootloader (OEM System Supplier Bootloader). diagnostic session doesn’t allow to jump to value JumpToBootLoaderEnum.noBoot chosen. 719 Document ID 673: AUTOSAR_CP_TPS_DiagnosticExtractTemplate Template R23-11"
+          "note": "This attribute represents the ability to define whether this diagnostic session allows to jump to Bootloader (OEM System Supplier Bootloader). diagnostic session doesn\u2019t allow to jump to value JumpToBootLoaderEnum.noBoot chosen. 719 Document ID 673: AUTOSAR_CP_TPS_DiagnosticExtractTemplate Template R23-11"
         },
         "p2ServerMax": {
           "type": "TimeValue",
@@ -226,8 +226,8 @@
         "authentications": {
           "type": "DiagnosticAuthRole",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the authenticationRole applicable the enclosing DiagnosticAccessPermission."
         }
       }

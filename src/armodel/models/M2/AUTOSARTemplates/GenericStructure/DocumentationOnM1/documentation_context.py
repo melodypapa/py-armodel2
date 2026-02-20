@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     MultilanguageReferrable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.AbstractStructure.atp_feature import (
     AtpFeature,
 )
@@ -34,12 +35,12 @@ class DocumentationContext(MultilanguageReferrable):
         return False
 
     feature: Optional[AtpFeature]
-    identifiable: Optional[Identifiable]
+    identifiable_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DocumentationContext."""
         super().__init__()
         self.feature: Optional[AtpFeature] = None
-        self.identifiable: Optional[Identifiable] = None
+        self.identifiable_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DocumentationContext to XML element.
@@ -75,12 +76,12 @@ class DocumentationContext(MultilanguageReferrable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize identifiable
-        if self.identifiable is not None:
-            serialized = ARObject._serialize_item(self.identifiable, "Identifiable")
+        # Serialize identifiable_ref
+        if self.identifiable_ref is not None:
+            serialized = ARObject._serialize_item(self.identifiable_ref, "Identifiable")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("IDENTIFIABLE")
+                wrapped = ET.Element("IDENTIFIABLE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -110,11 +111,11 @@ class DocumentationContext(MultilanguageReferrable):
             feature_value = ARObject._deserialize_by_tag(child, "AtpFeature")
             obj.feature = feature_value
 
-        # Parse identifiable
-        child = ARObject._find_child_element(element, "IDENTIFIABLE")
+        # Parse identifiable_ref
+        child = ARObject._find_child_element(element, "IDENTIFIABLE-REF")
         if child is not None:
-            identifiable_value = ARObject._deserialize_by_tag(child, "Identifiable")
-            obj.identifiable = identifiable_value
+            identifiable_ref_value = ARRef.deserialize(child)
+            obj.identifiable_ref = identifiable_ref_value
 
         return obj
 

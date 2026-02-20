@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Describable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_pin import (
     HwPin,
 )
@@ -30,11 +31,11 @@ class HwPinConnector(Describable):
         """
         return False
 
-    hw_pins: list[HwPin]
+    hw_pin_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize HwPinConnector."""
         super().__init__()
-        self.hw_pins: list[HwPin] = []
+        self.hw_pin_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize HwPinConnector to XML element.
@@ -56,13 +57,20 @@ class HwPinConnector(Describable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize hw_pins (list to container "HW-PINS")
-        if self.hw_pins:
-            wrapper = ET.Element("HW-PINS")
-            for item in self.hw_pins:
+        # Serialize hw_pin_refs (list to container "HW-PIN-REFS")
+        if self.hw_pin_refs:
+            wrapper = ET.Element("HW-PIN-REFS")
+            for item in self.hw_pin_refs:
                 serialized = ARObject._serialize_item(item, "HwPin")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("HW-PIN-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -81,15 +89,21 @@ class HwPinConnector(Describable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(HwPinConnector, cls).deserialize(element)
 
-        # Parse hw_pins (list from container "HW-PINS")
-        obj.hw_pins = []
-        container = ARObject._find_child_element(element, "HW-PINS")
+        # Parse hw_pin_refs (list from container "HW-PIN-REFS")
+        obj.hw_pin_refs = []
+        container = ARObject._find_child_element(element, "HW-PIN-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.hw_pins.append(child_value)
+                    obj.hw_pin_refs.append(child_value)
 
         return obj
 

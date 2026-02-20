@@ -41,7 +41,7 @@ class SignalServiceTranslationProps(Identifiable):
 
     control_refs: list[ARRef]
     control_pnc_refs: list[ARRef]
-    control_provideds: list[EventHandler]
+    control_provided_refs: list[ARRef]
     service_control: Optional[Any]
     signal_service_event_propses: list[Any]
     def __init__(self) -> None:
@@ -49,7 +49,7 @@ class SignalServiceTranslationProps(Identifiable):
         super().__init__()
         self.control_refs: list[ARRef] = []
         self.control_pnc_refs: list[ARRef] = []
-        self.control_provideds: list[EventHandler] = []
+        self.control_provided_refs: list[ARRef] = []
         self.service_control: Optional[Any] = None
         self.signal_service_event_propses: list[Any] = []
 
@@ -107,13 +107,20 @@ class SignalServiceTranslationProps(Identifiable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize control_provideds (list to container "CONTROL-PROVIDEDS")
-        if self.control_provideds:
-            wrapper = ET.Element("CONTROL-PROVIDEDS")
-            for item in self.control_provideds:
+        # Serialize control_provided_refs (list to container "CONTROL-PROVIDED-REFS")
+        if self.control_provided_refs:
+            wrapper = ET.Element("CONTROL-PROVIDED-REFS")
+            for item in self.control_provided_refs:
                 serialized = ARObject._serialize_item(item, "EventHandler")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("CONTROL-PROVIDED-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -188,15 +195,21 @@ class SignalServiceTranslationProps(Identifiable):
                 if child_value is not None:
                     obj.control_pnc_refs.append(child_value)
 
-        # Parse control_provideds (list from container "CONTROL-PROVIDEDS")
-        obj.control_provideds = []
-        container = ARObject._find_child_element(element, "CONTROL-PROVIDEDS")
+        # Parse control_provided_refs (list from container "CONTROL-PROVIDED-REFS")
+        obj.control_provided_refs = []
+        container = ARObject._find_child_element(element, "CONTROL-PROVIDED-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.control_provideds.append(child_value)
+                    obj.control_provided_refs.append(child_value)
 
         # Parse service_control
         child = ARObject._find_child_element(element, "SERVICE-CONTROL")

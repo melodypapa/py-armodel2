@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation.implement
     Implementation,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
     RevisionLabelString,
@@ -42,20 +43,20 @@ class BswImplementation(Implementation):
         return False
 
     ar_release: Optional[RevisionLabelString]
-    behavior: Optional[BswInternalBehavior]
-    preconfigureds: list[Any]
-    recommendeds: list[Any]
+    behavior_ref: Optional[ARRef]
+    preconfigured_refs: list[Any]
+    recommended_refs: list[Any]
     vendor_api_infix: Optional[Identifier]
-    vendor_specifics: list[EcucModuleDef]
+    vendor_specific_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize BswImplementation."""
         super().__init__()
         self.ar_release: Optional[RevisionLabelString] = None
-        self.behavior: Optional[BswInternalBehavior] = None
-        self.preconfigureds: list[Any] = []
-        self.recommendeds: list[Any] = []
+        self.behavior_ref: Optional[ARRef] = None
+        self.preconfigured_refs: list[Any] = []
+        self.recommended_refs: list[Any] = []
         self.vendor_api_infix: Optional[Identifier] = None
-        self.vendor_specifics: list[EcucModuleDef] = []
+        self.vendor_specific_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize BswImplementation to XML element.
@@ -91,12 +92,12 @@ class BswImplementation(Implementation):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize behavior
-        if self.behavior is not None:
-            serialized = ARObject._serialize_item(self.behavior, "BswInternalBehavior")
+        # Serialize behavior_ref
+        if self.behavior_ref is not None:
+            serialized = ARObject._serialize_item(self.behavior_ref, "BswInternalBehavior")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("BEHAVIOR")
+                wrapped = ET.Element("BEHAVIOR-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -105,23 +106,37 @@ class BswImplementation(Implementation):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize preconfigureds (list to container "PRECONFIGUREDS")
-        if self.preconfigureds:
-            wrapper = ET.Element("PRECONFIGUREDS")
-            for item in self.preconfigureds:
+        # Serialize preconfigured_refs (list to container "PRECONFIGURED-REFS")
+        if self.preconfigured_refs:
+            wrapper = ET.Element("PRECONFIGURED-REFS")
+            for item in self.preconfigured_refs:
                 serialized = ARObject._serialize_item(item, "Any")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("PRECONFIGURED-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize recommendeds (list to container "RECOMMENDEDS")
-        if self.recommendeds:
-            wrapper = ET.Element("RECOMMENDEDS")
-            for item in self.recommendeds:
+        # Serialize recommended_refs (list to container "RECOMMENDED-REFS")
+        if self.recommended_refs:
+            wrapper = ET.Element("RECOMMENDED-REFS")
+            for item in self.recommended_refs:
                 serialized = ARObject._serialize_item(item, "Any")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("RECOMMENDED-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -139,13 +154,20 @@ class BswImplementation(Implementation):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize vendor_specifics (list to container "VENDOR-SPECIFICS")
-        if self.vendor_specifics:
-            wrapper = ET.Element("VENDOR-SPECIFICS")
-            for item in self.vendor_specifics:
+        # Serialize vendor_specific_refs (list to container "VENDOR-SPECIFIC-REFS")
+        if self.vendor_specific_refs:
+            wrapper = ET.Element("VENDOR-SPECIFIC-REFS")
+            for item in self.vendor_specific_refs:
                 serialized = ARObject._serialize_item(item, "EcucModuleDef")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("VENDOR-SPECIFIC-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -170,31 +192,43 @@ class BswImplementation(Implementation):
             ar_release_value = child.text
             obj.ar_release = ar_release_value
 
-        # Parse behavior
-        child = ARObject._find_child_element(element, "BEHAVIOR")
+        # Parse behavior_ref
+        child = ARObject._find_child_element(element, "BEHAVIOR-REF")
         if child is not None:
-            behavior_value = ARObject._deserialize_by_tag(child, "BswInternalBehavior")
-            obj.behavior = behavior_value
+            behavior_ref_value = ARRef.deserialize(child)
+            obj.behavior_ref = behavior_ref_value
 
-        # Parse preconfigureds (list from container "PRECONFIGUREDS")
-        obj.preconfigureds = []
-        container = ARObject._find_child_element(element, "PRECONFIGUREDS")
+        # Parse preconfigured_refs (list from container "PRECONFIGURED-REFS")
+        obj.preconfigured_refs = []
+        container = ARObject._find_child_element(element, "PRECONFIGURED-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.preconfigureds.append(child_value)
+                    obj.preconfigured_refs.append(child_value)
 
-        # Parse recommendeds (list from container "RECOMMENDEDS")
-        obj.recommendeds = []
-        container = ARObject._find_child_element(element, "RECOMMENDEDS")
+        # Parse recommended_refs (list from container "RECOMMENDED-REFS")
+        obj.recommended_refs = []
+        container = ARObject._find_child_element(element, "RECOMMENDED-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.recommendeds.append(child_value)
+                    obj.recommended_refs.append(child_value)
 
         # Parse vendor_api_infix
         child = ARObject._find_child_element(element, "VENDOR-API-INFIX")
@@ -202,15 +236,21 @@ class BswImplementation(Implementation):
             vendor_api_infix_value = ARObject._deserialize_by_tag(child, "Identifier")
             obj.vendor_api_infix = vendor_api_infix_value
 
-        # Parse vendor_specifics (list from container "VENDOR-SPECIFICS")
-        obj.vendor_specifics = []
-        container = ARObject._find_child_element(element, "VENDOR-SPECIFICS")
+        # Parse vendor_specific_refs (list from container "VENDOR-SPECIFIC-REFS")
+        obj.vendor_specific_refs = []
+        container = ARObject._find_child_element(element, "VENDOR-SPECIFIC-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.vendor_specifics.append(child_value)
+                    obj.vendor_specific_refs.append(child_value)
 
         return obj
 

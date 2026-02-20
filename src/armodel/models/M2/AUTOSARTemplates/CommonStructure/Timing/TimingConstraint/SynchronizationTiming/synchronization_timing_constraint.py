@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.
     TimingConstraint,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.SynchronizationTiming import (
     EventOccurrenceKindEnum,
     SynchronizationTypeEnum,
@@ -38,16 +39,16 @@ class SynchronizationTimingConstraint(TimingConstraint):
         return False
 
     event: Optional[EventOccurrenceKindEnum]
-    scopes: list[TimingDescriptionEvent]
-    scope_events: list[TimingDescriptionEvent]
+    scope_refs: list[ARRef]
+    scope_event_refs: list[ARRef]
     synchronization: Optional[SynchronizationTypeEnum]
     tolerance: Optional[MultidimensionalTime]
     def __init__(self) -> None:
         """Initialize SynchronizationTimingConstraint."""
         super().__init__()
         self.event: Optional[EventOccurrenceKindEnum] = None
-        self.scopes: list[TimingDescriptionEvent] = []
-        self.scope_events: list[TimingDescriptionEvent] = []
+        self.scope_refs: list[ARRef] = []
+        self.scope_event_refs: list[ARRef] = []
         self.synchronization: Optional[SynchronizationTypeEnum] = None
         self.tolerance: Optional[MultidimensionalTime] = None
 
@@ -85,23 +86,37 @@ class SynchronizationTimingConstraint(TimingConstraint):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize scopes (list to container "SCOPES")
-        if self.scopes:
-            wrapper = ET.Element("SCOPES")
-            for item in self.scopes:
+        # Serialize scope_refs (list to container "SCOPE-REFS")
+        if self.scope_refs:
+            wrapper = ET.Element("SCOPE-REFS")
+            for item in self.scope_refs:
                 serialized = ARObject._serialize_item(item, "TimingDescriptionEvent")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("SCOPE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize scope_events (list to container "SCOPE-EVENTS")
-        if self.scope_events:
-            wrapper = ET.Element("SCOPE-EVENTS")
-            for item in self.scope_events:
+        # Serialize scope_event_refs (list to container "SCOPE-EVENT-REFS")
+        if self.scope_event_refs:
+            wrapper = ET.Element("SCOPE-EVENT-REFS")
+            for item in self.scope_event_refs:
                 serialized = ARObject._serialize_item(item, "TimingDescriptionEvent")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("SCOPE-EVENT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -154,25 +169,37 @@ class SynchronizationTimingConstraint(TimingConstraint):
             event_value = EventOccurrenceKindEnum.deserialize(child)
             obj.event = event_value
 
-        # Parse scopes (list from container "SCOPES")
-        obj.scopes = []
-        container = ARObject._find_child_element(element, "SCOPES")
+        # Parse scope_refs (list from container "SCOPE-REFS")
+        obj.scope_refs = []
+        container = ARObject._find_child_element(element, "SCOPE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.scopes.append(child_value)
+                    obj.scope_refs.append(child_value)
 
-        # Parse scope_events (list from container "SCOPE-EVENTS")
-        obj.scope_events = []
-        container = ARObject._find_child_element(element, "SCOPE-EVENTS")
+        # Parse scope_event_refs (list from container "SCOPE-EVENT-REFS")
+        obj.scope_event_refs = []
+        container = ARObject._find_child_element(element, "SCOPE-EVENT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.scope_events.append(child_value)
+                    obj.scope_event_refs.append(child_value)
 
         # Parse synchronization
         child = ARObject._find_child_element(element, "SYNCHRONIZATION")

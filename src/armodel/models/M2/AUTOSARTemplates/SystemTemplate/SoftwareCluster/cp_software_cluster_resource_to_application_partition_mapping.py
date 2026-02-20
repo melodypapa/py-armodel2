@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.application_partition import (
     ApplicationPartition,
 )
@@ -33,13 +34,13 @@ class CpSoftwareClusterResourceToApplicationPartitionMapping(Identifiable):
         """
         return False
 
-    application: Optional[ApplicationPartition]
-    resource: Optional[CpSoftwareCluster]
+    application_ref: Optional[ARRef]
+    resource_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterResourceToApplicationPartitionMapping."""
         super().__init__()
-        self.application: Optional[ApplicationPartition] = None
-        self.resource: Optional[CpSoftwareCluster] = None
+        self.application_ref: Optional[ARRef] = None
+        self.resource_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize CpSoftwareClusterResourceToApplicationPartitionMapping to XML element.
@@ -61,12 +62,12 @@ class CpSoftwareClusterResourceToApplicationPartitionMapping(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize application
-        if self.application is not None:
-            serialized = ARObject._serialize_item(self.application, "ApplicationPartition")
+        # Serialize application_ref
+        if self.application_ref is not None:
+            serialized = ARObject._serialize_item(self.application_ref, "ApplicationPartition")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("APPLICATION")
+                wrapped = ET.Element("APPLICATION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -75,12 +76,12 @@ class CpSoftwareClusterResourceToApplicationPartitionMapping(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize resource
-        if self.resource is not None:
-            serialized = ARObject._serialize_item(self.resource, "CpSoftwareCluster")
+        # Serialize resource_ref
+        if self.resource_ref is not None:
+            serialized = ARObject._serialize_item(self.resource_ref, "CpSoftwareCluster")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("RESOURCE")
+                wrapped = ET.Element("RESOURCE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -104,17 +105,17 @@ class CpSoftwareClusterResourceToApplicationPartitionMapping(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CpSoftwareClusterResourceToApplicationPartitionMapping, cls).deserialize(element)
 
-        # Parse application
-        child = ARObject._find_child_element(element, "APPLICATION")
+        # Parse application_ref
+        child = ARObject._find_child_element(element, "APPLICATION-REF")
         if child is not None:
-            application_value = ARObject._deserialize_by_tag(child, "ApplicationPartition")
-            obj.application = application_value
+            application_ref_value = ARRef.deserialize(child)
+            obj.application_ref = application_ref_value
 
-        # Parse resource
-        child = ARObject._find_child_element(element, "RESOURCE")
+        # Parse resource_ref
+        child = ARObject._find_child_element(element, "RESOURCE-REF")
         if child is not None:
-            resource_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
-            obj.resource = resource_value
+            resource_ref_value = ARRef.deserialize(child)
+            obj.resource_ref = resource_ref_value
 
         return obj
 

@@ -31,13 +31,13 @@ class SomeipTpConnection(ARObject):
         """
         return False
 
-    tp_channel: Optional[SomeipTpChannel]
+    tp_channel_ref: Optional[ARRef]
     tp_sdu_ref: Optional[ARRef]
     transport_pdu_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SomeipTpConnection."""
         super().__init__()
-        self.tp_channel: Optional[SomeipTpChannel] = None
+        self.tp_channel_ref: Optional[ARRef] = None
         self.tp_sdu_ref: Optional[ARRef] = None
         self.transport_pdu_ref: Optional[ARRef] = None
 
@@ -51,12 +51,12 @@ class SomeipTpConnection(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize tp_channel
-        if self.tp_channel is not None:
-            serialized = ARObject._serialize_item(self.tp_channel, "SomeipTpChannel")
+        # Serialize tp_channel_ref
+        if self.tp_channel_ref is not None:
+            serialized = ARObject._serialize_item(self.tp_channel_ref, "SomeipTpChannel")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TP-CHANNEL")
+                wrapped = ET.Element("TP-CHANNEL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -109,11 +109,11 @@ class SomeipTpConnection(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse tp_channel
-        child = ARObject._find_child_element(element, "TP-CHANNEL")
+        # Parse tp_channel_ref
+        child = ARObject._find_child_element(element, "TP-CHANNEL-REF")
         if child is not None:
-            tp_channel_value = ARObject._deserialize_by_tag(child, "SomeipTpChannel")
-            obj.tp_channel = tp_channel_value
+            tp_channel_ref_value = ARRef.deserialize(child)
+            obj.tp_channel_ref = tp_channel_ref_value
 
         # Parse tp_sdu_ref
         child = ARObject._find_child_element(element, "TP-SDU-REF")

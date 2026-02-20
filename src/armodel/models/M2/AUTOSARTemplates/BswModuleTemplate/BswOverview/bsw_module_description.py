@@ -65,8 +65,8 @@ class BswModuleDescription(ARElement):
 
     bsw_module_refs: list[ARRef]
     bsw_module_documentation: Optional[SwComponentDocumentation]
-    expected_entries: list[BswModuleEntry]
-    implementeds: list[BswModuleEntry]
+    expected_entrie_refs: list[ARRef]
+    implemented_refs: list[ARRef]
     internal_behaviors: list[BswInternalBehavior]
     module_id: Optional[PositiveInteger]
     provided_clients: list[BswModuleClientServerEntry]
@@ -82,8 +82,8 @@ class BswModuleDescription(ARElement):
         super().__init__()
         self.bsw_module_refs: list[ARRef] = []
         self.bsw_module_documentation: Optional[SwComponentDocumentation] = None
-        self.expected_entries: list[BswModuleEntry] = []
-        self.implementeds: list[BswModuleEntry] = []
+        self.expected_entrie_refs: list[ARRef] = []
+        self.implemented_refs: list[ARRef] = []
         self.internal_behaviors: list[BswInternalBehavior] = []
         self.module_id: Optional[PositiveInteger] = None
         self.provided_clients: list[BswModuleClientServerEntry] = []
@@ -146,23 +146,37 @@ class BswModuleDescription(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize expected_entries (list to container "EXPECTED-ENTRIES")
-        if self.expected_entries:
-            wrapper = ET.Element("EXPECTED-ENTRIES")
-            for item in self.expected_entries:
+        # Serialize expected_entrie_refs (list to container "EXPECTED-ENTRIE-REFS")
+        if self.expected_entrie_refs:
+            wrapper = ET.Element("EXPECTED-ENTRIE-REFS")
+            for item in self.expected_entrie_refs:
                 serialized = ARObject._serialize_item(item, "BswModuleEntry")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("EXPECTED-ENTRIE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize implementeds (list to container "IMPLEMENTEDS")
-        if self.implementeds:
-            wrapper = ET.Element("IMPLEMENTEDS")
-            for item in self.implementeds:
+        # Serialize implemented_refs (list to container "IMPLEMENTED-REFS")
+        if self.implemented_refs:
+            wrapper = ET.Element("IMPLEMENTED-REFS")
+            for item in self.implemented_refs:
                 serialized = ARObject._serialize_item(item, "BswModuleEntry")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("IMPLEMENTED-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -349,25 +363,37 @@ class BswModuleDescription(ARElement):
             bsw_module_documentation_value = ARObject._deserialize_by_tag(child, "SwComponentDocumentation")
             obj.bsw_module_documentation = bsw_module_documentation_value
 
-        # Parse expected_entries (list from container "EXPECTED-ENTRIES")
-        obj.expected_entries = []
-        container = ARObject._find_child_element(element, "EXPECTED-ENTRIES")
+        # Parse expected_entrie_refs (list from container "EXPECTED-ENTRIE-REFS")
+        obj.expected_entrie_refs = []
+        container = ARObject._find_child_element(element, "EXPECTED-ENTRIE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.expected_entries.append(child_value)
+                    obj.expected_entrie_refs.append(child_value)
 
-        # Parse implementeds (list from container "IMPLEMENTEDS")
-        obj.implementeds = []
-        container = ARObject._find_child_element(element, "IMPLEMENTEDS")
+        # Parse implemented_refs (list from container "IMPLEMENTED-REFS")
+        obj.implemented_refs = []
+        container = ARObject._find_child_element(element, "IMPLEMENTED-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.implementeds.append(child_value)
+                    obj.implemented_refs.append(child_value)
 
         # Parse internal_behaviors (list from container "INTERNAL-BEHAVIORS")
         obj.internal_behaviors = []

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
     String,
@@ -34,14 +35,14 @@ class DiagnosticMemoryIdentifier(DiagnosticCommonElement):
         """
         return False
 
-    access: Optional[DiagnosticAccessPermission]
+    access_ref: Optional[ARRef]
     id: Optional[PositiveInteger]
     memory_high: Optional[String]
     memory_low: Optional[String]
     def __init__(self) -> None:
         """Initialize DiagnosticMemoryIdentifier."""
         super().__init__()
-        self.access: Optional[DiagnosticAccessPermission] = None
+        self.access_ref: Optional[ARRef] = None
         self.id: Optional[PositiveInteger] = None
         self.memory_high: Optional[String] = None
         self.memory_low: Optional[String] = None
@@ -66,12 +67,12 @@ class DiagnosticMemoryIdentifier(DiagnosticCommonElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize access
-        if self.access is not None:
-            serialized = ARObject._serialize_item(self.access, "DiagnosticAccessPermission")
+        # Serialize access_ref
+        if self.access_ref is not None:
+            serialized = ARObject._serialize_item(self.access_ref, "DiagnosticAccessPermission")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ACCESS")
+                wrapped = ET.Element("ACCESS-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -137,11 +138,11 @@ class DiagnosticMemoryIdentifier(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticMemoryIdentifier, cls).deserialize(element)
 
-        # Parse access
-        child = ARObject._find_child_element(element, "ACCESS")
+        # Parse access_ref
+        child = ARObject._find_child_element(element, "ACCESS-REF")
         if child is not None:
-            access_value = ARObject._deserialize_by_tag(child, "DiagnosticAccessPermission")
-            obj.access = access_value
+            access_ref_value = ARRef.deserialize(child)
+            obj.access_ref = access_ref_value
 
         # Parse id
         child = ARObject._find_child_element(element, "ID")

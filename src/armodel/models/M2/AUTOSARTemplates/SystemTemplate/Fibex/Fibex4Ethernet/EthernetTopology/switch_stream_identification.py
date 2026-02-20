@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -37,22 +38,22 @@ class SwitchStreamIdentification(Identifiable):
         """
         return False
 
-    egress_ports: list[CouplingPort]
+    egress_port_refs: list[ARRef]
     filter_action_block: Optional[Boolean]
     filter_action_dest: Optional[Any]
     filter_action_drop: Optional[Boolean]
     filter_action_vlan: Optional[PositiveInteger]
-    ingress_ports: list[CouplingPort]
+    ingress_port_refs: list[ARRef]
     stream_filter: Optional[SwitchStreamFilterRule]
     def __init__(self) -> None:
         """Initialize SwitchStreamIdentification."""
         super().__init__()
-        self.egress_ports: list[CouplingPort] = []
+        self.egress_port_refs: list[ARRef] = []
         self.filter_action_block: Optional[Boolean] = None
         self.filter_action_dest: Optional[Any] = None
         self.filter_action_drop: Optional[Boolean] = None
         self.filter_action_vlan: Optional[PositiveInteger] = None
-        self.ingress_ports: list[CouplingPort] = []
+        self.ingress_port_refs: list[ARRef] = []
         self.stream_filter: Optional[SwitchStreamFilterRule] = None
 
     def serialize(self) -> ET.Element:
@@ -75,13 +76,20 @@ class SwitchStreamIdentification(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize egress_ports (list to container "EGRESS-PORTS")
-        if self.egress_ports:
-            wrapper = ET.Element("EGRESS-PORTS")
-            for item in self.egress_ports:
+        # Serialize egress_port_refs (list to container "EGRESS-PORT-REFS")
+        if self.egress_port_refs:
+            wrapper = ET.Element("EGRESS-PORT-REFS")
+            for item in self.egress_port_refs:
                 serialized = ARObject._serialize_item(item, "CouplingPort")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("EGRESS-PORT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -141,13 +149,20 @@ class SwitchStreamIdentification(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize ingress_ports (list to container "INGRESS-PORTS")
-        if self.ingress_ports:
-            wrapper = ET.Element("INGRESS-PORTS")
-            for item in self.ingress_ports:
+        # Serialize ingress_port_refs (list to container "INGRESS-PORT-REFS")
+        if self.ingress_port_refs:
+            wrapper = ET.Element("INGRESS-PORT-REFS")
+            for item in self.ingress_port_refs:
                 serialized = ARObject._serialize_item(item, "CouplingPort")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("INGRESS-PORT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -180,15 +195,21 @@ class SwitchStreamIdentification(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwitchStreamIdentification, cls).deserialize(element)
 
-        # Parse egress_ports (list from container "EGRESS-PORTS")
-        obj.egress_ports = []
-        container = ARObject._find_child_element(element, "EGRESS-PORTS")
+        # Parse egress_port_refs (list from container "EGRESS-PORT-REFS")
+        obj.egress_port_refs = []
+        container = ARObject._find_child_element(element, "EGRESS-PORT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.egress_ports.append(child_value)
+                    obj.egress_port_refs.append(child_value)
 
         # Parse filter_action_block
         child = ARObject._find_child_element(element, "FILTER-ACTION-BLOCK")
@@ -214,15 +235,21 @@ class SwitchStreamIdentification(Identifiable):
             filter_action_vlan_value = child.text
             obj.filter_action_vlan = filter_action_vlan_value
 
-        # Parse ingress_ports (list from container "INGRESS-PORTS")
-        obj.ingress_ports = []
-        container = ARObject._find_child_element(element, "INGRESS-PORTS")
+        # Parse ingress_port_refs (list from container "INGRESS-PORT-REFS")
+        obj.ingress_port_refs = []
+        container = ARObject._find_child_element(element, "INGRESS-PORT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.ingress_ports.append(child_value)
+                    obj.ingress_port_refs.append(child_value)
 
         # Parse stream_filter
         child = ARObject._find_child_element(element, "STREAM-FILTER")

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
     TimingDescription,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingClock.timing_clock import (
     TimingClock,
 )
@@ -31,12 +32,12 @@ class TimingDescriptionEvent(TimingDescription, ABC):
         """
         return True
 
-    clock_reference: Optional[TimingClock]
+    clock_reference_ref: Optional[ARRef]
     occurrence: Optional[Any]
     def __init__(self) -> None:
         """Initialize TimingDescriptionEvent."""
         super().__init__()
-        self.clock_reference: Optional[TimingClock] = None
+        self.clock_reference_ref: Optional[ARRef] = None
         self.occurrence: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
@@ -59,12 +60,12 @@ class TimingDescriptionEvent(TimingDescription, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize clock_reference
-        if self.clock_reference is not None:
-            serialized = ARObject._serialize_item(self.clock_reference, "TimingClock")
+        # Serialize clock_reference_ref
+        if self.clock_reference_ref is not None:
+            serialized = ARObject._serialize_item(self.clock_reference_ref, "TimingClock")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CLOCK-REFERENCE")
+                wrapped = ET.Element("CLOCK-REFERENCE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -102,11 +103,11 @@ class TimingDescriptionEvent(TimingDescription, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TimingDescriptionEvent, cls).deserialize(element)
 
-        # Parse clock_reference
-        child = ARObject._find_child_element(element, "CLOCK-REFERENCE")
+        # Parse clock_reference_ref
+        child = ARObject._find_child_element(element, "CLOCK-REFERENCE-REF")
         if child is not None:
-            clock_reference_value = ARObject._deserialize_by_tag(child, "TimingClock")
-            obj.clock_reference = clock_reference_value
+            clock_reference_ref_value = ARRef.deserialize(child)
+            obj.clock_reference_ref = clock_reference_ref_value
 
         # Parse occurrence
         child = ARObject._find_child_element(element, "OCCURRENCE")

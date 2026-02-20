@@ -56,9 +56,9 @@ class GlobalTimeDomain(FibexElement):
     gateways: list[GlobalTimeGateway]
     global_time: Optional[AbstractGlobalTimeDomainProps]
     global_time_master: Optional[GlobalTimeMaster]
-    global_time_subs: list[GlobalTimeDomain]
+    global_time_sub_refs: list[ARRef]
     network: Optional[NetworkSegmentIdentification]
-    offset_time: Optional[GlobalTimeDomain]
+    offset_time_ref: Optional[ARRef]
     pdu_triggering_ref: Optional[ARRef]
     slaves: list[GlobalTimeSlave]
     sync_loss: Optional[TimeValue]
@@ -70,9 +70,9 @@ class GlobalTimeDomain(FibexElement):
         self.gateways: list[GlobalTimeGateway] = []
         self.global_time: Optional[AbstractGlobalTimeDomainProps] = None
         self.global_time_master: Optional[GlobalTimeMaster] = None
-        self.global_time_subs: list[GlobalTimeDomain] = []
+        self.global_time_sub_refs: list[ARRef] = []
         self.network: Optional[NetworkSegmentIdentification] = None
-        self.offset_time: Optional[GlobalTimeDomain] = None
+        self.offset_time_ref: Optional[ARRef] = None
         self.pdu_triggering_ref: Optional[ARRef] = None
         self.slaves: list[GlobalTimeSlave] = []
         self.sync_loss: Optional[TimeValue] = None
@@ -163,13 +163,20 @@ class GlobalTimeDomain(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize global_time_subs (list to container "GLOBAL-TIME-SUBS")
-        if self.global_time_subs:
-            wrapper = ET.Element("GLOBAL-TIME-SUBS")
-            for item in self.global_time_subs:
+        # Serialize global_time_sub_refs (list to container "GLOBAL-TIME-SUB-REFS")
+        if self.global_time_sub_refs:
+            wrapper = ET.Element("GLOBAL-TIME-SUB-REFS")
+            for item in self.global_time_sub_refs:
                 serialized = ARObject._serialize_item(item, "GlobalTimeDomain")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("GLOBAL-TIME-SUB-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -187,12 +194,12 @@ class GlobalTimeDomain(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize offset_time
-        if self.offset_time is not None:
-            serialized = ARObject._serialize_item(self.offset_time, "GlobalTimeDomain")
+        # Serialize offset_time_ref
+        if self.offset_time_ref is not None:
+            serialized = ARObject._serialize_item(self.offset_time_ref, "GlobalTimeDomain")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("OFFSET-TIME")
+                wrapped = ET.Element("OFFSET-TIME-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -288,15 +295,21 @@ class GlobalTimeDomain(FibexElement):
             global_time_master_value = ARObject._deserialize_by_tag(child, "GlobalTimeMaster")
             obj.global_time_master = global_time_master_value
 
-        # Parse global_time_subs (list from container "GLOBAL-TIME-SUBS")
-        obj.global_time_subs = []
-        container = ARObject._find_child_element(element, "GLOBAL-TIME-SUBS")
+        # Parse global_time_sub_refs (list from container "GLOBAL-TIME-SUB-REFS")
+        obj.global_time_sub_refs = []
+        container = ARObject._find_child_element(element, "GLOBAL-TIME-SUB-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.global_time_subs.append(child_value)
+                    obj.global_time_sub_refs.append(child_value)
 
         # Parse network
         child = ARObject._find_child_element(element, "NETWORK")
@@ -304,11 +317,11 @@ class GlobalTimeDomain(FibexElement):
             network_value = ARObject._deserialize_by_tag(child, "NetworkSegmentIdentification")
             obj.network = network_value
 
-        # Parse offset_time
-        child = ARObject._find_child_element(element, "OFFSET-TIME")
+        # Parse offset_time_ref
+        child = ARObject._find_child_element(element, "OFFSET-TIME-REF")
         if child is not None:
-            offset_time_value = ARObject._deserialize_by_tag(child, "GlobalTimeDomain")
-            obj.offset_time = offset_time_value
+            offset_time_ref_value = ARRef.deserialize(child)
+            obj.offset_time_ref = offset_time_ref_value
 
         # Parse pdu_triggering_ref
         child = ARObject._find_child_element(element, "PDU-TRIGGERING-REF")

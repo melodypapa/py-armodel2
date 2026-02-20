@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer import (
     DataTransformationKindEnum,
 )
@@ -36,13 +37,13 @@ class DataTransformation(Identifiable):
 
     data: Optional[DataTransformationKindEnum]
     execute_despite: Optional[Boolean]
-    transformers: list[Any]
+    transformer_refs: list[Any]
     def __init__(self) -> None:
         """Initialize DataTransformation."""
         super().__init__()
         self.data: Optional[DataTransformationKindEnum] = None
         self.execute_despite: Optional[Boolean] = None
-        self.transformers: list[Any] = []
+        self.transformer_refs: list[Any] = []
 
     def serialize(self) -> ET.Element:
         """Serialize DataTransformation to XML element.
@@ -92,13 +93,20 @@ class DataTransformation(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize transformers (list to container "TRANSFORMERS")
-        if self.transformers:
-            wrapper = ET.Element("TRANSFORMERS")
-            for item in self.transformers:
+        # Serialize transformer_refs (list to container "TRANSFORMER-REFS")
+        if self.transformer_refs:
+            wrapper = ET.Element("TRANSFORMER-REFS")
+            for item in self.transformer_refs:
                 serialized = ARObject._serialize_item(item, "Any")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("TRANSFORMER-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -129,15 +137,21 @@ class DataTransformation(Identifiable):
             execute_despite_value = child.text
             obj.execute_despite = execute_despite_value
 
-        # Parse transformers (list from container "TRANSFORMERS")
-        obj.transformers = []
-        container = ARObject._find_child_element(element, "TRANSFORMERS")
+        # Parse transformer_refs (list from container "TRANSFORMER-REFS")
+        obj.transformer_refs = []
+        container = ARObject._find_child_element(element, "TRANSFORMER-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.transformers.append(child_value)
+                    obj.transformer_refs.append(child_value)
 
         return obj
 

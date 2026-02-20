@@ -107,10 +107,10 @@
                   <LONG-NAME>
                     <L-4 L="EN">Voltage</L-4>
                   </LONG-NAME>
+                  <CURRENT-EXP>-1</CURRENT-EXP>
                   <LENGTH-EXP>2</LENGTH-EXP>
                   <MASS-EXP>1</MASS-EXP>
                   <TIME-EXP>-3</TIME-EXP>
-                  <CURRENT-EXP>-1</CURRENT-EXP>
                 </PHYSICAL-DIMENSION>
                 <PHYSICAL-DIMENSION>
                   <SHORT-NAME>LenNeg1</SHORT-NAME>

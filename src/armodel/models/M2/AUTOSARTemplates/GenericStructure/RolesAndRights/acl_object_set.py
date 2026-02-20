@@ -47,7 +47,7 @@ class AclObjectSet(ARElement):
     acl_object_classe_refs: list[ReferrableSubtypesEnum]
     acl_scope: AclScopeEnum
     collection_ref: Optional[ARRef]
-    derived_froms: list[AtpBlueprint]
+    derived_from_refs: list[ARRef]
     engineerings: list[AutosarEngineeringObject]
     def __init__(self) -> None:
         """Initialize AclObjectSet."""
@@ -55,7 +55,7 @@ class AclObjectSet(ARElement):
         self.acl_object_classe_refs: list[ReferrableSubtypesEnum] = []
         self.acl_scope: AclScopeEnum = None
         self.collection_ref: Optional[ARRef] = None
-        self.derived_froms: list[AtpBlueprint] = []
+        self.derived_from_refs: list[ARRef] = []
         self.engineerings: list[AutosarEngineeringObject] = []
 
     def serialize(self) -> ET.Element:
@@ -123,13 +123,20 @@ class AclObjectSet(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize derived_froms (list to container "DERIVED-FROMS")
-        if self.derived_froms:
-            wrapper = ET.Element("DERIVED-FROMS")
-            for item in self.derived_froms:
+        # Serialize derived_from_refs (list to container "DERIVED-FROM-REFS")
+        if self.derived_from_refs:
+            wrapper = ET.Element("DERIVED-FROM-REFS")
+            for item in self.derived_from_refs:
                 serialized = ARObject._serialize_item(item, "AtpBlueprint")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("DERIVED-FROM-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -186,15 +193,21 @@ class AclObjectSet(ARElement):
             collection_ref_value = ARRef.deserialize(child)
             obj.collection_ref = collection_ref_value
 
-        # Parse derived_froms (list from container "DERIVED-FROMS")
-        obj.derived_froms = []
-        container = ARObject._find_child_element(element, "DERIVED-FROMS")
+        # Parse derived_from_refs (list from container "DERIVED-FROM-REFS")
+        obj.derived_from_refs = []
+        container = ARObject._find_child_element(element, "DERIVED-FROM-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.derived_froms.append(child_value)
+                    obj.derived_from_refs.append(child_value)
 
         # Parse engineerings (list from container "ENGINEERINGS")
         obj.engineerings = []

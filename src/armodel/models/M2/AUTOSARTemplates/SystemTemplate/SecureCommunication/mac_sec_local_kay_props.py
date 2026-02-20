@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication import (
     MacSecRoleEnum,
 )
@@ -38,18 +39,18 @@ class MacSecLocalKayProps(ARObject):
         return False
 
     destination_mac: Optional[MacAddressString]
-    global_kay_props: Optional[MacSecGlobalKayProps]
+    global_kay_props_ref: Optional[ARRef]
     key_server: Optional[PositiveInteger]
-    mka_participants: list[MacSecKayParticipant]
+    mka_participant_refs: list[ARRef]
     role: Optional[MacSecRoleEnum]
     source_mac: Optional[MacAddressString]
     def __init__(self) -> None:
         """Initialize MacSecLocalKayProps."""
         super().__init__()
         self.destination_mac: Optional[MacAddressString] = None
-        self.global_kay_props: Optional[MacSecGlobalKayProps] = None
+        self.global_kay_props_ref: Optional[ARRef] = None
         self.key_server: Optional[PositiveInteger] = None
-        self.mka_participants: list[MacSecKayParticipant] = []
+        self.mka_participant_refs: list[ARRef] = []
         self.role: Optional[MacSecRoleEnum] = None
         self.source_mac: Optional[MacAddressString] = None
 
@@ -77,12 +78,12 @@ class MacSecLocalKayProps(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize global_kay_props
-        if self.global_kay_props is not None:
-            serialized = ARObject._serialize_item(self.global_kay_props, "MacSecGlobalKayProps")
+        # Serialize global_kay_props_ref
+        if self.global_kay_props_ref is not None:
+            serialized = ARObject._serialize_item(self.global_kay_props_ref, "MacSecGlobalKayProps")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("GLOBAL-KAY-PROPS")
+                wrapped = ET.Element("GLOBAL-KAY-PROPS-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -105,13 +106,20 @@ class MacSecLocalKayProps(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize mka_participants (list to container "MKA-PARTICIPANTS")
-        if self.mka_participants:
-            wrapper = ET.Element("MKA-PARTICIPANTS")
-            for item in self.mka_participants:
+        # Serialize mka_participant_refs (list to container "MKA-PARTICIPANT-REFS")
+        if self.mka_participant_refs:
+            wrapper = ET.Element("MKA-PARTICIPANT-REFS")
+            for item in self.mka_participant_refs:
                 serialized = ARObject._serialize_item(item, "MacSecKayParticipant")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("MKA-PARTICIPANT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -165,11 +173,11 @@ class MacSecLocalKayProps(ARObject):
             destination_mac_value = child.text
             obj.destination_mac = destination_mac_value
 
-        # Parse global_kay_props
-        child = ARObject._find_child_element(element, "GLOBAL-KAY-PROPS")
+        # Parse global_kay_props_ref
+        child = ARObject._find_child_element(element, "GLOBAL-KAY-PROPS-REF")
         if child is not None:
-            global_kay_props_value = ARObject._deserialize_by_tag(child, "MacSecGlobalKayProps")
-            obj.global_kay_props = global_kay_props_value
+            global_kay_props_ref_value = ARRef.deserialize(child)
+            obj.global_kay_props_ref = global_kay_props_ref_value
 
         # Parse key_server
         child = ARObject._find_child_element(element, "KEY-SERVER")
@@ -177,15 +185,21 @@ class MacSecLocalKayProps(ARObject):
             key_server_value = child.text
             obj.key_server = key_server_value
 
-        # Parse mka_participants (list from container "MKA-PARTICIPANTS")
-        obj.mka_participants = []
-        container = ARObject._find_child_element(element, "MKA-PARTICIPANTS")
+        # Parse mka_participant_refs (list from container "MKA-PARTICIPANT-REFS")
+        obj.mka_participant_refs = []
+        container = ARObject._find_child_element(element, "MKA-PARTICIPANT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.mka_participants.append(child_value)
+                    obj.mka_participant_refs.append(child_value)
 
         # Parse role
         child = ARObject._find_child_element(element, "ROLE")

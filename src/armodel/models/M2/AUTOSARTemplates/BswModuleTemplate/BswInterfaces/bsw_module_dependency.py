@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -37,12 +38,12 @@ class BswModuleDependency(Identifiable):
         return False
 
     target_module_id: Optional[PositiveInteger]
-    target_module: Optional[BswModuleDescription]
+    target_module_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize BswModuleDependency."""
         super().__init__()
         self.target_module_id: Optional[PositiveInteger] = None
-        self.target_module: Optional[BswModuleDescription] = None
+        self.target_module_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize BswModuleDependency to XML element.
@@ -78,12 +79,12 @@ class BswModuleDependency(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize target_module
-        if self.target_module is not None:
-            serialized = ARObject._serialize_item(self.target_module, "BswModuleDescription")
+        # Serialize target_module_ref
+        if self.target_module_ref is not None:
+            serialized = ARObject._serialize_item(self.target_module_ref, "BswModuleDescription")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TARGET-MODULE")
+                wrapped = ET.Element("TARGET-MODULE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -113,11 +114,11 @@ class BswModuleDependency(Identifiable):
             target_module_id_value = child.text
             obj.target_module_id = target_module_id_value
 
-        # Parse target_module
-        child = ARObject._find_child_element(element, "TARGET-MODULE")
+        # Parse target_module_ref
+        child = ARObject._find_child_element(element, "TARGET-MODULE-REF")
         if child is not None:
-            target_module_value = ARObject._deserialize_by_tag(child, "BswModuleDescription")
-            obj.target_module = target_module_value
+            target_module_ref_value = ARRef.deserialize(child)
+            obj.target_module_ref = target_module_ref_value
 
         return obj
 

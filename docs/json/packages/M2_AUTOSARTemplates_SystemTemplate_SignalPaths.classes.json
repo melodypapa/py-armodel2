@@ -163,8 +163,8 @@
         "physicalChannels": {
           "type": "PhysicalChannel",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The SwcToSwcSignal shall not be transmitted on one of physical channels."
         },
         "signals": {
@@ -213,8 +213,8 @@
         "physicalChannels": {
           "type": "PhysicalChannel",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The SwcToSwcSignal can be transmitted on one of these channels."
         },
         "signals": {

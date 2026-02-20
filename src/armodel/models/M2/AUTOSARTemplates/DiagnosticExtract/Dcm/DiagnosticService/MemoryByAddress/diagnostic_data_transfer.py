@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticMemoryByAddress,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
 class DiagnosticDataTransfer(DiagnosticMemoryByAddress):
@@ -27,11 +28,11 @@ class DiagnosticDataTransfer(DiagnosticMemoryByAddress):
         """
         return False
 
-    data_transfer: Optional[DiagnosticDataTransfer]
+    data_transfer_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DiagnosticDataTransfer."""
         super().__init__()
-        self.data_transfer: Optional[DiagnosticDataTransfer] = None
+        self.data_transfer_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticDataTransfer to XML element.
@@ -53,12 +54,12 @@ class DiagnosticDataTransfer(DiagnosticMemoryByAddress):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize data_transfer
-        if self.data_transfer is not None:
-            serialized = ARObject._serialize_item(self.data_transfer, "DiagnosticDataTransfer")
+        # Serialize data_transfer_ref
+        if self.data_transfer_ref is not None:
+            serialized = ARObject._serialize_item(self.data_transfer_ref, "DiagnosticDataTransfer")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DATA-TRANSFER")
+                wrapped = ET.Element("DATA-TRANSFER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -82,11 +83,11 @@ class DiagnosticDataTransfer(DiagnosticMemoryByAddress):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticDataTransfer, cls).deserialize(element)
 
-        # Parse data_transfer
-        child = ARObject._find_child_element(element, "DATA-TRANSFER")
+        # Parse data_transfer_ref
+        child = ARObject._find_child_element(element, "DATA-TRANSFER-REF")
         if child is not None:
-            data_transfer_value = ARObject._deserialize_by_tag(child, "DiagnosticDataTransfer")
-            obj.data_transfer = data_transfer_value
+            data_transfer_ref_value = ARRef.deserialize(child)
+            obj.data_transfer_ref = data_transfer_ref_value
 
         return obj
 

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.di
     DiagnosticAbstractAliasEvent,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
 class DiagnosticFimAliasEventGroup(DiagnosticAbstractAliasEvent):
@@ -27,11 +28,11 @@ class DiagnosticFimAliasEventGroup(DiagnosticAbstractAliasEvent):
         """
         return False
 
-    grouped_aliases: list[Any]
+    grouped_aliase_refs: list[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticFimAliasEventGroup."""
         super().__init__()
-        self.grouped_aliases: list[Any] = []
+        self.grouped_aliase_refs: list[Any] = []
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticFimAliasEventGroup to XML element.
@@ -53,13 +54,20 @@ class DiagnosticFimAliasEventGroup(DiagnosticAbstractAliasEvent):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize grouped_aliases (list to container "GROUPED-ALIASES")
-        if self.grouped_aliases:
-            wrapper = ET.Element("GROUPED-ALIASES")
-            for item in self.grouped_aliases:
+        # Serialize grouped_aliase_refs (list to container "GROUPED-ALIASE-REFS")
+        if self.grouped_aliase_refs:
+            wrapper = ET.Element("GROUPED-ALIASE-REFS")
+            for item in self.grouped_aliase_refs:
                 serialized = ARObject._serialize_item(item, "Any")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("GROUPED-ALIASE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -78,15 +86,21 @@ class DiagnosticFimAliasEventGroup(DiagnosticAbstractAliasEvent):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticFimAliasEventGroup, cls).deserialize(element)
 
-        # Parse grouped_aliases (list from container "GROUPED-ALIASES")
-        obj.grouped_aliases = []
-        container = ARObject._find_child_element(element, "GROUPED-ALIASES")
+        # Parse grouped_aliase_refs (list from container "GROUPED-ALIASE-REFS")
+        obj.grouped_aliase_refs = []
+        container = ARObject._find_child_element(element, "GROUPED-ALIASE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.grouped_aliases.append(child_value)
+                    obj.grouped_aliase_refs.append(child_value)
 
         return obj
 

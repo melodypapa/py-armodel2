@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.DataDictionary.SystemConstant.sw_systemconst import (
     SwSystemconst,
 )
@@ -30,13 +31,13 @@ class SwSystemconstDependentFormula(ARObject, ABC):
         """
         return True
 
-    sysc: Optional[SwSystemconst]
-    sysc_string: Optional[SwSystemconst]
+    sysc_ref: Optional[ARRef]
+    sysc_string_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SwSystemconstDependentFormula."""
         super().__init__()
-        self.sysc: Optional[SwSystemconst] = None
-        self.sysc_string: Optional[SwSystemconst] = None
+        self.sysc_ref: Optional[ARRef] = None
+        self.sysc_string_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize SwSystemconstDependentFormula to XML element.
@@ -48,12 +49,12 @@ class SwSystemconstDependentFormula(ARObject, ABC):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize sysc
-        if self.sysc is not None:
-            serialized = ARObject._serialize_item(self.sysc, "SwSystemconst")
+        # Serialize sysc_ref
+        if self.sysc_ref is not None:
+            serialized = ARObject._serialize_item(self.sysc_ref, "SwSystemconst")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SYSC")
+                wrapped = ET.Element("SYSC-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -62,12 +63,12 @@ class SwSystemconstDependentFormula(ARObject, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sysc_string
-        if self.sysc_string is not None:
-            serialized = ARObject._serialize_item(self.sysc_string, "SwSystemconst")
+        # Serialize sysc_string_ref
+        if self.sysc_string_ref is not None:
+            serialized = ARObject._serialize_item(self.sysc_string_ref, "SwSystemconst")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SYSC-STRING")
+                wrapped = ET.Element("SYSC-STRING-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -92,17 +93,17 @@ class SwSystemconstDependentFormula(ARObject, ABC):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse sysc
-        child = ARObject._find_child_element(element, "SYSC")
+        # Parse sysc_ref
+        child = ARObject._find_child_element(element, "SYSC-REF")
         if child is not None:
-            sysc_value = ARObject._deserialize_by_tag(child, "SwSystemconst")
-            obj.sysc = sysc_value
+            sysc_ref_value = ARRef.deserialize(child)
+            obj.sysc_ref = sysc_ref_value
 
-        # Parse sysc_string
-        child = ARObject._find_child_element(element, "SYSC-STRING")
+        # Parse sysc_string_ref
+        child = ARObject._find_child_element(element, "SYSC-STRING-REF")
         if child is not None:
-            sysc_string_value = ARObject._deserialize_by_tag(child, "SwSystemconst")
-            obj.sysc_string = sysc_string_value
+            sysc_string_ref_value = ARRef.deserialize(child)
+            obj.sysc_string_ref = sysc_string_ref_value
 
         return obj
 

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
     AttributeCondition,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
 class PrimitiveAttributeCondition(AttributeCondition):
@@ -27,11 +28,11 @@ class PrimitiveAttributeCondition(AttributeCondition):
         """
         return False
 
-    attribute: Any
+    attribute_ref: Any
     def __init__(self) -> None:
         """Initialize PrimitiveAttributeCondition."""
         super().__init__()
-        self.attribute: Any = None
+        self.attribute_ref: Any = None
 
     def serialize(self) -> ET.Element:
         """Serialize PrimitiveAttributeCondition to XML element.
@@ -53,12 +54,12 @@ class PrimitiveAttributeCondition(AttributeCondition):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize attribute
-        if self.attribute is not None:
-            serialized = ARObject._serialize_item(self.attribute, "Any")
+        # Serialize attribute_ref
+        if self.attribute_ref is not None:
+            serialized = ARObject._serialize_item(self.attribute_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ATTRIBUTE")
+                wrapped = ET.Element("ATTRIBUTE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -82,11 +83,11 @@ class PrimitiveAttributeCondition(AttributeCondition):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PrimitiveAttributeCondition, cls).deserialize(element)
 
-        # Parse attribute
-        child = ARObject._find_child_element(element, "ATTRIBUTE")
+        # Parse attribute_ref
+        child = ARObject._find_child_element(element, "ATTRIBUTE-REF")
         if child is not None:
-            attribute_value = child.text
-            obj.attribute = attribute_value
+            attribute_ref_value = ARRef.deserialize(child)
+            obj.attribute_ref = attribute_ref_value
 
         return obj
 

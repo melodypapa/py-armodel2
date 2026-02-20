@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
     CpSoftwareCluster,
 )
@@ -33,13 +34,13 @@ class SystemSignalToCommunicationResourceMapping(Identifiable):
         """
         return False
 
-    software_cluster: Optional[CpSoftwareCluster]
-    system_signal: Optional[SystemSignal]
+    software_cluster_ref: Optional[ARRef]
+    system_signal_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SystemSignalToCommunicationResourceMapping."""
         super().__init__()
-        self.software_cluster: Optional[CpSoftwareCluster] = None
-        self.system_signal: Optional[SystemSignal] = None
+        self.software_cluster_ref: Optional[ARRef] = None
+        self.system_signal_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize SystemSignalToCommunicationResourceMapping to XML element.
@@ -61,12 +62,12 @@ class SystemSignalToCommunicationResourceMapping(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize software_cluster
-        if self.software_cluster is not None:
-            serialized = ARObject._serialize_item(self.software_cluster, "CpSoftwareCluster")
+        # Serialize software_cluster_ref
+        if self.software_cluster_ref is not None:
+            serialized = ARObject._serialize_item(self.software_cluster_ref, "CpSoftwareCluster")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SOFTWARE-CLUSTER")
+                wrapped = ET.Element("SOFTWARE-CLUSTER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -75,12 +76,12 @@ class SystemSignalToCommunicationResourceMapping(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize system_signal
-        if self.system_signal is not None:
-            serialized = ARObject._serialize_item(self.system_signal, "SystemSignal")
+        # Serialize system_signal_ref
+        if self.system_signal_ref is not None:
+            serialized = ARObject._serialize_item(self.system_signal_ref, "SystemSignal")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SYSTEM-SIGNAL")
+                wrapped = ET.Element("SYSTEM-SIGNAL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -104,17 +105,17 @@ class SystemSignalToCommunicationResourceMapping(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SystemSignalToCommunicationResourceMapping, cls).deserialize(element)
 
-        # Parse software_cluster
-        child = ARObject._find_child_element(element, "SOFTWARE-CLUSTER")
+        # Parse software_cluster_ref
+        child = ARObject._find_child_element(element, "SOFTWARE-CLUSTER-REF")
         if child is not None:
-            software_cluster_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
-            obj.software_cluster = software_cluster_value
+            software_cluster_ref_value = ARRef.deserialize(child)
+            obj.software_cluster_ref = software_cluster_ref_value
 
-        # Parse system_signal
-        child = ARObject._find_child_element(element, "SYSTEM-SIGNAL")
+        # Parse system_signal_ref
+        child = ARObject._find_child_element(element, "SYSTEM-SIGNAL-REF")
         if child is not None:
-            system_signal_value = ARObject._deserialize_by_tag(child, "SystemSignal")
-            obj.system_signal = system_signal_value
+            system_signal_ref_value = ARRef.deserialize(child)
+            obj.system_signal_ref = system_signal_ref_value
 
         return obj
 

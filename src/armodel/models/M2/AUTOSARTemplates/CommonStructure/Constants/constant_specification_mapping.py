@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.constant_specification import (
     ConstantSpecification,
 )
@@ -27,13 +28,13 @@ class ConstantSpecificationMapping(ARObject):
         """
         return False
 
-    appl_constant: Optional[ConstantSpecification]
-    impl_constant: Optional[ConstantSpecification]
+    appl_constant_ref: Optional[ARRef]
+    impl_constant_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ConstantSpecificationMapping."""
         super().__init__()
-        self.appl_constant: Optional[ConstantSpecification] = None
-        self.impl_constant: Optional[ConstantSpecification] = None
+        self.appl_constant_ref: Optional[ARRef] = None
+        self.impl_constant_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize ConstantSpecificationMapping to XML element.
@@ -45,12 +46,12 @@ class ConstantSpecificationMapping(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize appl_constant
-        if self.appl_constant is not None:
-            serialized = ARObject._serialize_item(self.appl_constant, "ConstantSpecification")
+        # Serialize appl_constant_ref
+        if self.appl_constant_ref is not None:
+            serialized = ARObject._serialize_item(self.appl_constant_ref, "ConstantSpecification")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("APPL-CONSTANT")
+                wrapped = ET.Element("APPL-CONSTANT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -59,12 +60,12 @@ class ConstantSpecificationMapping(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize impl_constant
-        if self.impl_constant is not None:
-            serialized = ARObject._serialize_item(self.impl_constant, "ConstantSpecification")
+        # Serialize impl_constant_ref
+        if self.impl_constant_ref is not None:
+            serialized = ARObject._serialize_item(self.impl_constant_ref, "ConstantSpecification")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("IMPL-CONSTANT")
+                wrapped = ET.Element("IMPL-CONSTANT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -89,17 +90,17 @@ class ConstantSpecificationMapping(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse appl_constant
-        child = ARObject._find_child_element(element, "APPL-CONSTANT")
+        # Parse appl_constant_ref
+        child = ARObject._find_child_element(element, "APPL-CONSTANT-REF")
         if child is not None:
-            appl_constant_value = ARObject._deserialize_by_tag(child, "ConstantSpecification")
-            obj.appl_constant = appl_constant_value
+            appl_constant_ref_value = ARRef.deserialize(child)
+            obj.appl_constant_ref = appl_constant_ref_value
 
-        # Parse impl_constant
-        child = ARObject._find_child_element(element, "IMPL-CONSTANT")
+        # Parse impl_constant_ref
+        child = ARObject._find_child_element(element, "IMPL-CONSTANT-REF")
         if child is not None:
-            impl_constant_value = ARObject._deserialize_by_tag(child, "ConstantSpecification")
-            obj.impl_constant = impl_constant_value
+            impl_constant_ref_value = ARRef.deserialize(child)
+            obj.impl_constant_ref = impl_constant_ref_value
 
         return obj
 

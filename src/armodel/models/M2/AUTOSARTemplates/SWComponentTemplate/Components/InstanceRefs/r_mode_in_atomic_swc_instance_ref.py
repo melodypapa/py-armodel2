@@ -37,17 +37,17 @@ class RModeInAtomicSwcInstanceRef(ARObject):
         """
         return False
 
-    base: Optional[AtomicSwComponentType]
+    base_ref: Optional[ARRef]
     context_mode_group_prototype_ref: Optional[ARRef]
-    context_port_prototype: Optional[AbstractRequiredPortPrototype]
-    target_mode_declaration: Optional[ModeDeclaration]
+    context_port_prototype_ref: Optional[ARRef]
+    target_mode_declaration_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize RModeInAtomicSwcInstanceRef."""
         super().__init__()
-        self.base: Optional[AtomicSwComponentType] = None
+        self.base_ref: Optional[ARRef] = None
         self.context_mode_group_prototype_ref: Optional[ARRef] = None
-        self.context_port_prototype: Optional[AbstractRequiredPortPrototype] = None
-        self.target_mode_declaration: Optional[ModeDeclaration] = None
+        self.context_port_prototype_ref: Optional[ARRef] = None
+        self.target_mode_declaration_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize RModeInAtomicSwcInstanceRef to XML element.
@@ -59,12 +59,12 @@ class RModeInAtomicSwcInstanceRef(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize base
-        if self.base is not None:
-            serialized = ARObject._serialize_item(self.base, "AtomicSwComponentType")
+        # Serialize base_ref
+        if self.base_ref is not None:
+            serialized = ARObject._serialize_item(self.base_ref, "AtomicSwComponentType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("BASE")
+                wrapped = ET.Element("BASE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -87,12 +87,12 @@ class RModeInAtomicSwcInstanceRef(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize context_port_prototype
-        if self.context_port_prototype is not None:
-            serialized = ARObject._serialize_item(self.context_port_prototype, "AbstractRequiredPortPrototype")
+        # Serialize context_port_prototype_ref
+        if self.context_port_prototype_ref is not None:
+            serialized = ARObject._serialize_item(self.context_port_prototype_ref, "AbstractRequiredPortPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT-PORT-PROTOTYPE")
+                wrapped = ET.Element("CONTEXT-PORT-PROTOTYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -101,12 +101,12 @@ class RModeInAtomicSwcInstanceRef(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize target_mode_declaration
-        if self.target_mode_declaration is not None:
-            serialized = ARObject._serialize_item(self.target_mode_declaration, "ModeDeclaration")
+        # Serialize target_mode_declaration_ref
+        if self.target_mode_declaration_ref is not None:
+            serialized = ARObject._serialize_item(self.target_mode_declaration_ref, "ModeDeclaration")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TARGET-MODE-DECLARATION")
+                wrapped = ET.Element("TARGET-MODE-DECLARATION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -131,11 +131,11 @@ class RModeInAtomicSwcInstanceRef(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse base
-        child = ARObject._find_child_element(element, "BASE")
+        # Parse base_ref
+        child = ARObject._find_child_element(element, "BASE-REF")
         if child is not None:
-            base_value = ARObject._deserialize_by_tag(child, "AtomicSwComponentType")
-            obj.base = base_value
+            base_ref_value = ARRef.deserialize(child)
+            obj.base_ref = base_ref_value
 
         # Parse context_mode_group_prototype_ref
         child = ARObject._find_child_element(element, "CONTEXT-MODE-GROUP-PROTOTYPE-REF")
@@ -143,17 +143,17 @@ class RModeInAtomicSwcInstanceRef(ARObject):
             context_mode_group_prototype_ref_value = ARRef.deserialize(child)
             obj.context_mode_group_prototype_ref = context_mode_group_prototype_ref_value
 
-        # Parse context_port_prototype
-        child = ARObject._find_child_element(element, "CONTEXT-PORT-PROTOTYPE")
+        # Parse context_port_prototype_ref
+        child = ARObject._find_child_element(element, "CONTEXT-PORT-PROTOTYPE-REF")
         if child is not None:
-            context_port_prototype_value = ARObject._deserialize_by_tag(child, "AbstractRequiredPortPrototype")
-            obj.context_port_prototype = context_port_prototype_value
+            context_port_prototype_ref_value = ARRef.deserialize(child)
+            obj.context_port_prototype_ref = context_port_prototype_ref_value
 
-        # Parse target_mode_declaration
-        child = ARObject._find_child_element(element, "TARGET-MODE-DECLARATION")
+        # Parse target_mode_declaration_ref
+        child = ARObject._find_child_element(element, "TARGET-MODE-DECLARATION-REF")
         if child is not None:
-            target_mode_declaration_value = ARObject._deserialize_by_tag(child, "ModeDeclaration")
-            obj.target_mode_declaration = target_mode_declaration_value
+            target_mode_declaration_ref_value = ARRef.deserialize(child)
+            obj.target_mode_declaration_ref = target_mode_declaration_ref_value
 
         return obj
 

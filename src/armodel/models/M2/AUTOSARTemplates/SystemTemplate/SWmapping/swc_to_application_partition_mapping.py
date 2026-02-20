@@ -34,12 +34,12 @@ class SwcToApplicationPartitionMapping(Identifiable):
         """
         return False
 
-    application: Optional[ApplicationPartition]
+    application_ref: Optional[ARRef]
     sw_component_prototype_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SwcToApplicationPartitionMapping."""
         super().__init__()
-        self.application: Optional[ApplicationPartition] = None
+        self.application_ref: Optional[ARRef] = None
         self.sw_component_prototype_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
@@ -62,12 +62,12 @@ class SwcToApplicationPartitionMapping(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize application
-        if self.application is not None:
-            serialized = ARObject._serialize_item(self.application, "ApplicationPartition")
+        # Serialize application_ref
+        if self.application_ref is not None:
+            serialized = ARObject._serialize_item(self.application_ref, "ApplicationPartition")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("APPLICATION")
+                wrapped = ET.Element("APPLICATION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -105,11 +105,11 @@ class SwcToApplicationPartitionMapping(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwcToApplicationPartitionMapping, cls).deserialize(element)
 
-        # Parse application
-        child = ARObject._find_child_element(element, "APPLICATION")
+        # Parse application_ref
+        child = ARObject._find_child_element(element, "APPLICATION-REF")
         if child is not None:
-            application_value = ARObject._deserialize_by_tag(child, "ApplicationPartition")
-            obj.application = application_value
+            application_ref_value = ARRef.deserialize(child)
+            obj.application_ref = application_ref_value
 
         # Parse sw_component_prototype_ref
         child = ARObject._find_child_element(element, "SW-COMPONENT-PROTOTYPE-REF")

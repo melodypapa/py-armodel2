@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Referrable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -33,13 +34,13 @@ class BswModuleClientServerEntry(Referrable):
         """
         return False
 
-    encapsulated: Optional[BswModuleEntry]
+    encapsulated_ref: Optional[ARRef]
     is_reentrant: Optional[Boolean]
     is_synchronous: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize BswModuleClientServerEntry."""
         super().__init__()
-        self.encapsulated: Optional[BswModuleEntry] = None
+        self.encapsulated_ref: Optional[ARRef] = None
         self.is_reentrant: Optional[Boolean] = None
         self.is_synchronous: Optional[Boolean] = None
 
@@ -63,12 +64,12 @@ class BswModuleClientServerEntry(Referrable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize encapsulated
-        if self.encapsulated is not None:
-            serialized = ARObject._serialize_item(self.encapsulated, "BswModuleEntry")
+        # Serialize encapsulated_ref
+        if self.encapsulated_ref is not None:
+            serialized = ARObject._serialize_item(self.encapsulated_ref, "BswModuleEntry")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ENCAPSULATED")
+                wrapped = ET.Element("ENCAPSULATED-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -120,11 +121,11 @@ class BswModuleClientServerEntry(Referrable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswModuleClientServerEntry, cls).deserialize(element)
 
-        # Parse encapsulated
-        child = ARObject._find_child_element(element, "ENCAPSULATED")
+        # Parse encapsulated_ref
+        child = ARObject._find_child_element(element, "ENCAPSULATED-REF")
         if child is not None:
-            encapsulated_value = ARObject._deserialize_by_tag(child, "BswModuleEntry")
-            obj.encapsulated = encapsulated_value
+            encapsulated_ref_value = ARRef.deserialize(child)
+            obj.encapsulated_ref = encapsulated_ref_value
 
         # Parse is_reentrant
         child = ARObject._find_child_element(element, "IS-REENTRANT")

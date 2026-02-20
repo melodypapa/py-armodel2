@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Dds.dds_cp_topic import (
     DdsCpTopic,
 )
@@ -30,13 +31,13 @@ class DdsCpISignalToDdsTopicMapping(ARObject):
         """
         return False
 
-    dds_topic: Optional[DdsCpTopic]
-    i_signal: Optional[ISignal]
+    dds_topic_ref: Optional[ARRef]
+    i_signal_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DdsCpISignalToDdsTopicMapping."""
         super().__init__()
-        self.dds_topic: Optional[DdsCpTopic] = None
-        self.i_signal: Optional[ISignal] = None
+        self.dds_topic_ref: Optional[ARRef] = None
+        self.i_signal_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DdsCpISignalToDdsTopicMapping to XML element.
@@ -48,12 +49,12 @@ class DdsCpISignalToDdsTopicMapping(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize dds_topic
-        if self.dds_topic is not None:
-            serialized = ARObject._serialize_item(self.dds_topic, "DdsCpTopic")
+        # Serialize dds_topic_ref
+        if self.dds_topic_ref is not None:
+            serialized = ARObject._serialize_item(self.dds_topic_ref, "DdsCpTopic")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DDS-TOPIC")
+                wrapped = ET.Element("DDS-TOPIC-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -62,12 +63,12 @@ class DdsCpISignalToDdsTopicMapping(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize i_signal
-        if self.i_signal is not None:
-            serialized = ARObject._serialize_item(self.i_signal, "ISignal")
+        # Serialize i_signal_ref
+        if self.i_signal_ref is not None:
+            serialized = ARObject._serialize_item(self.i_signal_ref, "ISignal")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("I-SIGNAL")
+                wrapped = ET.Element("I-SIGNAL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -92,17 +93,17 @@ class DdsCpISignalToDdsTopicMapping(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse dds_topic
-        child = ARObject._find_child_element(element, "DDS-TOPIC")
+        # Parse dds_topic_ref
+        child = ARObject._find_child_element(element, "DDS-TOPIC-REF")
         if child is not None:
-            dds_topic_value = ARObject._deserialize_by_tag(child, "DdsCpTopic")
-            obj.dds_topic = dds_topic_value
+            dds_topic_ref_value = ARRef.deserialize(child)
+            obj.dds_topic_ref = dds_topic_ref_value
 
-        # Parse i_signal
-        child = ARObject._find_child_element(element, "I-SIGNAL")
+        # Parse i_signal_ref
+        child = ARObject._find_child_element(element, "I-SIGNAL-REF")
         if child is not None:
-            i_signal_value = ARObject._deserialize_by_tag(child, "ISignal")
-            obj.i_signal = i_signal_value
+            i_signal_ref_value = ARRef.deserialize(child)
+            obj.i_signal_ref = i_signal_ref_value
 
         return obj
 

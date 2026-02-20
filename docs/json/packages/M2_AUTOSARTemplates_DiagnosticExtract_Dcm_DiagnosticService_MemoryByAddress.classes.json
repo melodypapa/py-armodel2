@@ -92,8 +92,8 @@
         "memoryRanges": {
           "type": "any (DiagnosticMemory)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the formal description of the memory to which the DiagnosticMemoryByAddress"
         }
       }
@@ -134,8 +134,8 @@
         "access": {
           "type": "DiagnosticAccessPermission",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents that access permission defined for the specific DiagnosticMemoryIdentifier."
         },
         "id": {
@@ -200,8 +200,8 @@
         "writeClass": {
           "type": "any (DiagnosticWriteMemory)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference substantiates that abstract reference in the serviceClass for this specific concrete class. reference represents the ability to access among all DiagnosticWritememoryBy the given context."
         }
       }
@@ -280,8 +280,8 @@
         "readClass": {
           "type": "any (DiagnosticReadMemory)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference substantiates that abstract reference in the serviceClass for this specific concrete class. reference represents the ability to access among all DiagnosticReadMemoryBy the given context."
         }
       }
@@ -359,8 +359,8 @@
         "transferExit": {
           "type": "DiagnosticTransferExit",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference substantiates that abstract reference in the reference represents the ability to access among all DiagnosticTransferExit in the"
         }
       }
@@ -438,8 +438,8 @@
         "dataTransfer": {
           "type": "DiagnosticDataTransfer",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference substantiates that abstract reference in the reference represents the ability to access among all DiagnosticDataTransfer in the"
         }
       }
@@ -518,8 +518,8 @@
         "request": {
           "type": "any (DiagnosticRequest)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference substantiates that abstract reference in the role serviceClass for this specific concrete class. reference represents the ability to access among all DiagnosticRequestDownload given context."
         }
       }
@@ -598,8 +598,8 @@
         "requestUpload": {
           "type": "any (DiagnosticRequest)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference substantiates that abstract reference in the reference represents the ability to access among all DiagnosticRequestUpload in context."
         }
       }

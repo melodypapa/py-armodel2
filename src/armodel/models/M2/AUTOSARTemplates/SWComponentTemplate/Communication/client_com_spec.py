@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.r_port
     RPortComSpec,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
 )
@@ -34,13 +35,13 @@ class ClientComSpec(RPortComSpec):
         return False
 
     end_to_end_call: Optional[TimeValue]
-    operation: Optional[ClientServerOperation]
+    operation_ref: Optional[ARRef]
     transformation_coms: list[Any]
     def __init__(self) -> None:
         """Initialize ClientComSpec."""
         super().__init__()
         self.end_to_end_call: Optional[TimeValue] = None
-        self.operation: Optional[ClientServerOperation] = None
+        self.operation_ref: Optional[ARRef] = None
         self.transformation_coms: list[Any] = []
 
     def serialize(self) -> ET.Element:
@@ -77,12 +78,12 @@ class ClientComSpec(RPortComSpec):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize operation
-        if self.operation is not None:
-            serialized = ARObject._serialize_item(self.operation, "ClientServerOperation")
+        # Serialize operation_ref
+        if self.operation_ref is not None:
+            serialized = ARObject._serialize_item(self.operation_ref, "ClientServerOperation")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("OPERATION")
+                wrapped = ET.Element("OPERATION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -122,11 +123,11 @@ class ClientComSpec(RPortComSpec):
             end_to_end_call_value = child.text
             obj.end_to_end_call = end_to_end_call_value
 
-        # Parse operation
-        child = ARObject._find_child_element(element, "OPERATION")
+        # Parse operation_ref
+        child = ARObject._find_child_element(element, "OPERATION-REF")
         if child is not None:
-            operation_value = ARObject._deserialize_by_tag(child, "ClientServerOperation")
-            obj.operation = operation_value
+            operation_ref_value = ARRef.deserialize(child)
+            obj.operation_ref = operation_ref_value
 
         # Parse transformation_coms (list from container "TRANSFORMATION-COMS")
         obj.transformation_coms = []

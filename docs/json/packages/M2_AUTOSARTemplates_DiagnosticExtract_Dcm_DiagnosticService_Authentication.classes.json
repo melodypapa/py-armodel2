@@ -52,8 +52,8 @@
         "authentication": {
           "type": "any (Diagnostic)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the corresponding \"class\", i.e. this"
         }
       }

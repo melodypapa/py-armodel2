@@ -47,7 +47,7 @@ class PortElementToCommunicationResourceMapping(Identifiable):
         return False
 
     client_server_instance_ref: Optional[ClientServerOperation]
-    communication: Optional[CpSoftwareCluster]
+    communication_ref: Optional[ARRef]
     mode_ref: Optional[ARRef]
     parameter_data_in_system_instance_ref: Optional[ARRef]
     trigger_ref: Optional[ARRef]
@@ -56,7 +56,7 @@ class PortElementToCommunicationResourceMapping(Identifiable):
         """Initialize PortElementToCommunicationResourceMapping."""
         super().__init__()
         self.client_server_instance_ref: Optional[ClientServerOperation] = None
-        self.communication: Optional[CpSoftwareCluster] = None
+        self.communication_ref: Optional[ARRef] = None
         self.mode_ref: Optional[ARRef] = None
         self.parameter_data_in_system_instance_ref: Optional[ARRef] = None
         self.trigger_ref: Optional[ARRef] = None
@@ -96,12 +96,12 @@ class PortElementToCommunicationResourceMapping(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize communication
-        if self.communication is not None:
-            serialized = ARObject._serialize_item(self.communication, "CpSoftwareCluster")
+        # Serialize communication_ref
+        if self.communication_ref is not None:
+            serialized = ARObject._serialize_item(self.communication_ref, "CpSoftwareCluster")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("COMMUNICATION")
+                wrapped = ET.Element("COMMUNICATION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -187,11 +187,11 @@ class PortElementToCommunicationResourceMapping(Identifiable):
             client_server_instance_ref_value = ARObject._deserialize_by_tag(child, "ClientServerOperation")
             obj.client_server_instance_ref = client_server_instance_ref_value
 
-        # Parse communication
-        child = ARObject._find_child_element(element, "COMMUNICATION")
+        # Parse communication_ref
+        child = ARObject._find_child_element(element, "COMMUNICATION-REF")
         if child is not None:
-            communication_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
-            obj.communication = communication_value
+            communication_ref_value = ARRef.deserialize(child)
+            obj.communication_ref = communication_ref_value
 
         # Parse mode_ref
         child = ARObject._find_child_element(element, "MODE-REF")

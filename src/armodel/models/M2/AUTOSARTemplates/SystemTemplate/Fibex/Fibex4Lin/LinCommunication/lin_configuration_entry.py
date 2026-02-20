@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommun
     ScheduleTableEntry,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinTopology.lin_slave import (
     LinSlave,
 )
@@ -34,13 +35,13 @@ class LinConfigurationEntry(ScheduleTableEntry, ABC):
         """
         return True
 
-    assigned: Optional[LinSlave]
-    assigned_lin: Optional[LinSlaveConfigIdent]
+    assigned_ref: Optional[ARRef]
+    assigned_lin_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize LinConfigurationEntry."""
         super().__init__()
-        self.assigned: Optional[LinSlave] = None
-        self.assigned_lin: Optional[LinSlaveConfigIdent] = None
+        self.assigned_ref: Optional[ARRef] = None
+        self.assigned_lin_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize LinConfigurationEntry to XML element.
@@ -62,12 +63,12 @@ class LinConfigurationEntry(ScheduleTableEntry, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize assigned
-        if self.assigned is not None:
-            serialized = ARObject._serialize_item(self.assigned, "LinSlave")
+        # Serialize assigned_ref
+        if self.assigned_ref is not None:
+            serialized = ARObject._serialize_item(self.assigned_ref, "LinSlave")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ASSIGNED")
+                wrapped = ET.Element("ASSIGNED-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -76,12 +77,12 @@ class LinConfigurationEntry(ScheduleTableEntry, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize assigned_lin
-        if self.assigned_lin is not None:
-            serialized = ARObject._serialize_item(self.assigned_lin, "LinSlaveConfigIdent")
+        # Serialize assigned_lin_ref
+        if self.assigned_lin_ref is not None:
+            serialized = ARObject._serialize_item(self.assigned_lin_ref, "LinSlaveConfigIdent")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ASSIGNED-LIN")
+                wrapped = ET.Element("ASSIGNED-LIN-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -105,17 +106,17 @@ class LinConfigurationEntry(ScheduleTableEntry, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(LinConfigurationEntry, cls).deserialize(element)
 
-        # Parse assigned
-        child = ARObject._find_child_element(element, "ASSIGNED")
+        # Parse assigned_ref
+        child = ARObject._find_child_element(element, "ASSIGNED-REF")
         if child is not None:
-            assigned_value = ARObject._deserialize_by_tag(child, "LinSlave")
-            obj.assigned = assigned_value
+            assigned_ref_value = ARRef.deserialize(child)
+            obj.assigned_ref = assigned_ref_value
 
-        # Parse assigned_lin
-        child = ARObject._find_child_element(element, "ASSIGNED-LIN")
+        # Parse assigned_lin_ref
+        child = ARObject._find_child_element(element, "ASSIGNED-LIN-REF")
         if child is not None:
-            assigned_lin_value = ARObject._deserialize_by_tag(child, "LinSlaveConfigIdent")
-            obj.assigned_lin = assigned_lin_value
+            assigned_lin_ref_value = ARRef.deserialize(child)
+            obj.assigned_lin_ref = assigned_lin_ref_value
 
         return obj
 

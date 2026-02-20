@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.J1939.diagnostic_j1939_node import (
     DiagnosticJ1939Node,
 )
@@ -30,11 +31,11 @@ class DiagnosticJ1939FreezeFrame(DiagnosticCommonElement):
         """
         return False
 
-    node: Optional[DiagnosticJ1939Node]
+    node_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DiagnosticJ1939FreezeFrame."""
         super().__init__()
-        self.node: Optional[DiagnosticJ1939Node] = None
+        self.node_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticJ1939FreezeFrame to XML element.
@@ -56,12 +57,12 @@ class DiagnosticJ1939FreezeFrame(DiagnosticCommonElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize node
-        if self.node is not None:
-            serialized = ARObject._serialize_item(self.node, "DiagnosticJ1939Node")
+        # Serialize node_ref
+        if self.node_ref is not None:
+            serialized = ARObject._serialize_item(self.node_ref, "DiagnosticJ1939Node")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("NODE")
+                wrapped = ET.Element("NODE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -85,11 +86,11 @@ class DiagnosticJ1939FreezeFrame(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticJ1939FreezeFrame, cls).deserialize(element)
 
-        # Parse node
-        child = ARObject._find_child_element(element, "NODE")
+        # Parse node_ref
+        child = ARObject._find_child_element(element, "NODE-REF")
         if child is not None:
-            node_value = ARObject._deserialize_by_tag(child, "DiagnosticJ1939Node")
-            obj.node = node_value
+            node_ref_value = ARRef.deserialize(child)
+            obj.node_ref = node_ref_value
 
         return obj
 

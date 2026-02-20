@@ -34,12 +34,12 @@ class RTriggerInAtomicSwcInstanceRef(TriggerInAtomicSwcInstanceRef):
         """
         return False
 
-    context_r_port_prototype: Optional[AbstractRequiredPortPrototype]
+    context_r_port_prototype_ref: Optional[ARRef]
     target_trigger_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize RTriggerInAtomicSwcInstanceRef."""
         super().__init__()
-        self.context_r_port_prototype: Optional[AbstractRequiredPortPrototype] = None
+        self.context_r_port_prototype_ref: Optional[ARRef] = None
         self.target_trigger_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
@@ -62,12 +62,12 @@ class RTriggerInAtomicSwcInstanceRef(TriggerInAtomicSwcInstanceRef):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize context_r_port_prototype
-        if self.context_r_port_prototype is not None:
-            serialized = ARObject._serialize_item(self.context_r_port_prototype, "AbstractRequiredPortPrototype")
+        # Serialize context_r_port_prototype_ref
+        if self.context_r_port_prototype_ref is not None:
+            serialized = ARObject._serialize_item(self.context_r_port_prototype_ref, "AbstractRequiredPortPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT-R-PORT-PROTOTYPE")
+                wrapped = ET.Element("CONTEXT-R-PORT-PROTOTYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -105,11 +105,11 @@ class RTriggerInAtomicSwcInstanceRef(TriggerInAtomicSwcInstanceRef):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RTriggerInAtomicSwcInstanceRef, cls).deserialize(element)
 
-        # Parse context_r_port_prototype
-        child = ARObject._find_child_element(element, "CONTEXT-R-PORT-PROTOTYPE")
+        # Parse context_r_port_prototype_ref
+        child = ARObject._find_child_element(element, "CONTEXT-R-PORT-PROTOTYPE-REF")
         if child is not None:
-            context_r_port_prototype_value = ARObject._deserialize_by_tag(child, "AbstractRequiredPortPrototype")
-            obj.context_r_port_prototype = context_r_port_prototype_value
+            context_r_port_prototype_ref_value = ARRef.deserialize(child)
+            obj.context_r_port_prototype_ref = context_r_port_prototype_ref_value
 
         # Parse target_trigger_ref
         child = ARObject._find_child_element(element, "TARGET-TRIGGER-REF")

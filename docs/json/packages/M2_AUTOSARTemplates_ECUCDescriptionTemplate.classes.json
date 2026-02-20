@@ -55,8 +55,8 @@
         "definition": {
           "type": "EcucModuleDef",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the definition of this EcucModule"
         },
         "ecucDefEdition": {
@@ -76,8 +76,8 @@
         "module": {
           "type": "BswImplementation",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Referencing the BSW module description, which this element is configuring. optional because the EcucModuleConfiguration is also used to configure the ECU map) or Application SW-Cs. case the EcucModuleConfigurationValues are configure the module, the reference is mandatory to fetch module specific \"common\" published"
         },
         "postBuildVariant": {
@@ -136,15 +136,15 @@
         "ecucValues": {
           "type": "any (EcucModule)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "References to the configuration of individual software that are present on this ECU. atpVariation"
         },
         "ecuExtract": {
           "type": "System",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Represents the extract of the System Configuration that is"
         }
       }
@@ -241,8 +241,8 @@
         "definition": {
           "type": "EcucContainerDef",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the definition of this Container in the ECU Definition."
         },
         "parameterValues": {
@@ -325,8 +325,8 @@
         "definition": {
           "type": "EcucParameterDef",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the definition of this EcucParameterValue the ECU Configuration Parameter"
         },
         "isAutoValue": {

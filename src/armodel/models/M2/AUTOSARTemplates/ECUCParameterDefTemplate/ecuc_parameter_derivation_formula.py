@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_query import (
     EcucQuery,
 )
@@ -27,11 +28,11 @@ class EcucParameterDerivationFormula(ARObject):
         """
         return False
 
-    ecuc_query: Optional[EcucQuery]
+    ecuc_query_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize EcucParameterDerivationFormula."""
         super().__init__()
-        self.ecuc_query: Optional[EcucQuery] = None
+        self.ecuc_query_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize EcucParameterDerivationFormula to XML element.
@@ -43,12 +44,12 @@ class EcucParameterDerivationFormula(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize ecuc_query
-        if self.ecuc_query is not None:
-            serialized = ARObject._serialize_item(self.ecuc_query, "EcucQuery")
+        # Serialize ecuc_query_ref
+        if self.ecuc_query_ref is not None:
+            serialized = ARObject._serialize_item(self.ecuc_query_ref, "EcucQuery")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ECUC-QUERY")
+                wrapped = ET.Element("ECUC-QUERY-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -73,11 +74,11 @@ class EcucParameterDerivationFormula(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse ecuc_query
-        child = ARObject._find_child_element(element, "ECUC-QUERY")
+        # Parse ecuc_query_ref
+        child = ARObject._find_child_element(element, "ECUC-QUERY-REF")
         if child is not None:
-            ecuc_query_value = ARObject._deserialize_by_tag(child, "EcucQuery")
-            obj.ecuc_query = ecuc_query_value
+            ecuc_query_ref_value = ARRef.deserialize(child)
+            obj.ecuc_query_ref = ecuc_query_ref_value
 
         return obj
 

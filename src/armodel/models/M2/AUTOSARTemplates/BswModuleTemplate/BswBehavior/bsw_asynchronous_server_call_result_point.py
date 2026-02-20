@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_module
     BswModuleCallPoint,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
 class BswAsynchronousServerCallResultPoint(BswModuleCallPoint):
@@ -27,11 +28,11 @@ class BswAsynchronousServerCallResultPoint(BswModuleCallPoint):
         """
         return False
 
-    asynchronous: Optional[Any]
+    asynchronous_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize BswAsynchronousServerCallResultPoint."""
         super().__init__()
-        self.asynchronous: Optional[Any] = None
+        self.asynchronous_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize BswAsynchronousServerCallResultPoint to XML element.
@@ -53,12 +54,12 @@ class BswAsynchronousServerCallResultPoint(BswModuleCallPoint):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize asynchronous
-        if self.asynchronous is not None:
-            serialized = ARObject._serialize_item(self.asynchronous, "Any")
+        # Serialize asynchronous_ref
+        if self.asynchronous_ref is not None:
+            serialized = ARObject._serialize_item(self.asynchronous_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ASYNCHRONOUS")
+                wrapped = ET.Element("ASYNCHRONOUS-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -82,11 +83,11 @@ class BswAsynchronousServerCallResultPoint(BswModuleCallPoint):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswAsynchronousServerCallResultPoint, cls).deserialize(element)
 
-        # Parse asynchronous
-        child = ARObject._find_child_element(element, "ASYNCHRONOUS")
+        # Parse asynchronous_ref
+        child = ARObject._find_child_element(element, "ASYNCHRONOUS-REF")
         if child is not None:
-            asynchronous_value = child.text
-            obj.asynchronous = asynchronous_value
+            asynchronous_ref_value = ARRef.deserialize(child)
+            obj.asynchronous_ref = asynchronous_ref_value
 
         return obj
 

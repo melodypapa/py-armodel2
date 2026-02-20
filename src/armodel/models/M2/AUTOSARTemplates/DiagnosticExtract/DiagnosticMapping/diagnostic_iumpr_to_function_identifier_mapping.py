@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
     DiagnosticMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_iumpr import (
     DiagnosticIumpr,
 )
@@ -30,13 +31,13 @@ class DiagnosticIumprToFunctionIdentifierMapping(DiagnosticMapping):
         """
         return False
 
-    function: Optional[Any]
-    iumpr: Optional[DiagnosticIumpr]
+    function_ref: Optional[Any]
+    iumpr_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DiagnosticIumprToFunctionIdentifierMapping."""
         super().__init__()
-        self.function: Optional[Any] = None
-        self.iumpr: Optional[DiagnosticIumpr] = None
+        self.function_ref: Optional[Any] = None
+        self.iumpr_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticIumprToFunctionIdentifierMapping to XML element.
@@ -58,12 +59,12 @@ class DiagnosticIumprToFunctionIdentifierMapping(DiagnosticMapping):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize function
-        if self.function is not None:
-            serialized = ARObject._serialize_item(self.function, "Any")
+        # Serialize function_ref
+        if self.function_ref is not None:
+            serialized = ARObject._serialize_item(self.function_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("FUNCTION")
+                wrapped = ET.Element("FUNCTION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -72,12 +73,12 @@ class DiagnosticIumprToFunctionIdentifierMapping(DiagnosticMapping):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize iumpr
-        if self.iumpr is not None:
-            serialized = ARObject._serialize_item(self.iumpr, "DiagnosticIumpr")
+        # Serialize iumpr_ref
+        if self.iumpr_ref is not None:
+            serialized = ARObject._serialize_item(self.iumpr_ref, "DiagnosticIumpr")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("IUMPR")
+                wrapped = ET.Element("IUMPR-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -101,17 +102,17 @@ class DiagnosticIumprToFunctionIdentifierMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticIumprToFunctionIdentifierMapping, cls).deserialize(element)
 
-        # Parse function
-        child = ARObject._find_child_element(element, "FUNCTION")
+        # Parse function_ref
+        child = ARObject._find_child_element(element, "FUNCTION-REF")
         if child is not None:
-            function_value = child.text
-            obj.function = function_value
+            function_ref_value = ARRef.deserialize(child)
+            obj.function_ref = function_ref_value
 
-        # Parse iumpr
-        child = ARObject._find_child_element(element, "IUMPR")
+        # Parse iumpr_ref
+        child = ARObject._find_child_element(element, "IUMPR-REF")
         if child is not None:
-            iumpr_value = ARObject._deserialize_by_tag(child, "DiagnosticIumpr")
-            obj.iumpr = iumpr_value
+            iumpr_ref_value = ARRef.deserialize(child)
+            obj.iumpr_ref = iumpr_ref_value
 
         return obj
 

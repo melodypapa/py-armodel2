@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
     TDEventCom,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription import (
     TDEventIPduTypeEnum,
 )
@@ -36,14 +37,14 @@ class TDEventIPdu(TDEventCom):
         """
         return False
 
-    i_pdu: Optional[IPdu]
-    physical_channel: Optional[PhysicalChannel]
+    i_pdu_ref: Optional[ARRef]
+    physical_channel_ref: Optional[ARRef]
     td_event_type: Optional[TDEventIPduTypeEnum]
     def __init__(self) -> None:
         """Initialize TDEventIPdu."""
         super().__init__()
-        self.i_pdu: Optional[IPdu] = None
-        self.physical_channel: Optional[PhysicalChannel] = None
+        self.i_pdu_ref: Optional[ARRef] = None
+        self.physical_channel_ref: Optional[ARRef] = None
         self.td_event_type: Optional[TDEventIPduTypeEnum] = None
 
     def serialize(self) -> ET.Element:
@@ -66,12 +67,12 @@ class TDEventIPdu(TDEventCom):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize i_pdu
-        if self.i_pdu is not None:
-            serialized = ARObject._serialize_item(self.i_pdu, "IPdu")
+        # Serialize i_pdu_ref
+        if self.i_pdu_ref is not None:
+            serialized = ARObject._serialize_item(self.i_pdu_ref, "IPdu")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("I-PDU")
+                wrapped = ET.Element("I-PDU-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -80,12 +81,12 @@ class TDEventIPdu(TDEventCom):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize physical_channel
-        if self.physical_channel is not None:
-            serialized = ARObject._serialize_item(self.physical_channel, "PhysicalChannel")
+        # Serialize physical_channel_ref
+        if self.physical_channel_ref is not None:
+            serialized = ARObject._serialize_item(self.physical_channel_ref, "PhysicalChannel")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PHYSICAL-CHANNEL")
+                wrapped = ET.Element("PHYSICAL-CHANNEL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -123,17 +124,17 @@ class TDEventIPdu(TDEventCom):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDEventIPdu, cls).deserialize(element)
 
-        # Parse i_pdu
-        child = ARObject._find_child_element(element, "I-PDU")
+        # Parse i_pdu_ref
+        child = ARObject._find_child_element(element, "I-PDU-REF")
         if child is not None:
-            i_pdu_value = ARObject._deserialize_by_tag(child, "IPdu")
-            obj.i_pdu = i_pdu_value
+            i_pdu_ref_value = ARRef.deserialize(child)
+            obj.i_pdu_ref = i_pdu_ref_value
 
-        # Parse physical_channel
-        child = ARObject._find_child_element(element, "PHYSICAL-CHANNEL")
+        # Parse physical_channel_ref
+        child = ARObject._find_child_element(element, "PHYSICAL-CHANNEL-REF")
         if child is not None:
-            physical_channel_value = ARObject._deserialize_by_tag(child, "PhysicalChannel")
-            obj.physical_channel = physical_channel_value
+            physical_channel_ref_value = ARRef.deserialize(child)
+            obj.physical_channel_ref = physical_channel_ref_value
 
         # Parse td_event_type
         child = ARObject._find_child_element(element, "TD-EVENT-TYPE")

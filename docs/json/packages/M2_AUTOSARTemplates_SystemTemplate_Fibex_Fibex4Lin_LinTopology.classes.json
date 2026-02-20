@@ -443,8 +443,8 @@
         "frame": {
           "type": "LinFrame",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to a Frame that is processed by the slave"
         },
         "messageId": {
@@ -486,8 +486,8 @@
         "frame": {
           "type": "LinFrame",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to a Frame that is processed by the slave"
         },
         "index": {

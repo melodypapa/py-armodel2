@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_
     DiagnosticCapabilityElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -35,14 +36,14 @@ class DiagnosticIoControlNeeds(DiagnosticCapabilityElement):
         """
         return False
 
-    current_value: Optional[DiagnosticValueNeeds]
+    current_value_ref: Optional[ARRef]
     freeze_current: Optional[Boolean]
     reset_to_default: Optional[Boolean]
     short_term: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize DiagnosticIoControlNeeds."""
         super().__init__()
-        self.current_value: Optional[DiagnosticValueNeeds] = None
+        self.current_value_ref: Optional[ARRef] = None
         self.freeze_current: Optional[Boolean] = None
         self.reset_to_default: Optional[Boolean] = None
         self.short_term: Optional[Boolean] = None
@@ -67,12 +68,12 @@ class DiagnosticIoControlNeeds(DiagnosticCapabilityElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize current_value
-        if self.current_value is not None:
-            serialized = ARObject._serialize_item(self.current_value, "DiagnosticValueNeeds")
+        # Serialize current_value_ref
+        if self.current_value_ref is not None:
+            serialized = ARObject._serialize_item(self.current_value_ref, "DiagnosticValueNeeds")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CURRENT-VALUE")
+                wrapped = ET.Element("CURRENT-VALUE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -138,11 +139,11 @@ class DiagnosticIoControlNeeds(DiagnosticCapabilityElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticIoControlNeeds, cls).deserialize(element)
 
-        # Parse current_value
-        child = ARObject._find_child_element(element, "CURRENT-VALUE")
+        # Parse current_value_ref
+        child = ARObject._find_child_element(element, "CURRENT-VALUE-REF")
         if child is not None:
-            current_value_value = ARObject._deserialize_by_tag(child, "DiagnosticValueNeeds")
-            obj.current_value = current_value_value
+            current_value_ref_value = ARRef.deserialize(child)
+            obj.current_value_ref = current_value_ref_value
 
         # Parse freeze_current
         child = ARObject._find_child_element(element, "FREEZE-CURRENT")

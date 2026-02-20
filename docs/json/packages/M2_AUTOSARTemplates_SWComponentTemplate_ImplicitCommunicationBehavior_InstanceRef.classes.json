@@ -32,15 +32,15 @@
         "base": {
           "type": "CompositionSwComponentType",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the base of the instanceRef."
         },
         "contextSws": {
           "type": "any (SwComponent)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the nested structure of SwComponent"
         },
         "targetData": {
@@ -83,15 +83,15 @@
         "base": {
           "type": "CompositionSwComponentType",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the base of the InstanceRef."
         },
         "contextSws": {
           "type": "any (SwComponent)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the nested structure of SwComponent"
         },
         "targetRunnable": {
@@ -134,22 +134,22 @@
         "base": {
           "type": "CompositionSwComponentType",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the base of the InstanceRef."
         },
         "contextSws": {
           "type": "any (SwComponent)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the nested structure of SwComponent"
         },
         "targetRunnable": {
           "type": "RunnableEntity",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the target RunnableEntity."
         }
       }
@@ -185,8 +185,8 @@
         "base": {
           "type": "CompositionSwComponentType",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the base of the InstanceRef."
         },
         "contextPort": {
@@ -199,8 +199,8 @@
         "contextSws": {
           "type": "any (SwComponent)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the nested structure of SwComponent"
         },
         "targetVariable": {

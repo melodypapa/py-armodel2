@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
 )
@@ -29,12 +30,12 @@ class RoleBasedDataTypeAssignment(ARObject):
         return False
 
     role: Optional[Identifier]
-    used: Optional[Any]
+    used_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize RoleBasedDataTypeAssignment."""
         super().__init__()
         self.role: Optional[Identifier] = None
-        self.used: Optional[Any] = None
+        self.used_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize RoleBasedDataTypeAssignment to XML element.
@@ -60,12 +61,12 @@ class RoleBasedDataTypeAssignment(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize used
-        if self.used is not None:
-            serialized = ARObject._serialize_item(self.used, "Any")
+        # Serialize used_ref
+        if self.used_ref is not None:
+            serialized = ARObject._serialize_item(self.used_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("USED")
+                wrapped = ET.Element("USED-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -96,11 +97,11 @@ class RoleBasedDataTypeAssignment(ARObject):
             role_value = ARObject._deserialize_by_tag(child, "Identifier")
             obj.role = role_value
 
-        # Parse used
-        child = ARObject._find_child_element(element, "USED")
+        # Parse used_ref
+        child = ARObject._find_child_element(element, "USED-REF")
         if child is not None:
-            used_value = child.text
-            obj.used = used_value
+            used_ref_value = ARRef.deserialize(child)
+            obj.used_ref = used_ref_value
 
         return obj
 

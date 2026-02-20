@@ -72,8 +72,8 @@
         "accessPoint": {
           "type": "AbstractAccessPoint",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "AbstractAccessPoint for which the count value is"
         },
         "value": {

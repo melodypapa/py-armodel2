@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -43,7 +44,7 @@ class ModeDeclarationGroup(ARElement):
         """
         return False
 
-    initial_mode: Optional[ModeDeclaration]
+    initial_mode_ref: Optional[ARRef]
     modes: list[ModeDeclaration]
     mode_manager: Optional[ModeErrorBehavior]
     mode_transition_mode_declaration_groups: list[ModeTransition]
@@ -52,7 +53,7 @@ class ModeDeclarationGroup(ARElement):
     def __init__(self) -> None:
         """Initialize ModeDeclarationGroup."""
         super().__init__()
-        self.initial_mode: Optional[ModeDeclaration] = None
+        self.initial_mode_ref: Optional[ARRef] = None
         self.modes: list[ModeDeclaration] = []
         self.mode_manager: Optional[ModeErrorBehavior] = None
         self.mode_transition_mode_declaration_groups: list[ModeTransition] = []
@@ -79,12 +80,12 @@ class ModeDeclarationGroup(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize initial_mode
-        if self.initial_mode is not None:
-            serialized = ARObject._serialize_item(self.initial_mode, "ModeDeclaration")
+        # Serialize initial_mode_ref
+        if self.initial_mode_ref is not None:
+            serialized = ARObject._serialize_item(self.initial_mode_ref, "ModeDeclaration")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("INITIAL-MODE")
+                wrapped = ET.Element("INITIAL-MODE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -170,11 +171,11 @@ class ModeDeclarationGroup(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ModeDeclarationGroup, cls).deserialize(element)
 
-        # Parse initial_mode
-        child = ARObject._find_child_element(element, "INITIAL-MODE")
+        # Parse initial_mode_ref
+        child = ARObject._find_child_element(element, "INITIAL-MODE-REF")
         if child is not None:
-            initial_mode_value = ARObject._deserialize_by_tag(child, "ModeDeclaration")
-            obj.initial_mode = initial_mode_value
+            initial_mode_ref_value = ARRef.deserialize(child)
+            obj.initial_mode_ref = initial_mode_ref_value
 
         # Parse modes (list from container "MODES")
         obj.modes = []

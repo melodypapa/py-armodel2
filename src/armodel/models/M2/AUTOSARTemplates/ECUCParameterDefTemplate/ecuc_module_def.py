@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_definition
     EcucDefinitionElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     CIdentifier,
@@ -39,7 +40,7 @@ class EcucModuleDef(EcucDefinitionElement):
     api_service_prefix: Optional[CIdentifier]
     containers: list[EcucContainerDef]
     post_build_variant: Optional[Boolean]
-    refined_module: Optional[EcucModuleDef]
+    refined_module_ref: Optional[ARRef]
     supporteds: list[Any]
     def __init__(self) -> None:
         """Initialize EcucModuleDef."""
@@ -47,7 +48,7 @@ class EcucModuleDef(EcucDefinitionElement):
         self.api_service_prefix: Optional[CIdentifier] = None
         self.containers: list[EcucContainerDef] = []
         self.post_build_variant: Optional[Boolean] = None
-        self.refined_module: Optional[EcucModuleDef] = None
+        self.refined_module_ref: Optional[ARRef] = None
         self.supporteds: list[Any] = []
 
     def serialize(self) -> ET.Element:
@@ -108,12 +109,12 @@ class EcucModuleDef(EcucDefinitionElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize refined_module
-        if self.refined_module is not None:
-            serialized = ARObject._serialize_item(self.refined_module, "EcucModuleDef")
+        # Serialize refined_module_ref
+        if self.refined_module_ref is not None:
+            serialized = ARObject._serialize_item(self.refined_module_ref, "EcucModuleDef")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("REFINED-MODULE")
+                wrapped = ET.Element("REFINED-MODULE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -169,11 +170,11 @@ class EcucModuleDef(EcucDefinitionElement):
             post_build_variant_value = child.text
             obj.post_build_variant = post_build_variant_value
 
-        # Parse refined_module
-        child = ARObject._find_child_element(element, "REFINED-MODULE")
+        # Parse refined_module_ref
+        child = ARObject._find_child_element(element, "REFINED-MODULE-REF")
         if child is not None:
-            refined_module_value = ARObject._deserialize_by_tag(child, "EcucModuleDef")
-            obj.refined_module = refined_module_value
+            refined_module_ref_value = ARRef.deserialize(child)
+            obj.refined_module_ref = refined_module_ref_value
 
         # Parse supporteds (list from container "SUPPORTEDS")
         obj.supporteds = []

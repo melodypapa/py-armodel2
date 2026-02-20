@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingExtensions.
     TimingExtension,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.sw_component_type import (
     SwComponentType,
 )
@@ -31,11 +32,11 @@ class VfbTiming(TimingExtension):
         """
         return False
 
-    component: Optional[SwComponentType]
+    component_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize VfbTiming."""
         super().__init__()
-        self.component: Optional[SwComponentType] = None
+        self.component_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize VfbTiming to XML element.
@@ -57,12 +58,12 @@ class VfbTiming(TimingExtension):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize component
-        if self.component is not None:
-            serialized = ARObject._serialize_item(self.component, "SwComponentType")
+        # Serialize component_ref
+        if self.component_ref is not None:
+            serialized = ARObject._serialize_item(self.component_ref, "SwComponentType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("COMPONENT")
+                wrapped = ET.Element("COMPONENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -86,11 +87,11 @@ class VfbTiming(TimingExtension):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(VfbTiming, cls).deserialize(element)
 
-        # Parse component
-        child = ARObject._find_child_element(element, "COMPONENT")
+        # Parse component_ref
+        child = ARObject._find_child_element(element, "COMPONENT-REF")
         if child is not None:
-            component_value = ARObject._deserialize_by_tag(child, "SwComponentType")
-            obj.component = component_value
+            component_ref_value = ARRef.deserialize(child)
+            obj.component_ref = component_ref_value
 
         return obj
 

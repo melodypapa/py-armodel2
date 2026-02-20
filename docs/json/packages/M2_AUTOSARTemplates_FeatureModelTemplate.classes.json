@@ -42,15 +42,15 @@
         "features": {
           "type": "FMFeature",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "\"feature\" holds the list of features of the feature model. No"
         },
         "root": {
           "type": "FMFeature",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The features of a feature model define a tree. The"
         }
       }
@@ -225,8 +225,8 @@
         "features": {
           "type": "FMFeature",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The features that are affected by the dependency defined"
         },
         "max": {
@@ -315,8 +315,8 @@
         "features": {
           "type": "FMFeature",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The FMFeature that is targeted by this FMFeature"
         },
         "restriction": {
@@ -395,8 +395,8 @@
         "definition": {
           "type": "FMAttributeDef",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This refers to the definition of this attribute."
         },
         "value": {
@@ -443,8 +443,8 @@
         "featureModels": {
           "type": "FMFeatureModel",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "All FMFeatures in this FMFeatureSelectionSet shall be the referenced FMFeatureModel."
         },
         "includes": {
@@ -550,15 +550,15 @@
         "postBuildVariants": {
           "type": "any (PostBuildVariant)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Selects a set of values for postbuild variant criterions."
         },
         "swValueSets": {
           "type": "SwSystemconstantValueSet",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Selects a set of values for system constants."
         }
       }
@@ -669,15 +669,15 @@
         "attribute": {
           "type": "FMAttributeDef",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "An expression of type FMFormulaByFeaturesAnd"
         },
         "feature": {
           "type": "FMFeature",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "An expression of type FMFormulaByFeaturesAnd"
         }
       }
@@ -744,8 +744,8 @@
         "feature": {
           "type": "FMFeature",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "An expression of type FMFormulaByFeaturesAndSw"
         }
       }

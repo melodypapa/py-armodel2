@@ -34,12 +34,12 @@ class DiagnosticJ1939SwMapping(DiagnosticSwMapping):
         """
         return False
 
-    node: Optional[DiagnosticJ1939Node]
+    node_ref: Optional[ARRef]
     sw_component_prototype_composition_instance_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DiagnosticJ1939SwMapping."""
         super().__init__()
-        self.node: Optional[DiagnosticJ1939Node] = None
+        self.node_ref: Optional[ARRef] = None
         self.sw_component_prototype_composition_instance_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
@@ -62,12 +62,12 @@ class DiagnosticJ1939SwMapping(DiagnosticSwMapping):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize node
-        if self.node is not None:
-            serialized = ARObject._serialize_item(self.node, "DiagnosticJ1939Node")
+        # Serialize node_ref
+        if self.node_ref is not None:
+            serialized = ARObject._serialize_item(self.node_ref, "DiagnosticJ1939Node")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("NODE")
+                wrapped = ET.Element("NODE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -105,11 +105,11 @@ class DiagnosticJ1939SwMapping(DiagnosticSwMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticJ1939SwMapping, cls).deserialize(element)
 
-        # Parse node
-        child = ARObject._find_child_element(element, "NODE")
+        # Parse node_ref
+        child = ARObject._find_child_element(element, "NODE-REF")
         if child is not None:
-            node_value = ARObject._deserialize_by_tag(child, "DiagnosticJ1939Node")
-            obj.node = node_value
+            node_ref_value = ARRef.deserialize(child)
+            obj.node_ref = node_ref_value
 
         # Parse sw_component_prototype_composition_instance_ref
         child = ARObject._find_child_element(element, "SW-COMPONENT-PROTOTYPE-COMPOSITION-INSTANCE-REF-REF")

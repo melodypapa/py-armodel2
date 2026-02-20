@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.hardware_configuration import (
     HardwareConfiguration,
 )
@@ -39,13 +40,13 @@ class HeapUsage(Identifiable, ABC):
         return True
 
     hardware: Optional[HardwareConfiguration]
-    hw_element: Optional[HwElement]
+    hw_element_ref: Optional[ARRef]
     software_context: Optional[SoftwareContext]
     def __init__(self) -> None:
         """Initialize HeapUsage."""
         super().__init__()
         self.hardware: Optional[HardwareConfiguration] = None
-        self.hw_element: Optional[HwElement] = None
+        self.hw_element_ref: Optional[ARRef] = None
         self.software_context: Optional[SoftwareContext] = None
 
     def serialize(self) -> ET.Element:
@@ -82,12 +83,12 @@ class HeapUsage(Identifiable, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize hw_element
-        if self.hw_element is not None:
-            serialized = ARObject._serialize_item(self.hw_element, "HwElement")
+        # Serialize hw_element_ref
+        if self.hw_element_ref is not None:
+            serialized = ARObject._serialize_item(self.hw_element_ref, "HwElement")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("HW-ELEMENT")
+                wrapped = ET.Element("HW-ELEMENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -131,11 +132,11 @@ class HeapUsage(Identifiable, ABC):
             hardware_value = ARObject._deserialize_by_tag(child, "HardwareConfiguration")
             obj.hardware = hardware_value
 
-        # Parse hw_element
-        child = ARObject._find_child_element(element, "HW-ELEMENT")
+        # Parse hw_element_ref
+        child = ARObject._find_child_element(element, "HW-ELEMENT-REF")
         if child is not None:
-            hw_element_value = ARObject._deserialize_by_tag(child, "HwElement")
-            obj.hw_element = hw_element_value
+            hw_element_ref_value = ARRef.deserialize(child)
+            obj.hw_element_ref = hw_element_ref_value
 
         # Parse software_context
         child = ARObject._find_child_element(element, "SOFTWARE-CONTEXT")

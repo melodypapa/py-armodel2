@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
     RTEEvent,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.ModeDeclarationGroup.mode_switch_point import (
     ModeSwitchPoint,
 )
@@ -30,11 +31,11 @@ class ModeSwitchedAckEvent(RTEEvent):
         """
         return False
 
-    event_source: Optional[ModeSwitchPoint]
+    event_source_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ModeSwitchedAckEvent."""
         super().__init__()
-        self.event_source: Optional[ModeSwitchPoint] = None
+        self.event_source_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize ModeSwitchedAckEvent to XML element.
@@ -56,12 +57,12 @@ class ModeSwitchedAckEvent(RTEEvent):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize event_source
-        if self.event_source is not None:
-            serialized = ARObject._serialize_item(self.event_source, "ModeSwitchPoint")
+        # Serialize event_source_ref
+        if self.event_source_ref is not None:
+            serialized = ARObject._serialize_item(self.event_source_ref, "ModeSwitchPoint")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("EVENT-SOURCE")
+                wrapped = ET.Element("EVENT-SOURCE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -85,11 +86,11 @@ class ModeSwitchedAckEvent(RTEEvent):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ModeSwitchedAckEvent, cls).deserialize(element)
 
-        # Parse event_source
-        child = ARObject._find_child_element(element, "EVENT-SOURCE")
+        # Parse event_source_ref
+        child = ARObject._find_child_element(element, "EVENT-SOURCE-REF")
         if child is not None:
-            event_source_value = ARObject._deserialize_by_tag(child, "ModeSwitchPoint")
-            obj.event_source = event_source_value
+            event_source_ref_value = ARRef.deserialize(child)
+            obj.event_source_ref = event_source_ref_value
 
         return obj
 

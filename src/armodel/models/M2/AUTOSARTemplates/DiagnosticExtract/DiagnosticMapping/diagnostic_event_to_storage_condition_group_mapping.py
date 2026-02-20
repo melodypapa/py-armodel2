@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
     DiagnosticMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_event import (
     DiagnosticEvent,
 )
@@ -30,13 +31,13 @@ class DiagnosticEventToStorageConditionGroupMapping(DiagnosticMapping):
         """
         return False
 
-    diagnostic_event: Optional[DiagnosticEvent]
-    storage: Optional[Any]
+    diagnostic_event_ref: Optional[ARRef]
+    storage_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticEventToStorageConditionGroupMapping."""
         super().__init__()
-        self.diagnostic_event: Optional[DiagnosticEvent] = None
-        self.storage: Optional[Any] = None
+        self.diagnostic_event_ref: Optional[ARRef] = None
+        self.storage_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticEventToStorageConditionGroupMapping to XML element.
@@ -58,12 +59,12 @@ class DiagnosticEventToStorageConditionGroupMapping(DiagnosticMapping):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize diagnostic_event
-        if self.diagnostic_event is not None:
-            serialized = ARObject._serialize_item(self.diagnostic_event, "DiagnosticEvent")
+        # Serialize diagnostic_event_ref
+        if self.diagnostic_event_ref is not None:
+            serialized = ARObject._serialize_item(self.diagnostic_event_ref, "DiagnosticEvent")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DIAGNOSTIC-EVENT")
+                wrapped = ET.Element("DIAGNOSTIC-EVENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -72,12 +73,12 @@ class DiagnosticEventToStorageConditionGroupMapping(DiagnosticMapping):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize storage
-        if self.storage is not None:
-            serialized = ARObject._serialize_item(self.storage, "Any")
+        # Serialize storage_ref
+        if self.storage_ref is not None:
+            serialized = ARObject._serialize_item(self.storage_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("STORAGE")
+                wrapped = ET.Element("STORAGE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -101,17 +102,17 @@ class DiagnosticEventToStorageConditionGroupMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticEventToStorageConditionGroupMapping, cls).deserialize(element)
 
-        # Parse diagnostic_event
-        child = ARObject._find_child_element(element, "DIAGNOSTIC-EVENT")
+        # Parse diagnostic_event_ref
+        child = ARObject._find_child_element(element, "DIAGNOSTIC-EVENT-REF")
         if child is not None:
-            diagnostic_event_value = ARObject._deserialize_by_tag(child, "DiagnosticEvent")
-            obj.diagnostic_event = diagnostic_event_value
+            diagnostic_event_ref_value = ARRef.deserialize(child)
+            obj.diagnostic_event_ref = diagnostic_event_ref_value
 
-        # Parse storage
-        child = ARObject._find_child_element(element, "STORAGE")
+        # Parse storage_ref
+        child = ARObject._find_child_element(element, "STORAGE-REF")
         if child is not None:
-            storage_value = child.text
-            obj.storage = storage_value
+            storage_ref_value = ARRef.deserialize(child)
+            obj.storage_ref = storage_ref_value
 
         return obj
 

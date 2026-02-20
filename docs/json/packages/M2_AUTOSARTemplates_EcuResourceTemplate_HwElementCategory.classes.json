@@ -37,8 +37,8 @@
         "hwAttributeDef": {
           "type": "HwAttributeDef",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This association represents the definition of the particular"
         },
         "v": {
@@ -186,8 +186,8 @@
         "unit": {
           "type": "Unit",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This association specifies the physical unit of the defined"
         }
       }

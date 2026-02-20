@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_abstract_i
     EcucAbstractInternalReferenceDef,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_container_def import (
     EcucContainerDef,
 )
@@ -32,11 +33,11 @@ class EcucReferenceDef(EcucAbstractInternalReferenceDef):
         """
         return False
 
-    destination: Optional[EcucContainerDef]
+    destination_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize EcucReferenceDef."""
         super().__init__()
-        self.destination: Optional[EcucContainerDef] = None
+        self.destination_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize EcucReferenceDef to XML element.
@@ -58,12 +59,12 @@ class EcucReferenceDef(EcucAbstractInternalReferenceDef):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize destination
-        if self.destination is not None:
-            serialized = ARObject._serialize_item(self.destination, "EcucContainerDef")
+        # Serialize destination_ref
+        if self.destination_ref is not None:
+            serialized = ARObject._serialize_item(self.destination_ref, "EcucContainerDef")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DESTINATION")
+                wrapped = ET.Element("DESTINATION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -87,11 +88,11 @@ class EcucReferenceDef(EcucAbstractInternalReferenceDef):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucReferenceDef, cls).deserialize(element)
 
-        # Parse destination
-        child = ARObject._find_child_element(element, "DESTINATION")
+        # Parse destination_ref
+        child = ARObject._find_child_element(element, "DESTINATION-REF")
         if child is not None:
-            destination_value = ARObject._deserialize_by_tag(child, "EcucContainerDef")
-            obj.destination = destination_value
+            destination_ref_value = ARRef.deserialize(child)
+            obj.destination_ref = destination_ref_value
 
         return obj
 

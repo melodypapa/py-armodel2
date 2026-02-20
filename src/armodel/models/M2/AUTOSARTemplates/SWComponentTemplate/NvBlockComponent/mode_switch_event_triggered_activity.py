@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
 )
@@ -31,12 +32,12 @@ class ModeSwitchEventTriggeredActivity(ARObject):
         return False
 
     role: Optional[Identifier]
-    swc_mode_switch_event: Optional[SwcModeSwitchEvent]
+    swc_mode_switch_event_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ModeSwitchEventTriggeredActivity."""
         super().__init__()
         self.role: Optional[Identifier] = None
-        self.swc_mode_switch_event: Optional[SwcModeSwitchEvent] = None
+        self.swc_mode_switch_event_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize ModeSwitchEventTriggeredActivity to XML element.
@@ -62,12 +63,12 @@ class ModeSwitchEventTriggeredActivity(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize swc_mode_switch_event
-        if self.swc_mode_switch_event is not None:
-            serialized = ARObject._serialize_item(self.swc_mode_switch_event, "SwcModeSwitchEvent")
+        # Serialize swc_mode_switch_event_ref
+        if self.swc_mode_switch_event_ref is not None:
+            serialized = ARObject._serialize_item(self.swc_mode_switch_event_ref, "SwcModeSwitchEvent")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SWC-MODE-SWITCH-EVENT")
+                wrapped = ET.Element("SWC-MODE-SWITCH-EVENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -98,11 +99,11 @@ class ModeSwitchEventTriggeredActivity(ARObject):
             role_value = ARObject._deserialize_by_tag(child, "Identifier")
             obj.role = role_value
 
-        # Parse swc_mode_switch_event
-        child = ARObject._find_child_element(element, "SWC-MODE-SWITCH-EVENT")
+        # Parse swc_mode_switch_event_ref
+        child = ARObject._find_child_element(element, "SWC-MODE-SWITCH-EVENT-REF")
         if child is not None:
-            swc_mode_switch_event_value = ARObject._deserialize_by_tag(child, "SwcModeSwitchEvent")
-            obj.swc_mode_switch_event = swc_mode_switch_event_value
+            swc_mode_switch_event_ref_value = ARRef.deserialize(child)
+            obj.swc_mode_switch_event_ref = swc_mode_switch_event_ref_value
 
         return obj
 

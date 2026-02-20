@@ -47,8 +47,8 @@
         "executableEntity": {
           "type": "ExecutableEntity",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The executable entity for which this stack usage is"
         },
         "hardware": {
@@ -61,8 +61,8 @@
         "hwElement": {
           "type": "HwElement",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Specifies for which hardware element (e.g. ECU) this is given."
         },
         "softwareContext": {

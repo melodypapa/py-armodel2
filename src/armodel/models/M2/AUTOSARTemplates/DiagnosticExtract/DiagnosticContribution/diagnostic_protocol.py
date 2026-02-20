@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     NameToken,
@@ -38,19 +39,19 @@ class DiagnosticProtocol(DiagnosticCommonElement):
         """
         return False
 
-    diagnostics: list[DiagnosticConnection]
+    diagnostic_refs: list[ARRef]
     priority: Optional[PositiveInteger]
     protocol_kind: Optional[NameToken]
     send_resp_pend: Optional[Boolean]
-    service_table: Optional[DiagnosticServiceTable]
+    service_table_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DiagnosticProtocol."""
         super().__init__()
-        self.diagnostics: list[DiagnosticConnection] = []
+        self.diagnostic_refs: list[ARRef] = []
         self.priority: Optional[PositiveInteger] = None
         self.protocol_kind: Optional[NameToken] = None
         self.send_resp_pend: Optional[Boolean] = None
-        self.service_table: Optional[DiagnosticServiceTable] = None
+        self.service_table_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticProtocol to XML element.
@@ -72,13 +73,20 @@ class DiagnosticProtocol(DiagnosticCommonElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize diagnostics (list to container "DIAGNOSTICS")
-        if self.diagnostics:
-            wrapper = ET.Element("DIAGNOSTICS")
-            for item in self.diagnostics:
+        # Serialize diagnostic_refs (list to container "DIAGNOSTIC-REFS")
+        if self.diagnostic_refs:
+            wrapper = ET.Element("DIAGNOSTIC-REFS")
+            for item in self.diagnostic_refs:
                 serialized = ARObject._serialize_item(item, "DiagnosticConnection")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("DIAGNOSTIC-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -124,12 +132,12 @@ class DiagnosticProtocol(DiagnosticCommonElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize service_table
-        if self.service_table is not None:
-            serialized = ARObject._serialize_item(self.service_table, "DiagnosticServiceTable")
+        # Serialize service_table_ref
+        if self.service_table_ref is not None:
+            serialized = ARObject._serialize_item(self.service_table_ref, "DiagnosticServiceTable")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SERVICE-TABLE")
+                wrapped = ET.Element("SERVICE-TABLE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -153,15 +161,21 @@ class DiagnosticProtocol(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticProtocol, cls).deserialize(element)
 
-        # Parse diagnostics (list from container "DIAGNOSTICS")
-        obj.diagnostics = []
-        container = ARObject._find_child_element(element, "DIAGNOSTICS")
+        # Parse diagnostic_refs (list from container "DIAGNOSTIC-REFS")
+        obj.diagnostic_refs = []
+        container = ARObject._find_child_element(element, "DIAGNOSTIC-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.diagnostics.append(child_value)
+                    obj.diagnostic_refs.append(child_value)
 
         # Parse priority
         child = ARObject._find_child_element(element, "PRIORITY")
@@ -181,11 +195,11 @@ class DiagnosticProtocol(DiagnosticCommonElement):
             send_resp_pend_value = child.text
             obj.send_resp_pend = send_resp_pend_value
 
-        # Parse service_table
-        child = ARObject._find_child_element(element, "SERVICE-TABLE")
+        # Parse service_table_ref
+        child = ARObject._find_child_element(element, "SERVICE-TABLE-REF")
         if child is not None:
-            service_table_value = ARObject._deserialize_by_tag(child, "DiagnosticServiceTable")
-            obj.service_table = service_table_value
+            service_table_ref_value = ARRef.deserialize(child)
+            obj.service_table_ref = service_table_ref_value
 
         return obj
 

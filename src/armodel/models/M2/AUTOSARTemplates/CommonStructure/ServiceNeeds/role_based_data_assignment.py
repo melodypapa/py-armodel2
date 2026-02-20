@@ -41,14 +41,14 @@ class RoleBasedDataAssignment(ARObject):
     role: Optional[Identifier]
     used_data_ref: Optional[ARRef]
     used_parameter_ref: Optional[ARRef]
-    used_pim: Optional[PerInstanceMemory]
+    used_pim_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize RoleBasedDataAssignment."""
         super().__init__()
         self.role: Optional[Identifier] = None
         self.used_data_ref: Optional[ARRef] = None
         self.used_parameter_ref: Optional[ARRef] = None
-        self.used_pim: Optional[PerInstanceMemory] = None
+        self.used_pim_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize RoleBasedDataAssignment to XML element.
@@ -102,12 +102,12 @@ class RoleBasedDataAssignment(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize used_pim
-        if self.used_pim is not None:
-            serialized = ARObject._serialize_item(self.used_pim, "PerInstanceMemory")
+        # Serialize used_pim_ref
+        if self.used_pim_ref is not None:
+            serialized = ARObject._serialize_item(self.used_pim_ref, "PerInstanceMemory")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("USED-PIM")
+                wrapped = ET.Element("USED-PIM-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -150,11 +150,11 @@ class RoleBasedDataAssignment(ARObject):
             used_parameter_ref_value = ARRef.deserialize(child)
             obj.used_parameter_ref = used_parameter_ref_value
 
-        # Parse used_pim
-        child = ARObject._find_child_element(element, "USED-PIM")
+        # Parse used_pim_ref
+        child = ARObject._find_child_element(element, "USED-PIM-REF")
         if child is not None:
-            used_pim_value = ARObject._deserialize_by_tag(child, "PerInstanceMemory")
-            obj.used_pim = used_pim_value
+            used_pim_ref_value = ARRef.deserialize(child)
+            obj.used_pim_ref = used_pim_ref_value
 
         return obj
 

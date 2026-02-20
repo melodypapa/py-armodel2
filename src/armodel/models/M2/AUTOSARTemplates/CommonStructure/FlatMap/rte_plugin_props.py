@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_container_value import (
     EcucContainerValue,
 )
@@ -27,13 +28,13 @@ class RtePluginProps(ARObject):
         """
         return False
 
-    associated: Optional[EcucContainerValue]
-    associated_rte: Optional[EcucContainerValue]
+    associated_ref: Optional[ARRef]
+    associated_rte_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize RtePluginProps."""
         super().__init__()
-        self.associated: Optional[EcucContainerValue] = None
-        self.associated_rte: Optional[EcucContainerValue] = None
+        self.associated_ref: Optional[ARRef] = None
+        self.associated_rte_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize RtePluginProps to XML element.
@@ -45,12 +46,12 @@ class RtePluginProps(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize associated
-        if self.associated is not None:
-            serialized = ARObject._serialize_item(self.associated, "EcucContainerValue")
+        # Serialize associated_ref
+        if self.associated_ref is not None:
+            serialized = ARObject._serialize_item(self.associated_ref, "EcucContainerValue")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ASSOCIATED")
+                wrapped = ET.Element("ASSOCIATED-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -59,12 +60,12 @@ class RtePluginProps(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize associated_rte
-        if self.associated_rte is not None:
-            serialized = ARObject._serialize_item(self.associated_rte, "EcucContainerValue")
+        # Serialize associated_rte_ref
+        if self.associated_rte_ref is not None:
+            serialized = ARObject._serialize_item(self.associated_rte_ref, "EcucContainerValue")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ASSOCIATED-RTE")
+                wrapped = ET.Element("ASSOCIATED-RTE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -89,17 +90,17 @@ class RtePluginProps(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse associated
-        child = ARObject._find_child_element(element, "ASSOCIATED")
+        # Parse associated_ref
+        child = ARObject._find_child_element(element, "ASSOCIATED-REF")
         if child is not None:
-            associated_value = ARObject._deserialize_by_tag(child, "EcucContainerValue")
-            obj.associated = associated_value
+            associated_ref_value = ARRef.deserialize(child)
+            obj.associated_ref = associated_ref_value
 
-        # Parse associated_rte
-        child = ARObject._find_child_element(element, "ASSOCIATED-RTE")
+        # Parse associated_rte_ref
+        child = ARObject._find_child_element(element, "ASSOCIATED-RTE-REF")
         if child is not None:
-            associated_rte_value = ARObject._deserialize_by_tag(child, "EcucContainerValue")
-            obj.associated_rte = associated_rte_value
+            associated_rte_ref_value = ARRef.deserialize(child)
+            obj.associated_rte_ref = associated_rte_ref_value
 
         return obj
 

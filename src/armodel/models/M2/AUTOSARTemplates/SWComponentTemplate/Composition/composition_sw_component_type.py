@@ -51,19 +51,19 @@ class CompositionSwComponentType(SwComponentType):
 
     components: list[Any]
     connectors: list[SwConnector]
-    constant_values: list[ConstantSpecification]
+    constant_value_refs: list[ARRef]
     data_type_refs: list[ARRef]
     instantiation_rte_events: list[InstantiationRTEEventProps]
-    physical: Optional[PhysicalDimension]
+    physical_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize CompositionSwComponentType."""
         super().__init__()
         self.components: list[Any] = []
         self.connectors: list[SwConnector] = []
-        self.constant_values: list[ConstantSpecification] = []
+        self.constant_value_refs: list[ARRef] = []
         self.data_type_refs: list[ARRef] = []
         self.instantiation_rte_events: list[InstantiationRTEEventProps] = []
-        self.physical: Optional[PhysicalDimension] = None
+        self.physical_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize CompositionSwComponentType to XML element.
@@ -105,13 +105,20 @@ class CompositionSwComponentType(SwComponentType):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize constant_values (list to container "CONSTANT-VALUES")
-        if self.constant_values:
-            wrapper = ET.Element("CONSTANT-VALUES")
-            for item in self.constant_values:
+        # Serialize constant_value_refs (list to container "CONSTANT-VALUE-REFS")
+        if self.constant_value_refs:
+            wrapper = ET.Element("CONSTANT-VALUE-REFS")
+            for item in self.constant_value_refs:
                 serialized = ARObject._serialize_item(item, "ConstantSpecification")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("CONSTANT-VALUE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -142,12 +149,12 @@ class CompositionSwComponentType(SwComponentType):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize physical
-        if self.physical is not None:
-            serialized = ARObject._serialize_item(self.physical, "PhysicalDimension")
+        # Serialize physical_ref
+        if self.physical_ref is not None:
+            serialized = ARObject._serialize_item(self.physical_ref, "PhysicalDimension")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PHYSICAL")
+                wrapped = ET.Element("PHYSICAL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -191,15 +198,21 @@ class CompositionSwComponentType(SwComponentType):
                 if child_value is not None:
                     obj.connectors.append(child_value)
 
-        # Parse constant_values (list from container "CONSTANT-VALUES")
-        obj.constant_values = []
-        container = ARObject._find_child_element(element, "CONSTANT-VALUES")
+        # Parse constant_value_refs (list from container "CONSTANT-VALUE-REFS")
+        obj.constant_value_refs = []
+        container = ARObject._find_child_element(element, "CONSTANT-VALUE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.constant_values.append(child_value)
+                    obj.constant_value_refs.append(child_value)
 
         # Parse data_type_refs (list from container "DATA-TYPE-REFS")
         obj.data_type_refs = []
@@ -227,11 +240,11 @@ class CompositionSwComponentType(SwComponentType):
                 if child_value is not None:
                     obj.instantiation_rte_events.append(child_value)
 
-        # Parse physical
-        child = ARObject._find_child_element(element, "PHYSICAL")
+        # Parse physical_ref
+        child = ARObject._find_child_element(element, "PHYSICAL-REF")
         if child is not None:
-            physical_value = ARObject._deserialize_by_tag(child, "PhysicalDimension")
-            obj.physical = physical_value
+            physical_ref_value = ARRef.deserialize(child)
+            obj.physical_ref = physical_ref_value
 
         return obj
 

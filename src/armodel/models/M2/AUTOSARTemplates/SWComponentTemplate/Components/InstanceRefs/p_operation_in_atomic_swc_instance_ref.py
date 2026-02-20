@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.InstanceR
     OperationInAtomicSwcInstanceRef,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_provided_port_prototype import (
     AbstractProvidedPortPrototype,
 )
@@ -33,13 +34,13 @@ class POperationInAtomicSwcInstanceRef(OperationInAtomicSwcInstanceRef):
         """
         return False
 
-    context_p_port_prototype: Optional[AbstractProvidedPortPrototype]
-    target_provided_operation: Optional[ClientServerOperation]
+    context_p_port_prototype_ref: Optional[ARRef]
+    target_provided_operation_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize POperationInAtomicSwcInstanceRef."""
         super().__init__()
-        self.context_p_port_prototype: Optional[AbstractProvidedPortPrototype] = None
-        self.target_provided_operation: Optional[ClientServerOperation] = None
+        self.context_p_port_prototype_ref: Optional[ARRef] = None
+        self.target_provided_operation_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize POperationInAtomicSwcInstanceRef to XML element.
@@ -61,12 +62,12 @@ class POperationInAtomicSwcInstanceRef(OperationInAtomicSwcInstanceRef):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize context_p_port_prototype
-        if self.context_p_port_prototype is not None:
-            serialized = ARObject._serialize_item(self.context_p_port_prototype, "AbstractProvidedPortPrototype")
+        # Serialize context_p_port_prototype_ref
+        if self.context_p_port_prototype_ref is not None:
+            serialized = ARObject._serialize_item(self.context_p_port_prototype_ref, "AbstractProvidedPortPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT-P-PORT-PROTOTYPE")
+                wrapped = ET.Element("CONTEXT-P-PORT-PROTOTYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -75,12 +76,12 @@ class POperationInAtomicSwcInstanceRef(OperationInAtomicSwcInstanceRef):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize target_provided_operation
-        if self.target_provided_operation is not None:
-            serialized = ARObject._serialize_item(self.target_provided_operation, "ClientServerOperation")
+        # Serialize target_provided_operation_ref
+        if self.target_provided_operation_ref is not None:
+            serialized = ARObject._serialize_item(self.target_provided_operation_ref, "ClientServerOperation")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TARGET-PROVIDED-OPERATION")
+                wrapped = ET.Element("TARGET-PROVIDED-OPERATION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -104,17 +105,17 @@ class POperationInAtomicSwcInstanceRef(OperationInAtomicSwcInstanceRef):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(POperationInAtomicSwcInstanceRef, cls).deserialize(element)
 
-        # Parse context_p_port_prototype
-        child = ARObject._find_child_element(element, "CONTEXT-P-PORT-PROTOTYPE")
+        # Parse context_p_port_prototype_ref
+        child = ARObject._find_child_element(element, "CONTEXT-P-PORT-PROTOTYPE-REF")
         if child is not None:
-            context_p_port_prototype_value = ARObject._deserialize_by_tag(child, "AbstractProvidedPortPrototype")
-            obj.context_p_port_prototype = context_p_port_prototype_value
+            context_p_port_prototype_ref_value = ARRef.deserialize(child)
+            obj.context_p_port_prototype_ref = context_p_port_prototype_ref_value
 
-        # Parse target_provided_operation
-        child = ARObject._find_child_element(element, "TARGET-PROVIDED-OPERATION")
+        # Parse target_provided_operation_ref
+        child = ARObject._find_child_element(element, "TARGET-PROVIDED-OPERATION-REF")
         if child is not None:
-            target_provided_operation_value = ARObject._deserialize_by_tag(child, "ClientServerOperation")
-            obj.target_provided_operation = target_provided_operation_value
+            target_provided_operation_ref_value = ARRef.deserialize(child)
+            obj.target_provided_operation_ref = target_provided_operation_ref_value
 
         return obj
 

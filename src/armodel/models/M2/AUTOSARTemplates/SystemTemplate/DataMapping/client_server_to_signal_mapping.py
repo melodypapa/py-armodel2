@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DataMapping.data_mapping 
     DataMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_operation import (
     ClientServerOperation,
 )
@@ -33,15 +34,15 @@ class ClientServerToSignalMapping(DataMapping):
         """
         return False
 
-    call_signal: Optional[SystemSignal]
+    call_signal_ref: Optional[ARRef]
     client_server: Optional[ClientServerOperation]
-    return_signal: Optional[SystemSignal]
+    return_signal_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ClientServerToSignalMapping."""
         super().__init__()
-        self.call_signal: Optional[SystemSignal] = None
+        self.call_signal_ref: Optional[ARRef] = None
         self.client_server: Optional[ClientServerOperation] = None
-        self.return_signal: Optional[SystemSignal] = None
+        self.return_signal_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize ClientServerToSignalMapping to XML element.
@@ -63,12 +64,12 @@ class ClientServerToSignalMapping(DataMapping):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize call_signal
-        if self.call_signal is not None:
-            serialized = ARObject._serialize_item(self.call_signal, "SystemSignal")
+        # Serialize call_signal_ref
+        if self.call_signal_ref is not None:
+            serialized = ARObject._serialize_item(self.call_signal_ref, "SystemSignal")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CALL-SIGNAL")
+                wrapped = ET.Element("CALL-SIGNAL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -91,12 +92,12 @@ class ClientServerToSignalMapping(DataMapping):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize return_signal
-        if self.return_signal is not None:
-            serialized = ARObject._serialize_item(self.return_signal, "SystemSignal")
+        # Serialize return_signal_ref
+        if self.return_signal_ref is not None:
+            serialized = ARObject._serialize_item(self.return_signal_ref, "SystemSignal")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("RETURN-SIGNAL")
+                wrapped = ET.Element("RETURN-SIGNAL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -120,11 +121,11 @@ class ClientServerToSignalMapping(DataMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ClientServerToSignalMapping, cls).deserialize(element)
 
-        # Parse call_signal
-        child = ARObject._find_child_element(element, "CALL-SIGNAL")
+        # Parse call_signal_ref
+        child = ARObject._find_child_element(element, "CALL-SIGNAL-REF")
         if child is not None:
-            call_signal_value = ARObject._deserialize_by_tag(child, "SystemSignal")
-            obj.call_signal = call_signal_value
+            call_signal_ref_value = ARRef.deserialize(child)
+            obj.call_signal_ref = call_signal_ref_value
 
         # Parse client_server
         child = ARObject._find_child_element(element, "CLIENT-SERVER")
@@ -132,11 +133,11 @@ class ClientServerToSignalMapping(DataMapping):
             client_server_value = ARObject._deserialize_by_tag(child, "ClientServerOperation")
             obj.client_server = client_server_value
 
-        # Parse return_signal
-        child = ARObject._find_child_element(element, "RETURN-SIGNAL")
+        # Parse return_signal_ref
+        child = ARObject._find_child_element(element, "RETURN-SIGNAL-REF")
         if child is not None:
-            return_signal_value = ARObject._deserialize_by_tag(child, "SystemSignal")
-            obj.return_signal = return_signal_value
+            return_signal_ref_value = ARRef.deserialize(child)
+            obj.return_signal_ref = return_signal_ref_value
 
         return obj
 

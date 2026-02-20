@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
     DiagnosticMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_event import (
     DiagnosticEvent,
 )
@@ -30,13 +31,13 @@ class DiagnosticEventToDebounceAlgorithmMapping(DiagnosticMapping):
         """
         return False
 
-    debounce: Optional[Any]
-    diagnostic_event: Optional[DiagnosticEvent]
+    debounce_ref: Optional[Any]
+    diagnostic_event_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DiagnosticEventToDebounceAlgorithmMapping."""
         super().__init__()
-        self.debounce: Optional[Any] = None
-        self.diagnostic_event: Optional[DiagnosticEvent] = None
+        self.debounce_ref: Optional[Any] = None
+        self.diagnostic_event_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticEventToDebounceAlgorithmMapping to XML element.
@@ -58,12 +59,12 @@ class DiagnosticEventToDebounceAlgorithmMapping(DiagnosticMapping):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize debounce
-        if self.debounce is not None:
-            serialized = ARObject._serialize_item(self.debounce, "Any")
+        # Serialize debounce_ref
+        if self.debounce_ref is not None:
+            serialized = ARObject._serialize_item(self.debounce_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DEBOUNCE")
+                wrapped = ET.Element("DEBOUNCE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -72,12 +73,12 @@ class DiagnosticEventToDebounceAlgorithmMapping(DiagnosticMapping):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize diagnostic_event
-        if self.diagnostic_event is not None:
-            serialized = ARObject._serialize_item(self.diagnostic_event, "DiagnosticEvent")
+        # Serialize diagnostic_event_ref
+        if self.diagnostic_event_ref is not None:
+            serialized = ARObject._serialize_item(self.diagnostic_event_ref, "DiagnosticEvent")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DIAGNOSTIC-EVENT")
+                wrapped = ET.Element("DIAGNOSTIC-EVENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -101,17 +102,17 @@ class DiagnosticEventToDebounceAlgorithmMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticEventToDebounceAlgorithmMapping, cls).deserialize(element)
 
-        # Parse debounce
-        child = ARObject._find_child_element(element, "DEBOUNCE")
+        # Parse debounce_ref
+        child = ARObject._find_child_element(element, "DEBOUNCE-REF")
         if child is not None:
-            debounce_value = child.text
-            obj.debounce = debounce_value
+            debounce_ref_value = ARRef.deserialize(child)
+            obj.debounce_ref = debounce_ref_value
 
-        # Parse diagnostic_event
-        child = ARObject._find_child_element(element, "DIAGNOSTIC-EVENT")
+        # Parse diagnostic_event_ref
+        child = ARObject._find_child_element(element, "DIAGNOSTIC-EVENT-REF")
         if child is not None:
-            diagnostic_event_value = ARObject._deserialize_by_tag(child, "DiagnosticEvent")
-            obj.diagnostic_event = diagnostic_event_value
+            diagnostic_event_ref_value = ARRef.deserialize(child)
+            obj.diagnostic_event_ref = diagnostic_event_ref_value
 
         return obj
 

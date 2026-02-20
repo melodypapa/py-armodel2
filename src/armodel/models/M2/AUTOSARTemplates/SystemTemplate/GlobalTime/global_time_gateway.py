@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.ecu_instance import (
     EcuInstance,
 )
@@ -36,15 +37,15 @@ class GlobalTimeGateway(Identifiable):
         """
         return False
 
-    host: Optional[EcuInstance]
-    master: Optional[GlobalTimeMaster]
-    slave: Optional[GlobalTimeSlave]
+    host_ref: Optional[ARRef]
+    master_ref: Optional[ARRef]
+    slave_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize GlobalTimeGateway."""
         super().__init__()
-        self.host: Optional[EcuInstance] = None
-        self.master: Optional[GlobalTimeMaster] = None
-        self.slave: Optional[GlobalTimeSlave] = None
+        self.host_ref: Optional[ARRef] = None
+        self.master_ref: Optional[ARRef] = None
+        self.slave_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize GlobalTimeGateway to XML element.
@@ -66,12 +67,12 @@ class GlobalTimeGateway(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize host
-        if self.host is not None:
-            serialized = ARObject._serialize_item(self.host, "EcuInstance")
+        # Serialize host_ref
+        if self.host_ref is not None:
+            serialized = ARObject._serialize_item(self.host_ref, "EcuInstance")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("HOST")
+                wrapped = ET.Element("HOST-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -80,12 +81,12 @@ class GlobalTimeGateway(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize master
-        if self.master is not None:
-            serialized = ARObject._serialize_item(self.master, "GlobalTimeMaster")
+        # Serialize master_ref
+        if self.master_ref is not None:
+            serialized = ARObject._serialize_item(self.master_ref, "GlobalTimeMaster")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("MASTER")
+                wrapped = ET.Element("MASTER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -94,12 +95,12 @@ class GlobalTimeGateway(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize slave
-        if self.slave is not None:
-            serialized = ARObject._serialize_item(self.slave, "GlobalTimeSlave")
+        # Serialize slave_ref
+        if self.slave_ref is not None:
+            serialized = ARObject._serialize_item(self.slave_ref, "GlobalTimeSlave")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SLAVE")
+                wrapped = ET.Element("SLAVE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -123,23 +124,23 @@ class GlobalTimeGateway(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(GlobalTimeGateway, cls).deserialize(element)
 
-        # Parse host
-        child = ARObject._find_child_element(element, "HOST")
+        # Parse host_ref
+        child = ARObject._find_child_element(element, "HOST-REF")
         if child is not None:
-            host_value = ARObject._deserialize_by_tag(child, "EcuInstance")
-            obj.host = host_value
+            host_ref_value = ARRef.deserialize(child)
+            obj.host_ref = host_ref_value
 
-        # Parse master
-        child = ARObject._find_child_element(element, "MASTER")
+        # Parse master_ref
+        child = ARObject._find_child_element(element, "MASTER-REF")
         if child is not None:
-            master_value = ARObject._deserialize_by_tag(child, "GlobalTimeMaster")
-            obj.master = master_value
+            master_ref_value = ARRef.deserialize(child)
+            obj.master_ref = master_ref_value
 
-        # Parse slave
-        child = ARObject._find_child_element(element, "SLAVE")
+        # Parse slave_ref
+        child = ARObject._find_child_element(element, "SLAVE-REF")
         if child is not None:
-            slave_value = ARObject._deserialize_by_tag(child, "GlobalTimeSlave")
-            obj.slave = slave_value
+            slave_ref_value = ARRef.deserialize(child)
+            obj.slave_ref = slave_ref_value
 
         return obj
 

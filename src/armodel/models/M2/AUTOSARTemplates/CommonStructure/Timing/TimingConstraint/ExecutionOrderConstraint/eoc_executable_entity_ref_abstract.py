@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from abc import ABC, abstractmethod
 
 
@@ -28,11 +29,11 @@ class EOCExecutableEntityRefAbstract(Identifiable, ABC):
         """
         return True
 
-    direct_successors: list[Any]
+    direct_successor_refs: list[Any]
     def __init__(self) -> None:
         """Initialize EOCExecutableEntityRefAbstract."""
         super().__init__()
-        self.direct_successors: list[Any] = []
+        self.direct_successor_refs: list[Any] = []
 
     def serialize(self) -> ET.Element:
         """Serialize EOCExecutableEntityRefAbstract to XML element.
@@ -54,13 +55,20 @@ class EOCExecutableEntityRefAbstract(Identifiable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize direct_successors (list to container "DIRECT-SUCCESSORS")
-        if self.direct_successors:
-            wrapper = ET.Element("DIRECT-SUCCESSORS")
-            for item in self.direct_successors:
+        # Serialize direct_successor_refs (list to container "DIRECT-SUCCESSOR-REFS")
+        if self.direct_successor_refs:
+            wrapper = ET.Element("DIRECT-SUCCESSOR-REFS")
+            for item in self.direct_successor_refs:
                 serialized = ARObject._serialize_item(item, "Any")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("DIRECT-SUCCESSOR-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -79,15 +87,21 @@ class EOCExecutableEntityRefAbstract(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EOCExecutableEntityRefAbstract, cls).deserialize(element)
 
-        # Parse direct_successors (list from container "DIRECT-SUCCESSORS")
-        obj.direct_successors = []
-        container = ARObject._find_child_element(element, "DIRECT-SUCCESSORS")
+        # Parse direct_successor_refs (list from container "DIRECT-SUCCESSOR-REFS")
+        obj.direct_successor_refs = []
+        container = ARObject._find_child_element(element, "DIRECT-SUCCESSOR-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.direct_successors.append(child_value)
+                    obj.direct_successor_refs.append(child_value)
 
         return obj
 

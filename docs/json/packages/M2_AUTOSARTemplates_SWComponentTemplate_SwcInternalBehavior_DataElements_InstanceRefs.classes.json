@@ -32,15 +32,15 @@
         "base": {
           "type": "AtomicSwComponentType",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Stereotypes: atpDerived xml.sequenceOffset=10"
         },
         "contextDatas": {
           "type": "any (ApplicationComposite)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This ist the context in a compositeDataType. Tags: xml.sequenceOffset=40 (ordered)"
         },
         "portPrototype": {
@@ -97,15 +97,15 @@
         "base": {
           "type": "AtomicSwComponentType",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Stereotypes: atpDerived xml.sequenceOffset=10"
         },
         "contextDatas": {
           "type": "any (ApplicationComposite)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This is the context in a compositeDataType. Tags: xml.sequenceOffset=40 (ordered)"
         },
         "portPrototype": {

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
     TDEventVfb,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
 class TDEventVfbReference(TDEventVfb):
@@ -27,11 +28,11 @@ class TDEventVfbReference(TDEventVfb):
         """
         return False
 
-    referenced_td_event_vfb: Optional[TDEventVfb]
+    referenced_td_event_vfb_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize TDEventVfbReference."""
         super().__init__()
-        self.referenced_td_event_vfb: Optional[TDEventVfb] = None
+        self.referenced_td_event_vfb_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize TDEventVfbReference to XML element.
@@ -53,12 +54,12 @@ class TDEventVfbReference(TDEventVfb):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize referenced_td_event_vfb
-        if self.referenced_td_event_vfb is not None:
-            serialized = ARObject._serialize_item(self.referenced_td_event_vfb, "TDEventVfb")
+        # Serialize referenced_td_event_vfb_ref
+        if self.referenced_td_event_vfb_ref is not None:
+            serialized = ARObject._serialize_item(self.referenced_td_event_vfb_ref, "TDEventVfb")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("REFERENCED-TD-EVENT-VFB")
+                wrapped = ET.Element("REFERENCED-TD-EVENT-VFB-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -82,11 +83,11 @@ class TDEventVfbReference(TDEventVfb):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDEventVfbReference, cls).deserialize(element)
 
-        # Parse referenced_td_event_vfb
-        child = ARObject._find_child_element(element, "REFERENCED-TD-EVENT-VFB")
+        # Parse referenced_td_event_vfb_ref
+        child = ARObject._find_child_element(element, "REFERENCED-TD-EVENT-VFB-REF")
         if child is not None:
-            referenced_td_event_vfb_value = ARObject._deserialize_by_tag(child, "TDEventVfb")
-            obj.referenced_td_event_vfb = referenced_td_event_vfb_value
+            referenced_td_event_vfb_ref_value = ARRef.deserialize(child)
+            obj.referenced_td_event_vfb_ref = referenced_td_event_vfb_ref_value
 
         return obj
 

@@ -197,8 +197,8 @@
         "substituteds": {
           "type": "LinUnconditionalFrame",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to a group of unconditional frames that share the same frame slot. In case that more than one of the needs to be transferred, the one first be chosen. channel a LIN Frame shall be referenced by only This allows a derivation of the a substituted Frame. The identifier is specified element. associated with a LinSporadic not be allocated in the same LinSchedule"
         }
       }
@@ -240,15 +240,15 @@
         "collisionSchedule": {
           "type": "LinScheduleTable",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the schedule table, which resolves a"
         },
         "linUnconditionalFrames": {
           "type": "LinUnconditionalFrame",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "A list of slaves can respond to the master request if at one of the signals carried in its unconditional frame For each response a LinFrameTriggering and shall be defined. Within a LIN Frame shall be referenced by only one allows a derivation of the identifier substituted Frame. The identifier is specified in The Unconditional frames an event triggered frame shall: equal length. the same checksum model (i.e. mixing LIN 1.x and frames is not allowed). the first data field to its protected identifier the associated unconditional frame is a unconditional frame in the same or table). published by different slave nodes. not be included directly in the same schedule the event triggered frame is scheduled."
         }
       }
@@ -476,15 +476,15 @@
         "assigned": {
           "type": "LinSlave",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The LIN slaves controller who is target of this assignment."
         },
         "assignedLin": {
           "type": "LinSlaveConfigIdent",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The LIN slave that is target of this assignment. note that this reference is redundant to the Ecu Extract of the LinMaster the LinSlave Ecus shall available. that is described here is necessary in the for the configuration of the LinMaster."
         }
       }

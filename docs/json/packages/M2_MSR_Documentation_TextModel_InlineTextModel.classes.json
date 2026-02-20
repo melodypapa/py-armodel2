@@ -144,8 +144,8 @@
         "trace": {
           "type": "Traceable",
           "multiplicity": "1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This allows to place an arbitrary reference to a traceable"
         },
         "tt": {
@@ -257,8 +257,8 @@
         "trace": {
           "type": "Traceable",
           "multiplicity": "1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This allows to place an arbitrary reference to a traceable"
         },
         "tt": {
@@ -330,7 +330,7 @@
           "multiplicity": "1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "This represents a technical term in verbatim. Note that it’s"
+          "note": "This represents a technical term in verbatim. Note that it\u2019s"
         },
         "xref": {
           "type": "Xref",
@@ -385,7 +385,7 @@
       "aggregated_by": [],
       "implements": [],
       "implemented_by": [],
-      "note": "This is the text model for items with subscript and superscripts such as measurement unit designations. It is intended, that such models can easily be transcribed to a plain text model either by using appropriate characters or by transcribing like mˆ2.",
+      "note": "This is the text model for items with subscript and superscripts such as measurement unit designations. It is intended, that such models can easily be transcribed to a plain text model either by using appropriate characters or by transcribing like m\u02c62.",
       "sources": [
         {
           "pdf_file": "AUTOSAR_FO_TPS_GenericStructureTemplate.pdf",

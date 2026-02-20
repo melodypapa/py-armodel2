@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.AsamHdo.Units.unit import (
     Unit,
 )
@@ -31,11 +32,11 @@ class UnitGroup(ARElement):
         """
         return False
 
-    units: list[Unit]
+    unit_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize UnitGroup."""
         super().__init__()
-        self.units: list[Unit] = []
+        self.unit_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize UnitGroup to XML element.
@@ -57,13 +58,20 @@ class UnitGroup(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize units (list to container "UNITS")
-        if self.units:
-            wrapper = ET.Element("UNITS")
-            for item in self.units:
+        # Serialize unit_refs (list to container "UNIT-REFS")
+        if self.unit_refs:
+            wrapper = ET.Element("UNIT-REFS")
+            for item in self.unit_refs:
                 serialized = ARObject._serialize_item(item, "Unit")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("UNIT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -82,15 +90,21 @@ class UnitGroup(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(UnitGroup, cls).deserialize(element)
 
-        # Parse units (list from container "UNITS")
-        obj.units = []
-        container = ARObject._find_child_element(element, "UNITS")
+        # Parse unit_refs (list from container "UNIT-REFS")
+        obj.unit_refs = []
+        container = ARObject._find_child_element(element, "UNIT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.units.append(child_value)
+                    obj.unit_refs.append(child_value)
 
         return obj
 

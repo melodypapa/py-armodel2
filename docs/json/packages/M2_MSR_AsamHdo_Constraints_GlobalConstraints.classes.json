@@ -185,19 +185,19 @@
           "is_ref": false,
           "note": "This is one particular scale which contributes to the data"
         },
-        "unit": {
-          "type": "Unit",
-          "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
-          "note": "This is the unit to which the physical constraints relate to."
-        },
         "upperLimit": {
           "type": "Limit",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This specifies the upper limit of the constraint."
+        },
+        "unit": {
+          "type": "Unit",
+          "multiplicity": "0..1",
+          "kind": "ref",
+          "is_ref": true,
+          "note": "This is the unit to which the physical constraints relate to."
         }
       }
     },

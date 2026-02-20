@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     NameToken,
 )
@@ -34,12 +35,12 @@ class EvaluatedVariantSet(ARElement):
         return False
 
     approval_status: NameToken
-    evaluateds: list[PredefinedVariant]
+    evaluated_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize EvaluatedVariantSet."""
         super().__init__()
         self.approval_status: NameToken = None
-        self.evaluateds: list[PredefinedVariant] = []
+        self.evaluated_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize EvaluatedVariantSet to XML element.
@@ -75,13 +76,20 @@ class EvaluatedVariantSet(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize evaluateds (list to container "EVALUATEDS")
-        if self.evaluateds:
-            wrapper = ET.Element("EVALUATEDS")
-            for item in self.evaluateds:
+        # Serialize evaluated_refs (list to container "EVALUATED-REFS")
+        if self.evaluated_refs:
+            wrapper = ET.Element("EVALUATED-REFS")
+            for item in self.evaluated_refs:
                 serialized = ARObject._serialize_item(item, "PredefinedVariant")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("EVALUATED-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -106,15 +114,21 @@ class EvaluatedVariantSet(ARElement):
             approval_status_value = child.text
             obj.approval_status = approval_status_value
 
-        # Parse evaluateds (list from container "EVALUATEDS")
-        obj.evaluateds = []
-        container = ARObject._find_child_element(element, "EVALUATEDS")
+        # Parse evaluated_refs (list from container "EVALUATED-REFS")
+        obj.evaluated_refs = []
+        container = ARObject._find_child_element(element, "EVALUATED-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.evaluateds.append(child_value)
+                    obj.evaluated_refs.append(child_value)
 
         return obj
 

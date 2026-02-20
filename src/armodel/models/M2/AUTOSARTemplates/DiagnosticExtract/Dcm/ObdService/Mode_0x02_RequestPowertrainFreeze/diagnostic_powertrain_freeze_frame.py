@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_parameter import (
     DiagnosticParameter,
 )
@@ -30,11 +31,11 @@ class DiagnosticPowertrainFreezeFrame(DiagnosticCommonElement):
         """
         return False
 
-    pids: list[DiagnosticParameter]
+    pid_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize DiagnosticPowertrainFreezeFrame."""
         super().__init__()
-        self.pids: list[DiagnosticParameter] = []
+        self.pid_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticPowertrainFreezeFrame to XML element.
@@ -56,13 +57,20 @@ class DiagnosticPowertrainFreezeFrame(DiagnosticCommonElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize pids (list to container "PIDS")
-        if self.pids:
-            wrapper = ET.Element("PIDS")
-            for item in self.pids:
+        # Serialize pid_refs (list to container "PID-REFS")
+        if self.pid_refs:
+            wrapper = ET.Element("PID-REFS")
+            for item in self.pid_refs:
                 serialized = ARObject._serialize_item(item, "DiagnosticParameter")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("PID-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -81,15 +89,21 @@ class DiagnosticPowertrainFreezeFrame(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticPowertrainFreezeFrame, cls).deserialize(element)
 
-        # Parse pids (list from container "PIDS")
-        obj.pids = []
-        container = ARObject._find_child_element(element, "PIDS")
+        # Parse pid_refs (list from container "PID-REFS")
+        obj.pid_refs = []
+        container = ARObject._find_child_element(element, "PID-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.pids.append(child_value)
+                    obj.pid_refs.append(child_value)
 
         return obj
 

@@ -131,9 +131,9 @@ class ARXMLWriter:
             return b'<' + tag + attrs + b'></' + tag + b'>'
         
         content = re.sub(pattern, replace_self_closing, content)
-        
-        with open(filepath, 'wb') as f:
-            f.write(content)
+
+        with open(filepath, 'wb') as f_out:
+            f_out.write(content)
 
     def _fix_xml_declaration_quotes_file(self, filepath: Path) -> None:
         """Replace single quotes with double quotes in XML declaration.

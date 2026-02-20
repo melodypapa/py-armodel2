@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
     CpSoftwareCluster,
 )
@@ -31,13 +32,13 @@ class DiagnosticMapping(DiagnosticCommonElement, ABC):
         """
         return True
 
-    provider: Optional[CpSoftwareCluster]
-    requester: Optional[CpSoftwareCluster]
+    provider_ref: Optional[ARRef]
+    requester_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DiagnosticMapping."""
         super().__init__()
-        self.provider: Optional[CpSoftwareCluster] = None
-        self.requester: Optional[CpSoftwareCluster] = None
+        self.provider_ref: Optional[ARRef] = None
+        self.requester_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticMapping to XML element.
@@ -59,12 +60,12 @@ class DiagnosticMapping(DiagnosticCommonElement, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize provider
-        if self.provider is not None:
-            serialized = ARObject._serialize_item(self.provider, "CpSoftwareCluster")
+        # Serialize provider_ref
+        if self.provider_ref is not None:
+            serialized = ARObject._serialize_item(self.provider_ref, "CpSoftwareCluster")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PROVIDER")
+                wrapped = ET.Element("PROVIDER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -73,12 +74,12 @@ class DiagnosticMapping(DiagnosticCommonElement, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize requester
-        if self.requester is not None:
-            serialized = ARObject._serialize_item(self.requester, "CpSoftwareCluster")
+        # Serialize requester_ref
+        if self.requester_ref is not None:
+            serialized = ARObject._serialize_item(self.requester_ref, "CpSoftwareCluster")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("REQUESTER")
+                wrapped = ET.Element("REQUESTER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -102,17 +103,17 @@ class DiagnosticMapping(DiagnosticCommonElement, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticMapping, cls).deserialize(element)
 
-        # Parse provider
-        child = ARObject._find_child_element(element, "PROVIDER")
+        # Parse provider_ref
+        child = ARObject._find_child_element(element, "PROVIDER-REF")
         if child is not None:
-            provider_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
-            obj.provider = provider_value
+            provider_ref_value = ARRef.deserialize(child)
+            obj.provider_ref = provider_ref_value
 
-        # Parse requester
-        child = ARObject._find_child_element(element, "REQUESTER")
+        # Parse requester_ref
+        child = ARObject._find_child_element(element, "REQUESTER-REF")
         if child is not None:
-            requester_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
-            obj.requester = requester_value
+            requester_ref_value = ARRef.deserialize(child)
+            obj.requester_ref = requester_ref_value
 
         return obj
 

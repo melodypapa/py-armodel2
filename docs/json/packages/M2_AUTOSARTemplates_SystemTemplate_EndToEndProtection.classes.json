@@ -50,8 +50,8 @@
         "iSignalIPdu": {
           "type": "ISignalIPdu",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the ISignalIPdu that transmits the protected"
         }
       }

@@ -178,8 +178,8 @@
         "targetModule": {
           "type": "BswModuleDescription",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the target module. It is an <<atpUriDef>> the reference shall be used to identify the target actually needing the description of that atpUriDef; atpVariation"
         }
       }
@@ -276,15 +276,15 @@
         "from": {
           "type": "BswModuleEntry",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Type of relationship that refers to the abstract BswModule notice that in this case the bswEntry be set to drivedFrom."
         },
         "to": {
           "type": "BswModuleEntry",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Type of relationship that refers to the concrete Bsw"
         }
       }
@@ -320,8 +320,8 @@
         "encapsulated": {
           "type": "BswModuleEntry",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The underlying BswModuleEntry. xml.sequenceOffset=5"
         },
         "isReentrant": {

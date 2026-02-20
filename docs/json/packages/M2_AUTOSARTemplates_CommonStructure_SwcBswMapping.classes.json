@@ -53,8 +53,8 @@
         "bswBehavior": {
           "type": "BswInternalBehavior",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The mapped BswInternalBehavior"
         },
         "runnableMappings": {
@@ -67,8 +67,8 @@
         "swcBehavior": {
           "type": "SwcInternalBehavior",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The mapped SwcInternalBehavior."
         },
         "synchronizeds": {
@@ -109,15 +109,15 @@
         "bswEntity": {
           "type": "BswModuleEntity",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The mapped BswModuleEntity"
         },
         "swcRunnable": {
           "type": "RunnableEntity",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The mapped SWC runnable."
         }
       }

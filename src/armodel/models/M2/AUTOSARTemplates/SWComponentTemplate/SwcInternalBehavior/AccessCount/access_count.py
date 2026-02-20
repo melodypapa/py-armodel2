@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -30,12 +31,12 @@ class AccessCount(ARObject):
         """
         return False
 
-    access_point: Optional[AbstractAccessPoint]
+    access_point_ref: Optional[ARRef]
     value: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize AccessCount."""
         super().__init__()
-        self.access_point: Optional[AbstractAccessPoint] = None
+        self.access_point_ref: Optional[ARRef] = None
         self.value: Optional[PositiveInteger] = None
 
     def serialize(self) -> ET.Element:
@@ -48,12 +49,12 @@ class AccessCount(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize access_point
-        if self.access_point is not None:
-            serialized = ARObject._serialize_item(self.access_point, "AbstractAccessPoint")
+        # Serialize access_point_ref
+        if self.access_point_ref is not None:
+            serialized = ARObject._serialize_item(self.access_point_ref, "AbstractAccessPoint")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ACCESS-POINT")
+                wrapped = ET.Element("ACCESS-POINT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -92,11 +93,11 @@ class AccessCount(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse access_point
-        child = ARObject._find_child_element(element, "ACCESS-POINT")
+        # Parse access_point_ref
+        child = ARObject._find_child_element(element, "ACCESS-POINT-REF")
         if child is not None:
-            access_point_value = ARObject._deserialize_by_tag(child, "AbstractAccessPoint")
-            obj.access_point = access_point_value
+            access_point_ref_value = ARRef.deserialize(child)
+            obj.access_point_ref = access_point_ref_value
 
         # Parse value
         child = ARObject._find_child_element(element, "VALUE")

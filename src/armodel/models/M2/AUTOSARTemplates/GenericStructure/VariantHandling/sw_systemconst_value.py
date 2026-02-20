@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Numerical,
 )
@@ -36,13 +37,13 @@ class SwSystemconstValue(ARObject):
         return False
 
     annotations: list[Annotation]
-    sw_systemconst: SwSystemconst
+    sw_systemconst_ref: ARRef
     value: Numerical
     def __init__(self) -> None:
         """Initialize SwSystemconstValue."""
         super().__init__()
         self.annotations: list[Annotation] = []
-        self.sw_systemconst: SwSystemconst = None
+        self.sw_systemconst_ref: ARRef = None
         self.value: Numerical = None
 
     def serialize(self) -> ET.Element:
@@ -65,12 +66,12 @@ class SwSystemconstValue(ARObject):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize sw_systemconst
-        if self.sw_systemconst is not None:
-            serialized = ARObject._serialize_item(self.sw_systemconst, "SwSystemconst")
+        # Serialize sw_systemconst_ref
+        if self.sw_systemconst_ref is not None:
+            serialized = ARObject._serialize_item(self.sw_systemconst_ref, "SwSystemconst")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SW-SYSTEMCONST")
+                wrapped = ET.Element("SW-SYSTEMCONST-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -119,11 +120,11 @@ class SwSystemconstValue(ARObject):
                 if child_value is not None:
                     obj.annotations.append(child_value)
 
-        # Parse sw_systemconst
-        child = ARObject._find_child_element(element, "SW-SYSTEMCONST")
+        # Parse sw_systemconst_ref
+        child = ARObject._find_child_element(element, "SW-SYSTEMCONST-REF")
         if child is not None:
-            sw_systemconst_value = ARObject._deserialize_by_tag(child, "SwSystemconst")
-            obj.sw_systemconst = sw_systemconst_value
+            sw_systemconst_ref_value = ARRef.deserialize(child)
+            obj.sw_systemconst_ref = sw_systemconst_ref_value
 
         # Parse value
         child = ARObject._find_child_element(element, "VALUE")

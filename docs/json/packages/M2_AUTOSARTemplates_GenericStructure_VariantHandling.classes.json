@@ -56,8 +56,8 @@
         "compuMethod": {
           "type": "CompuMethod",
           "multiplicity": "1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The compuMethod specifies the possible values for the serving as an enumerator."
         }
       }
@@ -117,8 +117,8 @@
         "variantCriterion": {
           "type": "any (PostBuildVariant)",
           "multiplicity": "1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This association selects the variant criterion whose value specified."
         }
       }
@@ -170,22 +170,22 @@
         "includedVariants": {
           "type": "PredefinedVariant",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The associated variants are considered part of this means the settings of the are included in the settings of the Nevertheless the included be included in several predefined variants."
         },
         "postBuildVariants": {
           "type": "any (PostBuildVariant)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This is the postBuildVariantCriterionValueSet contributing to the predefinded variant."
         },
         "sws": {
           "type": "SwSystemconstantValueSet",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This ist the set of Systemconstant Values contributing to the predefined variant."
         }
       }
@@ -350,7 +350,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "This class represents a condition which is computed based on system constants according to the specified expression. The expected result is considered as boolean value. The result of the expression is interpreted as a condition. • \"0\" represents \"false\"; • a value other than zero is considered \"true\"",
+      "note": "This class represents a condition which is computed based on system constants according to the specified expression. The expected result is considered as boolean value. The result of the expression is interpreted as a condition. \u2022 \"0\" represents \"false\"; \u2022 a value other than zero is considered \"true\"",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_SoftwareComponentTemplate.pdf",
@@ -429,8 +429,8 @@
         "matching": {
           "type": "any (PostBuildVariant)",
           "multiplicity": "1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This is the criterion which needs to match the value in order to make the PostbuildVariantCondition to be true."
         },
         "value": {
@@ -540,15 +540,15 @@
         "sysc": {
           "type": "SwSystemconst",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This refers to a system constant. The internal (coded)"
         },
         "syscString": {
           "type": "SwSystemconst",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "syscString indicates that the referenced system constant"
         }
       }
@@ -601,8 +601,8 @@
         "swSystemconst": {
           "type": "SwSystemconst",
           "multiplicity": "1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This is the system constant to which the value applies."
         },
         "value": {
@@ -656,8 +656,8 @@
         "evaluateds": {
           "type": "PredefinedVariant",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This metaclass represents one particular variant which evaluated. LowerMultiplicity is set to 0 to support a"
         }
       }

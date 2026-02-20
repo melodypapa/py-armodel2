@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
     TDEventSwc,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
 class TDEventSwcInternalBehaviorReference(TDEventSwc):
@@ -27,11 +28,11 @@ class TDEventSwcInternalBehaviorReference(TDEventSwc):
         """
         return False
 
-    referenced_td_event_swc: Optional[TDEventSwc]
+    referenced_td_event_swc_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize TDEventSwcInternalBehaviorReference."""
         super().__init__()
-        self.referenced_td_event_swc: Optional[TDEventSwc] = None
+        self.referenced_td_event_swc_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize TDEventSwcInternalBehaviorReference to XML element.
@@ -53,12 +54,12 @@ class TDEventSwcInternalBehaviorReference(TDEventSwc):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize referenced_td_event_swc
-        if self.referenced_td_event_swc is not None:
-            serialized = ARObject._serialize_item(self.referenced_td_event_swc, "TDEventSwc")
+        # Serialize referenced_td_event_swc_ref
+        if self.referenced_td_event_swc_ref is not None:
+            serialized = ARObject._serialize_item(self.referenced_td_event_swc_ref, "TDEventSwc")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("REFERENCED-TD-EVENT-SWC")
+                wrapped = ET.Element("REFERENCED-TD-EVENT-SWC-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -82,11 +83,11 @@ class TDEventSwcInternalBehaviorReference(TDEventSwc):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDEventSwcInternalBehaviorReference, cls).deserialize(element)
 
-        # Parse referenced_td_event_swc
-        child = ARObject._find_child_element(element, "REFERENCED-TD-EVENT-SWC")
+        # Parse referenced_td_event_swc_ref
+        child = ARObject._find_child_element(element, "REFERENCED-TD-EVENT-SWC-REF")
         if child is not None:
-            referenced_td_event_swc_value = ARObject._deserialize_by_tag(child, "TDEventSwc")
-            obj.referenced_td_event_swc = referenced_td_event_swc_value
+            referenced_td_event_swc_ref_value = ARRef.deserialize(child)
+            obj.referenced_td_event_swc_ref = referenced_td_event_swc_ref_value
 
         return obj
 

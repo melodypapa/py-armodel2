@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -41,20 +42,20 @@ class ApplicationEndpoint(Identifiable):
 
     consumed_services: list[Any]
     max_number_of: Optional[PositiveInteger]
-    network_endpoint_endpoint: Optional[NetworkEndpoint]
+    network_endpoint_endpoint_ref: Optional[ARRef]
     priority: Optional[PositiveInteger]
     provided_services: list[Any]
-    tls_crypto_service: Optional[TlsCryptoServiceMapping]
+    tls_crypto_service_ref: Optional[ARRef]
     tp_configuration_configuration: Optional[TransportProtocolConfiguration]
     def __init__(self) -> None:
         """Initialize ApplicationEndpoint."""
         super().__init__()
         self.consumed_services: list[Any] = []
         self.max_number_of: Optional[PositiveInteger] = None
-        self.network_endpoint_endpoint: Optional[NetworkEndpoint] = None
+        self.network_endpoint_endpoint_ref: Optional[ARRef] = None
         self.priority: Optional[PositiveInteger] = None
         self.provided_services: list[Any] = []
-        self.tls_crypto_service: Optional[TlsCryptoServiceMapping] = None
+        self.tls_crypto_service_ref: Optional[ARRef] = None
         self.tp_configuration_configuration: Optional[TransportProtocolConfiguration] = None
 
     def serialize(self) -> ET.Element:
@@ -101,12 +102,12 @@ class ApplicationEndpoint(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize network_endpoint_endpoint
-        if self.network_endpoint_endpoint is not None:
-            serialized = ARObject._serialize_item(self.network_endpoint_endpoint, "NetworkEndpoint")
+        # Serialize network_endpoint_endpoint_ref
+        if self.network_endpoint_endpoint_ref is not None:
+            serialized = ARObject._serialize_item(self.network_endpoint_endpoint_ref, "NetworkEndpoint")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("NETWORK-ENDPOINT-ENDPOINT")
+                wrapped = ET.Element("NETWORK-ENDPOINT-ENDPOINT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -139,12 +140,12 @@ class ApplicationEndpoint(Identifiable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize tls_crypto_service
-        if self.tls_crypto_service is not None:
-            serialized = ARObject._serialize_item(self.tls_crypto_service, "TlsCryptoServiceMapping")
+        # Serialize tls_crypto_service_ref
+        if self.tls_crypto_service_ref is not None:
+            serialized = ARObject._serialize_item(self.tls_crypto_service_ref, "TlsCryptoServiceMapping")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TLS-CRYPTO-SERVICE")
+                wrapped = ET.Element("TLS-CRYPTO-SERVICE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -198,11 +199,11 @@ class ApplicationEndpoint(Identifiable):
             max_number_of_value = child.text
             obj.max_number_of = max_number_of_value
 
-        # Parse network_endpoint_endpoint
-        child = ARObject._find_child_element(element, "NETWORK-ENDPOINT-ENDPOINT")
+        # Parse network_endpoint_endpoint_ref
+        child = ARObject._find_child_element(element, "NETWORK-ENDPOINT-ENDPOINT-REF")
         if child is not None:
-            network_endpoint_endpoint_value = ARObject._deserialize_by_tag(child, "NetworkEndpoint")
-            obj.network_endpoint_endpoint = network_endpoint_endpoint_value
+            network_endpoint_endpoint_ref_value = ARRef.deserialize(child)
+            obj.network_endpoint_endpoint_ref = network_endpoint_endpoint_ref_value
 
         # Parse priority
         child = ARObject._find_child_element(element, "PRIORITY")
@@ -220,11 +221,11 @@ class ApplicationEndpoint(Identifiable):
                 if child_value is not None:
                     obj.provided_services.append(child_value)
 
-        # Parse tls_crypto_service
-        child = ARObject._find_child_element(element, "TLS-CRYPTO-SERVICE")
+        # Parse tls_crypto_service_ref
+        child = ARObject._find_child_element(element, "TLS-CRYPTO-SERVICE-REF")
         if child is not None:
-            tls_crypto_service_value = ARObject._deserialize_by_tag(child, "TlsCryptoServiceMapping")
-            obj.tls_crypto_service = tls_crypto_service_value
+            tls_crypto_service_ref_value = ARRef.deserialize(child)
+            obj.tls_crypto_service_ref = tls_crypto_service_ref_value
 
         # Parse tp_configuration_configuration
         child = ARObject._find_child_element(element, "TP-CONFIGURATION-CONFIGURATION")

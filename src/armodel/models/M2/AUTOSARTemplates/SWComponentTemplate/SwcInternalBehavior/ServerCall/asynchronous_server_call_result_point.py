@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
     AbstractAccessPoint,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
 class AsynchronousServerCallResultPoint(AbstractAccessPoint):
@@ -28,11 +29,11 @@ class AsynchronousServerCallResultPoint(AbstractAccessPoint):
         """
         return False
 
-    asynchronous_server: Optional[Any]
+    asynchronous_server_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize AsynchronousServerCallResultPoint."""
         super().__init__()
-        self.asynchronous_server: Optional[Any] = None
+        self.asynchronous_server_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize AsynchronousServerCallResultPoint to XML element.
@@ -54,12 +55,12 @@ class AsynchronousServerCallResultPoint(AbstractAccessPoint):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize asynchronous_server
-        if self.asynchronous_server is not None:
-            serialized = ARObject._serialize_item(self.asynchronous_server, "Any")
+        # Serialize asynchronous_server_ref
+        if self.asynchronous_server_ref is not None:
+            serialized = ARObject._serialize_item(self.asynchronous_server_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ASYNCHRONOUS-SERVER")
+                wrapped = ET.Element("ASYNCHRONOUS-SERVER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -83,11 +84,11 @@ class AsynchronousServerCallResultPoint(AbstractAccessPoint):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AsynchronousServerCallResultPoint, cls).deserialize(element)
 
-        # Parse asynchronous_server
-        child = ARObject._find_child_element(element, "ASYNCHRONOUS-SERVER")
+        # Parse asynchronous_server_ref
+        child = ARObject._find_child_element(element, "ASYNCHRONOUS-SERVER-REF")
         if child is not None:
-            asynchronous_server_value = child.text
-            obj.asynchronous_server = asynchronous_server_value
+            asynchronous_server_ref_value = ARRef.deserialize(child)
+            obj.asynchronous_server_ref = asynchronous_server_ref_value
 
         return obj
 

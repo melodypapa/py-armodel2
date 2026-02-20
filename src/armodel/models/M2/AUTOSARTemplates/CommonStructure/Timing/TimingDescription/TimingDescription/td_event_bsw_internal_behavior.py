@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
     TimingDescriptionEvent,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_module_entity import (
     BswModuleEntity,
 )
@@ -30,12 +31,12 @@ class TDEventBswInternalBehavior(TimingDescriptionEvent):
         """
         return False
 
-    bsw_module_entity_entity: Optional[BswModuleEntity]
+    bsw_module_entity_entity_ref: Optional[ARRef]
     td_event_bsw_behavior_type: Optional[Any]
     def __init__(self) -> None:
         """Initialize TDEventBswInternalBehavior."""
         super().__init__()
-        self.bsw_module_entity_entity: Optional[BswModuleEntity] = None
+        self.bsw_module_entity_entity_ref: Optional[ARRef] = None
         self.td_event_bsw_behavior_type: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
@@ -58,12 +59,12 @@ class TDEventBswInternalBehavior(TimingDescriptionEvent):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize bsw_module_entity_entity
-        if self.bsw_module_entity_entity is not None:
-            serialized = ARObject._serialize_item(self.bsw_module_entity_entity, "BswModuleEntity")
+        # Serialize bsw_module_entity_entity_ref
+        if self.bsw_module_entity_entity_ref is not None:
+            serialized = ARObject._serialize_item(self.bsw_module_entity_entity_ref, "BswModuleEntity")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("BSW-MODULE-ENTITY-ENTITY")
+                wrapped = ET.Element("BSW-MODULE-ENTITY-ENTITY-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -101,11 +102,11 @@ class TDEventBswInternalBehavior(TimingDescriptionEvent):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDEventBswInternalBehavior, cls).deserialize(element)
 
-        # Parse bsw_module_entity_entity
-        child = ARObject._find_child_element(element, "BSW-MODULE-ENTITY-ENTITY")
+        # Parse bsw_module_entity_entity_ref
+        child = ARObject._find_child_element(element, "BSW-MODULE-ENTITY-ENTITY-REF")
         if child is not None:
-            bsw_module_entity_entity_value = ARObject._deserialize_by_tag(child, "BswModuleEntity")
-            obj.bsw_module_entity_entity = bsw_module_entity_entity_value
+            bsw_module_entity_entity_ref_value = ARRef.deserialize(child)
+            obj.bsw_module_entity_entity_ref = bsw_module_entity_entity_ref_value
 
         # Parse td_event_bsw_behavior_type
         child = ARObject._find_child_element(element, "TD-EVENT-BSW-BEHAVIOR-TYPE")

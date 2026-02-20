@@ -35,12 +35,12 @@ class PduActivationRoutingGroup(Identifiable):
         return False
 
     event_group_ref: Optional[EventGroupControlTypeEnum]
-    i_pdu_identifiers: list[SoConIPduIdentifier]
+    i_pdu_identifier_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize PduActivationRoutingGroup."""
         super().__init__()
         self.event_group_ref: Optional[EventGroupControlTypeEnum] = None
-        self.i_pdu_identifiers: list[SoConIPduIdentifier] = []
+        self.i_pdu_identifier_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize PduActivationRoutingGroup to XML element.
@@ -76,13 +76,20 @@ class PduActivationRoutingGroup(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize i_pdu_identifiers (list to container "I-PDU-IDENTIFIERS")
-        if self.i_pdu_identifiers:
-            wrapper = ET.Element("I-PDU-IDENTIFIERS")
-            for item in self.i_pdu_identifiers:
+        # Serialize i_pdu_identifier_refs (list to container "I-PDU-IDENTIFIER-REFS")
+        if self.i_pdu_identifier_refs:
+            wrapper = ET.Element("I-PDU-IDENTIFIER-REFS")
+            for item in self.i_pdu_identifier_refs:
                 serialized = ARObject._serialize_item(item, "SoConIPduIdentifier")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("I-PDU-IDENTIFIER-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -107,15 +114,21 @@ class PduActivationRoutingGroup(Identifiable):
             event_group_ref_value = ARRef.deserialize(child)
             obj.event_group_ref = event_group_ref_value
 
-        # Parse i_pdu_identifiers (list from container "I-PDU-IDENTIFIERS")
-        obj.i_pdu_identifiers = []
-        container = ARObject._find_child_element(element, "I-PDU-IDENTIFIERS")
+        # Parse i_pdu_identifier_refs (list from container "I-PDU-IDENTIFIER-REFS")
+        obj.i_pdu_identifier_refs = []
+        container = ARObject._find_child_element(element, "I-PDU-IDENTIFIER-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.i_pdu_identifiers.append(child_value)
+                    obj.i_pdu_identifier_refs.append(child_value)
 
         return obj
 

@@ -133,8 +133,8 @@
         "contexts": {
           "type": "DltContext",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Definition of ContextIds for the Application."
         }
       }
@@ -196,8 +196,8 @@
         "dltMessages": {
           "type": "DltMessage",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Group of Log and Trace Messages assigned to the Dlt atpVariation"
         }
       }
@@ -409,8 +409,8 @@
         "compuMethod": {
           "type": "CompuMethod",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to CompuMethod of category TEXTTABLE the supported user-defined privacy levels."
         },
         "privacyLevel": {

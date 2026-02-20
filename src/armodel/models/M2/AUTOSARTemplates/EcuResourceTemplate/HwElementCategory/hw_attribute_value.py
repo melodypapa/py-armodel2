@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Numerical,
     VerbatimString,
@@ -35,14 +36,14 @@ class HwAttributeValue(ARObject):
         return False
 
     annotation: Optional[Annotation]
-    hw_attribute_def: Optional[HwAttributeDef]
+    hw_attribute_def_ref: Optional[ARRef]
     v: Optional[Numerical]
     vt: Optional[VerbatimString]
     def __init__(self) -> None:
         """Initialize HwAttributeValue."""
         super().__init__()
         self.annotation: Optional[Annotation] = None
-        self.hw_attribute_def: Optional[HwAttributeDef] = None
+        self.hw_attribute_def_ref: Optional[ARRef] = None
         self.v: Optional[Numerical] = None
         self.vt: Optional[VerbatimString] = None
 
@@ -70,12 +71,12 @@ class HwAttributeValue(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize hw_attribute_def
-        if self.hw_attribute_def is not None:
-            serialized = ARObject._serialize_item(self.hw_attribute_def, "HwAttributeDef")
+        # Serialize hw_attribute_def_ref
+        if self.hw_attribute_def_ref is not None:
+            serialized = ARObject._serialize_item(self.hw_attribute_def_ref, "HwAttributeDef")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("HW-ATTRIBUTE-DEF")
+                wrapped = ET.Element("HW-ATTRIBUTE-DEF-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -134,11 +135,11 @@ class HwAttributeValue(ARObject):
             annotation_value = ARObject._deserialize_by_tag(child, "Annotation")
             obj.annotation = annotation_value
 
-        # Parse hw_attribute_def
-        child = ARObject._find_child_element(element, "HW-ATTRIBUTE-DEF")
+        # Parse hw_attribute_def_ref
+        child = ARObject._find_child_element(element, "HW-ATTRIBUTE-DEF-REF")
         if child is not None:
-            hw_attribute_def_value = ARObject._deserialize_by_tag(child, "HwAttributeDef")
-            obj.hw_attribute_def = hw_attribute_def_value
+            hw_attribute_def_ref_value = ARRef.deserialize(child)
+            obj.hw_attribute_def_ref = hw_attribute_def_ref_value
 
         # Parse v
         child = ARObject._find_child_element(element, "V")

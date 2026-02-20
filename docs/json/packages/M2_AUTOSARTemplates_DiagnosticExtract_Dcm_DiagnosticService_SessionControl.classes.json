@@ -38,15 +38,15 @@
         "diagnosticSessionSession": {
           "type": "DiagnosticSession",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the applicable DiagnosticSessions"
         },
         "sessionControl": {
           "type": "DiagnosticSession",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference substantiates that abstract reference in the reference represents the ability to access among all DiagnosticSessionControl in context."
         }
       }

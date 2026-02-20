@@ -32,14 +32,14 @@ class PortInCompositionTypeInstanceRef(ARObject, ABC):
         """
         return True
 
-    abstract_context: Optional[Any]
-    base: Optional[CompositionSwComponentType]
+    abstract_context_ref: Optional[Any]
+    base_ref: Optional[ARRef]
     target_port_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize PortInCompositionTypeInstanceRef."""
         super().__init__()
-        self.abstract_context: Optional[Any] = None
-        self.base: Optional[CompositionSwComponentType] = None
+        self.abstract_context_ref: Optional[Any] = None
+        self.base_ref: Optional[ARRef] = None
         self.target_port_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
@@ -52,12 +52,12 @@ class PortInCompositionTypeInstanceRef(ARObject, ABC):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize abstract_context
-        if self.abstract_context is not None:
-            serialized = ARObject._serialize_item(self.abstract_context, "Any")
+        # Serialize abstract_context_ref
+        if self.abstract_context_ref is not None:
+            serialized = ARObject._serialize_item(self.abstract_context_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ABSTRACT-CONTEXT")
+                wrapped = ET.Element("ABSTRACT-CONTEXT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -66,12 +66,12 @@ class PortInCompositionTypeInstanceRef(ARObject, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize base
-        if self.base is not None:
-            serialized = ARObject._serialize_item(self.base, "CompositionSwComponentType")
+        # Serialize base_ref
+        if self.base_ref is not None:
+            serialized = ARObject._serialize_item(self.base_ref, "CompositionSwComponentType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("BASE")
+                wrapped = ET.Element("BASE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -110,17 +110,17 @@ class PortInCompositionTypeInstanceRef(ARObject, ABC):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse abstract_context
-        child = ARObject._find_child_element(element, "ABSTRACT-CONTEXT")
+        # Parse abstract_context_ref
+        child = ARObject._find_child_element(element, "ABSTRACT-CONTEXT-REF")
         if child is not None:
-            abstract_context_value = child.text
-            obj.abstract_context = abstract_context_value
+            abstract_context_ref_value = ARRef.deserialize(child)
+            obj.abstract_context_ref = abstract_context_ref_value
 
-        # Parse base
-        child = ARObject._find_child_element(element, "BASE")
+        # Parse base_ref
+        child = ARObject._find_child_element(element, "BASE-REF")
         if child is not None:
-            base_value = ARObject._deserialize_by_tag(child, "CompositionSwComponentType")
-            obj.base = base_value
+            base_ref_value = ARRef.deserialize(child)
+            obj.base_ref = base_ref_value
 
         # Parse target_port_ref
         child = ARObject._find_child_element(element, "TARGET-PORT-REF")

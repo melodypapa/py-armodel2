@@ -37,15 +37,15 @@
         "bswModuleEntry": {
           "type": "BswModuleEntry",
           "multiplicity": "1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The referenced BswModuleEntry represents the Bsw the mapping is dedicated to."
         },
         "clientServer": {
           "type": "ClientServerOperation",
           "multiplicity": "1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The referenced ClientServerOperation represents the server operation the mapping is dedicated to."
         }
       }
@@ -87,8 +87,8 @@
         "clientServer": {
           "type": "ClientServerInterface",
           "multiplicity": "1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The referenced ClientServerInterface represents the server interface the mapping is dedicated to."
         },
         "operation": {

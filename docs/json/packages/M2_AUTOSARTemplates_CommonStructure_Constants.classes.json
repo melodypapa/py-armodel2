@@ -527,8 +527,8 @@
         "unit": {
           "type": "Unit",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the physical unit of the provided values."
         }
       }
@@ -1109,8 +1109,8 @@
         "constant": {
           "type": "ConstantSpecification",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The referenced constant."
         }
       }
@@ -1144,15 +1144,15 @@
         "applConstant": {
           "type": "ConstantSpecification",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "A ConstantSpecification defined in the application"
         },
         "implConstant": {
           "type": "ConstantSpecification",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "A ConstantSpecification defined in the implementation"
         }
       }
@@ -1322,8 +1322,8 @@
         "unit": {
           "type": "Unit",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the physical unit of the provided values."
         }
       }

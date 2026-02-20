@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticDataByIdentifier,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
 class DiagnosticWriteDataByIdentifier(DiagnosticDataByIdentifier):
@@ -27,11 +28,11 @@ class DiagnosticWriteDataByIdentifier(DiagnosticDataByIdentifier):
         """
         return False
 
-    write_class: Optional[Any]
+    write_class_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticWriteDataByIdentifier."""
         super().__init__()
-        self.write_class: Optional[Any] = None
+        self.write_class_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticWriteDataByIdentifier to XML element.
@@ -53,12 +54,12 @@ class DiagnosticWriteDataByIdentifier(DiagnosticDataByIdentifier):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize write_class
-        if self.write_class is not None:
-            serialized = ARObject._serialize_item(self.write_class, "Any")
+        # Serialize write_class_ref
+        if self.write_class_ref is not None:
+            serialized = ARObject._serialize_item(self.write_class_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("WRITE-CLASS")
+                wrapped = ET.Element("WRITE-CLASS-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -82,11 +83,11 @@ class DiagnosticWriteDataByIdentifier(DiagnosticDataByIdentifier):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticWriteDataByIdentifier, cls).deserialize(element)
 
-        # Parse write_class
-        child = ARObject._find_child_element(element, "WRITE-CLASS")
+        # Parse write_class_ref
+        child = ARObject._find_child_element(element, "WRITE-CLASS-REF")
         if child is not None:
-            write_class_value = child.text
-            obj.write_class = write_class_value
+            write_class_ref_value = ARRef.deserialize(child)
+            obj.write_class_ref = write_class_ref_value
 
         return obj
 

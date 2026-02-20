@@ -13,6 +13,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
 )
@@ -39,13 +40,13 @@ class SwPointerTargetProps(ARObject):
         """
         return False
 
-    function_pointer: Optional[BswModuleEntry]
+    function_pointer_ref: Optional[ARRef]
     sw_data_def: Optional[SwDataDefProps]
     target_category: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize SwPointerTargetProps."""
         super().__init__()
-        self.function_pointer: Optional[BswModuleEntry] = None
+        self.function_pointer_ref: Optional[ARRef] = None
         self.sw_data_def: Optional[SwDataDefProps] = None
         self.target_category: Optional[Identifier] = None
 
@@ -59,12 +60,12 @@ class SwPointerTargetProps(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize function_pointer
-        if self.function_pointer is not None:
-            serialized = ARObject._serialize_item(self.function_pointer, "BswModuleEntry")
+        # Serialize function_pointer_ref
+        if self.function_pointer_ref is not None:
+            serialized = ARObject._serialize_item(self.function_pointer_ref, "BswModuleEntry")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("FUNCTION-POINTER")
+                wrapped = ET.Element("FUNCTION-POINTER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -117,11 +118,11 @@ class SwPointerTargetProps(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse function_pointer
-        child = ARObject._find_child_element(element, "FUNCTION-POINTER")
+        # Parse function_pointer_ref
+        child = ARObject._find_child_element(element, "FUNCTION-POINTER-REF")
         if child is not None:
-            function_pointer_value = ARObject._deserialize_by_tag(child, "BswModuleEntry")
-            obj.function_pointer = function_pointer_value
+            function_pointer_ref_value = ARRef.deserialize(child)
+            obj.function_pointer_ref = function_pointer_ref_value
 
         # Parse sw_data_def
         child = ARObject._find_child_element(element, "SW-DATA-DEF")

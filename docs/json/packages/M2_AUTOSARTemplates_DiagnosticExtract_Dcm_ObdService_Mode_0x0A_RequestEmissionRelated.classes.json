@@ -38,8 +38,8 @@
         "request": {
           "type": "any (DiagnosticRequest)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference substantiates that abstract reference in the role serviceClass for this specific concrete class. Thereby, the reference represents the ability to access Class shared attributes among all DiagnosticRequestEmission Permanent RelatedDTCPermanentStatus in the given context. Status"
         }
       }

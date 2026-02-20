@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_event import (
     DiagnosticEvent,
 )
@@ -30,11 +31,11 @@ class DiagnosticFimEventGroup(DiagnosticCommonElement):
         """
         return False
 
-    events: list[DiagnosticEvent]
+    event_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize DiagnosticFimEventGroup."""
         super().__init__()
-        self.events: list[DiagnosticEvent] = []
+        self.event_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticFimEventGroup to XML element.
@@ -56,13 +57,20 @@ class DiagnosticFimEventGroup(DiagnosticCommonElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize events (list to container "EVENTS")
-        if self.events:
-            wrapper = ET.Element("EVENTS")
-            for item in self.events:
+        # Serialize event_refs (list to container "EVENT-REFS")
+        if self.event_refs:
+            wrapper = ET.Element("EVENT-REFS")
+            for item in self.event_refs:
                 serialized = ARObject._serialize_item(item, "DiagnosticEvent")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("EVENT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -81,15 +89,21 @@ class DiagnosticFimEventGroup(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticFimEventGroup, cls).deserialize(element)
 
-        # Parse events (list from container "EVENTS")
-        obj.events = []
-        container = ARObject._find_child_element(element, "EVENTS")
+        # Parse event_refs (list from container "EVENT-REFS")
+        obj.event_refs = []
+        container = ARObject._find_child_element(element, "EVENT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.events.append(child_value)
+                    obj.event_refs.append(child_value)
 
         return obj
 

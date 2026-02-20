@@ -51,20 +51,20 @@ class ExecutionTime(Identifiable, ABC):
         """
         return True
 
-    exclusive_area: Optional[ExclusiveArea]
-    executable_entity: Optional[ExecutableEntity]
+    exclusive_area_ref: Optional[ARRef]
+    executable_entity_ref: Optional[ARRef]
     hardware: Optional[HardwareConfiguration]
-    hw_element: Optional[HwElement]
+    hw_element_ref: Optional[ARRef]
     included_librarie_refs: list[ARRef]
     memory_section_locations: list[MemorySectionLocation]
     software_context: Optional[SoftwareContext]
     def __init__(self) -> None:
         """Initialize ExecutionTime."""
         super().__init__()
-        self.exclusive_area: Optional[ExclusiveArea] = None
-        self.executable_entity: Optional[ExecutableEntity] = None
+        self.exclusive_area_ref: Optional[ARRef] = None
+        self.executable_entity_ref: Optional[ARRef] = None
         self.hardware: Optional[HardwareConfiguration] = None
-        self.hw_element: Optional[HwElement] = None
+        self.hw_element_ref: Optional[ARRef] = None
         self.included_librarie_refs: list[ARRef] = []
         self.memory_section_locations: list[MemorySectionLocation] = []
         self.software_context: Optional[SoftwareContext] = None
@@ -89,12 +89,12 @@ class ExecutionTime(Identifiable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize exclusive_area
-        if self.exclusive_area is not None:
-            serialized = ARObject._serialize_item(self.exclusive_area, "ExclusiveArea")
+        # Serialize exclusive_area_ref
+        if self.exclusive_area_ref is not None:
+            serialized = ARObject._serialize_item(self.exclusive_area_ref, "ExclusiveArea")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("EXCLUSIVE-AREA")
+                wrapped = ET.Element("EXCLUSIVE-AREA-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -103,12 +103,12 @@ class ExecutionTime(Identifiable, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize executable_entity
-        if self.executable_entity is not None:
-            serialized = ARObject._serialize_item(self.executable_entity, "ExecutableEntity")
+        # Serialize executable_entity_ref
+        if self.executable_entity_ref is not None:
+            serialized = ARObject._serialize_item(self.executable_entity_ref, "ExecutableEntity")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("EXECUTABLE-ENTITY")
+                wrapped = ET.Element("EXECUTABLE-ENTITY-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -131,12 +131,12 @@ class ExecutionTime(Identifiable, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize hw_element
-        if self.hw_element is not None:
-            serialized = ARObject._serialize_item(self.hw_element, "HwElement")
+        # Serialize hw_element_ref
+        if self.hw_element_ref is not None:
+            serialized = ARObject._serialize_item(self.hw_element_ref, "HwElement")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("HW-ELEMENT")
+                wrapped = ET.Element("HW-ELEMENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -201,17 +201,17 @@ class ExecutionTime(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ExecutionTime, cls).deserialize(element)
 
-        # Parse exclusive_area
-        child = ARObject._find_child_element(element, "EXCLUSIVE-AREA")
+        # Parse exclusive_area_ref
+        child = ARObject._find_child_element(element, "EXCLUSIVE-AREA-REF")
         if child is not None:
-            exclusive_area_value = ARObject._deserialize_by_tag(child, "ExclusiveArea")
-            obj.exclusive_area = exclusive_area_value
+            exclusive_area_ref_value = ARRef.deserialize(child)
+            obj.exclusive_area_ref = exclusive_area_ref_value
 
-        # Parse executable_entity
-        child = ARObject._find_child_element(element, "EXECUTABLE-ENTITY")
+        # Parse executable_entity_ref
+        child = ARObject._find_child_element(element, "EXECUTABLE-ENTITY-REF")
         if child is not None:
-            executable_entity_value = ARObject._deserialize_by_tag(child, "ExecutableEntity")
-            obj.executable_entity = executable_entity_value
+            executable_entity_ref_value = ARRef.deserialize(child)
+            obj.executable_entity_ref = executable_entity_ref_value
 
         # Parse hardware
         child = ARObject._find_child_element(element, "HARDWARE")
@@ -219,11 +219,11 @@ class ExecutionTime(Identifiable, ABC):
             hardware_value = ARObject._deserialize_by_tag(child, "HardwareConfiguration")
             obj.hardware = hardware_value
 
-        # Parse hw_element
-        child = ARObject._find_child_element(element, "HW-ELEMENT")
+        # Parse hw_element_ref
+        child = ARObject._find_child_element(element, "HW-ELEMENT-REF")
         if child is not None:
-            hw_element_value = ARObject._deserialize_by_tag(child, "HwElement")
-            obj.hw_element = hw_element_value
+            hw_element_ref_value = ARRef.deserialize(child)
+            obj.hw_element_ref = hw_element_ref_value
 
         # Parse included_librarie_refs (list from container "INCLUDED-LIBRARIE-REFS")
         obj.included_librarie_refs = []

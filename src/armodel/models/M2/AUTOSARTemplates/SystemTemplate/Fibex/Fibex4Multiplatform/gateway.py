@@ -40,14 +40,14 @@ class Gateway(FibexElement):
         """
         return False
 
-    ecu: Optional[EcuInstance]
+    ecu_ref: Optional[ARRef]
     frame_mapping_refs: list[ARRef]
     i_pdu_mapping_refs: list[ARRef]
     signal_mapping_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize Gateway."""
         super().__init__()
-        self.ecu: Optional[EcuInstance] = None
+        self.ecu_ref: Optional[ARRef] = None
         self.frame_mapping_refs: list[ARRef] = []
         self.i_pdu_mapping_refs: list[ARRef] = []
         self.signal_mapping_refs: list[ARRef] = []
@@ -72,12 +72,12 @@ class Gateway(FibexElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize ecu
-        if self.ecu is not None:
-            serialized = ARObject._serialize_item(self.ecu, "EcuInstance")
+        # Serialize ecu_ref
+        if self.ecu_ref is not None:
+            serialized = ARObject._serialize_item(self.ecu_ref, "EcuInstance")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ECU")
+                wrapped = ET.Element("ECU-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -152,11 +152,11 @@ class Gateway(FibexElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Gateway, cls).deserialize(element)
 
-        # Parse ecu
-        child = ARObject._find_child_element(element, "ECU")
+        # Parse ecu_ref
+        child = ARObject._find_child_element(element, "ECU-REF")
         if child is not None:
-            ecu_value = ARObject._deserialize_by_tag(child, "EcuInstance")
-            obj.ecu = ecu_value
+            ecu_ref_value = ARRef.deserialize(child)
+            obj.ecu_ref = ecu_ref_value
 
         # Parse frame_mapping_refs (list from container "FRAME-MAPPING-REFS")
         obj.frame_mapping_refs = []

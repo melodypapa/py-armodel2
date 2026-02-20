@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DiagnosticConnection.tp_c
     TpConnection,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -43,30 +44,30 @@ class J1939TpConnection(TpConnection):
     broadcast: Optional[Boolean]
     buffer_ratio: Optional[PositiveInteger]
     cancellation: Optional[Boolean]
-    data_pdu: Optional[NPdu]
+    data_pdu_ref: Optional[ARRef]
     dynamic_bs: Optional[Boolean]
     flow_control_pdu: NPdu
     max_bs: Optional[PositiveInteger]
     max_exp_bs: Optional[PositiveInteger]
-    receivers: list[J1939TpNode]
+    receiver_refs: list[ARRef]
     retry: Optional[Boolean]
     tp_pgs: list[J1939TpPg]
-    transmitter: Optional[J1939TpNode]
+    transmitter_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize J1939TpConnection."""
         super().__init__()
         self.broadcast: Optional[Boolean] = None
         self.buffer_ratio: Optional[PositiveInteger] = None
         self.cancellation: Optional[Boolean] = None
-        self.data_pdu: Optional[NPdu] = None
+        self.data_pdu_ref: Optional[ARRef] = None
         self.dynamic_bs: Optional[Boolean] = None
         self.flow_control_pdu: NPdu = None
         self.max_bs: Optional[PositiveInteger] = None
         self.max_exp_bs: Optional[PositiveInteger] = None
-        self.receivers: list[J1939TpNode] = []
+        self.receiver_refs: list[ARRef] = []
         self.retry: Optional[Boolean] = None
         self.tp_pgs: list[J1939TpPg] = []
-        self.transmitter: Optional[J1939TpNode] = None
+        self.transmitter_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize J1939TpConnection to XML element.
@@ -130,12 +131,12 @@ class J1939TpConnection(TpConnection):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize data_pdu
-        if self.data_pdu is not None:
-            serialized = ARObject._serialize_item(self.data_pdu, "NPdu")
+        # Serialize data_pdu_ref
+        if self.data_pdu_ref is not None:
+            serialized = ARObject._serialize_item(self.data_pdu_ref, "NPdu")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DATA-PDU")
+                wrapped = ET.Element("DATA-PDU-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -200,13 +201,20 @@ class J1939TpConnection(TpConnection):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize receivers (list to container "RECEIVERS")
-        if self.receivers:
-            wrapper = ET.Element("RECEIVERS")
-            for item in self.receivers:
+        # Serialize receiver_refs (list to container "RECEIVER-REFS")
+        if self.receiver_refs:
+            wrapper = ET.Element("RECEIVER-REFS")
+            for item in self.receiver_refs:
                 serialized = ARObject._serialize_item(item, "J1939TpNode")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("RECEIVER-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -234,12 +242,12 @@ class J1939TpConnection(TpConnection):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize transmitter
-        if self.transmitter is not None:
-            serialized = ARObject._serialize_item(self.transmitter, "J1939TpNode")
+        # Serialize transmitter_ref
+        if self.transmitter_ref is not None:
+            serialized = ARObject._serialize_item(self.transmitter_ref, "J1939TpNode")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TRANSMITTER")
+                wrapped = ET.Element("TRANSMITTER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -281,11 +289,11 @@ class J1939TpConnection(TpConnection):
             cancellation_value = child.text
             obj.cancellation = cancellation_value
 
-        # Parse data_pdu
-        child = ARObject._find_child_element(element, "DATA-PDU")
+        # Parse data_pdu_ref
+        child = ARObject._find_child_element(element, "DATA-PDU-REF")
         if child is not None:
-            data_pdu_value = ARObject._deserialize_by_tag(child, "NPdu")
-            obj.data_pdu = data_pdu_value
+            data_pdu_ref_value = ARRef.deserialize(child)
+            obj.data_pdu_ref = data_pdu_ref_value
 
         # Parse dynamic_bs
         child = ARObject._find_child_element(element, "DYNAMIC-BS")
@@ -311,15 +319,21 @@ class J1939TpConnection(TpConnection):
             max_exp_bs_value = child.text
             obj.max_exp_bs = max_exp_bs_value
 
-        # Parse receivers (list from container "RECEIVERS")
-        obj.receivers = []
-        container = ARObject._find_child_element(element, "RECEIVERS")
+        # Parse receiver_refs (list from container "RECEIVER-REFS")
+        obj.receiver_refs = []
+        container = ARObject._find_child_element(element, "RECEIVER-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.receivers.append(child_value)
+                    obj.receiver_refs.append(child_value)
 
         # Parse retry
         child = ARObject._find_child_element(element, "RETRY")
@@ -337,11 +351,11 @@ class J1939TpConnection(TpConnection):
                 if child_value is not None:
                     obj.tp_pgs.append(child_value)
 
-        # Parse transmitter
-        child = ARObject._find_child_element(element, "TRANSMITTER")
+        # Parse transmitter_ref
+        child = ARObject._find_child_element(element, "TRANSMITTER-REF")
         if child is not None:
-            transmitter_value = ARObject._deserialize_by_tag(child, "J1939TpNode")
-            obj.transmitter = transmitter_value
+            transmitter_ref_value = ARRef.deserialize(child)
+            obj.transmitter_ref = transmitter_ref_value
 
         return obj
 

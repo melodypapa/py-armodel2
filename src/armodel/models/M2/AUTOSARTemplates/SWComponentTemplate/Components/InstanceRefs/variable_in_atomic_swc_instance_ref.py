@@ -36,13 +36,13 @@ class VariableInAtomicSwcInstanceRef(ARObject, ABC):
         return True
 
     abstract_target_ref: Optional[ARRef]
-    base: Optional[AtomicSwComponentType]
+    base_ref: Optional[ARRef]
     context_port_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize VariableInAtomicSwcInstanceRef."""
         super().__init__()
         self.abstract_target_ref: Optional[ARRef] = None
-        self.base: Optional[AtomicSwComponentType] = None
+        self.base_ref: Optional[ARRef] = None
         self.context_port_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
@@ -69,12 +69,12 @@ class VariableInAtomicSwcInstanceRef(ARObject, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize base
-        if self.base is not None:
-            serialized = ARObject._serialize_item(self.base, "AtomicSwComponentType")
+        # Serialize base_ref
+        if self.base_ref is not None:
+            serialized = ARObject._serialize_item(self.base_ref, "AtomicSwComponentType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("BASE")
+                wrapped = ET.Element("BASE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -119,11 +119,11 @@ class VariableInAtomicSwcInstanceRef(ARObject, ABC):
             abstract_target_ref_value = ARRef.deserialize(child)
             obj.abstract_target_ref = abstract_target_ref_value
 
-        # Parse base
-        child = ARObject._find_child_element(element, "BASE")
+        # Parse base_ref
+        child = ARObject._find_child_element(element, "BASE-REF")
         if child is not None:
-            base_value = ARObject._deserialize_by_tag(child, "AtomicSwComponentType")
-            obj.base = base_value
+            base_ref_value = ARRef.deserialize(child)
+            obj.base_ref = base_ref_value
 
         # Parse context_port_ref
         child = ARObject._find_child_element(element, "CONTEXT-PORT-REF")

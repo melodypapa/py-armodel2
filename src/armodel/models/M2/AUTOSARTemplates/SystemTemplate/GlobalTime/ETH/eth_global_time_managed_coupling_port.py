@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.ETH import (
     GlobalTimePortRoleEnum,
 )
@@ -34,7 +35,7 @@ class EthGlobalTimeManagedCouplingPort(ARObject):
         """
         return False
 
-    coupling_port: Optional[CouplingPort]
+    coupling_port_ref: Optional[ARRef]
     global_time_port_role: Optional[GlobalTimePortRoleEnum]
     global_time_tx_period: Optional[TimeValue]
     pdelay_latency: Optional[TimeValue]
@@ -44,7 +45,7 @@ class EthGlobalTimeManagedCouplingPort(ARObject):
     def __init__(self) -> None:
         """Initialize EthGlobalTimeManagedCouplingPort."""
         super().__init__()
-        self.coupling_port: Optional[CouplingPort] = None
+        self.coupling_port_ref: Optional[ARRef] = None
         self.global_time_port_role: Optional[GlobalTimePortRoleEnum] = None
         self.global_time_tx_period: Optional[TimeValue] = None
         self.pdelay_latency: Optional[TimeValue] = None
@@ -62,12 +63,12 @@ class EthGlobalTimeManagedCouplingPort(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize coupling_port
-        if self.coupling_port is not None:
-            serialized = ARObject._serialize_item(self.coupling_port, "CouplingPort")
+        # Serialize coupling_port_ref
+        if self.coupling_port_ref is not None:
+            serialized = ARObject._serialize_item(self.coupling_port_ref, "CouplingPort")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("COUPLING-PORT")
+                wrapped = ET.Element("COUPLING-PORT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -176,11 +177,11 @@ class EthGlobalTimeManagedCouplingPort(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse coupling_port
-        child = ARObject._find_child_element(element, "COUPLING-PORT")
+        # Parse coupling_port_ref
+        child = ARObject._find_child_element(element, "COUPLING-PORT-REF")
         if child is not None:
-            coupling_port_value = ARObject._deserialize_by_tag(child, "CouplingPort")
-            obj.coupling_port = coupling_port_value
+            coupling_port_ref_value = ARRef.deserialize(child)
+            obj.coupling_port_ref = coupling_port_ref_value
 
         # Parse global_time_port_role
         child = ARObject._find_child_element(element, "GLOBAL-TIME-PORT-ROLE")

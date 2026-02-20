@@ -45,8 +45,8 @@
         "asynchronousServer": {
           "type": "any (AsynchronousServer)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The referenced Asynchronous Server Call Point defines the asynchronous server call from which the results are"
         }
       }
@@ -165,8 +165,8 @@
         "calledFrom": {
           "type": "ExclusiveAreaNestingOrder",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This indicates that the call point is located at the deepest level inside one or more ExclusiveAreas that are nested the given order."
         }
       }

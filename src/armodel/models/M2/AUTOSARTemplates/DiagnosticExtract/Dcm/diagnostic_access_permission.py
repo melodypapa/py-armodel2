@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.diagnostic_auth_role import (
     DiagnosticAuthRole,
 )
@@ -37,16 +38,16 @@ class DiagnosticAccessPermission(DiagnosticCommonElement):
         return False
 
     authentication: Optional[DiagnosticAuthRole]
-    diagnostic_sessions: list[DiagnosticSession]
-    environmental: Optional[Any]
-    security_levels: list[DiagnosticSecurityLevel]
+    diagnostic_session_refs: list[ARRef]
+    environmental_ref: Optional[Any]
+    security_level_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize DiagnosticAccessPermission."""
         super().__init__()
         self.authentication: Optional[DiagnosticAuthRole] = None
-        self.diagnostic_sessions: list[DiagnosticSession] = []
-        self.environmental: Optional[Any] = None
-        self.security_levels: list[DiagnosticSecurityLevel] = []
+        self.diagnostic_session_refs: list[ARRef] = []
+        self.environmental_ref: Optional[Any] = None
+        self.security_level_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticAccessPermission to XML element.
@@ -82,22 +83,29 @@ class DiagnosticAccessPermission(DiagnosticCommonElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize diagnostic_sessions (list to container "DIAGNOSTIC-SESSIONS")
-        if self.diagnostic_sessions:
-            wrapper = ET.Element("DIAGNOSTIC-SESSIONS")
-            for item in self.diagnostic_sessions:
+        # Serialize diagnostic_session_refs (list to container "DIAGNOSTIC-SESSION-REFS")
+        if self.diagnostic_session_refs:
+            wrapper = ET.Element("DIAGNOSTIC-SESSION-REFS")
+            for item in self.diagnostic_session_refs:
                 serialized = ARObject._serialize_item(item, "DiagnosticSession")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("DIAGNOSTIC-SESSION-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize environmental
-        if self.environmental is not None:
-            serialized = ARObject._serialize_item(self.environmental, "Any")
+        # Serialize environmental_ref
+        if self.environmental_ref is not None:
+            serialized = ARObject._serialize_item(self.environmental_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ENVIRONMENTAL")
+                wrapped = ET.Element("ENVIRONMENTAL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -106,13 +114,20 @@ class DiagnosticAccessPermission(DiagnosticCommonElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize security_levels (list to container "SECURITY-LEVELS")
-        if self.security_levels:
-            wrapper = ET.Element("SECURITY-LEVELS")
-            for item in self.security_levels:
+        # Serialize security_level_refs (list to container "SECURITY-LEVEL-REFS")
+        if self.security_level_refs:
+            wrapper = ET.Element("SECURITY-LEVEL-REFS")
+            for item in self.security_level_refs:
                 serialized = ARObject._serialize_item(item, "DiagnosticSecurityLevel")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("SECURITY-LEVEL-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -137,31 +152,43 @@ class DiagnosticAccessPermission(DiagnosticCommonElement):
             authentication_value = ARObject._deserialize_by_tag(child, "DiagnosticAuthRole")
             obj.authentication = authentication_value
 
-        # Parse diagnostic_sessions (list from container "DIAGNOSTIC-SESSIONS")
-        obj.diagnostic_sessions = []
-        container = ARObject._find_child_element(element, "DIAGNOSTIC-SESSIONS")
+        # Parse diagnostic_session_refs (list from container "DIAGNOSTIC-SESSION-REFS")
+        obj.diagnostic_session_refs = []
+        container = ARObject._find_child_element(element, "DIAGNOSTIC-SESSION-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.diagnostic_sessions.append(child_value)
+                    obj.diagnostic_session_refs.append(child_value)
 
-        # Parse environmental
-        child = ARObject._find_child_element(element, "ENVIRONMENTAL")
+        # Parse environmental_ref
+        child = ARObject._find_child_element(element, "ENVIRONMENTAL-REF")
         if child is not None:
-            environmental_value = child.text
-            obj.environmental = environmental_value
+            environmental_ref_value = ARRef.deserialize(child)
+            obj.environmental_ref = environmental_ref_value
 
-        # Parse security_levels (list from container "SECURITY-LEVELS")
-        obj.security_levels = []
-        container = ARObject._find_child_element(element, "SECURITY-LEVELS")
+        # Parse security_level_refs (list from container "SECURITY-LEVEL-REFS")
+        obj.security_level_refs = []
+        container = ARObject._find_child_element(element, "SECURITY-LEVEL-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.security_levels.append(child_value)
+                    obj.security_level_refs.append(child_value)
 
         return obj
 

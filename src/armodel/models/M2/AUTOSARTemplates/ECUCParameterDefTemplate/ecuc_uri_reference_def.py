@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_abstract_i
     EcucAbstractInternalReferenceDef,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_destination_uri_def import (
     EcucDestinationUriDef,
 )
@@ -31,11 +32,11 @@ class EcucUriReferenceDef(EcucAbstractInternalReferenceDef):
         """
         return False
 
-    destination_uri: Optional[EcucDestinationUriDef]
+    destination_uri_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize EcucUriReferenceDef."""
         super().__init__()
-        self.destination_uri: Optional[EcucDestinationUriDef] = None
+        self.destination_uri_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize EcucUriReferenceDef to XML element.
@@ -57,12 +58,12 @@ class EcucUriReferenceDef(EcucAbstractInternalReferenceDef):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize destination_uri
-        if self.destination_uri is not None:
-            serialized = ARObject._serialize_item(self.destination_uri, "EcucDestinationUriDef")
+        # Serialize destination_uri_ref
+        if self.destination_uri_ref is not None:
+            serialized = ARObject._serialize_item(self.destination_uri_ref, "EcucDestinationUriDef")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DESTINATION-URI")
+                wrapped = ET.Element("DESTINATION-URI-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -86,11 +87,11 @@ class EcucUriReferenceDef(EcucAbstractInternalReferenceDef):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucUriReferenceDef, cls).deserialize(element)
 
-        # Parse destination_uri
-        child = ARObject._find_child_element(element, "DESTINATION-URI")
+        # Parse destination_uri_ref
+        child = ARObject._find_child_element(element, "DESTINATION-URI-REF")
         if child is not None:
-            destination_uri_value = ARObject._deserialize_by_tag(child, "EcucDestinationUriDef")
-            obj.destination_uri = destination_uri_value
+            destination_uri_ref_value = ARRef.deserialize(child)
+            obj.destination_uri_ref = destination_uri_ref_value
 
         return obj
 

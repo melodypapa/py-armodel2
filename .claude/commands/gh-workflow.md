@@ -8,6 +8,7 @@ When the user runs `/gh-workflow`, perform the following steps in order:
 
 ### 1. Quality Checks (Must Pass Before Proceeding)
 - Run linting with ruff: `ruff check src/ tools/`
+- Run type checking with mypy: `mypy src/`
 - Run tests with pytest: `pytest`
 - Install package: `pip install -e .`
 - **All checks must pass** before proceeding to next step
@@ -20,6 +21,7 @@ When the user runs `/gh-workflow`, perform the following steps in order:
   Check        Status    Details
   ───────────────────────────────────
   Ruff         ✅ Pass    No linting errors
+  MyPy         ✅ Pass    No type errors
   Pytest       ✅ Pass    All tests passed
   ```
 

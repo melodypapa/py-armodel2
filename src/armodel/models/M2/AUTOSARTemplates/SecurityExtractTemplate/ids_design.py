@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.ids_common_element import (
     IdsCommonElement,
 )
@@ -30,11 +31,11 @@ class IdsDesign(ARElement):
         """
         return False
 
-    elements: list[IdsCommonElement]
+    element_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize IdsDesign."""
         super().__init__()
-        self.elements: list[IdsCommonElement] = []
+        self.element_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize IdsDesign to XML element.
@@ -56,13 +57,20 @@ class IdsDesign(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize elements (list to container "ELEMENTS")
-        if self.elements:
-            wrapper = ET.Element("ELEMENTS")
-            for item in self.elements:
+        # Serialize element_refs (list to container "ELEMENT-REFS")
+        if self.element_refs:
+            wrapper = ET.Element("ELEMENT-REFS")
+            for item in self.element_refs:
                 serialized = ARObject._serialize_item(item, "IdsCommonElement")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("ELEMENT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -81,15 +89,21 @@ class IdsDesign(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IdsDesign, cls).deserialize(element)
 
-        # Parse elements (list from container "ELEMENTS")
-        obj.elements = []
-        container = ARObject._find_child_element(element, "ELEMENTS")
+        # Parse element_refs (list from container "ELEMENT-REFS")
+        obj.element_refs = []
+        container = ARObject._find_child_element(element, "ELEMENT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.elements.append(child_value)
+                    obj.element_refs.append(child_value)
 
         return obj
 

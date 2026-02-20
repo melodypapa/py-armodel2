@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -30,12 +31,12 @@ class DiagnosticComControl(DiagnosticServiceInstance):
         """
         return False
 
-    com_control: Optional[DiagnosticComControl]
+    com_control_ref: Optional[ARRef]
     custom_sub: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DiagnosticComControl."""
         super().__init__()
-        self.com_control: Optional[DiagnosticComControl] = None
+        self.com_control_ref: Optional[ARRef] = None
         self.custom_sub: Optional[PositiveInteger] = None
 
     def serialize(self) -> ET.Element:
@@ -58,12 +59,12 @@ class DiagnosticComControl(DiagnosticServiceInstance):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize com_control
-        if self.com_control is not None:
-            serialized = ARObject._serialize_item(self.com_control, "DiagnosticComControl")
+        # Serialize com_control_ref
+        if self.com_control_ref is not None:
+            serialized = ARObject._serialize_item(self.com_control_ref, "DiagnosticComControl")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("COM-CONTROL")
+                wrapped = ET.Element("COM-CONTROL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -101,11 +102,11 @@ class DiagnosticComControl(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticComControl, cls).deserialize(element)
 
-        # Parse com_control
-        child = ARObject._find_child_element(element, "COM-CONTROL")
+        # Parse com_control_ref
+        child = ARObject._find_child_element(element, "COM-CONTROL-REF")
         if child is not None:
-            com_control_value = ARObject._deserialize_by_tag(child, "DiagnosticComControl")
-            obj.com_control = com_control_value
+            com_control_ref_value = ARRef.deserialize(child)
+            obj.com_control_ref = com_control_ref_value
 
         # Parse custom_sub
         child = ARObject._find_child_element(element, "CUSTOM-SUB")

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
     DiagnosticMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_event import (
     DiagnosticEvent,
 )
@@ -30,13 +31,13 @@ class DiagnosticMasterToSlaveEventMapping(DiagnosticMapping):
         """
         return False
 
-    master_event: Optional[DiagnosticEvent]
-    slave_event: Optional[DiagnosticEvent]
+    master_event_ref: Optional[ARRef]
+    slave_event_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DiagnosticMasterToSlaveEventMapping."""
         super().__init__()
-        self.master_event: Optional[DiagnosticEvent] = None
-        self.slave_event: Optional[DiagnosticEvent] = None
+        self.master_event_ref: Optional[ARRef] = None
+        self.slave_event_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticMasterToSlaveEventMapping to XML element.
@@ -58,12 +59,12 @@ class DiagnosticMasterToSlaveEventMapping(DiagnosticMapping):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize master_event
-        if self.master_event is not None:
-            serialized = ARObject._serialize_item(self.master_event, "DiagnosticEvent")
+        # Serialize master_event_ref
+        if self.master_event_ref is not None:
+            serialized = ARObject._serialize_item(self.master_event_ref, "DiagnosticEvent")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("MASTER-EVENT")
+                wrapped = ET.Element("MASTER-EVENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -72,12 +73,12 @@ class DiagnosticMasterToSlaveEventMapping(DiagnosticMapping):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize slave_event
-        if self.slave_event is not None:
-            serialized = ARObject._serialize_item(self.slave_event, "DiagnosticEvent")
+        # Serialize slave_event_ref
+        if self.slave_event_ref is not None:
+            serialized = ARObject._serialize_item(self.slave_event_ref, "DiagnosticEvent")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SLAVE-EVENT")
+                wrapped = ET.Element("SLAVE-EVENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -101,17 +102,17 @@ class DiagnosticMasterToSlaveEventMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticMasterToSlaveEventMapping, cls).deserialize(element)
 
-        # Parse master_event
-        child = ARObject._find_child_element(element, "MASTER-EVENT")
+        # Parse master_event_ref
+        child = ARObject._find_child_element(element, "MASTER-EVENT-REF")
         if child is not None:
-            master_event_value = ARObject._deserialize_by_tag(child, "DiagnosticEvent")
-            obj.master_event = master_event_value
+            master_event_ref_value = ARRef.deserialize(child)
+            obj.master_event_ref = master_event_ref_value
 
-        # Parse slave_event
-        child = ARObject._find_child_element(element, "SLAVE-EVENT")
+        # Parse slave_event_ref
+        child = ARObject._find_child_element(element, "SLAVE-EVENT-REF")
         if child is not None:
-            slave_event_value = ARObject._deserialize_by_tag(child, "DiagnosticEvent")
-            obj.slave_event = slave_event_value
+            slave_event_ref_value = ARRef.deserialize(child)
+            obj.slave_event_ref = slave_event_ref_value
 
         return obj
 

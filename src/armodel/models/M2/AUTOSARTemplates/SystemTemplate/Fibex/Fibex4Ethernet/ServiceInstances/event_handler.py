@@ -48,23 +48,23 @@ class EventHandler(Identifiable):
 
     consumed_event_group_refs: list[ARRef]
     event_group: Optional[PositiveInteger]
-    event_multicast: Optional[ApplicationEndpoint]
+    event_multicast_ref: Optional[ARRef]
     multicast: Optional[PositiveInteger]
     pdu_activation_routings: list[PduActivationRoutingGroup]
     routing_group_refs: list[ARRef]
     sd_server_config: Optional[Any]
-    sd_server_eg: Optional[SomeipSdServerEventGroupTimingConfig]
+    sd_server_eg_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize EventHandler."""
         super().__init__()
         self.consumed_event_group_refs: list[ARRef] = []
         self.event_group: Optional[PositiveInteger] = None
-        self.event_multicast: Optional[ApplicationEndpoint] = None
+        self.event_multicast_ref: Optional[ARRef] = None
         self.multicast: Optional[PositiveInteger] = None
         self.pdu_activation_routings: list[PduActivationRoutingGroup] = []
         self.routing_group_refs: list[ARRef] = []
         self.sd_server_config: Optional[Any] = None
-        self.sd_server_eg: Optional[SomeipSdServerEventGroupTimingConfig] = None
+        self.sd_server_eg_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize EventHandler to XML element.
@@ -117,12 +117,12 @@ class EventHandler(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize event_multicast
-        if self.event_multicast is not None:
-            serialized = ARObject._serialize_item(self.event_multicast, "ApplicationEndpoint")
+        # Serialize event_multicast_ref
+        if self.event_multicast_ref is not None:
+            serialized = ARObject._serialize_item(self.event_multicast_ref, "ApplicationEndpoint")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("EVENT-MULTICAST")
+                wrapped = ET.Element("EVENT-MULTICAST-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -186,12 +186,12 @@ class EventHandler(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sd_server_eg
-        if self.sd_server_eg is not None:
-            serialized = ARObject._serialize_item(self.sd_server_eg, "SomeipSdServerEventGroupTimingConfig")
+        # Serialize sd_server_eg_ref
+        if self.sd_server_eg_ref is not None:
+            serialized = ARObject._serialize_item(self.sd_server_eg_ref, "SomeipSdServerEventGroupTimingConfig")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SD-SERVER-EG")
+                wrapped = ET.Element("SD-SERVER-EG-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -237,11 +237,11 @@ class EventHandler(Identifiable):
             event_group_value = child.text
             obj.event_group = event_group_value
 
-        # Parse event_multicast
-        child = ARObject._find_child_element(element, "EVENT-MULTICAST")
+        # Parse event_multicast_ref
+        child = ARObject._find_child_element(element, "EVENT-MULTICAST-REF")
         if child is not None:
-            event_multicast_value = ARObject._deserialize_by_tag(child, "ApplicationEndpoint")
-            obj.event_multicast = event_multicast_value
+            event_multicast_ref_value = ARRef.deserialize(child)
+            obj.event_multicast_ref = event_multicast_ref_value
 
         # Parse multicast
         child = ARObject._find_child_element(element, "MULTICAST")
@@ -281,11 +281,11 @@ class EventHandler(Identifiable):
             sd_server_config_value = child.text
             obj.sd_server_config = sd_server_config_value
 
-        # Parse sd_server_eg
-        child = ARObject._find_child_element(element, "SD-SERVER-EG")
+        # Parse sd_server_eg_ref
+        child = ARObject._find_child_element(element, "SD-SERVER-EG-REF")
         if child is not None:
-            sd_server_eg_value = ARObject._deserialize_by_tag(child, "SomeipSdServerEventGroupTimingConfig")
-            obj.sd_server_eg = sd_server_eg_value
+            sd_server_eg_ref_value = ARRef.deserialize(child)
+            obj.sd_server_eg_ref = sd_server_eg_ref_value
 
         return obj
 

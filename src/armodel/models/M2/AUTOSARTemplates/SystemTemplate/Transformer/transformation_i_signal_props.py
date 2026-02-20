@@ -35,13 +35,13 @@ class TransformationISignalProps(ARObject, ABC):
 
     cs_error_reaction: Optional[CSTransformerErrorReactionEnum]
     data_prototype_refs: list[ARRef]
-    transformer: Optional[Any]
+    transformer_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize TransformationISignalProps."""
         super().__init__()
         self.cs_error_reaction: Optional[CSTransformerErrorReactionEnum] = None
         self.data_prototype_refs: list[ARRef] = []
-        self.transformer: Optional[Any] = None
+        self.transformer_ref: Optional[Any] = None
 
 
 

@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.system import (
     System,
 )
@@ -32,13 +33,13 @@ class EcucValueCollection(ARElement):
         """
         return False
 
-    ecuc_values: list[Any]
-    ecu_extract: Optional[System]
+    ecuc_value_refs: list[Any]
+    ecu_extract_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize EcucValueCollection."""
         super().__init__()
-        self.ecuc_values: list[Any] = []
-        self.ecu_extract: Optional[System] = None
+        self.ecuc_value_refs: list[Any] = []
+        self.ecu_extract_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize EcucValueCollection to XML element.
@@ -60,22 +61,29 @@ class EcucValueCollection(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize ecuc_values (list to container "ECUC-VALUES")
-        if self.ecuc_values:
-            wrapper = ET.Element("ECUC-VALUES")
-            for item in self.ecuc_values:
+        # Serialize ecuc_value_refs (list to container "ECUC-VALUE-REFS")
+        if self.ecuc_value_refs:
+            wrapper = ET.Element("ECUC-VALUE-REFS")
+            for item in self.ecuc_value_refs:
                 serialized = ARObject._serialize_item(item, "Any")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("ECUC-VALUE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize ecu_extract
-        if self.ecu_extract is not None:
-            serialized = ARObject._serialize_item(self.ecu_extract, "System")
+        # Serialize ecu_extract_ref
+        if self.ecu_extract_ref is not None:
+            serialized = ARObject._serialize_item(self.ecu_extract_ref, "System")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ECU-EXTRACT")
+                wrapped = ET.Element("ECU-EXTRACT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -99,21 +107,27 @@ class EcucValueCollection(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucValueCollection, cls).deserialize(element)
 
-        # Parse ecuc_values (list from container "ECUC-VALUES")
-        obj.ecuc_values = []
-        container = ARObject._find_child_element(element, "ECUC-VALUES")
+        # Parse ecuc_value_refs (list from container "ECUC-VALUE-REFS")
+        obj.ecuc_value_refs = []
+        container = ARObject._find_child_element(element, "ECUC-VALUE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.ecuc_values.append(child_value)
+                    obj.ecuc_value_refs.append(child_value)
 
-        # Parse ecu_extract
-        child = ARObject._find_child_element(element, "ECU-EXTRACT")
+        # Parse ecu_extract_ref
+        child = ARObject._find_child_element(element, "ECU-EXTRACT-REF")
         if child is not None:
-            ecu_extract_value = ARObject._deserialize_by_tag(child, "System")
-            obj.ecu_extract = ecu_extract_value
+            ecu_extract_ref_value = ARRef.deserialize(child)
+            obj.ecu_extract_ref = ecu_extract_ref_value
 
         return obj
 

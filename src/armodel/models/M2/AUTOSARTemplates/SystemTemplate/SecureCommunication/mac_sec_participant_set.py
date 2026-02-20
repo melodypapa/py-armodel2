@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.ethernet_cluster import (
     EthernetCluster,
 )
@@ -33,12 +34,12 @@ class MacSecParticipantSet(ARElement):
         """
         return False
 
-    ethernet_cluster: Optional[EthernetCluster]
+    ethernet_cluster_ref: Optional[ARRef]
     mka_participants: list[MacSecKayParticipant]
     def __init__(self) -> None:
         """Initialize MacSecParticipantSet."""
         super().__init__()
-        self.ethernet_cluster: Optional[EthernetCluster] = None
+        self.ethernet_cluster_ref: Optional[ARRef] = None
         self.mka_participants: list[MacSecKayParticipant] = []
 
     def serialize(self) -> ET.Element:
@@ -61,12 +62,12 @@ class MacSecParticipantSet(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize ethernet_cluster
-        if self.ethernet_cluster is not None:
-            serialized = ARObject._serialize_item(self.ethernet_cluster, "EthernetCluster")
+        # Serialize ethernet_cluster_ref
+        if self.ethernet_cluster_ref is not None:
+            serialized = ARObject._serialize_item(self.ethernet_cluster_ref, "EthernetCluster")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ETHERNET-CLUSTER")
+                wrapped = ET.Element("ETHERNET-CLUSTER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -100,11 +101,11 @@ class MacSecParticipantSet(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MacSecParticipantSet, cls).deserialize(element)
 
-        # Parse ethernet_cluster
-        child = ARObject._find_child_element(element, "ETHERNET-CLUSTER")
+        # Parse ethernet_cluster_ref
+        child = ARObject._find_child_element(element, "ETHERNET-CLUSTER-REF")
         if child is not None:
-            ethernet_cluster_value = ARObject._deserialize_by_tag(child, "EthernetCluster")
-            obj.ethernet_cluster = ethernet_cluster_value
+            ethernet_cluster_ref_value = ARRef.deserialize(child)
+            obj.ethernet_cluster_ref = ethernet_cluster_ref_value
 
         # Parse mka_participants (list from container "MKA-PARTICIPANTS")
         obj.mka_participants = []

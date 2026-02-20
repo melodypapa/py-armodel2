@@ -40,21 +40,21 @@ class DataPrototypeInSystemInstanceRef(ARObject):
         """
         return False
 
-    base: Optional[System]
-    contexts: list[Any]
-    context_datas: list[Any]
+    base_ref: Optional[ARRef]
+    context_refs: list[Any]
+    context_data_refs: list[Any]
     context_port_ref: Optional[ARRef]
-    context_root: Optional[RootSwCompositionPrototype]
+    context_root_ref: Optional[ARRef]
     root_data_prototype_ref: Optional[ARRef]
     target_data_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DataPrototypeInSystemInstanceRef."""
         super().__init__()
-        self.base: Optional[System] = None
-        self.contexts: list[Any] = []
-        self.context_datas: list[Any] = []
+        self.base_ref: Optional[ARRef] = None
+        self.context_refs: list[Any] = []
+        self.context_data_refs: list[Any] = []
         self.context_port_ref: Optional[ARRef] = None
-        self.context_root: Optional[RootSwCompositionPrototype] = None
+        self.context_root_ref: Optional[ARRef] = None
         self.root_data_prototype_ref: Optional[ARRef] = None
         self.target_data_ref: Optional[ARRef] = None
 
@@ -68,12 +68,12 @@ class DataPrototypeInSystemInstanceRef(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize base
-        if self.base is not None:
-            serialized = ARObject._serialize_item(self.base, "System")
+        # Serialize base_ref
+        if self.base_ref is not None:
+            serialized = ARObject._serialize_item(self.base_ref, "System")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("BASE")
+                wrapped = ET.Element("BASE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -82,23 +82,37 @@ class DataPrototypeInSystemInstanceRef(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize contexts (list to container "CONTEXTS")
-        if self.contexts:
-            wrapper = ET.Element("CONTEXTS")
-            for item in self.contexts:
+        # Serialize context_refs (list to container "CONTEXT-REFS")
+        if self.context_refs:
+            wrapper = ET.Element("CONTEXT-REFS")
+            for item in self.context_refs:
                 serialized = ARObject._serialize_item(item, "Any")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("CONTEXT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize context_datas (list to container "CONTEXT-DATAS")
-        if self.context_datas:
-            wrapper = ET.Element("CONTEXT-DATAS")
-            for item in self.context_datas:
+        # Serialize context_data_refs (list to container "CONTEXT-DATA-REFS")
+        if self.context_data_refs:
+            wrapper = ET.Element("CONTEXT-DATA-REFS")
+            for item in self.context_data_refs:
                 serialized = ARObject._serialize_item(item, "Any")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("CONTEXT-DATA-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -116,12 +130,12 @@ class DataPrototypeInSystemInstanceRef(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize context_root
-        if self.context_root is not None:
-            serialized = ARObject._serialize_item(self.context_root, "RootSwCompositionPrototype")
+        # Serialize context_root_ref
+        if self.context_root_ref is not None:
+            serialized = ARObject._serialize_item(self.context_root_ref, "RootSwCompositionPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT-ROOT")
+                wrapped = ET.Element("CONTEXT-ROOT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -174,31 +188,43 @@ class DataPrototypeInSystemInstanceRef(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse base
-        child = ARObject._find_child_element(element, "BASE")
+        # Parse base_ref
+        child = ARObject._find_child_element(element, "BASE-REF")
         if child is not None:
-            base_value = ARObject._deserialize_by_tag(child, "System")
-            obj.base = base_value
+            base_ref_value = ARRef.deserialize(child)
+            obj.base_ref = base_ref_value
 
-        # Parse contexts (list from container "CONTEXTS")
-        obj.contexts = []
-        container = ARObject._find_child_element(element, "CONTEXTS")
+        # Parse context_refs (list from container "CONTEXT-REFS")
+        obj.context_refs = []
+        container = ARObject._find_child_element(element, "CONTEXT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.contexts.append(child_value)
+                    obj.context_refs.append(child_value)
 
-        # Parse context_datas (list from container "CONTEXT-DATAS")
-        obj.context_datas = []
-        container = ARObject._find_child_element(element, "CONTEXT-DATAS")
+        # Parse context_data_refs (list from container "CONTEXT-DATA-REFS")
+        obj.context_data_refs = []
+        container = ARObject._find_child_element(element, "CONTEXT-DATA-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.context_datas.append(child_value)
+                    obj.context_data_refs.append(child_value)
 
         # Parse context_port_ref
         child = ARObject._find_child_element(element, "CONTEXT-PORT-REF")
@@ -206,11 +232,11 @@ class DataPrototypeInSystemInstanceRef(ARObject):
             context_port_ref_value = ARRef.deserialize(child)
             obj.context_port_ref = context_port_ref_value
 
-        # Parse context_root
-        child = ARObject._find_child_element(element, "CONTEXT-ROOT")
+        # Parse context_root_ref
+        child = ARObject._find_child_element(element, "CONTEXT-ROOT-REF")
         if child is not None:
-            context_root_value = ARObject._deserialize_by_tag(child, "RootSwCompositionPrototype")
-            obj.context_root = context_root_value
+            context_root_ref_value = ARRef.deserialize(child)
+            obj.context_root_ref = context_root_ref_value
 
         # Parse root_data_prototype_ref
         child = ARObject._find_child_element(element, "ROOT-DATA-PROTOTYPE-REF")

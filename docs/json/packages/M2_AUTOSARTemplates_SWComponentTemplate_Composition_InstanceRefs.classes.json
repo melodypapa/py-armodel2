@@ -43,22 +43,22 @@
         "base": {
           "type": "CompositionSwComponentType",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Stereotypes: atpDerived"
         },
         "contexts": {
           "type": "any (SwComponent)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The context for the scope of this timing event."
         },
         "target": {
           "type": "any (SwComponent)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Tags: xml.sequenceOffset=30"
         }
       }
@@ -100,15 +100,15 @@
         "abstractContext": {
           "type": "any (SwComponent)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Stereotypes: atpAbstract"
         },
         "base": {
           "type": "CompositionSwComponentType",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Stereotypes: atpDerived"
         },
         "targetPort": {
@@ -153,15 +153,15 @@
         "context": {
           "type": "any (SwComponent)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Tags: xml.sequenceOffset=20"
         },
         "targetPPortPrototype": {
           "type": "AbstractProvidedPortPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Tags: xml.sequenceOffset=30"
         }
       }
@@ -206,15 +206,15 @@
         "context": {
           "type": "any (SwComponent)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Tags: xml.sequenceOffset=20"
         },
         "targetRPortPrototype": {
           "type": "AbstractRequiredPortPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Tags: xml.sequenceOffset=30"
         }
       }
@@ -250,22 +250,22 @@
         "base": {
           "type": "CompositionSwComponentType",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Stereotypes: atpDerived"
         },
         "contextPrototypes": {
           "type": "any (SwComponent)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Tags: xml.sequenceOffset=20"
         },
         "targetEvent": {
           "type": "RTEEvent",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Tags: xml.sequenceOffset=30"
         }
       }

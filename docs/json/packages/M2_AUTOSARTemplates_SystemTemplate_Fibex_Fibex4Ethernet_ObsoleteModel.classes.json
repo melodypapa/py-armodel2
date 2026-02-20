@@ -80,8 +80,8 @@
         "clientPort": {
           "type": "SocketAddress",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Client Port for TCP/UDP connection in an abstract"
         },
         "clientPortFrom": {

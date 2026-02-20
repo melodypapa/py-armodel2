@@ -35,12 +35,12 @@ class ModeRequestTypeMap(ARObject):
         """
         return False
 
-    implementation: Optional[AbstractImplementationDataType]
+    implementation_ref: Optional[ARRef]
     mode_group_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ModeRequestTypeMap."""
         super().__init__()
-        self.implementation: Optional[AbstractImplementationDataType] = None
+        self.implementation_ref: Optional[ARRef] = None
         self.mode_group_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
@@ -53,12 +53,12 @@ class ModeRequestTypeMap(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize implementation
-        if self.implementation is not None:
-            serialized = ARObject._serialize_item(self.implementation, "AbstractImplementationDataType")
+        # Serialize implementation_ref
+        if self.implementation_ref is not None:
+            serialized = ARObject._serialize_item(self.implementation_ref, "AbstractImplementationDataType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("IMPLEMENTATION")
+                wrapped = ET.Element("IMPLEMENTATION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -97,11 +97,11 @@ class ModeRequestTypeMap(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse implementation
-        child = ARObject._find_child_element(element, "IMPLEMENTATION")
+        # Parse implementation_ref
+        child = ARObject._find_child_element(element, "IMPLEMENTATION-REF")
         if child is not None:
-            implementation_value = ARObject._deserialize_by_tag(child, "AbstractImplementationDataType")
-            obj.implementation = implementation_value
+            implementation_ref_value = ARRef.deserialize(child)
+            obj.implementation_ref = implementation_ref_value
 
         # Parse mode_group_ref
         child = ARObject._find_child_element(element, "MODE-GROUP-REF")

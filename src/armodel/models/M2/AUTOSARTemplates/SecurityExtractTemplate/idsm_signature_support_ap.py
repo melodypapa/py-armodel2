@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -31,12 +32,12 @@ class IdsmSignatureSupportAp(ARObject):
         return False
 
     crypto_primitive: String
-    key_slot: Optional[CryptoKeySlot]
+    key_slot_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize IdsmSignatureSupportAp."""
         super().__init__()
         self.crypto_primitive: String = None
-        self.key_slot: Optional[CryptoKeySlot] = None
+        self.key_slot_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize IdsmSignatureSupportAp to XML element.
@@ -62,12 +63,12 @@ class IdsmSignatureSupportAp(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize key_slot
-        if self.key_slot is not None:
-            serialized = ARObject._serialize_item(self.key_slot, "CryptoKeySlot")
+        # Serialize key_slot_ref
+        if self.key_slot_ref is not None:
+            serialized = ARObject._serialize_item(self.key_slot_ref, "CryptoKeySlot")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("KEY-SLOT")
+                wrapped = ET.Element("KEY-SLOT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -98,11 +99,11 @@ class IdsmSignatureSupportAp(ARObject):
             crypto_primitive_value = child.text
             obj.crypto_primitive = crypto_primitive_value
 
-        # Parse key_slot
-        child = ARObject._find_child_element(element, "KEY-SLOT")
+        # Parse key_slot_ref
+        child = ARObject._find_child_element(element, "KEY-SLOT-REF")
         if child is not None:
-            key_slot_value = ARObject._deserialize_by_tag(child, "CryptoKeySlot")
-            obj.key_slot = key_slot_value
+            key_slot_ref_value = ARRef.deserialize(child)
+            obj.key_slot_ref = key_slot_ref_value
 
         return obj
 

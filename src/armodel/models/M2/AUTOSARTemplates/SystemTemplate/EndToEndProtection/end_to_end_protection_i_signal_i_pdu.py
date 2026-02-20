@@ -37,13 +37,13 @@ class EndToEndProtectionISignalIPdu(ARObject):
 
     data_offset: Optional[Integer]
     i_signal_group_ref: Optional[ARRef]
-    i_signal_i_pdu: Optional[ISignalIPdu]
+    i_signal_i_pdu_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize EndToEndProtectionISignalIPdu."""
         super().__init__()
         self.data_offset: Optional[Integer] = None
         self.i_signal_group_ref: Optional[ARRef] = None
-        self.i_signal_i_pdu: Optional[ISignalIPdu] = None
+        self.i_signal_i_pdu_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize EndToEndProtectionISignalIPdu to XML element.
@@ -83,12 +83,12 @@ class EndToEndProtectionISignalIPdu(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize i_signal_i_pdu
-        if self.i_signal_i_pdu is not None:
-            serialized = ARObject._serialize_item(self.i_signal_i_pdu, "ISignalIPdu")
+        # Serialize i_signal_i_pdu_ref
+        if self.i_signal_i_pdu_ref is not None:
+            serialized = ARObject._serialize_item(self.i_signal_i_pdu_ref, "ISignalIPdu")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("I-SIGNAL-I-PDU")
+                wrapped = ET.Element("I-SIGNAL-I-PDU-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -125,11 +125,11 @@ class EndToEndProtectionISignalIPdu(ARObject):
             i_signal_group_ref_value = ARRef.deserialize(child)
             obj.i_signal_group_ref = i_signal_group_ref_value
 
-        # Parse i_signal_i_pdu
-        child = ARObject._find_child_element(element, "I-SIGNAL-I-PDU")
+        # Parse i_signal_i_pdu_ref
+        child = ARObject._find_child_element(element, "I-SIGNAL-I-PDU-REF")
         if child is not None:
-            i_signal_i_pdu_value = ARObject._deserialize_by_tag(child, "ISignalIPdu")
-            obj.i_signal_i_pdu = i_signal_i_pdu_value
+            i_signal_i_pdu_ref_value = ARRef.deserialize(child)
+            obj.i_signal_i_pdu_ref = i_signal_i_pdu_ref_value
 
         return obj
 

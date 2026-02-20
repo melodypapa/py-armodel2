@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
     ModeDeclaration,
 )
@@ -30,13 +31,13 @@ class ModeDeclarationMapping(Identifiable):
         """
         return False
 
-    first_modes: list[ModeDeclaration]
-    second_mode: Optional[ModeDeclaration]
+    first_mode_refs: list[ARRef]
+    second_mode_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ModeDeclarationMapping."""
         super().__init__()
-        self.first_modes: list[ModeDeclaration] = []
-        self.second_mode: Optional[ModeDeclaration] = None
+        self.first_mode_refs: list[ARRef] = []
+        self.second_mode_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize ModeDeclarationMapping to XML element.
@@ -58,22 +59,29 @@ class ModeDeclarationMapping(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize first_modes (list to container "FIRST-MODES")
-        if self.first_modes:
-            wrapper = ET.Element("FIRST-MODES")
-            for item in self.first_modes:
+        # Serialize first_mode_refs (list to container "FIRST-MODE-REFS")
+        if self.first_mode_refs:
+            wrapper = ET.Element("FIRST-MODE-REFS")
+            for item in self.first_mode_refs:
                 serialized = ARObject._serialize_item(item, "ModeDeclaration")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("FIRST-MODE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize second_mode
-        if self.second_mode is not None:
-            serialized = ARObject._serialize_item(self.second_mode, "ModeDeclaration")
+        # Serialize second_mode_ref
+        if self.second_mode_ref is not None:
+            serialized = ARObject._serialize_item(self.second_mode_ref, "ModeDeclaration")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SECOND-MODE")
+                wrapped = ET.Element("SECOND-MODE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -97,21 +105,27 @@ class ModeDeclarationMapping(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ModeDeclarationMapping, cls).deserialize(element)
 
-        # Parse first_modes (list from container "FIRST-MODES")
-        obj.first_modes = []
-        container = ARObject._find_child_element(element, "FIRST-MODES")
+        # Parse first_mode_refs (list from container "FIRST-MODE-REFS")
+        obj.first_mode_refs = []
+        container = ARObject._find_child_element(element, "FIRST-MODE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.first_modes.append(child_value)
+                    obj.first_mode_refs.append(child_value)
 
-        # Parse second_mode
-        child = ARObject._find_child_element(element, "SECOND-MODE")
+        # Parse second_mode_ref
+        child = ARObject._find_child_element(element, "SECOND-MODE-REF")
         if child is not None:
-            second_mode_value = ARObject._deserialize_by_tag(child, "ModeDeclaration")
-            obj.second_mode = second_mode_value
+            second_mode_ref_value = ARRef.deserialize(child)
+            obj.second_mode_ref = second_mode_ref_value
 
         return obj
 

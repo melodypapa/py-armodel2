@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_ele
     FibexElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_cluster import (
     CommunicationCluster,
 )
@@ -31,11 +32,11 @@ class TpConfig(FibexElement, ABC):
         """
         return True
 
-    communication_cluster: Optional[CommunicationCluster]
+    communication_cluster_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize TpConfig."""
         super().__init__()
-        self.communication_cluster: Optional[CommunicationCluster] = None
+        self.communication_cluster_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize TpConfig to XML element.
@@ -57,12 +58,12 @@ class TpConfig(FibexElement, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize communication_cluster
-        if self.communication_cluster is not None:
-            serialized = ARObject._serialize_item(self.communication_cluster, "CommunicationCluster")
+        # Serialize communication_cluster_ref
+        if self.communication_cluster_ref is not None:
+            serialized = ARObject._serialize_item(self.communication_cluster_ref, "CommunicationCluster")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("COMMUNICATION-CLUSTER")
+                wrapped = ET.Element("COMMUNICATION-CLUSTER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -86,11 +87,11 @@ class TpConfig(FibexElement, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TpConfig, cls).deserialize(element)
 
-        # Parse communication_cluster
-        child = ARObject._find_child_element(element, "COMMUNICATION-CLUSTER")
+        # Parse communication_cluster_ref
+        child = ARObject._find_child_element(element, "COMMUNICATION-CLUSTER-REF")
         if child is not None:
-            communication_cluster_value = ARObject._deserialize_by_tag(child, "CommunicationCluster")
-            obj.communication_cluster = communication_cluster_value
+            communication_cluster_ref_value = ARRef.deserialize(child)
+            obj.communication_cluster_ref = communication_cluster_ref_value
 
         return obj
 

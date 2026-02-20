@@ -42,13 +42,13 @@ class HwElement(HwDescriptionEntity):
 
     hw_elements: list[HwElementConnector]
     hw_pin_group_refs: list[ARRef]
-    nested_elements: list[HwElement]
+    nested_element_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize HwElement."""
         super().__init__()
         self.hw_elements: list[HwElementConnector] = []
         self.hw_pin_group_refs: list[ARRef] = []
-        self.nested_elements: list[HwElement] = []
+        self.nested_element_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize HwElement to XML element.
@@ -97,13 +97,20 @@ class HwElement(HwDescriptionEntity):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize nested_elements (list to container "NESTED-ELEMENTS")
-        if self.nested_elements:
-            wrapper = ET.Element("NESTED-ELEMENTS")
-            for item in self.nested_elements:
+        # Serialize nested_element_refs (list to container "NESTED-ELEMENT-REFS")
+        if self.nested_element_refs:
+            wrapper = ET.Element("NESTED-ELEMENT-REFS")
+            for item in self.nested_element_refs:
                 serialized = ARObject._serialize_item(item, "HwElement")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("NESTED-ELEMENT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -148,15 +155,21 @@ class HwElement(HwDescriptionEntity):
                 if child_value is not None:
                     obj.hw_pin_group_refs.append(child_value)
 
-        # Parse nested_elements (list from container "NESTED-ELEMENTS")
-        obj.nested_elements = []
-        container = ARObject._find_child_element(element, "NESTED-ELEMENTS")
+        # Parse nested_element_refs (list from container "NESTED-ELEMENT-REFS")
+        obj.nested_element_refs = []
+        container = ARObject._find_child_element(element, "NESTED-ELEMENT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.nested_elements.append(child_value)
+                    obj.nested_element_refs.append(child_value)
 
         return obj
 

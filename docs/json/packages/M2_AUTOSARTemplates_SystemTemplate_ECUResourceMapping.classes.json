@@ -40,15 +40,15 @@
         "ecu": {
           "type": "HwElement",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to a HwElement of category ECU in the ECU"
         },
         "ecuInstance": {
           "type": "EcuInstance",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the EcuInstance in the System Template"
         },
         "hwPortMapping": {
@@ -89,15 +89,15 @@
         "communicationController": {
           "type": "CommunicationController",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the CommunicationController in the System"
         },
         "hw": {
           "type": "HwElement",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to a HwElement of category Communication in the ECU Resource Template."
         }
       }
@@ -131,8 +131,8 @@
         "communicationConnector": {
           "type": "CommunicationConnector",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the CommunicationConnector in the System"
         },
         "hwPinGroup": {

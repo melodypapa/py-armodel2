@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingExtensions.
     TimingExtension,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.system import (
     System,
 )
@@ -30,11 +31,11 @@ class SystemTiming(TimingExtension):
         """
         return False
 
-    system: Optional[System]
+    system_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SystemTiming."""
         super().__init__()
-        self.system: Optional[System] = None
+        self.system_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize SystemTiming to XML element.
@@ -56,12 +57,12 @@ class SystemTiming(TimingExtension):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize system
-        if self.system is not None:
-            serialized = ARObject._serialize_item(self.system, "System")
+        # Serialize system_ref
+        if self.system_ref is not None:
+            serialized = ARObject._serialize_item(self.system_ref, "System")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SYSTEM")
+                wrapped = ET.Element("SYSTEM-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -85,11 +86,11 @@ class SystemTiming(TimingExtension):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SystemTiming, cls).deserialize(element)
 
-        # Parse system
-        child = ARObject._find_child_element(element, "SYSTEM")
+        # Parse system_ref
+        child = ARObject._find_child_element(element, "SYSTEM-REF")
         if child is not None:
-            system_value = ARObject._deserialize_by_tag(child, "System")
-            obj.system = system_value
+            system_ref_value = ARRef.deserialize(child)
+            obj.system_ref = system_ref_value
 
         return obj
 

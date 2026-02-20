@@ -29,12 +29,12 @@ class ImplementationElementInParameterInstanceRef(ARObject):
         return False
 
     context_ref: Optional[ARRef]
-    target: Optional[Any]
+    target_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize ImplementationElementInParameterInstanceRef."""
         super().__init__()
         self.context_ref: Optional[ARRef] = None
-        self.target: Optional[Any] = None
+        self.target_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize ImplementationElementInParameterInstanceRef to XML element.
@@ -60,12 +60,12 @@ class ImplementationElementInParameterInstanceRef(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize target
-        if self.target is not None:
-            serialized = ARObject._serialize_item(self.target, "Any")
+        # Serialize target_ref
+        if self.target_ref is not None:
+            serialized = ARObject._serialize_item(self.target_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TARGET")
+                wrapped = ET.Element("TARGET-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -96,11 +96,11 @@ class ImplementationElementInParameterInstanceRef(ARObject):
             context_ref_value = ARRef.deserialize(child)
             obj.context_ref = context_ref_value
 
-        # Parse target
-        child = ARObject._find_child_element(element, "TARGET")
+        # Parse target_ref
+        child = ARObject._find_child_element(element, "TARGET-REF")
         if child is not None:
-            target_value = child.text
-            obj.target = target_value
+            target_ref_value = ARRef.deserialize(child)
+            obj.target_ref = target_ref_value
 
         return obj
 

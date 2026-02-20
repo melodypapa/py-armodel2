@@ -34,21 +34,21 @@ class SenderRecRecordElementMapping(ARObject):
         """
         return False
 
-    application_record: Optional[Any]
+    application_record_ref: Optional[Any]
     complex_type: Optional[SenderRecCompositeTypeMapping]
-    implementation: Optional[Any]
+    implementation_ref: Optional[Any]
     sender_to_signal_ref: Optional[ARRef]
     signal_to_ref: Optional[ARRef]
-    system_signal: Optional[SystemSignal]
+    system_signal_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SenderRecRecordElementMapping."""
         super().__init__()
-        self.application_record: Optional[Any] = None
+        self.application_record_ref: Optional[Any] = None
         self.complex_type: Optional[SenderRecCompositeTypeMapping] = None
-        self.implementation: Optional[Any] = None
+        self.implementation_ref: Optional[Any] = None
         self.sender_to_signal_ref: Optional[ARRef] = None
         self.signal_to_ref: Optional[ARRef] = None
-        self.system_signal: Optional[SystemSignal] = None
+        self.system_signal_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize SenderRecRecordElementMapping to XML element.
@@ -60,12 +60,12 @@ class SenderRecRecordElementMapping(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize application_record
-        if self.application_record is not None:
-            serialized = ARObject._serialize_item(self.application_record, "Any")
+        # Serialize application_record_ref
+        if self.application_record_ref is not None:
+            serialized = ARObject._serialize_item(self.application_record_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("APPLICATION-RECORD")
+                wrapped = ET.Element("APPLICATION-RECORD-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -88,12 +88,12 @@ class SenderRecRecordElementMapping(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize implementation
-        if self.implementation is not None:
-            serialized = ARObject._serialize_item(self.implementation, "Any")
+        # Serialize implementation_ref
+        if self.implementation_ref is not None:
+            serialized = ARObject._serialize_item(self.implementation_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("IMPLEMENTATION")
+                wrapped = ET.Element("IMPLEMENTATION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -130,12 +130,12 @@ class SenderRecRecordElementMapping(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize system_signal
-        if self.system_signal is not None:
-            serialized = ARObject._serialize_item(self.system_signal, "SystemSignal")
+        # Serialize system_signal_ref
+        if self.system_signal_ref is not None:
+            serialized = ARObject._serialize_item(self.system_signal_ref, "SystemSignal")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SYSTEM-SIGNAL")
+                wrapped = ET.Element("SYSTEM-SIGNAL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -160,11 +160,11 @@ class SenderRecRecordElementMapping(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse application_record
-        child = ARObject._find_child_element(element, "APPLICATION-RECORD")
+        # Parse application_record_ref
+        child = ARObject._find_child_element(element, "APPLICATION-RECORD-REF")
         if child is not None:
-            application_record_value = child.text
-            obj.application_record = application_record_value
+            application_record_ref_value = ARRef.deserialize(child)
+            obj.application_record_ref = application_record_ref_value
 
         # Parse complex_type
         child = ARObject._find_child_element(element, "COMPLEX-TYPE")
@@ -172,11 +172,11 @@ class SenderRecRecordElementMapping(ARObject):
             complex_type_value = ARObject._deserialize_by_tag(child, "SenderRecCompositeTypeMapping")
             obj.complex_type = complex_type_value
 
-        # Parse implementation
-        child = ARObject._find_child_element(element, "IMPLEMENTATION")
+        # Parse implementation_ref
+        child = ARObject._find_child_element(element, "IMPLEMENTATION-REF")
         if child is not None:
-            implementation_value = child.text
-            obj.implementation = implementation_value
+            implementation_ref_value = ARRef.deserialize(child)
+            obj.implementation_ref = implementation_ref_value
 
         # Parse sender_to_signal_ref
         child = ARObject._find_child_element(element, "SENDER-TO-SIGNAL-REF")
@@ -190,11 +190,11 @@ class SenderRecRecordElementMapping(ARObject):
             signal_to_ref_value = ARRef.deserialize(child)
             obj.signal_to_ref = signal_to_ref_value
 
-        # Parse system_signal
-        child = ARObject._find_child_element(element, "SYSTEM-SIGNAL")
+        # Parse system_signal_ref
+        child = ARObject._find_child_element(element, "SYSTEM-SIGNAL-REF")
         if child is not None:
-            system_signal_value = ARObject._deserialize_by_tag(child, "SystemSignal")
-            obj.system_signal = system_signal_value
+            system_signal_ref_value = ARRef.deserialize(child)
+            obj.system_signal_ref = system_signal_ref_value
 
         return obj
 

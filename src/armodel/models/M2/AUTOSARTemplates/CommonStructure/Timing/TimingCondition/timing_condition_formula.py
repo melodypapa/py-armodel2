@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.autosar_operation_argument_instance import (
     AutosarOperationArgumentInstance,
 )
@@ -36,19 +37,19 @@ class TimingConditionFormula(ARObject):
         """
         return False
 
-    timing_argument_argument_instance: Optional[AutosarOperationArgumentInstance]
-    timing_condition: Optional[TimingCondition]
-    timing_event: Optional[TimingDescriptionEvent]
-    timing_mode: Optional[TimingModeInstance]
-    timing_variable_instance: Optional[Any]
+    timing_argument_argument_instance_ref: Optional[ARRef]
+    timing_condition_ref: Optional[ARRef]
+    timing_event_ref: Optional[ARRef]
+    timing_mode_ref: Optional[ARRef]
+    timing_variable_instance_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize TimingConditionFormula."""
         super().__init__()
-        self.timing_argument_argument_instance: Optional[AutosarOperationArgumentInstance] = None
-        self.timing_condition: Optional[TimingCondition] = None
-        self.timing_event: Optional[TimingDescriptionEvent] = None
-        self.timing_mode: Optional[TimingModeInstance] = None
-        self.timing_variable_instance: Optional[Any] = None
+        self.timing_argument_argument_instance_ref: Optional[ARRef] = None
+        self.timing_condition_ref: Optional[ARRef] = None
+        self.timing_event_ref: Optional[ARRef] = None
+        self.timing_mode_ref: Optional[ARRef] = None
+        self.timing_variable_instance_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize TimingConditionFormula to XML element.
@@ -60,12 +61,12 @@ class TimingConditionFormula(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize timing_argument_argument_instance
-        if self.timing_argument_argument_instance is not None:
-            serialized = ARObject._serialize_item(self.timing_argument_argument_instance, "AutosarOperationArgumentInstance")
+        # Serialize timing_argument_argument_instance_ref
+        if self.timing_argument_argument_instance_ref is not None:
+            serialized = ARObject._serialize_item(self.timing_argument_argument_instance_ref, "AutosarOperationArgumentInstance")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TIMING-ARGUMENT-ARGUMENT-INSTANCE")
+                wrapped = ET.Element("TIMING-ARGUMENT-ARGUMENT-INSTANCE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -74,12 +75,12 @@ class TimingConditionFormula(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize timing_condition
-        if self.timing_condition is not None:
-            serialized = ARObject._serialize_item(self.timing_condition, "TimingCondition")
+        # Serialize timing_condition_ref
+        if self.timing_condition_ref is not None:
+            serialized = ARObject._serialize_item(self.timing_condition_ref, "TimingCondition")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TIMING-CONDITION")
+                wrapped = ET.Element("TIMING-CONDITION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -88,12 +89,12 @@ class TimingConditionFormula(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize timing_event
-        if self.timing_event is not None:
-            serialized = ARObject._serialize_item(self.timing_event, "TimingDescriptionEvent")
+        # Serialize timing_event_ref
+        if self.timing_event_ref is not None:
+            serialized = ARObject._serialize_item(self.timing_event_ref, "TimingDescriptionEvent")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TIMING-EVENT")
+                wrapped = ET.Element("TIMING-EVENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -102,12 +103,12 @@ class TimingConditionFormula(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize timing_mode
-        if self.timing_mode is not None:
-            serialized = ARObject._serialize_item(self.timing_mode, "TimingModeInstance")
+        # Serialize timing_mode_ref
+        if self.timing_mode_ref is not None:
+            serialized = ARObject._serialize_item(self.timing_mode_ref, "TimingModeInstance")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TIMING-MODE")
+                wrapped = ET.Element("TIMING-MODE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -116,12 +117,12 @@ class TimingConditionFormula(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize timing_variable_instance
-        if self.timing_variable_instance is not None:
-            serialized = ARObject._serialize_item(self.timing_variable_instance, "Any")
+        # Serialize timing_variable_instance_ref
+        if self.timing_variable_instance_ref is not None:
+            serialized = ARObject._serialize_item(self.timing_variable_instance_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TIMING-VARIABLE-INSTANCE")
+                wrapped = ET.Element("TIMING-VARIABLE-INSTANCE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -146,35 +147,35 @@ class TimingConditionFormula(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse timing_argument_argument_instance
-        child = ARObject._find_child_element(element, "TIMING-ARGUMENT-ARGUMENT-INSTANCE")
+        # Parse timing_argument_argument_instance_ref
+        child = ARObject._find_child_element(element, "TIMING-ARGUMENT-ARGUMENT-INSTANCE-REF")
         if child is not None:
-            timing_argument_argument_instance_value = ARObject._deserialize_by_tag(child, "AutosarOperationArgumentInstance")
-            obj.timing_argument_argument_instance = timing_argument_argument_instance_value
+            timing_argument_argument_instance_ref_value = ARRef.deserialize(child)
+            obj.timing_argument_argument_instance_ref = timing_argument_argument_instance_ref_value
 
-        # Parse timing_condition
-        child = ARObject._find_child_element(element, "TIMING-CONDITION")
+        # Parse timing_condition_ref
+        child = ARObject._find_child_element(element, "TIMING-CONDITION-REF")
         if child is not None:
-            timing_condition_value = ARObject._deserialize_by_tag(child, "TimingCondition")
-            obj.timing_condition = timing_condition_value
+            timing_condition_ref_value = ARRef.deserialize(child)
+            obj.timing_condition_ref = timing_condition_ref_value
 
-        # Parse timing_event
-        child = ARObject._find_child_element(element, "TIMING-EVENT")
+        # Parse timing_event_ref
+        child = ARObject._find_child_element(element, "TIMING-EVENT-REF")
         if child is not None:
-            timing_event_value = ARObject._deserialize_by_tag(child, "TimingDescriptionEvent")
-            obj.timing_event = timing_event_value
+            timing_event_ref_value = ARRef.deserialize(child)
+            obj.timing_event_ref = timing_event_ref_value
 
-        # Parse timing_mode
-        child = ARObject._find_child_element(element, "TIMING-MODE")
+        # Parse timing_mode_ref
+        child = ARObject._find_child_element(element, "TIMING-MODE-REF")
         if child is not None:
-            timing_mode_value = ARObject._deserialize_by_tag(child, "TimingModeInstance")
-            obj.timing_mode = timing_mode_value
+            timing_mode_ref_value = ARRef.deserialize(child)
+            obj.timing_mode_ref = timing_mode_ref_value
 
-        # Parse timing_variable_instance
-        child = ARObject._find_child_element(element, "TIMING-VARIABLE-INSTANCE")
+        # Parse timing_variable_instance_ref
+        child = ARObject._find_child_element(element, "TIMING-VARIABLE-INSTANCE-REF")
         if child is not None:
-            timing_variable_instance_value = child.text
-            obj.timing_variable_instance = timing_variable_instance_value
+            timing_variable_instance_ref_value = ARRef.deserialize(child)
+            obj.timing_variable_instance_ref = timing_variable_instance_ref_value
 
         return obj
 

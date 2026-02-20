@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances import (
     TcpRoleEnum,
 )
@@ -42,15 +43,15 @@ class StaticSocketConnection(Identifiable):
         """
         return False
 
-    i_pdu_identifiers: list[SoConIPduIdentifier]
-    remote_address: Optional[SocketAddress]
+    i_pdu_identifier_refs: list[ARRef]
+    remote_address_ref: Optional[ARRef]
     tcp_connect: Optional[TimeValue]
     tcp_role: Optional[TcpRoleEnum]
     def __init__(self) -> None:
         """Initialize StaticSocketConnection."""
         super().__init__()
-        self.i_pdu_identifiers: list[SoConIPduIdentifier] = []
-        self.remote_address: Optional[SocketAddress] = None
+        self.i_pdu_identifier_refs: list[ARRef] = []
+        self.remote_address_ref: Optional[ARRef] = None
         self.tcp_connect: Optional[TimeValue] = None
         self.tcp_role: Optional[TcpRoleEnum] = None
 
@@ -74,22 +75,29 @@ class StaticSocketConnection(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize i_pdu_identifiers (list to container "I-PDU-IDENTIFIERS")
-        if self.i_pdu_identifiers:
-            wrapper = ET.Element("I-PDU-IDENTIFIERS")
-            for item in self.i_pdu_identifiers:
+        # Serialize i_pdu_identifier_refs (list to container "I-PDU-IDENTIFIER-REFS")
+        if self.i_pdu_identifier_refs:
+            wrapper = ET.Element("I-PDU-IDENTIFIER-REFS")
+            for item in self.i_pdu_identifier_refs:
                 serialized = ARObject._serialize_item(item, "SoConIPduIdentifier")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("I-PDU-IDENTIFIER-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize remote_address
-        if self.remote_address is not None:
-            serialized = ARObject._serialize_item(self.remote_address, "SocketAddress")
+        # Serialize remote_address_ref
+        if self.remote_address_ref is not None:
+            serialized = ARObject._serialize_item(self.remote_address_ref, "SocketAddress")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("REMOTE-ADDRESS")
+                wrapped = ET.Element("REMOTE-ADDRESS-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -141,21 +149,27 @@ class StaticSocketConnection(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(StaticSocketConnection, cls).deserialize(element)
 
-        # Parse i_pdu_identifiers (list from container "I-PDU-IDENTIFIERS")
-        obj.i_pdu_identifiers = []
-        container = ARObject._find_child_element(element, "I-PDU-IDENTIFIERS")
+        # Parse i_pdu_identifier_refs (list from container "I-PDU-IDENTIFIER-REFS")
+        obj.i_pdu_identifier_refs = []
+        container = ARObject._find_child_element(element, "I-PDU-IDENTIFIER-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.i_pdu_identifiers.append(child_value)
+                    obj.i_pdu_identifier_refs.append(child_value)
 
-        # Parse remote_address
-        child = ARObject._find_child_element(element, "REMOTE-ADDRESS")
+        # Parse remote_address_ref
+        child = ARObject._find_child_element(element, "REMOTE-ADDRESS-REF")
         if child is not None:
-            remote_address_value = ARObject._deserialize_by_tag(child, "SocketAddress")
-            obj.remote_address = remote_address_value
+            remote_address_ref_value = ARRef.deserialize(child)
+            obj.remote_address_ref = remote_address_ref_value
 
         # Parse tcp_connect
         child = ARObject._find_child_element(element, "TCP-CONNECT")

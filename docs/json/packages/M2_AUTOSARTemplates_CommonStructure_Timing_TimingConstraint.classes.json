@@ -53,8 +53,8 @@
         "timingCondition": {
           "type": "TimingCondition",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "A timing condition the timing constraint depends on. In it specifies the condition the timing constraint"
         }
       }

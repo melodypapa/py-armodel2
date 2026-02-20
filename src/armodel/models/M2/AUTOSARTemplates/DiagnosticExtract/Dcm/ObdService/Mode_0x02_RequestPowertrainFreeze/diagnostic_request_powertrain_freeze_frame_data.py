@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.ObdService.Mode_0x02_RequestPowertrainFreeze.diagnostic_powertrain_freeze_frame import (
     DiagnosticPowertrainFreezeFrame,
 )
@@ -30,13 +31,13 @@ class DiagnosticRequestPowertrainFreezeFrameData(DiagnosticServiceInstance):
         """
         return False
 
-    freeze_frame_freeze_frame: Optional[DiagnosticPowertrainFreezeFrame]
-    request: Optional[Any]
+    freeze_frame_freeze_frame_ref: Optional[ARRef]
+    request_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticRequestPowertrainFreezeFrameData."""
         super().__init__()
-        self.freeze_frame_freeze_frame: Optional[DiagnosticPowertrainFreezeFrame] = None
-        self.request: Optional[Any] = None
+        self.freeze_frame_freeze_frame_ref: Optional[ARRef] = None
+        self.request_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticRequestPowertrainFreezeFrameData to XML element.
@@ -58,12 +59,12 @@ class DiagnosticRequestPowertrainFreezeFrameData(DiagnosticServiceInstance):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize freeze_frame_freeze_frame
-        if self.freeze_frame_freeze_frame is not None:
-            serialized = ARObject._serialize_item(self.freeze_frame_freeze_frame, "DiagnosticPowertrainFreezeFrame")
+        # Serialize freeze_frame_freeze_frame_ref
+        if self.freeze_frame_freeze_frame_ref is not None:
+            serialized = ARObject._serialize_item(self.freeze_frame_freeze_frame_ref, "DiagnosticPowertrainFreezeFrame")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("FREEZE-FRAME-FREEZE-FRAME")
+                wrapped = ET.Element("FREEZE-FRAME-FREEZE-FRAME-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -72,12 +73,12 @@ class DiagnosticRequestPowertrainFreezeFrameData(DiagnosticServiceInstance):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize request
-        if self.request is not None:
-            serialized = ARObject._serialize_item(self.request, "Any")
+        # Serialize request_ref
+        if self.request_ref is not None:
+            serialized = ARObject._serialize_item(self.request_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("REQUEST")
+                wrapped = ET.Element("REQUEST-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -101,17 +102,17 @@ class DiagnosticRequestPowertrainFreezeFrameData(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticRequestPowertrainFreezeFrameData, cls).deserialize(element)
 
-        # Parse freeze_frame_freeze_frame
-        child = ARObject._find_child_element(element, "FREEZE-FRAME-FREEZE-FRAME")
+        # Parse freeze_frame_freeze_frame_ref
+        child = ARObject._find_child_element(element, "FREEZE-FRAME-FREEZE-FRAME-REF")
         if child is not None:
-            freeze_frame_freeze_frame_value = ARObject._deserialize_by_tag(child, "DiagnosticPowertrainFreezeFrame")
-            obj.freeze_frame_freeze_frame = freeze_frame_freeze_frame_value
+            freeze_frame_freeze_frame_ref_value = ARRef.deserialize(child)
+            obj.freeze_frame_freeze_frame_ref = freeze_frame_freeze_frame_ref_value
 
-        # Parse request
-        child = ARObject._find_child_element(element, "REQUEST")
+        # Parse request_ref
+        child = ARObject._find_child_element(element, "REQUEST-REF")
         if child is not None:
-            request_value = child.text
-            obj.request = request_value
+            request_ref_value = ARRef.deserialize(child)
+            obj.request_ref = request_ref_value
 
         return obj
 

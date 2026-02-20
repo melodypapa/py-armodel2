@@ -35,19 +35,19 @@ class DiagnosticConnection(ARElement):
         """
         return False
 
-    functional_requests: list[TpConnectionIdent]
+    functional_request_refs: list[ARRef]
     periodic_response_uudt_refs: list[ARRef]
-    physical_request: Optional[TpConnectionIdent]
-    response: Optional[TpConnectionIdent]
-    response_on: Optional[TpConnectionIdent]
+    physical_request_ref: Optional[ARRef]
+    response_ref: Optional[ARRef]
+    response_on_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DiagnosticConnection."""
         super().__init__()
-        self.functional_requests: list[TpConnectionIdent] = []
+        self.functional_request_refs: list[ARRef] = []
         self.periodic_response_uudt_refs: list[ARRef] = []
-        self.physical_request: Optional[TpConnectionIdent] = None
-        self.response: Optional[TpConnectionIdent] = None
-        self.response_on: Optional[TpConnectionIdent] = None
+        self.physical_request_ref: Optional[ARRef] = None
+        self.response_ref: Optional[ARRef] = None
+        self.response_on_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticConnection to XML element.
@@ -69,13 +69,20 @@ class DiagnosticConnection(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize functional_requests (list to container "FUNCTIONAL-REQUESTS")
-        if self.functional_requests:
-            wrapper = ET.Element("FUNCTIONAL-REQUESTS")
-            for item in self.functional_requests:
+        # Serialize functional_request_refs (list to container "FUNCTIONAL-REQUEST-REFS")
+        if self.functional_request_refs:
+            wrapper = ET.Element("FUNCTIONAL-REQUEST-REFS")
+            for item in self.functional_request_refs:
                 serialized = ARObject._serialize_item(item, "TpConnectionIdent")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("FUNCTIONAL-REQUEST-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -96,12 +103,12 @@ class DiagnosticConnection(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize physical_request
-        if self.physical_request is not None:
-            serialized = ARObject._serialize_item(self.physical_request, "TpConnectionIdent")
+        # Serialize physical_request_ref
+        if self.physical_request_ref is not None:
+            serialized = ARObject._serialize_item(self.physical_request_ref, "TpConnectionIdent")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PHYSICAL-REQUEST")
+                wrapped = ET.Element("PHYSICAL-REQUEST-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -110,12 +117,12 @@ class DiagnosticConnection(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize response
-        if self.response is not None:
-            serialized = ARObject._serialize_item(self.response, "TpConnectionIdent")
+        # Serialize response_ref
+        if self.response_ref is not None:
+            serialized = ARObject._serialize_item(self.response_ref, "TpConnectionIdent")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("RESPONSE")
+                wrapped = ET.Element("RESPONSE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -124,12 +131,12 @@ class DiagnosticConnection(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize response_on
-        if self.response_on is not None:
-            serialized = ARObject._serialize_item(self.response_on, "TpConnectionIdent")
+        # Serialize response_on_ref
+        if self.response_on_ref is not None:
+            serialized = ARObject._serialize_item(self.response_on_ref, "TpConnectionIdent")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("RESPONSE-ON")
+                wrapped = ET.Element("RESPONSE-ON-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -153,15 +160,21 @@ class DiagnosticConnection(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticConnection, cls).deserialize(element)
 
-        # Parse functional_requests (list from container "FUNCTIONAL-REQUESTS")
-        obj.functional_requests = []
-        container = ARObject._find_child_element(element, "FUNCTIONAL-REQUESTS")
+        # Parse functional_request_refs (list from container "FUNCTIONAL-REQUEST-REFS")
+        obj.functional_request_refs = []
+        container = ARObject._find_child_element(element, "FUNCTIONAL-REQUEST-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.functional_requests.append(child_value)
+                    obj.functional_request_refs.append(child_value)
 
         # Parse periodic_response_uudt_refs (list from container "PERIODIC-RESPONSE-UUDT-REFS")
         obj.periodic_response_uudt_refs = []
@@ -179,23 +192,23 @@ class DiagnosticConnection(ARElement):
                 if child_value is not None:
                     obj.periodic_response_uudt_refs.append(child_value)
 
-        # Parse physical_request
-        child = ARObject._find_child_element(element, "PHYSICAL-REQUEST")
+        # Parse physical_request_ref
+        child = ARObject._find_child_element(element, "PHYSICAL-REQUEST-REF")
         if child is not None:
-            physical_request_value = ARObject._deserialize_by_tag(child, "TpConnectionIdent")
-            obj.physical_request = physical_request_value
+            physical_request_ref_value = ARRef.deserialize(child)
+            obj.physical_request_ref = physical_request_ref_value
 
-        # Parse response
-        child = ARObject._find_child_element(element, "RESPONSE")
+        # Parse response_ref
+        child = ARObject._find_child_element(element, "RESPONSE-REF")
         if child is not None:
-            response_value = ARObject._deserialize_by_tag(child, "TpConnectionIdent")
-            obj.response = response_value
+            response_ref_value = ARRef.deserialize(child)
+            obj.response_ref = response_ref_value
 
-        # Parse response_on
-        child = ARObject._find_child_element(element, "RESPONSE-ON")
+        # Parse response_on_ref
+        child = ARObject._find_child_element(element, "RESPONSE-ON-REF")
         if child is not None:
-            response_on_value = ARObject._deserialize_by_tag(child, "TpConnectionIdent")
-            obj.response_on = response_on_value
+            response_on_ref_value = ARRef.deserialize(child)
+            obj.response_on_ref = response_on_ref_value
 
         return obj
 

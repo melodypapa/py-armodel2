@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
     AttributeCondition,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.aggregation_tailoring import (
     AggregationTailoring,
 )
@@ -30,11 +31,11 @@ class AggregationCondition(AttributeCondition):
         """
         return False
 
-    aggregation: AggregationTailoring
+    aggregation_ref: ARRef
     def __init__(self) -> None:
         """Initialize AggregationCondition."""
         super().__init__()
-        self.aggregation: AggregationTailoring = None
+        self.aggregation_ref: ARRef = None
 
     def serialize(self) -> ET.Element:
         """Serialize AggregationCondition to XML element.
@@ -56,12 +57,12 @@ class AggregationCondition(AttributeCondition):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize aggregation
-        if self.aggregation is not None:
-            serialized = ARObject._serialize_item(self.aggregation, "AggregationTailoring")
+        # Serialize aggregation_ref
+        if self.aggregation_ref is not None:
+            serialized = ARObject._serialize_item(self.aggregation_ref, "AggregationTailoring")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("AGGREGATION")
+                wrapped = ET.Element("AGGREGATION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -85,11 +86,11 @@ class AggregationCondition(AttributeCondition):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AggregationCondition, cls).deserialize(element)
 
-        # Parse aggregation
-        child = ARObject._find_child_element(element, "AGGREGATION")
+        # Parse aggregation_ref
+        child = ARObject._find_child_element(element, "AGGREGATION-REF")
         if child is not None:
-            aggregation_value = ARObject._deserialize_by_tag(child, "AggregationTailoring")
-            obj.aggregation = aggregation_value
+            aggregation_ref_value = ARRef.deserialize(child)
+            obj.aggregation_ref = aggregation_ref_value
 
         return obj
 

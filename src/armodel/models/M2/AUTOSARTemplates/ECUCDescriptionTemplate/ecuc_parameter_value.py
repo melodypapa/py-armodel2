@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_indexable_v
     EcucIndexableValue,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -40,13 +41,13 @@ class EcucParameterValue(EcucIndexableValue, ABC):
         return True
 
     annotations: list[Annotation]
-    definition: Optional[EcucParameterDef]
+    definition_ref: Optional[ARRef]
     is_auto_value: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize EcucParameterValue."""
         super().__init__()
         self.annotations: list[Annotation] = []
-        self.definition: Optional[EcucParameterDef] = None
+        self.definition_ref: Optional[ARRef] = None
         self.is_auto_value: Optional[Boolean] = None
 
     def serialize(self) -> ET.Element:
@@ -79,12 +80,12 @@ class EcucParameterValue(EcucIndexableValue, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize definition
-        if self.definition is not None:
-            serialized = ARObject._serialize_item(self.definition, "EcucParameterDef")
+        # Serialize definition_ref
+        if self.definition_ref is not None:
+            serialized = ARObject._serialize_item(self.definition_ref, "EcucParameterDef")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DEFINITION")
+                wrapped = ET.Element("DEFINITION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -132,11 +133,11 @@ class EcucParameterValue(EcucIndexableValue, ABC):
                 if child_value is not None:
                     obj.annotations.append(child_value)
 
-        # Parse definition
-        child = ARObject._find_child_element(element, "DEFINITION")
+        # Parse definition_ref
+        child = ARObject._find_child_element(element, "DEFINITION-REF")
         if child is not None:
-            definition_value = ARObject._deserialize_by_tag(child, "EcucParameterDef")
-            obj.definition = definition_value
+            definition_ref_value = ARRef.deserialize(child)
+            obj.definition_ref = definition_ref_value
 
         # Parse is_auto_value
         child = ARObject._find_child_element(element, "IS-AUTO-VALUE")

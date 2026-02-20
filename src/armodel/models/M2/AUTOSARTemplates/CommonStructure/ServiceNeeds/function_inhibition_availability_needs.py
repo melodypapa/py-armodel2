@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_nee
     ServiceNeeds,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.function_inhibition_needs import (
     FunctionInhibitionNeeds,
 )
@@ -31,11 +32,11 @@ class FunctionInhibitionAvailabilityNeeds(ServiceNeeds):
         """
         return False
 
-    controlled_fid: Optional[FunctionInhibitionNeeds]
+    controlled_fid_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize FunctionInhibitionAvailabilityNeeds."""
         super().__init__()
-        self.controlled_fid: Optional[FunctionInhibitionNeeds] = None
+        self.controlled_fid_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize FunctionInhibitionAvailabilityNeeds to XML element.
@@ -57,12 +58,12 @@ class FunctionInhibitionAvailabilityNeeds(ServiceNeeds):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize controlled_fid
-        if self.controlled_fid is not None:
-            serialized = ARObject._serialize_item(self.controlled_fid, "FunctionInhibitionNeeds")
+        # Serialize controlled_fid_ref
+        if self.controlled_fid_ref is not None:
+            serialized = ARObject._serialize_item(self.controlled_fid_ref, "FunctionInhibitionNeeds")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONTROLLED-FID")
+                wrapped = ET.Element("CONTROLLED-FID-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -86,11 +87,11 @@ class FunctionInhibitionAvailabilityNeeds(ServiceNeeds):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FunctionInhibitionAvailabilityNeeds, cls).deserialize(element)
 
-        # Parse controlled_fid
-        child = ARObject._find_child_element(element, "CONTROLLED-FID")
+        # Parse controlled_fid_ref
+        child = ARObject._find_child_element(element, "CONTROLLED-FID-REF")
         if child is not None:
-            controlled_fid_value = ARObject._deserialize_by_tag(child, "FunctionInhibitionNeeds")
-            obj.controlled_fid = controlled_fid_value
+            controlled_fid_ref_value = ARRef.deserialize(child)
+            obj.controlled_fid_ref = controlled_fid_ref_value
 
         return obj
 

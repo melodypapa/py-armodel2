@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     MonotonyEnum,
 )
@@ -43,8 +44,8 @@ class PhysConstrs(ARObject):
     max_gradient: Optional[Numerical]
     monotony: Optional[MonotonyEnum]
     scale_constrs: list[ScaleConstr]
-    unit: Optional[Unit]
     upper_limit: Optional[Limit]
+    unit_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize PhysConstrs."""
         super().__init__()
@@ -53,8 +54,8 @@ class PhysConstrs(ARObject):
         self.max_gradient: Optional[Numerical] = None
         self.monotony: Optional[MonotonyEnum] = None
         self.scale_constrs: list[ScaleConstr] = []
-        self.unit: Optional[Unit] = None
         self.upper_limit: Optional[Limit] = None
+        self.unit_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize PhysConstrs to XML element.
@@ -132,12 +133,12 @@ class PhysConstrs(ARObject):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize unit
-        if self.unit is not None:
-            serialized = ARObject._serialize_item(self.unit, "Unit")
+        # Serialize upper_limit
+        if self.upper_limit is not None:
+            serialized = ARObject._serialize_item(self.upper_limit, "Limit")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("UNIT")
+                wrapped = ET.Element("UPPER-LIMIT")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -146,12 +147,12 @@ class PhysConstrs(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize upper_limit
-        if self.upper_limit is not None:
-            serialized = ARObject._serialize_item(self.upper_limit, "Limit")
+        # Serialize unit_ref
+        if self.unit_ref is not None:
+            serialized = ARObject._serialize_item(self.unit_ref, "Unit")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("UPPER-LIMIT")
+                wrapped = ET.Element("UNIT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -210,17 +211,17 @@ class PhysConstrs(ARObject):
                 if child_value is not None:
                     obj.scale_constrs.append(child_value)
 
-        # Parse unit
-        child = ARObject._find_child_element(element, "UNIT")
-        if child is not None:
-            unit_value = ARObject._deserialize_by_tag(child, "Unit")
-            obj.unit = unit_value
-
         # Parse upper_limit
         child = ARObject._find_child_element(element, "UPPER-LIMIT")
         if child is not None:
             upper_limit_value = ARObject._deserialize_by_tag(child, "Limit")
             obj.upper_limit = upper_limit_value
+
+        # Parse unit_ref
+        child = ARObject._find_child_element(element, "UNIT-REF")
+        if child is not None:
+            unit_ref_value = ARRef.deserialize(child)
+            obj.unit_ref = unit_ref_value
 
         return obj
 

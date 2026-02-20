@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcImplementation.swc_implementation import (
     SwcImplementation,
 )
@@ -30,11 +31,11 @@ class SwcToImplMapping(Identifiable):
         """
         return False
 
-    component: Optional[SwcImplementation]
+    component_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SwcToImplMapping."""
         super().__init__()
-        self.component: Optional[SwcImplementation] = None
+        self.component_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize SwcToImplMapping to XML element.
@@ -56,12 +57,12 @@ class SwcToImplMapping(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize component
-        if self.component is not None:
-            serialized = ARObject._serialize_item(self.component, "SwcImplementation")
+        # Serialize component_ref
+        if self.component_ref is not None:
+            serialized = ARObject._serialize_item(self.component_ref, "SwcImplementation")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("COMPONENT")
+                wrapped = ET.Element("COMPONENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -85,11 +86,11 @@ class SwcToImplMapping(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwcToImplMapping, cls).deserialize(element)
 
-        # Parse component
-        child = ARObject._find_child_element(element, "COMPONENT")
+        # Parse component_ref
+        child = ARObject._find_child_element(element, "COMPONENT-REF")
         if child is not None:
-            component_value = ARObject._deserialize_by_tag(child, "SwcImplementation")
-            obj.component = component_value
+            component_ref_value = ARRef.deserialize(child)
+            obj.component_ref = component_ref_value
 
         return obj
 

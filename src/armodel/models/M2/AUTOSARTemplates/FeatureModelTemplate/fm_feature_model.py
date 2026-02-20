@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_feature import (
     FMFeature,
 )
@@ -31,13 +32,13 @@ class FMFeatureModel(ARElement):
         """
         return False
 
-    features: list[FMFeature]
-    root: Optional[FMFeature]
+    feature_refs: list[ARRef]
+    root_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize FMFeatureModel."""
         super().__init__()
-        self.features: list[FMFeature] = []
-        self.root: Optional[FMFeature] = None
+        self.feature_refs: list[ARRef] = []
+        self.root_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize FMFeatureModel to XML element.
@@ -59,22 +60,29 @@ class FMFeatureModel(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize features (list to container "FEATURES")
-        if self.features:
-            wrapper = ET.Element("FEATURES")
-            for item in self.features:
+        # Serialize feature_refs (list to container "FEATURE-REFS")
+        if self.feature_refs:
+            wrapper = ET.Element("FEATURE-REFS")
+            for item in self.feature_refs:
                 serialized = ARObject._serialize_item(item, "FMFeature")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("FEATURE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize root
-        if self.root is not None:
-            serialized = ARObject._serialize_item(self.root, "FMFeature")
+        # Serialize root_ref
+        if self.root_ref is not None:
+            serialized = ARObject._serialize_item(self.root_ref, "FMFeature")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ROOT")
+                wrapped = ET.Element("ROOT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -98,21 +106,27 @@ class FMFeatureModel(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FMFeatureModel, cls).deserialize(element)
 
-        # Parse features (list from container "FEATURES")
-        obj.features = []
-        container = ARObject._find_child_element(element, "FEATURES")
+        # Parse feature_refs (list from container "FEATURE-REFS")
+        obj.feature_refs = []
+        container = ARObject._find_child_element(element, "FEATURE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.features.append(child_value)
+                    obj.feature_refs.append(child_value)
 
-        # Parse root
-        child = ARObject._find_child_element(element, "ROOT")
+        # Parse root_ref
+        child = ARObject._find_child_element(element, "ROOT-REF")
         if child is not None:
-            root_value = ARObject._deserialize_by_tag(child, "FMFeature")
-            obj.root = root_value
+            root_ref_value = ARRef.deserialize(child)
+            obj.root_ref = root_ref_value
 
         return obj
 

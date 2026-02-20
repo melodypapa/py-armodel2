@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticMemoryAddressableRangeAccess,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
 class DiagnosticRequestUpload(DiagnosticMemoryAddressableRangeAccess):
@@ -27,11 +28,11 @@ class DiagnosticRequestUpload(DiagnosticMemoryAddressableRangeAccess):
         """
         return False
 
-    request_upload: Optional[Any]
+    request_upload_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticRequestUpload."""
         super().__init__()
-        self.request_upload: Optional[Any] = None
+        self.request_upload_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticRequestUpload to XML element.
@@ -53,12 +54,12 @@ class DiagnosticRequestUpload(DiagnosticMemoryAddressableRangeAccess):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize request_upload
-        if self.request_upload is not None:
-            serialized = ARObject._serialize_item(self.request_upload, "Any")
+        # Serialize request_upload_ref
+        if self.request_upload_ref is not None:
+            serialized = ARObject._serialize_item(self.request_upload_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("REQUEST-UPLOAD")
+                wrapped = ET.Element("REQUEST-UPLOAD-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -82,11 +83,11 @@ class DiagnosticRequestUpload(DiagnosticMemoryAddressableRangeAccess):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticRequestUpload, cls).deserialize(element)
 
-        # Parse request_upload
-        child = ARObject._find_child_element(element, "REQUEST-UPLOAD")
+        # Parse request_upload_ref
+        child = ARObject._find_child_element(element, "REQUEST-UPLOAD-REF")
         if child is not None:
-            request_upload_value = child.text
-            obj.request_upload = request_upload_value
+            request_upload_ref_value = ARRef.deserialize(child)
+            obj.request_upload_ref = request_upload_ref_value
 
         return obj
 

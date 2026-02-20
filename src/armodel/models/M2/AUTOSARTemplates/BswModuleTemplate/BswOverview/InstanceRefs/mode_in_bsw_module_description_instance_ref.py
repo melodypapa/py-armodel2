@@ -34,15 +34,15 @@ class ModeInBswModuleDescriptionInstanceRef(ARObject):
         """
         return False
 
-    base: Optional[BswModuleDescription]
+    base_ref: Optional[ARRef]
     context_mode_group_ref: Optional[ARRef]
-    target_mode: Optional[ModeDeclaration]
+    target_mode_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ModeInBswModuleDescriptionInstanceRef."""
         super().__init__()
-        self.base: Optional[BswModuleDescription] = None
+        self.base_ref: Optional[ARRef] = None
         self.context_mode_group_ref: Optional[ARRef] = None
-        self.target_mode: Optional[ModeDeclaration] = None
+        self.target_mode_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize ModeInBswModuleDescriptionInstanceRef to XML element.
@@ -54,12 +54,12 @@ class ModeInBswModuleDescriptionInstanceRef(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize base
-        if self.base is not None:
-            serialized = ARObject._serialize_item(self.base, "BswModuleDescription")
+        # Serialize base_ref
+        if self.base_ref is not None:
+            serialized = ARObject._serialize_item(self.base_ref, "BswModuleDescription")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("BASE")
+                wrapped = ET.Element("BASE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -82,12 +82,12 @@ class ModeInBswModuleDescriptionInstanceRef(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize target_mode
-        if self.target_mode is not None:
-            serialized = ARObject._serialize_item(self.target_mode, "ModeDeclaration")
+        # Serialize target_mode_ref
+        if self.target_mode_ref is not None:
+            serialized = ARObject._serialize_item(self.target_mode_ref, "ModeDeclaration")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TARGET-MODE")
+                wrapped = ET.Element("TARGET-MODE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -112,11 +112,11 @@ class ModeInBswModuleDescriptionInstanceRef(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse base
-        child = ARObject._find_child_element(element, "BASE")
+        # Parse base_ref
+        child = ARObject._find_child_element(element, "BASE-REF")
         if child is not None:
-            base_value = ARObject._deserialize_by_tag(child, "BswModuleDescription")
-            obj.base = base_value
+            base_ref_value = ARRef.deserialize(child)
+            obj.base_ref = base_ref_value
 
         # Parse context_mode_group_ref
         child = ARObject._find_child_element(element, "CONTEXT-MODE-GROUP-REF")
@@ -124,11 +124,11 @@ class ModeInBswModuleDescriptionInstanceRef(ARObject):
             context_mode_group_ref_value = ARRef.deserialize(child)
             obj.context_mode_group_ref = context_mode_group_ref_value
 
-        # Parse target_mode
-        child = ARObject._find_child_element(element, "TARGET-MODE")
+        # Parse target_mode_ref
+        child = ARObject._find_child_element(element, "TARGET-MODE-REF")
         if child is not None:
-            target_mode_value = ARObject._deserialize_by_tag(child, "ModeDeclaration")
-            obj.target_mode = target_mode_value
+            target_mode_ref_value = ARRef.deserialize(child)
+            obj.target_mode_ref = target_mode_ref_value
 
         return obj
 

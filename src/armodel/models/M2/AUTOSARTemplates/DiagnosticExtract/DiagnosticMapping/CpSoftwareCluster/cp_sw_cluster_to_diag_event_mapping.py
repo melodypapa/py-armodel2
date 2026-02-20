@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
     DiagnosticMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
     CpSoftwareCluster,
 )
@@ -33,13 +34,13 @@ class CpSwClusterToDiagEventMapping(DiagnosticMapping):
         """
         return False
 
-    cp_software_cluster: Optional[CpSoftwareCluster]
-    diagnostic_event: Optional[DiagnosticEvent]
+    cp_software_cluster_ref: Optional[ARRef]
+    diagnostic_event_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize CpSwClusterToDiagEventMapping."""
         super().__init__()
-        self.cp_software_cluster: Optional[CpSoftwareCluster] = None
-        self.diagnostic_event: Optional[DiagnosticEvent] = None
+        self.cp_software_cluster_ref: Optional[ARRef] = None
+        self.diagnostic_event_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize CpSwClusterToDiagEventMapping to XML element.
@@ -61,12 +62,12 @@ class CpSwClusterToDiagEventMapping(DiagnosticMapping):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize cp_software_cluster
-        if self.cp_software_cluster is not None:
-            serialized = ARObject._serialize_item(self.cp_software_cluster, "CpSoftwareCluster")
+        # Serialize cp_software_cluster_ref
+        if self.cp_software_cluster_ref is not None:
+            serialized = ARObject._serialize_item(self.cp_software_cluster_ref, "CpSoftwareCluster")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CP-SOFTWARE-CLUSTER")
+                wrapped = ET.Element("CP-SOFTWARE-CLUSTER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -75,12 +76,12 @@ class CpSwClusterToDiagEventMapping(DiagnosticMapping):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize diagnostic_event
-        if self.diagnostic_event is not None:
-            serialized = ARObject._serialize_item(self.diagnostic_event, "DiagnosticEvent")
+        # Serialize diagnostic_event_ref
+        if self.diagnostic_event_ref is not None:
+            serialized = ARObject._serialize_item(self.diagnostic_event_ref, "DiagnosticEvent")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DIAGNOSTIC-EVENT")
+                wrapped = ET.Element("DIAGNOSTIC-EVENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -104,17 +105,17 @@ class CpSwClusterToDiagEventMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CpSwClusterToDiagEventMapping, cls).deserialize(element)
 
-        # Parse cp_software_cluster
-        child = ARObject._find_child_element(element, "CP-SOFTWARE-CLUSTER")
+        # Parse cp_software_cluster_ref
+        child = ARObject._find_child_element(element, "CP-SOFTWARE-CLUSTER-REF")
         if child is not None:
-            cp_software_cluster_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
-            obj.cp_software_cluster = cp_software_cluster_value
+            cp_software_cluster_ref_value = ARRef.deserialize(child)
+            obj.cp_software_cluster_ref = cp_software_cluster_ref_value
 
-        # Parse diagnostic_event
-        child = ARObject._find_child_element(element, "DIAGNOSTIC-EVENT")
+        # Parse diagnostic_event_ref
+        child = ARObject._find_child_element(element, "DIAGNOSTIC-EVENT-REF")
         if child is not None:
-            diagnostic_event_value = ARObject._deserialize_by_tag(child, "DiagnosticEvent")
-            obj.diagnostic_event = diagnostic_event_value
+            diagnostic_event_ref_value = ARRef.deserialize(child)
+            obj.diagnostic_event_ref = diagnostic_event_ref_value
 
         return obj
 

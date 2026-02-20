@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
 class DiagnosticCustomServiceInstance(DiagnosticServiceInstance):
@@ -27,11 +28,11 @@ class DiagnosticCustomServiceInstance(DiagnosticServiceInstance):
         """
         return False
 
-    custom_service: Optional[Any]
+    custom_service_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticCustomServiceInstance."""
         super().__init__()
-        self.custom_service: Optional[Any] = None
+        self.custom_service_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticCustomServiceInstance to XML element.
@@ -53,12 +54,12 @@ class DiagnosticCustomServiceInstance(DiagnosticServiceInstance):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize custom_service
-        if self.custom_service is not None:
-            serialized = ARObject._serialize_item(self.custom_service, "Any")
+        # Serialize custom_service_ref
+        if self.custom_service_ref is not None:
+            serialized = ARObject._serialize_item(self.custom_service_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CUSTOM-SERVICE")
+                wrapped = ET.Element("CUSTOM-SERVICE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -82,11 +83,11 @@ class DiagnosticCustomServiceInstance(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticCustomServiceInstance, cls).deserialize(element)
 
-        # Parse custom_service
-        child = ARObject._find_child_element(element, "CUSTOM-SERVICE")
+        # Parse custom_service_ref
+        child = ARObject._find_child_element(element, "CUSTOM-SERVICE-REF")
         if child is not None:
-            custom_service_value = child.text
-            obj.custom_service = custom_service_value
+            custom_service_ref_value = ARRef.deserialize(child)
+            obj.custom_service_ref = custom_service_ref_value
 
         return obj
 

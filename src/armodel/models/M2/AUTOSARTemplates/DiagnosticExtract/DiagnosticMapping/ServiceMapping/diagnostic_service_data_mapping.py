@@ -37,15 +37,15 @@ class DiagnosticServiceDataMapping(DiagnosticSwMapping):
         """
         return False
 
-    diagnostic_data: Optional[DiagnosticDataElement]
-    diagnostic: Optional[DiagnosticParameter]
+    diagnostic_data_ref: Optional[ARRef]
+    diagnostic_ref: Optional[ARRef]
     mapped_data_ref: Optional[ARRef]
     parameter: Optional[DiagnosticParameter]
     def __init__(self) -> None:
         """Initialize DiagnosticServiceDataMapping."""
         super().__init__()
-        self.diagnostic_data: Optional[DiagnosticDataElement] = None
-        self.diagnostic: Optional[DiagnosticParameter] = None
+        self.diagnostic_data_ref: Optional[ARRef] = None
+        self.diagnostic_ref: Optional[ARRef] = None
         self.mapped_data_ref: Optional[ARRef] = None
         self.parameter: Optional[DiagnosticParameter] = None
 
@@ -69,12 +69,12 @@ class DiagnosticServiceDataMapping(DiagnosticSwMapping):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize diagnostic_data
-        if self.diagnostic_data is not None:
-            serialized = ARObject._serialize_item(self.diagnostic_data, "DiagnosticDataElement")
+        # Serialize diagnostic_data_ref
+        if self.diagnostic_data_ref is not None:
+            serialized = ARObject._serialize_item(self.diagnostic_data_ref, "DiagnosticDataElement")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DIAGNOSTIC-DATA")
+                wrapped = ET.Element("DIAGNOSTIC-DATA-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -83,12 +83,12 @@ class DiagnosticServiceDataMapping(DiagnosticSwMapping):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize diagnostic
-        if self.diagnostic is not None:
-            serialized = ARObject._serialize_item(self.diagnostic, "DiagnosticParameter")
+        # Serialize diagnostic_ref
+        if self.diagnostic_ref is not None:
+            serialized = ARObject._serialize_item(self.diagnostic_ref, "DiagnosticParameter")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DIAGNOSTIC")
+                wrapped = ET.Element("DIAGNOSTIC-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -140,17 +140,17 @@ class DiagnosticServiceDataMapping(DiagnosticSwMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticServiceDataMapping, cls).deserialize(element)
 
-        # Parse diagnostic_data
-        child = ARObject._find_child_element(element, "DIAGNOSTIC-DATA")
+        # Parse diagnostic_data_ref
+        child = ARObject._find_child_element(element, "DIAGNOSTIC-DATA-REF")
         if child is not None:
-            diagnostic_data_value = ARObject._deserialize_by_tag(child, "DiagnosticDataElement")
-            obj.diagnostic_data = diagnostic_data_value
+            diagnostic_data_ref_value = ARRef.deserialize(child)
+            obj.diagnostic_data_ref = diagnostic_data_ref_value
 
-        # Parse diagnostic
-        child = ARObject._find_child_element(element, "DIAGNOSTIC")
+        # Parse diagnostic_ref
+        child = ARObject._find_child_element(element, "DIAGNOSTIC-REF")
         if child is not None:
-            diagnostic_value = ARObject._deserialize_by_tag(child, "DiagnosticParameter")
-            obj.diagnostic = diagnostic_value
+            diagnostic_ref_value = ARRef.deserialize(child)
+            obj.diagnostic_ref = diagnostic_ref_value
 
         # Parse mapped_data_ref
         child = ARObject._find_child_element(element, "MAPPED-DATA-REF")

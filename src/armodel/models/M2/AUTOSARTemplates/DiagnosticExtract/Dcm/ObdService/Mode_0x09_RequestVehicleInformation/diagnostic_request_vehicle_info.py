@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_info_type import (
     DiagnosticInfoType,
 )
@@ -30,13 +31,13 @@ class DiagnosticRequestVehicleInfo(DiagnosticServiceInstance):
         """
         return False
 
-    info_type: Optional[DiagnosticInfoType]
-    request_vehicle: Optional[Any]
+    info_type_ref: Optional[ARRef]
+    request_vehicle_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticRequestVehicleInfo."""
         super().__init__()
-        self.info_type: Optional[DiagnosticInfoType] = None
-        self.request_vehicle: Optional[Any] = None
+        self.info_type_ref: Optional[ARRef] = None
+        self.request_vehicle_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticRequestVehicleInfo to XML element.
@@ -58,12 +59,12 @@ class DiagnosticRequestVehicleInfo(DiagnosticServiceInstance):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize info_type
-        if self.info_type is not None:
-            serialized = ARObject._serialize_item(self.info_type, "DiagnosticInfoType")
+        # Serialize info_type_ref
+        if self.info_type_ref is not None:
+            serialized = ARObject._serialize_item(self.info_type_ref, "DiagnosticInfoType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("INFO-TYPE")
+                wrapped = ET.Element("INFO-TYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -72,12 +73,12 @@ class DiagnosticRequestVehicleInfo(DiagnosticServiceInstance):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize request_vehicle
-        if self.request_vehicle is not None:
-            serialized = ARObject._serialize_item(self.request_vehicle, "Any")
+        # Serialize request_vehicle_ref
+        if self.request_vehicle_ref is not None:
+            serialized = ARObject._serialize_item(self.request_vehicle_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("REQUEST-VEHICLE")
+                wrapped = ET.Element("REQUEST-VEHICLE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -101,17 +102,17 @@ class DiagnosticRequestVehicleInfo(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticRequestVehicleInfo, cls).deserialize(element)
 
-        # Parse info_type
-        child = ARObject._find_child_element(element, "INFO-TYPE")
+        # Parse info_type_ref
+        child = ARObject._find_child_element(element, "INFO-TYPE-REF")
         if child is not None:
-            info_type_value = ARObject._deserialize_by_tag(child, "DiagnosticInfoType")
-            obj.info_type = info_type_value
+            info_type_ref_value = ARRef.deserialize(child)
+            obj.info_type_ref = info_type_ref_value
 
-        # Parse request_vehicle
-        child = ARObject._find_child_element(element, "REQUEST-VEHICLE")
+        # Parse request_vehicle_ref
+        child = ARObject._find_child_element(element, "REQUEST-VEHICLE-REF")
         if child is not None:
-            request_vehicle_value = child.text
-            obj.request_vehicle = request_vehicle_value
+            request_vehicle_ref_value = ARRef.deserialize(child)
+            obj.request_vehicle_ref = request_vehicle_ref_value
 
         return obj
 

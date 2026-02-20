@@ -402,8 +402,8 @@
         "exclusiveArea": {
           "type": "ExclusiveArea",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference represents the ExclusiveArea for which the"
         }
       }

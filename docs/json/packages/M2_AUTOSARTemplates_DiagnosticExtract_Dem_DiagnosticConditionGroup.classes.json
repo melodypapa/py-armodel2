@@ -78,8 +78,8 @@
         "enableConditions": {
           "type": "any (DiagnosticEnable)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to enableConditions that are part of the Enable atpVariation"
         }
       }
@@ -121,8 +121,8 @@
         "storages": {
           "type": "any (DiagnosticStorage)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to storageConditions that are part of the StorageConditionGroup. atpVariation"
         }
       }

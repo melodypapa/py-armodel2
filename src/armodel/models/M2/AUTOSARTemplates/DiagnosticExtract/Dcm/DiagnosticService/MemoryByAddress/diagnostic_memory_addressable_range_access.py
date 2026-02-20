@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticMemoryByAddress,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from abc import ABC, abstractmethod
 
 
@@ -28,11 +29,11 @@ class DiagnosticMemoryAddressableRangeAccess(DiagnosticMemoryByAddress, ABC):
         """
         return True
 
-    memory_ranges: list[Any]
+    memory_range_refs: list[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticMemoryAddressableRangeAccess."""
         super().__init__()
-        self.memory_ranges: list[Any] = []
+        self.memory_range_refs: list[Any] = []
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticMemoryAddressableRangeAccess to XML element.
@@ -54,13 +55,20 @@ class DiagnosticMemoryAddressableRangeAccess(DiagnosticMemoryByAddress, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize memory_ranges (list to container "MEMORY-RANGES")
-        if self.memory_ranges:
-            wrapper = ET.Element("MEMORY-RANGES")
-            for item in self.memory_ranges:
+        # Serialize memory_range_refs (list to container "MEMORY-RANGE-REFS")
+        if self.memory_range_refs:
+            wrapper = ET.Element("MEMORY-RANGE-REFS")
+            for item in self.memory_range_refs:
                 serialized = ARObject._serialize_item(item, "Any")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("MEMORY-RANGE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -79,15 +87,21 @@ class DiagnosticMemoryAddressableRangeAccess(DiagnosticMemoryByAddress, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticMemoryAddressableRangeAccess, cls).deserialize(element)
 
-        # Parse memory_ranges (list from container "MEMORY-RANGES")
-        obj.memory_ranges = []
-        container = ARObject._find_child_element(element, "MEMORY-RANGES")
+        # Parse memory_range_refs (list from container "MEMORY-RANGE-REFS")
+        obj.memory_range_refs = []
+        container = ARObject._find_child_element(element, "MEMORY-RANGE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.memory_ranges.append(child_value)
+                    obj.memory_range_refs.append(child_value)
 
         return obj
 

@@ -40,22 +40,22 @@
         "controlledHw": {
           "type": "HwElement",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Optional mapping of SwComponentPrototypes that are by SensorActuatorSwComponentType to a Hw category SensorActuator."
         },
         "ecuInstance": {
           "type": "EcuInstance",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to a specific ECU Instance description."
         },
         "processingUnit": {
           "type": "HwElement",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Optional mapping of software components to individual residing in one ECU. A is described in the ECU Resource the HwElement of HwCategory Processing"
         }
       }
@@ -92,8 +92,8 @@
         "component": {
           "type": "SwcImplementation",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to a specific Implementation description. to be used by the specified SW This allows to achieve more precise the resource consumption that results from instance of an atomic SW component onto"
         }
       }
@@ -132,8 +132,8 @@
         "application": {
           "type": "ApplicationPartition",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to an ApplicationPartition to which a Sw is mapped."
         },
         "swComponentPrototype": {
@@ -210,15 +210,15 @@
         "applications": {
           "type": "ApplicationPartition",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to ApplicationPartitions that are mapped to an"
         },
         "ecuPartition": {
           "type": "EcuPartition",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to EcuPartition to which the Application"
         }
       }
@@ -410,15 +410,15 @@
         "j1939Controller": {
           "type": "any (J1939Controller)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the J1939 Controller Application that is mapped to the referenced J1939NmNode."
         },
         "j1939NmNode": {
           "type": "J1939NmNode",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "J1939NmNode that is the target of the J1939Controller"
         }
       }
@@ -507,8 +507,8 @@
         "ecuInstance": {
           "type": "EcuInstance",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the ECU this estimation is done for."
         },
         "introduction": {

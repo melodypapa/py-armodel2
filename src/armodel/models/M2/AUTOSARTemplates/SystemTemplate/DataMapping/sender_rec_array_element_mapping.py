@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DataMapping.indexed_array_element import (
     IndexedArrayElement,
 )
@@ -35,13 +36,13 @@ class SenderRecArrayElementMapping(ARObject):
 
     complex_type: Optional[SenderRecCompositeTypeMapping]
     indexed_array: Optional[IndexedArrayElement]
-    system_signal: Optional[SystemSignal]
+    system_signal_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SenderRecArrayElementMapping."""
         super().__init__()
         self.complex_type: Optional[SenderRecCompositeTypeMapping] = None
         self.indexed_array: Optional[IndexedArrayElement] = None
-        self.system_signal: Optional[SystemSignal] = None
+        self.system_signal_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize SenderRecArrayElementMapping to XML element.
@@ -81,12 +82,12 @@ class SenderRecArrayElementMapping(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize system_signal
-        if self.system_signal is not None:
-            serialized = ARObject._serialize_item(self.system_signal, "SystemSignal")
+        # Serialize system_signal_ref
+        if self.system_signal_ref is not None:
+            serialized = ARObject._serialize_item(self.system_signal_ref, "SystemSignal")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SYSTEM-SIGNAL")
+                wrapped = ET.Element("SYSTEM-SIGNAL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -123,11 +124,11 @@ class SenderRecArrayElementMapping(ARObject):
             indexed_array_value = ARObject._deserialize_by_tag(child, "IndexedArrayElement")
             obj.indexed_array = indexed_array_value
 
-        # Parse system_signal
-        child = ARObject._find_child_element(element, "SYSTEM-SIGNAL")
+        # Parse system_signal_ref
+        child = ARObject._find_child_element(element, "SYSTEM-SIGNAL-REF")
         if child is not None:
-            system_signal_value = ARObject._deserialize_by_tag(child, "SystemSignal")
-            obj.system_signal = system_signal_value
+            system_signal_ref_value = ARRef.deserialize(child)
+            obj.system_signal_ref = system_signal_ref_value
 
         return obj
 

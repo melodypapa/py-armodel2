@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.ResponseOnEvent.diagnostic_event_window import (
     DiagnosticEventWindow,
 )
@@ -31,12 +32,12 @@ class DiagnosticResponseOnEvent(DiagnosticServiceInstance):
         return False
 
     event_windows: list[DiagnosticEventWindow]
-    response_on: Optional[Any]
+    response_on_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticResponseOnEvent."""
         super().__init__()
         self.event_windows: list[DiagnosticEventWindow] = []
-        self.response_on: Optional[Any] = None
+        self.response_on_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticResponseOnEvent to XML element.
@@ -68,12 +69,12 @@ class DiagnosticResponseOnEvent(DiagnosticServiceInstance):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize response_on
-        if self.response_on is not None:
-            serialized = ARObject._serialize_item(self.response_on, "Any")
+        # Serialize response_on_ref
+        if self.response_on_ref is not None:
+            serialized = ARObject._serialize_item(self.response_on_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("RESPONSE-ON")
+                wrapped = ET.Element("RESPONSE-ON-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -107,11 +108,11 @@ class DiagnosticResponseOnEvent(DiagnosticServiceInstance):
                 if child_value is not None:
                     obj.event_windows.append(child_value)
 
-        # Parse response_on
-        child = ARObject._find_child_element(element, "RESPONSE-ON")
+        # Parse response_on_ref
+        child = ARObject._find_child_element(element, "RESPONSE-ON-REF")
         if child is not None:
-            response_on_value = child.text
-            obj.response_on = response_on_value
+            response_on_ref_value = ARRef.deserialize(child)
+            obj.response_on_ref = response_on_ref_value
 
         return obj
 
