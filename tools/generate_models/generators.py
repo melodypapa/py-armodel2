@@ -684,7 +684,7 @@ def _generate_deserialize_method(
                     # For reference lists, check if child is a reference element and use ARRef.deserialize()
                     # For non-reference lists, deserialize each child element dynamically based on its tag
                     if is_ref:
-                        code += f'''                # Check if child is a reference element (ends with -REF or -TREF)
+                        code += '''                # Check if child is a reference element (ends with -REF or -TREF)
                 child_tag = ARObject._strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
@@ -694,7 +694,7 @@ def _generate_deserialize_method(
                     child_value = ARObject._deserialize_by_tag(child, None)
 '''
                     else:
-                        code += f'''                # Deserialize each child element dynamically based on its tag
+                        code += '''                # Deserialize each child element dynamically based on its tag
                 child_value = ARObject._deserialize_by_tag(child, None)
 '''
                     
@@ -1697,10 +1697,10 @@ def _generate_serialize_method(
                     wrapper.append(child_elem)
 '''
                     else:
-                        code += f'''                    wrapper.append(serialized)
+                        code += '''                    wrapper.append(serialized)
 '''
                     
-                    code += f'''            if len(wrapper) > 0:
+                    code += '''            if len(wrapper) > 0:
                 elem.append(wrapper)
 
 '''

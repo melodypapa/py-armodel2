@@ -32,9 +32,6 @@ class ARObject:
     """AUTOSAR ARObject."""
     """Abstract base class - do not instantiate directly."""
 
-    checksum: Optional["String"] = None
-    timestamp: Optional["DateTime"] = None
-
     def __init__(self) -> None:
         """Initialize ARObject."""
         self._checksum: Optional["String"] = None

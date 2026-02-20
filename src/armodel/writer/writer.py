@@ -184,7 +184,7 @@ class ARXMLWriter:
             # Look for patterns like ">text<" where text contains quotes
             # Use regex to find text between tags and escape quotes
             
-            def escape_quotes_in_text(match):
+            def escape_quotes_in_text(match: re.Match[str]) -> str:
                 """Escape quotes in text content between tags."""
                 text = match.group(1)
                 if text:

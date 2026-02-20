@@ -1,7 +1,7 @@
 """ARXML reading functionality."""
 
 from pathlib import Path
-from typing import Union, Optional, cast
+from typing import Union, Optional
 import xml.etree.cElementTree as ET
 
 from armodel.core import SchemaVersionManager
@@ -98,7 +98,7 @@ class ARXMLReader:
             The populated AUTOSAR object
         """
         # Deserialize to get a new AUTOSAR object
-        loaded_autosar = cast(AUTOSAR, AUTOSAR.deserialize(root))
+        loaded_autosar = AUTOSAR.deserialize(root)
 
         # Copy all attributes from loaded_autosar to autosar
         for attr_name in vars(loaded_autosar).keys():

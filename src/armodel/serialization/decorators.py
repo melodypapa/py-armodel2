@@ -1,6 +1,6 @@
 """Decorators for XML serialization edge cases."""
 
-from typing import Any, Callable, Optional
+from typing import Any, Callable
 
 
 def xml_attribute(func: Any) -> Any:
