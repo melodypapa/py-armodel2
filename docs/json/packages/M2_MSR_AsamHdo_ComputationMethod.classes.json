@@ -72,6 +72,13 @@
         }
       ],
       "attributes": {
+        "unit": {
+          "type": "Unit",
+          "multiplicity": "0..1",
+          "kind": "ref",
+          "is_ref": true,
+          "note": "This is the physical unit of the Physical values for which"
+        },
         "compuInternalToPhys": {
           "type": "Compu",
           "multiplicity": "0..1",
@@ -92,13 +99,6 @@
           "kind": "attribute",
           "is_ref": false,
           "note": "This property specifies, how the physical value shall be in documents or measurement and"
-        },
-        "unit": {
-          "type": "Unit",
-          "multiplicity": "0..1",
-          "kind": "ref",
-          "is_ref": true,
-          "note": "This is the physical unit of the Physical values for which"
         }
       }
     },
@@ -488,19 +488,19 @@
         }
       ],
       "attributes": {
+        "compuNumerator": {
+          "type": "CompuNominatorDenominator",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This is the numerator of the rational expression."
+        },
         "compuDenominator": {
           "type": "CompuNominatorDenominator",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This is the denominator of the expression."
-        },
-        "compu": {
-          "type": "CompuNominatorDenominator",
-          "multiplicity": "0..1",
-          "kind": "attribute",
-          "is_ref": false,
-          "note": "This is the numerator of the rational expression."
         }
       }
     },
@@ -674,7 +674,15 @@
           "standard_release": "R23-11"
         }
       ],
-      "attributes": {}
+      "attributes": {
+        "v": {
+          "type": "Numerical",
+          "multiplicity": "*",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Value calculated via a system constant. This element is"
+        }
+      }
     },
     {
       "name": "CompuConstFormulaContent",

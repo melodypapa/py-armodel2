@@ -10,6 +10,9 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    Numerical,
+)
 
 
 class CompuNominatorDenominator(ARObject):
@@ -24,9 +27,11 @@ class CompuNominatorDenominator(ARObject):
         """
         return False
 
+    v: list[Numerical]
     def __init__(self) -> None:
         """Initialize CompuNominatorDenominator."""
         super().__init__()
+        self.v: list[Numerical] = []
 
     def serialize(self) -> ET.Element:
         """Serialize CompuNominatorDenominator to XML element.
@@ -37,6 +42,20 @@ class CompuNominatorDenominator(ARObject):
         # Get XML tag name for this class
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
+
+        # Serialize v (list)
+        for item in self.v:
+            serialized = ARObject._serialize_item(item, "Numerical")
+            if serialized is not None:
+                # For non-container lists, wrap with correct tag
+                wrapped = ET.Element("V")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
 
         return elem
 
@@ -53,6 +72,12 @@ class CompuNominatorDenominator(ARObject):
         # Create instance and initialize with default values
         obj = cls.__new__(cls)
         obj.__init__()
+
+        # Parse v (list)
+        obj.v = []
+        for child in ARObject._find_all_child_elements(element, "V"):
+            v_value = child.text
+            obj.v.append(v_value)
 
         return obj
 

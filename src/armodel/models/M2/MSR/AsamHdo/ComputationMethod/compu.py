@@ -43,29 +43,12 @@ class Compu(ARObject):
     def serialize(self) -> ET.Element:
         """Serialize Compu to XML element.
 
-        Handles CompuContent polymorphic types by serializing them directly.
-        Since CompuContent is abstract, we serialize the concrete subclass
-        (e.g., CompuScales) without a wrapper element.
-
         Returns:
             xml.etree.ElementTree.Element representing this Compu
         """
-        tag = NameConverter.to_xml_tag(self.__class__.__name__)
-        elem = ET.Element(tag)
-
-        # Serialize compu_content (polymorphic CompuContent subclass)
-        if self.compu_content is not None:
-            serialized = self.compu_content.serialize()
-            # Append the entire serialized element (not just children)
-            # This preserves the correct XML structure for CompuScales
-            elem.append(serialized)
-
-        # Serialize compu_default
-        if self.compu_default is not None:
-            serialized = self.compu_default.serialize()
-            elem.append(serialized)
-
-        return elem
+        # Delegate to parent's serialize - it handles all attributes correctly
+        # including compu_content and compu_default
+        return super(Compu, self).serialize()
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> Self:
@@ -81,8 +64,8 @@ class Compu(ARObject):
         Returns:
             Deserialized Compu instance with compu_content properly set
         """
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(Compu, cls).deserialize(element)
 
         # Use ModelFactory for polymorphic type resolution
         factory = ModelFactory()

@@ -940,6 +940,62 @@ class ARObject:
         # Validate deserialization - check for unrecognized XML elements
         cls._validate_deserialization(element, type_hints)
 
+        # Handle polymorphic_flattened attributes - check for flattened child elements
+        # that need to be wrapped in their container class
+        # Check if this class has a _polymorphic_flattened_mapping class attribute
+        if hasattr(cls, '_polymorphic_flattened_mapping'):
+            flattened_mapping = cls._polymorphic_flattened_mapping
+            for attr_name, attr_type in type_hints.items():
+                # Skip if this attribute doesn't have a polymorphic_flattened mapping
+                if attr_name not in flattened_mapping:
+                    continue
+
+                # Get the mapping from flattened child tags to wrapper class names
+                child_tag_mapping = flattened_mapping[attr_name]
+
+                # Skip if attribute is already set
+                if getattr(obj, attr_name, None) is not None:
+                    continue
+
+                # Check for flattened child elements
+                flattened_element = None
+                wrapper_class_name = None
+
+                for child in current_elem:
+                    child_tag = ARObject._strip_namespace(child.tag)
+                    if child_tag in child_tag_mapping:
+                        flattened_element = child
+                        wrapper_class_name = child_tag_mapping[child_tag]
+                        break
+
+                if flattened_element and wrapper_class_name:
+                    # Import the wrapper class
+                    wrapper_class = ARObject._import_class_by_name(wrapper_class_name)
+                    if wrapper_class:
+                        # Create wrapper instance
+                        wrapper_instance = wrapper_class()
+
+                        # Get the wrapper's attributes to find which one should hold the child
+                        if hasattr(wrapper_class, '__annotations__'):
+                            for wrapper_attr_name, wrapper_attr_type in wrapper_class.__annotations__.items():
+                                if wrapper_attr_name.startswith('_'):
+                                    continue
+
+                                # Try to deserialize the child element into the wrapper's attribute
+                                try:
+                                    child_value = ARObject._deserialize_with_type(
+                                        flattened_element,
+                                        str(wrapper_attr_type)
+                                    )
+                                    if child_value is not None:
+                                        setattr(wrapper_instance, wrapper_attr_name, child_value)
+                                        break
+                                except Exception:
+                                    continue
+
+                        # Set the wrapper instance as the attribute value
+                        setattr(obj, attr_name, wrapper_instance)
+
         return obj
 
     @classmethod
@@ -1055,15 +1111,18 @@ class ARObject:
                     if isinstance(cls, type):
                         return cls
 
-        # Try to import from known locations
+        # Common package paths to search
         # Convert class name to snake_case for filename
         class_filename = class_name.replace('<', '_').replace('>', '_')
 
-        # Common package paths to search
+        # Compute snake_case filename for ComputationMethod package
+        compu_method_filename = NameConverter.to_python_name(NameConverter.to_xml_tag(class_name))
+
         search_paths = [
             f'armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.{class_name}.{class_filename}',
             f'armodel.models.M2.AUTOSARTemplates.{class_name}.{class_filename}',
             f'armodel.models.M2.MSR.{class_name}.{class_filename}',
+            f'armodel.models.M2.MSR.AsamHdo.ComputationMethod.{compu_method_filename}',
         ]
 
         for module_path in search_paths:
@@ -1099,7 +1158,6 @@ class ARObject:
             factory = ModelFactory()
             if factory.is_initialized():
                 # Try to get the XML tag from class name and look up in factory
-                from armodel.serialization.name_converter import NameConverter
                 xml_tag = NameConverter.to_xml_tag(class_name)
                 cls = factory.get_class(xml_tag)
                 if cls:

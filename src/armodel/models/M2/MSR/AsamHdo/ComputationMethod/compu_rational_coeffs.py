@@ -27,13 +27,13 @@ class CompuRationalCoeffs(ARObject):
         """
         return False
 
+    compu_numerator: Optional[CompuNominatorDenominator]
     compu_denominator: Optional[CompuNominatorDenominator]
-    compu: Optional[CompuNominatorDenominator]
     def __init__(self) -> None:
         """Initialize CompuRationalCoeffs."""
         super().__init__()
+        self.compu_numerator: Optional[CompuNominatorDenominator] = None
         self.compu_denominator: Optional[CompuNominatorDenominator] = None
-        self.compu: Optional[CompuNominatorDenominator] = None
 
     def serialize(self) -> ET.Element:
         """Serialize CompuRationalCoeffs to XML element.
@@ -45,12 +45,12 @@ class CompuRationalCoeffs(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize compu_denominator
-        if self.compu_denominator is not None:
-            serialized = ARObject._serialize_item(self.compu_denominator, "CompuNominatorDenominator")
+        # Serialize compu_numerator
+        if self.compu_numerator is not None:
+            serialized = ARObject._serialize_item(self.compu_numerator, "CompuNominatorDenominator")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("COMPU-DENOMINATOR")
+                wrapped = ET.Element("COMPU-NUMERATOR")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -59,12 +59,12 @@ class CompuRationalCoeffs(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize compu
-        if self.compu is not None:
-            serialized = ARObject._serialize_item(self.compu, "CompuNominatorDenominator")
+        # Serialize compu_denominator
+        if self.compu_denominator is not None:
+            serialized = ARObject._serialize_item(self.compu_denominator, "CompuNominatorDenominator")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("COMPU")
+                wrapped = ET.Element("COMPU-DENOMINATOR")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -89,17 +89,17 @@ class CompuRationalCoeffs(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
+        # Parse compu_numerator
+        child = ARObject._find_child_element(element, "COMPU-NUMERATOR")
+        if child is not None:
+            compu_numerator_value = ARObject._deserialize_by_tag(child, "CompuNominatorDenominator")
+            obj.compu_numerator = compu_numerator_value
+
         # Parse compu_denominator
         child = ARObject._find_child_element(element, "COMPU-DENOMINATOR")
         if child is not None:
             compu_denominator_value = ARObject._deserialize_by_tag(child, "CompuNominatorDenominator")
             obj.compu_denominator = compu_denominator_value
-
-        # Parse compu
-        child = ARObject._find_child_element(element, "COMPU")
-        if child is not None:
-            compu_value = ARObject._deserialize_by_tag(child, "CompuNominatorDenominator")
-            obj.compu = compu_value
 
         return obj
 
