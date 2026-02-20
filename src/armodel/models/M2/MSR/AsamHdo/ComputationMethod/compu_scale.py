@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization.name_converter import NameConverter
 from armodel.serialization.model_factory import ModelFactory
+from armodel.serialization.decorators import polymorphic_flattened
 
 if TYPE_CHECKING:
     from typing import Self
@@ -38,6 +39,15 @@ from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_langu
 class CompuScale(ARObject):
     """AUTOSAR CompuScale."""
 
+    # Polymorphic flattened mapping for compu_scale_contents attribute
+    # Maps flattened child XML tags to wrapper class names
+    _polymorphic_flattened_mapping = {
+        "compu_scale_contents": {
+            "COMPU-CONST": "CompuScaleConstantContents",
+            "COMPU-RATIONAL-COEFFS": "CompuScaleRationalFormula"
+        }
+    }
+
     @property
     def is_abstract(self) -> bool:
         """Check if this class is abstract.
@@ -48,7 +58,7 @@ class CompuScale(ARObject):
         return False
 
     a2l_display_text: Optional[String]
-    compu_inverse: Optional[CompuConst]
+    compu_inverse_value: Optional[CompuConst]
     compu_scale_contents: Optional[CompuScaleContents]
     desc: Optional[MultiLanguageOverviewParagraph]
     lower_limit: Optional[Limit]
@@ -60,7 +70,7 @@ class CompuScale(ARObject):
         """Initialize CompuScale."""
         super().__init__()
         self.a2l_display_text: Optional[String] = None
-        self.compu_inverse: Optional[CompuConst] = None
+        self.compu_inverse_value: Optional[CompuConst] = None
         self.compu_scale_contents: Optional[CompuScaleContents] = None
         self.desc: Optional[MultiLanguageOverviewParagraph] = None
         self.lower_limit: Optional[Limit] = None
@@ -72,9 +82,6 @@ class CompuScale(ARObject):
     def serialize(self) -> ET.Element:
         """Serialize CompuScale to XML element.
 
-        Handles flattened COMPU-CONST structure where COMPU-CONST can appear
-        directly under COMPU-SCALE instead of being wrapped in COMPU-SCALE-CONSTANT-CONTENTS.
-
         Returns:
             xml.etree.ElementTree.Element representing this CompuScale
         """
@@ -82,8 +89,8 @@ class CompuScale(ARObject):
         elem = super().serialize()
 
         # Now handle compu_scale_contents specially for flattened structure
-        # Check if we have COMPU-SCALE-CONSTANT-CONTENTS that needs to be flattened
         if self.compu_scale_contents is not None:
+            # Handle CompuScaleConstantContents flattening
             from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_scale_constant_contents import CompuScaleConstantContents
             if isinstance(self.compu_scale_contents, CompuScaleConstantContents) and hasattr(self.compu_scale_contents, 'compu_const') and self.compu_scale_contents.compu_const is not None:
                 # Remove the COMPU-SCALE-CONSTANT-CONTENTS wrapper if it exists
@@ -96,14 +103,36 @@ class CompuScale(ARObject):
                         elem.append(serialized)
                         break
 
+            # Handle CompuScaleRationalFormula flattening
+            from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_scale_rational_formula import CompuScaleRationalFormula
+            if isinstance(self.compu_scale_contents, CompuScaleRationalFormula) and hasattr(self.compu_scale_contents, 'compu_rational_coeffs') and self.compu_scale_contents.compu_rational_coeffs is not None:
+                # Remove the COMPU-SCALE-RATIONAL-FORMULA wrapper if it exists
+                for child in list(elem):
+                    child_tag = ARObject._strip_namespace(child.tag)
+                    if child_tag == "COMPU-SCALE-RATIONAL-FORMULA":
+                        elem.remove(child)
+                        # Add the COMPU-RATIONAL-COEFFS directly (flattened structure)
+                        serialized = self.compu_scale_contents.compu_rational_coeffs.serialize()
+                        # Wrap with COMPU-RATIONAL-COEFFS tag
+                        wrapped = ET.Element("COMPU-RATIONAL-COEFFS")
+                        if hasattr(serialized, 'attrib'):
+                            wrapped.attrib.update(serialized.attrib)
+                            if serialized.text:
+                                wrapped.text = serialized.text
+                        for child in serialized:
+                            wrapped.append(child)
+                        elem.append(wrapped)
+                        break
+
         return elem
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> Self:
         """Deserialize XML element to CompuScale.
 
-        Handles flattened COMPU-CONST structure where COMPU-CONST can appear
-        directly under COMPU-SCALE instead of being wrapped in COMPU-SCALE-CONSTANT-CONTENTS.
+        The @polymorphic_flattened decorator on compu_scale_contents handles
+        flattened COMPU-CONST and COMPU-RATIONAL-COEFFS elements that can appear
+        directly under COMPU-SCALE without their wrapper elements.
 
         Args:
             element: XML element to deserialize from
@@ -111,33 +140,9 @@ class CompuScale(ARObject):
         Returns:
             Deserialized CompuScale instance
         """
-        # First, use the parent class deserialize to handle standard attributes
-        obj = super().deserialize(element)
-
-        # Now check for COMPU-CONST elements that weren't handled by standard deserialization
-        # (they would have been ignored as unrecognized elements)
-        compu_const_elements = []
-        for child in element:
-            child_tag = ARObject._strip_namespace(child.tag)
-            if child_tag == "COMPU-CONST":
-                compu_const_elements.append(child)
-
-        # Handle COMPU-CONST elements (flattened structure)
-        if compu_const_elements and obj.compu_scale_contents is None:
-            from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_scale_constant_contents import CompuScaleConstantContents
-            from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_const import CompuConst
-
-            # Create CompuScaleConstantContents wrapper
-            constant_contents = CompuScaleConstantContents()
-
-            # Deserialize the first COMPU-CONST
-            compu_const = CompuConst.deserialize(compu_const_elements[0])
-            constant_contents.compu_const = compu_const
-
-            # Set as compu_scale_contents
-            obj.compu_scale_contents = constant_contents
-
-        return obj
+        # Delegate to parent class deserialize - the @polymorphic_flattened
+        # decorator in ARObject.deserialize() will handle flattened child elements
+        return super().deserialize(element)
 
 
 class CompuScaleBuilder:

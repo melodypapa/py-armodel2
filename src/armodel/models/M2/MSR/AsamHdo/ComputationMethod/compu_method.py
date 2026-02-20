@@ -27,8 +27,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu import (
     Compu,
 )
-from armodel.models.M2.MSR.AsamHdo.Units.unit import (
-    Unit,
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import (
+    ARRef,
 )
 
 
@@ -38,7 +38,7 @@ class CompuMethod(ARElement):
     compu_internal_to_phys: Optional[Compu]
     compu_phys_to_internal: Optional[Compu]
     display_format: Optional[DisplayFormatString]
-    unit: Optional[Unit]
+    unit: Optional[ARRef]
 
     @property
     def is_abstract(self) -> bool:
@@ -55,7 +55,7 @@ class CompuMethod(ARElement):
         self._compu_internal_to_phys: Optional[Compu] = None
         self._compu_phys_to_internal: Optional[Compu] = None
         self.display_format: Optional[DisplayFormatString] = None
-        self.unit: Optional[Unit] = None
+        self.unit: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize CompuMethod to XML element.
@@ -81,6 +81,15 @@ class CompuMethod(ARElement):
         # Copy all children from parent element
         for child in parent_elem:
             elem.append(child)
+
+        # Serialize unit (UNIT-REF is a reference, not a UNIT element)
+        # Must come before COMPU-INTERNAL-TO-PHYS to match original XML order
+        if self.unit is not None:
+            serialized = super(CompuMethod, self)._serialize_item(self.unit, "ARRef")
+            if serialized is not None:
+                # ARRef.serialize() returns a generic element, we need to set the correct tag
+                serialized.tag = "UNIT-REF"
+                elem.append(serialized)
 
         # Serialize compu_internal_to_phys as COMPU-INTERNAL-TO-PHYS element
         if self._compu_internal_to_phys is not None:
@@ -109,12 +118,6 @@ class CompuMethod(ARElement):
             if serialized is not None:
                 elem.append(serialized)
 
-        # Serialize unit
-        if self.unit is not None:
-            serialized = super(CompuMethod, self)._serialize_item(self.unit, "Unit")
-            if serialized is not None:
-                elem.append(serialized)
-
         return elem
 
     @classmethod
@@ -135,24 +138,9 @@ class CompuMethod(ARElement):
         from armodel.serialization.model_factory import ModelFactory
         from armodel.serialization.name_converter import NameConverter
 
-        # Create instance without calling __init__
-        obj = cls.__new__(cls)
-
-        # Call __init__ to set default values
-        obj.__init__()
-
-        # Manually handle ARElement attributes (short_name, category, desc)
-        # These are the attributes inherited from ARElement
-        for child in element:
-            child_tag = ARObject._strip_namespace(child.tag)
-            if child_tag == "SHORT-NAME":
-                obj.short_name = child.text
-            elif child_tag == "CATEGORY":
-                obj.category = child.text
-            elif child_tag == "DESC":
-                # DESC can have complex structure with L-2/L-3 elements
-                # For now, just get the text content
-                obj.desc = child.text
+        # First, call parent's deserialize to handle inherited attributes
+        # This handles: long_name, short_name, desc, category, etc.
+        obj = super(CompuMethod, cls).deserialize(element)
 
         # Initialize ModelFactory for polymorphic type resolution
         factory = ModelFactory()
@@ -220,14 +208,14 @@ class CompuMethod(ARElement):
         if display_format_elem is not None:
             obj.display_format = display_format_elem.text
 
-        # Deserialize unit
+        # Deserialize unit (UNIT-REF is a reference, not a UNIT element)
         unit_elem = None
         for child in element:
-            if ARObject._strip_namespace(child.tag) == "UNIT":
+            if ARObject._strip_namespace(child.tag) == "UNIT-REF":
                 unit_elem = child
                 break
         if unit_elem is not None:
-            obj.unit = unit_elem.text
+            obj.unit = ARRef.deserialize(unit_elem)
 
         return obj
 
