@@ -7071,7 +7071,7 @@ Special values FFEh and FFFh are reserved for future definition of signal qualit
                   <INTRODUCTION>
                     <P>
                       <L-1 L="EN">There exist 4 principal states: open, intermediate, near closed, hard closed.The definition of intermediate and near closed has to be made for each project separately.
-Definition of "Clutch": </L-1>
+Definition of &quot;Clutch&quot;: </L-1>
                       <L-1 L="EN">Be aware that this information is not necessarily equal with the drivetrain open information. If a torque converter clutch is open, the drivetrain can still be closed. In contrary the drivetrain is open for Manual Transmission (MT) and Automatic Manual Transmission (AMT), if the clutch is open!</L-1>
                     </P>
                     <LIST TYPE="UNNUMBER">

@@ -248,8 +248,8 @@
         "arguments": {
           "type": "ArgumentDataPrototype",
           "multiplicity": "*",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "An argument of this ClientServerOperation atpSplitable; atpVariation"
         },
         "diagArgIntegrity": {

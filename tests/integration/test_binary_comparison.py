@@ -377,7 +377,6 @@ class TestIndividualFiles:
             tmp_path
         )
 
-    @pytest.mark.xfail(reason="Binary comparison not yet passing - work in progress")
     def test_port_interface_blueprint_binary_comparison(
         self,
         reader: ARXMLReader,

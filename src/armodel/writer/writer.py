@@ -206,41 +206,25 @@ class ARXMLWriter:
         """
         import re
         
-        # Process the XML string line by line
+        # Process the entire XML string at once to handle multiline text content
         # We need to escape quotes only in text content (between > and <)
         # and NOT in attribute values or tag names
         
-        lines = xml_str.split('\n')
-        processed_lines = []
+        def escape_quotes_in_text(match: re.Match[str]) -> str:
+            """Escape quotes in text content between tags."""
+            text = match.group(1)
+            if text:
+                # Escape quotes in text content
+                text = text.replace('"', '&quot;')
+            return f'>{text}<'
         
-        for line in lines:
-            # Skip lines that are purely tags (no text content)
-            if not line.strip():
-                processed_lines.append(line)
-                continue
-            
-            # For each line, identify text content and escape quotes
-            # Text content appears after > and before <
-            # We need to be careful not to escape quotes in attributes
-            
-            # Escape quotes in text content only
-            # Look for patterns like ">text<" where text contains quotes
-            # Use regex to find text between tags and escape quotes
-            
-            def escape_quotes_in_text(match: re.Match[str]) -> str:
-                """Escape quotes in text content between tags."""
-                text = match.group(1)
-                if text:
-                    # Escape quotes in text content
-                    text = text.replace('"', '&quot;')
-                return f'>{text}<'
-            
-            # Replace text content between tags
-            # This regex matches >...< where ... is not a tag
-            processed_line = re.sub(r'>([^<]*?)<', escape_quotes_in_text, line)
-            processed_lines.append(processed_line)
+        # Replace text content between tags
+        # Use re.DOTALL flag to match across newlines
+        # This regex matches >...< where ... is any text (including newlines)
+        # but not another tag (which starts with <)
+        processed_str = re.sub(r'>([^<]*?)<', escape_quotes_in_text, xml_str, flags=re.DOTALL)
         
-        return '\n'.join(processed_lines)
+        return processed_str
 
     def _indent(self, elem: ET.Element, level: int = 0) -> None:
         """Add indentation to XML element for pretty printing.

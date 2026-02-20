@@ -44,13 +44,13 @@ class ClientServerOperation(Identifiable):
         """
         return False
 
-    argument_refs: list[ARRef]
+    arguments: list[ArgumentDataPrototype]
     diag_arg_integrity: Optional[Boolean]
     possible_error_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize ClientServerOperation."""
         super().__init__()
-        self.argument_refs: list[ARRef] = []
+        self.arguments: list[ArgumentDataPrototype] = []
         self.diag_arg_integrity: Optional[Boolean] = None
         self.possible_error_refs: list[ARRef] = []
 
@@ -74,20 +74,13 @@ class ClientServerOperation(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize argument_refs (list to container "ARGUMENT-REFS")
-        if self.argument_refs:
-            wrapper = ET.Element("ARGUMENT-REFS")
-            for item in self.argument_refs:
+        # Serialize arguments (list to container "ARGUMENTS")
+        if self.arguments:
+            wrapper = ET.Element("ARGUMENTS")
+            for item in self.arguments:
                 serialized = ARObject._serialize_item(item, "ArgumentDataPrototype")
                 if serialized is not None:
-                    child_elem = ET.Element("ARGUMENT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -137,21 +130,15 @@ class ClientServerOperation(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ClientServerOperation, cls).deserialize(element)
 
-        # Parse argument_refs (list from container "ARGUMENT-REFS")
-        obj.argument_refs = []
-        container = ARObject._find_child_element(element, "ARGUMENT-REFS")
+        # Parse arguments (list from container "ARGUMENTS")
+        obj.arguments = []
+        container = ARObject._find_child_element(element, "ARGUMENTS")
         if container is not None:
             for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
-                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.argument_refs.append(child_value)
+                    obj.arguments.append(child_value)
 
         # Parse diag_arg_integrity
         child = ARObject._find_child_element(element, "DIAG-ARG-INTEGRITY")
