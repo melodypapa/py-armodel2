@@ -8,6 +8,7 @@ JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements_Figure.classe
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import l_prefix
 
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
     Paginateable,
@@ -46,7 +47,7 @@ class MlFigure(Paginateable):
     figure_caption: Optional[Caption]
     frame: Optional[FrameEnum]
     help_entry: Optional[String]
-    l_graphics: list[LGraphic]
+    _l_graphic: list[LGraphic]
     pgwide: Optional[PgwideEnum]
     verbatim: Optional[MultiLanguageVerbatim]
     def __init__(self) -> None:
@@ -55,9 +56,20 @@ class MlFigure(Paginateable):
         self.figure_caption: Optional[Caption] = None
         self.frame: Optional[FrameEnum] = None
         self.help_entry: Optional[String] = None
-        self.l_graphics: list[LGraphic] = []
+        self._l_graphic: list[LGraphic] = []
         self.pgwide: Optional[PgwideEnum] = None
         self.verbatim: Optional[MultiLanguageVerbatim] = None
+    @property
+    @l_prefix("L-GRAPHIC")
+    def l_graphic(self) -> list[LGraphic]:
+        """Get l_graphic with language-specific wrapper."""
+        return self._l_graphic
+
+    @l_graphic.setter
+    def l_graphic(self, value: list[LGraphic]) -> None:
+        """Set l_graphic with language-specific wrapper."""
+        self._l_graphic = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize MlFigure to XML element.
@@ -121,15 +133,19 @@ class MlFigure(Paginateable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize l_graphics (list to container "L-GRAPHICS")
-        if self.l_graphics:
-            wrapper = ET.Element("L-GRAPHICS")
-            for item in self.l_graphics:
-                serialized = ARObject._serialize_item(item, "LGraphic")
-                if serialized is not None:
-                    wrapper.append(serialized)
-            if len(wrapper) > 0:
-                elem.append(wrapper)
+        # Serialize l_graphic (list with l_prefix "L-GRAPHIC")
+        for item in self.l_graphic:
+            serialized = ARObject._serialize_item(item, "LGraphic")
+            if serialized is not None:
+                # For l_prefix lists, wrap each item in the l_prefix tag
+                wrapped = ET.Element("L-GRAPHIC")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
 
         # Serialize pgwide
         if self.pgwide is not None:
@@ -192,15 +208,11 @@ class MlFigure(Paginateable):
             help_entry_value = child.text
             obj.help_entry = help_entry_value
 
-        # Parse l_graphics (list from container "L-GRAPHICS")
-        obj.l_graphics = []
-        container = ARObject._find_child_element(element, "L-GRAPHICS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.l_graphics.append(child_value)
+        # Parse l_graphic (list with l_prefix "L-GRAPHIC")
+        obj.l_graphic = []
+        for child in ARObject._find_all_child_elements(element, "L-GRAPHIC"):
+            l_graphic_value = ARObject._deserialize_by_tag(child, "LGraphic")
+            obj.l_graphic.append(l_graphic_value)
 
         # Parse pgwide
         child = ARObject._find_child_element(element, "PGWIDE")

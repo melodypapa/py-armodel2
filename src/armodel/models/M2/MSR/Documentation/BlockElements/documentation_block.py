@@ -65,7 +65,7 @@ class DocumentationBlock(ARObject):
         return False
 
     def_list_ref: Optional[ARRef]
-    figure: Optional[MlFigure]
+    figure: list[MlFigure]
     formula: Optional[MlFormula]
     labeled_list_label_ref: Optional[ARRef]
     msr_query_p2: Optional[MsrQueryP2]
@@ -79,7 +79,7 @@ class DocumentationBlock(ARObject):
         """Initialize DocumentationBlock."""
         super().__init__()
         self.def_list_ref: Optional[ARRef] = None
-        self.figure: Optional[MlFigure] = None
+        self.figure: list[MlFigure] = []
         self.formula: Optional[MlFormula] = None
         self.labeled_list_label_ref: Optional[ARRef] = None
         self.msr_query_p2: Optional[MsrQueryP2] = None
@@ -114,9 +114,9 @@ class DocumentationBlock(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize figure
-        if self.figure is not None:
-            serialized = ARObject._serialize_item(self.figure, "MlFigure")
+        # Serialize figure (list)
+        for figure_item in self.figure:
+            serialized = ARObject._serialize_item(figure_item, "MlFigure")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FIGURE")
@@ -301,11 +301,11 @@ class DocumentationBlock(ARObject):
             def_list_ref_value = ARRef.deserialize(child)
             obj.def_list_ref = def_list_ref_value
 
-        # Parse figure
-        child = ARObject._find_child_element(element, "FIGURE")
-        if child is not None:
+        # Parse figure (list)
+        obj.figure = []
+        for child in ARObject._find_all_child_elements(element, "FIGURE"):
             figure_value = ARObject._deserialize_by_tag(child, "MlFigure")
-            obj.figure = figure_value
+            obj.figure.append(figure_value)
 
         # Parse formula
         child = ARObject._find_child_element(element, "FORMULA")

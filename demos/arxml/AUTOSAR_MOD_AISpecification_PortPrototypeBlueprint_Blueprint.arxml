@@ -7662,7 +7662,7 @@ Typical Receiver: Transmission</L-1>
                   <INTRODUCTION>
                     <FIGURE>
                       <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"/>
+                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"></GRAPHIC>
                       </L-GRAPHIC>
                     </FIGURE>
                     <P>
@@ -16306,6 +16306,11 @@ Typical Receiver: Transmission</L-1>
                     <L-2 L="EN">State of engine clutch concerning transmission of power.</L-2>
                   </DESC>
                   <INTRODUCTION>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\State_of_Power_Transmission_of_gearbox.pdf"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
                     <P>
                       <L-1 L="EN">The signal describes the coupling state of the engine clutch.</L-1>
                       <L-1 L="EN">The engine clutch is implemented typically as a friction clutch.</L-1>
@@ -16339,11 +16344,6 @@ Typical Receiver: Powertrain</L-1>
                       <L-1 L="EN">“State of Power Transmission” in typical series projects:
 </L-1>
                     </P>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\State_of_Power_Transmission_of_gearbox.pdf"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
                   </INTRODUCTION>
                   <INTERFACE-REF BASE="PortInterfaces" DEST="SENDER-RECEIVER-INTERFACE">PtCluEngSt1</INTERFACE-REF>
                 </PORT-PROTOTYPE-BLUEPRINT>
@@ -16573,6 +16573,21 @@ Typical Receiver: Transmission</L-1>
                     <L-2 L="EN">Torque at clutch requested by the driver.</L-2>
                   </DESC>
                   <INTRODUCTION>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Transmission_Accuracy_Timing_Requirements_Torque_Signals.jpg"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Accuracy_requirements_torque_signals.jpg"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
                     <P>
                       <L-1 L="EN">Combination of all real and virtual driver requests, project specific including idle speed control. Virtual driver requests include cruise control, distance cruise control, vehicle speed limiter, etc.</L-1>
                       <L-1 L="EN">This signal shows the unfiltered driver requested torque and therefore it is not affected by driving comfort functions. The signal determines the earliest torque information in the torque chain architecture.
@@ -16604,21 +16619,6 @@ The following image illustrates the respective accuracy requirements:
 Example: “Soot limitation” is marked with an “X” to indicate that it is considered in the signal.
 </L-1>
                     </P>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Transmission_Accuracy_Timing_Requirements_Torque_Signals.jpg"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Accuracy_requirements_torque_signals.jpg"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
                   </INTRODUCTION>
                   <INTERFACE-REF BASE="PortInterfaces" DEST="SENDER-RECEIVER-INTERFACE">PtDrvrReqTqClu1</INTERFACE-REF>
                 </PORT-PROTOTYPE-BLUEPRINT>
@@ -16631,6 +16631,11 @@ Example: “Soot limitation” is marked with an “X” to indicate that it is 
                     <L-2 L="EN">Predicted driver requested torque at clutch at the engine speed reached in target gear.</L-2>
                   </DESC>
                   <INTRODUCTION>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
                     <P>
                       <L-1 L="EN">Environmental conditions, such as altitude and temperature and engine internal limits, e.g., soot limitation and full load limit, are considered.</L-1>
                       <L-1 L="EN">The calculation of this signal by the provider is not permitted to consider the inertia, which has an effect on the torque at clutch. This means that the signal must be calculated as if the inertia is 0 kg*(m^2).</L-1>
@@ -16655,11 +16660,6 @@ Typical Receiver: Transmission</L-1>
 Example: “Soot limitation” is marked with an “X” to indicate that it is considered in the signal.
 </L-1>
                     </P>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
                   </INTRODUCTION>
                   <INTERFACE-REF BASE="PortInterfaces" DEST="SENDER-RECEIVER-INTERFACE">PtDrvrReqTqCluPredEngN1</INTERFACE-REF>
                 </PORT-PROTOTYPE-BLUEPRINT>
@@ -16704,6 +16704,11 @@ Typical Receiver: Transmission</L-1>
                     <L-2 L="EN">Torque of the electric machine at clutch.</L-2>
                   </DESC>
                   <INTRODUCTION>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
                     <P>
                       <L-1 L="EN">Torque output of the electric machine at clutch level. The gear ratio between the electric machine shaft and the clutch, if present, must be considered.</L-1>
                       <L-1 L="EN">The calculation of this signal by the provider is not permitted to consider the inertia, which has an effect on the torque at clutch. This means that the signal must be calculated as if the inertia is 0 kg*(m^2).</L-1>
@@ -16726,11 +16731,6 @@ Typical Receiver: Transmission</L-1>
 Example: “Soot limitation” is marked with an “X” to indicate that it is considered in the signal.
 </L-1>
                     </P>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
                   </INTRODUCTION>
                   <INTERFACE-REF BASE="PortInterfaces" DEST="SENDER-RECEIVER-INTERFACE">PtEmTq1</INTERFACE-REF>
                 </PORT-PROTOTYPE-BLUEPRINT>
@@ -16832,6 +16832,11 @@ Typical Receiver: Transmission</L-1>
                     <L-2 L="EN">Electric machine relative torque at clutch requested by powertrain.</L-2>
                   </DESC>
                   <INTRODUCTION>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
                     <P>
                       <L-1 L="EN">Torque to be implemented by the electric machine additional to the driver requested torque.</L-1>
                       <L-1 L="EN">Typically used to create the electric machine torque which is necessary to start the combustion engine via the engine clutch without influencing the implementation of the driver requested torque.</L-1>
@@ -16856,11 +16861,6 @@ Typical Receiver: Powertrain</L-1>
                       <L-1 L="EN">The image “Detailed signal content of Torque at Clutch Signals” shows the effects of this signal on the torque at clutch signals.
 </L-1>
                     </P>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
                   </INTRODUCTION>
                   <INTERFACE-REF BASE="PortInterfaces" DEST="SENDER-RECEIVER-INTERFACE">PtEmTqRelCluReq1</INTERFACE-REF>
                 </PORT-PROTOTYPE-BLUEPRINT>
@@ -16873,6 +16873,21 @@ Typical Receiver: Powertrain</L-1>
                     <L-2 L="EN">Requested electric machine torque, including all interventions, including all limitations.</L-2>
                   </DESC>
                   <INTRODUCTION>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Transmission_Accuracy_Timing_Requirements_Torque_Signals.jpg"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Accuracy_requirements_torque_signals.jpg"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
                     <P>
                       <L-1 L="EN">The signal contains the limitations which are closely related to the electric machine or which are attributed to the electric machine by the powertrain coordinator.</L-1>
                       <L-1 L="EN">The content of this signal is related to the clutch level, so a possibly installed ratio between the rotor of the electric machine and the clutch is considered.</L-1>
@@ -16901,21 +16916,6 @@ The following image illustrates the respective accuracy requirements:
 Example: “Soot limitation” is marked with an “X” to indicate that it is considered in the signal.
 </L-1>
                     </P>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Transmission_Accuracy_Timing_Requirements_Torque_Signals.jpg"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Accuracy_requirements_torque_signals.jpg"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
                   </INTRODUCTION>
                   <INTERFACE-REF BASE="PortInterfaces" DEST="SENDER-RECEIVER-INTERFACE">PtEmTqReq1</INTERFACE-REF>
                 </PORT-PROTOTYPE-BLUEPRINT>
@@ -16990,6 +16990,11 @@ Typical Receiver: Transmission</L-1>
                     <L-2 L="EN">Engine crankshaft speed requested by powertrain.</L-2>
                   </DESC>
                   <INTRODUCTION>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
                     <P>
                       <L-1 L="EN">Engine crankshaft speed requested by powertrain, used, e.g., for slip start.</L-1>
                       <L-1 L="EN">This signal is closely related to the status signal: “Powertrain: Request to Enable Engine Speed Request”.</L-1>
@@ -17019,11 +17024,6 @@ Typical Receiver: Powertrain</L-1>
                       <L-1 L="EN">The image “Detailed signal content of Torque at Clutch Signals” shows the effects of this signal on the torque at clutch signals.
 </L-1>
                     </P>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
                   </INTRODUCTION>
                   <INTERFACE-REF BASE="PortInterfaces" DEST="SENDER-RECEIVER-INTERFACE">PtEngNReq1</INTERFACE-REF>
                 </PORT-PROTOTYPE-BLUEPRINT>
@@ -17471,6 +17471,21 @@ Typical Receiver: Powertrain</L-1>
                     <L-2 L="EN">Indicated torque of combustion engine plus torque of electric machine, if present, plus internal engine torque losses plus all losses with an effect on the torque at clutch. The effect of inertia on the torque is not considered.</L-2>
                   </DESC>
                   <INTRODUCTION>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Transmission_Accuracy_Timing_Requirements_Torque_Signals.jpg"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Accuracy_requirements_torque_signals.jpg"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
                     <P>
                       <L-1 L="EN">Torque at clutch is a torque at the mechanical interface between engine and transmission. For manual transmissions, the mechanical interface is the primary side of the clutch, for automatic transmissions, this is the primary side of the converter.</L-1>
                       <L-1 L="EN">Torque at clutch considers the following contributors, if present:
@@ -17509,21 +17524,6 @@ The following image illustrates the respective accuracy requirements:
 Example: “Soot limitation” is marked with an “X” to indicate that it is considered in the signal.
 </L-1>
                     </P>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Transmission_Accuracy_Timing_Requirements_Torque_Signals.jpg"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Accuracy_requirements_torque_signals.jpg"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
                   </INTRODUCTION>
                   <INTERFACE-REF BASE="PortInterfaces" DEST="SENDER-RECEIVER-INTERFACE">PtTqClu1</INTERFACE-REF>
                 </PORT-PROTOTYPE-BLUEPRINT>
@@ -17754,6 +17754,21 @@ Typical Receiver: Transmission</L-1>
                     <L-2 L="EN">Driver torque request including all interventions except transmission shift interventions and including all limitations.</L-2>
                   </DESC>
                   <INTRODUCTION>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Transmission_Accuracy_Timing_Requirements_Torque_Signals.jpg"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Accuracy_requirements_torque_signals.jpg"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
                     <P>
                       <L-1 L="EN">Limitations include environmental conditions such as altitude, temperature, etc. and engine limitations such as soot limitation, full load limit, etc.</L-1>
                       <L-1 L="EN">The goal is that the torque information is sent 50 – 80 ms ahead of the desired real/physical torque.</L-1>
@@ -17783,21 +17798,6 @@ The following image illustrates the respective accuracy requirements:
 Example: “Soot limitation” is marked with an “X” to indicate that it is considered in the signal.
 </L-1>
                     </P>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Transmission_Accuracy_Timing_Requirements_Torque_Signals.jpg"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Accuracy_requirements_torque_signals.jpg"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
                   </INTRODUCTION>
                   <INTERFACE-REF BASE="PortInterfaces" DEST="SENDER-RECEIVER-INTERFACE">PtTqCluReqWoTrsmIntv1</INTERFACE-REF>
                 </PORT-PROTOTYPE-BLUEPRINT>
@@ -17827,6 +17827,21 @@ Example: “Soot limitation” is marked with an “X” to indicate that it is 
 </L-2>
                   </DESC>
                   <INTRODUCTION>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Transmission_Accuracy_Timing_Requirements_Torque_Signals.jpg"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Accuracy_requirements_torque_signals.jpg"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
                     <P>
                       <L-1 L="EN">Outside of a transmission intervention, the signal should show the same value as &quot;Powertrain: Torque at Clutch”.</L-1>
                       <L-1 L="EN">Highly dynamic torque contributions by anti jerk are not visible, in contrary to signal “Powertrain: Torque at Clutch”.</L-1>
@@ -17857,21 +17872,6 @@ The following image illustrates the respective accuracy requirements:
 Example: “Soot limitation” is marked with an “X” to indicate that it is considered in the signal.
 </L-1>
                     </P>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Transmission_Accuracy_Timing_Requirements_Torque_Signals.jpg"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Accuracy_requirements_torque_signals.jpg"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
                   </INTRODUCTION>
                   <INTERFACE-REF BASE="PortInterfaces" DEST="SENDER-RECEIVER-INTERFACE">PtTqCluWoTrsmIntv1</INTERFACE-REF>
                 </PORT-PROTOTYPE-BLUEPRINT>
@@ -17884,6 +17884,21 @@ Example: “Soot limitation” is marked with an “X” to indicate that it is 
                     <L-2 L="EN">Requested torque at crankshaft reduced by ancillary losses, including all interventions, including all limitations.</L-2>
                   </DESC>
                   <INTRODUCTION>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Transmission_Accuracy_Timing_Requirements_Torque_Signals.jpg"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Accuracy_requirements_torque_signals.jpg"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
                     <P>
                       <L-1 L="EN">The signal contains the limitations which are closely related to the combustion engine or which are attributed to the combustion engine by the powertrain coordinator.</L-1>
                       <L-1 L="EN">The calculation of this signal by the provider is not permitted to consider the inertia, which has an effect on the torque at clutch. This means that the signal must be calculated as if the inertia is 0 kg*(m^2).</L-1>
@@ -17911,21 +17926,6 @@ The following image illustrates the respective accuracy requirements:
 Example: “Soot limitation” is marked with an “X” to indicate that it is considered in the signal.
 </L-1>
                     </P>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Transmission_Accuracy_Timing_Requirements_Torque_Signals.jpg"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Accuracy_requirements_torque_signals.jpg"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
                   </INTRODUCTION>
                   <INTERFACE-REF BASE="PortInterfaces" DEST="SENDER-RECEIVER-INTERFACE">PtTqCrksftRedByAncllryLossReq1</INTERFACE-REF>
                 </PORT-PROTOTYPE-BLUEPRINT>
@@ -22370,6 +22370,11 @@ Complete fuel cut off excluded, since these are just the complete losses. This i
                     <L-2 L="EN">Maximum speed at clutch permitted by transmission.</L-2>
                   </DESC>
                   <INTRODUCTION>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Transmission_Requirement_for_Response_to_Clutch_Speed_Requested_by_Transmission.jpg"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
                     <P>
                       <L-1 L="EN">The timing and accuracy requirements in a typical series project are the same as for signal &quot;Transmission: Clutch Speed Requested by Transmission&quot;.</L-1>
                       <L-1 L="EN">References to other signals:
@@ -22391,11 +22396,6 @@ Typical Receiver: Powertrain</L-1>
                       <L-1 L="EN">The timing and accuracy requirements in a typical series project are the same as for signal &quot;Transmission: Clutch Speed Requested by Transmission&quot;, see:
 </L-1>
                     </P>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Transmission_Requirement_for_Response_to_Clutch_Speed_Requested_by_Transmission.jpg"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
                   </INTRODUCTION>
                   <INTERFACE-REF BASE="PortInterfaces" DEST="SENDER-RECEIVER-INTERFACE">TrsmCluNLimnReq1</INTERFACE-REF>
                 </PORT-PROTOTYPE-BLUEPRINT>
@@ -22408,6 +22408,16 @@ Typical Receiver: Powertrain</L-1>
                     <L-2 L="EN">Minimum clutch speed requested by transmission.</L-2>
                   </DESC>
                   <INTRODUCTION>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Transmission_Requirement_for_Response_to_Minimum_Clutch_Speed_Request.jpg"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
                     <P>
                       <L-1 L="EN">A higher speed potentially required by another system is permissible.
 Limitation typically implemented by the engine and/or the electric machine to e.g. 1200 rpm.</L-1>
@@ -22431,16 +22441,6 @@ Typical Receiver: Powertrain</L-1>
                       <L-1 L="EN">The image “Detailed signal content of Torque at Clutch Signals” shows the effects of this signal on the torque at clutch signals.
 </L-1>
                     </P>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Transmission_Requirement_for_Response_to_Minimum_Clutch_Speed_Request.jpg"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
                   </INTRODUCTION>
                   <INTERFACE-REF BASE="PortInterfaces" DEST="SENDER-RECEIVER-INTERFACE">TrsmCluNMinReq1</INTERFACE-REF>
                 </PORT-PROTOTYPE-BLUEPRINT>
@@ -22488,6 +22488,16 @@ Typical Receiver: Powertrain</L-1>
                     <L-2 L="EN">Clutch speed requested by transmission.</L-2>
                   </DESC>
                   <INTRODUCTION>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Transmission_Requirement_for_Response_to_Clutch_Speed_Requested_by_Transmission.jpg"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
                     <P>
                       <L-1 L="EN">Used for shift intervention, coasting including sailing, start-stop and other use cases.</L-1>
                       <L-1 L="EN">This signal is closely related to the following two signals:
@@ -22525,16 +22535,6 @@ Typical Receiver: Powertrain</L-1>
                       <L-1 L="EN">The image “Detailed signal content of Torque at Clutch Signals” shows the effects of this signal on the torque at clutch signals.
 </L-1>
                     </P>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Transmission_Requirement_for_Response_to_Clutch_Speed_Requested_by_Transmission.jpg"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
                   </INTRODUCTION>
                   <INTERFACE-REF BASE="PortInterfaces" DEST="SENDER-RECEIVER-INTERFACE">TrsmCluNReq1</INTERFACE-REF>
                 </PORT-PROTOTYPE-BLUEPRINT>
@@ -22666,6 +22666,11 @@ Definition of &quot;Clutch&quot;: </L-1>
                     <L-2 L="EN">State of drive-off element concerning power transmission.</L-2>
                   </DESC>
                   <INTRODUCTION>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\State_of_Power_Transmission_of_gearbox.pdf"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
                     <P>
                       <L-1 L="EN">The signal describes the transmission of power of the drive-off element only, independent of the gearbox design.
 The signal is independent of the position of the drive-off element in the power flow. The signal is also independent of whether the drive-off element is only used for drive-off or additionally used as a shift clutch.</L-1>
@@ -22703,11 +22708,6 @@ Typical Receiver: Powertrain</L-1>
                       <L-1 L="EN">“State of Power Transmission” in typical series projects:
 </L-1>
                     </P>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\State_of_Power_Transmission_of_gearbox.pdf"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
                   </INTRODUCTION>
                   <INTERFACE-REF BASE="PortInterfaces" DEST="SENDER-RECEIVER-INTERFACE">TrsmDrvOffElmSt1</INTERFACE-REF>
                 </PORT-PROTOTYPE-BLUEPRINT>
@@ -22720,6 +22720,11 @@ Typical Receiver: Powertrain</L-1>
                     <L-2 L="EN">Target state of the drive-off element concerning transmission of power.</L-2>
                   </DESC>
                   <INTRODUCTION>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\State_of_Power_Transmission_of_gearbox.pdf"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
                     <P>
                       <L-1 L="EN">The signal describes the target transmission of power of the drive-off element only, independent of the gearbox design.
 The signal is independent of the position of the drive-off element in the power flow. The signal is also independent of whether the drive-off element is only used for drive-off or additionally used as a shift clutch.</L-1>
@@ -22757,11 +22762,6 @@ Typical Receiver: Powertrain</L-1>
                       <L-1 L="EN">“State of Power Transmission” in typical series projects:
 </L-1>
                     </P>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\State_of_Power_Transmission_of_gearbox.pdf"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
                   </INTRODUCTION>
                   <INTERFACE-REF BASE="PortInterfaces" DEST="SENDER-RECEIVER-INTERFACE">TrsmDrvOffElmStTar1</INTERFACE-REF>
                 </PORT-PROTOTYPE-BLUEPRINT>
@@ -22894,6 +22894,11 @@ Typical Receiver: Powertrain</L-1>
                     <L-2 L="EN">State of gearbox core concerning power transmission.</L-2>
                   </DESC>
                   <INTRODUCTION>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\State_of_Power_Transmission_of_gearbox.pdf"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
                     <P>
                       <L-1 L="EN">The signal describes the transmission of power between gearbox input shaft and output shaft.
 The signal summarizes the state of power transmission of all gears and all gearbox internal clutches except for the drive-off element.</L-1>
@@ -22933,11 +22938,6 @@ Typical Receiver: Powertrain</L-1>
                       <L-1 L="EN">“State of Power Transmission” in typical series projects:
 </L-1>
                     </P>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\State_of_Power_Transmission_of_gearbox.pdf"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
                   </INTRODUCTION>
                   <INTERFACE-REF BASE="PortInterfaces" DEST="SENDER-RECEIVER-INTERFACE">TrsmGbxCoreSt1</INTERFACE-REF>
                 </PORT-PROTOTYPE-BLUEPRINT>
@@ -22950,6 +22950,11 @@ Typical Receiver: Powertrain</L-1>
                     <L-2 L="EN">State of the gearbox concerning transmission of power.</L-2>
                   </DESC>
                   <INTRODUCTION>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\State_of_Power_Transmission_of_gearbox.pdf"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
                     <P>
                       <L-1 L="EN">The signal is defined for the serial connection of the drive-off element and the gearbox core with one input shaft and one output shaft.
 Gearboxes with more than one input shaft or more than one output shaft are not in the scope of this definition. </L-1>
@@ -22983,11 +22988,6 @@ Typical Receiver: Powertrain</L-1>
                       <L-1 L="EN">“State of Power Transmission” in typical series projects:
 </L-1>
                     </P>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\State_of_Power_Transmission_of_gearbox.pdf"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
                   </INTRODUCTION>
                   <INTERFACE-REF BASE="PortInterfaces" DEST="SENDER-RECEIVER-INTERFACE">TrsmGbxSt1</INTERFACE-REF>
                 </PORT-PROTOTYPE-BLUEPRINT>
@@ -23771,6 +23771,11 @@ Typical Receiver: Powertrain</L-1>
                     <L-2 L="EN">State of the reduction gearbox concerning transmission of power.</L-2>
                   </DESC>
                   <INTRODUCTION>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\State_of_Power_Transmission_of_gearbox.pdf"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
                     <P>
                       <L-1 L="EN">The signal is defined for reduction gearboxes with dog clutch, which is the most common case.
 Correspondingly, reduction gearboxes with more than two states of power transmission are not in scope of this definition. </L-1>
@@ -23792,11 +23797,6 @@ Typical Receiver: Powertrain</L-1>
                       <L-1 L="EN">“State of Power Transmission” in typical series projects:
 </L-1>
                     </P>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\State_of_Power_Transmission_of_gearbox.pdf"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
                   </INTRODUCTION>
                   <INTERFACE-REF BASE="PortInterfaces" DEST="SENDER-RECEIVER-INTERFACE">TrsmRednGbxSt1</INTERFACE-REF>
                 </PORT-PROTOTYPE-BLUEPRINT>
@@ -23887,6 +23887,11 @@ Typical Receiver: Powertrain</L-1>
                     <L-2 L="EN">Target time to reach clutch speed requested by transmission.</L-2>
                   </DESC>
                   <INTRODUCTION>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Transmission_Requirement_for_Response_to_Clutch_Speed_Requested_by_Transmission.jpg"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
                     <P>
                       <L-1 L="EN">The speed at clutch requested by &quot;Transmission: Clutch Speed Requested by Transmission&quot; must be reached in the transmitted target time.</L-1>
                       <L-1 L="EN">As long as there is no speed request, the recommendation is to send the initialization value.</L-1>
@@ -23909,11 +23914,6 @@ Typical Receiver: Powertrain</L-1>
                       <L-1 L="EN">Example for timing and accuracy requirements on the speed request in a typical series project:
 </L-1>
                     </P>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Transmission_Requirement_for_Response_to_Clutch_Speed_Requested_by_Transmission.jpg"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
                   </INTRODUCTION>
                   <INTERFACE-REF BASE="PortInterfaces" DEST="SENDER-RECEIVER-INTERFACE">TrsmTiCluNReqTar1</INTERFACE-REF>
                 </PORT-PROTOTYPE-BLUEPRINT>
@@ -24059,6 +24059,21 @@ Typical Receiver: Powertrain</L-1>
                     <L-2 L="EN">Maximum torque at clutch requested by transmission for shift intervention on fast path.</L-2>
                   </DESC>
                   <INTRODUCTION>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Transmission_Requirement_for_Response_to_TrsmTqCluFast_Torque_Decrease_Request.jpg"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Accuracy_requirements_torque_signals.jpg"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
                     <P>
                       <L-1 L="EN">Usually used for shift intervention, but permitted for all purposes.</L-1>
                       <L-1 L="EN">As long as there is no torque request from the transmission, a constant substitute value (“no request”) or the maximum value is transmitted on the signal.</L-1>
@@ -24088,21 +24103,6 @@ The following image illustrates the respective accuracy requirements:
 Example: “Soot limitation” is marked with an “X” to indicate that it is considered in the signal.
 </L-1>
                     </P>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Transmission_Requirement_for_Response_to_TrsmTqCluFast_Torque_Decrease_Request.jpg"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Accuracy_requirements_torque_signals.jpg"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
                   </INTRODUCTION>
                   <INTERFACE-REF BASE="PortInterfaces" DEST="SENDER-RECEIVER-INTERFACE">TrsmTqCluMaxFastReqForShiftIntv1</INTERFACE-REF>
                 </PORT-PROTOTYPE-BLUEPRINT>
@@ -24154,6 +24154,11 @@ Typical Receiver: Powertrain</L-1>
                     <L-2 L="EN">Maximum torque at clutch requested by transmission for shift intervention on slow path.</L-2>
                   </DESC>
                   <INTRODUCTION>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
                     <P>
                       <L-1 L="EN">Usually used for shift intervention, but permitted for all purposes.</L-1>
                       <L-1 L="EN">As long as there is no torque request from the transmission, a constant substitute value (“no request”) or the maximum value is transmitted on the signal.</L-1>
@@ -24178,11 +24183,6 @@ Typical Receiver: Powertrain</L-1>
                       <L-1 L="EN">The image “Detailed signal content of Torque at Clutch Signals” shows the effects of this signal on the torque at clutch signals.
 </L-1>
                     </P>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
                   </INTRODUCTION>
                   <INTERFACE-REF BASE="PortInterfaces" DEST="SENDER-RECEIVER-INTERFACE">TrsmTqCluMaxSlowReqForShiftIntv1</INTERFACE-REF>
                 </PORT-PROTOTYPE-BLUEPRINT>
@@ -24195,6 +24195,16 @@ Typical Receiver: Powertrain</L-1>
                     <L-2 L="EN">Minimum torque at clutch requested by transmission for shift intervention on fast path.</L-2>
                   </DESC>
                   <INTRODUCTION>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Transmission_Requirement_for_Response_to_TrsmTqCluFast_Torque_Increase_Request.jpg"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
                     <P>
                       <L-1 L="EN">Usually used for shift intervention, but permitted for all purposes.</L-1>
                       <L-1 L="EN">As long as there is no torque request from the transmission, a constant substitute value (“no request”) or the minimum value is transmitted on the signal.</L-1>
@@ -24221,16 +24231,6 @@ Typical Receiver: Powertrain</L-1>
                       <L-1 L="EN">The image “Detailed signal content of Torque at Clutch Signals” shows the effects of this signal on the torque at clutch signals.
 </L-1>
                     </P>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Transmission_Requirement_for_Response_to_TrsmTqCluFast_Torque_Increase_Request.jpg"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
                   </INTRODUCTION>
                   <INTERFACE-REF BASE="PortInterfaces" DEST="SENDER-RECEIVER-INTERFACE">TrsmTqCluMinFastReqForShiftIntv1</INTERFACE-REF>
                 </PORT-PROTOTYPE-BLUEPRINT>
@@ -24278,6 +24278,11 @@ Typical Receiver: Powertrain</L-1>
                     <L-2 L="EN">Minimum torque at clutch requested by transmission for shift intervention on slow path.</L-2>
                   </DESC>
                   <INTRODUCTION>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
                     <P>
                       <L-1 L="EN">Usually used for shift intervention, but permitted for all purposes.</L-1>
                       <L-1 L="EN">As long as there is no torque request from the transmission, a constant substitute value (“no request”) or the minimum value is transmitted on the signal.</L-1>
@@ -24302,11 +24307,6 @@ Typical Receiver: Powertrain</L-1>
                       <L-1 L="EN">The image “Detailed signal content of Torque at Clutch Signals” shows the effects of this signal on the torque at clutch signals.
 </L-1>
                     </P>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
                   </INTRODUCTION>
                   <INTERFACE-REF BASE="PortInterfaces" DEST="SENDER-RECEIVER-INTERFACE">TrsmTqCluMinSlowReqForShiftIntv1</INTERFACE-REF>
                 </PORT-PROTOTYPE-BLUEPRINT>
@@ -24319,6 +24319,21 @@ Typical Receiver: Powertrain</L-1>
                     <L-2 L="EN">Torque at clutch requested by transmission for shift intervention.</L-2>
                   </DESC>
                   <INTRODUCTION>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Transmission_Requirement_for_Response_to_TrsmTqCluFast_Torque_Decrease_Request.jpg"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Transmission_Requirement_for_Response_to_TrsmTqCluFast_Torque_Increase_Request.jpg"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
                     <P>
                       <L-1 L="EN">This signal is closely related to the signals for &quot;implementation type&quot; and “intervention mode” of request:
 “Transmission: Implementation Type of Request for Torque at Clutch for Shift Intervention”,
@@ -24349,21 +24364,6 @@ Typical Receiver: Powertrain</L-1>
                       <L-1 L="EN">The image “Detailed signal content of Torque at Clutch Signals” shows the effects of this signal on the torque at clutch signals.
 </L-1>
                     </P>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Transmission_Requirement_for_Response_to_TrsmTqCluFast_Torque_Decrease_Request.jpg"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Transmission_Requirement_for_Response_to_TrsmTqCluFast_Torque_Increase_Request.jpg"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
                   </INTRODUCTION>
                   <INTERFACE-REF BASE="PortInterfaces" DEST="SENDER-RECEIVER-INTERFACE">TrsmTqCluReqForShiftIntv1</INTERFACE-REF>
                 </PORT-PROTOTYPE-BLUEPRINT>
@@ -24376,6 +24376,16 @@ Typical Receiver: Powertrain</L-1>
                     <L-2 L="EN">Request to increase torque on slow path without affecting torque at clutch. Reference for increase is defined by the corresponding status signal.</L-2>
                   </DESC>
                   <INTRODUCTION>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Transmission_Requirement_for_Response_to_TrsmTqCluResv_Torque_Reserve_Torque_Decrease_Request.jpg"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Transmission_Requirement_for_Response_to_TrsmTqCluResv_Torque_Reserve_Torque_Increase_Request.jpg"></GRAPHIC>
+                      </L-GRAPHIC>
+                    </FIGURE>
                     <P>
                       <L-1 L="EN">This signal is closely related to &quot;Transmission: Implementation Type of Request for Torque Reserve at Clutch&quot;.
 The engine must compensate for the increased air mass by ignition retard and/or injection cutoff. The engine is not permitted to increase the air mass more than can be compensated for. This prevents unintended acceleration of the car.</L-1>
@@ -24400,16 +24410,6 @@ Typical Receiver: Powertrain</L-1>
 
 </L-1>
                     </P>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Transmission_Requirement_for_Response_to_TrsmTqCluResv_Torque_Reserve_Torque_Decrease_Request.jpg"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Transmission_Requirement_for_Response_to_TrsmTqCluResv_Torque_Reserve_Torque_Increase_Request.jpg"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
                   </INTRODUCTION>
                   <INTERFACE-REF BASE="PortInterfaces" DEST="SENDER-RECEIVER-INTERFACE">TrsmTqCluResvReq1</INTERFACE-REF>
                 </PORT-PROTOTYPE-BLUEPRINT>

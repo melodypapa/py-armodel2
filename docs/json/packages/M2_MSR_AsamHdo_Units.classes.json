@@ -72,7 +72,7 @@
           "is_ref": false,
           "note": "This is the offset for the conversion from and to siUnits."
         },
-        "physical": {
+        "physicalDimension": {
           "type": "physicalDimension",
           "multiplicity": "0..1",
           "kind": "ref",

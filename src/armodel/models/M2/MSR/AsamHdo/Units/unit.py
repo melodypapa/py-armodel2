@@ -40,14 +40,14 @@ class Unit(ARElement):
     display_name: Optional[SingleLanguageUnitNames]
     factor_si_to_unit: Optional[Float]
     offset_si_to_unit: Optional[Float]
-    physical_ref: Optional[ARRef]
+    physical_dimension_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize Unit."""
         super().__init__()
         self.display_name: Optional[SingleLanguageUnitNames] = None
         self.factor_si_to_unit: Optional[Float] = None
         self.offset_si_to_unit: Optional[Float] = None
-        self.physical_ref: Optional[ARRef] = None
+        self.physical_dimension_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize Unit to XML element.
@@ -111,12 +111,12 @@ class Unit(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize physical_ref
-        if self.physical_ref is not None:
-            serialized = ARObject._serialize_item(self.physical_ref, "physicalDimension")
+        # Serialize physical_dimension_ref
+        if self.physical_dimension_ref is not None:
+            serialized = ARObject._serialize_item(self.physical_dimension_ref, "physicalDimension")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PHYSICAL-REF")
+                wrapped = ET.Element("PHYSICAL-DIMENSION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -158,11 +158,11 @@ class Unit(ARElement):
             offset_si_to_unit_value = child.text
             obj.offset_si_to_unit = offset_si_to_unit_value
 
-        # Parse physical_ref
-        child = ARObject._find_child_element(element, "PHYSICAL-REF")
+        # Parse physical_dimension_ref
+        child = ARObject._find_child_element(element, "PHYSICAL-DIMENSION-REF")
         if child is not None:
-            physical_ref_value = ARRef.deserialize(child)
-            obj.physical_ref = physical_ref_value
+            physical_dimension_ref_value = ARRef.deserialize(child)
+            obj.physical_dimension_ref = physical_dimension_ref_value
 
         return obj
 
