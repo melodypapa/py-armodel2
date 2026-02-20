@@ -42,7 +42,7 @@ class MultiLanguageVerbatim(Paginateable):
     allow_break: Optional[NameToken]
     float: Optional[FloatEnum]
     help_entry: Optional[String]
-    _l5: LVerbatim
+    _l5: list[LVerbatim]
     pgwide: Optional[PgwideEnum]
     def __init__(self) -> None:
         """Initialize MultiLanguageVerbatim."""
@@ -50,16 +50,16 @@ class MultiLanguageVerbatim(Paginateable):
         self.allow_break: Optional[NameToken] = None
         self.float: Optional[FloatEnum] = None
         self.help_entry: Optional[String] = None
-        self._l5: LVerbatim = None
+        self._l5: list[LVerbatim] = []
         self.pgwide: Optional[PgwideEnum] = None
     @property
     @l_prefix("L-5")
-    def l5(self) -> LVerbatim:
+    def l5(self) -> Optional[PgwideEnum]:
         """Get l5 with language-specific wrapper."""
         return self._l5
 
     @l5.setter
-    def l5(self, value: LVerbatim) -> None:
+    def l5(self, value: Optional[PgwideEnum]) -> None:
         """Set l5 with language-specific wrapper."""
         self._l5 = value
 

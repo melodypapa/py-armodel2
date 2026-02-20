@@ -28,19 +28,19 @@ class MultiLanguagePlainText(ARObject):
         """
         return False
 
-    _l10: LPlainText
+    _l10: list[LPlainText]
     def __init__(self) -> None:
         """Initialize MultiLanguagePlainText."""
         super().__init__()
-        self._l10: LPlainText = None
+        self._l10: list[LPlainText] = []
     @property
     @l_prefix("L-10")
-    def l10(self) -> LPlainText:
+    def l10(self) -> list[LPlainText]:
         """Get l10 with language-specific wrapper."""
         return self._l10
 
     @l10.setter
-    def l10(self, value: LPlainText) -> None:
+    def l10(self, value: list[LPlainText]) -> None:
         """Set l10 with language-specific wrapper."""
         self._l10 = value
 

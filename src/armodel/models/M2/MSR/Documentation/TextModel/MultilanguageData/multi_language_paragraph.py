@@ -43,12 +43,12 @@ class MultiLanguageParagraph(Paginateable):
         self._l1: list[LParagraph] = []
     @property
     @l_prefix("L-1")
-    def l1(self) -> LParagraph:
+    def l1(self) -> list[LParagraph]:
         """Get l1 with language-specific wrapper."""
         return self._l1
 
     @l1.setter
-    def l1(self, value: LParagraph) -> None:
+    def l1(self, value: list[LParagraph]) -> None:
         """Set l1 with language-specific wrapper."""
         self._l1 = value
 

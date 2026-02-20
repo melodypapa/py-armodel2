@@ -31,19 +31,19 @@ class MultiLanguageOverviewParagraph(ARObject):
         """
         return False
 
-    _l2: LOverviewParagraph
+    _l2: list[LOverviewParagraph]
     def __init__(self) -> None:
         """Initialize MultiLanguageOverviewParagraph."""
         super().__init__()
-        self._l2: LOverviewParagraph = None
+        self._l2: list[LOverviewParagraph] = []
     @property
     @l_prefix("L-2")
-    def l2(self) -> LOverviewParagraph:
+    def l2(self) -> list[LOverviewParagraph]:
         """Get l2 with language-specific wrapper."""
         return self._l2
 
     @l2.setter
-    def l2(self, value: LOverviewParagraph) -> None:
+    def l2(self, value: list[LOverviewParagraph]) -> None:
         """Set l2 with language-specific wrapper."""
         self._l2 = value
 

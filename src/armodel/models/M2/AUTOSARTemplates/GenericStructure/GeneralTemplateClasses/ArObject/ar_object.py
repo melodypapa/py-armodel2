@@ -182,6 +182,30 @@ class ARObject:
                 # Check if this should be an XML attribute (via decorator)
                 if self._is_xml_attribute(name):
                     elem.set(xml_tag, str(value))
+                elif isinstance(value, list):
+                    # Check if this list has l_prefix decorator
+                    if ARObject._has_l_prefix(self.__class__, name):
+                        # Handle l_prefix pattern for lists - wrap each item in L-<number> tag
+                        l_prefix_tag = ARObject._get_l_prefix_tag(self.__class__, name)
+                        if l_prefix_tag:
+                            for item in value:
+                                if item is not None:
+                                    # Serialize the child element
+                                    serialized = self._serialize_with_correct_tag(item, xml_tag)
+                                    # Wrap it in the l_prefix tag
+                                    wrapped = self._serialize_l_prefix(serialized, l_prefix_tag)
+                                    elem.append(wrapped)
+                    else:
+                        # Serialize list items - create wrapper element
+                        wrapper = ET.Element(xml_tag)
+                        for item in value:
+                            if hasattr(item, 'serialize'):
+                                wrapper.append(item.serialize())
+                            else:
+                                child = ET.Element(xml_tag)
+                                child.text = str(item)
+                                wrapper.append(child)
+                        elem.append(wrapper)
                 elif ARObject._has_l_prefix(self.__class__, name):
                     # Handle l_prefix pattern - wrap child element in L-<number> tag
                     l_prefix_tag = ARObject._get_l_prefix_tag(self.__class__, name)
@@ -195,17 +219,6 @@ class ARObject:
                     # Recursively serialize child objects
                     child = self._serialize_with_correct_tag(value, xml_tag)
                     elem.append(child)
-                elif isinstance(value, list):
-                    # Serialize list items - create wrapper element
-                    wrapper = ET.Element(xml_tag)
-                    for item in value:
-                        if hasattr(item, 'serialize'):
-                            wrapper.append(item.serialize())
-                        else:
-                            child = ET.Element(xml_tag)
-                            child.text = str(item)
-                            wrapper.append(child)
-                    elem.append(wrapper)
                 else:
                     # Primitive value - create element with text content
                     child = ET.Element(xml_tag)
@@ -856,18 +869,50 @@ class ARObject:
                     # Handle l_prefix pattern for private attribute
                     l_prefix_tag = ARObject._get_l_prefix_tag(cls, public_name)
                     if l_prefix_tag:
-                        # Find the l_prefix element
-                        child = None
-                        for elem in current_elem:
-                            if ARObject._strip_namespace(elem.tag) == l_prefix_tag:
-                                child = elem
-                                break
+                        # Check if this is a list type
+                        is_list_type = False
+                        if isinstance(attr_type, str) and attr_type.startswith("list["):
+                            is_list_type = True
+                        elif get_origin(attr_type) is list:
+                            is_list_type = True
 
-                        if child is not None:
-                            # Deserialize the child element using the expected type
-                            value = ARObject._deserialize_with_type(child, attr_type)
+                        if is_list_type:
+                            # For list types with l_prefix, find all l_prefix elements
+                            # and deserialize each one as a list item
+                            result = []
+                            for elem in current_elem:
+                                if ARObject._strip_namespace(elem.tag) == l_prefix_tag:
+                                    # Get the inner type from list[T]
+                                    inner_type = None
+                                    if isinstance(attr_type, str):
+                                        import re
+                                        match = re.match(r'list\[(.+?)\]', attr_type)
+                                        if match:
+                                            inner_type = match.group(1)
+                                    else:
+                                        type_args = get_args(attr_type)
+                                        if type_args:
+                                            inner_type = type_args[0]
+
+                                    if inner_type:
+                                        # Deserialize the l_prefix element as the inner type
+                                        value = ARObject._deserialize_with_type(elem, str(inner_type))
+                                        if value is not None:
+                                            result.append(value)
+                            value = result
                         else:
-                            value = None
+                            # For single value types with l_prefix, find the single l_prefix element
+                            child = None
+                            for elem in current_elem:
+                                if ARObject._strip_namespace(elem.tag) == l_prefix_tag:
+                                    child = elem
+                                    break
+
+                            if child is not None:
+                                # Deserialize the child element using the expected type
+                                value = ARObject._deserialize_with_type(child, attr_type)
+                            else:
+                                value = None
                     else:
                         value = None
             else:

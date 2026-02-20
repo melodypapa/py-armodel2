@@ -521,12 +521,12 @@ class {class_name}(ABC):
                 # Generate property with l_prefix decorator
                 code += f'''    @property
     @l_prefix("{l_prefix_tag}")
-    def {python_name}(self) -> {attr_type}:
+    def {python_name}(self) -> {python_type}:
         """Get {python_name} with language-specific wrapper."""
         return self.{private_name}
 
     @{python_name}.setter
-    def {python_name}(self, value: {attr_type}) -> None:
+    def {python_name}(self, value: {python_type}) -> None:
         """Set {python_name} with language-specific wrapper."""
         self.{private_name} = value
 

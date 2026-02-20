@@ -70,8 +70,8 @@ class DocumentationBlock(ARObject):
     labeled_list_label_ref: Optional[ARRef]
     msr_query_p2: Optional[MsrQueryP2]
     note: Optional[Note]
-    p: list[MultiLanguageParagraph]
-    list: list[ARList]
+    p: Optional[MultiLanguageParagraph]
+    list: Optional[ARList]
     structured_req: Optional[StructuredReq]
     trace: Optional[TraceableText]
     verbatim: Optional[MultiLanguageVerbatim]
@@ -84,8 +84,8 @@ class DocumentationBlock(ARObject):
         self.labeled_list_label_ref: Optional[ARRef] = None
         self.msr_query_p2: Optional[MsrQueryP2] = None
         self.note: Optional[Note] = None
-        self.p: list[MultiLanguageParagraph] = []
-        self.list: list[ARList] = []
+        self.p: Optional[MultiLanguageParagraph] = None
+        self.list: Optional[ARList] = None
         self.structured_req: Optional[StructuredReq] = None
         self.trace: Optional[TraceableText] = None
         self.verbatim: Optional[MultiLanguageVerbatim] = None
@@ -184,11 +184,11 @@ class DocumentationBlock(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize p (list)
-        for item in self.p:
-            serialized = ARObject._serialize_item(item, "MultiLanguageParagraph")
+        # Serialize p
+        if self.p is not None:
+            serialized = ARObject._serialize_item(self.p, "MultiLanguageParagraph")
             if serialized is not None:
-                # For non-container lists, wrap with correct tag
+                # Wrap with correct tag
                 wrapped = ET.Element("P")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
@@ -198,11 +198,11 @@ class DocumentationBlock(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize list (list)
-        for item in self.list:
-            serialized = ARObject._serialize_item(item, "ARList")
+        # Serialize list
+        if self.list is not None:
+            serialized = ARObject._serialize_item(self.list, "ARList")
             if serialized is not None:
-                # For non-container lists, wrap with correct tag
+                # Wrap with correct tag
                 wrapped = ET.Element("LIST")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
@@ -306,17 +306,17 @@ class DocumentationBlock(ARObject):
             note_value = ARObject._deserialize_by_tag(child, "Note")
             obj.note = note_value
 
-        # Parse p (list)
-        obj.p = []
-        for child in ARObject._find_all_child_elements(element, "P"):
+        # Parse p
+        child = ARObject._find_child_element(element, "P")
+        if child is not None:
             p_value = ARObject._deserialize_with_type(child, "MultiLanguageParagraph")
-            obj.p.append(p_value)
+            obj.p = p_value
 
-        # Parse list (list)
-        obj.list = []
-        for child in ARObject._find_all_child_elements(element, "LIST"):
+        # Parse list
+        child = ARObject._find_child_element(element, "LIST")
+        if child is not None:
             list_value = ARObject._deserialize_by_tag(child, "ARList")
-            obj.list.append(list_value)
+            obj.list = list_value
 
         # Parse structured_req
         child = ARObject._find_child_element(element, "STRUCTURED-REQ")

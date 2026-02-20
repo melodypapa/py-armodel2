@@ -1,12 +1,11 @@
 version: 1.0.0
 generated_from: docs/json/mapping.json
-generated_at: '2026-02-19T21:54:38.595446'
+generated_at: '2026-02-20T12:45:42.708488'
 metadata:
   total_classes: 1937
   total_packages: 637
   total_polymorphic_types: 233
 xml_tag_mappings:
-  VT: CompuConstTextContent
   BSW-MODULE-DESCRIPTION: BswModuleDescription
   MODE-IN-BSW-MODULE-DESCRIPTION-INSTANCE-REF: ModeInBswModuleDescriptionInstanceRef
   BSW-MODULE-ENTRY: BswModuleEntry
@@ -1519,6 +1518,7 @@ xml_tag_mappings:
   COMPU-SCALES: CompuScales
   COMPU-SCALE-CONTENTS: CompuScaleContents
   COMPU-CONST-TEXT-CONTENT: CompuConstTextContent
+  VT: CompuConstTextContent
   COMPU-CONST-NUMERIC-CONTENT: CompuConstNumericContent
   COMPU-RATIONAL-COEFFS: CompuRationalCoeffs
   COMPU-CONST: CompuConst
@@ -1555,7 +1555,7 @@ xml_tag_mappings:
   TRACEABLE-TEXT: TraceableText
   TRACEABLE: Traceable
   ML-FORMULA: MlFormula
-  LIST: ARList
+  AR-LIST: ARList
   ITEM: Item
   LABELED-LIST: LabeledList
   LABELED-ITEM: LabeledItem

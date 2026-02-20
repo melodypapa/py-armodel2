@@ -58,7 +58,7 @@
       "attributes": {
         "l2": {
           "type": "LOverviewParagraph",
-          "multiplicity": "1",
+          "multiplicity": "*",
           "kind": "l_prefix",
           "is_ref": false,
           "note": ""
@@ -110,7 +110,7 @@
       "attributes": {
         "l4": {
           "type": "LLongName",
-          "multiplicity": "1",
+          "multiplicity": "*",
           "kind": "l_prefix",
           "is_ref": false,
           "note": ""
@@ -215,7 +215,7 @@
         },
         "l5": {
           "type": "LVerbatim",
-          "multiplicity": "1",
+          "multiplicity": "*",
           "kind": "l_prefix",
           "is_ref": false,
           "note": ""
@@ -259,7 +259,7 @@
       "attributes": {
         "l10": {
           "type": "LPlainText",
-          "multiplicity": "1",
+          "multiplicity": "*",
           "kind": "l_prefix",
           "is_ref": false,
           "note": ""

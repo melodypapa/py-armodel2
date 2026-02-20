@@ -126,14 +126,14 @@
         },
         "p": {
           "type": "MultiLanguageParagraph",
-          "multiplicity": "*",
+          "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This is one particular paragraph. Multiple paragraphs can appear in mixed content."
         },
         "list": {
           "type": "ARList",
-          "multiplicity": "*",
+          "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents numbered or unnumbered list. atpVariation"

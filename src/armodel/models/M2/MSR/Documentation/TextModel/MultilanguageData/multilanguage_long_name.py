@@ -30,19 +30,19 @@ class MultilanguageLongName(ARObject):
         """
         return False
 
-    _l4: LLongName
+    _l4: list[LLongName]
     def __init__(self) -> None:
         """Initialize MultilanguageLongName."""
         super().__init__()
-        self._l4: LLongName = None
+        self._l4: list[LLongName] = []
     @property
     @l_prefix("L-4")
-    def l4(self) -> LLongName:
+    def l4(self) -> list[LLongName]:
         """Get l4 with language-specific wrapper."""
         return self._l4
 
     @l4.setter
-    def l4(self, value: LLongName) -> None:
+    def l4(self, value: list[LLongName]) -> None:
         """Set l4 with language-specific wrapper."""
         self._l4 = value
 
