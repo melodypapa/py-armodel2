@@ -133,7 +133,7 @@
         },
         "list": {
           "type": "ARList",
-          "multiplicity": "0..1",
+          "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents numbered or unnumbered list. atpVariation"

@@ -44,6 +44,9 @@ skip_classes:
   # Item requires custom serialization - item_contents (DocumentationBlock) is serialized as direct children of ITEM, not wrapped in ITEM-CONTENTS
   - "Item"
 
+  # DocumentationBlock requires custom serialization - handles L-1 through L-10 language-specific elements (P paragraphs)
+  - "DocumentationBlock"
+
 # Force TYPE_CHECKING Imports
 # These types will always be imported inside TYPE_CHECKING blocks to prevent circular imports.
 # This is needed when the automatic circular import detection doesn't catch all cases,

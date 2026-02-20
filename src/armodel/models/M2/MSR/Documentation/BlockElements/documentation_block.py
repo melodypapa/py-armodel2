@@ -71,7 +71,7 @@ class DocumentationBlock(ARObject):
     msr_query_p2: Optional[MsrQueryP2]
     note: Optional[Note]
     p: Optional[MultiLanguageParagraph]
-    list: Optional[ARList]
+    list: list[ARList]
     structured_req: Optional[StructuredReq]
     trace: Optional[TraceableText]
     verbatim: Optional[MultiLanguageVerbatim]
@@ -85,7 +85,7 @@ class DocumentationBlock(ARObject):
         self.msr_query_p2: Optional[MsrQueryP2] = None
         self.note: Optional[Note] = None
         self.p: Optional[MultiLanguageParagraph] = None
-        self.list: Optional[ARList] = None
+        self.list: list[ARList] = []
         self.structured_req: Optional[StructuredReq] = None
         self.trace: Optional[TraceableText] = None
         self.verbatim: Optional[MultiLanguageVerbatim] = None
@@ -184,33 +184,46 @@ class DocumentationBlock(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize p
+        # Serialize p - Special handling for MultiLanguageParagraph
+        # The P element should contain L-1 elements directly as children
         if self.p is not None:
-            serialized = ARObject._serialize_item(self.p, "MultiLanguageParagraph")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("P")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+            # Create P element
+            wrapped = ET.Element("P")
+            # Serialize each LParagraph in the l1 list directly
+            # This ensures L-1 elements are direct children of P
+            if hasattr(self.p, '_l1') and self.p._l1:
+                for lp in self.p._l1:
+                    if lp is not None:
+                        # Serialize the LParagraph
+                        serialized_lp = lp.serialize()
+                        # Wrap it in L-1 tag with L attribute
+                        l1_elem = ET.Element("L-1")
+                        # Copy attributes (L attribute)
+                        if hasattr(serialized_lp, 'attrib'):
+                            l1_elem.attrib.update(serialized_lp.attrib)
+                        # Copy text content
+                        if serialized_lp.text:
+                            l1_elem.text = serialized_lp.text
+                        # Copy children
+                        for child in serialized_lp:
+                            l1_elem.append(child)
+                        wrapped.append(l1_elem)
+            elem.append(wrapped)
 
         # Serialize list
-        if self.list is not None:
-            serialized = ARObject._serialize_item(self.list, "ARList")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("LIST")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+        if self.list:
+            for ar_list_item in self.list:
+                serialized = ARObject._serialize_item(ar_list_item, "ARList")
+                if serialized is not None:
+                    # Wrap with correct tag
+                    wrapped = ET.Element("LIST")
+                    if hasattr(serialized, 'attrib'):
+                        wrapped.attrib.update(serialized.attrib)
+                        if serialized.text:
+                            wrapped.text = serialized.text
+                    for child in serialized:
+                        wrapped.append(child)
+                    elem.append(wrapped)
 
         # Serialize structured_req
         if self.structured_req is not None:
@@ -240,19 +253,31 @@ class DocumentationBlock(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize verbatim
+        # Serialize verbatim - Special handling for MultiLanguageVerbatim
+        # Similar to p, VERBATIM should contain L-1 elements directly as children
         if self.verbatim is not None:
-            serialized = ARObject._serialize_item(self.verbatim, "MultiLanguageVerbatim")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("VERBATIM")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+            # Create VERBATIM element
+            wrapped = ET.Element("VERBATIM")
+            # Serialize each LParagraph in the l1 list directly
+            # This ensures L-1 elements are direct children of VERBATIM
+            if hasattr(self.verbatim, '_l1') and self.verbatim._l1:
+                for lp in self.verbatim._l1:
+                    if lp is not None:
+                        # Serialize the LParagraph
+                        serialized_lp = lp.serialize()
+                        # Wrap it in L-1 tag with L attribute
+                        l1_elem = ET.Element("L-1")
+                        # Copy attributes (L attribute)
+                        if hasattr(serialized_lp, 'attrib'):
+                            l1_elem.attrib.update(serialized_lp.attrib)
+                        # Copy text content
+                        if serialized_lp.text:
+                            l1_elem.text = serialized_lp.text
+                        # Copy children
+                        for child in serialized_lp:
+                            l1_elem.append(child)
+                        wrapped.append(l1_elem)
+            elem.append(wrapped)
 
         return elem
 
@@ -306,17 +331,27 @@ class DocumentationBlock(ARObject):
             note_value = ARObject._deserialize_by_tag(child, "Note")
             obj.note = note_value
 
-        # Parse p
+        # Parse p - Special handling for MultiLanguageParagraph
+        # The P element contains L-1 elements directly as children
         child = ARObject._find_child_element(element, "P")
         if child is not None:
-            p_value = ARObject._deserialize_with_type(child, "MultiLanguageParagraph")
+            # Create a MultiLanguageParagraph
+            from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_language_paragraph import MultiLanguageParagraph
+            p_value = MultiLanguageParagraph()
+            # Find all L-1 children and deserialize them as LParagraph
+            from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel.l_paragraph import LParagraph
+            for l1_child in child:
+                if ARObject._strip_namespace(l1_child.tag) == "L-1":
+                    # Deserialize L-1 as LParagraph
+                    lp = LParagraph.deserialize(l1_child)
+                    p_value._l1.append(lp)
             obj.p = p_value
 
         # Parse list
-        child = ARObject._find_child_element(element, "LIST")
-        if child is not None:
+        for child in ARObject._find_all_child_elements(element, "LIST"):
             list_value = ARObject._deserialize_by_tag(child, "ARList")
-            obj.list = list_value
+            if list_value is not None:
+                obj.list.append(list_value)
 
         # Parse structured_req
         child = ARObject._find_child_element(element, "STRUCTURED-REQ")
@@ -330,10 +365,20 @@ class DocumentationBlock(ARObject):
             trace_value = ARObject._deserialize_by_tag(child, "TraceableText")
             obj.trace = trace_value
 
-        # Parse verbatim
+        # Parse verbatim - Special handling for MultiLanguageVerbatim
+        # The VERBATIM element contains L-1 elements directly as children
         child = ARObject._find_child_element(element, "VERBATIM")
         if child is not None:
-            verbatim_value = ARObject._deserialize_with_type(child, "MultiLanguageVerbatim")
+            # Create a MultiLanguageVerbatim
+            from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_language_verbatim import MultiLanguageVerbatim
+            verbatim_value = MultiLanguageVerbatim()
+            # Find all L-1 children and deserialize them as LParagraph
+            from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel.l_paragraph import LParagraph
+            for l1_child in child:
+                if ARObject._strip_namespace(l1_child.tag) == "L-1":
+                    # Deserialize L-1 as LParagraph
+                    lp = LParagraph.deserialize(l1_child)
+                    verbatim_value._l1.append(lp)
             obj.verbatim = verbatim_value
 
         return obj

@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ElementCollection import (
     AutoCollectEnum,
 )
@@ -42,23 +43,23 @@ class Collection(ARElement):
         """
         return False
 
-    auto_collect_enum: Optional[AutoCollectEnum]
-    collecteds: list[AtpFeature]
-    collection: Optional[NameToken]
-    elements: list[Identifiable]
+    auto_collect: Optional[AutoCollectEnum]
+    collected_instances: list[AtpFeature]
+    collection_semantics: Optional[NameToken]
     element_role: Optional[Identifier]
-    source_elements: list[Identifiable]
-    source_instances: list[AtpFeature]
+    element_refs: list[ARRef]
+    source_element_refs: list[ARRef]
+    source_instance_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize Collection."""
         super().__init__()
-        self.auto_collect_enum: Optional[AutoCollectEnum] = None
-        self.collecteds: list[AtpFeature] = []
-        self.collection: Optional[NameToken] = None
-        self.elements: list[Identifiable] = []
+        self.auto_collect: Optional[AutoCollectEnum] = None
+        self.collected_instances: list[AtpFeature] = []
+        self.collection_semantics: Optional[NameToken] = None
         self.element_role: Optional[Identifier] = None
-        self.source_elements: list[Identifiable] = []
-        self.source_instances: list[AtpFeature] = []
+        self.element_refs: list[ARRef] = []
+        self.source_element_refs: list[ARRef] = []
+        self.source_instance_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize Collection to XML element.
@@ -80,12 +81,12 @@ class Collection(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize auto_collect_enum
-        if self.auto_collect_enum is not None:
-            serialized = ARObject._serialize_item(self.auto_collect_enum, "AutoCollectEnum")
+        # Serialize auto_collect
+        if self.auto_collect is not None:
+            serialized = ARObject._serialize_item(self.auto_collect, "AutoCollectEnum")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("AUTO-COLLECT-ENUM")
+                wrapped = ET.Element("AUTO-COLLECT")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -94,22 +95,22 @@ class Collection(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize collecteds (list to container "COLLECTEDS")
-        if self.collecteds:
-            wrapper = ET.Element("COLLECTEDS")
-            for item in self.collecteds:
+        # Serialize collected_instances (list to container "COLLECTED-INSTANCES")
+        if self.collected_instances:
+            wrapper = ET.Element("COLLECTED-INSTANCES")
+            for item in self.collected_instances:
                 serialized = ARObject._serialize_item(item, "AtpFeature")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize collection
-        if self.collection is not None:
-            serialized = ARObject._serialize_item(self.collection, "NameToken")
+        # Serialize collection_semantics
+        if self.collection_semantics is not None:
+            serialized = ARObject._serialize_item(self.collection_semantics, "NameToken")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("COLLECTION")
+                wrapped = ET.Element("COLLECTION-SEMANTICS")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -117,16 +118,6 @@ class Collection(ARElement):
                 for child in serialized:
                     wrapped.append(child)
                 elem.append(wrapped)
-
-        # Serialize elements (list to container "ELEMENTS")
-        if self.elements:
-            wrapper = ET.Element("ELEMENTS")
-            for item in self.elements:
-                serialized = ARObject._serialize_item(item, "Identifiable")
-                if serialized is not None:
-                    wrapper.append(serialized)
-            if len(wrapper) > 0:
-                elem.append(wrapper)
 
         # Serialize element_role
         if self.element_role is not None:
@@ -142,23 +133,54 @@ class Collection(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize source_elements (list to container "SOURCE-ELEMENTS")
-        if self.source_elements:
-            wrapper = ET.Element("SOURCE-ELEMENTS")
-            for item in self.source_elements:
+        # Serialize element_refs (list to container "ELEMENT-REFS")
+        if self.element_refs:
+            wrapper = ET.Element("ELEMENT-REFS")
+            for item in self.element_refs:
                 serialized = ARObject._serialize_item(item, "Identifiable")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("ELEMENT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize source_instances (list to container "SOURCE-INSTANCES")
-        if self.source_instances:
-            wrapper = ET.Element("SOURCE-INSTANCES")
-            for item in self.source_instances:
+        # Serialize source_element_refs (list to container "SOURCE-ELEMENT-REFS")
+        if self.source_element_refs:
+            wrapper = ET.Element("SOURCE-ELEMENT-REFS")
+            for item in self.source_element_refs:
+                serialized = ARObject._serialize_item(item, "Identifiable")
+                if serialized is not None:
+                    child_elem = ET.Element("SOURCE-ELEMENT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize source_instance_refs (list to container "SOURCE-INSTANCE-REFS")
+        if self.source_instance_refs:
+            wrapper = ET.Element("SOURCE-INSTANCE-REFS")
+            for item in self.source_instance_refs:
                 serialized = ARObject._serialize_item(item, "AtpFeature")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("SOURCE-INSTANCE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -177,37 +199,27 @@ class Collection(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Collection, cls).deserialize(element)
 
-        # Parse auto_collect_enum
-        child = ARObject._find_child_element(element, "AUTO-COLLECT-ENUM")
+        # Parse auto_collect
+        child = ARObject._find_child_element(element, "AUTO-COLLECT")
         if child is not None:
-            auto_collect_enum_value = AutoCollectEnum.deserialize(child)
-            obj.auto_collect_enum = auto_collect_enum_value
+            auto_collect_value = AutoCollectEnum.deserialize(child)
+            obj.auto_collect = auto_collect_value
 
-        # Parse collecteds (list from container "COLLECTEDS")
-        obj.collecteds = []
-        container = ARObject._find_child_element(element, "COLLECTEDS")
+        # Parse collected_instances (list from container "COLLECTED-INSTANCES")
+        obj.collected_instances = []
+        container = ARObject._find_child_element(element, "COLLECTED-INSTANCES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.collecteds.append(child_value)
+                    obj.collected_instances.append(child_value)
 
-        # Parse collection
-        child = ARObject._find_child_element(element, "COLLECTION")
+        # Parse collection_semantics
+        child = ARObject._find_child_element(element, "COLLECTION-SEMANTICS")
         if child is not None:
-            collection_value = child.text
-            obj.collection = collection_value
-
-        # Parse elements (list from container "ELEMENTS")
-        obj.elements = []
-        container = ARObject._find_child_element(element, "ELEMENTS")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.elements.append(child_value)
+            collection_semantics_value = child.text
+            obj.collection_semantics = collection_semantics_value
 
         # Parse element_role
         child = ARObject._find_child_element(element, "ELEMENT-ROLE")
@@ -215,25 +227,53 @@ class Collection(ARElement):
             element_role_value = ARObject._deserialize_by_tag(child, "Identifier")
             obj.element_role = element_role_value
 
-        # Parse source_elements (list from container "SOURCE-ELEMENTS")
-        obj.source_elements = []
-        container = ARObject._find_child_element(element, "SOURCE-ELEMENTS")
+        # Parse element_refs (list from container "ELEMENT-REFS")
+        obj.element_refs = []
+        container = ARObject._find_child_element(element, "ELEMENT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.source_elements.append(child_value)
+                    obj.element_refs.append(child_value)
 
-        # Parse source_instances (list from container "SOURCE-INSTANCES")
-        obj.source_instances = []
-        container = ARObject._find_child_element(element, "SOURCE-INSTANCES")
+        # Parse source_element_refs (list from container "SOURCE-ELEMENT-REFS")
+        obj.source_element_refs = []
+        container = ARObject._find_child_element(element, "SOURCE-ELEMENT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.source_instances.append(child_value)
+                    obj.source_element_refs.append(child_value)
+
+        # Parse source_instance_refs (list from container "SOURCE-INSTANCE-REFS")
+        obj.source_instance_refs = []
+        container = ARObject._find_child_element(element, "SOURCE-INSTANCE-REFS")
+        if container is not None:
+            for child in container:
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.source_instance_refs.append(child_value)
 
         return obj
 
