@@ -89,8 +89,51 @@ class ARXMLWriter:
         # Fix XML declaration quotes
         self._fix_xml_declaration_quotes_file(filepath)
         
+        # Convert self-closing empty elements to separate opening and closing tags
+        # xml.etree.ElementTree serializes empty elements as <TAG /> but AUTOSAR uses <TAG></TAG>
+        self._fix_empty_elements_file(filepath)
+        
         # Preserve HTML entity encoding in text content
         self._preserve_html_entities_file(filepath)
+
+    def _fix_empty_elements_file(self, filepath: Path) -> None:
+        """Convert self-closing empty elements to separate opening and closing tags.
+
+        Post-processes the file to convert:
+        <TAG />
+        to:
+        <TAG></TAG>
+
+        This matches the AUTOSAR file format where empty elements use separate
+        opening and closing tags instead of self-closing tags.
+
+        Args:
+            filepath: Path to the ARXML file to fix
+        """
+        with open(filepath, 'rb') as f:
+            content = f.read()
+        
+        # Convert self-closing tags to empty tags
+        # Use regex to match patterns like <TAG /> or <TAG attribute="value" />
+        # and convert them to <TAG attribute="value"></TAG>
+        import re
+        
+        # Pattern to match self-closing tags (bytes pattern)
+        # Matches: <TAG />, <TAG attr="value" />, <TAG attr1="value1" attr2="value2" />, etc.
+        pattern = rb'<([A-Z][A-Z0-9-]*)([^>]*)/>'
+        
+        def replace_self_closing(match: re.Match[bytes]) -> bytes:
+            """Replace self-closing tag with separate opening and closing tags."""
+            tag = match.group(1)
+            attrs = match.group(2)
+            # Strip trailing whitespace from attributes
+            attrs = attrs.rstrip()
+            return b'<' + tag + attrs + b'></' + tag + b'>'
+        
+        content = re.sub(pattern, replace_self_closing, content)
+        
+        with open(filepath, 'wb') as f:
+            f.write(content)
 
     def _fix_xml_declaration_quotes_file(self, filepath: Path) -> None:
         """Replace single quotes with double quotes in XML declaration.

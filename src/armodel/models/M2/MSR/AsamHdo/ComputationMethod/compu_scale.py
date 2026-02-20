@@ -88,6 +88,23 @@ class CompuScale(ARObject):
         # First, call parent class serialize to get standard serialization
         elem = super().serialize()
 
+        # Handle desc attribute - unwrap MultiLanguageOverviewParagraph wrapper
+        # The DESC element should contain L-2 children directly, not MULTI-LANGUAGE-OVERVIEW-PARAGRAPH
+        for child in list(elem):
+            child_tag = ARObject._strip_namespace(child.tag)
+            if child_tag == "MULTI-LANGUAGE-OVERVIEW-PARAGRAPH":
+                elem.remove(child)
+                # Wrap with DESC tag and copy children
+                wrapped = ET.Element("DESC")
+                if hasattr(child, 'attrib'):
+                    wrapped.attrib.update(child.attrib)
+                    if child.text:
+                        wrapped.text = child.text
+                for sub_child in child:
+                    wrapped.append(sub_child)
+                elem.append(wrapped)
+                break
+
         # Now handle compu_scale_contents specially for flattened structure
         if self.compu_scale_contents is not None:
             # Handle CompuScaleConstantContents flattening
@@ -123,6 +140,35 @@ class CompuScale(ARObject):
                             wrapped.append(child)
                         elem.append(wrapped)
                         break
+
+        # Reorder elements to match AUTOSAR XML schema order
+        # The correct order is: DESC, LOWER-LIMIT, UPPER-LIMIT, COMPU-CONST/COMPU-RATIONAL-COEFFS, ...
+        # Extract all children and reorder them
+        children = list(elem)
+        elem.clear()  # Remove all children
+
+        # Define the desired order of elements
+        element_order = [
+            "DESC",
+            "LOWER-LIMIT",
+            "UPPER-LIMIT",
+            "COMPU-CONST",
+            "COMPU-RATIONAL-COEFFS",
+        ]
+
+        # Add elements in the desired order
+        for tag in element_order:
+            for child in children:
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag == tag:
+                    elem.append(child)
+                    break
+
+        # Add any remaining elements that weren't in the ordered list
+        for child in children:
+            child_tag = ARObject._strip_namespace(child.tag)
+            if child_tag not in element_order:
+                elem.append(child)
 
         return elem
 
