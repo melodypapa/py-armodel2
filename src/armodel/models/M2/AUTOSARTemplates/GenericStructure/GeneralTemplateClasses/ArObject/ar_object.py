@@ -129,6 +129,15 @@ class ARObject:
                 if self._is_xml_attribute(name):
                     # XML attributes go on the main element, not inside wrapper
                     elem.set(xml_tag, str(value))
+                elif ARObject._has_l_prefix(self.__class__, name):
+                    # Handle l_prefix pattern - wrap child element in L-<number> tag
+                    l_prefix_tag = ARObject._get_l_prefix_tag(self.__class__, name)
+                    if l_prefix_tag and value is not None:
+                        # Serialize the child element
+                        serialized = self._serialize_with_correct_tag(value, xml_tag)
+                        # Wrap it in the l_prefix tag
+                        wrapped = self._serialize_l_prefix(serialized, l_prefix_tag)
+                        current_elem.append(wrapped)
                 elif hasattr(value, 'serialize'):
                     # Recursively serialize child objects
                     child = self._serialize_with_correct_tag(value, xml_tag)
@@ -167,6 +176,15 @@ class ARObject:
                 # Check if this should be an XML attribute (via decorator)
                 if self._is_xml_attribute(name):
                     elem.set(xml_tag, str(value))
+                elif ARObject._has_l_prefix(self.__class__, name):
+                    # Handle l_prefix pattern - wrap child element in L-<number> tag
+                    l_prefix_tag = ARObject._get_l_prefix_tag(self.__class__, name)
+                    if l_prefix_tag and value is not None:
+                        # Serialize the child element
+                        serialized = self._serialize_with_correct_tag(value, xml_tag)
+                        # Wrap it in the l_prefix tag
+                        wrapped = self._serialize_l_prefix(serialized, l_prefix_tag)
+                        elem.append(wrapped)
                 elif hasattr(value, 'serialize'):
                     # Recursively serialize child objects
                     child = self._serialize_with_correct_tag(value, xml_tag)
@@ -541,6 +559,79 @@ class ARObject:
         return False
 
     @staticmethod
+    def _has_l_prefix(cls, attr_name: str) -> bool:
+        """Check if an attribute has @l_prefix decorator.
+
+        Args:
+            cls: The class to check
+            attr_name: Name of the attribute to check
+
+        Returns:
+            True if attribute has @l_prefix decorator
+        """
+        # Check if it's a property
+        prop = getattr(cls, attr_name, None)
+        if prop and isinstance(prop, property) and hasattr(prop.fget, '_l_prefix'):
+            return True
+
+        # Check if the attribute itself has the marker
+        attr = getattr(cls, attr_name, None)
+        if attr and hasattr(attr, '_l_prefix'):
+            return True
+
+        return False
+
+    @staticmethod
+    def _get_l_prefix_tag(cls, attr_name: str) -> Optional[str]:
+        """Get the XML tag name for an l_prefix attribute.
+
+        Args:
+            cls: The class to check
+            attr_name: Name of the attribute to check
+
+        Returns:
+            XML tag name if attribute has @l_prefix decorator, None otherwise
+        """
+        # Check if it's a property
+        prop = getattr(cls, attr_name, None)
+        if prop and isinstance(prop, property) and hasattr(prop.fget, '_l_prefix_tag'):
+            return prop.fget._l_prefix_tag
+
+        # Check if the attribute itself has the marker
+        attr = getattr(cls, attr_name, None)
+        if attr and hasattr(attr, '_l_prefix_tag'):
+            return attr._l_prefix_tag
+
+        return None
+
+    @staticmethod
+    def _serialize_l_prefix(child_elem: ET.Element, l_prefix_tag: str) -> ET.Element:
+        """Wrap a child element in the l_prefix tag.
+
+        This method takes a serialized child element (e.g., LPlainText)
+        and wraps it in a language-specific tag (e.g., L-10), copying
+        all attributes and text content from the child element.
+
+        Args:
+            child_elem: The child element to wrap (already serialized)
+            l_prefix_tag: The language-specific tag to use (e.g., "L-10")
+
+        Returns:
+            New element wrapping the child content
+        """
+        wrapped = ET.Element(l_prefix_tag)
+        # Copy attributes from child to wrapper
+        if hasattr(child_elem, 'attrib'):
+            wrapped.attrib.update(child_elem.attrib)
+        # Copy text from child to wrapper
+        if child_elem.text:
+            wrapped.text = child_elem.text
+        # Copy all children from child to wrapper
+        for child in child_elem:
+            wrapped.append(child)
+        return wrapped
+
+    @staticmethod
     def _extract_value_with_children(element: ET.Element, attr_type, explicit_class_name: Optional[str] = None):
         """Extract value from XML element's children based on type.
 
@@ -771,6 +862,24 @@ class ARObject:
             if ARObject._is_xml_attribute_static(cls, attr_name):
                 # XML attributes are always on the main element, not inside wrapper
                 value = element.get(xml_tag)
+            elif ARObject._has_l_prefix(cls, attr_name):
+                # Handle l_prefix pattern - look for L-<number> element
+                l_prefix_tag = ARObject._get_l_prefix_tag(cls, attr_name)
+                if l_prefix_tag:
+                    # Find the l_prefix element
+                    child = None
+                    for elem in current_elem:
+                        if ARObject._strip_namespace(elem.tag) == l_prefix_tag:
+                            child = elem
+                            break
+                    
+                    if child is not None:
+                        # Deserialize the child element dynamically
+                        value = ARObject._deserialize_by_tag(child, None)
+                    else:
+                        value = None
+                else:
+                    value = None
             else:
                 # Check if this attribute has @xml_element_tag with multi-level path
                 element_path = ARObject._get_element_tag_path_static(cls, attr_name)

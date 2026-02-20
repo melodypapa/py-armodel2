@@ -120,3 +120,31 @@ def atp_variant() -> Callable[[Any], Any]:
         cls._atp_variant = True  # type: ignore[union-attr]
         return cls
     return decorator
+
+
+def l_prefix(xml_tag: str) -> Callable[[Any], Any]:
+    """Decorator to mark an attribute as using the l_prefix pattern.
+
+    The l_prefix pattern wraps child elements in language-specific XML tags.
+    This is used for MultiLanguage* classes where language-specific content
+    is wrapped in L-<number> elements.
+
+    For example, attribute `l10` with type `LPlainText` is serialized as:
+    <L-10 L="EN">English text</L-10>
+
+    Usage:
+        class MultiLanguagePlainText(ARObject):
+            @l_prefix("L-10")
+            l10: LPlainText = None
+
+    Args:
+        xml_tag: The XML tag to use for wrapping (e.g., "L-10", "L-4", "L-2")
+
+    Returns:
+        Decorator that sets _l_prefix and _l_prefix_tag on the attribute
+    """
+    def decorator(attr_or_func: Any) -> Any:
+        attr_or_func._l_prefix = True  # type: ignore[union-attr]
+        attr_or_func._l_prefix_tag = xml_tag  # type: ignore[union-attr]
+        return attr_or_func
+    return decorator

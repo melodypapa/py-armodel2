@@ -10,6 +10,7 @@ JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_MultilanguageData
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import l_prefix
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel.l_long_name import (
@@ -29,58 +30,22 @@ class MultilanguageLongName(ARObject):
         """
         return False
 
-    l4: LLongName
+    _l4: LLongName
     def __init__(self) -> None:
         """Initialize MultilanguageLongName."""
         super().__init__()
-        self.l4: LLongName = None
-    def serialize(self) -> ET.Element:
-        """Serialize MultilanguageLongName to XML element.
+        self._l4: LLongName = None
+    @property
+    @l_prefix("L-4")
+    def l4(self) -> LLongName:
+        """Get l4 with language-specific wrapper."""
+        return self._l4
 
-        Returns:
-            xml.etree.ElementTree.Element representing this object
-        """
-        # Get XML tag name for this class
-        tag = self._get_xml_tag()
-        elem = ET.Element(tag)
+    @l4.setter
+    def l4(self, value: LLongName) -> None:
+        """Set l4 with language-specific wrapper."""
+        self._l4 = value
 
-        # Serialize l4 - use L-4 (language-specific element with hyphen)
-        if self.l4 is not None:
-            serialized = ARObject._serialize_item(self.l4, "LLongName")
-            if serialized is not None:
-                # Wrap with correct tag L-4 (language-specific)
-                wrapped = ET.Element("L-4")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
-
-        return elem
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "MultilanguageLongName":
-        """Deserialize XML element to MultilanguageLongName object.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Deserialized MultilanguageLongName object
-        """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
-
-        # Parse l4 - look for L-4 (language-specific element with hyphen)
-        child = ARObject._find_child_element(element, "L-4")
-        if child is not None:
-            l4_value = ARObject._deserialize_by_tag(child, "LLongName")
-            obj.l4 = l4_value
-
-        return obj
 
 
 

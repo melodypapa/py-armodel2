@@ -29,14 +29,6 @@ skip_classes:
   - "CompuConst"
   - "CompuConstTextContent"
 
-  # Language-specific element classes with L-N naming convention (L-1, L-2, L-4, L-5, L-10)
-  # These require custom serialization to handle hyphenated XML tag names
-  - "MultiLanguagePlainText"
-  - "MultilanguageLongName"
-  - "MultiLanguageParagraph"
-  - "MultiLanguageOverviewParagraph"
-  - "MultiLanguageVerbatim"
-
   # ARPackage requires custom handling for long_name attribute which contains language-specific elements
   - "ARPackage"
 

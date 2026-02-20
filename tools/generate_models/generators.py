@@ -168,6 +168,17 @@ def generate_class_code(
         if atp_type == "atpVariation":
             decorator_import += "from armodel.serialization.decorators import atp_variant\n"
         
+        # Check if this class has l_prefix attributes
+        has_l_prefix = False
+        if attribute_types:
+            for attr_name, attr_info in attribute_types.items():
+                kind = attr_info.get("kind", "attribute")
+                if kind == "l_prefix":
+                    has_l_prefix = True
+                    break
+        if has_l_prefix:
+            decorator_import += "from armodel.serialization.decorators import l_prefix\n"
+        
         code = f'''"""{docstring}"""
 
 {future_import}{basic_import}{base_import}{decorator_import}
@@ -425,8 +436,8 @@ class {class_name}(ABC):
             # Get Python identifier with Ref suffix if needed
             python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity)
 
-            # For xml_attribute, use private field with property
-            if kind == "xml_attribute":
+            # For xml_attribute and l_prefix, use private field with property
+            if kind == "xml_attribute" or kind == "l_prefix":
                 private_name = f"_{python_name}"
                 code += f"    {private_name}: {python_type}\n"
             else:
@@ -466,8 +477,8 @@ class {class_name}(ABC):
             # Get Python identifier with Ref suffix if needed
             python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity)
             
-            # For xml_attribute, use private field
-            if kind == "xml_attribute":
+            # For xml_attribute and l_prefix, use private field
+            if kind == "xml_attribute" or kind == "l_prefix":
                 private_name = f"_{python_name}"
                 attr_code = f"        self.{private_name}: {python_type} = {initial_value}\n"
                 code += attr_code
@@ -475,7 +486,7 @@ class {class_name}(ABC):
                 attr_code = f"        self.{python_name}: {python_type} = {initial_value}\n"
                 code += attr_code
 
-    # Add property decorators for xml_attribute attributes
+    # Add property decorators for xml_attribute and l_prefix attributes
     if attribute_types:
         for attr_name, attr_info in attribute_types.items():
             attr_type = attr_info["type"]
@@ -500,6 +511,26 @@ class {class_name}(ABC):
         self.{private_name} = value
 
 '''
+            elif kind == "l_prefix":
+                python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity)
+                private_name = f"_{python_name}"
+                # Extract the number from attribute name (e.g., "l10" → "10")
+                # Convert to XML tag format (e.g., "L-10")
+                number = attr_name[1:]  # Remove the 'l' prefix
+                l_prefix_tag = f"L-{number}"
+                # Generate property with l_prefix decorator
+                code += f'''    @property
+    @l_prefix("{l_prefix_tag}")
+    def {python_name}(self) -> {attr_type}:
+        """Get {python_name} with language-specific wrapper."""
+        return self.{private_name}
+
+    @{python_name}.setter
+    def {python_name}(self, value: {attr_type}) -> None:
+        """Set {python_name} with language-specific wrapper."""
+        self.{private_name} = value
+
+'''
 
     # Add blank line between __init__ and serialize/deserialize methods
     code += "\n"
@@ -515,6 +546,10 @@ class {class_name}(ABC):
         # atpVariant classes use ARObject's reflection-based serialization
         # with automatic wrapper element handling (VARIANTS/CONDITIONAL)
         # Don't generate custom serialize()/deserialize() methods
+        pass
+    elif attribute_types and any(attr_info.get("kind") == "l_prefix" for attr_info in attribute_types.values()):
+        # Classes with l_prefix attributes use ARObject's reflection-based serialization
+        # with l_prefix decorator handling (no custom serialize/deserialize methods needed)
         pass
     else:
         # For other classes, generate optimized serialize() and deserialize() methods

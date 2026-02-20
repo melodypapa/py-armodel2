@@ -59,7 +59,7 @@
         "l2": {
           "type": "LOverviewParagraph",
           "multiplicity": "1",
-          "kind": "attribute",
+          "kind": "l_prefix",
           "is_ref": false,
           "note": ""
         }
@@ -111,7 +111,7 @@
         "l4": {
           "type": "LLongName",
           "multiplicity": "1",
-          "kind": "attribute",
+          "kind": "l_prefix",
           "is_ref": false,
           "note": ""
         }
@@ -155,7 +155,7 @@
         "l1": {
           "type": "LParagraph",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "l_prefix",
           "is_ref": false,
           "note": ""
         }
@@ -216,7 +216,7 @@
         "l5": {
           "type": "LVerbatim",
           "multiplicity": "1",
-          "kind": "attribute",
+          "kind": "l_prefix",
           "is_ref": false,
           "note": ""
         },
@@ -260,7 +260,7 @@
         "l10": {
           "type": "LPlainText",
           "multiplicity": "1",
-          "kind": "attribute",
+          "kind": "l_prefix",
           "is_ref": false,
           "note": ""
         }
