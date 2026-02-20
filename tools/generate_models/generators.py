@@ -163,6 +163,11 @@ def generate_class_code(
         if has_xml_attribute:
             decorator_import = "from armodel.serialization.decorators import xml_attribute\n"
         
+        # Check if this class uses atpVariation pattern
+        atp_type = type_def.get("atp_type", None)
+        if atp_type == "atpVariation":
+            decorator_import += "from armodel.serialization.decorators import atp_variant\n"
+        
         code = f'''"""{docstring}"""
 
 {future_import}{basic_import}{base_import}{decorator_import}
@@ -209,6 +214,10 @@ def generate_class_code(
         code += "from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef\n"
 
     # Add type imports if needed
+    # Initialize circular and non-circular import sets outside attribute_types block
+    circular_imports = set()
+    non_circular_imports = set()
+    
     if attribute_types:
         type_imports = set()
         primitive_imports = {}  # Changed from set to dict to track package path
@@ -296,10 +305,6 @@ def generate_class_code(
         # Get forced TYPE_CHECKING imports for this class
         forced_type_checking_for_class = force_type_checking_imports.get(class_name, [])
 
-        # Separate circular and non-circular imports
-        circular_imports = set()
-        non_circular_imports = set()
-
         if type_imports:
             for import_type in sorted(type_imports):
                 # Skip self-import (class importing itself)
@@ -324,8 +329,9 @@ def generate_class_code(
                     added_imports.add(import_path)
 
         # Add non-circular imports directly
-        for import_type, import_path in sorted(non_circular_imports):
-            code += f"{import_path}\n"
+        if non_circular_imports:
+            for import_type, import_path in sorted(non_circular_imports):
+                code += f"{import_path}\n"
 
         # Add circular imports in TYPE_CHECKING block
         if circular_imports:
@@ -339,7 +345,9 @@ def generate_class_code(
                     python_path = type_package.replace("::", ".")
                     module_path = f"armodel.models.{python_path}.{to_snake_case(import_type)}"
                     code += f"    from {module_path} import (\n        {import_type},\n    )\n"
-            code += "\n"
+            # Add TWO blank lines after TYPE_CHECKING block to ensure two blank lines before class
+            # THREE newline characters create TWO blank lines
+            code += "\n\n\n"
 
     # Generate class definition with ABC for abstract classes
     if is_abstract:
@@ -368,14 +376,22 @@ class {class_name}(ABC):
 '''
     else:
         # Non-abstract classes
+        # Add two blank lines before class definition if NO circular imports
+        # If there ARE circular imports, blank lines are already added after TYPE_CHECKING block
+        if not circular_imports:
+            code += "\n\n"
+        
+        # Add @atp_variant decorator if this class uses atpVariation pattern
+        atp_type = type_def.get("atp_type", None)
+        if atp_type == "atpVariation":
+            code += '''@atp_variant()
+
+'''
+        
         if parent_class:
-            code += f'''\n
-class {class_name}({parent_class}):
-    """AUTOSAR {class_name}."""\n'''
+            code += f'class {class_name}({parent_class}):\n    """AUTOSAR {class_name}."""\n'
         else:
-            code += f'''\n
-class {class_name}:
-    """AUTOSAR {class_name}."""\n'''
+            code += f'class {class_name}:\n    """AUTOSAR {class_name}."""\n'
         # Add is_abstract property for non-abstract classes
         code += '''
     @property
@@ -495,6 +511,11 @@ class {class_name}:
         # ARObject uses reflection-based serialization framework
         # Add serialize(), deserialize(), and helper methods
         code += _generate_ar_object_methods()
+    elif type_def.get("atp_type") == "atpVariation":
+        # atpVariant classes use ARObject's reflection-based serialization
+        # with automatic wrapper element handling (VARIANTS/CONDITIONAL)
+        # Don't generate custom serialize()/deserialize() methods
+        pass
     else:
         # For other classes, generate optimized serialize() and deserialize() methods
         # These methods parse/serialize XML directly without reflection for better performance

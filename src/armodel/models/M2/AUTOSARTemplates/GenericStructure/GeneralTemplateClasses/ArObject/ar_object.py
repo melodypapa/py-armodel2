@@ -61,6 +61,26 @@ class ARObject:
         """Set timestamp attribute."""
         self._timestamp = value
 
+    @staticmethod
+    def _get_atp_variant_wrapper_path(class_name: str) -> str:
+        """Derive wrapper path for atpVariation classes from class name.
+        
+        AUTOSAR atpVariation pattern wraps all attributes in nested elements.
+        The pattern is: <CLASS-TAG>-VARIANTS/<CLASS-TAG>-CONDITIONAL
+        
+        Examples:
+            SwDataDefProps → "SW-DATA-DEF-PROPS-VARIANTS/SW-DATA-DEF-PROPS-CONDITIONAL"
+            DiagnosticCommonProps → "DIAGNOSTIC-COMMON-PROPS-VARIANTS/DIAGNOSTIC-COMMON-PROPS-CONDITIONAL"
+        
+        Args:
+            class_name: Python class name (e.g., "SwDataDefProps")
+        
+        Returns:
+            Wrapper path (e.g., "SW-DATA-DEF-PROPS-VARIANTS/SW-DATA-DEF-PROPS-CONDITIONAL")
+        """
+        class_tag = NameConverter.to_xml_tag(class_name)
+        return f"{class_tag}-VARIANTS/{class_tag}-CONDITIONAL"
+
     def serialize(self) -> ET.Element:
         """Serialize object to XML element using reflection.
 
@@ -80,42 +100,93 @@ class ARObject:
         # Note: AUTOSAR namespace attributes are now handled in AUTOSAR.serialize()
         # This base class no longer hardcodes schema location
 
-        # Get all instance attributes
-        for name, value in vars(self).items():
-            # Skip private attributes
-            if name.startswith('_'):
-                continue
+        # Check if this class uses atpVariation pattern
+        if hasattr(self.__class__, '_atp_variant'):
+            wrapper_path = self._get_atp_variant_wrapper_path(self.__class__.__name__)
+            wrapper_elements = wrapper_path.split('/')
+            
+            # Create nested wrapper elements
+            current_elem = elem
+            for wrapper_name in wrapper_elements:
+                wrapper_elem = ET.Element(wrapper_name)
+                current_elem.append(wrapper_elem)
+                current_elem = wrapper_elem
+            
+            # Serialize all attributes into the innermost wrapper
+            for name, value in vars(self).items():
+                # Skip private attributes
+                if name.startswith('_'):
+                    continue
 
-            # Check for custom XML element tag via @xml_element_tag decorator
-            xml_tag = self._get_element_tag(name)
+                # Check for custom XML element tag via @xml_element_tag decorator
+                xml_tag = self._get_element_tag(name)
 
-            # Skip None values
-            if value is None:
-                continue
+                # Skip None values
+                if value is None:
+                    continue
 
-            # Check if this should be an XML attribute (via decorator)
-            if self._is_xml_attribute(name):
-                elem.set(xml_tag, str(value))
-            elif hasattr(value, 'serialize'):
-                # Recursively serialize child objects
-                child = self._serialize_with_correct_tag(value, xml_tag)
-                elem.append(child)
-            elif isinstance(value, list):
-                # Serialize list items - create wrapper element
-                wrapper = ET.Element(xml_tag)
-                for item in value:
-                    if hasattr(item, 'serialize'):
-                        wrapper.append(item.serialize())
-                    else:
-                        child = ET.Element(xml_tag)
-                        child.text = str(item)
-                        wrapper.append(child)
-                elem.append(wrapper)
-            else:
-                # Primitive value - create element with text content
-                child = ET.Element(xml_tag)
-                child.text = str(value)
-                elem.append(child)
+                # Check if this should be an XML attribute (via decorator)
+                if self._is_xml_attribute(name):
+                    # XML attributes go on the main element, not inside wrapper
+                    elem.set(xml_tag, str(value))
+                elif hasattr(value, 'serialize'):
+                    # Recursively serialize child objects
+                    child = self._serialize_with_correct_tag(value, xml_tag)
+                    current_elem.append(child)
+                elif isinstance(value, list):
+                    # Serialize list items - create wrapper element
+                    wrapper = ET.Element(xml_tag)
+                    for item in value:
+                        if hasattr(item, 'serialize'):
+                            wrapper.append(item.serialize())
+                        else:
+                            child = ET.Element(xml_tag)
+                            child.text = str(item)
+                            wrapper.append(child)
+                    current_elem.append(wrapper)
+                else:
+                    # Primitive value - create element with text content
+                    child = ET.Element(xml_tag)
+                    child.text = str(value)
+                    current_elem.append(child)
+        else:
+            # Standard serialization for non-atpVariant classes
+            # Get all instance attributes
+            for name, value in vars(self).items():
+                # Skip private attributes
+                if name.startswith('_'):
+                    continue
+
+                # Check for custom XML element tag via @xml_element_tag decorator
+                xml_tag = self._get_element_tag(name)
+
+                # Skip None values
+                if value is None:
+                    continue
+
+                # Check if this should be an XML attribute (via decorator)
+                if self._is_xml_attribute(name):
+                    elem.set(xml_tag, str(value))
+                elif hasattr(value, 'serialize'):
+                    # Recursively serialize child objects
+                    child = self._serialize_with_correct_tag(value, xml_tag)
+                    elem.append(child)
+                elif isinstance(value, list):
+                    # Serialize list items - create wrapper element
+                    wrapper = ET.Element(xml_tag)
+                    for item in value:
+                        if hasattr(item, 'serialize'):
+                            wrapper.append(item.serialize())
+                        else:
+                            child = ET.Element(xml_tag)
+                            child.text = str(item)
+                            wrapper.append(child)
+                    elem.append(wrapper)
+                else:
+                    # Primitive value - create element with text content
+                    child = ET.Element(xml_tag)
+                    child.text = str(value)
+                    elem.append(child)
 
         # Also serialize properties that have custom XML tags
         for name, obj in self.__class__.__dict__.items():
@@ -133,6 +204,10 @@ class ARObject:
                 # Get the custom XML tag path
                 xml_tag_path = obj.fget._xml_element_tag
 
+                # Determine target element for serialization
+                # For atp_variant classes, serialize into innermost wrapper
+                target_elem = current_elem if hasattr(self.__class__, '_atp_variant') else elem
+
                 # Serialize the value
                 if hasattr(value, 'serialize'):
                     serialized_value = value.serialize()
@@ -140,7 +215,7 @@ class ARObject:
                     # Handle multi-level paths
                     if isinstance(xml_tag_path, list) and len(xml_tag_path) > 1:
                         # Create nested wrapper elements
-                        current = elem
+                        current = target_elem
                         for i, tag in enumerate(xml_tag_path):
                             if i == len(xml_tag_path) - 1:
                                 # Last level - this is where we put the serialized content
@@ -173,13 +248,13 @@ class ARObject:
                         # Copy all attributes from the serialized value to the wrapper
                         for attr_name, attr_value in serialized_value.attrib.items():
                             wrapper.set(attr_name, attr_value)
-                        elem.append(wrapper)
+                        target_elem.append(wrapper)
                 else:
                     # Primitive value
                     tag = xml_tag_path[-1] if isinstance(xml_tag_path, list) else xml_tag_path
                     if isinstance(xml_tag_path, list) and len(xml_tag_path) > 1:
                         # Create nested wrapper elements for primitive
-                        current = elem
+                        current = target_elem
                         for i, level_tag in enumerate(xml_tag_path):
                             if i == len(xml_tag_path) - 1:
                                 # Last level - create element with text
@@ -200,7 +275,7 @@ class ARObject:
                     else:
                         child = ET.Element(tag)
                         child.text = str(value)
-                        elem.append(child)
+                        target_elem.append(child)
 
         # Also serialize properties that don't have decorators but have getters
         # This handles properties like 'checksum' that are simple property getters
@@ -225,7 +300,7 @@ class ARObject:
                     # Convert property name to XML tag
                     xml_tag = NameConverter.to_xml_tag(name)
                     
-                    # Serialize as XML attribute
+                    # Serialize as XML attribute (always on main element)
                     elem.set(xml_tag, str(value))
                     continue
 
@@ -241,10 +316,14 @@ class ARObject:
                 # Convert property name to XML tag
                 xml_tag = NameConverter.to_xml_tag(name)
 
+                # Determine target element for serialization
+                # For atp_variant classes, serialize into innermost wrapper
+                target_elem = current_elem if hasattr(self.__class__, '_atp_variant') else elem
+
                 # Serialize the value
                 if hasattr(value, 'serialize'):
                     child = self._serialize_with_correct_tag(value, xml_tag)
-                    elem.append(child)
+                    target_elem.append(child)
                 elif isinstance(value, list):
                     wrapper = ET.Element(xml_tag)
                     for item in value:
@@ -254,11 +333,11 @@ class ARObject:
                             child = ET.Element(xml_tag)
                             child.text = str(item)
                             wrapper.append(child)
-                    elem.append(wrapper)
+                    target_elem.append(wrapper)
                 else:
                     child = ET.Element(xml_tag)
                     child.text = str(value)
-                    elem.append(child)
+                    target_elem.append(child)
 
         return elem
 
@@ -663,6 +742,26 @@ class ARObject:
                             # Keep as string - _extract_value will handle it
                             type_hints[attr_name] = attr_type_str
 
+        # For atp_variant classes, navigate through wrapper elements
+        if hasattr(cls, '_atp_variant'):
+            wrapper_path = cls._get_atp_variant_wrapper_path(cls.__name__)
+            wrapper_elements = wrapper_path.split('/')
+            
+            # Navigate through wrapper elements to find the innermost one
+            current_elem = element
+            for wrapper_name in wrapper_elements:
+                found = False
+                for child in current_elem:
+                    if ARObject._strip_namespace(child.tag) == wrapper_name:
+                        current_elem = child
+                        found = True
+                        break
+                if not found:
+                    # Wrapper not found, use current element
+                    break
+        else:
+            current_elem = element
+
         # Process each attribute from type hints
         for attr_name, attr_type in type_hints.items():
             # Convert Python name to XML tag
@@ -670,6 +769,7 @@ class ARObject:
 
             # Check if this should be an XML attribute
             if ARObject._is_xml_attribute_static(cls, attr_name):
+                # XML attributes are always on the main element, not inside wrapper
                 value = element.get(xml_tag)
             else:
                 # Check if this attribute has @xml_element_tag with multi-level path
@@ -677,7 +777,7 @@ class ARObject:
 
                 if isinstance(element_path, list) and len(element_path) > 1:
                     # Multi-level path - navigate through hierarchy
-                    child = element
+                    child = current_elem
                     for tag in element_path:
                         # Find child at current level
                         found = False
@@ -693,10 +793,10 @@ class ARObject:
                     # Single-level path - standard lookup
                     # Get the tag name (handle both string and list)
                     target_tag = element_path[-1] if isinstance(element_path, list) else element_path
-                    child = element.find(target_tag)
+                    child = current_elem.find(target_tag)
                     if child is None:
                         # Try to find by matching stripped tag names
-                        for elem in element:
+                        for elem in current_elem:
                             if ARObject._strip_namespace(elem.tag) == target_tag:
                                 child = elem
                                 break
@@ -757,6 +857,13 @@ class ARObject:
 
         # Build set of expected XML tags from type hints
         expected_tags = {NameConverter.to_xml_tag(name) for name in type_hints.keys()}
+        
+        # For atp_variant classes, add wrapper tags to expected tags
+        # These are not attributes but structural elements
+        if hasattr(cls, '_atp_variant'):
+            wrapper_path = cls._get_atp_variant_wrapper_path(cls.__name__)
+            for wrapper_tag in wrapper_path.split('/'):
+                expected_tags.add(wrapper_tag)
 
         # Check each child element
         for child in element:

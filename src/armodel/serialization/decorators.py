@@ -91,3 +91,32 @@ def xml_element_tag(xml_element_name: str, python_class_name: Optional[str] = No
 
         return cls_or_func
     return decorator
+
+
+def atp_variant() -> Callable[[Any], Any]:
+    """Decorator to mark a class as using AUTOSAR atpVariation pattern.
+
+    Classes with atpVariation wrap all their attributes in nested XML elements.
+    The wrapper path is automatically derived from the class name using AUTOSAR convention:
+    - First level: <CLASS-TAG>-VARIANTS
+    - Second level: <CLASS-TAG>-CONDITIONAL
+
+    Usage:
+        @atp_variant()
+        class SwDataDefProps(ARObject):
+            base_type_ref: Optional[ARRef] = None
+            sw_calibration_access: Optional[SwCalibrationAccessEnum] = None
+
+    Generates wrapper path: "SW-DATA-DEF-PROPS-VARIANTS/SW-DATA-DEF-PROPS-CONDITIONAL"
+
+    The ARObject serialization framework automatically:
+    1. Creates the nested wrapper elements during serialization
+    2. Navigates through wrapper elements during deserialization
+
+    Returns:
+        Decorator that sets _atp_variant flag on the class
+    """
+    def decorator(cls: Any) -> Any:
+        cls._atp_variant = True  # type: ignore[union-attr]
+        return cls
+    return decorator

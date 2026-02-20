@@ -24,6 +24,9 @@ PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest tests/unit/test
 # Run tests with coverage
 PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest --cov=src --cov-report=html --cov-report=term
 
+# Run binary comparison integration tests (verify read/write cycle produces identical XML)
+PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest tests/integration/test_binary_comparison.py -v
+
 # Lint
 ruff check src/ tools/
 
@@ -74,6 +77,8 @@ The project uses a reflection-based serialization framework that eliminates boil
 
 **Custom serialize/deserialize**: Some classes override these methods for special handling:
 - **CompuMethod**: Custom `serialize()`/`deserialize()` to handle `compu_internal_to_phys` → `<COMPU-INTERNAL-TO-PHYS>` and `compu_phys_to_internal` → `<COMPU-PHYS-TO-INTERNAL>` tag names
+- **Language-specific classes**: MultiLanguage* classes handle L-N naming convention (L-1, L-2, L-4, L-5, L-10) with inheritance-based parsing
+- **Item class**: Custom serialization where `item_contents` (DocumentationBlock) serializes as direct children of ITEM, not wrapped in ITEM-CONTENTS
 - Pattern: When child element tag must differ from parent attribute name, override `serialize()` to manually set the tag, and `deserialize()` to temporarily change the tag before calling the child's `deserialize()` method
 
 **Example**:
@@ -145,6 +150,63 @@ Key rules from `docs/designs/design_rules.md`:
 
 ## Important Implementation Details
 
+### Manually Maintained Classes
+
+Certain classes are manually maintained and excluded from code generation (see `tools/skip_classes.yaml`):
+
+**Framework Core**:
+- `AUTOSAR` - Root element, manually maintained
+- `ARObject` - Base class implementing reflection-based serialization
+- `ARRef` - AUTOSAR reference type with DEST/BASE attributes
+
+**Complex Serialization**:
+- `SwDataDefProps` - Uses atpVariation pattern (SW-DATA-DEF-PROPS-VARIANTS/SW-DATA-DEF-PROPS-CONDITIONAL)
+- `CompuMethod`, `Compu`, `CompuScales`, `CompuScale`, `CompuConst`, `CompuConstTextContent` - Custom compu logic
+- `Item` - Custom serialization for item_contents
+
+**Language-Specific Elements** (L-N naming convention):
+- `MultiLanguagePlainText`, `MultilanguageLongName`, `MultiLanguageParagraph`, `MultiLanguageOverviewParagraph`, `MultiLanguageVerbatim`
+- `LanguageSpecific`, `LLongName`, `LPlainText`, `LParagraph`, `LOverviewParagraph`, `LVerbatim`, `MixedContentForUnitNames`
+- `ARPackage` - Contains long_name with language-specific elements
+
+**Circular Import Handling**:
+- `tools/skip_classes.yaml` also defines `force_type_checking_imports` for types that always need TYPE_CHECKING to avoid circular imports:
+  - `AbstractImplementationDataType`, `SwDataDefProps`, `ApplicationPrimitiveDataType`, `ValueSpecification`
+
+### Decorator System
+
+The codebase uses decorators for XML serialization edge cases:
+
+- `@xml_attribute` - Marks property/attribute to serialize as XML attribute instead of element
+- `@xml_tag("name")` - Specifies custom XML tag name for class or attribute
+- `@xml_element_tag("ELEMENT-NAME", "ClassName")` - Custom XML element name with optional Python class for polymorphic types
+- `@atp_variant()` - Marks class using AUTOSAR atpVariation pattern (auto-generates wrapper path from class name)
+
+Example:
+```python
+@atp_variant()
+class SwDataDefProps(ARObject):
+    # Automatically wrapped in SW-DATA-DEF-PROPS-VARIANTS/SW-DATA-DEF-PROPS-CONDITIONAL
+    base_type_ref: Optional[ARRef] = None
+```
+
+### Global Settings Management
+
+`GlobalSettingsManager` (singleton) manages application-wide settings:
+
+```python
+from armodel.core import GlobalSettingsManager
+
+settings = GlobalSettingsManager()
+settings.strict_validation = True  # Raise exception on unrecognized XML elements
+settings.warn_on_unrecognized = False  # Suppress warnings
+settings.reset()  # Restore defaults
+```
+
+Settings:
+- `strict_validation` (default: False) - Raise exception on unrecognized XML elements during deserialization
+- `warn_on_unrecognized` (default: True) - Log warnings for unrecognized XML elements
+
 ### Circular Import Handling
 
 The codebase uses `from __future__ import annotations` combined with `TYPE_CHECKING` to avoid circular import issues:
@@ -191,6 +253,26 @@ if ar_object.some_enum == "EXPECTED_VALUE":  # Works even if some_enum is AREnum
     ...
 ```
 
+### ARRef Reference Type
+
+`ARRef` represents AUTOSAR references with DEST/BASE attributes:
+
+**XML Format**:
+```xml
+<SW-ADDR-METHOD-REF DEST="SW-ADDR-METHOD" BASE="DataTypes">/Package/Element</SW-ADDR-METHOD-REF>
+```
+
+**Python Usage**:
+```python
+ref = ARRef(dest="SW-ADDR-METHOD", value="/Package/Element", base="DataTypes")
+```
+
+**Key Points**:
+- DEST attribute specifies the target type (required for most references)
+- BASE attribute specifies the base package/type (optional)
+- Text content contains the reference path
+- Serialized with `-REF` or `-TREF` suffix based on JSON "kind" field in mappings
+
 ## Important Implementation Details
 
 ### Reader/Writer Architecture
@@ -219,6 +301,29 @@ Generated model files are excluded from strict requirements.
 - Reader converts lxml elements to ElementTree elements before model deserialization
 
 ## Common Tasks
+
+### Format ARXML Files (CLI)
+
+```bash
+# Basic formatting
+armodel format input.arxml -o output.arxml
+
+# With validation
+armodel format input.arxml -o output.arxml --strict
+
+# Verbose output for debugging
+armodel format input.arxml -o output.arxml -v
+
+# Quiet mode (suppress output)
+armodel format input.arxml -o output.arxml -q
+```
+
+**CLI Exit Codes**:
+- 0: Success
+- 1: Input file not found
+- 2: ARXML parsing error
+- 3: File write error
+- 4: Unhandled exception
 
 ### Read ARXML file
 
@@ -314,7 +419,6 @@ docs/
 
 ## Known Limitations
 
-- CLI module (`main.py`) not implemented
 - Utils module not implemented
 - Some complex nested structures may have incomplete `deserialize()` implementations
 - Performance optimization for very large files (100MB+) could be improved
@@ -323,5 +427,7 @@ docs/
 ## Key Reference Documents
 
 - **Design Rules**: `docs/designs/design_rules.md` - Complete list of design rules including naming, structure, and import patterns
+- **Skip Classes**: `tools/skip_classes.yaml` - List of manually maintained classes excluded from code generation
 - **Generator Skill**: `.claude/commands/gen-class.md` - Interactive command for generating classes from ARXML files
+- **Quality Command**: `.claude/commands/quality.md` - Run linting, type checking, and tests
 - **Requirements**: `docs/requirements/` - Detailed functional and non-functional requirements for each module

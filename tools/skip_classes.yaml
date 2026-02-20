@@ -20,8 +20,6 @@ skip_classes:
 
   # Abstract base class for SwBaseType - requires custom handling
   - "BaseType"
-  # SwDataDefProps - manually maintained to handle SW-DATA-DEF-PROPS-VARIANTS/SW-DATA-DEF-PROPS-CONDITIONAL wrapper structure
-  - "SwDataDefProps"
 
   # CompuMethod is a complex class with custom serialization logic with compuInternalToPhys
   - "CompuMethod"
@@ -86,4 +84,3 @@ force_type_checking_imports:
   
   # ValueSpecification may have circular imports with various types
   "ValueSpecification": "*"
-  # SwDataDefProps - manually maintained to handle SW-DATA-DEF-PROPS-VARIANTS/SW-DATA-DEF-PROPS-CONDITIONAL wrapper structure

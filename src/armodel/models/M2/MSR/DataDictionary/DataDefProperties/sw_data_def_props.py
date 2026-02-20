@@ -14,8 +14,9 @@ References:
 JSON Source: docs/json/packages/M2_MSR_DataDictionary_DataDefProperties.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, get_type_hints
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import atp_variant
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
@@ -69,7 +70,6 @@ from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_text_props import
 from armodel.models.M2.MSR.AsamHdo.Units.unit import (
     Unit,
 )
-from armodel.serialization.name_converter import NameConverter
 
 if TYPE_CHECKING:
     from armodel.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes.abstract_implementation_data_type import (
@@ -89,12 +89,11 @@ if TYPE_CHECKING:
     )
 
 
-class SwDataDefProps(ARObject):
-    """AUTOSAR SwDataDefProps.
 
-    Manually maintained class to handle SW-DATA-DEF-PROPS-VARIANTS/SW-DATA-DEF-PROPS-CONDITIONAL
-    wrapper structure in AUTOSAR XML files.
-    """
+@atp_variant()
+
+class SwDataDefProps(ARObject):
+    """AUTOSAR SwDataDefProps."""
 
     @property
     def is_abstract(self) -> bool:
@@ -107,15 +106,15 @@ class SwDataDefProps(ARObject):
 
     additional_native_type_qualifier: Optional[NativeDeclarationString]
     annotations: list[Annotation]
-    base_type_ref: Optional[ARRef]
-    compu_method_ref: Optional[ARRef]
-    data_constr_ref: Optional[ARRef]
+    base_type: Optional[SwBaseType]
+    compu_method: Optional[CompuMethod]
+    data_constr: Optional[DataConstr]
     display_format: Optional[DisplayFormatString]
     display_presentation: Optional[DisplayPresentationEnum]
-    implementation_data_type_ref: Optional[ARRef]
+    implementation_data_type: Optional[AbstractImplementationDataType]
     invalid_value: Optional[ValueSpecification]
     step_size: Optional[Float]
-    sw_addr_method_ref: Optional[ARRef]
+    sw_addr_method: Optional[SwAddrMethod]
     sw_alignment: Optional[AlignmentType]
     sw_bit_representation: Optional[SwBitRepresentation]
     sw_calibration_access: Optional[SwCalibrationAccessEnum]
@@ -128,28 +127,27 @@ class SwDataDefProps(ARObject):
     sw_interpolation_method: Optional[Identifier]
     sw_is_virtual: Optional[Boolean]
     sw_pointer_target_props: Optional[SwPointerTargetProps]
-    sw_record_layout_ref: Optional[ARRef]
+    sw_record_layout: Optional[SwRecordLayout]
     sw_refresh_timing: Optional[MultidimensionalTime]
     sw_text_props: Optional[SwTextProps]
     sw_value_block_size: Optional[Numerical]
     sw_value_block_size_mults: list[Numerical]
-    unit_ref: Optional[ARRef]
+    unit: Optional[Unit]
     value_axis_data_type: Optional[ApplicationPrimitiveDataType]
-
     def __init__(self) -> None:
         """Initialize SwDataDefProps."""
         super().__init__()
         self.additional_native_type_qualifier: Optional[NativeDeclarationString] = None
         self.annotations: list[Annotation] = []
-        self.base_type_ref: Optional[ARRef] = None
-        self.compu_method_ref: Optional[ARRef] = None
-        self.data_constr_ref: Optional[ARRef] = None
+        self.base_type: Optional[SwBaseType] = None
+        self.compu_method: Optional[CompuMethod] = None
+        self.data_constr: Optional[DataConstr] = None
         self.display_format: Optional[DisplayFormatString] = None
         self.display_presentation: Optional[DisplayPresentationEnum] = None
-        self.implementation_data_type_ref: Optional[ARRef] = None
+        self.implementation_data_type: Optional[AbstractImplementationDataType] = None
         self.invalid_value: Optional[ValueSpecification] = None
         self.step_size: Optional[Float] = None
-        self.sw_addr_method_ref: Optional[ARRef] = None
+        self.sw_addr_method: Optional[SwAddrMethod] = None
         self.sw_alignment: Optional[AlignmentType] = None
         self.sw_bit_representation: Optional[SwBitRepresentation] = None
         self.sw_calibration_access: Optional[SwCalibrationAccessEnum] = None
@@ -162,221 +160,14 @@ class SwDataDefProps(ARObject):
         self.sw_interpolation_method: Optional[Identifier] = None
         self.sw_is_virtual: Optional[Boolean] = None
         self.sw_pointer_target_props: Optional[SwPointerTargetProps] = None
-        self.sw_record_layout_ref: Optional[ARRef] = None
+        self.sw_record_layout: Optional[SwRecordLayout] = None
         self.sw_refresh_timing: Optional[MultidimensionalTime] = None
         self.sw_text_props: Optional[SwTextProps] = None
         self.sw_value_block_size: Optional[Numerical] = None
         self.sw_value_block_size_mults: list[Numerical] = []
-        self.unit_ref: Optional[ARRef] = None
+        self.unit: Optional[Unit] = None
         self.value_axis_data_type: Optional[ApplicationPrimitiveDataType] = None
 
-    def serialize(self, namespace: str = "") -> ET.Element:
-        """Serialize SwDataDefProps to XML element.
-
-        AUTOSAR schema uses nested structure: SW-DATA-DEF-PROPS contains
-        SW-DATA-DEF-PROPS-VARIANTS/SW-DATA-DEF-PROPS-CONDITIONAL wrapper.
-
-        Returns:
-            xml.etree.ElementTree.Element representing this SwDataDefProps
-        """
-        # Get XML tag name
-        tag = NameConverter.to_xml_tag(self.__class__.__name__)
-        elem = ET.Element(tag)
-
-        # Add namespace if provided
-        if namespace:
-            elem.set("xmlns", namespace)
-
-        # Create SW-DATA-DEF-PROPS-VARIANTS wrapper
-        variants_elem = ET.Element("SW-DATA-DEF-PROPS-VARIANTS")
-
-        # Create SW-DATA-DEF-PROPS-CONDITIONAL wrapper
-        conditional_elem = ET.Element("SW-DATA-DEF-PROPS-CONDITIONAL")
-
-        # Serialize reference attributes that go inside SW-DATA-DEF-PROPS-CONDITIONAL
-        # These are ARRef attributes that should be wrapped in -REF elements
-        if self.base_type_ref:
-            child = self._serialize_with_correct_tag(self.base_type_ref, "BASE-TYPE-REF")
-            conditional_elem.append(child)
-
-        if self.implementation_data_type_ref:
-            child = self._serialize_with_correct_tag(self.implementation_data_type_ref, "IMPLEMENTATION-DATA-TYPE-REF")
-            conditional_elem.append(child)
-
-        if self.data_constr_ref:
-            child = self._serialize_with_correct_tag(self.data_constr_ref, "DATA-CONSTR-REF")
-            conditional_elem.append(child)
-
-        if self.compu_method_ref:
-            child = self._serialize_with_correct_tag(self.compu_method_ref, "COMPU-METHOD-REF")
-            conditional_elem.append(child)
-
-        if self.unit_ref:
-            child = self._serialize_with_correct_tag(self.unit_ref, "UNIT-REF")
-            conditional_elem.append(child)
-
-        # Serialize all other attributes inside SW-DATA-DEF-PROPS-CONDITIONAL
-        # This includes primitive types like sw_calibration_access, enums, etc.
-        for name, value in vars(self).items():
-            # Skip private attributes and already handled reference attributes
-            if name.startswith('_') or name in ['base_type_ref', 'implementation_data_type_ref', 'data_constr_ref', 'compu_method_ref', 'unit_ref']:
-                continue
-
-            # Skip None values
-            if value is None:
-                continue
-
-            # Convert Python name to XML tag
-            xml_tag = NameConverter.to_xml_tag(name)
-
-            # Check if this should be an XML attribute
-            if ARObject._is_xml_attribute_static(self.__class__, name):
-                # XML attributes should be on the main element
-                elem.set(xml_tag, str(value))
-            elif hasattr(value, 'serialize'):
-                # Use _serialize_with_correct_tag to ensure proper tag name for enums and primitives
-                child = self._serialize_with_correct_tag(value, xml_tag)
-                conditional_elem.append(child)
-            elif isinstance(value, list):
-                # Serialize list items
-                if value:  # Only add if list is not empty
-                    wrapper = ET.Element(xml_tag)
-                    for item in value:
-                        if hasattr(item, 'serialize'):
-                            child = self._serialize_with_correct_tag(item, xml_tag)
-                            wrapper.append(child)
-                        else:
-                            child = ET.Element(xml_tag)
-                            child.text = str(item)
-                            wrapper.append(child)
-                    conditional_elem.append(wrapper)
-            else:
-                # Primitive value - add to conditional
-                child = ET.Element(xml_tag)
-                child.text = str(value)
-                conditional_elem.append(child)
-
-        # Add conditional to variants
-        variants_elem.append(conditional_elem)
-
-        # Add variants to main element
-        elem.append(variants_elem)
-
-        return elem
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "SwDataDefProps":
-        """Deserialize XML element to SwDataDefProps.
-
-        AUTOSAR schema uses nested structure: SW-DATA-DEF-PROPS contains
-        SW-DATA-DEF-PROPS-VARIANTS/SW-DATA-DEF-PROPS-CONDITIONAL wrapper.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Deserialized SwDataDefProps instance
-        """
-        # Create instance without calling __init__
-        obj = cls.__new__(cls)
-
-        # Call __init__ to set default values
-        obj.__init__()
-
-        # Get type hints to know what attributes to expect
-        try:
-            type_hints = get_type_hints(cls)
-        except Exception:
-            # Fallback: Use __annotations__ directly
-            type_hints = {}
-            for base_cls in cls.__mro__:
-                if hasattr(base_cls, '__annotations__'):
-                    for attr_name, attr_type_str in base_cls.__annotations__.items():
-                        if attr_name not in type_hints:
-                            type_hints[attr_name] = attr_type_str
-
-        # Helper function to strip namespace from tag
-        def strip_namespace(tag: str) -> str:
-            if '}' in tag:
-                return tag.split('}')[1]
-            return tag
-
-        # Find SW-DATA-DEF-PROPS-VARIANTS element
-        variants_elem = None
-        for child in element:
-            child_tag = strip_namespace(child.tag)
-            if child_tag == "SW-DATA-DEF-PROPS-VARIANTS":
-                variants_elem = child
-                break
-
-        # Find SW-DATA-DEF-PROPS-CONDITIONAL element
-        conditional_elem = None
-        if variants_elem is not None:
-            for child in variants_elem:
-                child_tag = strip_namespace(child.tag)
-                if child_tag == "SW-DATA-DEF-PROPS-CONDITIONAL":
-                    conditional_elem = child
-                    break
-
-        # Process reference elements and other attributes inside SW-DATA-DEF-PROPS-CONDITIONAL
-        if conditional_elem is not None:
-            for child in conditional_elem:
-                child_tag = strip_namespace(child.tag)
-                if child_tag == "BASE-TYPE-REF":
-                    obj.base_type_ref = ARRef.deserialize(child)
-                elif child_tag == "IMPLEMENTATION-DATA-TYPE-REF":
-                    obj.implementation_data_type_ref = ARRef.deserialize(child)
-                elif child_tag == "DATA-CONSTR-REF":
-                    obj.data_constr_ref = ARRef.deserialize(child)
-                elif child_tag == "COMPU-METHOD-REF":
-                    obj.compu_method_ref = ARRef.deserialize(child)
-                elif child_tag == "UNIT-REF":
-                    obj.unit_ref = ARRef.deserialize(child)
-
-        # Process other attributes - look for them in SW-DATA-DEF-PROPS-CONDITIONAL first,
-        # then fall back to main element for XML attributes
-        for attr_name, attr_type in type_hints.items():
-            # Skip already handled reference attributes
-            if attr_name in ['base_type_ref', 'implementation_data_type_ref', 'data_constr_ref', 'compu_method_ref', 'unit_ref']:
-                continue
-
-            # Convert Python name to XML tag
-            xml_tag = NameConverter.to_xml_tag(attr_name)
-
-            # Check if this should be an XML attribute
-            if ARObject._is_xml_attribute_static(cls, attr_name):
-                # XML attributes are on the main element
-                value = element.get(xml_tag)
-                if value is not None:
-                    setattr(obj, attr_name, value)
-            else:
-                # For child elements, first look in SW-DATA-DEF-PROPS-CONDITIONAL
-                child = None
-                if conditional_elem is not None:
-                    child = conditional_elem.find(xml_tag)
-                    if child is None:
-                        # Try to find by matching stripped tag names
-                        for elem in conditional_elem:
-                            if strip_namespace(elem.tag) == xml_tag:
-                                child = elem
-                                break
-
-                # If not found in conditional, check main element
-                if child is None:
-                    child = element.find(xml_tag)
-                    if child is None:
-                        # Try to find by matching stripped tag names
-                        for elem in element:
-                            if strip_namespace(elem.tag) == xml_tag:
-                                child = elem
-                                break
-
-                if child is not None:
-                    # Get value based on type
-                    value = ARObject._extract_value(child, attr_type)
-                    setattr(obj, attr_name, value)
-
-        return obj
 
 
 class SwDataDefPropsBuilder:

@@ -22,6 +22,8 @@ if TYPE_CHECKING:
         SwDataDefProps,
     )
 
+
+
 from abc import ABC, abstractmethod
 
 
