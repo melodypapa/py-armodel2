@@ -96,8 +96,8 @@
         "unit": {
           "type": "Unit",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This is the physical unit of the Physical values for which"
         }
       }
@@ -257,7 +257,7 @@
           "is_ref": false,
           "note": "The value of this attribute shall be taken for generating"
         },
-        "compuInverse": {
+        "compuInverseValue": {
           "type": "CompuConst",
           "multiplicity": "0..1",
           "kind": "attribute",
