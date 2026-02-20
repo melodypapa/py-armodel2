@@ -49,6 +49,7 @@ class DiagnosticEnvDataElementCondition(DiagnosticEnvCompareCondition):
         self.compare_value: Optional[ValueSpecification] = None
         self.data_prototype_ref: Optional[ARRef] = None
         self.sw_data_def: Optional[SwDataDefProps] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticEnvDataElementCondition to XML element.
 
@@ -56,7 +57,7 @@ class DiagnosticEnvDataElementCondition(DiagnosticEnvCompareCondition):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -88,7 +89,7 @@ class DiagnosticEnvDataElementCondition(DiagnosticEnvCompareCondition):
             serialized = ARObject._serialize_item(self.data_prototype_ref, "DataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DATA-PROTOTYPE")
+                wrapped = ET.Element("DATA-PROTOTYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -133,9 +134,9 @@ class DiagnosticEnvDataElementCondition(DiagnosticEnvCompareCondition):
             obj.compare_value = compare_value_value
 
         # Parse data_prototype_ref
-        child = ARObject._find_child_element(element, "DATA-PROTOTYPE")
+        child = ARObject._find_child_element(element, "DATA-PROTOTYPE-REF")
         if child is not None:
-            data_prototype_ref_value = ARObject._deserialize_by_tag(child, "DataPrototype")
+            data_prototype_ref_value = ARRef.deserialize(child)
             obj.data_prototype_ref = data_prototype_ref_value
 
         # Parse sw_data_def

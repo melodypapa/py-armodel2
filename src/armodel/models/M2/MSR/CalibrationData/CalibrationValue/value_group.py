@@ -40,6 +40,7 @@ class ValueGroup(ARObject):
         super().__init__()
         self.label: Optional[MultilanguageLongName] = None
         self.vg_contents: Optional[SwValues] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ValueGroup to XML element.
 
@@ -47,7 +48,7 @@ class ValueGroup(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize label
@@ -97,7 +98,7 @@ class ValueGroup(ARObject):
         # Parse label
         child = ARObject._find_child_element(element, "LABEL")
         if child is not None:
-            label_value = ARObject._deserialize_by_tag(child, "MultilanguageLongName")
+            label_value = ARObject._deserialize_with_type(child, "MultilanguageLongName")
             obj.label = label_value
 
         # Parse vg_contents

@@ -26,5 +26,5 @@ class HandleOutOfRangeStatusEnum(AREnum):
         """
         self._value_ = value
 
-    INDICATE = "indicate"
-    SILENT = "silent"
+    INDICATE = "INDICATE"
+    SILENT = "SILENT"

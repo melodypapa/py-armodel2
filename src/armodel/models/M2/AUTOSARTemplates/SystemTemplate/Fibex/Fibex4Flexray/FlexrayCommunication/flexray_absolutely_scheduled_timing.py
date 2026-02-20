@@ -37,6 +37,7 @@ class FlexrayAbsolutelyScheduledTiming(ARObject):
         super().__init__()
         self.communication_cycle_cycle: Optional[CommunicationCycle] = None
         self.slot_id: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FlexrayAbsolutelyScheduledTiming to XML element.
 
@@ -44,7 +45,7 @@ class FlexrayAbsolutelyScheduledTiming(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize communication_cycle_cycle

@@ -35,6 +35,7 @@ class DiagnosticControlDTCSettingClass(DiagnosticServiceClass):
         """Initialize DiagnosticControlDTCSettingClass."""
         super().__init__()
         self.control_option: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticControlDTCSettingClass to XML element.
 
@@ -42,7 +43,7 @@ class DiagnosticControlDTCSettingClass(DiagnosticServiceClass):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

@@ -37,6 +37,7 @@ class DiagnosticAging(DiagnosticCommonElement):
         super().__init__()
         self.aging_cycle: Optional[Any] = None
         self.threshold: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticAging to XML element.
 
@@ -44,7 +45,7 @@ class DiagnosticAging(DiagnosticCommonElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

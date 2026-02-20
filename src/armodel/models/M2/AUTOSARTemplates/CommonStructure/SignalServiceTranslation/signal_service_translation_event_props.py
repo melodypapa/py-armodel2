@@ -45,6 +45,7 @@ class SignalServiceTranslationEventProps(Identifiable):
         self.safe_translation: Optional[Boolean] = None
         self.secure: Optional[Boolean] = None
         self.translation_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SignalServiceTranslationEventProps to XML element.
 
@@ -52,7 +53,7 @@ class SignalServiceTranslationEventProps(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -108,7 +109,7 @@ class SignalServiceTranslationEventProps(Identifiable):
             serialized = ARObject._serialize_item(self.translation_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TRANSLATION")
+                wrapped = ET.Element("TRANSLATION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -155,9 +156,9 @@ class SignalServiceTranslationEventProps(Identifiable):
             obj.secure = secure_value
 
         # Parse translation_ref
-        child = ARObject._find_child_element(element, "TRANSLATION")
+        child = ARObject._find_child_element(element, "TRANSLATION-REF")
         if child is not None:
-            translation_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            translation_ref_value = ARRef.deserialize(child)
             obj.translation_ref = translation_ref_value
 
         return obj

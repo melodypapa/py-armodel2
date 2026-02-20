@@ -34,6 +34,7 @@ class PlcaProps(ARObject):
         super().__init__()
         self.plca_local_node: Optional[PositiveInteger] = None
         self.plca_max_burst: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize PlcaProps to XML element.
 
@@ -41,7 +42,7 @@ class PlcaProps(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize plca_local_node

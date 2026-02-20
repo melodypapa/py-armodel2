@@ -42,7 +42,7 @@
         "swRecord": {
           "type": "SwRecordLayoutGroup",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This is the top level record layout group."
         }
@@ -210,7 +210,7 @@
         "swRecord": {
           "type": "SwRecordLayoutGroup",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This aggregation provides support for nested iterations. example, if a map is to be handled, then we might nested SwRecordLayoutGroups, one for the one for the y-axis. The inner iteration runs"
         },

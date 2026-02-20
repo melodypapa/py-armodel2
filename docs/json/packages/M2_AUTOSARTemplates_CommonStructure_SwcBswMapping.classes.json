@@ -60,7 +60,7 @@
         "runnableMappings": {
           "type": "SwcBswRunnableMapping",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "A mapping between a pair of SWC and BSW runnables."
         },
@@ -151,14 +151,14 @@
         "bswModeGroupPrototype": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "The BSW mode group prototype."
         },
         "swcModeGroupSwcInstanceRef": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "by: PModeGroupInAtomic"
         }
@@ -193,14 +193,14 @@
         "bswTrigger": {
           "type": "Trigger",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "The BSW Trigger."
         },
         "swcTrigger": {
           "type": "Trigger",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "The SWC Trigger provided by a particular port."
         }

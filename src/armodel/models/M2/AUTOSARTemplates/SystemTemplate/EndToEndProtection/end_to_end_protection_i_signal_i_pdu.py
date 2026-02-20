@@ -44,6 +44,7 @@ class EndToEndProtectionISignalIPdu(ARObject):
         self.data_offset: Optional[Integer] = None
         self.i_signal_group_ref: Optional[ARRef] = None
         self.i_signal_i_pdu: Optional[ISignalIPdu] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EndToEndProtectionISignalIPdu to XML element.
 
@@ -51,7 +52,7 @@ class EndToEndProtectionISignalIPdu(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize data_offset
@@ -73,7 +74,7 @@ class EndToEndProtectionISignalIPdu(ARObject):
             serialized = ARObject._serialize_item(self.i_signal_group_ref, "ISignalGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("I-SIGNAL-GROUP")
+                wrapped = ET.Element("I-SIGNAL-GROUP-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -119,9 +120,9 @@ class EndToEndProtectionISignalIPdu(ARObject):
             obj.data_offset = data_offset_value
 
         # Parse i_signal_group_ref
-        child = ARObject._find_child_element(element, "I-SIGNAL-GROUP")
+        child = ARObject._find_child_element(element, "I-SIGNAL-GROUP-REF")
         if child is not None:
-            i_signal_group_ref_value = ARObject._deserialize_by_tag(child, "ISignalGroup")
+            i_signal_group_ref_value = ARRef.deserialize(child)
             obj.i_signal_group_ref = i_signal_group_ref_value
 
         # Parse i_signal_i_pdu

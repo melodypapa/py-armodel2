@@ -90,21 +90,21 @@
         "dataElementSystemInstanceRef": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "by: VariableDataPrototypeIn"
         },
         "senderToSignal": {
           "type": "TextTableMapping",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This mapping allows for the text-table translation between sending DataPrototype that is defined in the Port and the physicalProps defined for the System"
         },
         "signalTo": {
           "type": "TextTableMapping",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This mapping allows for the text-table translation between physicalProps defined for the SystemSignal and a DataPrototype that is defined in the Port"
         },
@@ -147,14 +147,14 @@
         "dataElement": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "mapped to a signal group. by: VariableDataPrototypeIn"
         },
         "signalGroup": {
           "type": "SystemSignalGroup",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to the signal group, which contain all primitive the composite type"
         },
@@ -243,14 +243,14 @@
         "senderToSignal": {
           "type": "TextTableMapping",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This mapping allows for the text-table translation between sending DataPrototype that is defined in the Port and the physicalProps defined for the System"
         },
         "signalTo": {
           "type": "TextTableMapping",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This mapping allows for the text-table translation between physicalProps defined for the SystemSignal and a DataPrototype that is defined in the Port"
         }
@@ -345,14 +345,14 @@
         "senderToSignal": {
           "type": "TextTableMapping",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This mapping allows for the text-table translation between sending DataPrototype that is defined in the Port and the physicalProps defined for the System"
         },
         "signalTo": {
           "type": "TextTableMapping",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This mapping allows for the text-table translation between physicalProps defined for the SystemSignal and a DataPrototype that is defined in the Port"
         },
@@ -543,7 +543,7 @@
         "dataElement": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "one element is mapped to a SystemSignal. by: VariableDataPrototypeIn"
         },
@@ -600,7 +600,7 @@
         "trigger": {
           "type": "Trigger",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This represents the Trigger that shall be used to trigger"
         }

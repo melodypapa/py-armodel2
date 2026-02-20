@@ -26,5 +26,5 @@ class IPsecDpdActionEnum(AREnum):
         """
         self._value_ = value
 
-    CLEAR = "clear"
-    RESTART = "restart"
+    CLEAR = "CLEAR"
+    RESTART = "RESTART"

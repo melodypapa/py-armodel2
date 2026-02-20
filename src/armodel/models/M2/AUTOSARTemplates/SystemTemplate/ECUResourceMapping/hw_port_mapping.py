@@ -38,6 +38,7 @@ class HwPortMapping(ARObject):
         super().__init__()
         self.communication_connector: Optional[CommunicationConnector] = None
         self.hw_pin_group_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize HwPortMapping to XML element.
 
@@ -45,7 +46,7 @@ class HwPortMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize communication_connector
@@ -67,7 +68,7 @@ class HwPortMapping(ARObject):
             serialized = ARObject._serialize_item(self.hw_pin_group_ref, "HwPinGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("HW-PIN-GROUP")
+                wrapped = ET.Element("HW-PIN-GROUP-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -99,9 +100,9 @@ class HwPortMapping(ARObject):
             obj.communication_connector = communication_connector_value
 
         # Parse hw_pin_group_ref
-        child = ARObject._find_child_element(element, "HW-PIN-GROUP")
+        child = ARObject._find_child_element(element, "HW-PIN-GROUP-REF")
         if child is not None:
-            hw_pin_group_ref_value = ARObject._deserialize_by_tag(child, "HwPinGroup")
+            hw_pin_group_ref_value = ARRef.deserialize(child)
             obj.hw_pin_group_ref = hw_pin_group_ref_value
 
         return obj

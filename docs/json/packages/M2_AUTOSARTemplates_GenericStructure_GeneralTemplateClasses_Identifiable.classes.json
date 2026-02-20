@@ -668,19 +668,19 @@
           "is_ref": false,
           "note": "Possibility to provide additional notes while defining a"
         },
-        "category": {
-          "type": "CategoryString",
-          "multiplicity": "0..1",
-          "kind": "attribute",
-          "is_ref": false,
-          "note": "The category is a keyword that specializes the semantics"
-        },
         "desc": {
           "type": "MultiLanguageOverviewParagraph",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents a general but brief (one paragraph) what the object in question is about. It is only Desc is intended to be collected into This property helps a human reader to object in question. documentation, (in particular how the built or used) should go to \"introduction\"."
+        },
+        "category": {
+          "type": "CategoryString",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "The category is a keyword that specializes the semantics"
         },
         "introduction": {
           "type": "DocumentationBlock",

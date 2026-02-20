@@ -27,5 +27,5 @@ class DataTransformationErrorHandlingEnum(AREnum):
         """
         self._value_ = value
 
-    NO_TRANSFORMER_ERROR_HANDLING = "noTransformerErrorHandling"
-    TRANSFORMER_ERROR_HANDLING = "transformerErrorHandling"
+    NO_TRANSFORMER_ERROR_HANDLING = "NO-TRANSFORMER-ERROR-HANDLING"
+    TRANSFORMER_ERROR_HANDLING = "TRANSFORMER-ERROR-HANDLING"

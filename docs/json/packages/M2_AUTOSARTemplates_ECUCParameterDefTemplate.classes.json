@@ -272,7 +272,7 @@
         "references": {
           "type": "any (EcucAbstractReference)",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "The references defined within the EcucParamConf"
         },
@@ -657,7 +657,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "Specifies that this parameter’s value is used, together"
+          "note": "Specifies that this parameter\u2019s value is used, together"
         },
         "withAuto": {
           "type": "Boolean",
@@ -1545,14 +1545,14 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "The context in the AUTOSAR Metamodel to which’ this"
+          "note": "The context in the AUTOSAR Metamodel to which\u2019 this"
         },
         "destinationType": {
           "type": "String",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "The type in the AUTOSAR Metamodel to which’ instance"
+          "note": "The type in the AUTOSAR Metamodel to which\u2019 instance"
         }
       }
     },
@@ -1739,7 +1739,7 @@
         "references": {
           "type": "any (EcucAbstractReference)",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Description of references that are contained in the target"
         }
@@ -1761,7 +1761,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "Allows to define configuration items that are calculated based on the value of • other parameter values • elements (attributes/classes) defined in other AUTOSAR templates such as System template and SW component template",
+      "note": "Allows to define configuration items that are calculated based on the value of \u2022 other parameter values \u2022 elements (attributes/classes) defined in other AUTOSAR templates such as System template and SW component template",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_ECUConfiguration.pdf",

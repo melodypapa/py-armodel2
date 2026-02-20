@@ -42,6 +42,7 @@ class Ipv6Props(ARObject):
         self.dhcp_props: Optional[Dhcpv6Props] = None
         self.fragmentation: Optional[Ipv6FragmentationProps] = None
         self.ndp_props: Optional[Ipv6NdpProps] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Ipv6Props to XML element.
 
@@ -49,7 +50,7 @@ class Ipv6Props(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize dhcp_props

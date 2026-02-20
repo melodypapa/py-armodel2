@@ -54,7 +54,7 @@
         "hwPortMapping": {
           "type": "HwPortMapping",
           "multiplicity": "1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "of the ECU."
         }
@@ -138,7 +138,7 @@
         "hwPinGroup": {
           "type": "HwPinGroup",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to the HwPinPortGroup of category The connection to the Hw is described in the Ecu"
         }

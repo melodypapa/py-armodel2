@@ -65,6 +65,7 @@ class EventHandler(Identifiable):
         self.routing_group_refs: list[ARRef] = []
         self.sd_server_config: Optional[Any] = None
         self.sd_server_eg: Optional[SomeipSdServerEventGroupTimingConfig] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EventHandler to XML element.
 
@@ -72,7 +73,7 @@ class EventHandler(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -85,13 +86,20 @@ class EventHandler(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize consumed_event_group_refs (list to container "CONSUMED-EVENT-GROUPS")
+        # Serialize consumed_event_group_refs (list to container "CONSUMED-EVENT-GROUP-REFS")
         if self.consumed_event_group_refs:
-            wrapper = ET.Element("CONSUMED-EVENT-GROUPS")
+            wrapper = ET.Element("CONSUMED-EVENT-GROUP-REFS")
             for item in self.consumed_event_group_refs:
                 serialized = ARObject._serialize_item(item, "ConsumedEventGroup")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("CONSUMED-EVENT-GROUP-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -147,13 +155,20 @@ class EventHandler(Identifiable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize routing_group_refs (list to container "ROUTING-GROUPS")
+        # Serialize routing_group_refs (list to container "ROUTING-GROUP-REFS")
         if self.routing_group_refs:
-            wrapper = ET.Element("ROUTING-GROUPS")
+            wrapper = ET.Element("ROUTING-GROUP-REFS")
             for item in self.routing_group_refs:
                 serialized = ARObject._serialize_item(item, "SoAdRoutingGroup")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("ROUTING-GROUP-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -200,13 +215,19 @@ class EventHandler(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EventHandler, cls).deserialize(element)
 
-        # Parse consumed_event_group_refs (list from container "CONSUMED-EVENT-GROUPS")
+        # Parse consumed_event_group_refs (list from container "CONSUMED-EVENT-GROUP-REFS")
         obj.consumed_event_group_refs = []
-        container = ARObject._find_child_element(element, "CONSUMED-EVENT-GROUPS")
+        container = ARObject._find_child_element(element, "CONSUMED-EVENT-GROUP-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.consumed_event_group_refs.append(child_value)
 
@@ -238,13 +259,19 @@ class EventHandler(Identifiable):
                 if child_value is not None:
                     obj.pdu_activation_routings.append(child_value)
 
-        # Parse routing_group_refs (list from container "ROUTING-GROUPS")
+        # Parse routing_group_refs (list from container "ROUTING-GROUP-REFS")
         obj.routing_group_refs = []
-        container = ARObject._find_child_element(element, "ROUTING-GROUPS")
+        container = ARObject._find_child_element(element, "ROUTING-GROUP-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.routing_group_refs.append(child_value)
 

@@ -36,6 +36,7 @@ class E2EProfileCompatibilityProps(ARElement):
         """Initialize E2EProfileCompatibilityProps."""
         super().__init__()
         self.transit_to_invalid: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize E2EProfileCompatibilityProps to XML element.
 
@@ -43,7 +44,7 @@ class E2EProfileCompatibilityProps(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

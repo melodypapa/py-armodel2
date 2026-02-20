@@ -38,6 +38,7 @@ class DataConstr(ARElement):
         """Initialize DataConstr."""
         super().__init__()
         self.data_constr_rules: list[DataConstrRule] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DataConstr to XML element.
 
@@ -45,7 +46,7 @@ class DataConstr(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

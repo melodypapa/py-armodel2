@@ -9156,7 +9156,7 @@
       "package_path": "M2::MSR::Documentation::BlockElements::Formula"
     },
     {
-      "name": "List",
+      "name": "ARList",
       "type": "Class",
       "package_path": "M2::MSR::Documentation::BlockElements::ListElements"
     },

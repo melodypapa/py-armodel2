@@ -26,6 +26,6 @@ class ProcessingKindEnum(AREnum):
         """
         self._value_ = value
 
-    FILTERED = "filtered"
-    NONE = "none"
-    RAW = "raw"
+    FILTERED = "FILTERED"
+    NONE = "NONE"
+    RAW = "RAW"

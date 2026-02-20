@@ -26,5 +26,5 @@ class NetworkTargetAddressType(AREnum):
         """
         self._value_ = value
 
-    FUNCTIONAL = "functional"
-    PHYSICAL = "physical"
+    FUNCTIONAL = "FUNCTIONAL"
+    PHYSICAL = "PHYSICAL"

@@ -26,4 +26,4 @@ class MirroringProtocolEnum(AREnum):
         """
         self._value_ = value
 
-    NONE = "none"
+    NONE = "NONE"

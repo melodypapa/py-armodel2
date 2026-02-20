@@ -40,6 +40,7 @@ class DoIpLogicAddress(Identifiable):
         super().__init__()
         self.address: Optional[Integer] = None
         self.do_ip_logic: Optional[AbstractDoIpLogicAddressProps] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DoIpLogicAddress to XML element.
 
@@ -47,7 +48,7 @@ class DoIpLogicAddress(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

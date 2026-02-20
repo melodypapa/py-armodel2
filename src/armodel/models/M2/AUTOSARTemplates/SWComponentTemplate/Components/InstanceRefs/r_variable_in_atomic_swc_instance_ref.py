@@ -41,6 +41,7 @@ class RVariableInAtomicSwcInstanceRef(VariableInAtomicSwcInstanceRef):
         super().__init__()
         self.context_r_port_prototype: Optional[AbstractRequiredPortPrototype] = None
         self.target_data_element_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RVariableInAtomicSwcInstanceRef to XML element.
 
@@ -48,7 +49,7 @@ class RVariableInAtomicSwcInstanceRef(VariableInAtomicSwcInstanceRef):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -80,7 +81,7 @@ class RVariableInAtomicSwcInstanceRef(VariableInAtomicSwcInstanceRef):
             serialized = ARObject._serialize_item(self.target_data_element_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TARGET-DATA-ELEMENT")
+                wrapped = ET.Element("TARGET-DATA-ELEMENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -111,9 +112,9 @@ class RVariableInAtomicSwcInstanceRef(VariableInAtomicSwcInstanceRef):
             obj.context_r_port_prototype = context_r_port_prototype_value
 
         # Parse target_data_element_ref
-        child = ARObject._find_child_element(element, "TARGET-DATA-ELEMENT")
+        child = ARObject._find_child_element(element, "TARGET-DATA-ELEMENT-REF")
         if child is not None:
-            target_data_element_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            target_data_element_ref_value = ARRef.deserialize(child)
             obj.target_data_element_ref = target_data_element_ref_value
 
         return obj

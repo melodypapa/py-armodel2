@@ -40,6 +40,7 @@ class RoughEstimateOfExecutionTime(ExecutionTime):
         super().__init__()
         self.additional: Optional[String] = None
         self.estimated_execution_time: Optional[MultidimensionalTime] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RoughEstimateOfExecutionTime to XML element.
 
@@ -47,7 +48,7 @@ class RoughEstimateOfExecutionTime(ExecutionTime):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

@@ -35,6 +35,7 @@ class EcucInstanceReferenceValue(EcucAbstractReferenceValue):
         """Initialize EcucInstanceReferenceValue."""
         super().__init__()
         self.value: Optional[AtpFeature] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EcucInstanceReferenceValue to XML element.
 
@@ -42,7 +43,7 @@ class EcucInstanceReferenceValue(EcucAbstractReferenceValue):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

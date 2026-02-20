@@ -32,6 +32,7 @@ class ModeSwitchedAckRequest(ARObject):
         """Initialize ModeSwitchedAckRequest."""
         super().__init__()
         self.timeout: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ModeSwitchedAckRequest to XML element.
 
@@ -39,7 +40,7 @@ class ModeSwitchedAckRequest(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize timeout

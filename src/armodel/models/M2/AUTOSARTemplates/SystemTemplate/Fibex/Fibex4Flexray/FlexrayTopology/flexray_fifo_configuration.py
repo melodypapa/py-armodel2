@@ -53,6 +53,7 @@ class FlexrayFifoConfiguration(ARObject):
         self.fifo_ranges: list[FlexrayFifoRange] = []
         self.msg_id_mask: Optional[Integer] = None
         self.msg_id_match: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FlexrayFifoConfiguration to XML element.
 
@@ -60,7 +61,7 @@ class FlexrayFifoConfiguration(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize admit_without

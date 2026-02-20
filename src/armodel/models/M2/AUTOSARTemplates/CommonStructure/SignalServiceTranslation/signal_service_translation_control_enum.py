@@ -26,8 +26,8 @@ class SignalServiceTranslationControlEnum(AREnum):
         """
         self._value_ = value
 
-    ALL_PARTIAL_NETWORKS_ACTIVE = "allPartialNetworksActive"
-    ANY_PARTIAL_NETWORK_ACTIVE = "anyPartialNetworkActive"
-    PARTIAL_NETWORK = "partialNetwork"
-    SERVICE_DISCOVERY = "serviceDiscovery"
-    TRANSLATION_START = "translationStart"
+    ALL_PARTIAL_NETWORKS_ACTIVE = "ALL-PARTIAL-NETWORKS-ACTIVE"
+    ANY_PARTIAL_NETWORK_ACTIVE = "ANY-PARTIAL-NETWORK-ACTIVE"
+    PARTIAL_NETWORK = "PARTIAL-NETWORK"
+    SERVICE_DISCOVERY = "SERVICE-DISCOVERY"
+    TRANSLATION_START = "TRANSLATION-START"

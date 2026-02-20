@@ -42,6 +42,7 @@ class ApplicationCompositeElementInPortInterfaceInstanceRef(ARObject):
         self.context_datas: list[Any] = []
         self.root_data_ref: Optional[ARRef] = None
         self.target_data: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ApplicationCompositeElementInPortInterfaceInstanceRef to XML element.
 
@@ -49,7 +50,7 @@ class ApplicationCompositeElementInPortInterfaceInstanceRef(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize base
@@ -81,7 +82,7 @@ class ApplicationCompositeElementInPortInterfaceInstanceRef(ARObject):
             serialized = ARObject._serialize_item(self.root_data_ref, "AutosarDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ROOT-DATA")
+                wrapped = ET.Element("ROOT-DATA-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -137,9 +138,9 @@ class ApplicationCompositeElementInPortInterfaceInstanceRef(ARObject):
                     obj.context_datas.append(child_value)
 
         # Parse root_data_ref
-        child = ARObject._find_child_element(element, "ROOT-DATA")
+        child = ARObject._find_child_element(element, "ROOT-DATA-REF")
         if child is not None:
-            root_data_ref_value = ARObject._deserialize_by_tag(child, "AutosarDataPrototype")
+            root_data_ref_value = ARRef.deserialize(child)
             obj.root_data_ref = root_data_ref_value
 
         # Parse target_data

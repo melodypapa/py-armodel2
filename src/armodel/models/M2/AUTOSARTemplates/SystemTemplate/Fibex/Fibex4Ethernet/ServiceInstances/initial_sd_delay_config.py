@@ -37,6 +37,7 @@ class InitialSdDelayConfig(ARObject):
         self.initial_delay_max: Optional[TimeValue] = None
         self.initial_delay_min: Optional[TimeValue] = None
         self.initial: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize InitialSdDelayConfig to XML element.
 
@@ -44,7 +45,7 @@ class InitialSdDelayConfig(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize initial_delay_max

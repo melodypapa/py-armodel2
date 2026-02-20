@@ -40,6 +40,7 @@ class SomeipTpChannel(Identifiable):
         self.burst_size: Optional[PositiveInteger] = None
         self.rx_timeout_time: Optional[TimeValue] = None
         self.separation_time: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SomeipTpChannel to XML element.
 
@@ -47,7 +48,7 @@ class SomeipTpChannel(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

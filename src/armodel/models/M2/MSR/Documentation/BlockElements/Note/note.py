@@ -48,6 +48,7 @@ class Note(Paginateable):
         self.label: Optional[MultilanguageLongName] = None
         self.note_text: DocumentationBlock = None
         self.note_type: Optional[NoteTypeEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Note to XML element.
 
@@ -55,7 +56,7 @@ class Note(Paginateable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -128,7 +129,7 @@ class Note(Paginateable):
         # Parse label
         child = ARObject._find_child_element(element, "LABEL")
         if child is not None:
-            label_value = ARObject._deserialize_by_tag(child, "MultilanguageLongName")
+            label_value = ARObject._deserialize_with_type(child, "MultilanguageLongName")
             obj.label = label_value
 
         # Parse note_text

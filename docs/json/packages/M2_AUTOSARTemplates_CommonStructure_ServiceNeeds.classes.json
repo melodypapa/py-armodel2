@@ -78,7 +78,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "This class specifies an assignment of a role to a particular data object in either • the SwcInternalBehavior of a software component (or in the BswInternalBehavior of a BSW module or BSW cluster) in the context of an AUTOSAR Service or • an NvBlockDescriptor to sort out the assignment of event-based writing strategies to data elements in a PortPrototype. With this assignment, the role of the data can be mapped to a DataPrototype that is used in the context of the definition of a specific ServiceNeeds or NvBlockDescriptor, so that a tool is able to create the correct access or writing strategy.",
+      "note": "This class specifies an assignment of a role to a particular data object in either \u2022 the SwcInternalBehavior of a software component (or in the BswInternalBehavior of a BSW module or BSW cluster) in the context of an AUTOSAR Service or \u2022 an NvBlockDescriptor to sort out the assignment of event-based writing strategies to data elements in a PortPrototype. With this assignment, the role of the data can be mapped to a DataPrototype that is used in the context of the definition of a specific ServiceNeeds or NvBlockDescriptor, so that a tool is able to create the correct access or writing strategy.",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf",
@@ -104,14 +104,14 @@
         "usedData": {
           "type": "AutosarVariableRef",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "The VariableDataPrototype used in this role, e.g. Permanent RAM Block of an NVRAM Block which shall the same SwcInternalBehavior or Bsw the role signalBasedDiagnostics it has to refer to a a SenderReceiverInterface or"
         },
         "usedParameter": {
           "type": "AutosarParameterRef",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "The ParameterDataPrototype used in this role, e.g. ROM Block of an NVRAM Block. It shall belong to the or BswInternalbehavior. the role signalBasedDiagnostics it has to refer to a a ParameterInterface."
         },
@@ -454,7 +454,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "that this value has to be recalculated with respect to the WdgM’s own cycle time for ECU configuration. Table 12.12: SupervisedEntityNeeds 234 of 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Basic Software Module Description Template AUTOSAR CP R23-11",
+      "note": "that this value has to be recalculated with respect to the WdgM\u2019s own cycle time for ECU configuration. Table 12.12: SupervisedEntityNeeds 234 of 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Basic Software Module Description Template AUTOSAR CP R23-11",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf",

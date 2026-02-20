@@ -26,6 +26,6 @@ class AclScopeEnum(AREnum):
         """
         self._value_ = value
 
-    DEPENDANT = "dependant"
-    DESCENDANT = "descendant"
-    EXPLICIT = "explicit"
+    DEPENDANT = "DEPENDANT"
+    DESCENDANT = "DESCENDANT"
+    EXPLICIT = "EXPLICIT"

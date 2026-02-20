@@ -40,6 +40,7 @@ class MsrQueryTopic1(Paginateable):
         super().__init__()
         self.msr_query_props: MsrQueryProps = None
         self.msr_query_result_topic1: Optional[MsrQueryResultTopic1] = None
+
     def serialize(self) -> ET.Element:
         """Serialize MsrQueryTopic1 to XML element.
 
@@ -47,7 +48,7 @@ class MsrQueryTopic1(Paginateable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

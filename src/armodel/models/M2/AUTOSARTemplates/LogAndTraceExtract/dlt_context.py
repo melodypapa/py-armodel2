@@ -43,6 +43,7 @@ class DltContext(ARElement):
         self.context: Optional[String] = None
         self.context_id: Optional[String] = None
         self.dlt_messages: list[DltMessage] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DltContext to XML element.
 
@@ -50,7 +51,7 @@ class DltContext(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

@@ -26,4 +26,4 @@ class LetDataExchangeParadigmEnum(AREnum):
         """
         self._value_ = value
 
-    INTER_LET_ONLYINTRA_LET_EOC_ONLY = "interLetOnlyintraLetEOCOnly"
+    INTER_LET_ONLYINTRA_LET_EOC_ONLY = "INTER-LET-ONLYINTRA-LET-E-O-C-ONLY"

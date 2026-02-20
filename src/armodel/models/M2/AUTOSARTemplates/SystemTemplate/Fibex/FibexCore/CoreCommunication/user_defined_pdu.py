@@ -36,6 +36,7 @@ class UserDefinedPdu(Pdu):
         """Initialize UserDefinedPdu."""
         super().__init__()
         self.cdd_type: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize UserDefinedPdu to XML element.
 
@@ -43,7 +44,7 @@ class UserDefinedPdu(Pdu):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

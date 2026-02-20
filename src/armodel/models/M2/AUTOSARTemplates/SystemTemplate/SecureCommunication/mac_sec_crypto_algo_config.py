@@ -45,6 +45,7 @@ class MacSecCryptoAlgoConfig(ARObject):
         self.cipher_suite: MacSecCipherSuiteConfig = None
         self.confidentiality: Optional[MacSecConfidentialityOffsetEnum] = None
         self.replay_protection: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize MacSecCryptoAlgoConfig to XML element.
 
@@ -52,7 +53,7 @@ class MacSecCryptoAlgoConfig(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize capability

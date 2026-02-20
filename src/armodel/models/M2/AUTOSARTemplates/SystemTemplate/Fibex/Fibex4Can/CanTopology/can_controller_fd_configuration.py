@@ -45,6 +45,7 @@ class CanControllerFdConfiguration(ARObject):
         self.time_seg1: Optional[PositiveInteger] = None
         self.time_seg2: Optional[PositiveInteger] = None
         self.tx_bit_rate_switch: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CanControllerFdConfiguration to XML element.
 
@@ -52,7 +53,7 @@ class CanControllerFdConfiguration(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize padding_value

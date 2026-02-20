@@ -54,6 +54,7 @@ class SecuredIPdu(IPdu):
         self.secure: Optional[Any] = None
         self.use_as: Optional[Boolean] = None
         self.use_secured_pdu: Optional[SecuredPduHeaderEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SecuredIPdu to XML element.
 
@@ -61,7 +62,7 @@ class SecuredIPdu(IPdu):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -121,7 +122,7 @@ class SecuredIPdu(IPdu):
             serialized = ARObject._serialize_item(self.payload_ref, "PduTriggering")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PAYLOAD")
+                wrapped = ET.Element("PAYLOAD-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -206,9 +207,9 @@ class SecuredIPdu(IPdu):
             obj.freshness_props = freshness_props_value
 
         # Parse payload_ref
-        child = ARObject._find_child_element(element, "PAYLOAD")
+        child = ARObject._find_child_element(element, "PAYLOAD-REF")
         if child is not None:
-            payload_ref_value = ARObject._deserialize_by_tag(child, "PduTriggering")
+            payload_ref_value = ARRef.deserialize(child)
             obj.payload_ref = payload_ref_value
 
         # Parse secure

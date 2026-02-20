@@ -28,6 +28,7 @@ class SwcSupportedFeature(ARObject, ABC):
     def __init__(self) -> None:
         """Initialize SwcSupportedFeature."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize SwcSupportedFeature to XML element.
 
@@ -35,7 +36,7 @@ class SwcSupportedFeature(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         return elem

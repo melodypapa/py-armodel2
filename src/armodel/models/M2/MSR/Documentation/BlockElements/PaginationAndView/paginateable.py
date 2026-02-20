@@ -39,6 +39,7 @@ class Paginateable(DocumentViewSelectable, ABC):
         super().__init__()
         self.break_: Optional[ChapterEnumBreak] = None
         self.keep_with: Optional[KeepWithPreviousEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Paginateable to XML element.
 
@@ -46,7 +47,7 @@ class Paginateable(DocumentViewSelectable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

@@ -40,6 +40,7 @@ class EthIpProps(ARElement):
         super().__init__()
         self.ipv4_props: Optional[Ipv4Props] = None
         self.ipv6_props: Optional[Ipv6Props] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EthIpProps to XML element.
 
@@ -47,7 +48,7 @@ class EthIpProps(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

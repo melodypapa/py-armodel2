@@ -36,14 +36,14 @@ using Python's standard reflection capabilities:
 
 For edge cases, decorators are available:
 - @xml_attribute: Mark a property to serialize as XML attribute
-- @xml_tag(name): Specify custom XML tag name
+- @atp_variant(): Mark class using AUTOSAR atpVariation pattern
+- @l_prefix(tag): Mark attribute using language-specific L-N pattern
 """
 
-from armodel.serialization.decorators import xml_attribute, xml_tag
+from armodel.serialization.decorators import xml_attribute
 from armodel.serialization.name_converter import NameConverter
 
 __all__ = [
     "NameConverter",
     "xml_attribute",
-    "xml_tag",
 ]

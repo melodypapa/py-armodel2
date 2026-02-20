@@ -42,6 +42,7 @@ class SomeipSdClientServiceInstanceConfig(ARElement):
         self.initial_find_behavior: Optional[InitialSdDelayConfig] = None
         self.priority: Optional[PositiveInteger] = None
         self.service_find: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SomeipSdClientServiceInstanceConfig to XML element.
 
@@ -49,7 +50,7 @@ class SomeipSdClientServiceInstanceConfig(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

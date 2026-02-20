@@ -26,9 +26,9 @@ class DiagnosticDenominatorConditionEnum(AREnum):
         """
         self._value_ = value
 
-    _500MILES = "_500miles"
-    COLDSTART = "coldstart"
-    CSERS = "csers"
-    EVAP = "evap"
-    EVAPPURGEFLOWINDIVIDUAL = "evappurgeflowindividual"
-    OBD = "obd"
+    _500MILES = "_500MILES"
+    COLDSTART = "COLDSTART"
+    CSERS = "CSERS"
+    EVAP = "EVAP"
+    EVAPPURGEFLOWINDIVIDUAL = "EVAPPURGEFLOWINDIVIDUAL"
+    OBD = "OBD"

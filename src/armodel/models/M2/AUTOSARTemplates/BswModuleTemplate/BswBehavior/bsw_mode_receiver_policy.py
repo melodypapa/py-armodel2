@@ -40,6 +40,7 @@ class BswModeReceiverPolicy(ARObject):
         self.enhanced_mode: Optional[Boolean] = None
         self.required_mode_ref: Optional[ARRef] = None
         self.supports: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BswModeReceiverPolicy to XML element.
 
@@ -47,7 +48,7 @@ class BswModeReceiverPolicy(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize enhanced_mode
@@ -69,7 +70,7 @@ class BswModeReceiverPolicy(ARObject):
             serialized = ARObject._serialize_item(self.required_mode_ref, "ModeDeclarationGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("REQUIRED-MODE")
+                wrapped = ET.Element("REQUIRED-MODE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -115,9 +116,9 @@ class BswModeReceiverPolicy(ARObject):
             obj.enhanced_mode = enhanced_mode_value
 
         # Parse required_mode_ref
-        child = ARObject._find_child_element(element, "REQUIRED-MODE")
+        child = ARObject._find_child_element(element, "REQUIRED-MODE-REF")
         if child is not None:
-            required_mode_ref_value = ARObject._deserialize_by_tag(child, "ModeDeclarationGroup")
+            required_mode_ref_value = ARRef.deserialize(child)
             obj.required_mode_ref = required_mode_ref_value
 
         # Parse supports

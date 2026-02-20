@@ -34,7 +34,7 @@
         "abstractTarget": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Stereotypes: atpAbstract xml.sequenceOffset=30"
         },
@@ -48,7 +48,7 @@
         "contextPort": {
           "type": "PortPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Stereotypes: atpAbstract"
         }
@@ -94,7 +94,7 @@
         "targetDataElement": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Tags: xml.sequenceOffset=30"
         }
@@ -139,7 +139,7 @@
         "contextModeGroupPrototype": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Tags: xml.sequenceOffset=30"
         },
@@ -204,7 +204,7 @@
         "target": {
           "type": "PortGroup",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Links a PortGroup in a composition to another PortGroup, defined in a component which is part of this shall be at most per contained SwComponentPrototype."
         }
@@ -252,14 +252,14 @@
         "contextPort": {
           "type": "PortPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Stereotypes: atpAbstract"
         },
         "target": {
           "type": "Trigger",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Stereotypes: atpAbstract"
         }
@@ -305,7 +305,7 @@
         "targetTrigger": {
           "type": "Trigger",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Tags: xml.sequenceOffset=30"
         }
@@ -351,7 +351,7 @@
         "targetTrigger": {
           "type": "Trigger",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Tags: xml.sequenceOffset=30"
         }
@@ -399,7 +399,7 @@
         "contextPort": {
           "type": "PortPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Stereotypes: atpAbstract"
         },
@@ -542,7 +542,7 @@
         "targetMode": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Tags: xml.sequenceOffset=30"
         }
@@ -590,7 +590,7 @@
         "targetMode": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Tags: xml.sequenceOffset=30"
         }
@@ -640,14 +640,14 @@
         "contextPort": {
           "type": "PortPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Stereotypes: atpAbstract"
         },
         "target": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Stereotypes: atpAbstract xml.sequenceOffset=30"
         }

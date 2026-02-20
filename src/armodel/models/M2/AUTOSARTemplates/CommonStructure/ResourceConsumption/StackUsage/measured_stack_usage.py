@@ -42,6 +42,7 @@ class MeasuredStackUsage(StackUsage):
         self.maximum_memory_consumption: Optional[PositiveInteger] = None
         self.minimum_memory_consumption: Optional[PositiveInteger] = None
         self.test_pattern: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize MeasuredStackUsage to XML element.
 
@@ -49,7 +50,7 @@ class MeasuredStackUsage(StackUsage):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

@@ -36,6 +36,7 @@ class DiagnosticOperationCyclePortMapping(DiagnosticSwMapping):
         self.operation_cycle: Optional[Any] = None
         self.swc_flat_service: Optional[Any] = None
         self.swc_service: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticOperationCyclePortMapping to XML element.
 
@@ -43,7 +44,7 @@ class DiagnosticOperationCyclePortMapping(DiagnosticSwMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

@@ -26,10 +26,10 @@ class TtcanTriggerType(AREnum):
         """
         self._value_ = value
 
-    RX_TRIGGER = "rxTrigger"
-    TX_REF_TRIGGER = "txRefTrigger"
-    TX_REF_TRIGGER_GAP = "txRefTriggerGap"
-    TX_TRIGGER_MERGED = "txTriggerMerged"
-    TX_TRIGGER_SINGLE = "txTriggerSingle"
-    WATCH_TRIGGER = "watchTrigger"
-    WATCH_TRIGGER_GAP = "watchTriggerGap"
+    RX_TRIGGER = "RX-TRIGGER"
+    TX_REF_TRIGGER = "TX-REF-TRIGGER"
+    TX_REF_TRIGGER_GAP = "TX-REF-TRIGGER-GAP"
+    TX_TRIGGER_MERGED = "TX-TRIGGER-MERGED"
+    TX_TRIGGER_SINGLE = "TX-TRIGGER-SINGLE"
+    WATCH_TRIGGER = "WATCH-TRIGGER"
+    WATCH_TRIGGER_GAP = "WATCH-TRIGGER-GAP"

@@ -8,7 +8,6 @@ This example demonstrates how to:
 The new API allows reusing the same AUTOSAR instance for multiple operations.
 """
 
-from pathlib import Path
 from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
 from armodel.reader import ARXMLReader
 from armodel.writer import ARXMLWriter

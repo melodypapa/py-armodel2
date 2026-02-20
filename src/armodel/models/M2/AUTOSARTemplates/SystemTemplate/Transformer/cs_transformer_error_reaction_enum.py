@@ -26,5 +26,5 @@ class CSTransformerErrorReactionEnum(AREnum):
         """
         self._value_ = value
 
-    APPLICATION_ONLY = "applicationOnly"
-    AUTONOMOUS = "autonomous"
+    APPLICATION_ONLY = "APPLICATION-ONLY"
+    AUTONOMOUS = "AUTONOMOUS"

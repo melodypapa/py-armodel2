@@ -35,6 +35,7 @@ class SdgCaption(MultilanguageReferrable):
         """Initialize SdgCaption."""
         super().__init__()
         self.desc: Optional[MultiLanguageOverviewParagraph] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SdgCaption to XML element.
 
@@ -42,7 +43,7 @@ class SdgCaption(MultilanguageReferrable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -87,7 +88,7 @@ class SdgCaption(MultilanguageReferrable):
         # Parse desc
         child = ARObject._find_child_element(element, "DESC")
         if child is not None:
-            desc_value = ARObject._deserialize_by_tag(child, "MultiLanguageOverviewParagraph")
+            desc_value = ARObject._deserialize_with_type(child, "MultiLanguageOverviewParagraph")
             obj.desc = desc_value
 
         return obj

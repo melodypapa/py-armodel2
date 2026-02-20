@@ -34,6 +34,7 @@ class DiagnosticEnvironmentalCondition(DiagnosticCommonElement):
         super().__init__()
         self.formula: Optional[Any] = None
         self.mode_elements: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticEnvironmentalCondition to XML element.
 
@@ -41,7 +42,7 @@ class DiagnosticEnvironmentalCondition(DiagnosticCommonElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

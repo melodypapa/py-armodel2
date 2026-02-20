@@ -36,6 +36,7 @@ class DdsResourceLimits(ARObject):
         self.max_instances: Optional[PositiveInteger] = None
         self.max_samples: Optional[PositiveInteger] = None
         self.max_samples_per_instance: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DdsResourceLimits to XML element.
 
@@ -43,7 +44,7 @@ class DdsResourceLimits(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize max_instances

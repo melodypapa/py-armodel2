@@ -37,6 +37,7 @@ class DiagnosticSecurityEventReportingModeMapping(DiagnosticMapping):
         super().__init__()
         self.data_element: Optional[DiagnosticDataElement] = None
         self.security_event_context: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticSecurityEventReportingModeMapping to XML element.
 
@@ -44,7 +45,7 @@ class DiagnosticSecurityEventReportingModeMapping(DiagnosticMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

@@ -26,5 +26,5 @@ class SecurityEventContextDataSourceEnum(AREnum):
         """
         self._value_ = value
 
-    USE_FIRST_CONTEXT_DATA = "useFirstContextData"
-    USE_LAST_CONTEXT_DATA = "useLastContextData"
+    USE_FIRST_CONTEXT_DATA = "USE-FIRST-CONTEXT-DATA"
+    USE_LAST_CONTEXT_DATA = "USE-LAST-CONTEXT-DATA"

@@ -26,5 +26,5 @@ class TDEventTriggerTypeEnum(AREnum):
         """
         self._value_ = value
 
-    TRIGGER_ACTIVATED = "triggerActivated"
-    TRIGGER_RELEASED = "triggerReleased"
+    TRIGGER_ACTIVATED = "TRIGGER-ACTIVATED"
+    TRIGGER_RELEASED = "TRIGGER-RELEASED"

@@ -26,5 +26,5 @@ class DiagnosticTroubleCodeJ1939DtcKindEnum(AREnum):
         """
         self._value_ = value
 
-    SERVICE_ONLY = "serviceOnly"
-    STANDARD = "standard"
+    SERVICE_ONLY = "SERVICE-ONLY"
+    STANDARD = "STANDARD"

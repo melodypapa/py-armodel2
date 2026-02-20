@@ -45,6 +45,7 @@ class CanControllerConfigurationRequirements(AbstractCanCommunicationControllerA
         self.min_number_of_time_quanta_per: Optional[Any] = None
         self.min_sample_point: Optional[Float] = None
         self.min_sync_jump: Optional[Float] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CanControllerConfigurationRequirements to XML element.
 
@@ -52,7 +53,7 @@ class CanControllerConfigurationRequirements(AbstractCanCommunicationControllerA
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

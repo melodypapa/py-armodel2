@@ -26,7 +26,7 @@ class GlobalTimeIcvVerificationEnum(AREnum):
         """
         self._value_ = value
 
-    ICV_IGNORED = "icvIgnored"
-    ICV_NOT_VERIFIED = "icvNotVerified"
-    ICV_OPTIONAL = "icvOptional"
-    ICV_VERIFIED = "icvVerified"
+    ICV_IGNORED = "ICV-IGNORED"
+    ICV_NOT_VERIFIED = "ICV-NOT-VERIFIED"
+    ICV_OPTIONAL = "ICV-OPTIONAL"
+    ICV_VERIFIED = "ICV-VERIFIED"

@@ -349,7 +349,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "Specifies the valid content of the class. The content can optionally depend on a condition. (E.g. value of attribute ’category’)",
+      "note": "Specifies the valid content of the class. The content can optionally depend on a condition. (E.g. value of attribute \u2019category\u2019)",
       "sources": [
         {
           "pdf_file": "AUTOSAR_FO_TPS_StandardizationTemplate.pdf",
@@ -544,7 +544,7 @@
         "reference": {
           "type": "ReferenceTailoring",
           "multiplicity": "1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "The reference that has to be accepted by the restrictions ReferenceCondition"
         }
@@ -789,7 +789,7 @@
         "unresolvedRestriction": {
           "type": "UnresolvedReferenceRestrictionWithSeverity",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Specifies the severity of unresolved references."
         }

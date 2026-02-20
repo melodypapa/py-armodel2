@@ -46,6 +46,7 @@ class ChapterModel(ARObject):
         self.chapter: Optional[ChapterOrMsrQuery] = None
         self.chapter_content: Optional[ChapterContent] = None
         self.topic1: Optional[TopicOrMsrQuery] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ChapterModel to XML element.
 
@@ -53,7 +54,7 @@ class ChapterModel(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize chapter

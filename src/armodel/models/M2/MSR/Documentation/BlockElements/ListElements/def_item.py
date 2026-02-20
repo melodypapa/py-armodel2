@@ -43,6 +43,7 @@ class DefItem(Paginateable):
         super().__init__()
         self.def_: DocumentationBlock = None
         self.help_entry: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DefItem to XML element.
 
@@ -50,7 +51,7 @@ class DefItem(Paginateable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

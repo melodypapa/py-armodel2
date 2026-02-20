@@ -48,6 +48,7 @@ class AtpInstanceRef(ARObject, ABC):
         self.atp_base: AtpClassifier = None
         self.atp_context_refs: list[ARRef] = []
         self.atp_target: AtpFeature = None
+
     def serialize(self) -> ET.Element:
         """Serialize AtpInstanceRef to XML element.
 
@@ -55,7 +56,7 @@ class AtpInstanceRef(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize atp_base
@@ -72,13 +73,20 @@ class AtpInstanceRef(ARObject, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize atp_context_refs (list to container "ATP-CONTEXTS")
+        # Serialize atp_context_refs (list to container "ATP-CONTEXT-REFS")
         if self.atp_context_refs:
-            wrapper = ET.Element("ATP-CONTEXTS")
+            wrapper = ET.Element("ATP-CONTEXT-REFS")
             for item in self.atp_context_refs:
                 serialized = ARObject._serialize_item(item, "AtpPrototype")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("ATP-CONTEXT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -118,13 +126,19 @@ class AtpInstanceRef(ARObject, ABC):
             atp_base_value = ARObject._deserialize_by_tag(child, "AtpClassifier")
             obj.atp_base = atp_base_value
 
-        # Parse atp_context_refs (list from container "ATP-CONTEXTS")
+        # Parse atp_context_refs (list from container "ATP-CONTEXT-REFS")
         obj.atp_context_refs = []
-        container = ARObject._find_child_element(element, "ATP-CONTEXTS")
+        container = ARObject._find_child_element(element, "ATP-CONTEXT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.atp_context_refs.append(child_value)
 

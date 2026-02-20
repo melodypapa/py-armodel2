@@ -34,6 +34,7 @@ class ClientIdRange(ARObject):
         super().__init__()
         self.lower_limit: Optional[Limit] = None
         self.upper_limit: Optional[Limit] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ClientIdRange to XML element.
 
@@ -41,7 +42,7 @@ class ClientIdRange(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize lower_limit

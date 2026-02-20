@@ -6,11 +6,11 @@ Run all quality checks (linting, type checking, testing) to ensure code meets pr
 
 When the user runs `/quality`, run the following checks in order:
 
-### 1. Linting with Flake8
+### 1. Linting with Ruff
 ```bash
-flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+ruff check .
 ```
-- Expected: All checks pass with no E9, F63, F7, F82 errors
+- Expected: All checks pass with no errors
 - If failures: Show linting errors and offer to fix
 
 ### 2. Install Package
@@ -21,7 +21,7 @@ pip install -e .
 
 ### 3. Testing with Pytest
 ```bash
-pytest
+PYTHONPATH=/Users/ray/Workspace/py-armodel2/src pytest
 ```
 - Expected: All tests pass
 - If failures: Identify failing tests and help debug
@@ -31,14 +31,14 @@ Display a summary table:
 ```
 Check        Status    Details
 ──────────────────────────────────
-Flake8       ✅ Pass    No E9,F63,F7,F82 errors
+Ruff         ✅ Pass    No linting errors
 Pytest       ✅ Pass    All tests passed
 ```
 
 ## Quality Gates
 
 All of the following must pass before committing:
-1. ✅ Flake8 linting: No E9, F63, F7, F82 errors
+1. ✅ Ruff linting: No errors
 2. ✅ Pytest: All tests pass
 
 ## Arguments

@@ -53,6 +53,7 @@ class StaticSocketConnection(Identifiable):
         self.remote_address: Optional[SocketAddress] = None
         self.tcp_connect: Optional[TimeValue] = None
         self.tcp_role: Optional[TcpRoleEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize StaticSocketConnection to XML element.
 
@@ -60,7 +61,7 @@ class StaticSocketConnection(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

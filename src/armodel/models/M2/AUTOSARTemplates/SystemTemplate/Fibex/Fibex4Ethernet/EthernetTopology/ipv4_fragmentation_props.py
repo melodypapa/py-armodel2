@@ -38,6 +38,7 @@ class Ipv4FragmentationProps(ARObject):
         self.tcp_ip_ip: Optional[Boolean] = None
         self.tcp_ip_ip_num: Optional[PositiveInteger] = None
         self.tcp_ip_ip_reass: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Ipv4FragmentationProps to XML element.
 
@@ -45,7 +46,7 @@ class Ipv4FragmentationProps(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize tcp_ip_ip

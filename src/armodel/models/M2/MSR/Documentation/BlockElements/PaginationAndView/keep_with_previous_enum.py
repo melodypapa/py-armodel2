@@ -26,5 +26,5 @@ class KeepWithPreviousEnum(AREnum):
         """
         self._value_ = value
 
-    KEEP = "keep"
-    NO_KEEP = "noKeep"
+    KEEP = "KEEP"
+    NO_KEEP = "NO-KEEP"

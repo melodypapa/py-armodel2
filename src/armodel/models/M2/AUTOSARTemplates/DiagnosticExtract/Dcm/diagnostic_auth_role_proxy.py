@@ -32,6 +32,7 @@ class DiagnosticAuthRoleProxy(ARObject):
         """Initialize DiagnosticAuthRoleProxy."""
         super().__init__()
         self.authentications: list[DiagnosticAuthRole] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticAuthRoleProxy to XML element.
 
@@ -39,7 +40,7 @@ class DiagnosticAuthRoleProxy(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize authentications (list to container "AUTHENTICATIONS")

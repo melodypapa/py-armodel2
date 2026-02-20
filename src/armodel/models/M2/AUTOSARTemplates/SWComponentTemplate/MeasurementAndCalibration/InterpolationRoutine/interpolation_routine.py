@@ -41,6 +41,7 @@ class InterpolationRoutine(ARObject):
         self.interpolation: Optional[BswModuleEntry] = None
         self.is_default: Optional[Boolean] = None
         self.short_label: Optional[Identifier] = None
+
     def serialize(self) -> ET.Element:
         """Serialize InterpolationRoutine to XML element.
 
@@ -48,7 +49,7 @@ class InterpolationRoutine(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize interpolation

@@ -44,6 +44,7 @@ class VariableInAtomicSwcInstanceRef(ARObject, ABC):
         self.abstract_target_ref: Optional[ARRef] = None
         self.base: Optional[AtomicSwComponentType] = None
         self.context_port_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize VariableInAtomicSwcInstanceRef to XML element.
 
@@ -51,7 +52,7 @@ class VariableInAtomicSwcInstanceRef(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize abstract_target_ref
@@ -59,7 +60,7 @@ class VariableInAtomicSwcInstanceRef(ARObject, ABC):
             serialized = ARObject._serialize_item(self.abstract_target_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ABSTRACT-TARGET")
+                wrapped = ET.Element("ABSTRACT-TARGET-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -87,7 +88,7 @@ class VariableInAtomicSwcInstanceRef(ARObject, ABC):
             serialized = ARObject._serialize_item(self.context_port_ref, "PortPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT-PORT")
+                wrapped = ET.Element("CONTEXT-PORT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -113,9 +114,9 @@ class VariableInAtomicSwcInstanceRef(ARObject, ABC):
         obj.__init__()
 
         # Parse abstract_target_ref
-        child = ARObject._find_child_element(element, "ABSTRACT-TARGET")
+        child = ARObject._find_child_element(element, "ABSTRACT-TARGET-REF")
         if child is not None:
-            abstract_target_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            abstract_target_ref_value = ARRef.deserialize(child)
             obj.abstract_target_ref = abstract_target_ref_value
 
         # Parse base
@@ -125,9 +126,9 @@ class VariableInAtomicSwcInstanceRef(ARObject, ABC):
             obj.base = base_value
 
         # Parse context_port_ref
-        child = ARObject._find_child_element(element, "CONTEXT-PORT")
+        child = ARObject._find_child_element(element, "CONTEXT-PORT-REF")
         if child is not None:
-            context_port_ref_value = ARObject._deserialize_by_tag(child, "PortPrototype")
+            context_port_ref_value = ARRef.deserialize(child)
             obj.context_port_ref = context_port_ref_value
 
         return obj

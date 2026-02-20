@@ -35,6 +35,7 @@ class EcucAbstractConfigurationClass(ARObject, ABC):
         super().__init__()
         self.config_class: Optional[EcucConfigurationClassEnum] = None
         self.config_variant: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EcucAbstractConfigurationClass to XML element.
 
@@ -42,7 +43,7 @@ class EcucAbstractConfigurationClass(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize config_class

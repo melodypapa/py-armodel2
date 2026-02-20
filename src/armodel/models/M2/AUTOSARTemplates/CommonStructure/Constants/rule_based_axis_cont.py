@@ -50,6 +50,7 @@ class RuleBasedAxisCont(ARObject):
         self.sw_arraysize_ref: Optional[ARRef] = None
         self.sw_axis_index: Optional[AxisIndexType] = None
         self.unit: Optional[Unit] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RuleBasedAxisCont to XML element.
 
@@ -57,7 +58,7 @@ class RuleBasedAxisCont(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize category
@@ -93,7 +94,7 @@ class RuleBasedAxisCont(ARObject):
             serialized = ARObject._serialize_item(self.sw_arraysize_ref, "ValueList")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SW-ARRAYSIZE")
+                wrapped = ET.Element("SW-ARRAYSIZE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -159,9 +160,9 @@ class RuleBasedAxisCont(ARObject):
             obj.rule_based = rule_based_value
 
         # Parse sw_arraysize_ref
-        child = ARObject._find_child_element(element, "SW-ARRAYSIZE")
+        child = ARObject._find_child_element(element, "SW-ARRAYSIZE-REF")
         if child is not None:
-            sw_arraysize_ref_value = ARObject._deserialize_by_tag(child, "ValueList")
+            sw_arraysize_ref_value = ARRef.deserialize(child)
             obj.sw_arraysize_ref = sw_arraysize_ref_value
 
         # Parse sw_axis_index

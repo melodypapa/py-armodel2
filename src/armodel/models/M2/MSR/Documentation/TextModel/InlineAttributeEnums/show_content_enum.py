@@ -26,5 +26,5 @@ class ShowContentEnum(AREnum):
         """
         self._value_ = value
 
-    NO_SHOW_CONTENT = "noShowContent"
-    SHOW_CONTENT = "showContent"
+    NO_SHOW_CONTENT = "NO-SHOW-CONTENT"
+    SHOW_CONTENT = "SHOW-CONTENT"

@@ -26,10 +26,10 @@ class SecurityEventReportingModeEnum(AREnum):
         """
         self._value_ = value
 
-    BRIEF = "brief"
-    BRIEF_BYPASSING = "briefBypassing"
-    DETAILED = "detailed"
-    SECURITY = "Security"
-    AUTOSAR = "AUTOSAR"
-    DETAILED_BYPASSING = "detailedBypassing"
-    OFF = "off"
+    BRIEF = "BRIEF"
+    BRIEF_BYPASSING = "BRIEF-BYPASSING"
+    DETAILED = "DETAILED"
+    SECURITY = "SECURITY"
+    AUTOSAR = "A-U-T-O-S-A-R"
+    DETAILED_BYPASSING = "DETAILED-BYPASSING"
+    OFF = "OFF"

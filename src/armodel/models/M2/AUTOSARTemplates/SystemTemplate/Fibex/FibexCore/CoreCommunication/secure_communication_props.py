@@ -44,6 +44,7 @@ class SecureCommunicationProps(ARObject):
         self.message_link: Optional[PositiveInteger] = None
         self.secondary: Optional[PositiveInteger] = None
         self.secured_area: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SecureCommunicationProps to XML element.
 
@@ -51,7 +52,7 @@ class SecureCommunicationProps(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize auth_data

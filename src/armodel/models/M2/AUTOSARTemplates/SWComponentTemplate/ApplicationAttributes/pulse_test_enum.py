@@ -26,4 +26,4 @@ class PulseTestEnum(AREnum):
         """
         self._value_ = value
 
-    DISABLE = "disable"
+    DISABLE = "DISABLE"

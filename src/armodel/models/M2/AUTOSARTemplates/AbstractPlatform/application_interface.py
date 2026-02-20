@@ -46,6 +46,7 @@ class ApplicationInterface(PortInterface):
         self.attributes: list[Field] = []
         self.commands: list[ClientServerOperation] = []
         self.indication_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ApplicationInterface to XML element.
 
@@ -53,7 +54,7 @@ class ApplicationInterface(PortInterface):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -86,13 +87,20 @@ class ApplicationInterface(PortInterface):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize indication_refs (list to container "INDICATIONS")
+        # Serialize indication_refs (list to container "INDICATION-REFS")
         if self.indication_refs:
-            wrapper = ET.Element("INDICATIONS")
+            wrapper = ET.Element("INDICATION-REFS")
             for item in self.indication_refs:
                 serialized = ARObject._serialize_item(item, "VariableDataPrototype")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("INDICATION-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -131,13 +139,19 @@ class ApplicationInterface(PortInterface):
                 if child_value is not None:
                     obj.commands.append(child_value)
 
-        # Parse indication_refs (list from container "INDICATIONS")
+        # Parse indication_refs (list from container "INDICATION-REFS")
         obj.indication_refs = []
-        container = ARObject._find_child_element(element, "INDICATIONS")
+        container = ARObject._find_child_element(element, "INDICATION-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.indication_refs.append(child_value)
 

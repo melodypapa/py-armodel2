@@ -32,6 +32,7 @@ class InvertCondition(AbstractCondition):
         """Initialize InvertCondition."""
         super().__init__()
         self.condition: AbstractCondition = None
+
     def serialize(self) -> ET.Element:
         """Serialize InvertCondition to XML element.
 
@@ -39,7 +40,7 @@ class InvertCondition(AbstractCondition):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

@@ -26,7 +26,7 @@ class GlobalTimePortRoleEnum(AREnum):
         """
         self._value_ = value
 
-    DYNAMIC = "dynamic"
-    SYSTEM = "System"
-    AUTOSAR = "AUTOSAR"
-    TIME_SLAVE = "timeSlave"
+    DYNAMIC = "DYNAMIC"
+    SYSTEM = "SYSTEM"
+    AUTOSAR = "A-U-T-O-S-A-R"
+    TIME_SLAVE = "TIME-SLAVE"

@@ -35,6 +35,7 @@ class ServiceInstanceCollectionSet(FibexElement):
         """Initialize ServiceInstanceCollectionSet."""
         super().__init__()
         self.service_instances: list[AbstractServiceInstance] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ServiceInstanceCollectionSet to XML element.
 
@@ -42,7 +43,7 @@ class ServiceInstanceCollectionSet(FibexElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

@@ -37,6 +37,7 @@ class AbstractMultiplicityRestriction(ARObject, ABC):
         super().__init__()
         self.lower_multiplicity: Optional[PositiveInteger] = None
         self.upper_multiplicity: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AbstractMultiplicityRestriction to XML element.
 
@@ -44,7 +45,7 @@ class AbstractMultiplicityRestriction(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize lower_multiplicity

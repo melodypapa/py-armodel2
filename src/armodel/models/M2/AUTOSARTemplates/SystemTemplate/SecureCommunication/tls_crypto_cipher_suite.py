@@ -75,6 +75,7 @@ class TlsCryptoCipherSuite(Identifiable):
         self.remote: Optional[Any] = None
         self.signatures: list[CryptoSignatureScheme] = []
         self.version: Optional[TlsVersionEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TlsCryptoCipherSuite to XML element.
 
@@ -82,7 +83,7 @@ class TlsCryptoCipherSuite(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

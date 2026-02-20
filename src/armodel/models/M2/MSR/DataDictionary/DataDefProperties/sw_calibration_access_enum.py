@@ -27,6 +27,6 @@ class SwCalibrationAccessEnum(AREnum):
         """
         self._value_ = value
 
-    NOT_ACCESSIBLE = "notAccessible"
-    READ_ONLY = "readOnly"
-    READ_WRITE = "readWrite"
+    NOT_ACCESSIBLE = "NOT-ACCESSIBLE"
+    READ_ONLY = "READ-ONLY"
+    READ_WRITE = "READ-WRITE"

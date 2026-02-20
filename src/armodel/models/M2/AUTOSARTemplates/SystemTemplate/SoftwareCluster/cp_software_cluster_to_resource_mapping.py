@@ -39,6 +39,7 @@ class CpSoftwareClusterToResourceMapping(Identifiable):
         self.provider: Optional[CpSoftwareCluster] = None
         self.requesters: list[CpSoftwareCluster] = []
         self.service: Optional[CpSoftwareCluster] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CpSoftwareClusterToResourceMapping to XML element.
 
@@ -46,7 +47,7 @@ class CpSoftwareClusterToResourceMapping(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

@@ -39,6 +39,7 @@ class DataPrototypeGroup(Identifiable):
         super().__init__()
         self.data_prototype_group_group_in_composition_instance_ref_refs: list[ARRef] = []
         self.implicit_data_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DataPrototypeGroup to XML element.
 
@@ -46,7 +47,7 @@ class DataPrototypeGroup(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -59,23 +60,37 @@ class DataPrototypeGroup(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize data_prototype_group_group_in_composition_instance_ref_refs (list to container "DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REFS")
+        # Serialize data_prototype_group_group_in_composition_instance_ref_refs (list to container "DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS")
         if self.data_prototype_group_group_in_composition_instance_ref_refs:
-            wrapper = ET.Element("DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REFS")
+            wrapper = ET.Element("DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS")
             for item in self.data_prototype_group_group_in_composition_instance_ref_refs:
                 serialized = ARObject._serialize_item(item, "DataPrototypeGroup")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize implicit_data_refs (list to container "IMPLICIT-DATAS")
+        # Serialize implicit_data_refs (list to container "IMPLICIT-DATA-REFS")
         if self.implicit_data_refs:
-            wrapper = ET.Element("IMPLICIT-DATAS")
+            wrapper = ET.Element("IMPLICIT-DATA-REFS")
             for item in self.implicit_data_refs:
                 serialized = ARObject._serialize_item(item, "VariableDataPrototype")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("IMPLICIT-DATA-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -94,23 +109,35 @@ class DataPrototypeGroup(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DataPrototypeGroup, cls).deserialize(element)
 
-        # Parse data_prototype_group_group_in_composition_instance_ref_refs (list from container "DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REFS")
+        # Parse data_prototype_group_group_in_composition_instance_ref_refs (list from container "DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS")
         obj.data_prototype_group_group_in_composition_instance_ref_refs = []
-        container = ARObject._find_child_element(element, "DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REFS")
+        container = ARObject._find_child_element(element, "DATA-PROTOTYPE-GROUP-GROUP-IN-COMPOSITION-INSTANCE-REF-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.data_prototype_group_group_in_composition_instance_ref_refs.append(child_value)
 
-        # Parse implicit_data_refs (list from container "IMPLICIT-DATAS")
+        # Parse implicit_data_refs (list from container "IMPLICIT-DATA-REFS")
         obj.implicit_data_refs = []
-        container = ARObject._find_child_element(element, "IMPLICIT-DATAS")
+        container = ARObject._find_child_element(element, "IMPLICIT-DATA-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.implicit_data_refs.append(child_value)
 

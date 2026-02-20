@@ -41,6 +41,7 @@ class PortPrototypeBlueprintInitValue(ARObject):
         super().__init__()
         self.data_prototype_ref: ARRef = None
         self.value: ValueSpecification = None
+
     def serialize(self) -> ET.Element:
         """Serialize PortPrototypeBlueprintInitValue to XML element.
 
@@ -48,7 +49,7 @@ class PortPrototypeBlueprintInitValue(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize data_prototype_ref
@@ -56,7 +57,7 @@ class PortPrototypeBlueprintInitValue(ARObject):
             serialized = ARObject._serialize_item(self.data_prototype_ref, "AutosarDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DATA-PROTOTYPE")
+                wrapped = ET.Element("DATA-PROTOTYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -96,9 +97,9 @@ class PortPrototypeBlueprintInitValue(ARObject):
         obj.__init__()
 
         # Parse data_prototype_ref
-        child = ARObject._find_child_element(element, "DATA-PROTOTYPE")
+        child = ARObject._find_child_element(element, "DATA-PROTOTYPE-REF")
         if child is not None:
-            data_prototype_ref_value = ARObject._deserialize_by_tag(child, "AutosarDataPrototype")
+            data_prototype_ref_value = ARRef.deserialize(child)
             obj.data_prototype_ref = data_prototype_ref_value
 
         # Parse value

@@ -39,6 +39,7 @@ class InstanceEventInCompositionInstanceRef(ARObject):
         self.base: Optional[CompositionSwComponentType] = None
         self.context_prototypes: list[Any] = []
         self.target_event: Optional[RTEEvent] = None
+
     def serialize(self) -> ET.Element:
         """Serialize InstanceEventInCompositionInstanceRef to XML element.
 
@@ -46,7 +47,7 @@ class InstanceEventInCompositionInstanceRef(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize base

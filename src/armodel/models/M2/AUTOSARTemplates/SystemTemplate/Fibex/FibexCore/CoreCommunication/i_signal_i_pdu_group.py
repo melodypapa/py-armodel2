@@ -49,6 +49,7 @@ class ISignalIPduGroup(FibexElement):
         self.contained_refs: list[ARRef] = []
         self.i_signal_i_pdus: list[ISignalIPdu] = []
         self.nm_pdus: list[NmPdu] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ISignalIPduGroup to XML element.
 
@@ -56,7 +57,7 @@ class ISignalIPduGroup(FibexElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -83,13 +84,20 @@ class ISignalIPduGroup(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize contained_refs (list to container "CONTAINEDS")
+        # Serialize contained_refs (list to container "CONTAINED-REFS")
         if self.contained_refs:
-            wrapper = ET.Element("CONTAINEDS")
+            wrapper = ET.Element("CONTAINED-REFS")
             for item in self.contained_refs:
                 serialized = ARObject._serialize_item(item, "ISignalIPduGroup")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("CONTAINED-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -134,13 +142,19 @@ class ISignalIPduGroup(FibexElement):
             communication_value = child.text
             obj.communication = communication_value
 
-        # Parse contained_refs (list from container "CONTAINEDS")
+        # Parse contained_refs (list from container "CONTAINED-REFS")
         obj.contained_refs = []
-        container = ARObject._find_child_element(element, "CONTAINEDS")
+        container = ARObject._find_child_element(element, "CONTAINED-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.contained_refs.append(child_value)
 

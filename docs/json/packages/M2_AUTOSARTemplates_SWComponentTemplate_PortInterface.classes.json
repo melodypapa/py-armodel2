@@ -248,7 +248,7 @@
         "arguments": {
           "type": "ArgumentDataPrototype",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "An argument of this ClientServerOperation atpSplitable; atpVariation"
         },
@@ -340,7 +340,7 @@
         "dataElements": {
           "type": "VariableDataPrototype",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "The data elements of this SenderReceiverInterface."
         },
@@ -354,7 +354,7 @@
         "metaDataItemSets": {
           "type": "MetaDataItemSet",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This aggregation defines fixed sets of meta-data items with dataElements of the enclosing Sender"
         }
@@ -473,7 +473,7 @@
         "nvDatas": {
           "type": "VariableDataPrototype",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "The VariableDataPrototype of this nv data interface."
         }
@@ -621,7 +621,7 @@
         "parameters": {
           "type": "ParameterDataPrototype",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "The ParameterDataPrototype of this ParameterInterface."
         }
@@ -656,7 +656,7 @@
         "dataElement": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to the dataElement for which the Invalidation"
         },
@@ -752,7 +752,7 @@
         "dataElements": {
           "type": "VariableDataPrototype",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This reference identifies the dataElement for which the of meta-data items is defined."
         },
@@ -856,7 +856,7 @@
         "triggers": {
           "type": "Trigger",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "The Trigger of this trigger interface."
         }
@@ -909,7 +909,7 @@
         "modeGroup": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "The ModeDeclarationGroupPrototype of this mode"
         }
@@ -959,7 +959,7 @@
         "portInterfaces": {
           "type": "PortInterfaceMapping",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Specifies one PortInterfaceMapping to support the of Ports typed by two different PortInterfaces elements having unequal names and/or (resolution or range). atpVariation"
         }
@@ -1062,7 +1062,7 @@
         "dataMappings": {
           "type": "DataPrototypeMapping",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Defines the mapping of two particular VariableData ParameterDataPrototypes with unequal unequal semantic (resolution or range) in two different SenderReceiverInterfaces, Nv ParameterInterfaces"
         }
@@ -1104,7 +1104,7 @@
         "firstData": {
           "type": "AutosarDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "First to be mapped DataPrototype in context of a Sender NvDataInterface, ParameterInterface"
         },
@@ -1118,7 +1118,7 @@
         "secondData": {
           "type": "AutosarDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Second to be mapped DataPrototype in context of a NvDataInterface, Parameter Operation."
         },
@@ -1132,14 +1132,14 @@
         "subElements": {
           "type": "SubElementMapping",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This represents the owned SubelementMapping. atpSplitable"
         },
         "textTable": {
           "type": "TextTableMapping",
           "multiplicity": "1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": ""
         }
@@ -1223,7 +1223,7 @@
         "arguments": {
           "type": "DataPrototypeMapping",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Defines the mapping of two particular ArgumentData with unequal names or unequal semantic range) in context of Operations."
         },
@@ -1328,7 +1328,7 @@
         "modeMapping": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Mapping of two ModeDeclarationGroupPrototypes in two ModeInterfaces"
         }
@@ -1464,7 +1464,7 @@
         "triggerMappings": {
           "type": "TriggerMapping",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Mapping of two Trigger in two different TriggerInterface"
         }
@@ -1499,21 +1499,21 @@
         "firstElement": {
           "type": "SubElementRef",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This represents the first element referenced in the scope"
         },
         "secondElement": {
           "type": "SubElementRef",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This represents the second element referenced in the"
         },
         "textTable": {
           "type": "TextTableMapping",
           "multiplicity": "1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "of a composite data type."
         }
@@ -1690,7 +1690,7 @@
         "mapping": {
           "type": "MappingDirectionEnum",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Specifies the conversion direction for which the TextTable is applicable."
         },

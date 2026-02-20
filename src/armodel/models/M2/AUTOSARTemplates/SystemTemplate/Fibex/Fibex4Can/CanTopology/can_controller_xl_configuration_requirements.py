@@ -65,6 +65,7 @@ class CanControllerXlConfigurationRequirements(ARObject):
         self.min_sync_jump: Optional[Float] = None
         self.min_trcv_delay: Optional[TimeValue] = None
         self.trcv_pwm_mode: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CanControllerXlConfigurationRequirements to XML element.
 
@@ -72,7 +73,7 @@ class CanControllerXlConfigurationRequirements(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize error_signaling

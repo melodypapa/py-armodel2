@@ -48,6 +48,7 @@ class SwComponentDocumentation(ARObject):
         self.sw_feature_desc: Optional[Chapter] = None
         self.sw_maintenance: Optional[Chapter] = None
         self.sw_test_desc: Optional[Chapter] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwComponentDocumentation to XML element.
 
@@ -55,7 +56,7 @@ class SwComponentDocumentation(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize chapters (list to container "CHAPTERS")

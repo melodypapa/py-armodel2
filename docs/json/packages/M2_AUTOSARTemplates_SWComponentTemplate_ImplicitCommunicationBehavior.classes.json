@@ -43,28 +43,28 @@
         "dpgDoesNots": {
           "type": "DataPrototypeGroup",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This group of VariableDataPrototypes does not require with respect to the implicit communication atpVariation 1228 Document ID 62: AUTOSAR_CP_TPS_SoftwareComponentTemplate Template R23-11"
         },
         "dpgRequireses": {
           "type": "DataPrototypeGroup",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This group of VariableDataPrototypes requires coherency respect to the implicit communication behavior, i.e. and write access to VariableDataPrototypes in the the RunnableEntitys of the to be handled in a coherent atpVariation"
         },
         "regDoesNots": {
           "type": "RunnableEntityGroup",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This group of RunnableEntities does not require stability respect to the implicit communication behavior. atpVariation"
         },
         "regRequireses": {
           "type": "RunnableEntityGroup",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This group of RunnableEntities requires stability with to the implicit communication behavior, i.e. all write access to VariableDataPrototypes in the the RunnableEntitys of the to be handled in a stable atpVariation"
         }
@@ -121,7 +121,7 @@
         "runnableEntityGroupGroupInCompositionInstanceRefs": {
           "type": "RunnableEntityGroup",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "atpVariation by: InnerRunnableEntity"
         }
@@ -171,14 +171,14 @@
         "dataPrototypeGroupGroupInCompositionInstanceRefs": {
           "type": "DataPrototypeGroup",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "atpVariation by: InnerDataPrototype"
         },
         "implicitDatas": {
           "type": "VariableDataPrototype",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "belong to the enclosing DataPrototypeGroup atpVariation by: VariableDataPrototypeIn"
         }

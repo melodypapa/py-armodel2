@@ -52,7 +52,7 @@
         "aclObjectSets": {
           "type": "AclObjectSet",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This denotes an object to which the AclPermission"
         },
@@ -123,7 +123,7 @@
         "aclObjectClasses": {
           "type": "ReferrableSubtypesEnum",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This specifies that the considered objects as instances of denoted meta class."
         },
@@ -137,7 +137,7 @@
         "collection": {
           "type": "Collection",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This indicates that the relevant objects are specified via a"
         },

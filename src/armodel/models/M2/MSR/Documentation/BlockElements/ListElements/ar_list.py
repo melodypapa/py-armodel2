@@ -1,4 +1,4 @@
-"""List AUTOSAR element.
+"""ARList AUTOSAR element.
 
 References:
   - AUTOSAR_FO_TPS_GenericStructureTemplate.pdf (page 295)
@@ -8,12 +8,12 @@ JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements_ListElements.
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import xml_attribute
 
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginateable import (
     Paginateable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.Documentation.BlockElements.ListElements import (
     ListEnum,
 )
@@ -25,8 +25,8 @@ if TYPE_CHECKING:
 
 
 
-class List(Paginateable):
-    """AUTOSAR List."""
+class ARList(Paginateable):
+    """AUTOSAR ARList."""
 
     @property
     def is_abstract(self) -> bool:
@@ -37,25 +37,37 @@ class List(Paginateable):
         """
         return False
 
-    item: Item
-    type_ref: Optional[ARRef]
+    item: list[Item]
+    _type: Optional[ListEnum]
     def __init__(self) -> None:
-        """Initialize List."""
+        """Initialize ARList."""
         super().__init__()
-        self.item: Item = None
-        self.type_ref: Optional[ARRef] = None
+        self.item: list[Item] = []
+        self._type: Optional[ListEnum] = None
+    @property
+    @xml_attribute
+    def type(self) -> ListEnum:
+        """Get type XML attribute."""
+        return self._type
+
+    @type.setter
+    def type(self, value: ListEnum) -> None:
+        """Set type XML attribute."""
+        self._type = value
+
+
     def serialize(self) -> ET.Element:
-        """Serialize List to XML element.
+        """Serialize ARList to XML element.
 
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
-        parent_elem = super(List, self).serialize()
+        parent_elem = super(ARList, self).serialize()
 
         # Copy all attributes from parent element
         elem.attrib.update(parent_elem.attrib)
@@ -64,11 +76,11 @@ class List(Paginateable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize item
-        if self.item is not None:
-            serialized = ARObject._serialize_item(self.item, "Item")
+        # Serialize item (list)
+        for item in self.item:
+            serialized = ARObject._serialize_item(item, "Item")
             if serialized is not None:
-                # Wrap with correct tag
+                # For non-container lists, wrap with correct tag
                 wrapped = ET.Element("ITEM")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
@@ -78,63 +90,52 @@ class List(Paginateable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize type_ref
-        if self.type_ref is not None:
-            serialized = ARObject._serialize_item(self.type_ref, "ListEnum")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("TYPE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+        # Serialize type as XML attribute
+        if self.type is not None:
+            elem.attrib["TYPE"] = str(self.type)
 
         return elem
 
     @classmethod
-    def deserialize(cls, element: ET.Element) -> "List":
-        """Deserialize XML element to List object.
+    def deserialize(cls, element: ET.Element) -> "ARList":
+        """Deserialize XML element to ARList object.
 
         Args:
             element: XML element to deserialize from
 
         Returns:
-            Deserialized List object
+            Deserialized ARList object
         """
         # First, call parent's deserialize to handle inherited attributes
-        obj = super(List, cls).deserialize(element)
+        obj = super(ARList, cls).deserialize(element)
 
-        # Parse item
-        child = ARObject._find_child_element(element, "ITEM")
-        if child is not None:
+        # Parse item (list)
+        obj.item = []
+        for child in ARObject._find_all_child_elements(element, "ITEM"):
             item_value = ARObject._deserialize_by_tag(child, "Item")
-            obj.item = item_value
+            obj.item.append(item_value)
 
-        # Parse type_ref
-        child = ARObject._find_child_element(element, "TYPE")
-        if child is not None:
-            type_ref_value = ListEnum.deserialize(child)
-            obj.type_ref = type_ref_value
+        # Parse type from XML attribute
+        if "TYPE" in element.attrib:
+            type_value = ListEnum(element.attrib["TYPE"])
+            obj.type = type_value
 
         return obj
 
 
 
-class ListBuilder:
-    """Builder for List."""
+class ARListBuilder:
+    """Builder for ARList."""
 
     def __init__(self) -> None:
         """Initialize builder."""
-        self._obj: List = List()
+        self._obj: ARList = ARList()
 
-    def build(self) -> List:
-        """Build and return List object.
+    def build(self) -> ARList:
+        """Build and return ARList object.
 
         Returns:
-            List instance
+            ARList instance
         """
         # TODO: Add validation
         return self._obj

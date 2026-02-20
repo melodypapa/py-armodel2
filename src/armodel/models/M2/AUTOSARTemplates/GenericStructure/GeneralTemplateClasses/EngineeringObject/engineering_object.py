@@ -41,6 +41,7 @@ class EngineeringObject(ARObject, ABC):
         self.domain: Optional[NameToken] = None
         self.revision_label_strings: list[RevisionLabelString] = []
         self.short_label: NameToken = None
+
     def serialize(self) -> ET.Element:
         """Serialize EngineeringObject to XML element.
 
@@ -48,7 +49,7 @@ class EngineeringObject(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize category

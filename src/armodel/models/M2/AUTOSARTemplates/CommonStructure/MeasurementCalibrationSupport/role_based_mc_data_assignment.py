@@ -45,6 +45,7 @@ class RoleBasedMcDataAssignment(ARObject):
         self.executions: list[RptExecutionContext] = []
         self.mc_data_instances: list[McDataInstance] = []
         self.role: Optional[Identifier] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RoleBasedMcDataAssignment to XML element.
 
@@ -52,7 +53,7 @@ class RoleBasedMcDataAssignment(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize executions (list to container "EXECUTIONS")

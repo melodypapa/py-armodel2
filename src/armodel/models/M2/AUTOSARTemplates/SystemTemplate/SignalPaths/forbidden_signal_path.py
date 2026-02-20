@@ -42,6 +42,7 @@ class ForbiddenSignalPath(SignalPathConstraint):
         self.operations: list[Any] = []
         self.physical_channels: list[PhysicalChannel] = []
         self.signals: list[SwcToSwcSignal] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ForbiddenSignalPath to XML element.
 
@@ -49,7 +50,7 @@ class ForbiddenSignalPath(SignalPathConstraint):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

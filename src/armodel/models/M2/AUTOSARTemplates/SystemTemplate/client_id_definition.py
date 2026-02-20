@@ -40,6 +40,7 @@ class ClientIdDefinition(Identifiable):
         super().__init__()
         self.client_id: Optional[Numerical] = None
         self.client_server_instance_ref: Optional[ClientServerOperation] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ClientIdDefinition to XML element.
 
@@ -47,7 +48,7 @@ class ClientIdDefinition(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

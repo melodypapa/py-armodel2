@@ -28,6 +28,6 @@ class DiagnosticProcessingStyleEnum(AREnum):
         """
         self._value_ = value
 
-    PROCESSING_STYLE = "processingStyle"
-    PROCESSING_STYLE_ERROR = "processingStyleError"
-    PROCESSING_STYLE_SYNCHRONOUS = "processingStyleSynchronous"
+    PROCESSING_STYLE = "PROCESSING-STYLE"
+    PROCESSING_STYLE_ERROR = "PROCESSING-STYLE-ERROR"
+    PROCESSING_STYLE_SYNCHRONOUS = "PROCESSING-STYLE-SYNCHRONOUS"

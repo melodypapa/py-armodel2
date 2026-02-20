@@ -146,14 +146,14 @@
         "port": {
           "type": "PortPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "port on which the TimingEvent shall apply"
         },
         "portPrototype": {
           "type": "PortPrototypeBlueprint",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "port on which the TimingEvent shall apply (in the context an AUTOSAR blueprint)"
         }
@@ -195,7 +195,7 @@
         "dataElement": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "The referenced VariableDataPrototype"
         },
@@ -307,7 +307,7 @@
         "mode": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "The referenced mode declaration group prototype."
         },
@@ -356,14 +356,14 @@
         "tdEventTrigger": {
           "type": "TDEventTriggerTypeEnum",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "The specific type of this timing event."
         },
         "trigger": {
           "type": "Trigger",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "The trigger which is provided (released) or required"
         }
@@ -784,7 +784,7 @@
         "tdPduTriggerings": {
           "type": "PduTriggering",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Specifies the PDU that if contained in the Ethernet frame"
         }
@@ -1107,7 +1107,7 @@
         "mode": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "The scope of this timing event. 277 Document ID 411: AUTOSAR_CP_TPS_TimingExtensions Timing Extensions for Classic R23-11"
         },
@@ -1187,7 +1187,7 @@
         "port": {
           "type": "PortPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "The originating port of the timing event"
         }
@@ -1326,7 +1326,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "This class represents a reference to a variable instance within AUTOSAR. This way it is possible to reference a variable instance in the occurrence expression formula. The variable instance can target to one of the following variables: • a variable provided via a PortPrototype as whole • an element inside of a composite variable provided via a PortPrototype",
+      "note": "This class represents a reference to a variable instance within AUTOSAR. This way it is possible to reference a variable instance in the occurrence expression formula. The variable instance can target to one of the following variables: \u2022 a variable provided via a PortPrototype as whole \u2022 an element inside of a composite variable provided via a PortPrototype",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_TimingExtensions.pdf",
@@ -1339,7 +1339,7 @@
         "variableInstanceInstanceRef": {
           "type": "DataPrototype",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "by: VariableInComponent"
         }
@@ -1365,7 +1365,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "This class represents a reference to an argument instance. This way it is possible to reference an argument instance in the occurrence expression formula. The argument instance can target to one of the following arguments: • a whole argument used in an operation of a PortPrototype with ClientServerInterface • an element inside of a composite argument used in an operation of a PortPrototype with ClientServer Interface",
+      "note": "This class represents a reference to an argument instance. This way it is possible to reference an argument instance in the occurrence expression formula. The argument instance can target to one of the following arguments: \u2022 a whole argument used in an operation of a PortPrototype with ClientServerInterface \u2022 an element inside of a composite argument used in an operation of a PortPrototype with ClientServer Interface",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_TimingExtensions.pdf",
@@ -1378,7 +1378,7 @@
         "operation": {
           "type": "DataPrototype",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "implemented by: OperationArgumentIn Instance ComponentInstanceRef"
         }

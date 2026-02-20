@@ -40,6 +40,7 @@ class Pdu(FibexElement, ABC):
         super().__init__()
         self.has_dynamic: Optional[Boolean] = None
         self.length: Optional[UnlimitedInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Pdu to XML element.
 
@@ -47,7 +48,7 @@ class Pdu(FibexElement, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

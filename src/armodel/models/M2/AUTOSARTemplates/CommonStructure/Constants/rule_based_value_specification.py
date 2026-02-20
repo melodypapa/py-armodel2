@@ -41,6 +41,7 @@ class RuleBasedValueSpecification(ARObject):
         self.arguments: Optional[RuleArguments] = None
         self.max_size_to_fill: Optional[Integer] = None
         self.rule: Optional[Identifier] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RuleBasedValueSpecification to XML element.
 
@@ -48,7 +49,7 @@ class RuleBasedValueSpecification(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize arguments

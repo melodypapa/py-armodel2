@@ -26,6 +26,6 @@ class FrArTpAckType(AREnum):
         """
         self._value_ = value
 
-    ACK_WITHOUT_RT = "ackWithoutRt"
-    ACK_WITH_RT = "ackWithRt"
-    NO_ACK = "noAck"
+    ACK_WITHOUT_RT = "ACK-WITHOUT-RT"
+    ACK_WITH_RT = "ACK-WITH-RT"
+    NO_ACK = "NO-ACK"

@@ -53,6 +53,7 @@ class Describable(ARObject, ABC):
         self.category: Optional[CategoryString] = None
         self.desc: Optional[MultiLanguageOverviewParagraph] = None
         self.introduction: Optional[DocumentationBlock] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Describable to XML element.
 
@@ -60,7 +61,7 @@ class Describable(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize admin_data
@@ -150,7 +151,7 @@ class Describable(ARObject, ABC):
         # Parse desc
         child = ARObject._find_child_element(element, "DESC")
         if child is not None:
-            desc_value = ARObject._deserialize_by_tag(child, "MultiLanguageOverviewParagraph")
+            desc_value = ARObject._deserialize_with_type(child, "MultiLanguageOverviewParagraph")
             obj.desc = desc_value
 
         # Parse introduction

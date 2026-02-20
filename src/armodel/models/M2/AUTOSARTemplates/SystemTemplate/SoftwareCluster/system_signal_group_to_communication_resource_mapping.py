@@ -41,6 +41,7 @@ class SystemSignalGroupToCommunicationResourceMapping(Identifiable):
         super().__init__()
         self.software_cluster: Optional[CpSoftwareCluster] = None
         self.system_signal_group_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SystemSignalGroupToCommunicationResourceMapping to XML element.
 
@@ -48,7 +49,7 @@ class SystemSignalGroupToCommunicationResourceMapping(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -80,7 +81,7 @@ class SystemSignalGroupToCommunicationResourceMapping(Identifiable):
             serialized = ARObject._serialize_item(self.system_signal_group_ref, "SystemSignalGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SYSTEM-SIGNAL-GROUP")
+                wrapped = ET.Element("SYSTEM-SIGNAL-GROUP-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -111,9 +112,9 @@ class SystemSignalGroupToCommunicationResourceMapping(Identifiable):
             obj.software_cluster = software_cluster_value
 
         # Parse system_signal_group_ref
-        child = ARObject._find_child_element(element, "SYSTEM-SIGNAL-GROUP")
+        child = ARObject._find_child_element(element, "SYSTEM-SIGNAL-GROUP-REF")
         if child is not None:
-            system_signal_group_ref_value = ARObject._deserialize_by_tag(child, "SystemSignalGroup")
+            system_signal_group_ref_value = ARRef.deserialize(child)
             obj.system_signal_group_ref = system_signal_group_ref_value
 
         return obj

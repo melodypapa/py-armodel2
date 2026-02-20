@@ -73,7 +73,7 @@
         "bswModules": {
           "type": "BswModuleDependency",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Describes the dependency to another BSW module. atpSplitable; atpVariation"
         },
@@ -122,21 +122,21 @@
         "providedDatas": {
           "type": "VariableDataPrototype",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Specifies a data prototype provided by this module in be read from another partition or core.The declared locally to this context and will be the requiredData of another or the same the configuration of the BSW Scheduler. atpVariation 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },
         "providedModes": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "A set of modes which is owned and provided by this module or cluster. It can be connected to the required other modules or clusters via the the BswScheduler. It can also be modes provided via ports by an EcuAbstraction ComplexDeviceDriverSw atpVariation"
         },
         "releasedTriggers": {
           "type": "Trigger",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "A Trigger released by this module or cluster. It can be"
         },
@@ -150,21 +150,21 @@
         "requiredDatas": {
           "type": "VariableDataPrototype",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Specifies a data prototype required by this module in oder provided from another partition or core.The required declared locally to this context and will be the providedData of another or the same the configuration of the BswScheduler. atpVariation 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },
         "requiredModes": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Specifies that this module or cluster depends on a certain mode group. The requiredModeGroup is local to this will be connected to the providedModeGroup module or cluster via the configuration of the atpVariation"
         },
         "requiredTriggers": {
           "type": "Trigger",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Specifies that this module or cluster reacts upon an"
         }

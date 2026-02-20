@@ -46,21 +46,21 @@
         "portPrototype": {
           "type": "PortPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This is the port providing the variable or the entry point to structure."
         },
         "rootParameter": {
           "type": "DataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This represents the entry point for references into a"
         },
         "targetData": {
           "type": "DataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This is the target parameter element. Note that this must nested in ParameterDataPrototype. The target must of ParameterDataPrototype, Application"
         }
@@ -111,21 +111,21 @@
         "portPrototype": {
           "type": "PortPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This is the port providing the parameter or the entry point parameter structure."
         },
         "rootVariableDataPrototype": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Tags: xml.sequenceOffset=30 1228 Document ID 62: AUTOSAR_CP_TPS_SoftwareComponentTemplate Template R23-11"
         },
         "targetData": {
           "type": "DataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This is the target of the instance ref. Note that it shall be of ApplicationCompositeElementDataPrototype of"
         }

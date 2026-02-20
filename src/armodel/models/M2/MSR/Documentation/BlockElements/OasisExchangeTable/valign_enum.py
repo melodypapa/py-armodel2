@@ -26,6 +26,6 @@ class ValignEnum(AREnum):
         """
         self._value_ = value
 
-    BOTTOM = "bottom"
-    MIDDLE = "middle"
-    TOP = "top"
+    BOTTOM = "BOTTOM"
+    MIDDLE = "MIDDLE"
+    TOP = "TOP"

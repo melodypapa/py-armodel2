@@ -26,5 +26,5 @@ class ShowResourceShortNameEnum(AREnum):
         """
         self._value_ = value
 
-    NO_SHOW_SHORT_NAME = "noShowShortName"
-    SHOW_SHORT_NAME = "showShortName"
+    NO_SHOW_SHORT_NAME = "NO-SHOW-SHORT-NAME"
+    SHOW_SHORT_NAME = "SHOW-SHORT-NAME"

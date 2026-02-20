@@ -45,6 +45,7 @@ class HwAttributeValue(ARObject):
         self.hw_attribute_def: Optional[HwAttributeDef] = None
         self.v: Optional[Numerical] = None
         self.vt: Optional[VerbatimString] = None
+
     def serialize(self) -> ET.Element:
         """Serialize HwAttributeValue to XML element.
 
@@ -52,7 +53,7 @@ class HwAttributeValue(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize annotation

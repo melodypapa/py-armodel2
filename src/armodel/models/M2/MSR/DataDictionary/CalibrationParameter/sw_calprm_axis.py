@@ -52,6 +52,7 @@ class SwCalprmAxis(ARObject):
         self.sw_axis_index: Optional[AxisIndexType] = None
         self.sw_calibration_access: Optional[SwCalibrationAccessEnum] = None
         self.sw_calprm_axis: Optional[SwCalprmAxisTypeProps] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwCalprmAxis to XML element.
 
@@ -59,7 +60,7 @@ class SwCalprmAxis(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize category

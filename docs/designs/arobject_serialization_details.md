@@ -54,7 +54,7 @@ def serialize(self, namespace: str = "") -> ET.Element:
 │                                                                             │
 │  1. Get XML Tag Name                                                        │
 │     ┌──────────────────────────────────────────────────────────────────┐   │
-│     │ Check for @xml_tag decorator → Use custom tag name               │   │
+│     │ Use NameConverter.to_xml_tag(class.__name__)               │   │
 │     │                                  ↓ No decorator                 │   │
 │     │ Use class name → NameConverter.to_xml_tag(class.__name__)       │   │
 │     └──────────────────────────────────────────────────────────────────┘   │

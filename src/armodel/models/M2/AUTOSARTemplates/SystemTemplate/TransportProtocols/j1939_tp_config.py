@@ -45,6 +45,7 @@ class J1939TpConfig(TpConfig):
         self.tp_addresses: list[TpAddress] = []
         self.tp_connections: list[J1939TpConnection] = []
         self.tp_nodes: list[J1939TpNode] = []
+
     def serialize(self) -> ET.Element:
         """Serialize J1939TpConfig to XML element.
 
@@ -52,7 +53,7 @@ class J1939TpConfig(TpConfig):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

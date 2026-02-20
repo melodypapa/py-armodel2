@@ -26,5 +26,5 @@ class IPsecModeEnum(AREnum):
         """
         self._value_ = value
 
-    TRANSPORT = "transport"
-    TUNNEL = "tunnel"
+    TRANSPORT = "TRANSPORT"
+    TUNNEL = "TUNNEL"

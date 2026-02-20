@@ -26,5 +26,5 @@ class SwitchStreamFilterActionPortModificationEnum(AREnum):
         """
         self._value_ = value
 
-    EXTEND = "extend"
-    OVERWRITE = "overwrite"
+    EXTEND = "EXTEND"
+    OVERWRITE = "OVERWRITE"

@@ -64,7 +64,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "This is the version info of the ModuleDef ECUC to which this values conform to / are Definition of ModuleDef ECUC Parameters the be used to express the semantic compatibility rules between the definition revision labels is up to the module’s vendor."
+          "note": "This is the version info of the ModuleDef ECUC to which this values conform to / are Definition of ModuleDef ECUC Parameters the be used to express the semantic compatibility rules between the definition revision labels is up to the module\u2019s vendor."
         },
         "implementation": {
           "type": "any (EcucConfiguration)",
@@ -255,7 +255,7 @@
         "referenceValues": {
           "type": "any (EcucAbstractReference)",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Aggregates all References with this container. [RS_ECUC_00079] atpVariation"
         },
@@ -516,7 +516,7 @@
         "definition": {
           "type": "any (EcucAbstractReference)",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to the definition of this EcucAbstractReference subclasses in the ECU Configuration Parameter"
         },
@@ -566,7 +566,7 @@
         "value": {
           "type": "Referrable",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Specifies the destination of the reference."
         }

@@ -26,7 +26,7 @@ class FlowMeteringColorModeEnum(AREnum):
         """
         self._value_ = value
 
-    COLOR_AWARE = "colorAware"
-    SYSTEM = "System"
-    AUTOSAR = "AUTOSAR"
-    COLOR_BLIND = "colorBlind"
+    COLOR_AWARE = "COLOR-AWARE"
+    SYSTEM = "SYSTEM"
+    AUTOSAR = "A-U-T-O-S-A-R"
+    COLOR_BLIND = "COLOR-BLIND"

@@ -27,4 +27,4 @@ class TDEventModeDeclarationTypeEnum(AREnum):
         self._value_ = value
 
     # Note: 1 duplicate literal(s) found and removed: modeDeclaration
-    MODE_DECLARATION = "modeDeclaration"
+    MODE_DECLARATION = "MODE-DECLARATION"

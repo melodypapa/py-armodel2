@@ -118,14 +118,14 @@
         "externals": {
           "type": "ExternalTriggeringPoint",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "The aggregation of ExternalTriggeringPoint is subject to with the purpose to support the conditional trigger ports or the variant existence of points in the implementation. atpVariation"
         },
         "internals": {
           "type": "InternalTriggeringPoint",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "The aggregation of InternalTriggeringPoint is subject to with the purpose to support the variant internal triggering points in the atpVariation"
         },
@@ -169,7 +169,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "The symbol describing this RunnableEntity’s entry point."
+          "note": "The symbol describing this RunnableEntity\u2019s entry point."
         },
         "waitPoints": {
           "type": "WaitPoint",
@@ -255,7 +255,7 @@
         "arTypedPers": {
           "type": "VariableDataPrototype",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Defines an AUTOSAR typed memory-block that needs to available for each instance of the SW-component. is typically only useful if supportsMultipleInstantiation to \"true\" or if the component defines NVRAM permanent blocks. of arTypedPerInstanceMemory is subject with the purpose to support variability in the implementations. Typically different the implementation are requiring different memory objects. atpVariation 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },
@@ -276,21 +276,21 @@
         "explicitInters": {
           "type": "VariableDataPrototype",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Implement state message semantics for establishing among runnables of the same The aggregation of explicitInterRunnable subject to variability with the purpose to in the software components different algorithms in the requiring different number of memory atpVariation"
         },
         "implicitInters": {
           "type": "VariableDataPrototype",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Implement state message semantics for establishing among runnables of the same The aggregation of implicitInterRunnable subject to variability with the purpose to in the software components different algorithms in the requiring different number of memory atpVariation"
         },
         "includedDataTypeSets": {
           "type": "IncludedDataTypeSet",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "The includedDataTypeSet is used by a software for its implementation."
         },

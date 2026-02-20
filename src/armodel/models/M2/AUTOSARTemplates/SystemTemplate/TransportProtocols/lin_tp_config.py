@@ -45,6 +45,7 @@ class LinTpConfig(TpConfig):
         self.tp_addresses: list[TpAddress] = []
         self.tp_connections: list[LinTpConnection] = []
         self.tp_nodes: list[LinTpNode] = []
+
     def serialize(self) -> ET.Element:
         """Serialize LinTpConfig to XML element.
 
@@ -52,7 +53,7 @@ class LinTpConfig(TpConfig):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

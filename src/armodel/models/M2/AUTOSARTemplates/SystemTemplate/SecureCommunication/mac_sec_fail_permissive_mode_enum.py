@@ -26,7 +26,7 @@ class MacSecFailPermissiveModeEnum(AREnum):
         """
         self._value_ = value
 
-    NEVER = "never"
-    SYSTEM = "System"
-    AUTOSAR = "AUTOSAR"
-    TIMEOUT = "timeout"
+    NEVER = "NEVER"
+    SYSTEM = "SYSTEM"
+    AUTOSAR = "A-U-T-O-S-A-R"
+    TIMEOUT = "TIMEOUT"

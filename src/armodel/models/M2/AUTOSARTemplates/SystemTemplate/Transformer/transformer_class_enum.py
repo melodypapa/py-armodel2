@@ -27,7 +27,7 @@ class TransformerClassEnum(AREnum):
         """
         self._value_ = value
 
-    CUSTOM = "custom"
-    SAFETY = "safety"
-    SECURITY = "security"
-    SERIALIZER = "serializer"
+    CUSTOM = "CUSTOM"
+    SAFETY = "SAFETY"
+    SECURITY = "SECURITY"
+    SERIALIZER = "SERIALIZER"

@@ -39,6 +39,7 @@ class BinaryManifestAddressableObject(Identifiable, ABC):
         super().__init__()
         self.address: Optional[Address] = None
         self.symbol: Optional[SymbolString] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BinaryManifestAddressableObject to XML element.
 
@@ -46,7 +47,7 @@ class BinaryManifestAddressableObject(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

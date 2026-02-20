@@ -39,6 +39,7 @@ class MsrQueryProps(ARObject):
         self.comment: Optional[String] = None
         self.msr_query_args: list[MsrQueryArg] = []
         self.msr_query_name: String = None
+
     def serialize(self) -> ET.Element:
         """Serialize MsrQueryProps to XML element.
 
@@ -46,7 +47,7 @@ class MsrQueryProps(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize comment

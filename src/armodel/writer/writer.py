@@ -88,6 +88,9 @@ class ARXMLWriter:
         
         # Fix XML declaration quotes
         self._fix_xml_declaration_quotes_file(filepath)
+        
+        # Preserve HTML entity encoding in text content
+        self._preserve_html_entities_file(filepath)
 
     def _fix_xml_declaration_quotes_file(self, filepath: Path) -> None:
         """Replace single quotes with double quotes in XML declaration.
@@ -121,6 +124,80 @@ class ARXMLWriter:
         xml_str = xml_str.replace("<?xml version='1.0'", '<?xml version="1.0"')
         xml_str = xml_str.replace("encoding='UTF-8'?>", 'encoding="UTF-8"?>')
         return xml_str
+
+    def _preserve_html_entities_file(self, filepath: Path) -> None:
+        """Preserve HTML entity encoding in text content.
+
+        Post-processes the file to escape special characters in text content
+        to match AUTOSAR format (e.g., &quot; instead of " in text nodes).
+
+        Args:
+            filepath: Path to the ARXML file to process
+        """
+        with open(filepath, 'rb') as f:
+            content = f.read()
+        
+        # Decode to string for processing
+        xml_str = content.decode(self._encoding)
+        
+        # Apply HTML entity preservation
+        xml_str = self._preserve_html_entities_str(xml_str)
+        
+        # Write back
+        with open(filepath, 'wb') as f:
+            f.write(xml_str.encode(self._encoding))
+
+    def _preserve_html_entities_str(self, xml_str: str) -> str:
+        """Preserve HTML entity encoding in XML string.
+
+        Escapes special characters in text content to match AUTOSAR format:
+        - " -> &quot; (quotes in text content)
+        Note: Does NOT escape <, >, & in tag names or attribute values.
+        Note: Does NOT escape apostrophes as AUTOSAR files use literal '.
+
+        Args:
+            xml_str: XML string to process
+
+        Returns:
+            XML string with preserved HTML entity encoding
+        """
+        import re
+        
+        # Process the XML string line by line
+        # We need to escape quotes only in text content (between > and <)
+        # and NOT in attribute values or tag names
+        
+        lines = xml_str.split('\n')
+        processed_lines = []
+        
+        for line in lines:
+            # Skip lines that are purely tags (no text content)
+            if not line.strip():
+                processed_lines.append(line)
+                continue
+            
+            # For each line, identify text content and escape quotes
+            # Text content appears after > and before <
+            # We need to be careful not to escape quotes in attributes
+            
+            # Escape quotes in text content only
+            # Look for patterns like ">text<" where text contains quotes
+            # Use regex to find text between tags and escape quotes
+            
+            def escape_quotes_in_text(match: re.Match[str]) -> str:
+                """Escape quotes in text content between tags."""
+                text = match.group(1)
+                if text:
+                    # Escape quotes in text content
+                    text = text.replace('"', '&quot;')
+                return f'>{text}<'
+            
+            # Replace text content between tags
+            # This regex matches >...< where ... is not a tag
+            processed_line = re.sub(r'>([^<]*?)<', escape_quotes_in_text, line)
+            processed_lines.append(processed_line)
+        
+        return '\n'.join(processed_lines)
 
     def _indent(self, elem: ET.Element, level: int = 0) -> None:
         """Add indentation to XML element for pretty printing.

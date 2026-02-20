@@ -26,7 +26,7 @@ class IPsecPolicyEnum(AREnum):
         """
         self._value_ = value
 
-    DROP = "drop"
-    IPSEC = "ipsec"
-    PASSTHROUGH = "passthrough"
-    REJECT = "reject"
+    DROP = "DROP"
+    IPSEC = "IPSEC"
+    PASSTHROUGH = "PASSTHROUGH"
+    REJECT = "REJECT"

@@ -30,6 +30,7 @@ class UserDefinedTransformationDescription(TransformationDescription):
     def __init__(self) -> None:
         """Initialize UserDefinedTransformationDescription."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize UserDefinedTransformationDescription to XML element.
 
@@ -37,7 +38,7 @@ class UserDefinedTransformationDescription(TransformationDescription):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

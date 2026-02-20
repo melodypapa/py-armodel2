@@ -231,7 +231,7 @@
         "contextMode": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Specifies the mode declaration group prototype that manifests the context. xml.sequenceOffset=20"
         },
@@ -290,14 +290,14 @@
         "contextMode": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Specifies the mode declaration group prototype that manifests the context. xml.sequenceOffset=40"
         },
         "contextPort": {
           "type": "PortPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Specifies the port prototype representing the context. 277 Document ID 411: AUTOSAR_CP_TPS_TimingExtensions Timing Extensions for Classic R23-11"
         },

@@ -81,6 +81,7 @@ class FlexrayArTpChannel(ARObject):
         self.timeout_bs: Optional[TimeValue] = None
         self.timeout_cr: Optional[TimeValue] = None
         self.tp_connections: list[FlexrayArTpConnection] = []
+
     def serialize(self) -> ET.Element:
         """Serialize FlexrayArTpChannel to XML element.
 
@@ -88,7 +89,7 @@ class FlexrayArTpChannel(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize ack_type

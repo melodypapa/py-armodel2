@@ -31,11 +31,12 @@ class ComponentSeparation(MappingConstraint):
         """
         return False
 
-    mapping_scope_enum_ref: Optional[ARRef]
+    mapping_scope_enum_ref: Optional[MappingScopeEnum]
     def __init__(self) -> None:
         """Initialize ComponentSeparation."""
         super().__init__()
-        self.mapping_scope_enum_ref: Optional[ARRef] = None
+        self.mapping_scope_enum_ref: Optional[MappingScopeEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ComponentSeparation to XML element.
 
@@ -43,7 +44,7 @@ class ComponentSeparation(MappingConstraint):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -61,7 +62,7 @@ class ComponentSeparation(MappingConstraint):
             serialized = ARObject._serialize_item(self.mapping_scope_enum_ref, "MappingScopeEnum")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("MAPPING-SCOPE-ENUM")
+                wrapped = ET.Element("MAPPING-SCOPE-ENUM-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -86,9 +87,9 @@ class ComponentSeparation(MappingConstraint):
         obj = super(ComponentSeparation, cls).deserialize(element)
 
         # Parse mapping_scope_enum_ref
-        child = ARObject._find_child_element(element, "MAPPING-SCOPE-ENUM")
+        child = ARObject._find_child_element(element, "MAPPING-SCOPE-ENUM-REF")
         if child is not None:
-            mapping_scope_enum_ref_value = MappingScopeEnum.deserialize(child)
+            mapping_scope_enum_ref_value = ARRef.deserialize(child)
             obj.mapping_scope_enum_ref = mapping_scope_enum_ref_value
 
         return obj

@@ -36,6 +36,7 @@ class AutosarVariableInstance(Identifiable):
         """Initialize AutosarVariableInstance."""
         super().__init__()
         self.variable_instance_instance_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AutosarVariableInstance to XML element.
 
@@ -43,7 +44,7 @@ class AutosarVariableInstance(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -61,7 +62,7 @@ class AutosarVariableInstance(Identifiable):
             serialized = ARObject._serialize_item(self.variable_instance_instance_ref, "DataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("VARIABLE-INSTANCE-INSTANCE-REF")
+                wrapped = ET.Element("VARIABLE-INSTANCE-INSTANCE-REF-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -86,9 +87,9 @@ class AutosarVariableInstance(Identifiable):
         obj = super(AutosarVariableInstance, cls).deserialize(element)
 
         # Parse variable_instance_instance_ref
-        child = ARObject._find_child_element(element, "VARIABLE-INSTANCE-INSTANCE-REF")
+        child = ARObject._find_child_element(element, "VARIABLE-INSTANCE-INSTANCE-REF-REF")
         if child is not None:
-            variable_instance_instance_ref_value = ARObject._deserialize_by_tag(child, "DataPrototype")
+            variable_instance_instance_ref_value = ARRef.deserialize(child)
             obj.variable_instance_instance_ref = variable_instance_instance_ref_value
 
         return obj

@@ -40,6 +40,7 @@ class BswTriggerDirectImplementation(ARObject):
         self.cat2_isr: Optional[Identifier] = None
         self.mastered_trigger_ref: Optional[ARRef] = None
         self.task: Optional[Identifier] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BswTriggerDirectImplementation to XML element.
 
@@ -47,7 +48,7 @@ class BswTriggerDirectImplementation(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize cat2_isr
@@ -69,7 +70,7 @@ class BswTriggerDirectImplementation(ARObject):
             serialized = ARObject._serialize_item(self.mastered_trigger_ref, "Trigger")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("MASTERED-TRIGGER")
+                wrapped = ET.Element("MASTERED-TRIGGER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -115,9 +116,9 @@ class BswTriggerDirectImplementation(ARObject):
             obj.cat2_isr = cat2_isr_value
 
         # Parse mastered_trigger_ref
-        child = ARObject._find_child_element(element, "MASTERED-TRIGGER")
+        child = ARObject._find_child_element(element, "MASTERED-TRIGGER-REF")
         if child is not None:
-            mastered_trigger_ref_value = ARObject._deserialize_by_tag(child, "Trigger")
+            mastered_trigger_ref_value = ARRef.deserialize(child)
             obj.mastered_trigger_ref = mastered_trigger_ref_value
 
         # Parse task

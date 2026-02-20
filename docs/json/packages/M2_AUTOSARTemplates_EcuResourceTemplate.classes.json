@@ -62,7 +62,7 @@
         "hwPinGroups": {
           "type": "HwPinGroup",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This aggregation is used to describe the connection a hardware element. Note that hardware no pins but only pingroups. atpVariation"
         },
@@ -177,7 +177,7 @@
         "hwPinGroupContent": {
           "type": "HwPinGroupContent",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This aggregation describes the contained pins/pin groups."
         }
@@ -219,7 +219,7 @@
         "hwPinGroup": {
           "type": "HwPinGroup",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This aggregation represents a nested hardware pin group. atpVariation"
         }
@@ -322,7 +322,7 @@
         "hwPinGroups": {
           "type": "HwPinGroupConnector",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This represents one particular connection between two pin groups. atpVariation"
         }
@@ -365,7 +365,7 @@
         "hwPinGroups": {
           "type": "HwPinGroup",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This association connects two hardware pin groups."
         }

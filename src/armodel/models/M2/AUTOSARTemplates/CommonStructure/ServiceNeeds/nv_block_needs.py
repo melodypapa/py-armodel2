@@ -86,6 +86,7 @@ class NvBlockNeeds(ServiceNeeds):
         self.write_verification: Optional[Boolean] = None
         self.writing: Optional[PositiveInteger] = None
         self.writing_priority: Optional[NvBlockNeedsWritingPriorityEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize NvBlockNeeds to XML element.
 
@@ -93,7 +94,7 @@ class NvBlockNeeds(ServiceNeeds):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

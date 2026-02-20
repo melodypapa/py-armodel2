@@ -26,7 +26,7 @@ class AreaEnumShape(AREnum):
         """
         self._value_ = value
 
-    CIRCLE = "circle"
-    DEFAULT = "default"
-    POLY = "poly"
-    RECT = "rect"
+    CIRCLE = "CIRCLE"
+    DEFAULT = "DEFAULT"
+    POLY = "POLY"
+    RECT = "RECT"

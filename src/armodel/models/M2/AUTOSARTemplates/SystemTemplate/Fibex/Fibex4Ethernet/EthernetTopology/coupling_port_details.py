@@ -57,6 +57,7 @@ class CouplingPortDetails(ARObject):
         self.global_time_coupling: Optional[GlobalTimeCouplingPortProps] = None
         self.last_egress: Optional[CouplingPortScheduler] = None
         self.rate_policies: list[CouplingPortRatePolicy] = []
+
     def serialize(self) -> ET.Element:
         """Serialize CouplingPortDetails to XML element.
 
@@ -64,7 +65,7 @@ class CouplingPortDetails(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize coupling_ports (list to container "COUPLING-PORTS")

@@ -43,21 +43,21 @@
         "frameMappings": {
           "type": "FrameMapping",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Frame Gateway: The entire source frame is mapped as it the target frame (what in general is only possible a common platform). In this case source and should be the identical object. frames are variable in clusters, the mapping needs to be variable, too. atpVariation"
         },
         "iPduMappings": {
           "type": "IPduMapping",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "IPdu Gateway: Arranges those IPdus that are transferred gateway from one channel to the other in pairs and mapping between them. PDUs are variable in clusters, the gateway needs to be variable, too. atpVariation"
         },
         "signalMappings": {
           "type": "ISignalMapping",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Signal Gateway: Arranges those signals that are the gateway from one channel to the other and defines the mapping between them. signals are variable in clusters, the mapping needs to be variable, too. atpVariation"
         }
@@ -99,14 +99,14 @@
         "sourceFrame": {
           "type": "FrameTriggering",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Source destination of the referencing mapping."
         },
         "targetFrame": {
           "type": "FrameTriggering",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Target destination of the referencing mapping."
         }
@@ -162,14 +162,14 @@
         "sourceIPdu": {
           "type": "PduTriggering",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Source destination of the referencing mapping."
         },
         "targetIPdu": {
           "type": "TargetIPduRef",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Target destination of the referencing mapping."
         }
@@ -204,14 +204,14 @@
         "defaultValue": {
           "type": "PduMappingDefaultValue",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "If no I-Pdu has been received a default value will be"
         },
         "targetIPdu": {
           "type": "PduTriggering",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "IPdu Reference"
         }
@@ -330,14 +330,14 @@
         "sourceSignal": {
           "type": "ISignalTriggering",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Source destination of the referencing mapping."
         },
         "targetSignal": {
           "type": "ISignalTriggering",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Target destination of the referencing mapping."
         }

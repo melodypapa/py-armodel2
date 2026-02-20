@@ -29,6 +29,7 @@ class DiagnosticEventWindow(ARObject):
         """Initialize DiagnosticEventWindow."""
         super().__init__()
         self.event_window: Optional[DiagnosticEventWindow] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticEventWindow to XML element.
 
@@ -36,7 +37,7 @@ class DiagnosticEventWindow(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize event_window

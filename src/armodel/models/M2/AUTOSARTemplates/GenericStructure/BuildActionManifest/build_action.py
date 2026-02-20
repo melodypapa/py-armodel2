@@ -49,6 +49,7 @@ class BuildAction(BuildActionEntity):
         self.modified_datas: list[BuildActionIoElement] = []
         self.predecessors: list[BuildAction] = []
         self.required: BuildActionEnvironment = None
+
     def serialize(self) -> ET.Element:
         """Serialize BuildAction to XML element.
 
@@ -56,7 +57,7 @@ class BuildAction(BuildActionEntity):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

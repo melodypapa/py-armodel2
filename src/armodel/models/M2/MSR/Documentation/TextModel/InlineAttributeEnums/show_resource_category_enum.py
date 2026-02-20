@@ -26,5 +26,5 @@ class ShowResourceCategoryEnum(AREnum):
         """
         self._value_ = value
 
-    NO_SHOW_CATEGORY = "noShowCategory"
-    SHOW_CATEGORY = "showCategory"
+    NO_SHOW_CATEGORY = "NO-SHOW-CATEGORY"
+    SHOW_CATEGORY = "SHOW-CATEGORY"

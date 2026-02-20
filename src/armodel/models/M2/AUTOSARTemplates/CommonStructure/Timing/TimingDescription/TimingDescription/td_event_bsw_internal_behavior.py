@@ -37,6 +37,7 @@ class TDEventBswInternalBehavior(TimingDescriptionEvent):
         super().__init__()
         self.bsw_module_entity_entity: Optional[BswModuleEntity] = None
         self.td_event_bsw_behavior_type: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TDEventBswInternalBehavior to XML element.
 
@@ -44,7 +45,7 @@ class TDEventBswInternalBehavior(TimingDescriptionEvent):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

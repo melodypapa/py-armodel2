@@ -44,16 +44,17 @@ class ApplicationArrayElement(ApplicationCompositeElementDataPrototype):
         return False
 
     array_size_handling: Optional[ArraySizeHandlingEnum]
-    array_size: Optional[ArraySizeSemanticsEnum]
+    array_size_semantics: Optional[ArraySizeSemanticsEnum]
     index_data_type: Optional[ApplicationPrimitiveDataType]
-    max_number_of: Optional[PositiveInteger]
+    max_number_of_elements: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize ApplicationArrayElement."""
         super().__init__()
         self.array_size_handling: Optional[ArraySizeHandlingEnum] = None
-        self.array_size: Optional[ArraySizeSemanticsEnum] = None
+        self.array_size_semantics: Optional[ArraySizeSemanticsEnum] = None
         self.index_data_type: Optional[ApplicationPrimitiveDataType] = None
-        self.max_number_of: Optional[PositiveInteger] = None
+        self.max_number_of_elements: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ApplicationArrayElement to XML element.
 
@@ -61,7 +62,7 @@ class ApplicationArrayElement(ApplicationCompositeElementDataPrototype):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -88,12 +89,12 @@ class ApplicationArrayElement(ApplicationCompositeElementDataPrototype):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize array_size
-        if self.array_size is not None:
-            serialized = ARObject._serialize_item(self.array_size, "ArraySizeSemanticsEnum")
+        # Serialize array_size_semantics
+        if self.array_size_semantics is not None:
+            serialized = ARObject._serialize_item(self.array_size_semantics, "ArraySizeSemanticsEnum")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ARRAY-SIZE")
+                wrapped = ET.Element("ARRAY-SIZE-SEMANTICS")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -116,12 +117,12 @@ class ApplicationArrayElement(ApplicationCompositeElementDataPrototype):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize max_number_of
-        if self.max_number_of is not None:
-            serialized = ARObject._serialize_item(self.max_number_of, "PositiveInteger")
+        # Serialize max_number_of_elements
+        if self.max_number_of_elements is not None:
+            serialized = ARObject._serialize_item(self.max_number_of_elements, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("MAX-NUMBER-OF")
+                wrapped = ET.Element("MAX-NUMBER-OF-ELEMENTS")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -151,11 +152,11 @@ class ApplicationArrayElement(ApplicationCompositeElementDataPrototype):
             array_size_handling_value = ArraySizeHandlingEnum.deserialize(child)
             obj.array_size_handling = array_size_handling_value
 
-        # Parse array_size
-        child = ARObject._find_child_element(element, "ARRAY-SIZE")
+        # Parse array_size_semantics
+        child = ARObject._find_child_element(element, "ARRAY-SIZE-SEMANTICS")
         if child is not None:
-            array_size_value = ArraySizeSemanticsEnum.deserialize(child)
-            obj.array_size = array_size_value
+            array_size_semantics_value = ArraySizeSemanticsEnum.deserialize(child)
+            obj.array_size_semantics = array_size_semantics_value
 
         # Parse index_data_type
         child = ARObject._find_child_element(element, "INDEX-DATA-TYPE")
@@ -163,11 +164,11 @@ class ApplicationArrayElement(ApplicationCompositeElementDataPrototype):
             index_data_type_value = ARObject._deserialize_by_tag(child, "ApplicationPrimitiveDataType")
             obj.index_data_type = index_data_type_value
 
-        # Parse max_number_of
-        child = ARObject._find_child_element(element, "MAX-NUMBER-OF")
+        # Parse max_number_of_elements
+        child = ARObject._find_child_element(element, "MAX-NUMBER-OF-ELEMENTS")
         if child is not None:
-            max_number_of_value = child.text
-            obj.max_number_of = max_number_of_value
+            max_number_of_elements_value = child.text
+            obj.max_number_of_elements = max_number_of_elements_value
 
         return obj
 

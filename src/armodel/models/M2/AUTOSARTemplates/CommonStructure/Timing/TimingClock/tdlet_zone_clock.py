@@ -37,6 +37,7 @@ class TDLETZoneClock(TimingClock):
         super().__init__()
         self.accuracy_ext: Optional[MultidimensionalTime] = None
         self.accuracy_int: Optional[MultidimensionalTime] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TDLETZoneClock to XML element.
 
@@ -44,7 +45,7 @@ class TDLETZoneClock(TimingClock):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

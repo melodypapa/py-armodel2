@@ -45,6 +45,7 @@ class DiagnosticJ1939SpnMapping(DiagnosticMapping):
         self.sending_nodes: list[DiagnosticJ1939Node] = []
         self.spn: Optional[DiagnosticJ1939Spn] = None
         self.system_signal: Optional[SystemSignal] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticJ1939SpnMapping to XML element.
 
@@ -52,7 +53,7 @@ class DiagnosticJ1939SpnMapping(DiagnosticMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

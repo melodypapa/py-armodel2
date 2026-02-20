@@ -62,15 +62,15 @@ class TestInternalConstrsSerialization:
         assert lower_limit_elem.get("INTERVAL-TYPE") is None
 
     def test_serialize_internal_constrs_with_monotony(self):
-        """Test InternalConstrs serialization with monotony enum."""
+        """Test InternalConstrs serialization with monotony enum (with hyphens)."""
         self.internal_constrs.monotony = MonotonyEnum.STRICTLY_INCREASING
 
         elem = self.internal_constrs.serialize()
 
         monotony_elem = elem.find("MONOTONY")
         assert monotony_elem is not None
-        # Verify enum value is serialized as uppercase
-        assert monotony_elem.text == "STRICTLYINCREASING"
+        # Verify enum value is serialized as uppercase with hyphens (AUTOSAR format)
+        assert monotony_elem.text == "STRICTLY-INCREASING"
 
     def test_deserialize_internal_constrs_with_limits(self):
         """Test InternalConstrs deserialization with Limit types."""
@@ -92,9 +92,9 @@ class TestInternalConstrsSerialization:
         assert obj.upper_limit.interval_type == IntervalTypeEnum.OPEN
 
     def test_deserialize_internal_constrs_with_monotony_lowercase(self):
-        """Test InternalConstrs deserialization with lowercase monotony value."""
+        """Test InternalConstrs deserialization with lowercase monotony value (with hyphens)."""
         xml = '''<INTERNAL-CONSTRS>
-            <MONOTONY>strictlyincreasing</MONOTONY>
+            <MONOTONY>strictly-increasing</MONOTONY>
         </INTERNAL-CONSTRS>'''
 
         elem = ET.fromstring(xml)
@@ -104,9 +104,9 @@ class TestInternalConstrsSerialization:
         assert obj.monotony == MonotonyEnum.STRICTLY_INCREASING
 
     def test_deserialize_internal_constrs_with_monotony_uppercase(self):
-        """Test InternalConstrs deserialization with uppercase monotony value."""
+        """Test InternalConstrs deserialization with uppercase monotony value (with hyphens)."""
         xml = '''<INTERNAL-CONSTRS>
-            <MONOTONY>STRICTLYINCREASING</MONOTONY>
+            <MONOTONY>STRICTLY-INCREASING</MONOTONY>
         </INTERNAL-CONSTRS>'''
 
         elem = ET.fromstring(xml)

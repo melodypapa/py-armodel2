@@ -46,6 +46,7 @@ class InstantiationDataDefProps(ARObject):
         self.parameter_ref: Optional[ARRef] = None
         self.sw_data_def: Optional[SwDataDefProps] = None
         self.variable_instance_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize InstantiationDataDefProps to XML element.
 
@@ -53,7 +54,7 @@ class InstantiationDataDefProps(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize parameter_ref
@@ -61,7 +62,7 @@ class InstantiationDataDefProps(ARObject):
             serialized = ARObject._serialize_item(self.parameter_ref, "AutosarParameterRef")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PARAMETER")
+                wrapped = ET.Element("PARAMETER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -89,7 +90,7 @@ class InstantiationDataDefProps(ARObject):
             serialized = ARObject._serialize_item(self.variable_instance_ref, "AutosarVariableRef")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("VARIABLE-INSTANCE")
+                wrapped = ET.Element("VARIABLE-INSTANCE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -115,9 +116,9 @@ class InstantiationDataDefProps(ARObject):
         obj.__init__()
 
         # Parse parameter_ref
-        child = ARObject._find_child_element(element, "PARAMETER")
+        child = ARObject._find_child_element(element, "PARAMETER-REF")
         if child is not None:
-            parameter_ref_value = ARObject._deserialize_by_tag(child, "AutosarParameterRef")
+            parameter_ref_value = ARRef.deserialize(child)
             obj.parameter_ref = parameter_ref_value
 
         # Parse sw_data_def
@@ -127,9 +128,9 @@ class InstantiationDataDefProps(ARObject):
             obj.sw_data_def = sw_data_def_value
 
         # Parse variable_instance_ref
-        child = ARObject._find_child_element(element, "VARIABLE-INSTANCE")
+        child = ARObject._find_child_element(element, "VARIABLE-INSTANCE-REF")
         if child is not None:
-            variable_instance_ref_value = ARObject._deserialize_by_tag(child, "AutosarVariableRef")
+            variable_instance_ref_value = ARRef.deserialize(child)
             obj.variable_instance_ref = variable_instance_ref_value
 
         return obj

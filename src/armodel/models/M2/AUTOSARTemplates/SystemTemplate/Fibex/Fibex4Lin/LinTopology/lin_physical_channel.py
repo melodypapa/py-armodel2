@@ -40,6 +40,7 @@ class LinPhysicalChannel(PhysicalChannel):
         super().__init__()
         self.bus_idle_timeout: Optional[TimeValue] = None
         self.schedule_tables: list[LinScheduleTable] = []
+
     def serialize(self) -> ET.Element:
         """Serialize LinPhysicalChannel to XML element.
 
@@ -47,7 +48,7 @@ class LinPhysicalChannel(PhysicalChannel):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

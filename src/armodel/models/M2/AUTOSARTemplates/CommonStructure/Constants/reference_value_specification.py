@@ -36,6 +36,7 @@ class ReferenceValueSpecification(ValueSpecification):
         """Initialize ReferenceValueSpecification."""
         super().__init__()
         self.reference_value_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ReferenceValueSpecification to XML element.
 
@@ -43,7 +44,7 @@ class ReferenceValueSpecification(ValueSpecification):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -61,7 +62,7 @@ class ReferenceValueSpecification(ValueSpecification):
             serialized = ARObject._serialize_item(self.reference_value_ref, "DataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("REFERENCE-VALUE")
+                wrapped = ET.Element("REFERENCE-VALUE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -86,9 +87,9 @@ class ReferenceValueSpecification(ValueSpecification):
         obj = super(ReferenceValueSpecification, cls).deserialize(element)
 
         # Parse reference_value_ref
-        child = ARObject._find_child_element(element, "REFERENCE-VALUE")
+        child = ARObject._find_child_element(element, "REFERENCE-VALUE-REF")
         if child is not None:
-            reference_value_ref_value = ARObject._deserialize_by_tag(child, "DataPrototype")
+            reference_value_ref_value = ARRef.deserialize(child)
             obj.reference_value_ref = reference_value_ref_value
 
         return obj

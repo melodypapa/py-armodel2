@@ -26,5 +26,5 @@ class TcpRoleEnum(AREnum):
         """
         self._value_ = value
 
-    CONNECT = "connect"
-    LISTEN = "listen"
+    CONNECT = "CONNECT"
+    LISTEN = "LISTEN"

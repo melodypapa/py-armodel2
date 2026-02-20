@@ -67,6 +67,7 @@ class J1939TpConnection(TpConnection):
         self.retry: Optional[Boolean] = None
         self.tp_pgs: list[J1939TpPg] = []
         self.transmitter: Optional[J1939TpNode] = None
+
     def serialize(self) -> ET.Element:
         """Serialize J1939TpConnection to XML element.
 
@@ -74,7 +75,7 @@ class J1939TpConnection(TpConnection):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

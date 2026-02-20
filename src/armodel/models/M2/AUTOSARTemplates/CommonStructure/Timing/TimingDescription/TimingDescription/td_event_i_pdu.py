@@ -45,6 +45,7 @@ class TDEventIPdu(TDEventCom):
         self.i_pdu: Optional[IPdu] = None
         self.physical_channel: Optional[PhysicalChannel] = None
         self.td_event_type: Optional[TDEventIPduTypeEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TDEventIPdu to XML element.
 
@@ -52,7 +53,7 @@ class TDEventIPdu(TDEventCom):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

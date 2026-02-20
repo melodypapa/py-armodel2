@@ -42,6 +42,7 @@ class ArParameterInImplementationDataInstanceRef(ARObject):
         self.port_prototype_ref: Optional[ARRef] = None
         self.root_parameter: Optional[ParameterDataPrototype] = None
         self.target_data: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ArParameterInImplementationDataInstanceRef to XML element.
 
@@ -49,7 +50,7 @@ class ArParameterInImplementationDataInstanceRef(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize context_datas (list to container "CONTEXT-DATAS")
@@ -67,7 +68,7 @@ class ArParameterInImplementationDataInstanceRef(ARObject):
             serialized = ARObject._serialize_item(self.port_prototype_ref, "PortPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PORT-PROTOTYPE")
+                wrapped = ET.Element("PORT-PROTOTYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -131,9 +132,9 @@ class ArParameterInImplementationDataInstanceRef(ARObject):
                     obj.context_datas.append(child_value)
 
         # Parse port_prototype_ref
-        child = ARObject._find_child_element(element, "PORT-PROTOTYPE")
+        child = ARObject._find_child_element(element, "PORT-PROTOTYPE-REF")
         if child is not None:
-            port_prototype_ref_value = ARObject._deserialize_by_tag(child, "PortPrototype")
+            port_prototype_ref_value = ARRef.deserialize(child)
             obj.port_prototype_ref = port_prototype_ref_value
 
         # Parse root_parameter

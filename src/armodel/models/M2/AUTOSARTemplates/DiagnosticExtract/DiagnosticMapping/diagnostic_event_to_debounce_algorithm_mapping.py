@@ -37,6 +37,7 @@ class DiagnosticEventToDebounceAlgorithmMapping(DiagnosticMapping):
         super().__init__()
         self.debounce: Optional[Any] = None
         self.diagnostic_event: Optional[DiagnosticEvent] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticEventToDebounceAlgorithmMapping to XML element.
 
@@ -44,7 +45,7 @@ class DiagnosticEventToDebounceAlgorithmMapping(DiagnosticMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

@@ -42,6 +42,7 @@ class AppOsTaskProxyToEcuTaskProxyMapping(Identifiable):
         self.app_task_proxy: Optional[OsTaskProxy] = None
         self.ecu_task_proxy: Optional[OsTaskProxy] = None
         self.offset: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AppOsTaskProxyToEcuTaskProxyMapping to XML element.
 
@@ -49,7 +50,7 @@ class AppOsTaskProxyToEcuTaskProxyMapping(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

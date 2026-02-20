@@ -40,6 +40,7 @@ class DynamicPartAlternative(ARObject):
         self.initial_dynamic: Optional[Boolean] = None
         self.i_pdu: Optional[ISignalIPdu] = None
         self.selector_field: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DynamicPartAlternative to XML element.
 
@@ -47,7 +48,7 @@ class DynamicPartAlternative(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize initial_dynamic

@@ -63,6 +63,7 @@ class ExecutableEntity(Identifiable, ABC):
         self.reentrancy_level_enum: Optional[ReentrancyLevelEnum] = None
         self.runs_insides: list[ExclusiveArea] = []
         self.sw_addr_method: Optional[SwAddrMethod] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ExecutableEntity to XML element.
 
@@ -70,7 +71,7 @@ class ExecutableEntity(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

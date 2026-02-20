@@ -51,6 +51,7 @@ class ObdMonitorServiceNeeds(DiagnosticCapabilityElement):
         self.event_needs: Optional[DiagnosticEventNeeds] = None
         self.unit_and_scaling_id: Optional[PositiveInteger] = None
         self.update_kind: Optional[DiagnosticMonitorUpdateKindEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ObdMonitorServiceNeeds to XML element.
 
@@ -58,7 +59,7 @@ class ObdMonitorServiceNeeds(DiagnosticCapabilityElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

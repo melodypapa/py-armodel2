@@ -26,5 +26,5 @@ class DiagnosticLogicalOperatorEnum(AREnum):
         """
         self._value_ = value
 
-    LOGICAL_AND = "logicalAnd"
-    LOGICAL_OR = "logicalOr"
+    LOGICAL_AND = "LOGICAL-AND"
+    LOGICAL_OR = "LOGICAL-OR"

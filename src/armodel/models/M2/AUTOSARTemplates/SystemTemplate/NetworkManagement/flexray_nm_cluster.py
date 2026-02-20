@@ -49,6 +49,7 @@ class FlexrayNmCluster(NmCluster):
         self.nm_repeat: Optional[TimeValue] = None
         self.nm_repetition: Optional[Integer] = None
         self.nm_voting_cycle: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FlexrayNmCluster to XML element.
 
@@ -56,7 +57,7 @@ class FlexrayNmCluster(NmCluster):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

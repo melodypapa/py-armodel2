@@ -27,6 +27,6 @@ class NvBlockNeedsWritingPriorityEnum(AREnum):
         """
         self._value_ = value
 
-    HIGH = "high"
-    LOW = "low"
-    MEDIUM = "medium"
+    HIGH = "HIGH"
+    LOW = "LOW"
+    MEDIUM = "MEDIUM"

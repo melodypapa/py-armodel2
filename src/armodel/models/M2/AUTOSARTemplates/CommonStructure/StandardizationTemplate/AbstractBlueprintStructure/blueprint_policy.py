@@ -33,6 +33,7 @@ class BlueprintPolicy(ARObject, ABC):
         """Initialize BlueprintPolicy."""
         super().__init__()
         self.attribute_name: String = None
+
     def serialize(self) -> ET.Element:
         """Serialize BlueprintPolicy to XML element.
 
@@ -40,7 +41,7 @@ class BlueprintPolicy(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize attribute_name

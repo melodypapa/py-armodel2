@@ -40,6 +40,7 @@ class DiagnosticAbstractParameter(ARObject, ABC):
         self.bit_offset: Optional[PositiveInteger] = None
         self.data_element: Optional[DiagnosticDataElement] = None
         self.parameter_size: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticAbstractParameter to XML element.
 
@@ -47,7 +48,7 @@ class DiagnosticAbstractParameter(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize bit_offset

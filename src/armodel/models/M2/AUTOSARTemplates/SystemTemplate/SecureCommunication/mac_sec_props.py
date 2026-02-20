@@ -42,6 +42,7 @@ class MacSecProps(ARObject):
         self.mac_sec_kay: Optional[MacSecLocalKayProps] = None
         self.on_fail: Optional[TimeValue] = None
         self.sak_rekey_time: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize MacSecProps to XML element.
 
@@ -49,7 +50,7 @@ class MacSecProps(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize auto_start

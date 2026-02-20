@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_AdaptivePlatform_PlatformModuleDeployment_CryptoDeployment.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
@@ -32,23 +32,24 @@ class CryptoKeySlot(Identifiable):
         """
         return False
 
-    allocate_shadow: Optional[Boolean]
+    allocate_shadow_copy: Optional[Boolean]
     crypto_alg_id: Optional[String]
-    crypto_object_type_enum: Optional[Any]
-    key_slot_allowed: Optional[Any]
-    key_slot_contents: list[Any]
+    crypto_object_type: Optional[CryptoObjectTypeEnum]
+    key_slot_allowed_modification: Optional[CryptoKeySlotAllowedModification]
+    key_slot_content_allowed_usages: list[CryptoKeySlotContentAllowedUsage]
     slot_capacity: Optional[PositiveInteger]
-    slot_type: Optional[Any]
+    slot_type: Optional[CryptoKeySlotTypeEnum]
     def __init__(self) -> None:
         """Initialize CryptoKeySlot."""
         super().__init__()
-        self.allocate_shadow: Optional[Boolean] = None
+        self.allocate_shadow_copy: Optional[Boolean] = None
         self.crypto_alg_id: Optional[String] = None
-        self.crypto_object_type_enum: Optional[Any] = None
-        self.key_slot_allowed: Optional[Any] = None
-        self.key_slot_contents: list[Any] = []
+        self.crypto_object_type: Optional[CryptoObjectTypeEnum] = None
+        self.key_slot_allowed_modification: Optional[CryptoKeySlotAllowedModification] = None
+        self.key_slot_content_allowed_usages: list[CryptoKeySlotContentAllowedUsage] = []
         self.slot_capacity: Optional[PositiveInteger] = None
-        self.slot_type: Optional[Any] = None
+        self.slot_type: Optional[CryptoKeySlotTypeEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CryptoKeySlot to XML element.
 
@@ -56,7 +57,7 @@ class CryptoKeySlot(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -69,12 +70,12 @@ class CryptoKeySlot(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize allocate_shadow
-        if self.allocate_shadow is not None:
-            serialized = ARObject._serialize_item(self.allocate_shadow, "Boolean")
+        # Serialize allocate_shadow_copy
+        if self.allocate_shadow_copy is not None:
+            serialized = ARObject._serialize_item(self.allocate_shadow_copy, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ALLOCATE-SHADOW")
+                wrapped = ET.Element("ALLOCATE-SHADOW-COPY")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -97,12 +98,12 @@ class CryptoKeySlot(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize crypto_object_type_enum
-        if self.crypto_object_type_enum is not None:
-            serialized = ARObject._serialize_item(self.crypto_object_type_enum, "Any")
+        # Serialize crypto_object_type
+        if self.crypto_object_type is not None:
+            serialized = ARObject._serialize_item(self.crypto_object_type, "CryptoObjectTypeEnum")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CRYPTO-OBJECT-TYPE-ENUM")
+                wrapped = ET.Element("CRYPTO-OBJECT-TYPE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -111,12 +112,12 @@ class CryptoKeySlot(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize key_slot_allowed
-        if self.key_slot_allowed is not None:
-            serialized = ARObject._serialize_item(self.key_slot_allowed, "Any")
+        # Serialize key_slot_allowed_modification
+        if self.key_slot_allowed_modification is not None:
+            serialized = ARObject._serialize_item(self.key_slot_allowed_modification, "CryptoKeySlotAllowedModification")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("KEY-SLOT-ALLOWED")
+                wrapped = ET.Element("KEY-SLOT-ALLOWED-MODIFICATION")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -125,11 +126,11 @@ class CryptoKeySlot(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize key_slot_contents (list to container "KEY-SLOT-CONTENTS")
-        if self.key_slot_contents:
-            wrapper = ET.Element("KEY-SLOT-CONTENTS")
-            for item in self.key_slot_contents:
-                serialized = ARObject._serialize_item(item, "Any")
+        # Serialize key_slot_content_allowed_usages (list to container "KEY-SLOT-CONTENT-ALLOWED-USAGES")
+        if self.key_slot_content_allowed_usages:
+            wrapper = ET.Element("KEY-SLOT-CONTENT-ALLOWED-USAGES")
+            for item in self.key_slot_content_allowed_usages:
+                serialized = ARObject._serialize_item(item, "CryptoKeySlotContentAllowedUsage")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -151,7 +152,7 @@ class CryptoKeySlot(Identifiable):
 
         # Serialize slot_type
         if self.slot_type is not None:
-            serialized = ARObject._serialize_item(self.slot_type, "Any")
+            serialized = ARObject._serialize_item(self.slot_type, "CryptoKeySlotTypeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SLOT-TYPE")
@@ -178,11 +179,11 @@ class CryptoKeySlot(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CryptoKeySlot, cls).deserialize(element)
 
-        # Parse allocate_shadow
-        child = ARObject._find_child_element(element, "ALLOCATE-SHADOW")
+        # Parse allocate_shadow_copy
+        child = ARObject._find_child_element(element, "ALLOCATE-SHADOW-COPY")
         if child is not None:
-            allocate_shadow_value = child.text
-            obj.allocate_shadow = allocate_shadow_value
+            allocate_shadow_copy_value = child.text
+            obj.allocate_shadow_copy = allocate_shadow_copy_value
 
         # Parse crypto_alg_id
         child = ARObject._find_child_element(element, "CRYPTO-ALG-ID")
@@ -190,27 +191,27 @@ class CryptoKeySlot(Identifiable):
             crypto_alg_id_value = child.text
             obj.crypto_alg_id = crypto_alg_id_value
 
-        # Parse crypto_object_type_enum
-        child = ARObject._find_child_element(element, "CRYPTO-OBJECT-TYPE-ENUM")
+        # Parse crypto_object_type
+        child = ARObject._find_child_element(element, "CRYPTO-OBJECT-TYPE")
         if child is not None:
-            crypto_object_type_enum_value = child.text
-            obj.crypto_object_type_enum = crypto_object_type_enum_value
+            crypto_object_type_value = ARObject._deserialize_by_tag(child, "CryptoObjectTypeEnum")
+            obj.crypto_object_type = crypto_object_type_value
 
-        # Parse key_slot_allowed
-        child = ARObject._find_child_element(element, "KEY-SLOT-ALLOWED")
+        # Parse key_slot_allowed_modification
+        child = ARObject._find_child_element(element, "KEY-SLOT-ALLOWED-MODIFICATION")
         if child is not None:
-            key_slot_allowed_value = child.text
-            obj.key_slot_allowed = key_slot_allowed_value
+            key_slot_allowed_modification_value = ARObject._deserialize_by_tag(child, "CryptoKeySlotAllowedModification")
+            obj.key_slot_allowed_modification = key_slot_allowed_modification_value
 
-        # Parse key_slot_contents (list from container "KEY-SLOT-CONTENTS")
-        obj.key_slot_contents = []
-        container = ARObject._find_child_element(element, "KEY-SLOT-CONTENTS")
+        # Parse key_slot_content_allowed_usages (list from container "KEY-SLOT-CONTENT-ALLOWED-USAGES")
+        obj.key_slot_content_allowed_usages = []
+        container = ARObject._find_child_element(element, "KEY-SLOT-CONTENT-ALLOWED-USAGES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.key_slot_contents.append(child_value)
+                    obj.key_slot_content_allowed_usages.append(child_value)
 
         # Parse slot_capacity
         child = ARObject._find_child_element(element, "SLOT-CAPACITY")
@@ -221,7 +222,7 @@ class CryptoKeySlot(Identifiable):
         # Parse slot_type
         child = ARObject._find_child_element(element, "SLOT-TYPE")
         if child is not None:
-            slot_type_value = child.text
+            slot_type_value = ARObject._deserialize_by_tag(child, "CryptoKeySlotTypeEnum")
             obj.slot_type = slot_type_value
 
         return obj

@@ -36,6 +36,7 @@ class BswDataReceivedEvent(BswScheduleEvent):
         """Initialize BswDataReceivedEvent."""
         super().__init__()
         self.data_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BswDataReceivedEvent to XML element.
 
@@ -43,7 +44,7 @@ class BswDataReceivedEvent(BswScheduleEvent):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -61,7 +62,7 @@ class BswDataReceivedEvent(BswScheduleEvent):
             serialized = ARObject._serialize_item(self.data_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DATA")
+                wrapped = ET.Element("DATA-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -86,9 +87,9 @@ class BswDataReceivedEvent(BswScheduleEvent):
         obj = super(BswDataReceivedEvent, cls).deserialize(element)
 
         # Parse data_ref
-        child = ARObject._find_child_element(element, "DATA")
+        child = ARObject._find_child_element(element, "DATA-REF")
         if child is not None:
-            data_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            data_ref_value = ARRef.deserialize(child)
             obj.data_ref = data_ref_value
 
         return obj

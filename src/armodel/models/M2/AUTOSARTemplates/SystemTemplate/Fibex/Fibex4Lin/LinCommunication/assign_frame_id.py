@@ -36,6 +36,7 @@ class AssignFrameId(LinConfigurationEntry):
         """Initialize AssignFrameId."""
         super().__init__()
         self.assigned_frame_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AssignFrameId to XML element.
 
@@ -43,7 +44,7 @@ class AssignFrameId(LinConfigurationEntry):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -61,7 +62,7 @@ class AssignFrameId(LinConfigurationEntry):
             serialized = ARObject._serialize_item(self.assigned_frame_ref, "LinFrameTriggering")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ASSIGNED-FRAME")
+                wrapped = ET.Element("ASSIGNED-FRAME-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -86,9 +87,9 @@ class AssignFrameId(LinConfigurationEntry):
         obj = super(AssignFrameId, cls).deserialize(element)
 
         # Parse assigned_frame_ref
-        child = ARObject._find_child_element(element, "ASSIGNED-FRAME")
+        child = ARObject._find_child_element(element, "ASSIGNED-FRAME-REF")
         if child is not None:
-            assigned_frame_ref_value = ARObject._deserialize_by_tag(child, "LinFrameTriggering")
+            assigned_frame_ref_value = ARRef.deserialize(child)
             obj.assigned_frame_ref = assigned_frame_ref_value
 
         return obj

@@ -53,6 +53,7 @@ class FirewallRule(ARElement):
         self.someip_rule: Optional[Any] = None
         self.someip_sd_rule: Optional[Any] = None
         self.transport_layer_rule: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FirewallRule to XML element.
 
@@ -60,7 +61,7 @@ class FirewallRule(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

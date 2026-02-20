@@ -45,6 +45,7 @@ class ArgumentDataPrototype(AutosarDataPrototype):
         super().__init__()
         self.direction: Optional[ArgumentDirectionEnum] = None
         self.server_argument_impl: Optional[ServerArgumentImplPolicyEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ArgumentDataPrototype to XML element.
 
@@ -52,7 +53,7 @@ class ArgumentDataPrototype(AutosarDataPrototype):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

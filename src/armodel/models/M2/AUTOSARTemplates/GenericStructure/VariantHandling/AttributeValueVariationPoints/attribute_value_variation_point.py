@@ -45,6 +45,7 @@ class AttributeValueVariationPoint(ARObject, ABC):
         self.blueprint_value: Optional[String] = None
         self.sd: Optional[String] = None
         self.short_label: Optional[PrimitiveIdentifier] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AttributeValueVariationPoint to XML element.
 
@@ -52,7 +53,7 @@ class AttributeValueVariationPoint(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize binding_time_enum

@@ -101,6 +101,7 @@ class RunnableEntity(ExecutableEntity):
         self.symbol: Optional[CIdentifier] = None
         self.wait_points: list[WaitPoint] = []
         self.written_locals: list[VariableAccess] = []
+
     def serialize(self) -> ET.Element:
         """Serialize RunnableEntity to XML element.
 
@@ -108,7 +109,7 @@ class RunnableEntity(ExecutableEntity):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -195,23 +196,37 @@ class RunnableEntity(ExecutableEntity):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize external_refs (list to container "EXTERNALS")
+        # Serialize external_refs (list to container "EXTERNAL-REFS")
         if self.external_refs:
-            wrapper = ET.Element("EXTERNALS")
+            wrapper = ET.Element("EXTERNAL-REFS")
             for item in self.external_refs:
                 serialized = ARObject._serialize_item(item, "ExternalTriggeringPoint")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("EXTERNAL-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize internal_refs (list to container "INTERNALS")
+        # Serialize internal_refs (list to container "INTERNAL-REFS")
         if self.internal_refs:
-            wrapper = ET.Element("INTERNALS")
+            wrapper = ET.Element("INTERNAL-REFS")
             for item in self.internal_refs:
                 serialized = ARObject._serialize_item(item, "InternalTriggeringPoint")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("INTERNAL-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -380,23 +395,35 @@ class RunnableEntity(ExecutableEntity):
                 if child_value is not None:
                     obj.data_writes.append(child_value)
 
-        # Parse external_refs (list from container "EXTERNALS")
+        # Parse external_refs (list from container "EXTERNAL-REFS")
         obj.external_refs = []
-        container = ARObject._find_child_element(element, "EXTERNALS")
+        container = ARObject._find_child_element(element, "EXTERNAL-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.external_refs.append(child_value)
 
-        # Parse internal_refs (list from container "INTERNALS")
+        # Parse internal_refs (list from container "INTERNAL-REFS")
         obj.internal_refs = []
-        container = ARObject._find_child_element(element, "INTERNALS")
+        container = ARObject._find_child_element(element, "INTERNAL-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.internal_refs.append(child_value)
 

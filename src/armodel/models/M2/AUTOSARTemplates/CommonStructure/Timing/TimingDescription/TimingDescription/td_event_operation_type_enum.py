@@ -26,7 +26,7 @@ class TDEventOperationTypeEnum(AREnum):
         """
         self._value_ = value
 
-    OPERATION_CALLED = "operationCalled"
-    OPERATION_CALL_RECEIVED = "operationCallReceived"
-    OPERATION_CALL_RESPONSE_RECEIVED = "operationCallResponseReceived"
-    OPERATION_CALL = "operationCall"
+    OPERATION_CALLED = "OPERATION-CALLED"
+    OPERATION_CALL_RECEIVED = "OPERATION-CALL-RECEIVED"
+    OPERATION_CALL_RESPONSE_RECEIVED = "OPERATION-CALL-RESPONSE-RECEIVED"
+    OPERATION_CALL = "OPERATION-CALL"

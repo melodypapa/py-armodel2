@@ -101,7 +101,7 @@
         "pduTriggering": {
           "type": "PduTriggering",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This PduTriggering will be taken to transmit the global"
         },

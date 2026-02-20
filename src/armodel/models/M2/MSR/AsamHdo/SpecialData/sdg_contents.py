@@ -53,6 +53,7 @@ class SdgContents(ARObject):
         self.sdg: Optional[Sdg] = None
         self.sdx_ref: Optional[ARRef] = None
         self.sdxf_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SdgContents to XML element.
 
@@ -60,7 +61,7 @@ class SdgContents(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize sd
@@ -110,7 +111,7 @@ class SdgContents(ARObject):
             serialized = ARObject._serialize_item(self.sdx_ref, "Referrable")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SDX")
+                wrapped = ET.Element("SDX-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -124,7 +125,7 @@ class SdgContents(ARObject):
             serialized = ARObject._serialize_item(self.sdxf_ref, "Referrable")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SDXF")
+                wrapped = ET.Element("SDXF-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -168,15 +169,15 @@ class SdgContents(ARObject):
             obj.sdg = sdg_value
 
         # Parse sdx_ref
-        child = ARObject._find_child_element(element, "SDX")
+        child = ARObject._find_child_element(element, "SDX-REF")
         if child is not None:
-            sdx_ref_value = ARObject._deserialize_by_tag(child, "Referrable")
+            sdx_ref_value = ARRef.deserialize(child)
             obj.sdx_ref = sdx_ref_value
 
         # Parse sdxf_ref
-        child = ARObject._find_child_element(element, "SDXF")
+        child = ARObject._find_child_element(element, "SDXF-REF")
         if child is not None:
-            sdxf_ref_value = ARObject._deserialize_by_tag(child, "Referrable")
+            sdxf_ref_value = ARRef.deserialize(child)
             obj.sdxf_ref = sdxf_ref_value
 
         return obj

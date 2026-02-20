@@ -26,5 +26,5 @@ class LatencyConstraintTypeEnum(AREnum):
         """
         self._value_ = value
 
-    AGE = "age"
-    REACTION = "reaction"
+    AGE = "AGE"
+    REACTION = "REACTION"

@@ -2,6 +2,7 @@
 
 import argparse
 from pathlib import Path
+from typing import Optional
 
 from .parsers import (
     load_all_package_data,
@@ -29,7 +30,7 @@ def generate_all_models(
     generate_enums: bool = True,
     generate_primitives: bool = True,
     include_members: bool = False,
-    skip_list_file: Path = None,
+    skip_list_file: Optional[Path] = None,
 ) -> None:
     """Generate all model classes, enums, and primitives from JSON definitions.
 
@@ -71,6 +72,8 @@ def generate_all_models(
 
         # Create a mapping of class names to their JSON file paths
         class_json_file_map = {}
+        # Create a mapping of class names to their class details (including atp_type)
+        class_details_map = {}
         for package_path, package_info in package_data.items():
             if "classes" in package_info:
                 json_file_path = str(
@@ -78,6 +81,8 @@ def generate_all_models(
                 )
                 for cls in package_info["classes"]:
                     class_json_file_map[cls["name"]] = json_file_path
+                    # Store the full class details (including atp_type)
+                    class_details_map[cls["name"]] = cls
 
         # Generate each class
         for type_def in types:
@@ -94,6 +99,13 @@ def generate_all_models(
 
             # Get the JSON file path for this class
             json_file_path = class_json_file_map.get(class_name, "")
+
+            # Merge class details from package_data into type_def
+            # This includes fields like atp_type, parent, bases, etc.
+            if class_name in class_details_map:
+                for key, value in class_details_map[class_name].items():
+                    if key not in type_def:  # Don't override existing fields
+                        type_def[key] = value
 
             # Convert package path to file path
             dir_path = output_dir / package_path.replace("::", "/")

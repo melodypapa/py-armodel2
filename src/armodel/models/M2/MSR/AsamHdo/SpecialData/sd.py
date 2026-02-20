@@ -37,6 +37,7 @@ class Sd(ARObject):
         self.gid: NameToken = None
         self.value: VerbatimStringPlain = None
         self.xml_space: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Sd to XML element.
 
@@ -44,7 +45,7 @@ class Sd(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize gid

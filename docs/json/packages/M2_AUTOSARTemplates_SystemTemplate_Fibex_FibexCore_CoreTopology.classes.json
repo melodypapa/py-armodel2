@@ -131,7 +131,7 @@
         "associatedComs": {
           "type": "ISignalIPduGroup",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "With this reference it is possible to identify which ISignal are applicable for which Communication level ISignalIPduGroups shall be referenced by If an ISignalIPduGroup contains other these contained ISignalIPdu not be referenced by the EcuInstance. are associated to an Ecu the top level ISignalIPduGroup. 719 Document ID 673: AUTOSAR_CP_TPS_DiagnosticExtractTemplate Template R23-11"
         },
@@ -145,7 +145,7 @@
         "associatedPdurs": {
           "type": "PdurIPduGroup",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "With this reference it is possible to identify which PduR Groups are applicable for which Communication"
         },
@@ -360,14 +360,14 @@
         "frameTriggerings": {
           "type": "FrameTriggering",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "One frame triggering is defined for exactly one channel. have assigned an arbitrary number of signals/PDUs/frames are variable, the shall be variable, too. atpVariation"
         },
         "iSignals": {
           "type": "ISignalTriggering",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "One ISignalTriggering is defined for exactly one channel. may have assigned an arbitrary number of signals/PDUs/frames are variable, the shall be variable, too. atpVariation 719 Document ID 673: AUTOSAR_CP_TPS_DiagnosticExtractTemplate Template R23-11"
         },
@@ -381,7 +381,7 @@
         "pduTriggerings": {
           "type": "PduTriggering",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "One PduTriggering is defined for exactly one channel."
         }

@@ -36,6 +36,7 @@ class NvDataPortAnnotation(GeneralAnnotation):
         """Initialize NvDataPortAnnotation."""
         super().__init__()
         self.variable_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize NvDataPortAnnotation to XML element.
 
@@ -43,7 +44,7 @@ class NvDataPortAnnotation(GeneralAnnotation):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -61,7 +62,7 @@ class NvDataPortAnnotation(GeneralAnnotation):
             serialized = ARObject._serialize_item(self.variable_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("VARIABLE")
+                wrapped = ET.Element("VARIABLE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -86,9 +87,9 @@ class NvDataPortAnnotation(GeneralAnnotation):
         obj = super(NvDataPortAnnotation, cls).deserialize(element)
 
         # Parse variable_ref
-        child = ARObject._find_child_element(element, "VARIABLE")
+        child = ARObject._find_child_element(element, "VARIABLE-REF")
         if child is not None:
-            variable_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            variable_ref_value = ARRef.deserialize(child)
             obj.variable_ref = variable_ref_value
 
         return obj

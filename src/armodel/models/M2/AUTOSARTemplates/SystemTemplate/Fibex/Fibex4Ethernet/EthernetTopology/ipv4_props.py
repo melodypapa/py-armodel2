@@ -42,6 +42,7 @@ class Ipv4Props(ARObject):
         self.arp_props: Optional[Ipv4ArpProps] = None
         self.auto_ip_props: Optional[Ipv4AutoIpProps] = None
         self.fragmentation: Optional[Ipv4FragmentationProps] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Ipv4Props to XML element.
 
@@ -49,7 +50,7 @@ class Ipv4Props(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize arp_props

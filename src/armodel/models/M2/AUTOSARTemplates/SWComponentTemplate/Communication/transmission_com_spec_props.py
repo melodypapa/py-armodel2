@@ -37,6 +37,7 @@ class TransmissionComSpecProps(ARObject):
         self.data_update: Optional[TimeValue] = None
         self.minimum_send: Optional[TimeValue] = None
         self.transmission: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TransmissionComSpecProps to XML element.
 
@@ -44,7 +45,7 @@ class TransmissionComSpecProps(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize data_update

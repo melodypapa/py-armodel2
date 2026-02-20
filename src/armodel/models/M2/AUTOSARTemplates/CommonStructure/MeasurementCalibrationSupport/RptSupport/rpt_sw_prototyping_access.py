@@ -37,6 +37,7 @@ class RptSwPrototypingAccess(ARObject):
         self.rpt_hook_access: Optional[RptAccessEnum] = None
         self.rpt_read_access: Optional[RptAccessEnum] = None
         self.rpt_write_access: Optional[RptAccessEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RptSwPrototypingAccess to XML element.
 
@@ -44,7 +45,7 @@ class RptSwPrototypingAccess(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize rpt_hook_access

@@ -40,6 +40,7 @@ class ISignalMapping(ARObject):
         self.introduction: Optional[DocumentationBlock] = None
         self.source_signal_ref: Optional[ARRef] = None
         self.target_signal_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ISignalMapping to XML element.
 
@@ -47,7 +48,7 @@ class ISignalMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize introduction
@@ -69,7 +70,7 @@ class ISignalMapping(ARObject):
             serialized = ARObject._serialize_item(self.source_signal_ref, "ISignalTriggering")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SOURCE-SIGNAL")
+                wrapped = ET.Element("SOURCE-SIGNAL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -83,7 +84,7 @@ class ISignalMapping(ARObject):
             serialized = ARObject._serialize_item(self.target_signal_ref, "ISignalTriggering")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TARGET-SIGNAL")
+                wrapped = ET.Element("TARGET-SIGNAL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -115,15 +116,15 @@ class ISignalMapping(ARObject):
             obj.introduction = introduction_value
 
         # Parse source_signal_ref
-        child = ARObject._find_child_element(element, "SOURCE-SIGNAL")
+        child = ARObject._find_child_element(element, "SOURCE-SIGNAL-REF")
         if child is not None:
-            source_signal_ref_value = ARObject._deserialize_by_tag(child, "ISignalTriggering")
+            source_signal_ref_value = ARRef.deserialize(child)
             obj.source_signal_ref = source_signal_ref_value
 
         # Parse target_signal_ref
-        child = ARObject._find_child_element(element, "TARGET-SIGNAL")
+        child = ARObject._find_child_element(element, "TARGET-SIGNAL-REF")
         if child is not None:
-            target_signal_ref_value = ARObject._deserialize_by_tag(child, "ISignalTriggering")
+            target_signal_ref_value = ARRef.deserialize(child)
             obj.target_signal_ref = target_signal_ref_value
 
         return obj

@@ -48,6 +48,7 @@ class EthernetCommunicationConnector(CommunicationConnector):
         self.neighbor_cache: Optional[PositiveInteger] = None
         self.path_mtu: Optional[Boolean] = None
         self.path_mtu_timeout: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EthernetCommunicationConnector to XML element.
 
@@ -55,7 +56,7 @@ class EthernetCommunicationConnector(CommunicationConnector):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

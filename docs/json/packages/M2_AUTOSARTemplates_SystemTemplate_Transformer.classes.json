@@ -679,7 +679,7 @@
         "dataPrototypes": {
           "type": "DataPrototype",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Fine granular modeling of TransfromationProps on the level of DataPrototypes. This atpSplitable property has no atp.Splitkey due (PropertySetPattern)."
         },
@@ -831,7 +831,7 @@
         "tlvDataIds": {
           "type": "TlvDataIdDefinitionSet",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This reference identifies the TlvDataIdDefinitions relevant the enclosing SOMEIPTransformationISignalProps"
         }
@@ -1012,7 +1012,7 @@
         "dataPrototypeIn": {
           "type": "DataPrototype",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to a DataPrototype that is transported in the serialized ISignal."
         },
@@ -1105,7 +1105,7 @@
         "dataPrototypeIn": {
           "type": "DataPrototype",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "context of a SenderReceiverInterface. implemented by: DataPrototypeInSender"
         }
@@ -1310,7 +1310,7 @@
         "tlvArgument": {
           "type": "ArgumentDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This reference assigns a tlvDataId to a given argument of"
         },

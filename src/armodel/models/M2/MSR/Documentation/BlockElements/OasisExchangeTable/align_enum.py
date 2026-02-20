@@ -26,6 +26,6 @@ class AlignEnum(AREnum):
         """
         self._value_ = value
 
-    CENTER = "center"
-    JUSTIFY = "justify"
-    LEFTRIGHT = "leftright"
+    CENTER = "CENTER"
+    JUSTIFY = "JUSTIFY"
+    LEFTRIGHT = "LEFTRIGHT"

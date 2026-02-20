@@ -51,6 +51,8 @@ if TYPE_CHECKING:
         IoHwAbstractionServerAnnotation,
     )
 
+
+
 from abc import ABC, abstractmethod
 
 
@@ -85,6 +87,7 @@ class PortPrototype(Identifiable, ABC):
         self.parameter_ports: list[ParameterPortAnnotation] = []
         self.sender_receivers: list[Any] = []
         self.trigger_port_annotation_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize PortPrototype to XML element.
 
@@ -92,7 +95,7 @@ class PortPrototype(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -179,13 +182,20 @@ class PortPrototype(Identifiable, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize trigger_port_annotation_refs (list to container "TRIGGER-PORT-ANNOTATIONS")
+        # Serialize trigger_port_annotation_refs (list to container "TRIGGER-PORT-ANNOTATION-REFS")
         if self.trigger_port_annotation_refs:
-            wrapper = ET.Element("TRIGGER-PORT-ANNOTATIONS")
+            wrapper = ET.Element("TRIGGER-PORT-ANNOTATION-REFS")
             for item in self.trigger_port_annotation_refs:
                 serialized = ARObject._serialize_item(item, "TriggerPortAnnotation")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("TRIGGER-PORT-ANNOTATION-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -270,13 +280,19 @@ class PortPrototype(Identifiable, ABC):
                 if child_value is not None:
                     obj.sender_receivers.append(child_value)
 
-        # Parse trigger_port_annotation_refs (list from container "TRIGGER-PORT-ANNOTATIONS")
+        # Parse trigger_port_annotation_refs (list from container "TRIGGER-PORT-ANNOTATION-REFS")
         obj.trigger_port_annotation_refs = []
-        container = ARObject._find_child_element(element, "TRIGGER-PORT-ANNOTATIONS")
+        container = ARObject._find_child_element(element, "TRIGGER-PORT-ANNOTATION-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.trigger_port_annotation_refs.append(child_value)
 

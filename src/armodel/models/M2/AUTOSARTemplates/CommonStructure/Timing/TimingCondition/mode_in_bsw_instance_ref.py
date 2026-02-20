@@ -43,6 +43,7 @@ class ModeInBswInstanceRef(ARObject):
         self.context_bsw: Optional[BswImplementation] = None
         self.context_mode_ref: Optional[ARRef] = None
         self.target_mode: Optional[ModeDeclaration] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ModeInBswInstanceRef to XML element.
 
@@ -50,7 +51,7 @@ class ModeInBswInstanceRef(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize context_bsw
@@ -72,7 +73,7 @@ class ModeInBswInstanceRef(ARObject):
             serialized = ARObject._serialize_item(self.context_mode_ref, "ModeDeclarationGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT-MODE")
+                wrapped = ET.Element("CONTEXT-MODE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -118,9 +119,9 @@ class ModeInBswInstanceRef(ARObject):
             obj.context_bsw = context_bsw_value
 
         # Parse context_mode_ref
-        child = ARObject._find_child_element(element, "CONTEXT-MODE")
+        child = ARObject._find_child_element(element, "CONTEXT-MODE-REF")
         if child is not None:
-            context_mode_ref_value = ARObject._deserialize_by_tag(child, "ModeDeclarationGroup")
+            context_mode_ref_value = ARRef.deserialize(child)
             obj.context_mode_ref = context_mode_ref_value
 
         # Parse target_mode

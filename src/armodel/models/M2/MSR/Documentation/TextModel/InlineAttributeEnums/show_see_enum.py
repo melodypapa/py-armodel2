@@ -26,5 +26,5 @@ class ShowSeeEnum(AREnum):
         """
         self._value_ = value
 
-    NO_SHOW_SEE = "noShowSee"
-    SHOW_SEE = "showSee"
+    NO_SHOW_SEE = "NO-SHOW-SEE"
+    SHOW_SEE = "SHOW-SEE"

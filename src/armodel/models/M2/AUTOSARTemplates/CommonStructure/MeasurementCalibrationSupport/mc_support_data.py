@@ -50,6 +50,7 @@ class McSupportData(ARObject):
         self.mc_variables: list[McDataInstance] = []
         self.measurables: list[SwSystemconstantValueSet] = []
         self.rpt_support_data: Optional[RptSupportData] = None
+
     def serialize(self) -> ET.Element:
         """Serialize McSupportData to XML element.
 
@@ -57,7 +58,7 @@ class McSupportData(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize emulations (list to container "EMULATIONS")

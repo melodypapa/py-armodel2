@@ -26,5 +26,5 @@ class EventOccurrenceKindEnum(AREnum):
         """
         self._value_ = value
 
-    MULTIPLE_OCCURRENCES = "multipleOccurrences"
-    SINGLE_OCCURRENCE_INDICATES = "singleOccurrenceIndicates"
+    MULTIPLE_OCCURRENCES = "MULTIPLE-OCCURRENCES"
+    SINGLE_OCCURRENCE_INDICATES = "SINGLE-OCCURRENCE-INDICATES"

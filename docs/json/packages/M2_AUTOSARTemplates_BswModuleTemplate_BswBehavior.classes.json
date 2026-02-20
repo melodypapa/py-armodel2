@@ -63,9 +63,9 @@
         "arTypedPerInstanceMemories": {
           "type": "VariableDataPrototype",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
-          "note": "Defines an AUTOSAR typed memory-block that needs to available for each instance of the Basic Software The aggregation of arTypedPerInstanceMemory to variability with the purpose to support the Basic Software Module’s different algorithms in the requiring different number of memory atpVariation"
+          "note": "Defines an AUTOSAR typed memory-block that needs to available for each instance of the Basic Software The aggregation of arTypedPerInstanceMemory to variability with the purpose to support the Basic Software Module\u2019s different algorithms in the requiring different number of memory atpVariation"
         },
         "bswPerInstanceMemoryPolicies": {
           "type": "BswPerInstanceMemoryPolicy",
@@ -112,7 +112,7 @@
         "includedDataTypeSets": {
           "type": "IncludedDataTypeSet",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "The includedDataTypeSet is used by a basic software for its implementation."
         },
@@ -126,7 +126,7 @@
         "internals": {
           "type": "BswInternalTriggeringPoint",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Policy for an internalTriggeringPoint in this BswInternal Behavior.. The policy selects the options of the Schedule API generation. atpVariation"
         },
@@ -156,7 +156,7 @@
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
-          "note": "Describes a read only memory object containing characteristic value(s) needed by this BswInternal role name perInstanceParameter is chosen to the similar role in the context of SwcInternal to constantMemory, this object is not allocated the module’s code, but by the BSW Scheduler is accessed from the BSW module via the BSW The main use case is the support of of calibration data. is subject to variability with the purpose implementation variants. atpVariation"
+          "note": "Describes a read only memory object containing characteristic value(s) needed by this BswInternal role name perInstanceParameter is chosen to the similar role in the context of SwcInternal to constantMemory, this object is not allocated the module\u2019s code, but by the BSW Scheduler is accessed from the BSW module via the BSW The main use case is the support of of calibration data. is subject to variability with the purpose implementation variants. atpVariation"
         },
         "receptionPolicies": {
           "type": "BswDataReceptionPolicy",
@@ -168,7 +168,7 @@
         "releasedTriggers": {
           "type": "any (BswReleasedTrigger)",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Policy for a releasedTrigger. The policy selects the options of the Schedule Manager API generation. atpVariation"
         },
@@ -196,7 +196,7 @@
         "triggerDirects": {
           "type": "BswTriggerDirectImplementation",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Specifies a trigger to be directly implemented via OS calls. atpVariation"
         },
@@ -262,14 +262,14 @@
         "accessedModes": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "A mode group which is accessed via API call by this entity. It shall be a ModeDeclarationGroupPrototype this module or cluster. atpVariation"
         },
         "activationPoints": {
           "type": "BswInternalTriggeringPoint",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Activation point used by the module entity to activate one more internal triggers. atpVariation"
         },
@@ -304,14 +304,14 @@
         "issuedTriggers": {
           "type": "Trigger",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "A trigger issued by this entity via BSW Scheduler API call."
         },
         "managedModes": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "A mode group which is managed by this entity. It shall be a ModeDeclarationGroupPrototype provided by this cluster. atpVariation"
         },
@@ -692,7 +692,7 @@
         "accessedVariable": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "The data accessed via the BSW Scheduler."
         },
@@ -1116,7 +1116,7 @@
         "eventSourcePoint": {
           "type": "BswInternalTriggeringPoint",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "The activation point is the source of this event."
         }
@@ -1157,7 +1157,7 @@
         "trigger": {
           "type": "Trigger",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "The trigger associated with this event. The trigger is"
         }
@@ -1239,7 +1239,7 @@
         "modeGroup": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "A mode group provided by this module. The of a switch of this group raises this"
         }
@@ -1280,7 +1280,7 @@
         "modeGroup": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This represents the ModeDeclarationGroupPrototype for the error behavior of the mode manager applies."
         }
@@ -1402,7 +1402,7 @@
         "data": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "The received data."
         }
@@ -1444,7 +1444,7 @@
         "masteredTrigger": {
           "type": "Trigger",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "The trigger which is directly mastered by this module."
         },
@@ -1500,7 +1500,7 @@
         "providedMode": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "The provided mode group for which the policy is specified. 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },
@@ -1584,7 +1584,7 @@
         "requiredMode": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "The required mode group for which the policy is specified."
         },
@@ -1631,7 +1631,7 @@
         "receivedData": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "The data received over the BSW Scheduler using this"
         }

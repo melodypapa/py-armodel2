@@ -32,6 +32,7 @@ class SwCalprmAxisSet(ARObject):
         """Initialize SwCalprmAxisSet."""
         super().__init__()
         self.sw_calprm_axises: list[SwCalprmAxis] = []
+
     def serialize(self) -> ET.Element:
         """Serialize SwCalprmAxisSet to XML element.
 
@@ -39,7 +40,7 @@ class SwCalprmAxisSet(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize sw_calprm_axises (list to container "SW-CALPRM-AXISES")

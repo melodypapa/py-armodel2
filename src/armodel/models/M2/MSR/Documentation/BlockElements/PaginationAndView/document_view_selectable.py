@@ -38,6 +38,7 @@ class DocumentViewSelectable(ARObject, ABC):
         super().__init__()
         self.si: NameTokens = None
         self.view: Optional[ViewTokens] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DocumentViewSelectable to XML element.
 
@@ -45,7 +46,7 @@ class DocumentViewSelectable(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize si

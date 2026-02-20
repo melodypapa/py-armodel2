@@ -47,6 +47,7 @@ class FMFeatureMapElement(Identifiable):
         self.conditions: list[FMFeatureMap] = []
         self.post_build_variants: list[Any] = []
         self.sw_value_sets: list[SwSystemconstantValueSet] = []
+
     def serialize(self) -> ET.Element:
         """Serialize FMFeatureMapElement to XML element.
 
@@ -54,7 +55,7 @@ class FMFeatureMapElement(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

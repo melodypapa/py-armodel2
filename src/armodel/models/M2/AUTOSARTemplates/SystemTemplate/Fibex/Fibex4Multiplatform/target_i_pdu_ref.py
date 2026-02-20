@@ -38,6 +38,7 @@ class TargetIPduRef(ARObject):
         super().__init__()
         self.default_value_ref: Optional[ARRef] = None
         self.target_i_pdu_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TargetIPduRef to XML element.
 
@@ -45,7 +46,7 @@ class TargetIPduRef(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize default_value_ref
@@ -53,7 +54,7 @@ class TargetIPduRef(ARObject):
             serialized = ARObject._serialize_item(self.default_value_ref, "PduMappingDefaultValue")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DEFAULT-VALUE")
+                wrapped = ET.Element("DEFAULT-VALUE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -67,7 +68,7 @@ class TargetIPduRef(ARObject):
             serialized = ARObject._serialize_item(self.target_i_pdu_ref, "PduTriggering")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TARGET-I-PDU")
+                wrapped = ET.Element("TARGET-I-PDU-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -93,15 +94,15 @@ class TargetIPduRef(ARObject):
         obj.__init__()
 
         # Parse default_value_ref
-        child = ARObject._find_child_element(element, "DEFAULT-VALUE")
+        child = ARObject._find_child_element(element, "DEFAULT-VALUE-REF")
         if child is not None:
-            default_value_ref_value = ARObject._deserialize_by_tag(child, "PduMappingDefaultValue")
+            default_value_ref_value = ARRef.deserialize(child)
             obj.default_value_ref = default_value_ref_value
 
         # Parse target_i_pdu_ref
-        child = ARObject._find_child_element(element, "TARGET-I-PDU")
+        child = ARObject._find_child_element(element, "TARGET-I-PDU-REF")
         if child is not None:
-            target_i_pdu_ref_value = ARObject._deserialize_by_tag(child, "PduTriggering")
+            target_i_pdu_ref_value = ARRef.deserialize(child)
             obj.target_i_pdu_ref = target_i_pdu_ref_value
 
         return obj

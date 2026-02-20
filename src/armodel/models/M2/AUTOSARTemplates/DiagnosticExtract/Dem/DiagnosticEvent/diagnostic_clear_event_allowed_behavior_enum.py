@@ -26,5 +26,5 @@ class DiagnosticClearEventAllowedBehaviorEnum(AREnum):
         """
         self._value_ = value
 
-    NO_STATUS_BYTE_CHANGEONLY_THIS_CYCLE_AND = "noStatusByteChangeonlyThisCycleAnd"
-    READINESS = "Readiness"
+    NO_STATUS_BYTE_CHANGEONLY_THIS_CYCLE_AND = "NO-STATUS-BYTE-CHANGEONLY-THIS-CYCLE-AND"
+    READINESS = "READINESS"

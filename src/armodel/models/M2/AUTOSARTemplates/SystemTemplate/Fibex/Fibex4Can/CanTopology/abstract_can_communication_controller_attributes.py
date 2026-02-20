@@ -32,6 +32,7 @@ class AbstractCanCommunicationControllerAttributes(ARObject, ABC):
         super().__init__()
         self.can_controller_fd: Optional[Any] = None
         self.can_controller_xl: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AbstractCanCommunicationControllerAttributes to XML element.
 
@@ -39,7 +40,7 @@ class AbstractCanCommunicationControllerAttributes(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize can_controller_fd

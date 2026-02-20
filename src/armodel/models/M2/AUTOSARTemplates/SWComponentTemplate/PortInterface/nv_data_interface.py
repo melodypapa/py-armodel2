@@ -39,6 +39,7 @@ class NvDataInterface(DataInterface):
         """Initialize NvDataInterface."""
         super().__init__()
         self.nv_data_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize NvDataInterface to XML element.
 
@@ -46,7 +47,7 @@ class NvDataInterface(DataInterface):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -59,13 +60,20 @@ class NvDataInterface(DataInterface):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize nv_data_refs (list to container "NV-DATAS")
+        # Serialize nv_data_refs (list to container "NV-DATA-REFS")
         if self.nv_data_refs:
-            wrapper = ET.Element("NV-DATAS")
+            wrapper = ET.Element("NV-DATA-REFS")
             for item in self.nv_data_refs:
                 serialized = ARObject._serialize_item(item, "VariableDataPrototype")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("NV-DATA-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -84,13 +92,19 @@ class NvDataInterface(DataInterface):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(NvDataInterface, cls).deserialize(element)
 
-        # Parse nv_data_refs (list from container "NV-DATAS")
+        # Parse nv_data_refs (list from container "NV-DATA-REFS")
         obj.nv_data_refs = []
-        container = ARObject._find_child_element(element, "NV-DATAS")
+        container = ARObject._find_child_element(element, "NV-DATA-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.nv_data_refs.append(child_value)
 

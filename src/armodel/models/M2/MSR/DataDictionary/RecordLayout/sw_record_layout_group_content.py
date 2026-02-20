@@ -38,6 +38,7 @@ class SwRecordLayoutGroupContent(ARObject):
         super().__init__()
         self.sw_record_ref: Optional[ARRef] = None
         self.sw_record_layout_v: Optional[SwRecordLayoutV] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwRecordLayoutGroupContent to XML element.
 
@@ -45,7 +46,7 @@ class SwRecordLayoutGroupContent(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize sw_record_ref
@@ -53,7 +54,7 @@ class SwRecordLayoutGroupContent(ARObject):
             serialized = ARObject._serialize_item(self.sw_record_ref, "SwRecordLayoutGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SW-RECORD")
+                wrapped = ET.Element("SW-RECORD-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -93,9 +94,9 @@ class SwRecordLayoutGroupContent(ARObject):
         obj.__init__()
 
         # Parse sw_record_ref
-        child = ARObject._find_child_element(element, "SW-RECORD")
+        child = ARObject._find_child_element(element, "SW-RECORD-REF")
         if child is not None:
-            sw_record_ref_value = ARObject._deserialize_by_tag(child, "SwRecordLayoutGroup")
+            sw_record_ref_value = ARRef.deserialize(child)
             obj.sw_record_ref = sw_record_ref_value
 
         # Parse sw_record_layout_v

@@ -37,6 +37,7 @@ class SwcBswRunnableMapping(ARObject):
         super().__init__()
         self.bsw_entity: Optional[BswModuleEntity] = None
         self.swc_runnable: Optional[RunnableEntity] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwcBswRunnableMapping to XML element.
 
@@ -44,7 +45,7 @@ class SwcBswRunnableMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize bsw_entity

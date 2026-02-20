@@ -2,7 +2,7 @@
   "package": "M2::MSR::Documentation::BlockElements::ListElements",
   "classes": [
     {
-      "name": "List",
+      "name": "ARList",
       "package": "M2::MSR::Documentation::BlockElements::ListElements",
       "is_abstract": false,
       "atp_type": null,
@@ -31,7 +31,7 @@
       "attributes": {
         "item": {
           "type": "Item",
-          "multiplicity": "1",
+          "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "block.Therefore lists can be arbitrarily is discouraged to have a very deep nesting. atpVariation"
@@ -39,8 +39,8 @@
         "type": {
           "type": "ListEnum",
           "multiplicity": "0..1",
-          "kind": "attribute",
-          "is_ref": true,
+          "kind": "xml_attribute",
+          "is_ref": false,
           "note": "The type of the list. Default is \"UNNUMBER\""
         }
       }

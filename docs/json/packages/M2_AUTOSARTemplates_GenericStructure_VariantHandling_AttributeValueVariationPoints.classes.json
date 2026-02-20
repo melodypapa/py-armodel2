@@ -414,7 +414,7 @@
         "enumTable": {
           "type": "Ref",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This represents the assigned enumeration table."
         }
@@ -496,7 +496,7 @@
         "entries": {
           "type": "any (EnumerationMapping)",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Key-value pair mapping enumeration values to unique"
         }

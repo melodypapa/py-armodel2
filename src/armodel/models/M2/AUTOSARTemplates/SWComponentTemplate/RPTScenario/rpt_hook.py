@@ -45,6 +45,7 @@ class RptHook(ARObject):
         self.mcd_identifier: Optional[NameToken] = None
         self.rpt_ar_hook: Optional[AtpFeature] = None
         self.sdgs: list[Sdg] = []
+
     def serialize(self) -> ET.Element:
         """Serialize RptHook to XML element.
 
@@ -52,7 +53,7 @@ class RptHook(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize code_label

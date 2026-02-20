@@ -55,6 +55,7 @@ class FlexrayTpConfig(TpConfig):
         self.tp_connections: list[FlexrayTpConnection] = []
         self.tp_ecus: list[FlexrayTpEcu] = []
         self.tp_nodes: list[FlexrayTpNode] = []
+
     def serialize(self) -> ET.Element:
         """Serialize FlexrayTpConfig to XML element.
 
@@ -62,7 +63,7 @@ class FlexrayTpConfig(TpConfig):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

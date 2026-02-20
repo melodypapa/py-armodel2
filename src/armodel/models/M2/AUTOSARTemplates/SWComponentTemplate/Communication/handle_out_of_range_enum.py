@@ -27,8 +27,8 @@ class HandleOutOfRangeEnum(AREnum):
         """
         self._value_ = value
 
-    DEFAULT = "default"
-    EXTERNAL_REPLACEMENT = "externalReplacement"
-    IGNOREINVALID = "ignoreinvalid"
-    NONE = "none"
-    SATURATE = "saturate"
+    DEFAULT = "DEFAULT"
+    EXTERNAL_REPLACEMENT = "EXTERNAL-REPLACEMENT"
+    IGNOREINVALID = "IGNOREINVALID"
+    NONE = "NONE"
+    SATURATE = "SATURATE"

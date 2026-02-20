@@ -42,6 +42,7 @@ class RptSupportData(ARObject):
         self.executions: list[RptExecutionContext] = []
         self.rpt_components: list[RptComponent] = []
         self.rpt_service_points: list[RptServicePoint] = []
+
     def serialize(self) -> ET.Element:
         """Serialize RptSupportData to XML element.
 
@@ -49,7 +50,7 @@ class RptSupportData(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize executions (list to container "EXECUTIONS")

@@ -26,6 +26,6 @@ class DiagnosticEventClearAllowedEnum(AREnum):
         """
         self._value_ = value
 
-    ALWAYS = "always"
-    REQUIRES_CALLBACK = "requiresCallback"
-    EXECUTION = "Execution"
+    ALWAYS = "ALWAYS"
+    REQUIRES_CALLBACK = "REQUIRES-CALLBACK"
+    EXECUTION = "EXECUTION"

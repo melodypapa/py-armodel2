@@ -34,6 +34,7 @@ class TDHeaderIdRange(ARObject):
         super().__init__()
         self.max_header_id: Optional[Integer] = None
         self.min_header_id: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TDHeaderIdRange to XML element.
 
@@ -41,7 +42,7 @@ class TDHeaderIdRange(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize max_header_id

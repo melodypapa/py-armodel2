@@ -35,6 +35,7 @@ class FramePid(ARObject):
         super().__init__()
         self.index: Optional[Integer] = None
         self.pid: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FramePid to XML element.
 
@@ -42,7 +43,7 @@ class FramePid(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize index

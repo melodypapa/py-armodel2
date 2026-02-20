@@ -41,6 +41,7 @@ class SynchronizationPointConstraint(TimingConstraint):
         self.source_events: list[AbstractEvent] = []
         self.target_eecs: list[Any] = []
         self.target_events: list[AbstractEvent] = []
+
     def serialize(self) -> ET.Element:
         """Serialize SynchronizationPointConstraint to XML element.
 
@@ -48,7 +49,7 @@ class SynchronizationPointConstraint(TimingConstraint):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

@@ -47,6 +47,7 @@ class AtomicSwComponentType(SwComponentType, ABC):
         super().__init__()
         self.internal_behavior: Optional[SwcInternalBehavior] = None
         self.symbol_props: Optional[SymbolProps] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AtomicSwComponentType to XML element.
 
@@ -54,7 +55,7 @@ class AtomicSwComponentType(SwComponentType, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

@@ -58,6 +58,7 @@ class ImplementationDataType(AbstractImplementationDataType):
         self.sub_elements: list[ImplementationDataTypeElement] = []
         self.symbol_props: Optional[SymbolProps] = None
         self.type_emitter: Optional[NameToken] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ImplementationDataType to XML element.
 
@@ -65,7 +66,7 @@ class ImplementationDataType(AbstractImplementationDataType):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

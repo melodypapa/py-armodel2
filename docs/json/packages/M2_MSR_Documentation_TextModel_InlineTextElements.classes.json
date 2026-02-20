@@ -425,7 +425,7 @@
         "referrable": {
           "type": "Referrable",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This establishes the reference in Autosar style"
         },
@@ -469,7 +469,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "Indicates if the Number of the referenced resource shall be shown. Default is \"SHOW–NUMBER\""
+          "note": "Indicates if the Number of the referenced resource shall be shown. Default is \"SHOW\u2013NUMBER\""
         },
         "showResourcePage": {
           "type": "ShowResourcePageEnum",

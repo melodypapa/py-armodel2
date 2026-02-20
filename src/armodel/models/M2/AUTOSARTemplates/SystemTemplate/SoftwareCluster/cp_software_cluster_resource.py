@@ -45,6 +45,7 @@ class CpSoftwareClusterResource(Identifiable, ABC):
         self.dependents: list[RoleBasedResourceDependency] = []
         self.global_resource: Optional[PositiveInteger] = None
         self.is_mandatory: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CpSoftwareClusterResource to XML element.
 
@@ -52,7 +53,7 @@ class CpSoftwareClusterResource(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

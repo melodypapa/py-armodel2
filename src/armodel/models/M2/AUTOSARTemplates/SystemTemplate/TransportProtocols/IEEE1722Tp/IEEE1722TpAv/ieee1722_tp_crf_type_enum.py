@@ -26,8 +26,8 @@ class IEEE1722TpCrfTypeEnum(AREnum):
         """
         self._value_ = value
 
-    AUDIO_SAMPLE = "audioSample"
-    MACHINE_CYCLE = "machineCycle"
-    USER = "user"
-    VIDEO_FRAME = "videoFrame"
-    VIDEO_LINE = "videoLine"
+    AUDIO_SAMPLE = "AUDIO-SAMPLE"
+    MACHINE_CYCLE = "MACHINE-CYCLE"
+    USER = "USER"
+    VIDEO_FRAME = "VIDEO-FRAME"
+    VIDEO_LINE = "VIDEO-LINE"

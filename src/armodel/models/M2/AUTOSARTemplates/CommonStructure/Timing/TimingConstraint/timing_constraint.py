@@ -36,6 +36,7 @@ class TimingConstraint(Traceable, ABC):
         """Initialize TimingConstraint."""
         super().__init__()
         self.timing_condition: Optional[TimingCondition] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TimingConstraint to XML element.
 
@@ -43,7 +44,7 @@ class TimingConstraint(Traceable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

@@ -50,6 +50,7 @@ class ModeInSwcInstanceRef(ARObject):
         self.context_mode_ref: Optional[ARRef] = None
         self.context_port_ref: Optional[ARRef] = None
         self.target_mode: Optional[ModeDeclaration] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ModeInSwcInstanceRef to XML element.
 
@@ -57,7 +58,7 @@ class ModeInSwcInstanceRef(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize base
@@ -89,7 +90,7 @@ class ModeInSwcInstanceRef(ARObject):
             serialized = ARObject._serialize_item(self.context_mode_ref, "ModeDeclarationGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT-MODE")
+                wrapped = ET.Element("CONTEXT-MODE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -103,7 +104,7 @@ class ModeInSwcInstanceRef(ARObject):
             serialized = ARObject._serialize_item(self.context_port_ref, "PortPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT-PORT")
+                wrapped = ET.Element("CONTEXT-PORT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -159,15 +160,15 @@ class ModeInSwcInstanceRef(ARObject):
                     obj.contexts.append(child_value)
 
         # Parse context_mode_ref
-        child = ARObject._find_child_element(element, "CONTEXT-MODE")
+        child = ARObject._find_child_element(element, "CONTEXT-MODE-REF")
         if child is not None:
-            context_mode_ref_value = ARObject._deserialize_by_tag(child, "ModeDeclarationGroup")
+            context_mode_ref_value = ARRef.deserialize(child)
             obj.context_mode_ref = context_mode_ref_value
 
         # Parse context_port_ref
-        child = ARObject._find_child_element(element, "CONTEXT-PORT")
+        child = ARObject._find_child_element(element, "CONTEXT-PORT-REF")
         if child is not None:
-            context_port_ref_value = ARObject._deserialize_by_tag(child, "PortPrototype")
+            context_port_ref_value = ARRef.deserialize(child)
             obj.context_port_ref = context_port_ref_value
 
         # Parse target_mode

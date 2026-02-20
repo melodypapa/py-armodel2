@@ -46,6 +46,7 @@ class SignalServiceTranslationElementProps(Identifiable):
         self.element_ref: Optional[ARRef] = None
         self.filter: Optional[DataFilter] = None
         self.transmission: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SignalServiceTranslationElementProps to XML element.
 
@@ -53,7 +54,7 @@ class SignalServiceTranslationElementProps(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -71,7 +72,7 @@ class SignalServiceTranslationElementProps(Identifiable):
             serialized = ARObject._serialize_item(self.element_ref, "DataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ELEMENT")
+                wrapped = ET.Element("ELEMENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -124,9 +125,9 @@ class SignalServiceTranslationElementProps(Identifiable):
         obj = super(SignalServiceTranslationElementProps, cls).deserialize(element)
 
         # Parse element_ref
-        child = ARObject._find_child_element(element, "ELEMENT")
+        child = ARObject._find_child_element(element, "ELEMENT-REF")
         if child is not None:
-            element_ref_value = ARObject._deserialize_by_tag(child, "DataPrototype")
+            element_ref_value = ARRef.deserialize(child)
             obj.element_ref = element_ref_value
 
         # Parse filter

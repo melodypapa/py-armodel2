@@ -26,6 +26,6 @@ class EcucDestinationUriNestingContractEnum(AREnum):
         """
         self._value_ = value
 
-    LEAF_OF_TARGET = "leafOfTarget"
-    TARGET_CONTAINER = "targetContainer"
-    VERTEX_OF_TARGET = "vertexOfTarget"
+    LEAF_OF_TARGET = "LEAF-OF-TARGET"
+    TARGET_CONTAINER = "TARGET-CONTAINER"
+    VERTEX_OF_TARGET = "VERTEX-OF-TARGET"

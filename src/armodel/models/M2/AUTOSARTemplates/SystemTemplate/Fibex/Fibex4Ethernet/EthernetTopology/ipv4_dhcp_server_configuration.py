@@ -44,6 +44,7 @@ class Ipv4DhcpServerConfiguration(Describable):
         self.default_lease: Optional[TimeValue] = None
         self.dns_servers: list[Ip4AddressString] = []
         self.network_mask: Optional[Ip4AddressString] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Ipv4DhcpServerConfiguration to XML element.
 
@@ -51,7 +52,7 @@ class Ipv4DhcpServerConfiguration(Describable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

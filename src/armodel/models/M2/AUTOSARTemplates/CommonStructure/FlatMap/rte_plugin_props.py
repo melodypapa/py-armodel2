@@ -34,6 +34,7 @@ class RtePluginProps(ARObject):
         super().__init__()
         self.associated: Optional[EcucContainerValue] = None
         self.associated_rte: Optional[EcucContainerValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RtePluginProps to XML element.
 
@@ -41,7 +42,7 @@ class RtePluginProps(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize associated

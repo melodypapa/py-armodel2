@@ -39,6 +39,7 @@ class SimulatedExecutionTime(ExecutionTime):
         self.maximum_execution_time: Optional[MultidimensionalTime] = None
         self.minimum_execution_time: Optional[MultidimensionalTime] = None
         self.nominal_execution_time: Optional[MultidimensionalTime] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SimulatedExecutionTime to XML element.
 
@@ -46,7 +47,7 @@ class SimulatedExecutionTime(ExecutionTime):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

@@ -27,4 +27,4 @@ class ModeErrorReactionPolicyEnum(AREnum):
         """
         self._value_ = value
 
-    DEFAULT_MODELAST_MODE = "defaultModelastMode"
+    DEFAULT_MODELAST_MODE = "DEFAULT-MODELAST-MODE"

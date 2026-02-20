@@ -42,6 +42,7 @@ class ClientComSpec(RPortComSpec):
         self.end_to_end_call: Optional[TimeValue] = None
         self.operation: Optional[ClientServerOperation] = None
         self.transformation_coms: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ClientComSpec to XML element.
 
@@ -49,7 +50,7 @@ class ClientComSpec(RPortComSpec):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

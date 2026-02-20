@@ -26,8 +26,8 @@ class MappingScopeEnum(AREnum):
         """
         self._value_ = value
 
-    MAPPING_SCOPE_CORE = "mappingScopeCore"
-    SYSTEM = "System"
-    AUTOSAR = "AUTOSAR"
-    MAPPING_SCOPE_ECU = "mappingScopeEcu"
-    MAPPING_SCOPE_PARTITION = "mappingScopePartition"
+    MAPPING_SCOPE_CORE = "MAPPING-SCOPE-CORE"
+    SYSTEM = "SYSTEM"
+    AUTOSAR = "A-U-T-O-S-A-R"
+    MAPPING_SCOPE_ECU = "MAPPING-SCOPE-ECU"
+    MAPPING_SCOPE_PARTITION = "MAPPING-SCOPE-PARTITION"

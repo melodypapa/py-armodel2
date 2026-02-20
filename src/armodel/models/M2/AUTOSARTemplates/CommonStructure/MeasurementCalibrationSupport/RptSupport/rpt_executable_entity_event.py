@@ -60,6 +60,7 @@ class RptExecutableEntityEvent(Identifiable):
         self.rpt_executable_entity: Optional[RptExecutableEntity] = None
         self.rpt_impl_policy: Optional[RptImplPolicy] = None
         self.rpt_service_points: list[RptServicePoint] = []
+
     def serialize(self) -> ET.Element:
         """Serialize RptExecutableEntityEvent to XML element.
 
@@ -67,7 +68,7 @@ class RptExecutableEntityEvent(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

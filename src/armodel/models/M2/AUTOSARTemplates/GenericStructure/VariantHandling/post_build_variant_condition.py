@@ -36,6 +36,7 @@ class PostBuildVariantCondition(ARObject):
         super().__init__()
         self.matching: Any = None
         self.value: Integer = None
+
     def serialize(self) -> ET.Element:
         """Serialize PostBuildVariantCondition to XML element.
 
@@ -43,7 +44,7 @@ class PostBuildVariantCondition(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize matching

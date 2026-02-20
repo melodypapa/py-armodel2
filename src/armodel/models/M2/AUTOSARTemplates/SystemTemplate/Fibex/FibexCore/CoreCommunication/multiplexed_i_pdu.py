@@ -42,6 +42,7 @@ class MultiplexedIPdu(IPdu):
         self.dynamic_part: Optional[DynamicPart] = None
         self.selector_field: Optional[Integer] = None
         self.unused_bit: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize MultiplexedIPdu to XML element.
 
@@ -49,7 +50,7 @@ class MultiplexedIPdu(IPdu):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

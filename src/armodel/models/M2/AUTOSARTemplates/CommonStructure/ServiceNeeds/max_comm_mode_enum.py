@@ -27,6 +27,6 @@ class MaxCommModeEnum(AREnum):
         """
         self._value_ = value
 
-    FULL = "full"
-    NONE = "none"
-    SILENT = "silent"
+    FULL = "FULL"
+    NONE = "NONE"
+    SILENT = "SILENT"

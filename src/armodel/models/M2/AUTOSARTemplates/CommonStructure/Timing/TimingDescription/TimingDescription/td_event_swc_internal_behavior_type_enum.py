@@ -27,6 +27,6 @@ class TDEventSwcInternalBehaviorTypeEnum(AREnum):
         self._value_ = value
 
     # Note: 1 duplicate literal(s) found and removed: runnableEntity
-    RUNNABLE_ENTITY = "runnableEntity"
-    RUNNABLE_ENTITY_TERMINATED = "runnableEntityTerminated"
-    RUNNABLE_ENTITY_VARIABLE_ACCESS = "runnableEntityVariableAccess"
+    RUNNABLE_ENTITY = "RUNNABLE-ENTITY"
+    RUNNABLE_ENTITY_TERMINATED = "RUNNABLE-ENTITY-TERMINATED"
+    RUNNABLE_ENTITY_VARIABLE_ACCESS = "RUNNABLE-ENTITY-VARIABLE-ACCESS"

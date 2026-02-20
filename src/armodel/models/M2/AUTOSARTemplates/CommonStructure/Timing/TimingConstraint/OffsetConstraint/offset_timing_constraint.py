@@ -44,6 +44,7 @@ class OffsetTimingConstraint(TimingConstraint):
         self.minimum: Optional[MultidimensionalTime] = None
         self.source: Optional[TimingDescriptionEvent] = None
         self.target: Optional[TimingDescriptionEvent] = None
+
     def serialize(self) -> ET.Element:
         """Serialize OffsetTimingConstraint to XML element.
 
@@ -51,7 +52,7 @@ class OffsetTimingConstraint(TimingConstraint):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

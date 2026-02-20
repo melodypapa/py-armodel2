@@ -36,12 +36,13 @@ class DependencyOnArtifact(Identifiable):
         return False
 
     artifact: Optional[AutosarEngineeringObject]
-    usage_refs: list[ARRef]
+    usage_refs: list[DependencyUsageEnum]
     def __init__(self) -> None:
         """Initialize DependencyOnArtifact."""
         super().__init__()
         self.artifact: Optional[AutosarEngineeringObject] = None
-        self.usage_refs: list[ARRef] = []
+        self.usage_refs: list[DependencyUsageEnum] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DependencyOnArtifact to XML element.
 
@@ -49,7 +50,7 @@ class DependencyOnArtifact(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -76,13 +77,20 @@ class DependencyOnArtifact(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize usage_refs (list to container "USAGES")
+        # Serialize usage_refs (list to container "USAGE-REFS")
         if self.usage_refs:
-            wrapper = ET.Element("USAGES")
+            wrapper = ET.Element("USAGE-REFS")
             for item in self.usage_refs:
                 serialized = ARObject._serialize_item(item, "DependencyUsageEnum")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("USAGE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -107,13 +115,19 @@ class DependencyOnArtifact(Identifiable):
             artifact_value = ARObject._deserialize_by_tag(child, "AutosarEngineeringObject")
             obj.artifact = artifact_value
 
-        # Parse usage_refs (list from container "USAGES")
+        # Parse usage_refs (list from container "USAGE-REFS")
         obj.usage_refs = []
-        container = ARObject._find_child_element(element, "USAGES")
+        container = ARObject._find_child_element(element, "USAGE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.usage_refs.append(child_value)
 

@@ -38,6 +38,7 @@ class DiagnosticMapping(DiagnosticCommonElement, ABC):
         super().__init__()
         self.provider: Optional[CpSoftwareCluster] = None
         self.requester: Optional[CpSoftwareCluster] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticMapping to XML element.
 
@@ -45,7 +46,7 @@ class DiagnosticMapping(DiagnosticCommonElement, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

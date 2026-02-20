@@ -37,6 +37,7 @@ class IdsmSignatureSupportAp(ARObject):
         super().__init__()
         self.crypto_primitive: String = None
         self.key_slot: Optional[CryptoKeySlot] = None
+
     def serialize(self) -> ET.Element:
         """Serialize IdsmSignatureSupportAp to XML element.
 
@@ -44,7 +45,7 @@ class IdsmSignatureSupportAp(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize crypto_primitive

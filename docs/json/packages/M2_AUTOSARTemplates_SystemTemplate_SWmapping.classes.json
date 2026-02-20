@@ -20,7 +20,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "This meta-class is used: • to map SwComponentPrototypes to a specific ECU Instance unit, • optionally to map SwComponentPrototypes to a HwElement with category ProcessingUnit, • optionally to map SwComponentPrototypes typed by SensorActuatorSwComponentType to a Hw Element with category SensorActuator. For each combination of ECUInstance and the optional ProcessingUnit and the optional SensorActuator only one SwcToEcuMapping shall be used.",
+      "note": "This meta-class is used: \u2022 to map SwComponentPrototypes to a specific ECU Instance unit, \u2022 optionally to map SwComponentPrototypes to a HwElement with category ProcessingUnit, \u2022 optionally to map SwComponentPrototypes typed by SensorActuatorSwComponentType to a Hw Element with category SensorActuator. For each combination of ECUInstance and the optional ProcessingUnit and the optional SensorActuator only one SwcToEcuMapping shall be used.",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_SystemTemplate.pdf",
@@ -139,7 +139,7 @@
         "swComponentPrototype": {
           "type": "SwComponentPrototype",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "References to the software component instances that are referenced is a composition, this all atomic software components within the mapped to the ApplicationPartition. is additionally a mapping of some SwComponent the Composition to another Application inner mapping overrides the outer mapping. by: ComponentInSystem"
         }
@@ -339,7 +339,7 @@
         "mappingScopeEnum": {
           "type": "MappingScopeEnum",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This attribute indicates whether the ComponentClustering applies to different ECUs, partitions or this attribute is not specified then mappingScope be assumed."
         }
@@ -375,7 +375,7 @@
         "mappingScopeEnum": {
           "type": "MappingScopeEnum",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This attribute indicates whether the Component constraint applies to different ECUs, cores. If this attribute is not specified then be assumed. 0..2 iref The two components that have to be mapped to different ECUs by: ComponentInSystem"
         }
@@ -465,7 +465,7 @@
         "swComponentPrototype": {
           "type": "SwComponentPrototype",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This represents the SwComponentPrototype (which is the J1939ControllerApplication. by: ComponentInSystem"
         }
@@ -528,7 +528,7 @@
         "swCompToEcus": {
           "type": "SwcToEcuMapping",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "References to SwcToEcuMappings that have been taken account for the resource estimations. This way it is define dfferent EcuResourceEstimations with e.g. before and after mapping an component."
         }

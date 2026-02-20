@@ -32,6 +32,7 @@ class DoIpEntity(ARObject):
         """Initialize DoIpEntity."""
         super().__init__()
         self.do_ip_entity_role_enum: Optional[DoIpEntityRoleEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DoIpEntity to XML element.
 
@@ -39,7 +40,7 @@ class DoIpEntity(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize do_ip_entity_role_enum

@@ -37,6 +37,7 @@ class SensorActuatorSwComponentType(AtomicSwComponentType):
         """Initialize SensorActuatorSwComponentType."""
         super().__init__()
         self.sensor_actuator: Optional[HwDescriptionEntity] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SensorActuatorSwComponentType to XML element.
 
@@ -44,7 +45,7 @@ class SensorActuatorSwComponentType(AtomicSwComponentType):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

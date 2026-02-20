@@ -38,6 +38,7 @@ class MetaDataItem(ARObject):
         super().__init__()
         self.length: Optional[PositiveInteger] = None
         self.meta_data_item: Optional[TextValueSpecification] = None
+
     def serialize(self) -> ET.Element:
         """Serialize MetaDataItem to XML element.
 
@@ -45,7 +46,7 @@ class MetaDataItem(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize length

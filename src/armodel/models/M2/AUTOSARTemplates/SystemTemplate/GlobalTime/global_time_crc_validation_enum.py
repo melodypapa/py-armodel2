@@ -26,7 +26,7 @@ class GlobalTimeCrcValidationEnum(AREnum):
         """
         self._value_ = value
 
-    CRC_IGNORED = "crcIgnored"
-    CRC_NOT_VALIDATED = "crcNotValidated"
-    CRC_OPTIONAL = "crcOptional"
-    CRC_VALIDATED = "crcValidated"
+    CRC_IGNORED = "CRC-IGNORED"
+    CRC_NOT_VALIDATED = "CRC-NOT-VALIDATED"
+    CRC_OPTIONAL = "CRC-OPTIONAL"
+    CRC_VALIDATED = "CRC-VALIDATED"

@@ -53,6 +53,7 @@ class DdsCpServiceInstance(AbstractServiceInstance, ABC):
         self.dds_service_qos: Optional[DdsCpQosProfile] = None
         self.service_instance: Optional[PositiveInteger] = None
         self.service_interface: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DdsCpServiceInstance to XML element.
 
@@ -60,7 +61,7 @@ class DdsCpServiceInstance(AbstractServiceInstance, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

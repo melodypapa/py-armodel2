@@ -23,7 +23,7 @@ from .utils import (
     create_directory_structure,
     to_snake_case,
 )
-from ._common import get_python_identifier
+from ._common import get_python_identifier, get_python_identifier_with_ref, to_autosar_xml_format
 
 __all__ = [
     # Main entry point
@@ -44,4 +44,6 @@ __all__ = [
     "create_directory_structure",
     "to_snake_case",
     "get_python_identifier",
+    "get_python_identifier_with_ref",
+    "to_autosar_xml_format",
 ]

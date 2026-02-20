@@ -26,5 +26,5 @@ class ShowResourceAliasNameEnum(AREnum):
         """
         self._value_ = value
 
-    NO_SHOW_ALIAS_NAME = "noShowAliasName"
-    SHOW_ALIAS_NAME = "showAliasName"
+    NO_SHOW_ALIAS_NAME = "NO-SHOW-ALIAS-NAME"
+    SHOW_ALIAS_NAME = "SHOW-ALIAS-NAME"

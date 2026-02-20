@@ -58,6 +58,7 @@ class TransformationTechnology(Identifiable):
         self.transformation_description: Optional[TransformationDescription] = None
         self.transformer: Optional[TransformerClassEnum] = None
         self.version: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TransformationTechnology to XML element.
 
@@ -65,7 +66,7 @@ class TransformationTechnology(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

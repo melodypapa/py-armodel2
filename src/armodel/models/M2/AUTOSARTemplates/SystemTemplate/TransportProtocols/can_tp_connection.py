@@ -86,6 +86,7 @@ class CanTpConnection(TpConnection):
         self.timeout_cs: Optional[TimeValue] = None
         self.tp_sdu: Optional[IPdu] = None
         self.transmitter: Optional[CanTpNode] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CanTpConnection to XML element.
 
@@ -93,7 +94,7 @@ class CanTpConnection(TpConnection):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

@@ -32,6 +32,7 @@ class DdsDeadline(ARObject):
         """Initialize DdsDeadline."""
         super().__init__()
         self.deadline_period: Optional[Float] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DdsDeadline to XML element.
 
@@ -39,7 +40,7 @@ class DdsDeadline(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize deadline_period

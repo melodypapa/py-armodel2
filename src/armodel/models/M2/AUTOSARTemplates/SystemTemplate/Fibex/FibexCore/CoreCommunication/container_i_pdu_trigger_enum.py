@@ -26,5 +26,5 @@ class ContainerIPduTriggerEnum(AREnum):
         """
         self._value_ = value
 
-    DEFAULT_TRIGGERFIRST_CONTAINED = "defaultTriggerfirstContained"
-    TRIGGER = "Trigger"
+    DEFAULT_TRIGGERFIRST_CONTAINED = "DEFAULT-TRIGGERFIRST-CONTAINED"
+    TRIGGER = "TRIGGER"

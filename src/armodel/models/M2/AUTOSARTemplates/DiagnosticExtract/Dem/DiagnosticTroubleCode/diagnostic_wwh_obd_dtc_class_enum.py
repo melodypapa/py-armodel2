@@ -26,9 +26,9 @@ class DiagnosticWwhObdDtcClassEnum(AREnum):
         """
         self._value_ = value
 
-    DEM_DTC_WWH_OBD_CLASS_A = "demDtcWwhObdClassA"
-    DEM_DTC_WWH_OBD_CLASS_B1 = "demDtcWwhObdClassB1"
-    DEM_DTC_WWH_OBD_CLASS_B2 = "demDtcWwhObdClassB2"
-    DEM_DTC_WWH_OBD_CLASS_C = "demDtcWwhObdClassC"
-    DEM_DTC_WWH_OBD = "demDtcWwhObd"
-    CLASS_NO_INFORMATION = "ClassNoInformation"
+    DEM_DTC_WWH_OBD_CLASS_A = "DEM-DTC-WWH-OBD-CLASS-A"
+    DEM_DTC_WWH_OBD_CLASS_B1 = "DEM-DTC-WWH-OBD-CLASS-B1"
+    DEM_DTC_WWH_OBD_CLASS_B2 = "DEM-DTC-WWH-OBD-CLASS-B2"
+    DEM_DTC_WWH_OBD_CLASS_C = "DEM-DTC-WWH-OBD-CLASS-C"
+    DEM_DTC_WWH_OBD = "DEM-DTC-WWH-OBD"
+    CLASS_NO_INFORMATION = "CLASS-NO-INFORMATION"

@@ -48,6 +48,7 @@ class Sdg(ARObject):
         self.gid: NameToken = None
         self.sdg_caption: Optional[SdgCaption] = None
         self.sdg_contents: Optional[SdgContents] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Sdg to XML element.
 
@@ -55,7 +56,7 @@ class Sdg(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize gid

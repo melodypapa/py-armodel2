@@ -35,6 +35,7 @@ class IPv6ExtHeaderFilterList(Identifiable):
         """Initialize IPv6ExtHeaderFilterList."""
         super().__init__()
         self.allowed_i_pv6_exts: list[PositiveInteger] = []
+
     def serialize(self) -> ET.Element:
         """Serialize IPv6ExtHeaderFilterList to XML element.
 
@@ -42,7 +43,7 @@ class IPv6ExtHeaderFilterList(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

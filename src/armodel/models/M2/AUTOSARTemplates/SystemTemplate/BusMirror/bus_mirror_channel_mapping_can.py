@@ -52,6 +52,7 @@ class BusMirrorChannelMappingCan(BusMirrorChannelMapping):
         self.lin_pid_to_can_ids: list[BusMirrorLinPidToCanIdMapping] = []
         self.mirror_source_lin: Optional[PositiveInteger] = None
         self.mirror_status: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BusMirrorChannelMappingCan to XML element.
 
@@ -59,7 +60,7 @@ class BusMirrorChannelMappingCan(BusMirrorChannelMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

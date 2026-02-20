@@ -43,6 +43,7 @@ class RuleArguments(ARObject):
         self.vf: Optional[Numerical] = None
         self.vt: Optional[VerbatimString] = None
         self.vtf: Optional[NumericalOrText] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RuleArguments to XML element.
 
@@ -50,7 +51,7 @@ class RuleArguments(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize v

@@ -57,6 +57,7 @@ class SocketConnection(Describable):
         self.runtime_ip: Optional[Any] = None
         self.runtime_port: Optional[Any] = None
         self.short_label: Optional[Identifier] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SocketConnection to XML element.
 
@@ -64,7 +65,7 @@ class SocketConnection(Describable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

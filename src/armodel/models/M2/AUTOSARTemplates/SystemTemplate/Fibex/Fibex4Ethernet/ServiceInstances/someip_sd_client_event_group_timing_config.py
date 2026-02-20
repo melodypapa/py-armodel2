@@ -42,6 +42,7 @@ class SomeipSdClientEventGroupTimingConfig(ARElement):
         self.request: Optional[RequestResponseDelay] = None
         self.subscribe: Optional[PositiveInteger] = None
         self.time_to_live: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SomeipSdClientEventGroupTimingConfig to XML element.
 
@@ -49,7 +50,7 @@ class SomeipSdClientEventGroupTimingConfig(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

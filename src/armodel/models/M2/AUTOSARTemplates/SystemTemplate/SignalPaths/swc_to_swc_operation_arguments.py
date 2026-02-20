@@ -34,6 +34,7 @@ class SwcToSwcOperationArguments(ARObject):
         super().__init__()
         self.direction: Optional[Any] = None
         self.operations: list[ClientServerOperation] = []
+
     def serialize(self) -> ET.Element:
         """Serialize SwcToSwcOperationArguments to XML element.
 
@@ -41,7 +42,7 @@ class SwcToSwcOperationArguments(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize direction

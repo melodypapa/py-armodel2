@@ -52,6 +52,7 @@ class StackUsage(Identifiable, ABC):
         self.hardware: Optional[HardwareConfiguration] = None
         self.hw_element: Optional[HwElement] = None
         self.software_context: Optional[SoftwareContext] = None
+
     def serialize(self) -> ET.Element:
         """Serialize StackUsage to XML element.
 
@@ -59,7 +60,7 @@ class StackUsage(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

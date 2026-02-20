@@ -41,6 +41,7 @@ class DataTypeMap(ARObject):
         super().__init__()
         self.application_data_type: Optional[ApplicationDataType] = None
         self.implementation: Optional[AbstractImplementationDataType] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DataTypeMap to XML element.
 
@@ -48,7 +49,7 @@ class DataTypeMap(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize application_data_type

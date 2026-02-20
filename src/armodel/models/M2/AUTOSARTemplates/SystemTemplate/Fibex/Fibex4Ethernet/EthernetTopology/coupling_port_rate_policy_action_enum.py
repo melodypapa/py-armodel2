@@ -26,5 +26,5 @@ class CouplingPortRatePolicyActionEnum(AREnum):
         """
         self._value_ = value
 
-    BLOCK_SOURCE = "blockSource"
-    DROP_FRAME = "dropFrame"
+    BLOCK_SOURCE = "BLOCK-SOURCE"
+    DROP_FRAME = "DROP-FRAME"

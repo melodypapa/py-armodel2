@@ -41,6 +41,7 @@ class ConcretePatternEventTriggering(EventTriggeringConstraint):
         self.pattern_jitter: Optional[MultidimensionalTime] = None
         self.pattern_length: Optional[MultidimensionalTime] = None
         self.pattern_period: Optional[MultidimensionalTime] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ConcretePatternEventTriggering to XML element.
 
@@ -48,7 +49,7 @@ class ConcretePatternEventTriggering(EventTriggeringConstraint):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

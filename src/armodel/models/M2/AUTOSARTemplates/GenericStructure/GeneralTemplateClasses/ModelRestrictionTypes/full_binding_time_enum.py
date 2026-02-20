@@ -27,9 +27,9 @@ class FullBindingTimeEnum(AREnum):
         """
         self._value_ = value
 
-    BLUEPRINT_DERIVATION_TIME = "blueprintDerivationTime"
-    CODE_GENERATION_TIME = "codeGenerationTime"
-    LINK_TIME = "linkTime"
-    POST_BUILD = "postBuild"
-    PRE_COMPILE_TIME = "preCompileTime"
-    SYSTEM_DESIGN_TIME = "systemDesignTime"
+    BLUEPRINT_DERIVATION_TIME = "BLUEPRINT-DERIVATION-TIME"
+    CODE_GENERATION_TIME = "CODE-GENERATION-TIME"
+    LINK_TIME = "LINK-TIME"
+    POST_BUILD = "POST-BUILD"
+    PRE_COMPILE_TIME = "PRE-COMPILE-TIME"
+    SYSTEM_DESIGN_TIME = "SYSTEM-DESIGN-TIME"

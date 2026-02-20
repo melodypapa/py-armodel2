@@ -71,7 +71,7 @@ This guide provides a comprehensive overview of the ARXML reader and writer func
 │  └──────────────┘                 └──────────────┘                         │
 │                                                                             │
 │  Steps:                                                                    │
-│  1. Get XML tag name (via @xml_tag or NameConverter)                      │
+│  1. Get XML tag name (via NameConverter)                      │
 │  2. Iterate attributes via vars(self)                                     │
 │  3. Convert names: snake_case → UPPER-CASE-WITH-HYPHENS                    │
 │  4. Serialize objects, lists, or primitives                               │
@@ -300,7 +300,6 @@ class AUTOSAR(ARObject):
 ### Pattern 3: Custom Tag Name
 
 ```python
-@xml_tag("AUTOSAR")
 class AUTOSAR(ARObject):
     pass
 ```

@@ -30,11 +30,13 @@ class MixedContentForUnitNames(ARObject, ABC):
 
     sub: Superscript
     sup: Superscript
+    _text: Optional[str]
     def __init__(self) -> None:
         """Initialize MixedContentForUnitNames."""
         super().__init__()
         self.sub: Superscript = None
         self.sup: Superscript = None
+        self._text: Optional[str] = None
     def serialize(self) -> ET.Element:
         """Serialize MixedContentForUnitNames to XML element.
 
@@ -42,8 +44,12 @@ class MixedContentForUnitNames(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
+
+        # Serialize text content directly to element text
+        if self._text is not None:
+            elem.text = self._text
 
         # Serialize sub
         if self.sub is not None:
@@ -88,6 +94,10 @@ class MixedContentForUnitNames(ARObject, ABC):
         # Create instance and initialize with default values
         obj = cls.__new__(cls)
         obj.__init__()
+
+        # Parse text content from element
+        if element.text is not None and element.text.strip():
+            obj._text = element.text
 
         # Parse sub
         child = ARObject._find_child_element(element, "SUB")

@@ -47,6 +47,7 @@ class BswEvent(AbstractEvent, ABC):
         self.contexts: list[BswDistinguishedPartition] = []
         self.disabled_in_mode_description_instance_refs: list[ModeDeclaration] = []
         self.starts_on_event: Optional[BswModuleEntity] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BswEvent to XML element.
 
@@ -54,7 +55,7 @@ class BswEvent(AbstractEvent, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

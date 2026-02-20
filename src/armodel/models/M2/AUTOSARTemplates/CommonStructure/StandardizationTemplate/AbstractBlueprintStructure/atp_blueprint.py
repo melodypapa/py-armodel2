@@ -38,6 +38,7 @@ class AtpBlueprint(Identifiable, ABC):
         """Initialize AtpBlueprint."""
         super().__init__()
         self.blueprint_policies: list[BlueprintPolicy] = []
+
     def serialize(self) -> ET.Element:
         """Serialize AtpBlueprint to XML element.
 
@@ -45,7 +46,7 @@ class AtpBlueprint(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

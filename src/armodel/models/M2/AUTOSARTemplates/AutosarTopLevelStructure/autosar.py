@@ -58,6 +58,7 @@ class AUTOSAR(ARObject):
     ar_packages: list[ARPackage]
     file_info_comment: Optional[FileInfoComment]
     introduction: Optional[DocumentationBlock]
+    schema_location: Optional[str]
     def __init__(self) -> None:
         """Initialize AUTOSAR."""
         super().__init__()
@@ -65,6 +66,115 @@ class AUTOSAR(ARObject):
         self.ar_packages: list[ARPackage] = []
         self.file_info_comment: Optional[FileInfoComment] = None
         self.introduction: Optional[DocumentationBlock] = None
+        self.schema_location: Optional[str] = None
+
+    def serialize(self) -> ET.Element:
+        """Serialize AUTOSAR to XML element.
+
+        Override base class to handle namespace attributes and preserve schema location.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = self._get_xml_tag()
+        elem = ET.Element(tag)
+
+        # Add AUTOSAR namespace attributes if this is an AUTOSAR instance (root element only)
+        elem.set("xmlns", "http://autosar.org/schema/r4.0")
+        elem.set("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance")
+
+        # Use stored schema location or fallback to default
+        if self.schema_location is not None:
+            elem.set("xsi:schemaLocation", self.schema_location)
+        else:
+            # Fallback to default schema location
+            elem.set("xsi:schemaLocation", "http://autosar.org/schema/r4.0 AUTOSAR_4-0-3.xsd")
+
+        # Serialize admin_data
+        if self.admin_data is not None:
+            serialized = self.admin_data.serialize()
+            elem.append(serialized)
+
+        # Serialize file_info_comment
+        if self.file_info_comment is not None:
+            serialized = self.file_info_comment.serialize()
+            elem.append(serialized)
+
+        # Serialize introduction
+        if self.introduction is not None:
+            serialized = self.introduction.serialize()
+            elem.append(serialized)
+
+        # Serialize ar_packages (list to container "AR-PACKAGES")
+        if self.ar_packages:
+            wrapper = ET.Element("AR-PACKAGES")
+            for item in self.ar_packages:
+                serialized = item.serialize()
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AUTOSAR":
+        """Deserialize XML element to AUTOSAR object.
+
+        Override base class to extract schema location from xsi:schemaLocation attribute.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AUTOSAR object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Extract schema location from xsi:schemaLocation attribute
+        schema_loc = element.get("{http://www.w3.org/2001/XMLSchema-instance}schemaLocation")
+        if schema_loc is not None:
+            obj.schema_location = schema_loc
+
+        # Parse admin_data
+        child = ARObject._find_child_element(element, "ADMIN-DATA")
+        if child is not None:
+            from armodel.models.M2.MSR.AsamHdo.AdminData.admin_data import AdminData
+            admin_data_value = AdminData.deserialize(child)
+            obj.admin_data = admin_data_value
+
+        # Parse file_info_comment
+        child = ARObject._find_child_element(element, "FILE-INFO-COMMENT")
+        if child is not None:
+            from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.file_info_comment import FileInfoComment
+            file_info_comment_value = FileInfoComment.deserialize(child)
+            obj.file_info_comment = file_info_comment_value
+
+        # Parse introduction
+        child = ARObject._find_child_element(element, "INTRODUCTION")
+        if child is not None:
+            from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import DocumentationBlock
+            introduction_value = DocumentationBlock.deserialize(child)
+            obj.introduction = introduction_value
+
+        # Parse ar_packages (list from container "AR-PACKAGES")
+        obj.ar_packages = []
+        container = ARObject._find_child_element(element, "AR-PACKAGES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                from armodel.serialization.model_factory import ModelFactory
+                factory = ModelFactory()
+                tag = ARObject._strip_namespace(child.tag)
+                child_class = factory.get_class(tag)
+                if child_class is not None:
+                    child_value = child_class.deserialize(child)
+                    obj.ar_packages.append(child_value)
+
+        return obj
 
 
 class AUTOSARBuilder:

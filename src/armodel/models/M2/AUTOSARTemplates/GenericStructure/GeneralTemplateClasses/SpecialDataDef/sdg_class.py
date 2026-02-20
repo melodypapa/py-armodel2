@@ -49,6 +49,7 @@ class SdgClass(SdgElementWithGid):
         self.caption: Optional[Boolean] = None
         self.extends_meta: Optional[MetaClassName] = None
         self.sdg_constraints: list[TraceableText] = []
+
     def serialize(self) -> ET.Element:
         """Serialize SdgClass to XML element.
 
@@ -56,7 +57,7 @@ class SdgClass(SdgElementWithGid):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

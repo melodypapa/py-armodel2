@@ -56,6 +56,7 @@ class ApplicationEndpoint(Identifiable):
         self.provided_services: list[Any] = []
         self.tls_crypto_service: Optional[TlsCryptoServiceMapping] = None
         self.tp_configuration_configuration: Optional[TransportProtocolConfiguration] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ApplicationEndpoint to XML element.
 
@@ -63,7 +64,7 @@ class ApplicationEndpoint(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

@@ -28,6 +28,6 @@ class ByteOrderEnum(AREnum):
         """
         self._value_ = value
 
-    MOST_SIGNIFICANT_BYTE_FIRST = "mostSignificantByteFirst"
-    MOST_SIGNIFICANT_BYTE_LAST = "mostSignificantByteLast"
-    OPAQUE = "opaque"
+    MOST_SIGNIFICANT_BYTE_FIRST = "MOST-SIGNIFICANT-BYTE-FIRST"
+    MOST_SIGNIFICANT_BYTE_LAST = "MOST-SIGNIFICANT-BYTE-LAST"
+    OPAQUE = "OPAQUE"

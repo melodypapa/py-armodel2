@@ -51,6 +51,7 @@ class EcucCommonAttributes(EcucDefinitionElement, ABC):
         self.post_build_variant: Optional[Boolean] = None
         self.requires_index: Optional[Boolean] = None
         self.value_configs: list[EcucValueConfigurationClass] = []
+
     def serialize(self) -> ET.Element:
         """Serialize EcucCommonAttributes to XML element.
 
@@ -58,7 +59,7 @@ class EcucCommonAttributes(EcucDefinitionElement, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

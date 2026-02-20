@@ -37,6 +37,7 @@ class RoleBasedBswModuleEntryAssignment(ARObject):
         super().__init__()
         self.assigned_entry: Optional[BswModuleEntry] = None
         self.role: Optional[Identifier] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RoleBasedBswModuleEntryAssignment to XML element.
 
@@ -44,7 +45,7 @@ class RoleBasedBswModuleEntryAssignment(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize assigned_entry

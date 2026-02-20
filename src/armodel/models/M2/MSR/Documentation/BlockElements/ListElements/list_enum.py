@@ -26,5 +26,5 @@ class ListEnum(AREnum):
         """
         self._value_ = value
 
-    NUMBER = "number"
-    UNNUMBER = "unnumber"
+    NUMBER = "NUMBER"
+    UNNUMBER = "UNNUMBER"

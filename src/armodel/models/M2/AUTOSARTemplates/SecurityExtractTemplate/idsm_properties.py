@@ -40,6 +40,7 @@ class IdsmProperties(IdsCommonElement):
         super().__init__()
         self.rate_limitations: list[IdsmRateLimitation] = []
         self.traffic_limitations: list[IdsmTrafficLimitation] = []
+
     def serialize(self) -> ET.Element:
         """Serialize IdsmProperties to XML element.
 
@@ -47,7 +48,7 @@ class IdsmProperties(IdsCommonElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

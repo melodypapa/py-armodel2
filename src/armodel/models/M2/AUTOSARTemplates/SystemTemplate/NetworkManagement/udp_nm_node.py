@@ -38,6 +38,7 @@ class UdpNmNode(NmNode):
         super().__init__()
         self.all_nm_messages: Optional[Boolean] = None
         self.nm_msg_cycle: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize UdpNmNode to XML element.
 
@@ -45,7 +46,7 @@ class UdpNmNode(NmNode):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

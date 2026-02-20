@@ -22,7 +22,6 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     CollectableElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.packageable_element import (
     PackageableElement,
 )
@@ -48,13 +47,13 @@ class ARPackage(CollectableElement):
 
     ar_packages: list[ARPackage]
     elements: list[PackageableElement]
-    reference_base_refs: list[ARRef]
+    reference_bases: list[ReferenceBase]
     def __init__(self) -> None:
         """Initialize ARPackage."""
         super().__init__()
         self.ar_packages: list[ARPackage] = []
         self.elements: list[PackageableElement] = []
-        self.reference_base_refs: list[ARRef] = []
+        self.reference_bases: list[ReferenceBase] = []
     def serialize(self) -> ET.Element:
         """Serialize ARPackage to XML element.
 
@@ -62,7 +61,7 @@ class ARPackage(CollectableElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -85,21 +84,21 @@ class ARPackage(CollectableElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize elements (list to container "ELEMENTS")
-        if self.elements:
-            wrapper = ET.Element("ELEMENTS")
-            for item in self.elements:
-                serialized = ARObject._serialize_item(item, "PackageableElement")
+        # Serialize reference_bases (list to container "REFERENCE-BASES")
+        if self.reference_bases:
+            wrapper = ET.Element("REFERENCE-BASES")
+            for item in self.reference_bases:
+                serialized = ARObject._serialize_item(item, "ReferenceBase")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize reference_base_refs (list to container "REFERENCE-BASES")
-        if self.reference_base_refs:
-            wrapper = ET.Element("REFERENCE-BASES")
-            for item in self.reference_base_refs:
-                serialized = ARObject._serialize_item(item, "ReferenceBase")
+        # Serialize elements (list to container "ELEMENTS")
+        if self.elements:
+            wrapper = ET.Element("ELEMENTS")
+            for item in self.elements:
+                serialized = ARObject._serialize_item(item, "PackageableElement")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -140,15 +139,15 @@ class ARPackage(CollectableElement):
                 if child_value is not None:
                     obj.elements.append(child_value)
 
-        # Parse reference_base_refs (list from container "REFERENCE-BASES")
-        obj.reference_base_refs = []
+        # Parse reference_bases (list from container "REFERENCE-BASES")
+        obj.reference_bases = []
         container = ARObject._find_child_element(element, "REFERENCE-BASES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.reference_base_refs.append(child_value)
+                    obj.reference_bases.append(child_value)
 
         return obj
 

@@ -26,6 +26,6 @@ class DiagnosticEventDisplacementStrategyEnum(AREnum):
         """
         self._value_ = value
 
-    FULL = "full"
-    NONE = "none"
-    PRIO_OCC = "prioOcc"
+    FULL = "FULL"
+    NONE = "NONE"
+    PRIO_OCC = "PRIO-OCC"

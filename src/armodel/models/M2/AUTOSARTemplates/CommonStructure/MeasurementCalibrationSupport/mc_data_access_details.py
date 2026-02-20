@@ -40,6 +40,7 @@ class McDataAccessDetails(ARObject):
         super().__init__()
         self.rte_event_refs: list[RTEEvent] = []
         self.variable_accesses: list[VariableAccess] = []
+
     def serialize(self) -> ET.Element:
         """Serialize McDataAccessDetails to XML element.
 
@@ -47,7 +48,7 @@ class McDataAccessDetails(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize rte_event_refs (list to container "RTE-EVENT-REFS")

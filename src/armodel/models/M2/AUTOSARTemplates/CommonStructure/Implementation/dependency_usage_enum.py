@@ -26,8 +26,8 @@ class DependencyUsageEnum(AREnum):
         """
         self._value_ = value
 
-    BUILD = "build"
-    CODEGENERATION = "codegeneration"
-    COMPILE = "compile"
-    EXECUTE = "execute"
-    LINK = "link"
+    BUILD = "BUILD"
+    CODEGENERATION = "CODEGENERATION"
+    COMPILE = "COMPILE"
+    EXECUTE = "EXECUTE"
+    LINK = "LINK"

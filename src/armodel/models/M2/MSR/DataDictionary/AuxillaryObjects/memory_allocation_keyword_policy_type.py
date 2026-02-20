@@ -28,6 +28,6 @@ class MemoryAllocationKeywordPolicyType(AREnum):
         self._value_ = value
 
     # Note: 1 duplicate literal(s) found and removed: addrMethodShort
-    ADDR_METHOD_SHORT = "addrMethodShort"
-    NAME = "Name"
-    NAME_AND_ALIGNMENT = "NameAndAlignment"
+    ADDR_METHOD_SHORT = "ADDR-METHOD-SHORT"
+    NAME = "NAME"
+    NAME_AND_ALIGNMENT = "NAME-AND-ALIGNMENT"

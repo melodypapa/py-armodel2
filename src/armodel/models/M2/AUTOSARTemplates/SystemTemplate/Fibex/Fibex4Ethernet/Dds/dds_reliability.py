@@ -37,6 +37,7 @@ class DdsReliability(ARObject):
         super().__init__()
         self.reliability_kind: Optional[DdsReliabilityKindEnum] = None
         self.reliability_max: Optional[Float] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DdsReliability to XML element.
 
@@ -44,7 +45,7 @@ class DdsReliability(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize reliability_kind

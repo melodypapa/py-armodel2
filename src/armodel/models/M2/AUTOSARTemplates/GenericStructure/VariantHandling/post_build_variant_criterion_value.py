@@ -41,6 +41,7 @@ class PostBuildVariantCriterionValue(ARObject):
         self.annotations: list[Annotation] = []
         self.value: Integer = None
         self.variant_criterion: Any = None
+
     def serialize(self) -> ET.Element:
         """Serialize PostBuildVariantCriterionValue to XML element.
 
@@ -48,7 +49,7 @@ class PostBuildVariantCriterionValue(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize annotations (list to container "ANNOTATIONS")

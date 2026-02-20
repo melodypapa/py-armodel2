@@ -90,6 +90,7 @@ class DdsCpQosProfile(Identifiable):
         self.resource_limits: Optional[DdsResourceLimits] = None
         self.topic_data: Optional[DdsTopicData] = None
         self.transport_priority: Optional[DdsTransportPriority] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DdsCpQosProfile to XML element.
 
@@ -97,7 +98,7 @@ class DdsCpQosProfile(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

@@ -26,8 +26,8 @@ class Ipv6AddressSourceEnum(AREnum):
         """
         self._value_ = value
 
-    DHCPV6 = "dhcpv6"
-    FIXED = "fixed"
-    LINK_LOCAL = "linkLocal"
-    LINK_LOCAL_DOIP = "linkLocal_doip"
-    ROUTER_ADVERTISEMENT = "routerAdvertisement"
+    DHCPV6 = "DHCPV6"
+    FIXED = "FIXED"
+    LINK_LOCAL = "LINK-LOCAL"
+    LINK_LOCAL_DOIP = "LINK-LOCAL_DOIP"
+    ROUTER_ADVERTISEMENT = "ROUTER-ADVERTISEMENT"

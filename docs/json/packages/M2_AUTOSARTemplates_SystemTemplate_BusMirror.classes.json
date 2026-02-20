@@ -67,7 +67,7 @@
         "targetPdus": {
           "type": "PduTriggering",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to the PduTriggering that is used for"
         }
@@ -271,7 +271,7 @@
         "souceCanId": {
           "type": "CanFrameTriggering",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This reference points to the sourceFrame with sourceCan the sourceChannel."
         }
@@ -313,7 +313,7 @@
         "sourceLinPid": {
           "type": "LinFrameTriggering",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This reference points to the sourceFrame with sourceCan the sourceChannel."
         }

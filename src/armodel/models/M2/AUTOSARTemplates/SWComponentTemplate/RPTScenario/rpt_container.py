@@ -62,6 +62,7 @@ class RptContainer(Identifiable):
         self.rpt_hook: Optional[RptHook] = None
         self.rpt_impl_policy: Optional[RptImplPolicy] = None
         self.rpt_sw: Optional[RptSwPrototypingAccess] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RptContainer to XML element.
 
@@ -69,7 +70,7 @@ class RptContainer(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

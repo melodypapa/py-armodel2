@@ -25,6 +25,8 @@ if TYPE_CHECKING:
         RunnableEntity,
     )
 
+
+
 from abc import ABC, abstractmethod
 
 
@@ -47,6 +49,7 @@ class RTEEvent(AbstractEvent, ABC):
         super().__init__()
         self.disabled_mode_instance_refs: list[ModeDeclaration] = []
         self.start_on_event: Optional[RunnableEntity] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RTEEvent to XML element.
 
@@ -54,7 +57,7 @@ class RTEEvent(AbstractEvent, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

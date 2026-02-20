@@ -38,6 +38,7 @@ class DiagnosticIumprGroup(DiagnosticCommonElement):
         super().__init__()
         self.iumprs: list[DiagnosticIumpr] = []
         self.iumpr_group_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticIumprGroup to XML element.
 
@@ -45,7 +46,7 @@ class DiagnosticIumprGroup(DiagnosticCommonElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -73,7 +74,7 @@ class DiagnosticIumprGroup(DiagnosticCommonElement):
             serialized = ARObject._serialize_item(self.iumpr_group_ref, "DiagnosticIumprGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("IUMPR-GROUP")
+                wrapped = ET.Element("IUMPR-GROUP-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -108,9 +109,9 @@ class DiagnosticIumprGroup(DiagnosticCommonElement):
                     obj.iumprs.append(child_value)
 
         # Parse iumpr_group_ref
-        child = ARObject._find_child_element(element, "IUMPR-GROUP")
+        child = ARObject._find_child_element(element, "IUMPR-GROUP-REF")
         if child is not None:
-            iumpr_group_ref_value = ARObject._deserialize_by_tag(child, "DiagnosticIumprGroup")
+            iumpr_group_ref_value = ARRef.deserialize(child)
             obj.iumpr_group_ref = iumpr_group_ref_value
 
         return obj

@@ -38,6 +38,7 @@ class TagWithOptionalValue(ARObject):
         self.key: Optional[String] = None
         self.sequence_offset: Optional[Integer] = None
         self.value: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TagWithOptionalValue to XML element.
 
@@ -45,7 +46,7 @@ class TagWithOptionalValue(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize key

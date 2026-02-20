@@ -31,6 +31,7 @@ class IdsCommonElement(ARElement, ABC):
     def __init__(self) -> None:
         """Initialize IdsCommonElement."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize IdsCommonElement to XML element.
 
@@ -38,7 +39,7 @@ class IdsCommonElement(ARElement, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

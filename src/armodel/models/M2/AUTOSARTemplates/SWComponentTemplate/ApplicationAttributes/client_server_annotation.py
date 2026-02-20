@@ -35,6 +35,7 @@ class ClientServerAnnotation(GeneralAnnotation):
         """Initialize ClientServerAnnotation."""
         super().__init__()
         self.operation: Optional[ClientServerOperation] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ClientServerAnnotation to XML element.
 
@@ -42,7 +43,7 @@ class ClientServerAnnotation(GeneralAnnotation):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

@@ -64,6 +64,7 @@ class LinSlaveConfig(ARObject):
         self.protocol_version: Optional[String] = None
         self.supplier_id: Optional[PositiveInteger] = None
         self.variant_id: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize LinSlaveConfig to XML element.
 
@@ -71,7 +72,7 @@ class LinSlaveConfig(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize configured_nad

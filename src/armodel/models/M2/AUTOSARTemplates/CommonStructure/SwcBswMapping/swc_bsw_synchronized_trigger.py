@@ -35,6 +35,7 @@ class SwcBswSynchronizedTrigger(ARObject):
         super().__init__()
         self.bsw_trigger_ref: Optional[ARRef] = None
         self.swc_trigger_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwcBswSynchronizedTrigger to XML element.
 
@@ -42,7 +43,7 @@ class SwcBswSynchronizedTrigger(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize bsw_trigger_ref
@@ -50,7 +51,7 @@ class SwcBswSynchronizedTrigger(ARObject):
             serialized = ARObject._serialize_item(self.bsw_trigger_ref, "Trigger")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("BSW-TRIGGER")
+                wrapped = ET.Element("BSW-TRIGGER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -64,7 +65,7 @@ class SwcBswSynchronizedTrigger(ARObject):
             serialized = ARObject._serialize_item(self.swc_trigger_ref, "Trigger")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SWC-TRIGGER")
+                wrapped = ET.Element("SWC-TRIGGER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -90,15 +91,15 @@ class SwcBswSynchronizedTrigger(ARObject):
         obj.__init__()
 
         # Parse bsw_trigger_ref
-        child = ARObject._find_child_element(element, "BSW-TRIGGER")
+        child = ARObject._find_child_element(element, "BSW-TRIGGER-REF")
         if child is not None:
-            bsw_trigger_ref_value = ARObject._deserialize_by_tag(child, "Trigger")
+            bsw_trigger_ref_value = ARRef.deserialize(child)
             obj.bsw_trigger_ref = bsw_trigger_ref_value
 
         # Parse swc_trigger_ref
-        child = ARObject._find_child_element(element, "SWC-TRIGGER")
+        child = ARObject._find_child_element(element, "SWC-TRIGGER-REF")
         if child is not None:
-            swc_trigger_ref_value = ARObject._deserialize_by_tag(child, "Trigger")
+            swc_trigger_ref_value = ARRef.deserialize(child)
             obj.swc_trigger_ref = swc_trigger_ref_value
 
         return obj

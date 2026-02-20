@@ -26,4 +26,4 @@ class ServerArgumentImplPolicyEnum(AREnum):
         """
         self._value_ = value
 
-    USE_VOID = "useVoid"
+    USE_VOID = "USE-VOID"

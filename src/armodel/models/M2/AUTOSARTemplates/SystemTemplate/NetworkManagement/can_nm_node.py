@@ -42,6 +42,7 @@ class CanNmNode(NmNode):
         self.nm_car_wake_up: Optional[Boolean] = None
         self.nm_msg_cycle: Optional[TimeValue] = None
         self.nm_msg: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CanNmNode to XML element.
 
@@ -49,7 +50,7 @@ class CanNmNode(NmNode):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

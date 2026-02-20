@@ -42,6 +42,7 @@ class Documentation(ARElement):
         super().__init__()
         self.contexts: list[DocumentationContext] = []
         self.documentation: Optional[PredefinedChapter] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Documentation to XML element.
 
@@ -49,7 +50,7 @@ class Documentation(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

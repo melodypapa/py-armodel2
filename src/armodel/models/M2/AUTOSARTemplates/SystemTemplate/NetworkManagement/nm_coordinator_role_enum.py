@@ -26,5 +26,5 @@ class NmCoordinatorRoleEnum(AREnum):
         """
         self._value_ = value
 
-    ACTIVE = "Active"
-    PASSIVE = "Passive"
+    ACTIVE = "ACTIVE"
+    PASSIVE = "PASSIVE"

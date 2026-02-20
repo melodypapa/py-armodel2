@@ -34,6 +34,7 @@ class SecureCommunicationPropsSet(FibexElement):
         super().__init__()
         self.authentications: list[Any] = []
         self.freshness_propses: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize SecureCommunicationPropsSet to XML element.
 
@@ -41,7 +42,7 @@ class SecureCommunicationPropsSet(FibexElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

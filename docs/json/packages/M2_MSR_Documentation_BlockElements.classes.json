@@ -85,7 +85,7 @@
         "defList": {
           "type": "DefList",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This represents a definition list in the documentation atpVariation"
         },
@@ -106,16 +106,9 @@
         "labeledListLabel": {
           "type": "LabeledList",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This represents a labeled list. atpVariation"
-        },
-        "list": {
-          "type": "List",
-          "multiplicity": "0..1",
-          "kind": "attribute",
-          "is_ref": true,
-          "note": "This represents numbered or unnumbered list. atpVariation"
         },
         "msrQueryP2": {
           "type": "MsrQueryP2",
@@ -132,11 +125,18 @@
           "note": "This represents a note in the text flow."
         },
         "p": {
-          "type": "any (MultiLanguage)",
+          "type": "MultiLanguageParagraph",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "This is one particular paragraph."
+          "note": "This is one particular paragraph. Multiple paragraphs can appear in mixed content."
+        },
+        "list": {
+          "type": "ARList",
+          "multiplicity": "*",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This represents numbered or unnumbered list. atpVariation"
         },
         "structuredReq": {
           "type": "StructuredReq",

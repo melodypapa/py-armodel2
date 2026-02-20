@@ -26,5 +26,5 @@ class StorageConditionStatusEnum(AREnum):
         """
         self._value_ = value
 
-    DISABLED = "Disabled"
-    EVENT_STORAGE_ENABLED = "eventStorageEnabled"
+    DISABLED = "DISABLED"
+    EVENT_STORAGE_ENABLED = "EVENT-STORAGE-ENABLED"

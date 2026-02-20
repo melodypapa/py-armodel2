@@ -64,6 +64,7 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
         self.handle_timeout_enum: Optional[HandleTimeoutEnum] = None
         self.init_value: Optional[ValueSpecification] = None
         self.timeout: Optional[ValueSpecification] = None
+
     def serialize(self) -> ET.Element:
         """Serialize NonqueuedReceiverComSpec to XML element.
 
@@ -71,7 +72,7 @@ class NonqueuedReceiverComSpec(ReceiverComSpec):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

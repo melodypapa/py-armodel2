@@ -46,6 +46,7 @@ class McGroup(ARElement):
         self.ref_calprm_set_ref: Optional[ARRef] = None
         self.ref_ref: Optional[ARRef] = None
         self.sub_group_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize McGroup to XML element.
 
@@ -53,7 +54,7 @@ class McGroup(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -81,7 +82,7 @@ class McGroup(ARElement):
             serialized = ARObject._serialize_item(self.ref_calprm_set_ref, "McGroupDataRefSet")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("REF-CALPRM-SET")
+                wrapped = ET.Element("REF-CALPRM-SET-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -95,7 +96,7 @@ class McGroup(ARElement):
             serialized = ARObject._serialize_item(self.ref_ref, "McGroupDataRefSet")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("REF")
+                wrapped = ET.Element("REF-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -104,13 +105,20 @@ class McGroup(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sub_group_refs (list to container "SUB-GROUPS")
+        # Serialize sub_group_refs (list to container "SUB-GROUP-REFS")
         if self.sub_group_refs:
-            wrapper = ET.Element("SUB-GROUPS")
+            wrapper = ET.Element("SUB-GROUP-REFS")
             for item in self.sub_group_refs:
                 serialized = ARObject._serialize_item(item, "McGroup")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("SUB-GROUP-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -140,24 +148,30 @@ class McGroup(ARElement):
                     obj.mc_functions.append(child_value)
 
         # Parse ref_calprm_set_ref
-        child = ARObject._find_child_element(element, "REF-CALPRM-SET")
+        child = ARObject._find_child_element(element, "REF-CALPRM-SET-REF")
         if child is not None:
-            ref_calprm_set_ref_value = ARObject._deserialize_by_tag(child, "McGroupDataRefSet")
+            ref_calprm_set_ref_value = ARRef.deserialize(child)
             obj.ref_calprm_set_ref = ref_calprm_set_ref_value
 
         # Parse ref_ref
-        child = ARObject._find_child_element(element, "REF")
+        child = ARObject._find_child_element(element, "REF-REF")
         if child is not None:
-            ref_ref_value = ARObject._deserialize_by_tag(child, "McGroupDataRefSet")
+            ref_ref_value = ARRef.deserialize(child)
             obj.ref_ref = ref_ref_value
 
-        # Parse sub_group_refs (list from container "SUB-GROUPS")
+        # Parse sub_group_refs (list from container "SUB-GROUP-REFS")
         obj.sub_group_refs = []
-        container = ARObject._find_child_element(element, "SUB-GROUPS")
+        container = ARObject._find_child_element(element, "SUB-GROUP-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.sub_group_refs.append(child_value)
 

@@ -9,10 +9,13 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.MSR.Documentation.TextModel.InlineTextModel.mixed_content_for_unit_names import (
+    MixedContentForUnitNames,
+)
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 
-class SingleLanguageUnitNames(ARObject):
+class SingleLanguageUnitNames(MixedContentForUnitNames):
     """AUTOSAR SingleLanguageUnitNames."""
 
     @property
@@ -27,6 +30,7 @@ class SingleLanguageUnitNames(ARObject):
     def __init__(self) -> None:
         """Initialize SingleLanguageUnitNames."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize SingleLanguageUnitNames to XML element.
 
@@ -34,8 +38,18 @@ class SingleLanguageUnitNames(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(SingleLanguageUnitNames, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
 
         return elem
 
@@ -49,11 +63,8 @@ class SingleLanguageUnitNames(ARObject):
         Returns:
             Deserialized SingleLanguageUnitNames object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
-
-        return obj
+        # Delegate to parent class to handle inherited attributes
+        return super(SingleLanguageUnitNames, cls).deserialize(element)
 
 
 

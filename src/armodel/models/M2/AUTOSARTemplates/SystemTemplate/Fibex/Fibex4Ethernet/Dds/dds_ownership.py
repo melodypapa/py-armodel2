@@ -32,6 +32,7 @@ class DdsOwnership(ARObject):
         """Initialize DdsOwnership."""
         super().__init__()
         self.ownership_kind: Optional[DdsOwnershipKindEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DdsOwnership to XML element.
 
@@ -39,7 +40,7 @@ class DdsOwnership(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize ownership_kind

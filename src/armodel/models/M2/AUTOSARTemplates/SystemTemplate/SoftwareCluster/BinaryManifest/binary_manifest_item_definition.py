@@ -43,6 +43,7 @@ class BinaryManifestItemDefinition(Identifiable):
         self.auxiliary_fields: list[BinaryManifestItem] = []
         self.is_optional: Optional[Boolean] = None
         self.size: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BinaryManifestItemDefinition to XML element.
 
@@ -50,7 +51,7 @@ class BinaryManifestItemDefinition(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

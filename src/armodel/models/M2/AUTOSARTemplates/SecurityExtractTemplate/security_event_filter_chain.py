@@ -47,6 +47,7 @@ class SecurityEventFilterChain(IdsCommonElement):
         self.one_every_n: Optional[SecurityEventOneEveryNFilter] = None
         self.state: Optional[SecurityEventStateFilter] = None
         self.threshold: Optional[SecurityEventThresholdFilter] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SecurityEventFilterChain to XML element.
 
@@ -54,7 +55,7 @@ class SecurityEventFilterChain(IdsCommonElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

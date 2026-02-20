@@ -44,6 +44,7 @@ class CpSoftwareCluster(ARElement):
         self.software_cluster: Optional[PositiveInteger] = None
         self.sw_components: list[Any] = []
         self.sw_composition_component_types: list[CompositionSwComponentType] = []
+
     def serialize(self) -> ET.Element:
         """Serialize CpSoftwareCluster to XML element.
 
@@ -51,7 +52,7 @@ class CpSoftwareCluster(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

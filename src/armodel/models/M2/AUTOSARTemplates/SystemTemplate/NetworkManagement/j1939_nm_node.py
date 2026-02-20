@@ -41,6 +41,7 @@ class J1939NmNode(NmNode):
         super().__init__()
         self.address: Optional[J1939NmAddressConfigurationCapabilityEnum] = None
         self.node_name: Optional[J1939NodeName] = None
+
     def serialize(self) -> ET.Element:
         """Serialize J1939NmNode to XML element.
 
@@ -48,7 +49,7 @@ class J1939NmNode(NmNode):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

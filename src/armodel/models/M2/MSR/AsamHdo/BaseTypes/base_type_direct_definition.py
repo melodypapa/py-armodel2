@@ -53,6 +53,7 @@ class BaseTypeDirectDefinition(BaseTypeDefinition):
         self.byte_order: Optional[ByteOrderEnum] = None
         self.mem_alignment: Optional[PositiveInteger] = None
         self.native: Optional[NativeDeclarationString] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BaseTypeDirectDefinition to XML element.
 
@@ -60,7 +61,7 @@ class BaseTypeDirectDefinition(BaseTypeDefinition):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

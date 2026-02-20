@@ -40,6 +40,7 @@ class DataTransformationSet(ARElement):
         super().__init__()
         self.datas: list[DataTransformation] = []
         self.transformation_technologies: list[TransformationTechnology] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DataTransformationSet to XML element.
 
@@ -47,7 +48,7 @@ class DataTransformationSet(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

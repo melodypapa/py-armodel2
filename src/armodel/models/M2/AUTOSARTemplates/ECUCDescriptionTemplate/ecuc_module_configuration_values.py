@@ -57,6 +57,7 @@ class EcucModuleConfigurationValues(ARElement):
         self.implementation: Optional[Any] = None
         self.module: Optional[BswImplementation] = None
         self.post_build_variant: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EcucModuleConfigurationValues to XML element.
 
@@ -64,7 +65,7 @@ class EcucModuleConfigurationValues(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

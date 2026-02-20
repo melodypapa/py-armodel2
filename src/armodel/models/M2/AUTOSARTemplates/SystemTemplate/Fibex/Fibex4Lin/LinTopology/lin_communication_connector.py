@@ -48,6 +48,7 @@ class LinCommunicationConnector(CommunicationConnector):
         self.lin_configurable_frames: list[LinConfigurableFrame] = []
         self.lin_ordereds: list[LinOrderedConfigurableFrame] = []
         self.schedule: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize LinCommunicationConnector to XML element.
 
@@ -55,7 +56,7 @@ class LinCommunicationConnector(CommunicationConnector):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

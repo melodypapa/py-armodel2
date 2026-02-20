@@ -51,6 +51,7 @@ class DocRevision(ARObject):
         self.revision_label_p1: Optional[RevisionLabelString] = None
         self.revision_label_p2: Optional[RevisionLabelString] = None
         self.state: Optional[NameToken] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DocRevision to XML element.
 
@@ -58,7 +59,7 @@ class DocRevision(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize date

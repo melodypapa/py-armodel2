@@ -26,6 +26,6 @@ class CouplingPortRoleEnum(AREnum):
         """
         self._value_ = value
 
-    HOST_PORT_ELEMENT = "hostPortElement"
-    STANDARD_PORTUP_LINK_PORT = "standardPortupLinkPort"
-    ECU = "ECU"
+    HOST_PORT_ELEMENT = "HOST-PORT-ELEMENT"
+    STANDARD_PORTUP_LINK_PORT = "STANDARD-PORTUP-LINK-PORT"
+    ECU = "E-C-U"

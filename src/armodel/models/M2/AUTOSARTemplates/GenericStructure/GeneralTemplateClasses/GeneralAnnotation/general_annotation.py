@@ -44,6 +44,7 @@ class GeneralAnnotation(ARObject, ABC):
         self.annotation: String = None
         self.annotation_text: DocumentationBlock = None
         self.label: Optional[MultilanguageLongName] = None
+
     def serialize(self) -> ET.Element:
         """Serialize GeneralAnnotation to XML element.
 
@@ -51,7 +52,7 @@ class GeneralAnnotation(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize annotation
@@ -127,7 +128,7 @@ class GeneralAnnotation(ARObject, ABC):
         # Parse label
         child = ARObject._find_child_element(element, "LABEL")
         if child is not None:
-            label_value = ARObject._deserialize_by_tag(child, "MultilanguageLongName")
+            label_value = ARObject._deserialize_with_type(child, "MultilanguageLongName")
             obj.label = label_value
 
         return obj

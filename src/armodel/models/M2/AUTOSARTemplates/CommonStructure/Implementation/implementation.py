@@ -100,6 +100,7 @@ class Implementation(ARElement, ABC):
         self.sw_version: Optional[RevisionLabelString] = None
         self.used_code_generator: Optional[String] = None
         self.vendor_id: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Implementation to XML element.
 
@@ -107,7 +108,7 @@ class Implementation(ARElement, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -154,13 +155,20 @@ class Implementation(ARElement, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize generated_refs (list to container "GENERATEDS")
+        # Serialize generated_refs (list to container "GENERATED-REFS")
         if self.generated_refs:
-            wrapper = ET.Element("GENERATEDS")
+            wrapper = ET.Element("GENERATED-REFS")
             for item in self.generated_refs:
                 serialized = ARObject._serialize_item(item, "DependencyOnArtifact")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("GENERATED-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -212,23 +220,37 @@ class Implementation(ARElement, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize required_artifact_refs (list to container "REQUIRED-ARTIFACTS")
+        # Serialize required_artifact_refs (list to container "REQUIRED-ARTIFACT-REFS")
         if self.required_artifact_refs:
-            wrapper = ET.Element("REQUIRED-ARTIFACTS")
+            wrapper = ET.Element("REQUIRED-ARTIFACT-REFS")
             for item in self.required_artifact_refs:
                 serialized = ARObject._serialize_item(item, "DependencyOnArtifact")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("REQUIRED-ARTIFACT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize required_refs (list to container "REQUIREDS")
+        # Serialize required_refs (list to container "REQUIRED-REFS")
         if self.required_refs:
-            wrapper = ET.Element("REQUIREDS")
+            wrapper = ET.Element("REQUIRED-REFS")
             for item in self.required_refs:
                 serialized = ARObject._serialize_item(item, "DependencyOnArtifact")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("REQUIRED-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -251,7 +273,7 @@ class Implementation(ARElement, ABC):
             serialized = ARObject._serialize_item(self.swc_bsw_ref, "SwcBswMapping")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SWC-BSW")
+                wrapped = ET.Element("SWC-BSW-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -343,13 +365,19 @@ class Implementation(ARElement, ABC):
                 if child_value is not None:
                     obj.compilers.append(child_value)
 
-        # Parse generated_refs (list from container "GENERATEDS")
+        # Parse generated_refs (list from container "GENERATED-REFS")
         obj.generated_refs = []
-        container = ARObject._find_child_element(element, "GENERATEDS")
+        container = ARObject._find_child_element(element, "GENERATED-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.generated_refs.append(child_value)
 
@@ -385,23 +413,35 @@ class Implementation(ARElement, ABC):
             programming_value = ProgramminglanguageEnum.deserialize(child)
             obj.programming = programming_value
 
-        # Parse required_artifact_refs (list from container "REQUIRED-ARTIFACTS")
+        # Parse required_artifact_refs (list from container "REQUIRED-ARTIFACT-REFS")
         obj.required_artifact_refs = []
-        container = ARObject._find_child_element(element, "REQUIRED-ARTIFACTS")
+        container = ARObject._find_child_element(element, "REQUIRED-ARTIFACT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.required_artifact_refs.append(child_value)
 
-        # Parse required_refs (list from container "REQUIREDS")
+        # Parse required_refs (list from container "REQUIRED-REFS")
         obj.required_refs = []
-        container = ARObject._find_child_element(element, "REQUIREDS")
+        container = ARObject._find_child_element(element, "REQUIRED-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.required_refs.append(child_value)
 
@@ -412,9 +452,9 @@ class Implementation(ARElement, ABC):
             obj.resource = resource_value
 
         # Parse swc_bsw_ref
-        child = ARObject._find_child_element(element, "SWC-BSW")
+        child = ARObject._find_child_element(element, "SWC-BSW-REF")
         if child is not None:
-            swc_bsw_ref_value = ARObject._deserialize_by_tag(child, "SwcBswMapping")
+            swc_bsw_ref_value = ARRef.deserialize(child)
             obj.swc_bsw_ref = swc_bsw_ref_value
 
         # Parse sw_version

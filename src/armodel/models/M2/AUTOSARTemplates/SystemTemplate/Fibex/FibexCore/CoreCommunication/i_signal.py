@@ -80,6 +80,7 @@ class ISignal(FibexElement):
         self.system_signal: Optional[SystemSignal] = None
         self.timeout: Optional[ValueSpecification] = None
         self.transformation_i_signals: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ISignal to XML element.
 
@@ -87,7 +88,7 @@ class ISignal(FibexElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

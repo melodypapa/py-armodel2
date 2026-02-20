@@ -27,4 +27,4 @@ class ModeActivationKind(AREnum):
         """
         self._value_ = value
 
-    ON_ENTRYON_EXITON_TRANSITION = "onEntryonExitonTransition"
+    ON_ENTRYON_EXITON_TRANSITION = "ON-ENTRYON-EXITON-TRANSITION"

@@ -95,7 +95,6 @@ class ARPackage(ARObject):
 
 **Special cases use decorators**:
 ```python
-@xml_tag("AUTOSAR")
 class AUTOSAR(ARObject):
     def __init__(self) -> None:
         self._schema_version: str = "4.5.0"
@@ -289,7 +288,7 @@ Model classes use a reflection-based serialization framework that eliminates boi
 - `ARObject.serialize()` - Base method using `vars()` and `get_type_hints()`
 - `ARObject.deserialize()` - Class method for XML deserialization
 - `NameConverter` - Utility for snake_case ↔ UPPER-CASE-WITH-HYPHENS conversion
-- `@xml_attribute`, `@xml_tag()` - Decorators for edge cases only
+- `@xml_attribute`, `@atp_variant()`, `@l_prefix()` - Decorators for edge cases only
 
 **No XMLMember, No Registry, No Strategies!**
 
@@ -307,12 +306,12 @@ The framework automatically:
 Use decorators only when XML structure doesn't match default behavior:
 
 ```python
-from armodel.serialization.decorators import xml_attribute, xml_tag
+from armodel.serialization.decorators import xml_attribute
 
-@xml_tag("AUTOSAR")  # Custom tag name
 class AUTOSAR(ARObject):
     def __init__(self) -> None:
         self._schema_version: str = "4.5.0"
+        # XML tag name is auto-generated as AUTOSAR
         self.ar_packages: list[ARPackage] = []
 
     @xml_attribute  # Serialize as XML attribute

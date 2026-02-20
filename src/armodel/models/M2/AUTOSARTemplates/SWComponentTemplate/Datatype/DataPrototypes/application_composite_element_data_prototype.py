@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
     DataPrototype,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.application_data_type import (
     ApplicationDataType,
 )
@@ -32,11 +33,12 @@ class ApplicationCompositeElementDataPrototype(DataPrototype, ABC):
         """
         return True
 
-    type: Optional[ApplicationDataType]
+    type_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ApplicationCompositeElementDataPrototype."""
         super().__init__()
-        self.type: Optional[ApplicationDataType] = None
+        self.type_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ApplicationCompositeElementDataPrototype to XML element.
 
@@ -44,7 +46,7 @@ class ApplicationCompositeElementDataPrototype(DataPrototype, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -57,12 +59,12 @@ class ApplicationCompositeElementDataPrototype(DataPrototype, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize type
-        if self.type is not None:
-            serialized = ARObject._serialize_item(self.type, "ApplicationDataType")
+        # Serialize type_ref
+        if self.type_ref is not None:
+            serialized = ARObject._serialize_item(self.type_ref, "ApplicationDataType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TYPE")
+                wrapped = ET.Element("TYPE-TREF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -86,11 +88,11 @@ class ApplicationCompositeElementDataPrototype(DataPrototype, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ApplicationCompositeElementDataPrototype, cls).deserialize(element)
 
-        # Parse type
-        child = ARObject._find_child_element(element, "TYPE")
+        # Parse type_ref
+        child = ARObject._find_child_element(element, "TYPE-TREF")
         if child is not None:
-            type_value = ARObject._deserialize_by_tag(child, "ApplicationDataType")
-            obj.type = type_value
+            type_ref_value = ARRef.deserialize(child)
+            obj.type_ref = type_ref_value
 
         return obj
 

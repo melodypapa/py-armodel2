@@ -51,6 +51,7 @@ class GlobalTimeMaster(Identifiable, ABC):
         self.immediate: Optional[TimeValue] = None
         self.is_system_wide: Optional[Boolean] = None
         self.sync_period: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize GlobalTimeMaster to XML element.
 
@@ -58,7 +59,7 @@ class GlobalTimeMaster(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

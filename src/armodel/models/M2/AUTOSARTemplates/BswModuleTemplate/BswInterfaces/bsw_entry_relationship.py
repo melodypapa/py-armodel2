@@ -37,6 +37,7 @@ class BswEntryRelationship(ARObject):
         self.bsw_entry: Optional[BswEntryRelationship] = None
         self.from_: Optional[BswModuleEntry] = None
         self.to: Optional[BswModuleEntry] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BswEntryRelationship to XML element.
 
@@ -44,7 +45,7 @@ class BswEntryRelationship(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize bsw_entry

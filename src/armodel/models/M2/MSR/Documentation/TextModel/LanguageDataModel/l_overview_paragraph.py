@@ -9,13 +9,16 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
+from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel.language_specific import (
+    LanguageSpecific,
+)
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
 
 
-class LOverviewParagraph(ARObject):
+class LOverviewParagraph(LanguageSpecific):
     """AUTOSAR LOverviewParagraph."""
 
     @property
@@ -27,11 +30,10 @@ class LOverviewParagraph(ARObject):
         """
         return False
 
-    blueprint_value: Optional[String]
     def __init__(self) -> None:
         """Initialize LOverviewParagraph."""
         super().__init__()
-        self.blueprint_value: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize LOverviewParagraph to XML element.
 
@@ -39,22 +41,22 @@ class LOverviewParagraph(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize blueprint_value
-        if self.blueprint_value is not None:
-            serialized = ARObject._serialize_item(self.blueprint_value, "String")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("BLUEPRINT-VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+        # First, call parent's serialize to handle inherited attributes (L attribute and text)
+        parent_elem = super(LOverviewParagraph, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Copy text from parent element
+        if parent_elem.text is not None:
+            elem.text = parent_elem.text
 
         return elem
 
@@ -68,17 +70,8 @@ class LOverviewParagraph(ARObject):
         Returns:
             Deserialized LOverviewParagraph object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
-
-        # Parse blueprint_value
-        child = ARObject._find_child_element(element, "BLUEPRINT-VALUE")
-        if child is not None:
-            blueprint_value_value = child.text
-            obj.blueprint_value = blueprint_value_value
-
-        return obj
+        # First, call parent's deserialize to handle inherited attributes (L attribute and text)
+        return super(LOverviewParagraph, cls).deserialize(element)
 
 
 

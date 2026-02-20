@@ -27,5 +27,5 @@ class DiagnosticDebounceBehaviorEnum(AREnum):
         """
         self._value_ = value
 
-    FREEZE = "freeze"
-    RESET = "reset"
+    FREEZE = "FREEZE"
+    RESET = "RESET"

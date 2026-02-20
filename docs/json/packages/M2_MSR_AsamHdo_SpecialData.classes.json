@@ -125,14 +125,14 @@
         "sdx": {
           "type": "Referrable",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to any identifiable element. This allows to use"
         },
         "sdxf": {
           "type": "Referrable",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Additional reference with variant support."
         }

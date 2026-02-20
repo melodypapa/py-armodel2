@@ -36,6 +36,7 @@ class TDEventCom(TimingDescriptionEvent, ABC):
         """Initialize TDEventCom."""
         super().__init__()
         self.ecu_instance: Optional[EcuInstance] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TDEventCom to XML element.
 
@@ -43,7 +44,7 @@ class TDEventCom(TimingDescriptionEvent, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

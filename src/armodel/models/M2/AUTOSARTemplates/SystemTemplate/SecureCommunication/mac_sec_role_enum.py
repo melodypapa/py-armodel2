@@ -26,5 +26,5 @@ class MacSecRoleEnum(AREnum):
         """
         self._value_ = value
 
-    KEY_SERVER = "keyServer"
-    PEER = "peer"
+    KEY_SERVER = "KEY-SERVER"
+    PEER = "PEER"

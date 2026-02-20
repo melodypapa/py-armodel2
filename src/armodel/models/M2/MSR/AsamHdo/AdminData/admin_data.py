@@ -51,6 +51,7 @@ class AdminData(ARObject):
         self.language: Optional[LEnum] = None
         self.sdg: list[Sdg] = []
         self.used_languages: Optional[MultiLanguagePlainText] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AdminData to XML element.
 
@@ -58,7 +59,7 @@ class AdminData(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize doc_revisions (list to container "DOC-REVISIONS")
@@ -154,7 +155,7 @@ class AdminData(ARObject):
         # Parse used_languages
         child = ARObject._find_child_element(element, "USED-LANGUAGES")
         if child is not None:
-            used_languages_value = ARObject._deserialize_by_tag(child, "MultiLanguagePlainText")
+            used_languages_value = ARObject._deserialize_with_type(child, "MultiLanguagePlainText")
             obj.used_languages = used_languages_value
 
         return obj

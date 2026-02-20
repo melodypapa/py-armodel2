@@ -35,6 +35,7 @@ class SecurityEventStateFilter(AbstractSecurityEventFilter):
         """Initialize SecurityEventStateFilter."""
         super().__init__()
         self.block_if_states: list[BlockState] = []
+
     def serialize(self) -> ET.Element:
         """Serialize SecurityEventStateFilter to XML element.
 
@@ -42,7 +43,7 @@ class SecurityEventStateFilter(AbstractSecurityEventFilter):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

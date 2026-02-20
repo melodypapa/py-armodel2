@@ -26,5 +26,5 @@ class ShowResourceTypeEnum(AREnum):
         """
         self._value_ = value
 
-    NO_SHOW_TYPE = "noShowType"
-    SHOW_TYPE = "showType"
+    NO_SHOW_TYPE = "NO-SHOW-TYPE"
+    SHOW_TYPE = "SHOW-TYPE"

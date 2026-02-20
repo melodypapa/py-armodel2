@@ -50,6 +50,7 @@ class SupervisedEntityNeeds(ServiceNeeds):
         self.max_alive_cycle: Optional[TimeValue] = None
         self.min_alive_cycle: Optional[TimeValue] = None
         self.tolerated_failed: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SupervisedEntityNeeds to XML element.
 
@@ -57,7 +58,7 @@ class SupervisedEntityNeeds(ServiceNeeds):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

@@ -54,6 +54,7 @@ class Ipv4Configuration(NetworkEndpointAddress):
         self.ipv4_address_source: Optional[Ipv4AddressSourceEnum] = None
         self.network_mask: Optional[Ip4AddressString] = None
         self.ttl: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Ipv4Configuration to XML element.
 
@@ -61,7 +62,7 @@ class Ipv4Configuration(NetworkEndpointAddress):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

@@ -27,5 +27,5 @@ class IntervalTypeEnum(AREnum):
         """
         self._value_ = value
 
-    CLOSED = "closed"
-    OPEN = "open"
+    CLOSED = "CLOSED"
+    OPEN = "OPEN"

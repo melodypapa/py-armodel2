@@ -45,33 +45,26 @@
         }
       ],
       "attributes": {
-        "autoCollectEnum": {
+        "autoCollect": {
           "type": "AutoCollectEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This attribute reflects how far the referenced objects are the collection."
         },
-        "collecteds": {
+        "collectedInstances": {
           "type": "AtpFeature",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "iref",
           "is_ref": false,
           "note": "This instance ref supports the use case that a particular"
         },
-        "collection": {
+        "collectionSemantics": {
           "type": "NameToken",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Provides the ability to express the semantics of a"
-        },
-        "elements": {
-          "type": "Identifiable",
-          "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
-          "note": "This is an element in the collection. Note that Collection"
         },
         "elementRole": {
           "type": "Identifier",
@@ -80,18 +73,25 @@
           "is_ref": false,
           "note": "This attribute allows to denote a particular role of the"
         },
+        "elements": {
+          "type": "Identifiable",
+          "multiplicity": "*",
+          "kind": "ref",
+          "is_ref": true,
+          "note": "This is an element in the collection. Note that Collection"
+        },
         "sourceElements": {
           "type": "Identifiable",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Only if Category = \"RELATION\". This represents the"
         },
         "sourceInstances": {
           "type": "AtpFeature",
           "multiplicity": "*",
-          "kind": "attribute",
-          "is_ref": false,
+          "kind": "iref",
+          "is_ref": true,
           "note": "Only if Category = \"RELATION\". This represents the"
         }
       }

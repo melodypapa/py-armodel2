@@ -33,6 +33,8 @@ if TYPE_CHECKING:
         SwDataDefProps,
     )
 
+
+
 from abc import ABC, abstractmethod
 
 
@@ -65,6 +67,7 @@ class SenderComSpec(PPortComSpec, ABC):
         self.transmission: Optional[Any] = None
         self.transmission_com_spec: Optional[TransmissionComSpecProps] = None
         self.uses_end_to_end: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SenderComSpec to XML element.
 
@@ -72,7 +75,7 @@ class SenderComSpec(PPortComSpec, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -100,7 +103,7 @@ class SenderComSpec(PPortComSpec, ABC):
             serialized = ARObject._serialize_item(self.data_element_ref, "AutosarDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DATA-ELEMENT")
+                wrapped = ET.Element("DATA-ELEMENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -205,9 +208,9 @@ class SenderComSpec(PPortComSpec, ABC):
                     obj.composite_networks.append(child_value)
 
         # Parse data_element_ref
-        child = ARObject._find_child_element(element, "DATA-ELEMENT")
+        child = ARObject._find_child_element(element, "DATA-ELEMENT-REF")
         if child is not None:
-            data_element_ref_value = ARObject._deserialize_by_tag(child, "AutosarDataPrototype")
+            data_element_ref_value = ARRef.deserialize(child)
             obj.data_element_ref = data_element_ref_value
 
         # Parse handle_out_of_range

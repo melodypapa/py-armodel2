@@ -37,6 +37,7 @@ class CommunicationControllerMapping(ARObject):
         super().__init__()
         self.communication_controller: Optional[CommunicationController] = None
         self.hw: Optional[HwElement] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CommunicationControllerMapping to XML element.
 
@@ -44,7 +45,7 @@ class CommunicationControllerMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize communication_controller

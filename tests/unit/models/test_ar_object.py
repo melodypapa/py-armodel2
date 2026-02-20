@@ -54,9 +54,10 @@ class TestARObject:
         assert checksum_elem is not None
         assert checksum_elem.text == "test_checksum"
 
-        timestamp_elem = element.find("TIMESTAMP")
-        assert timestamp_elem is not None
-        assert timestamp_elem.text == "2024-01-01T00:00:00Z"
+        # timestamp is serialized as XML attribute 'T' (not child element)
+        timestamp_attr = element.get("T")
+        assert timestamp_attr is not None
+        assert timestamp_attr == "2024-01-01T00:00:00Z"
 
     def test_ar_object_deserialize(self):
         """Test that ARObject can be deserialized from XML (SWUT_MODELS_003)."""
@@ -74,10 +75,9 @@ class TestARObject:
         element = ET.Element("AROBJECT")
         checksum_elem = ET.Element("CHECKSUM")
         checksum_elem.text = "test_checksum"
-        timestamp_elem = ET.Element("TIMESTAMP")
-        timestamp_elem.text = "2024-01-01T00:00:00Z"
         element.append(checksum_elem)
-        element.append(timestamp_elem)
+        # timestamp is deserialized from XML attribute 'T' (not child element)
+        element.set("T", "2024-01-01T00:00:00Z")
         obj = ARObject.deserialize(element)
 
         assert obj.checksum == "test_checksum"

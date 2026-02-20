@@ -27,6 +27,6 @@ class NvBlockNeedsReliabilityEnum(AREnum):
         """
         self._value_ = value
 
-    ERROR_CORRECTION = "errorCorrection"
-    ERROR_DETECTION = "errorDetection"
-    NO_PROTECTION = "noProtection"
+    ERROR_CORRECTION = "ERROR-CORRECTION"
+    ERROR_DETECTION = "ERROR-DETECTION"
+    NO_PROTECTION = "NO-PROTECTION"

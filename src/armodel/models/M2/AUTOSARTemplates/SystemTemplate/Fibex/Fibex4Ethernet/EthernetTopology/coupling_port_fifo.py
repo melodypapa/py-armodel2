@@ -39,6 +39,7 @@ class CouplingPortFifo(CouplingPortStructuralElement):
         self.assigned_traffic: PositiveInteger = None
         self.minimum_fifo: Optional[PositiveInteger] = None
         self.shaper: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CouplingPortFifo to XML element.
 
@@ -46,7 +47,7 @@ class CouplingPortFifo(CouplingPortStructuralElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

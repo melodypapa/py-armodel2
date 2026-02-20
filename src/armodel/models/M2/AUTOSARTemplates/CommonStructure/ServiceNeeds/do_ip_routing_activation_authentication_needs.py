@@ -38,6 +38,7 @@ class DoIpRoutingActivationAuthenticationNeeds(DoIpServiceNeeds):
         super().__init__()
         self.data_length: Optional[PositiveInteger] = None
         self.routing: Optional[NameToken] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DoIpRoutingActivationAuthenticationNeeds to XML element.
 
@@ -45,7 +46,7 @@ class DoIpRoutingActivationAuthenticationNeeds(DoIpServiceNeeds):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

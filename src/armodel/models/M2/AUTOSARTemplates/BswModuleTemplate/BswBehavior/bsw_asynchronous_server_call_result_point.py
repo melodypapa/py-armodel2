@@ -32,6 +32,7 @@ class BswAsynchronousServerCallResultPoint(BswModuleCallPoint):
         """Initialize BswAsynchronousServerCallResultPoint."""
         super().__init__()
         self.asynchronous: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BswAsynchronousServerCallResultPoint to XML element.
 
@@ -39,7 +40,7 @@ class BswAsynchronousServerCallResultPoint(BswModuleCallPoint):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

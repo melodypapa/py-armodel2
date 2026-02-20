@@ -44,6 +44,7 @@ class ScaleConstr(ARObject):
         self.short_label: Optional[Identifier] = None
         self.upper_limit: Optional[Limit] = None
         self.validity: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ScaleConstr to XML element.
 
@@ -51,7 +52,7 @@ class ScaleConstr(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize desc
@@ -143,7 +144,7 @@ class ScaleConstr(ARObject):
         # Parse desc
         child = ARObject._find_child_element(element, "DESC")
         if child is not None:
-            desc_value = ARObject._deserialize_by_tag(child, "MultiLanguageOverviewParagraph")
+            desc_value = ARObject._deserialize_with_type(child, "MultiLanguageOverviewParagraph")
             obj.desc = desc_value
 
         # Parse lower_limit

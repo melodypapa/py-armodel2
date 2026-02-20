@@ -26,5 +26,5 @@ class DiagnosticTypeOfFreezeFrameRecordNumerationEnum(AREnum):
         """
         self._value_ = value
 
-    CALCULATED = "calculated"
-    CONFIGURED = "configured"
+    CALCULATED = "CALCULATED"
+    CONFIGURED = "CONFIGURED"

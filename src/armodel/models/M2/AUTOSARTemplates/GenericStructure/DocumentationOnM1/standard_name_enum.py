@@ -28,8 +28,8 @@ class StandardNameEnum(AREnum):
         """
         self._value_ = value
 
-    AP = "AP"
-    CP = "CP"
-    FO = "FO"
-    TA = "TA"
-    TC = "TC"
+    AP = "A-P"
+    CP = "C-P"
+    FO = "F-O"
+    TA = "T-A"
+    TC = "T-C"

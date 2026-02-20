@@ -30,7 +30,7 @@
         }
       ],
       "attributes": {
-        "allocateShadow": {
+        "allocateShadowCopy": {
           "type": "Boolean",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -44,22 +44,22 @@
           "is_ref": false,
           "note": "This attribute defines a crypto algorithm restriction (kAlgId"
         },
-        "cryptoObjectTypeEnum": {
-          "type": "any (CryptoObjectTypeEnum)",
+        "cryptoObjectType": {
+          "type": "CryptoObjectTypeEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Object type that can be stored in the slot. If this field \"Undefined\" then mSlotCapacity must be larger then 0."
         },
-        "keySlotAllowed": {
-          "type": "any (CryptoKeySlotAllowed)",
+        "keySlotAllowedModification": {
+          "type": "CryptoKeySlotAllowedModification",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Restricts how this keySlot may be used Tags: atp.Status=candidate"
         },
-        "keySlotContents": {
-          "type": "any (CryptoKeySlotContent)",
+        "keySlotContentAllowedUsages": {
+          "type": "CryptoKeySlotContentAllowedUsage",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -73,7 +73,7 @@
           "note": "Capacity of the slot in bytes to be reserved by the stack use case is to define this value in case that is undefined and the slot size can deduced from cryptoObjectType and cryptoAlgId. slot size can be deduced from cryptoObject cryptoAlgId."
         },
         "slotType": {
-          "type": "any (CryptoKeySlotType)",
+          "type": "CryptoKeySlotTypeEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

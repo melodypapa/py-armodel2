@@ -43,7 +43,7 @@
         "iSignalGroup": {
           "type": "ISignalGroup",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to the ISignalGroup that is to be protected."
         },

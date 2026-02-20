@@ -50,6 +50,7 @@ class GlobalTimeSlave(Identifiable, ABC):
         self.time_leap_future: Optional[TimeValue] = None
         self.time_leap: Optional[PositiveInteger] = None
         self.time_leap_past: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize GlobalTimeSlave to XML element.
 
@@ -57,7 +58,7 @@ class GlobalTimeSlave(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

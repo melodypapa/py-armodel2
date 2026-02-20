@@ -42,6 +42,7 @@ class CanNmClusterCoupling(NmClusterCoupling):
         self.coupled_clusters: list[CanNmCluster] = []
         self.nm_busload_reduction: Optional[Any] = None
         self.nm_immediate: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CanNmClusterCoupling to XML element.
 
@@ -49,7 +50,7 @@ class CanNmClusterCoupling(NmClusterCoupling):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

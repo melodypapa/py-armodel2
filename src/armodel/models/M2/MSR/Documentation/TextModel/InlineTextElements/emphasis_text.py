@@ -52,6 +52,7 @@ class EmphasisText(ARObject):
         self.sup: Superscript = None
         self.tt: Optional[Tt] = None
         self.type: Optional[EEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EmphasisText to XML element.
 
@@ -59,7 +60,7 @@ class EmphasisText(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize color

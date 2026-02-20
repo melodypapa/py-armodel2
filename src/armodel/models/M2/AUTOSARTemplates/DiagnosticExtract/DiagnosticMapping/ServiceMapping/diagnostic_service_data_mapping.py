@@ -48,6 +48,7 @@ class DiagnosticServiceDataMapping(DiagnosticSwMapping):
         self.diagnostic: Optional[DiagnosticParameter] = None
         self.mapped_data_ref: Optional[ARRef] = None
         self.parameter: Optional[DiagnosticParameter] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticServiceDataMapping to XML element.
 
@@ -55,7 +56,7 @@ class DiagnosticServiceDataMapping(DiagnosticSwMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -101,7 +102,7 @@ class DiagnosticServiceDataMapping(DiagnosticSwMapping):
             serialized = ARObject._serialize_item(self.mapped_data_ref, "DataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("MAPPED-DATA")
+                wrapped = ET.Element("MAPPED-DATA-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -152,9 +153,9 @@ class DiagnosticServiceDataMapping(DiagnosticSwMapping):
             obj.diagnostic = diagnostic_value
 
         # Parse mapped_data_ref
-        child = ARObject._find_child_element(element, "MAPPED-DATA")
+        child = ARObject._find_child_element(element, "MAPPED-DATA-REF")
         if child is not None:
-            mapped_data_ref_value = ARObject._deserialize_by_tag(child, "DataPrototype")
+            mapped_data_ref_value = ARRef.deserialize(child)
             obj.mapped_data_ref = mapped_data_ref_value
 
         # Parse parameter

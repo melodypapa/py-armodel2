@@ -77,7 +77,7 @@
         "includedLibraries": {
           "type": "DependencyOnArtifact",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "If this dependency is specified, the execution time of the is included in the execution time data for the"
         },

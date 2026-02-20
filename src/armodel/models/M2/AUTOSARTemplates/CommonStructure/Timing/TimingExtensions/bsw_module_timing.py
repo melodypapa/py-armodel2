@@ -35,6 +35,7 @@ class BswModuleTiming(TimingExtension):
         """Initialize BswModuleTiming."""
         super().__init__()
         self.behavior: Optional[BswInternalBehavior] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BswModuleTiming to XML element.
 
@@ -42,7 +43,7 @@ class BswModuleTiming(TimingExtension):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

@@ -27,6 +27,7 @@ class BooleanValueVariationPoint(ARObject):
     def __init__(self) -> None:
         """Initialize BooleanValueVariationPoint."""
         super().__init__()
+
     def serialize(self) -> ET.Element:
         """Serialize BooleanValueVariationPoint to XML element.
 
@@ -34,7 +35,7 @@ class BooleanValueVariationPoint(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         return elem

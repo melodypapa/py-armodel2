@@ -35,6 +35,7 @@ class MsrQueryArg(ARObject):
         super().__init__()
         self.arg: String = None
         self.si: NameToken = None
+
     def serialize(self) -> ET.Element:
         """Serialize MsrQueryArg to XML element.
 
@@ -42,7 +43,7 @@ class MsrQueryArg(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize arg

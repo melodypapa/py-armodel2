@@ -41,6 +41,7 @@ class DiagEventDebounceTimeBased(DiagEventDebounceAlgorithm):
         self.time_based_fdc: Optional[TimeValue] = None
         self.time_failed: Optional[TimeValue] = None
         self.time_passed: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagEventDebounceTimeBased to XML element.
 
@@ -48,7 +49,7 @@ class DiagEventDebounceTimeBased(DiagEventDebounceAlgorithm):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

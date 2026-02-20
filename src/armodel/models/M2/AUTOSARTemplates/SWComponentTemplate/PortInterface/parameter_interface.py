@@ -37,6 +37,7 @@ class ParameterInterface(DataInterface):
         """Initialize ParameterInterface."""
         super().__init__()
         self.parameter_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ParameterInterface to XML element.
 
@@ -44,7 +45,7 @@ class ParameterInterface(DataInterface):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -57,13 +58,20 @@ class ParameterInterface(DataInterface):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize parameter_refs (list to container "PARAMETERS")
+        # Serialize parameter_refs (list to container "PARAMETER-REFS")
         if self.parameter_refs:
-            wrapper = ET.Element("PARAMETERS")
+            wrapper = ET.Element("PARAMETER-REFS")
             for item in self.parameter_refs:
                 serialized = ARObject._serialize_item(item, "ParameterDataPrototype")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("PARAMETER-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -82,13 +90,19 @@ class ParameterInterface(DataInterface):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ParameterInterface, cls).deserialize(element)
 
-        # Parse parameter_refs (list from container "PARAMETERS")
+        # Parse parameter_refs (list from container "PARAMETER-REFS")
         obj.parameter_refs = []
-        container = ARObject._find_child_element(element, "PARAMETERS")
+        container = ARObject._find_child_element(element, "PARAMETER-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.parameter_refs.append(child_value)
 

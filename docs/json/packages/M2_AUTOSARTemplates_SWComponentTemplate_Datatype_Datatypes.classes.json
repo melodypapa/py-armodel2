@@ -436,7 +436,7 @@
         }
       ],
       "attributes": {
-        "dynamicArray": {
+        "dynamicArraySizeProfile": {
           "type": "String",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -444,7 +444,7 @@
           "note": "Specifies the profile which the array will follow if it is a"
         },
         "element": {
-          "type": "any (ApplicationArray)",
+          "type": "ApplicationArrayElement",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

@@ -37,6 +37,7 @@ class BlueprintFormula(ARObject):
         super().__init__()
         self.ecuc: EcucDefinitionElement = None
         self.verbatim: MultiLanguageVerbatim = None
+
     def serialize(self) -> ET.Element:
         """Serialize BlueprintFormula to XML element.
 
@@ -44,7 +45,7 @@ class BlueprintFormula(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize ecuc
@@ -100,7 +101,7 @@ class BlueprintFormula(ARObject):
         # Parse verbatim
         child = ARObject._find_child_element(element, "VERBATIM")
         if child is not None:
-            verbatim_value = ARObject._deserialize_by_tag(child, "MultiLanguageVerbatim")
+            verbatim_value = ARObject._deserialize_with_type(child, "MultiLanguageVerbatim")
             obj.verbatim = verbatim_value
 
         return obj

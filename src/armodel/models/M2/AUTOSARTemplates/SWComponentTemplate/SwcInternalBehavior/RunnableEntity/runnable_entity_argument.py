@@ -32,6 +32,7 @@ class RunnableEntityArgument(ARObject):
         """Initialize RunnableEntityArgument."""
         super().__init__()
         self.symbol: Optional[CIdentifier] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RunnableEntityArgument to XML element.
 
@@ -39,7 +40,7 @@ class RunnableEntityArgument(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize symbol

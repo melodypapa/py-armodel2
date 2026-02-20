@@ -49,6 +49,7 @@ class SenderReceiverToSignalMapping(DataMapping):
         self.sender_to_signal_ref: Optional[ARRef] = None
         self.signal_to_ref: Optional[ARRef] = None
         self.system_signal: Optional[SystemSignal] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SenderReceiverToSignalMapping to XML element.
 
@@ -56,7 +57,7 @@ class SenderReceiverToSignalMapping(DataMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -74,7 +75,7 @@ class SenderReceiverToSignalMapping(DataMapping):
             serialized = ARObject._serialize_item(self.data_element_system_instance_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DATA-ELEMENT-SYSTEM-INSTANCE-REF")
+                wrapped = ET.Element("DATA-ELEMENT-SYSTEM-INSTANCE-REF-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -88,7 +89,7 @@ class SenderReceiverToSignalMapping(DataMapping):
             serialized = ARObject._serialize_item(self.sender_to_signal_ref, "TextTableMapping")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SENDER-TO-SIGNAL")
+                wrapped = ET.Element("SENDER-TO-SIGNAL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -102,7 +103,7 @@ class SenderReceiverToSignalMapping(DataMapping):
             serialized = ARObject._serialize_item(self.signal_to_ref, "TextTableMapping")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SIGNAL-TO")
+                wrapped = ET.Element("SIGNAL-TO-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -141,21 +142,21 @@ class SenderReceiverToSignalMapping(DataMapping):
         obj = super(SenderReceiverToSignalMapping, cls).deserialize(element)
 
         # Parse data_element_system_instance_ref
-        child = ARObject._find_child_element(element, "DATA-ELEMENT-SYSTEM-INSTANCE-REF")
+        child = ARObject._find_child_element(element, "DATA-ELEMENT-SYSTEM-INSTANCE-REF-REF")
         if child is not None:
-            data_element_system_instance_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            data_element_system_instance_ref_value = ARRef.deserialize(child)
             obj.data_element_system_instance_ref = data_element_system_instance_ref_value
 
         # Parse sender_to_signal_ref
-        child = ARObject._find_child_element(element, "SENDER-TO-SIGNAL")
+        child = ARObject._find_child_element(element, "SENDER-TO-SIGNAL-REF")
         if child is not None:
-            sender_to_signal_ref_value = ARObject._deserialize_by_tag(child, "TextTableMapping")
+            sender_to_signal_ref_value = ARRef.deserialize(child)
             obj.sender_to_signal_ref = sender_to_signal_ref_value
 
         # Parse signal_to_ref
-        child = ARObject._find_child_element(element, "SIGNAL-TO")
+        child = ARObject._find_child_element(element, "SIGNAL-TO-REF")
         if child is not None:
-            signal_to_ref_value = ARObject._deserialize_by_tag(child, "TextTableMapping")
+            signal_to_ref_value = ARRef.deserialize(child)
             obj.signal_to_ref = signal_to_ref_value
 
         # Parse system_signal

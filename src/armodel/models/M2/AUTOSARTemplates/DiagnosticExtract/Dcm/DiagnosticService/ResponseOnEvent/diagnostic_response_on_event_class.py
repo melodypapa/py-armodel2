@@ -45,6 +45,7 @@ class DiagnosticResponseOnEventClass(DiagnosticServiceClass):
         self.max_supported: Optional[PositiveInteger] = None
         self.response_on: Optional[TimeValue] = None
         self.store_event: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticResponseOnEventClass to XML element.
 
@@ -52,7 +53,7 @@ class DiagnosticResponseOnEventClass(DiagnosticServiceClass):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

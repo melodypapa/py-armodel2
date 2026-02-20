@@ -26,4 +26,4 @@ class DdsLivenessKindEnum(AREnum):
         """
         self._value_ = value
 
-    AUTOMATICMANUAL_BY_PARTICIPANTMANUAL_BY_TOPIC = "automaticmanualByParticipantmanualByTopic"
+    AUTOMATICMANUAL_BY_PARTICIPANTMANUAL_BY_TOPIC = "AUTOMATICMANUAL-BY-PARTICIPANTMANUAL-BY-TOPIC"

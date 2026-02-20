@@ -75,7 +75,7 @@
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
-          "note": "Describes a read only memory object containing characteristic value(s) implemented by this Internal of ParameterDataPrototype has to be the ”C’ identifier of the described constant. value(s) might be shared between Sw the same SwComponentType. of constantMemory is subject to the purpose to support variability in the or module implementations. algorithms in the implementation are number of memory objects. atpVariation"
+          "note": "Describes a read only memory object containing characteristic value(s) implemented by this Internal of ParameterDataPrototype has to be the \u201dC\u2019 identifier of the described constant. value(s) might be shared between Sw the same SwComponentType. of constantMemory is subject to the purpose to support variability in the or module implementations. algorithms in the implementation are number of memory objects. atpVariation"
         },
         "constantValues": {
           "type": "ConstantSpecification",
@@ -87,7 +87,7 @@
         "dataTypes": {
           "type": "DataTypeMappingSet",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to the DataTypeMapping to be applied for the InternalBehavior"
         },
@@ -108,9 +108,9 @@
         "staticMemories": {
           "type": "VariableDataPrototype",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
-          "note": "Describes a read and writeable static memory object variables implemented by component. The term \"static\" is used in the \"non-temporary\" and does not necessarily linker encapsulation. This kind of memory is if supportsMultipleInstantiation is FALSE. of the VariableDataPrototype has to be the ”C’ identifier of the described variable. of staticMemory is subject to variability purpose to support variability in the software algorithms in the implementation are number of memory objects. atpVariation"
+          "note": "Describes a read and writeable static memory object variables implemented by component. The term \"static\" is used in the \"non-temporary\" and does not necessarily linker encapsulation. This kind of memory is if supportsMultipleInstantiation is FALSE. of the VariableDataPrototype has to be the \u201dC\u2019 identifier of the described variable. of staticMemory is subject to variability purpose to support variability in the software algorithms in the implementation are number of memory objects. atpVariation"
         }
       }
     },

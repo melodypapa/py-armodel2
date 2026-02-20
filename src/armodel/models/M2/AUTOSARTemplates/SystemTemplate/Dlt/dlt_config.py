@@ -44,6 +44,7 @@ class DltConfig(ARObject):
         self.dlt_log_channels: list[DltLogChannel] = []
         self.session_id: Optional[Boolean] = None
         self.timestamp: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DltConfig to XML element.
 
@@ -51,7 +52,7 @@ class DltConfig(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize dlt_ecu

@@ -34,6 +34,7 @@ class DefaultValueElement(ARObject):
         super().__init__()
         self.element_byte_value: Optional[Integer] = None
         self.element_position: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DefaultValueElement to XML element.
 
@@ -41,7 +42,7 @@ class DefaultValueElement(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize element_byte_value

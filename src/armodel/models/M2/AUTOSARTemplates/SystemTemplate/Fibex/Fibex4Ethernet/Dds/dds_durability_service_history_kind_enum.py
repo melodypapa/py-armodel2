@@ -26,4 +26,4 @@ class DdsDurabilityServiceHistoryKindEnum(AREnum):
         """
         self._value_ = value
 
-    KEEP_ALLKEEP_LAST = "keepAllkeepLast"
+    KEEP_ALLKEEP_LAST = "KEEP-ALLKEEP-LAST"

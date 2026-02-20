@@ -40,6 +40,7 @@ class DdsCpConfig(ARElement):
         super().__init__()
         self.dds_domains: list[DdsCpDomain] = []
         self.dds_qos_profiles: list[DdsCpQosProfile] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DdsCpConfig to XML element.
 
@@ -47,7 +48,7 @@ class DdsCpConfig(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

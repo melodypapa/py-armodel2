@@ -27,5 +27,5 @@ class RamBlockStatusControlEnum(AREnum):
         """
         self._value_ = value
 
-    API = "api"
-    NV_RAM_MANAGER = "nvRamManager"
+    API = "API"
+    NV_RAM_MANAGER = "NV-RAM-MANAGER"

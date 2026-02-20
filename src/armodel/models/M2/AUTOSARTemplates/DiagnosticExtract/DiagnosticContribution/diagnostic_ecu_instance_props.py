@@ -40,6 +40,7 @@ class DiagnosticEcuInstanceProps(DiagnosticCommonElement):
         super().__init__()
         self.ecu_instances: list[EcuInstance] = []
         self.obd_support: Optional[DiagnosticObdSupportEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticEcuInstanceProps to XML element.
 
@@ -47,7 +48,7 @@ class DiagnosticEcuInstanceProps(DiagnosticCommonElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

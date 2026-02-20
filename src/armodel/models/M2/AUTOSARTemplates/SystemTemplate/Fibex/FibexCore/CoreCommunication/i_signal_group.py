@@ -49,6 +49,7 @@ class ISignalGroup(FibexElement):
         self.i_signals: list[ISignal] = []
         self.system_signal_group_ref: Optional[ARRef] = None
         self.transformation_i_signals: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ISignalGroup to XML element.
 
@@ -56,7 +57,7 @@ class ISignalGroup(FibexElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -98,7 +99,7 @@ class ISignalGroup(FibexElement):
             serialized = ARObject._serialize_item(self.system_signal_group_ref, "SystemSignalGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SYSTEM-SIGNAL-GROUP")
+                wrapped = ET.Element("SYSTEM-SIGNAL-GROUP-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -149,9 +150,9 @@ class ISignalGroup(FibexElement):
                     obj.i_signals.append(child_value)
 
         # Parse system_signal_group_ref
-        child = ARObject._find_child_element(element, "SYSTEM-SIGNAL-GROUP")
+        child = ARObject._find_child_element(element, "SYSTEM-SIGNAL-GROUP-REF")
         if child is not None:
-            system_signal_group_ref_value = ARObject._deserialize_by_tag(child, "SystemSignalGroup")
+            system_signal_group_ref_value = ARRef.deserialize(child)
             obj.system_signal_group_ref = system_signal_group_ref_value
 
         # Parse transformation_i_signals (list from container "TRANSFORMATION-I-SIGNALS")

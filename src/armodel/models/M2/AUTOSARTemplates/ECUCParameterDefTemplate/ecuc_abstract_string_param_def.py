@@ -9,6 +9,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCParameterDefTemplate.cla
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import atp_variant
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
@@ -42,113 +43,6 @@ class EcucAbstractStringParamDef(ARObject, ABC):
         self.max_length: Optional[PositiveInteger] = None
         self.min_length: Optional[PositiveInteger] = None
         self.regular: Optional[RegularExpression] = None
-    def serialize(self) -> ET.Element:
-        """Serialize EcucAbstractStringParamDef to XML element.
-
-        Returns:
-            xml.etree.ElementTree.Element representing this object
-        """
-        # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
-        elem = ET.Element(tag)
-
-        # Serialize default_value
-        if self.default_value is not None:
-            serialized = ARObject._serialize_item(self.default_value, "VerbatimString")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("DEFAULT-VALUE")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
-
-        # Serialize max_length
-        if self.max_length is not None:
-            serialized = ARObject._serialize_item(self.max_length, "PositiveInteger")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MAX-LENGTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
-
-        # Serialize min_length
-        if self.min_length is not None:
-            serialized = ARObject._serialize_item(self.min_length, "PositiveInteger")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("MIN-LENGTH")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
-
-        # Serialize regular
-        if self.regular is not None:
-            serialized = ARObject._serialize_item(self.regular, "RegularExpression")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REGULAR")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
-
-        return elem
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "EcucAbstractStringParamDef":
-        """Deserialize XML element to EcucAbstractStringParamDef object.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Deserialized EcucAbstractStringParamDef object
-        """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
-
-        # Parse default_value
-        child = ARObject._find_child_element(element, "DEFAULT-VALUE")
-        if child is not None:
-            default_value_value = ARObject._deserialize_by_tag(child, "VerbatimString")
-            obj.default_value = default_value_value
-
-        # Parse max_length
-        child = ARObject._find_child_element(element, "MAX-LENGTH")
-        if child is not None:
-            max_length_value = child.text
-            obj.max_length = max_length_value
-
-        # Parse min_length
-        child = ARObject._find_child_element(element, "MIN-LENGTH")
-        if child is not None:
-            min_length_value = child.text
-            obj.min_length = min_length_value
-
-        # Parse regular
-        child = ARObject._find_child_element(element, "REGULAR")
-        if child is not None:
-            regular_value = child.text
-            obj.regular = regular_value
-
-        return obj
 
 
 

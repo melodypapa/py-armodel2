@@ -40,6 +40,7 @@ class SecurityEventContextMapping(IdsMapping, ABC):
         self.filter_chain: Optional[Any] = None
         self.idsm_instance: Optional[IdsmInstance] = None
         self.mapped_securities: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize SecurityEventContextMapping to XML element.
 
@@ -47,7 +48,7 @@ class SecurityEventContextMapping(IdsMapping, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

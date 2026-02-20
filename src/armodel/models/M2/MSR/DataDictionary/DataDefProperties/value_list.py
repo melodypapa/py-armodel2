@@ -35,6 +35,7 @@ class ValueList(ARObject):
         """Initialize ValueList."""
         super().__init__()
         self.v: Optional[Numerical] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ValueList to XML element.
 
@@ -42,7 +43,7 @@ class ValueList(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize v

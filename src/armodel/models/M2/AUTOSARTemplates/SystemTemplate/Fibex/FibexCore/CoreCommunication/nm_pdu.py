@@ -47,6 +47,7 @@ class NmPdu(Pdu):
         self.nm_data: Optional[Boolean] = None
         self.nm_vote_information: Optional[Boolean] = None
         self.unused_bit: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize NmPdu to XML element.
 
@@ -54,7 +55,7 @@ class NmPdu(Pdu):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -67,13 +68,20 @@ class NmPdu(Pdu):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize i_signal_to_i_pdu_refs (list to container "I-SIGNAL-TO-I-PDUS")
+        # Serialize i_signal_to_i_pdu_refs (list to container "I-SIGNAL-TO-I-PDU-REFS")
         if self.i_signal_to_i_pdu_refs:
-            wrapper = ET.Element("I-SIGNAL-TO-I-PDUS")
+            wrapper = ET.Element("I-SIGNAL-TO-I-PDU-REFS")
             for item in self.i_signal_to_i_pdu_refs:
                 serialized = ARObject._serialize_item(item, "ISignalToIPduMapping")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("I-SIGNAL-TO-I-PDU-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -134,13 +142,19 @@ class NmPdu(Pdu):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(NmPdu, cls).deserialize(element)
 
-        # Parse i_signal_to_i_pdu_refs (list from container "I-SIGNAL-TO-I-PDUS")
+        # Parse i_signal_to_i_pdu_refs (list from container "I-SIGNAL-TO-I-PDU-REFS")
         obj.i_signal_to_i_pdu_refs = []
-        container = ARObject._find_child_element(element, "I-SIGNAL-TO-I-PDUS")
+        container = ARObject._find_child_element(element, "I-SIGNAL-TO-I-PDU-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.i_signal_to_i_pdu_refs.append(child_value)
 

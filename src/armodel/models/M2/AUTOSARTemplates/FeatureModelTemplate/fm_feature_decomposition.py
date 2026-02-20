@@ -42,6 +42,7 @@ class FMFeatureDecomposition(ARObject):
         self.features: list[FMFeature] = []
         self.max: Optional[PositiveInteger] = None
         self.min: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FMFeatureDecomposition to XML element.
 
@@ -49,7 +50,7 @@ class FMFeatureDecomposition(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize category

@@ -41,6 +41,7 @@ class TDEventOccurrenceExpression(ARObject):
         self.formula: Optional[Any] = None
         self.modes: list[TimingModeInstance] = []
         self.variables: list[Any] = []
+
     def serialize(self) -> ET.Element:
         """Serialize TDEventOccurrenceExpression to XML element.
 
@@ -48,7 +49,7 @@ class TDEventOccurrenceExpression(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize arguments (list to container "ARGUMENTS")

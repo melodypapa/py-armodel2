@@ -26,6 +26,6 @@ class TDEventISignalTypeEnum(AREnum):
         """
         self._value_ = value
 
-    I_SIGNAL_AVAILABLE_FOR = "iSignalAvailableFor"
-    RTE = "RTE"
-    I_SIGNAL_SENT_TO_COM = "iSignalSentToCOM"
+    I_SIGNAL_AVAILABLE_FOR = "I-SIGNAL-AVAILABLE-FOR"
+    RTE = "R-T-E"
+    I_SIGNAL_SENT_TO_COM = "I-SIGNAL-SENT-TO-C-O-M"

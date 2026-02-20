@@ -47,6 +47,7 @@ class DiagEventDebounceCounterBased(DiagEventDebounceAlgorithm):
         self.counter_jump: Optional[Integer] = None
         self.counter_jump_up: Optional[Integer] = None
         self.counter_passed: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagEventDebounceCounterBased to XML element.
 
@@ -54,7 +55,7 @@ class DiagEventDebounceCounterBased(DiagEventDebounceAlgorithm):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

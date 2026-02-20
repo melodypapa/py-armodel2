@@ -1,13 +1,16 @@
 """Utility functions for code generation."""
 
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 from ._common import to_snake_case
 
 
+__all__ = ["create_directory_structure", "to_snake_case"]
+
+
 def create_directory_structure(
-    types: list, output_dir: Path, package_data: Dict[str, Dict[str, Any]]
+    types: List[Any], output_dir: Path, package_data: Dict[str, Dict[str, Any]]
 ) -> None:
     """Create directory structure from package paths.
 

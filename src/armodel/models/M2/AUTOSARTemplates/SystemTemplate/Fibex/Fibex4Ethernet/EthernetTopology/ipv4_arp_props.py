@@ -40,6 +40,7 @@ class Ipv4ArpProps(ARObject):
         self.tcp_ip_arp_packet: Optional[Boolean] = None
         self.tcp_ip_arp: Optional[TimeValue] = None
         self.tcp_ip_arp_table: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Ipv4ArpProps to XML element.
 
@@ -47,7 +48,7 @@ class Ipv4ArpProps(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize tcp_ip_arp_num

@@ -26,5 +26,5 @@ class SendIndicationEnum(AREnum):
         """
         self._value_ = value
 
-    ANY_SEND_OPERATION = "anySendOperation"
-    NONE = "none"
+    ANY_SEND_OPERATION = "ANY-SEND-OPERATION"
+    NONE = "NONE"

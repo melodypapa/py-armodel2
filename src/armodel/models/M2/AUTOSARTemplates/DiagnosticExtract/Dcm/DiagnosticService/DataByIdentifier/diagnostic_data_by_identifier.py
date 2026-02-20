@@ -36,6 +36,7 @@ class DiagnosticDataByIdentifier(DiagnosticServiceInstance, ABC):
         """Initialize DiagnosticDataByIdentifier."""
         super().__init__()
         self.data_identifier: Optional[DiagnosticAbstractDataIdentifier] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticDataByIdentifier to XML element.
 
@@ -43,7 +44,7 @@ class DiagnosticDataByIdentifier(DiagnosticServiceInstance, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

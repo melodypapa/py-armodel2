@@ -37,6 +37,7 @@ class IndentSample(ARObject):
         super().__init__()
         self.item_label_pos_enum: Optional[ItemLabelPosEnum] = None
         self.l2: LOverviewParagraph = None
+
     def serialize(self) -> ET.Element:
         """Serialize IndentSample to XML element.
 
@@ -44,7 +45,7 @@ class IndentSample(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize item_label_pos_enum

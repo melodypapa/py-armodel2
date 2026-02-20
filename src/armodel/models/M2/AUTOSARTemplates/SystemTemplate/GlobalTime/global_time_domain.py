@@ -76,6 +76,7 @@ class GlobalTimeDomain(FibexElement):
         self.pdu_triggering_ref: Optional[ARRef] = None
         self.slaves: list[GlobalTimeSlave] = []
         self.sync_loss: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize GlobalTimeDomain to XML element.
 
@@ -83,7 +84,7 @@ class GlobalTimeDomain(FibexElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -205,7 +206,7 @@ class GlobalTimeDomain(FibexElement):
             serialized = ARObject._serialize_item(self.pdu_triggering_ref, "PduTriggering")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PDU-TRIGGERING")
+                wrapped = ET.Element("PDU-TRIGGERING-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -310,9 +311,9 @@ class GlobalTimeDomain(FibexElement):
             obj.offset_time = offset_time_value
 
         # Parse pdu_triggering_ref
-        child = ARObject._find_child_element(element, "PDU-TRIGGERING")
+        child = ARObject._find_child_element(element, "PDU-TRIGGERING-REF")
         if child is not None:
-            pdu_triggering_ref_value = ARObject._deserialize_by_tag(child, "PduTriggering")
+            pdu_triggering_ref_value = ARRef.deserialize(child)
             obj.pdu_triggering_ref = pdu_triggering_ref_value
 
         # Parse slaves (list from container "SLAVES")

@@ -36,6 +36,7 @@ class SwcServiceDependencyInSystemInstanceRef(ARObject):
         self.context_root_sw: Optional[RootSwCompositionPrototype] = None
         self.context_sw_prototypes: list[Any] = []
         self.target_swc: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwcServiceDependencyInSystemInstanceRef to XML element.
 
@@ -43,7 +44,7 @@ class SwcServiceDependencyInSystemInstanceRef(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize context_root_sw

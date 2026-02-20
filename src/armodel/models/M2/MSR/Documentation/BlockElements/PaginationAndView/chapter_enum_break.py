@@ -26,5 +26,5 @@ class ChapterEnumBreak(AREnum):
         """
         self._value_ = value
 
-    BREAK = "break"
-    NO_BREAK = "noBreak"
+    BREAK = "BREAK"
+    NO_BREAK = "NO-BREAK"

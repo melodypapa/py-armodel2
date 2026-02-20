@@ -62,6 +62,7 @@ class TcpProps(ARObject):
         self.tcp_syn_max_rtx: Optional[PositiveInteger] = None
         self.tcp_syn_received: Optional[TimeValue] = None
         self.tcp_ttl: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TcpProps to XML element.
 
@@ -69,7 +70,7 @@ class TcpProps(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize tcp_congestion

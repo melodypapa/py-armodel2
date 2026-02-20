@@ -37,6 +37,7 @@ class ModeSwitchPoint(AbstractAccessPoint):
         """Initialize ModeSwitchPoint."""
         super().__init__()
         self.mode_group_swc_instance_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ModeSwitchPoint to XML element.
 
@@ -44,7 +45,7 @@ class ModeSwitchPoint(AbstractAccessPoint):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class ModeSwitchPoint(AbstractAccessPoint):
             serialized = ARObject._serialize_item(self.mode_group_swc_instance_ref, "ModeDeclarationGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("MODE-GROUP-SWC-INSTANCE-REF")
+                wrapped = ET.Element("MODE-GROUP-SWC-INSTANCE-REF-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -87,9 +88,9 @@ class ModeSwitchPoint(AbstractAccessPoint):
         obj = super(ModeSwitchPoint, cls).deserialize(element)
 
         # Parse mode_group_swc_instance_ref
-        child = ARObject._find_child_element(element, "MODE-GROUP-SWC-INSTANCE-REF")
+        child = ARObject._find_child_element(element, "MODE-GROUP-SWC-INSTANCE-REF-REF")
         if child is not None:
-            mode_group_swc_instance_ref_value = ARObject._deserialize_by_tag(child, "ModeDeclarationGroup")
+            mode_group_swc_instance_ref_value = ARRef.deserialize(child)
             obj.mode_group_swc_instance_ref = mode_group_swc_instance_ref_value
 
         return obj

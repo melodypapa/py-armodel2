@@ -39,6 +39,7 @@ class AutosarDataPrototype(DataPrototype, ABC):
         """Initialize AutosarDataPrototype."""
         super().__init__()
         self.type: Optional[AutosarDataType] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AutosarDataPrototype to XML element.
 
@@ -46,7 +47,7 @@ class AutosarDataPrototype(DataPrototype, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

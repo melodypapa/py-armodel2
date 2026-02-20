@@ -38,6 +38,7 @@ class IncludedModeDeclarationGroupSet(ARObject):
         super().__init__()
         self.mode_refs: list[ARRef] = []
         self.prefix: Optional[Identifier] = None
+
     def serialize(self) -> ET.Element:
         """Serialize IncludedModeDeclarationGroupSet to XML element.
 
@@ -45,16 +46,23 @@ class IncludedModeDeclarationGroupSet(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize mode_refs (list to container "MODES")
+        # Serialize mode_refs (list to container "MODE-REFS")
         if self.mode_refs:
-            wrapper = ET.Element("MODES")
+            wrapper = ET.Element("MODE-REFS")
             for item in self.mode_refs:
                 serialized = ARObject._serialize_item(item, "ModeDeclarationGroup")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("MODE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -88,13 +96,19 @@ class IncludedModeDeclarationGroupSet(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse mode_refs (list from container "MODES")
+        # Parse mode_refs (list from container "MODE-REFS")
         obj.mode_refs = []
-        container = ARObject._find_child_element(element, "MODES")
+        container = ARObject._find_child_element(element, "MODE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.mode_refs.append(child_value)
 

@@ -45,6 +45,7 @@ class ClientServerOperationMapping(ARObject):
         self.first_operation: Optional[ClientServerOperation] = None
         self.first_to_second: Optional[DataTransformation] = None
         self.second: Optional[ClientServerOperation] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ClientServerOperationMapping to XML element.
 
@@ -52,16 +53,23 @@ class ClientServerOperationMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize argument_refs (list to container "ARGUMENTS")
+        # Serialize argument_refs (list to container "ARGUMENT-REFS")
         if self.argument_refs:
-            wrapper = ET.Element("ARGUMENTS")
+            wrapper = ET.Element("ARGUMENT-REFS")
             for item in self.argument_refs:
                 serialized = ARObject._serialize_item(item, "DataPrototypeMapping")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("ARGUMENT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -123,13 +131,19 @@ class ClientServerOperationMapping(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse argument_refs (list from container "ARGUMENTS")
+        # Parse argument_refs (list from container "ARGUMENT-REFS")
         obj.argument_refs = []
-        container = ARObject._find_child_element(element, "ARGUMENTS")
+        container = ARObject._find_child_element(element, "ARGUMENT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.argument_refs.append(child_value)
 

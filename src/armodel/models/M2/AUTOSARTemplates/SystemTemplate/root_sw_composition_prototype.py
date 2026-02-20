@@ -45,6 +45,7 @@ class RootSwCompositionPrototype(Identifiable):
         self.calibrations: list[Any] = []
         self.flat_map: Optional[FlatMap] = None
         self.software: Optional[CompositionSwComponentType] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RootSwCompositionPrototype to XML element.
 
@@ -52,7 +53,7 @@ class RootSwCompositionPrototype(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

@@ -45,6 +45,7 @@ class DiagnosticSession(DiagnosticCommonElement):
         self.jump_to_boot: Optional[DiagnosticJumpToBootLoaderEnum] = None
         self.p2_server_max: Optional[TimeValue] = None
         self.p2_star_server: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticSession to XML element.
 
@@ -52,7 +53,7 @@ class DiagnosticSession(DiagnosticCommonElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

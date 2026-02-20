@@ -37,6 +37,7 @@ class InfrastructureServices(ARObject):
         super().__init__()
         self.do_ip_entity: Optional[DoIpEntity] = None
         self.time: Optional[TimeSynchronization] = None
+
     def serialize(self) -> ET.Element:
         """Serialize InfrastructureServices to XML element.
 
@@ -44,7 +45,7 @@ class InfrastructureServices(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize do_ip_entity

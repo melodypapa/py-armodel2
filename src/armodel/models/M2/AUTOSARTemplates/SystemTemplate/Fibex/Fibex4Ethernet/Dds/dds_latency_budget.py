@@ -32,6 +32,7 @@ class DdsLatencyBudget(ARObject):
         """Initialize DdsLatencyBudget."""
         super().__init__()
         self.latency_budget: Optional[Float] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DdsLatencyBudget to XML element.
 
@@ -39,7 +40,7 @@ class DdsLatencyBudget(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize latency_budget

@@ -26,5 +26,5 @@ class ShowResourceLongNameEnum(AREnum):
         """
         self._value_ = value
 
-    NO_SHOW_LONG_NAME = "noShowLongName"
-    SHOW_LONG_NAME = "showLongName"
+    NO_SHOW_LONG_NAME = "NO-SHOW-LONG-NAME"
+    SHOW_LONG_NAME = "SHOW-LONG-NAME"

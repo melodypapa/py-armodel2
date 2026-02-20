@@ -26,5 +26,5 @@ class EcucScopeEnum(AREnum):
         """
         self._value_ = value
 
-    ECU = "ECU"
-    LOCAL = "local"
+    ECU = "E-C-U"
+    LOCAL = "LOCAL"

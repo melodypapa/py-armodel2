@@ -34,13 +34,14 @@ class TDEventTrigger(TDEventVfbPort):
         """
         return False
 
-    td_event_trigger_ref: Optional[ARRef]
+    td_event_trigger_ref: Optional[TDEventTriggerTypeEnum]
     trigger_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize TDEventTrigger."""
         super().__init__()
-        self.td_event_trigger_ref: Optional[ARRef] = None
+        self.td_event_trigger_ref: Optional[TDEventTriggerTypeEnum] = None
         self.trigger_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TDEventTrigger to XML element.
 
@@ -48,7 +49,7 @@ class TDEventTrigger(TDEventVfbPort):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -66,7 +67,7 @@ class TDEventTrigger(TDEventVfbPort):
             serialized = ARObject._serialize_item(self.td_event_trigger_ref, "TDEventTriggerTypeEnum")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TD-EVENT-TRIGGER")
+                wrapped = ET.Element("TD-EVENT-TRIGGER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -80,7 +81,7 @@ class TDEventTrigger(TDEventVfbPort):
             serialized = ARObject._serialize_item(self.trigger_ref, "Trigger")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TRIGGER")
+                wrapped = ET.Element("TRIGGER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -105,15 +106,15 @@ class TDEventTrigger(TDEventVfbPort):
         obj = super(TDEventTrigger, cls).deserialize(element)
 
         # Parse td_event_trigger_ref
-        child = ARObject._find_child_element(element, "TD-EVENT-TRIGGER")
+        child = ARObject._find_child_element(element, "TD-EVENT-TRIGGER-REF")
         if child is not None:
-            td_event_trigger_ref_value = TDEventTriggerTypeEnum.deserialize(child)
+            td_event_trigger_ref_value = ARRef.deserialize(child)
             obj.td_event_trigger_ref = td_event_trigger_ref_value
 
         # Parse trigger_ref
-        child = ARObject._find_child_element(element, "TRIGGER")
+        child = ARObject._find_child_element(element, "TRIGGER-REF")
         if child is not None:
-            trigger_ref_value = ARObject._deserialize_by_tag(child, "Trigger")
+            trigger_ref_value = ARRef.deserialize(child)
             obj.trigger_ref = trigger_ref_value
 
         return obj

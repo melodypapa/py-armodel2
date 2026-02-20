@@ -50,6 +50,7 @@ class LinTpNode(Identifiable):
         self.p2_max: Optional[TimeValue] = None
         self.p2_timing: Optional[TimeValue] = None
         self.tp_address: Optional[TpAddress] = None
+
     def serialize(self) -> ET.Element:
         """Serialize LinTpNode to XML element.
 
@@ -57,7 +58,7 @@ class LinTpNode(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

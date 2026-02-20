@@ -26,5 +26,5 @@ class UdpChecksumCalculationEnum(AREnum):
         """
         self._value_ = value
 
-    UDP_CHECKSUM_DISABLED = "udpChecksumDisabled"
-    UDP_CHECKSUM_ENABLED = "udpChecksumEnabled"
+    UDP_CHECKSUM_DISABLED = "UDP-CHECKSUM-DISABLED"
+    UDP_CHECKSUM_ENABLED = "UDP-CHECKSUM-ENABLED"

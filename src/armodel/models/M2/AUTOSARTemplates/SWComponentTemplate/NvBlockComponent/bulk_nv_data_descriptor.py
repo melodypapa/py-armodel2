@@ -41,6 +41,7 @@ class BulkNvDataDescriptor(Identifiable):
         super().__init__()
         self.bulk_nv_block_ref: Optional[ARRef] = None
         self.nv_block_data_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize BulkNvDataDescriptor to XML element.
 
@@ -48,7 +49,7 @@ class BulkNvDataDescriptor(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -66,7 +67,7 @@ class BulkNvDataDescriptor(Identifiable):
             serialized = ARObject._serialize_item(self.bulk_nv_block_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("BULK-NV-BLOCK")
+                wrapped = ET.Element("BULK-NV-BLOCK-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -75,13 +76,20 @@ class BulkNvDataDescriptor(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize nv_block_data_refs (list to container "NV-BLOCK-DATAS")
+        # Serialize nv_block_data_refs (list to container "NV-BLOCK-DATA-REFS")
         if self.nv_block_data_refs:
-            wrapper = ET.Element("NV-BLOCK-DATAS")
+            wrapper = ET.Element("NV-BLOCK-DATA-REFS")
             for item in self.nv_block_data_refs:
                 serialized = ARObject._serialize_item(item, "NvBlockDataMapping")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("NV-BLOCK-DATA-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -101,18 +109,24 @@ class BulkNvDataDescriptor(Identifiable):
         obj = super(BulkNvDataDescriptor, cls).deserialize(element)
 
         # Parse bulk_nv_block_ref
-        child = ARObject._find_child_element(element, "BULK-NV-BLOCK")
+        child = ARObject._find_child_element(element, "BULK-NV-BLOCK-REF")
         if child is not None:
-            bulk_nv_block_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            bulk_nv_block_ref_value = ARRef.deserialize(child)
             obj.bulk_nv_block_ref = bulk_nv_block_ref_value
 
-        # Parse nv_block_data_refs (list from container "NV-BLOCK-DATAS")
+        # Parse nv_block_data_refs (list from container "NV-BLOCK-DATA-REFS")
         obj.nv_block_data_refs = []
-        container = ARObject._find_child_element(element, "NV-BLOCK-DATAS")
+        container = ARObject._find_child_element(element, "NV-BLOCK-DATA-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.nv_block_data_refs.append(child_value)
 

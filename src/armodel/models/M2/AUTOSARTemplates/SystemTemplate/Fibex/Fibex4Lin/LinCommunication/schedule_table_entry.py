@@ -41,6 +41,7 @@ class ScheduleTableEntry(ARObject, ABC):
         self.delay: Optional[TimeValue] = None
         self.introduction: Optional[DocumentationBlock] = None
         self.position_in_table: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ScheduleTableEntry to XML element.
 
@@ -48,7 +49,7 @@ class ScheduleTableEntry(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize delay

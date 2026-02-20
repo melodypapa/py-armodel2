@@ -83,6 +83,7 @@ class CouplingPort(Identifiable):
         self.vlans: list[VlanMembership] = []
         self.vlan_modifier: Optional[Any] = None
         self.wakeup_sleep: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CouplingPort to XML element.
 
@@ -90,7 +91,7 @@ class CouplingPort(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -173,13 +174,20 @@ class CouplingPort(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize mac_multicast_group_refs (list to container "MAC-MULTICAST-GROUPS")
+        # Serialize mac_multicast_group_refs (list to container "MAC-MULTICAST-GROUP-REFS")
         if self.mac_multicast_group_refs:
-            wrapper = ET.Element("MAC-MULTICAST-GROUPS")
+            wrapper = ET.Element("MAC-MULTICAST-GROUP-REFS")
             for item in self.mac_multicast_group_refs:
                 serialized = ARObject._serialize_item(item, "MacMulticastGroup")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("MAC-MULTICAST-GROUP-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -221,13 +229,20 @@ class CouplingPort(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize pnc_mapping_ident_refs (list to container "PNC-MAPPING-IDENTS")
+        # Serialize pnc_mapping_ident_refs (list to container "PNC-MAPPING-IDENT-REFS")
         if self.pnc_mapping_ident_refs:
-            wrapper = ET.Element("PNC-MAPPING-IDENTS")
+            wrapper = ET.Element("PNC-MAPPING-IDENT-REFS")
             for item in self.pnc_mapping_ident_refs:
                 serialized = ARObject._serialize_item(item, "PncMappingIdent")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("PNC-MAPPING-IDENT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -328,13 +343,19 @@ class CouplingPort(Identifiable):
             mac_layer_type_enum_value = EthernetMacLayerTypeEnum.deserialize(child)
             obj.mac_layer_type_enum = mac_layer_type_enum_value
 
-        # Parse mac_multicast_group_refs (list from container "MAC-MULTICAST-GROUPS")
+        # Parse mac_multicast_group_refs (list from container "MAC-MULTICAST-GROUP-REFS")
         obj.mac_multicast_group_refs = []
-        container = ARObject._find_child_element(element, "MAC-MULTICAST-GROUPS")
+        container = ARObject._find_child_element(element, "MAC-MULTICAST-GROUP-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.mac_multicast_group_refs.append(child_value)
 
@@ -360,13 +381,19 @@ class CouplingPort(Identifiable):
             plca_props_value = ARObject._deserialize_by_tag(child, "PlcaProps")
             obj.plca_props = plca_props_value
 
-        # Parse pnc_mapping_ident_refs (list from container "PNC-MAPPING-IDENTS")
+        # Parse pnc_mapping_ident_refs (list from container "PNC-MAPPING-IDENT-REFS")
         obj.pnc_mapping_ident_refs = []
-        container = ARObject._find_child_element(element, "PNC-MAPPING-IDENTS")
+        container = ARObject._find_child_element(element, "PNC-MAPPING-IDENT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.pnc_mapping_ident_refs.append(child_value)
 

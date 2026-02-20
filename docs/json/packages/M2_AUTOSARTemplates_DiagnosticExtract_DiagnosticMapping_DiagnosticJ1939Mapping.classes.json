@@ -103,7 +103,7 @@
         "swComponentPrototypeCompositionInstanceRef": {
           "type": "SwComponentPrototype",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This represents the mapped SwComponentPrototype."
         }

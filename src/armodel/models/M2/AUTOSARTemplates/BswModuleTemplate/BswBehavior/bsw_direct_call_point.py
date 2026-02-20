@@ -40,6 +40,7 @@ class BswDirectCallPoint(BswModuleCallPoint):
         super().__init__()
         self.called_entry: Optional[BswModuleEntry] = None
         self.called_from: Optional[ExclusiveAreaNestingOrder] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BswDirectCallPoint to XML element.
 
@@ -47,7 +48,7 @@ class BswDirectCallPoint(BswModuleCallPoint):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

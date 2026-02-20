@@ -26,4 +26,4 @@ class AreaEnumNohref(AREnum):
         """
         self._value_ = value
 
-    NOHREF = "nohref"
+    NOHREF = "NOHREF"

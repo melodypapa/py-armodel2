@@ -37,6 +37,7 @@ class OrderedMaster(ARObject):
         super().__init__()
         self.index: Optional[PositiveInteger] = None
         self.time_sync_server_configuration: Optional[TimeSyncServerConfiguration] = None
+
     def serialize(self) -> ET.Element:
         """Serialize OrderedMaster to XML element.
 
@@ -44,7 +45,7 @@ class OrderedMaster(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize index

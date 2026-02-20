@@ -40,6 +40,7 @@ class LinFrameTriggering(FrameTriggering):
         super().__init__()
         self.identifier: Optional[Integer] = None
         self.lin_checksum: Optional[LinChecksumType] = None
+
     def serialize(self) -> ET.Element:
         """Serialize LinFrameTriggering to XML element.
 
@@ -47,7 +48,7 @@ class LinFrameTriggering(FrameTriggering):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

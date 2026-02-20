@@ -26,7 +26,7 @@ class DiagnosticInhibitionMaskEnum(AREnum):
         """
         self._value_ = value
 
-    LAST_FAILED = "lastFailed"
-    NOT_TESTED = "notTested"
-    TESTED = "tested"
-    TESTED_AND_FAILED = "testedAndFailed"
+    LAST_FAILED = "LAST-FAILED"
+    NOT_TESTED = "NOT-TESTED"
+    TESTED = "TESTED"
+    TESTED_AND_FAILED = "TESTED-AND-FAILED"

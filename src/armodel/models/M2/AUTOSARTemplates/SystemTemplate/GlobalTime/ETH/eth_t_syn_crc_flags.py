@@ -42,6 +42,7 @@ class EthTSynCrcFlags(ARObject):
         self.crc_precise: Optional[Boolean] = None
         self.crc_sequence_id: Optional[Boolean] = None
         self.crc_source_port: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EthTSynCrcFlags to XML element.
 
@@ -49,7 +50,7 @@ class EthTSynCrcFlags(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize crc_correction

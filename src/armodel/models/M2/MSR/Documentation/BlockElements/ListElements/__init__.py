@@ -4,8 +4,8 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from armodel.models.M2.MSR.Documentation.BlockElements.ListElements.list import (
-        List,
+    from armodel.models.M2.MSR.Documentation.BlockElements.ListElements.ar_list import (
+        ARList,
     )
     from armodel.models.M2.MSR.Documentation.BlockElements.ListElements.item import (
         Item,
@@ -34,6 +34,7 @@ from armodel.models.M2.MSR.Documentation.BlockElements.ListElements.item_label_p
 )
 
 __all__ = [
+    "ARList",
     "DefItem",
     "DefList",
     "IndentSample",
@@ -41,6 +42,5 @@ __all__ = [
     "ItemLabelPosEnum",
     "LabeledItem",
     "LabeledList",
-    "List",
     "ListEnum",
 ]

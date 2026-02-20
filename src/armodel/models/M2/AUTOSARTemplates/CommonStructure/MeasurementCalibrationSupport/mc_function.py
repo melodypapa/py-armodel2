@@ -46,6 +46,7 @@ class McFunction(ARElement):
         self.out_ref: Optional[ARRef] = None
         self.ref_calprm_set_ref: Optional[ARRef] = None
         self.sub_functions: list[McFunction] = []
+
     def serialize(self) -> ET.Element:
         """Serialize McFunction to XML element.
 
@@ -53,7 +54,7 @@ class McFunction(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -71,7 +72,7 @@ class McFunction(ARElement):
             serialized = ARObject._serialize_item(self.def_calprm_set_ref, "McFunctionDataRefSet")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DEF-CALPRM-SET")
+                wrapped = ET.Element("DEF-CALPRM-SET-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -85,7 +86,7 @@ class McFunction(ARElement):
             serialized = ARObject._serialize_item(self.in_measurement_ref, "McFunctionDataRefSet")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("IN-MEASUREMENT")
+                wrapped = ET.Element("IN-MEASUREMENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -99,7 +100,7 @@ class McFunction(ARElement):
             serialized = ARObject._serialize_item(self.loc_ref, "McFunctionDataRefSet")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("LOC")
+                wrapped = ET.Element("LOC-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -113,7 +114,7 @@ class McFunction(ARElement):
             serialized = ARObject._serialize_item(self.out_ref, "McFunctionDataRefSet")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("OUT")
+                wrapped = ET.Element("OUT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -127,7 +128,7 @@ class McFunction(ARElement):
             serialized = ARObject._serialize_item(self.ref_calprm_set_ref, "McFunctionDataRefSet")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("REF-CALPRM-SET")
+                wrapped = ET.Element("REF-CALPRM-SET-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -162,33 +163,33 @@ class McFunction(ARElement):
         obj = super(McFunction, cls).deserialize(element)
 
         # Parse def_calprm_set_ref
-        child = ARObject._find_child_element(element, "DEF-CALPRM-SET")
+        child = ARObject._find_child_element(element, "DEF-CALPRM-SET-REF")
         if child is not None:
-            def_calprm_set_ref_value = ARObject._deserialize_by_tag(child, "McFunctionDataRefSet")
+            def_calprm_set_ref_value = ARRef.deserialize(child)
             obj.def_calprm_set_ref = def_calprm_set_ref_value
 
         # Parse in_measurement_ref
-        child = ARObject._find_child_element(element, "IN-MEASUREMENT")
+        child = ARObject._find_child_element(element, "IN-MEASUREMENT-REF")
         if child is not None:
-            in_measurement_ref_value = ARObject._deserialize_by_tag(child, "McFunctionDataRefSet")
+            in_measurement_ref_value = ARRef.deserialize(child)
             obj.in_measurement_ref = in_measurement_ref_value
 
         # Parse loc_ref
-        child = ARObject._find_child_element(element, "LOC")
+        child = ARObject._find_child_element(element, "LOC-REF")
         if child is not None:
-            loc_ref_value = ARObject._deserialize_by_tag(child, "McFunctionDataRefSet")
+            loc_ref_value = ARRef.deserialize(child)
             obj.loc_ref = loc_ref_value
 
         # Parse out_ref
-        child = ARObject._find_child_element(element, "OUT")
+        child = ARObject._find_child_element(element, "OUT-REF")
         if child is not None:
-            out_ref_value = ARObject._deserialize_by_tag(child, "McFunctionDataRefSet")
+            out_ref_value = ARRef.deserialize(child)
             obj.out_ref = out_ref_value
 
         # Parse ref_calprm_set_ref
-        child = ARObject._find_child_element(element, "REF-CALPRM-SET")
+        child = ARObject._find_child_element(element, "REF-CALPRM-SET-REF")
         if child is not None:
-            ref_calprm_set_ref_value = ARObject._deserialize_by_tag(child, "McFunctionDataRefSet")
+            ref_calprm_set_ref_value = ARRef.deserialize(child)
             obj.ref_calprm_set_ref = ref_calprm_set_ref_value
 
         # Parse sub_functions (list from container "SUB-FUNCTIONS")

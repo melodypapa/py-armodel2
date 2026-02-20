@@ -35,6 +35,7 @@ class DiagnosticJ1939FreezeFrame(DiagnosticCommonElement):
         """Initialize DiagnosticJ1939FreezeFrame."""
         super().__init__()
         self.node: Optional[DiagnosticJ1939Node] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticJ1939FreezeFrame to XML element.
 
@@ -42,7 +43,7 @@ class DiagnosticJ1939FreezeFrame(DiagnosticCommonElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

@@ -1,10 +1,9 @@
 """Unit tests for ARObject helper methods."""
 
-import pytest
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-from armodel.serialization.decorators import xml_element_tag
+# Note: @xml_element_tag decorator has been removed from the framework
 
 
 class TestARObjectHelperMethods:
@@ -21,21 +20,6 @@ class TestARObjectHelperMethods:
         tag = "ELEMENT"
         result = ARObject._strip_namespace(tag)
         assert result == "ELEMENT"
-
-    def test_get_element_tag_from_property_decorator(self):
-        """Test getting element tag from property decorator."""
-        class TestClass(ARObject):
-            """Test class with property."""
-
-            @property
-            @xml_element_tag("CUSTOM-TAG")
-            def custom_prop(self) -> str:
-                """Custom property."""
-                return "test"
-
-        obj = TestClass()
-        tag = obj._get_element_tag("custom_prop")
-        assert tag == "CUSTOM-TAG"
 
     def test_get_element_tag_auto_generated(self):
         """Test auto-generating element tag from attribute name."""

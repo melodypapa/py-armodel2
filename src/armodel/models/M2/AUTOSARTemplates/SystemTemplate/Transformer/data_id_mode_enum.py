@@ -26,7 +26,7 @@ class DataIdModeEnum(AREnum):
         """
         self._value_ = value
 
-    ALL16_BIT = "all16Bit"
-    ALTERNATING8_BITCOUNTER = "alternating8Bitcounter"
-    LOWER12_BIT = "lower12Bit"
-    LOWER8_BITARE = "lower8Bitare"
+    ALL16_BIT = "ALL16-BIT"
+    ALTERNATING8_BITCOUNTER = "ALTERNATING8-BITCOUNTER"
+    LOWER12_BIT = "LOWER12-BIT"
+    LOWER8_BITARE = "LOWER8-BITARE"

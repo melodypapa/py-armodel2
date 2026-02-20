@@ -67,6 +67,7 @@ class Xref(ARObject):
         self.show_resource_page: Optional[ShowResourcePageEnum] = None
         self.show_resource_short: Optional[ShowResourceShortNameEnum] = None
         self.show_see: Optional[ShowSeeEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Xref to XML element.
 
@@ -74,7 +75,7 @@ class Xref(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize label1
@@ -96,7 +97,7 @@ class Xref(ARObject):
             serialized = ARObject._serialize_item(self.referrable_ref, "Referrable")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("REFERRABLE")
+                wrapped = ET.Element("REFERRABLE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -254,9 +255,9 @@ class Xref(ARObject):
             obj.label1 = label1_value
 
         # Parse referrable_ref
-        child = ARObject._find_child_element(element, "REFERRABLE")
+        child = ARObject._find_child_element(element, "REFERRABLE-REF")
         if child is not None:
-            referrable_ref_value = ARObject._deserialize_by_tag(child, "Referrable")
+            referrable_ref_value = ARRef.deserialize(child)
             obj.referrable_ref = referrable_ref_value
 
         # Parse resolution_policy_enum

@@ -72,6 +72,7 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
         self.filtering: Optional[FilterDebouncingEnum] = None
         self.pulse_test: Optional[PulseTestEnum] = None
         self.trigger_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize IoHwAbstractionServerAnnotation to XML element.
 
@@ -79,7 +80,7 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -111,7 +112,7 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
             serialized = ARObject._serialize_item(self.argument_ref, "ArgumentDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ARGUMENT")
+                wrapped = ET.Element("ARGUMENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -139,7 +140,7 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
             serialized = ARObject._serialize_item(self.data_element_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DATA-ELEMENT")
+                wrapped = ET.Element("DATA-ELEMENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -153,7 +154,7 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
             serialized = ARObject._serialize_item(self.failure_ref, "PortPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("FAILURE")
+                wrapped = ET.Element("FAILURE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -195,7 +196,7 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
             serialized = ARObject._serialize_item(self.trigger_ref, "Trigger")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TRIGGER")
+                wrapped = ET.Element("TRIGGER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -226,9 +227,9 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
             obj.age = age_value
 
         # Parse argument_ref
-        child = ARObject._find_child_element(element, "ARGUMENT")
+        child = ARObject._find_child_element(element, "ARGUMENT-REF")
         if child is not None:
-            argument_ref_value = ARObject._deserialize_by_tag(child, "ArgumentDataPrototype")
+            argument_ref_value = ARRef.deserialize(child)
             obj.argument_ref = argument_ref_value
 
         # Parse bsw_resolution
@@ -238,15 +239,15 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
             obj.bsw_resolution = bsw_resolution_value
 
         # Parse data_element_ref
-        child = ARObject._find_child_element(element, "DATA-ELEMENT")
+        child = ARObject._find_child_element(element, "DATA-ELEMENT-REF")
         if child is not None:
-            data_element_ref_value = ARObject._deserialize_by_tag(child, "VariableDataPrototype")
+            data_element_ref_value = ARRef.deserialize(child)
             obj.data_element_ref = data_element_ref_value
 
         # Parse failure_ref
-        child = ARObject._find_child_element(element, "FAILURE")
+        child = ARObject._find_child_element(element, "FAILURE-REF")
         if child is not None:
-            failure_ref_value = ARObject._deserialize_by_tag(child, "PortPrototype")
+            failure_ref_value = ARRef.deserialize(child)
             obj.failure_ref = failure_ref_value
 
         # Parse filtering
@@ -262,9 +263,9 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
             obj.pulse_test = pulse_test_value
 
         # Parse trigger_ref
-        child = ARObject._find_child_element(element, "TRIGGER")
+        child = ARObject._find_child_element(element, "TRIGGER-REF")
         if child is not None:
-            trigger_ref_value = ARObject._deserialize_by_tag(child, "Trigger")
+            trigger_ref_value = ARRef.deserialize(child)
             obj.trigger_ref = trigger_ref_value
 
         return obj

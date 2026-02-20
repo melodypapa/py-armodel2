@@ -40,6 +40,7 @@ class EthTcpIpIcmpProps(ARElement):
         super().__init__()
         self.icmp_v4_props: Optional[TcpIpIcmpv4Props] = None
         self.icmp_v6_props: Optional[TcpIpIcmpv6Props] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EthTcpIpIcmpProps to XML element.
 
@@ -47,7 +48,7 @@ class EthTcpIpIcmpProps(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

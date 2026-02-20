@@ -48,6 +48,7 @@ class RModeInAtomicSwcInstanceRef(ARObject):
         self.context_mode_group_prototype_ref: Optional[ARRef] = None
         self.context_port_prototype: Optional[AbstractRequiredPortPrototype] = None
         self.target_mode_declaration: Optional[ModeDeclaration] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RModeInAtomicSwcInstanceRef to XML element.
 
@@ -55,7 +56,7 @@ class RModeInAtomicSwcInstanceRef(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize base
@@ -77,7 +78,7 @@ class RModeInAtomicSwcInstanceRef(ARObject):
             serialized = ARObject._serialize_item(self.context_mode_group_prototype_ref, "ModeDeclarationGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT-MODE-GROUP-PROTOTYPE")
+                wrapped = ET.Element("CONTEXT-MODE-GROUP-PROTOTYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -137,9 +138,9 @@ class RModeInAtomicSwcInstanceRef(ARObject):
             obj.base = base_value
 
         # Parse context_mode_group_prototype_ref
-        child = ARObject._find_child_element(element, "CONTEXT-MODE-GROUP-PROTOTYPE")
+        child = ARObject._find_child_element(element, "CONTEXT-MODE-GROUP-PROTOTYPE-REF")
         if child is not None:
-            context_mode_group_prototype_ref_value = ARObject._deserialize_by_tag(child, "ModeDeclarationGroup")
+            context_mode_group_prototype_ref_value = ARRef.deserialize(child)
             obj.context_mode_group_prototype_ref = context_mode_group_prototype_ref_value
 
         # Parse context_port_prototype

@@ -47,6 +47,7 @@ class ISignalTriggering(Identifiable):
         self.i_signal: Optional[ISignal] = None
         self.i_signal_group_ref: Optional[ARRef] = None
         self.i_signal_ports: list[ISignalPort] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ISignalTriggering to XML element.
 
@@ -54,7 +55,7 @@ class ISignalTriggering(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -86,7 +87,7 @@ class ISignalTriggering(Identifiable):
             serialized = ARObject._serialize_item(self.i_signal_group_ref, "ISignalGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("I-SIGNAL-GROUP")
+                wrapped = ET.Element("I-SIGNAL-GROUP-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -127,9 +128,9 @@ class ISignalTriggering(Identifiable):
             obj.i_signal = i_signal_value
 
         # Parse i_signal_group_ref
-        child = ARObject._find_child_element(element, "I-SIGNAL-GROUP")
+        child = ARObject._find_child_element(element, "I-SIGNAL-GROUP-REF")
         if child is not None:
-            i_signal_group_ref_value = ARObject._deserialize_by_tag(child, "ISignalGroup")
+            i_signal_group_ref_value = ARRef.deserialize(child)
             obj.i_signal_group_ref = i_signal_group_ref_value
 
         # Parse i_signal_ports (list from container "I-SIGNAL-PORTS")

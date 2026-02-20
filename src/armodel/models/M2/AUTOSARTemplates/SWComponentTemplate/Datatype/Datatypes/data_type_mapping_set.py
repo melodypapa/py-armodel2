@@ -43,6 +43,7 @@ class DataTypeMappingSet(ARElement):
         super().__init__()
         self.data_type_maps: list[DataTypeMap] = []
         self.mode_request_type_maps: list[ModeRequestTypeMap] = []
+
     def serialize(self) -> ET.Element:
         """Serialize DataTypeMappingSet to XML element.
 
@@ -50,7 +51,7 @@ class DataTypeMappingSet(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

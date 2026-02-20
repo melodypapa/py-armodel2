@@ -275,7 +275,7 @@
         "ddsEvent": {
           "type": "PduTriggering",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to the PduTriggerung used for the upper layer"
         },
@@ -325,7 +325,7 @@
         "ddsOperation": {
           "type": "PduTriggering",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to the PduTriggering used for the upper layer"
         }
@@ -510,7 +510,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "Definition of the DDS Partition Name. ’*’ may be used to"
+          "note": "Definition of the DDS Partition Name. \u2019*\u2019 may be used to"
         }
       }
     },

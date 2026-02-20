@@ -8,6 +8,7 @@ JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_MultilanguageData
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import l_prefix
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel.l_plain_text import (
@@ -27,58 +28,22 @@ class MultiLanguagePlainText(ARObject):
         """
         return False
 
-    l10: LPlainText
+    _l10: list[LPlainText]
     def __init__(self) -> None:
         """Initialize MultiLanguagePlainText."""
         super().__init__()
-        self.l10: LPlainText = None
-    def serialize(self) -> ET.Element:
-        """Serialize MultiLanguagePlainText to XML element.
+        self._l10: list[LPlainText] = []
+    @property
+    @l_prefix("L-10")
+    def l10(self) -> list[LPlainText]:
+        """Get l10 with language-specific wrapper."""
+        return self._l10
 
-        Returns:
-            xml.etree.ElementTree.Element representing this object
-        """
-        # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
-        elem = ET.Element(tag)
+    @l10.setter
+    def l10(self, value: list[LPlainText]) -> None:
+        """Set l10 with language-specific wrapper."""
+        self._l10 = value
 
-        # Serialize l10
-        if self.l10 is not None:
-            serialized = ARObject._serialize_item(self.l10, "LPlainText")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("L10")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
-
-        return elem
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "MultiLanguagePlainText":
-        """Deserialize XML element to MultiLanguagePlainText object.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Deserialized MultiLanguagePlainText object
-        """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
-
-        # Parse l10
-        child = ARObject._find_child_element(element, "L10")
-        if child is not None:
-            l10_value = ARObject._deserialize_by_tag(child, "LPlainText")
-            obj.l10 = l10_value
-
-        return obj
 
 
 

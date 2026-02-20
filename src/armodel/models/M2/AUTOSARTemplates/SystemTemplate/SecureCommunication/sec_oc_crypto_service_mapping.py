@@ -45,6 +45,7 @@ class SecOcCryptoServiceMapping(CryptoServiceMapping):
         self.authentication: Optional[CryptoServicePrimitive] = None
         self.crypto_service_key: Optional[CryptoServiceKey] = None
         self.crypto_service_queue: Optional[CryptoServiceQueue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SecOcCryptoServiceMapping to XML element.
 
@@ -52,7 +53,7 @@ class SecOcCryptoServiceMapping(CryptoServiceMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

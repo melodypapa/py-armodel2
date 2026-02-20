@@ -32,6 +32,7 @@ class LimitValueVariationPoint(ARObject):
         """Initialize LimitValueVariationPoint."""
         super().__init__()
         self.interval_type_enum: Optional[IntervalTypeEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize LimitValueVariationPoint to XML element.
 
@@ -39,7 +40,7 @@ class LimitValueVariationPoint(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize interval_type_enum

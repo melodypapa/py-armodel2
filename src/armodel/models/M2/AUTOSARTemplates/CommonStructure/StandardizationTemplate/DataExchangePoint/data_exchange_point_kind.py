@@ -26,4 +26,4 @@ class DataExchangePointKind(AREnum):
         """
         self._value_ = value
 
-    AGREED = "agreed"
+    AGREED = "AGREED"

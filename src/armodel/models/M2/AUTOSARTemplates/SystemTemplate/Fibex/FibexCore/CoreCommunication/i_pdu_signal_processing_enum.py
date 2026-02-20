@@ -26,5 +26,5 @@ class IPduSignalProcessingEnum(AREnum):
         """
         self._value_ = value
 
-    DEFERRED = "deferred"
-    IMMEDIATE = "immediate"
+    DEFERRED = "DEFERRED"
+    IMMEDIATE = "IMMEDIATE"

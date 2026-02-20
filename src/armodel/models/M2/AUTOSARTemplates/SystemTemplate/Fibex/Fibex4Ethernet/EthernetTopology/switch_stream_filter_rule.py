@@ -45,6 +45,7 @@ class SwitchStreamFilterRule(Identifiable):
         self.data_link_layer: Optional[StreamFilterRuleDataLinkLayer] = None
         self.ieee1722_tp: Optional[StreamFilterIEEE1722Tp] = None
         self.ip_tp_rule: Optional[StreamFilterRuleIpTp] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwitchStreamFilterRule to XML element.
 
@@ -52,7 +53,7 @@ class SwitchStreamFilterRule(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

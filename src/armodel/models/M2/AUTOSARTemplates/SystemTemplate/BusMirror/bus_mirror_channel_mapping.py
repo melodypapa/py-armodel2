@@ -49,6 +49,7 @@ class BusMirrorChannelMapping(FibexElement, ABC):
         self.source_channel: Optional[BusMirrorChannel] = None
         self.target_channel: Optional[BusMirrorChannel] = None
         self.target_pdu_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize BusMirrorChannelMapping to XML element.
 
@@ -56,7 +57,7 @@ class BusMirrorChannelMapping(FibexElement, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -111,13 +112,20 @@ class BusMirrorChannelMapping(FibexElement, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize target_pdu_refs (list to container "TARGET-PDUS")
+        # Serialize target_pdu_refs (list to container "TARGET-PDU-REFS")
         if self.target_pdu_refs:
-            wrapper = ET.Element("TARGET-PDUS")
+            wrapper = ET.Element("TARGET-PDU-REFS")
             for item in self.target_pdu_refs:
                 serialized = ARObject._serialize_item(item, "PduTriggering")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("TARGET-PDU-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -154,13 +162,19 @@ class BusMirrorChannelMapping(FibexElement, ABC):
             target_channel_value = ARObject._deserialize_by_tag(child, "BusMirrorChannel")
             obj.target_channel = target_channel_value
 
-        # Parse target_pdu_refs (list from container "TARGET-PDUS")
+        # Parse target_pdu_refs (list from container "TARGET-PDU-REFS")
         obj.target_pdu_refs = []
-        container = ARObject._find_child_element(element, "TARGET-PDUS")
+        container = ARObject._find_child_element(element, "TARGET-PDU-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.target_pdu_refs.append(child_value)
 

@@ -26,6 +26,6 @@ class TransmissionModeDefinitionEnum(AREnum):
         """
         self._value_ = value
 
-    CYCLIC = "cyclic"
-    CYCLIC_AND_ON = "cyclicAndOn"
-    TRIGGERED = "triggered"
+    CYCLIC = "CYCLIC"
+    CYCLIC_AND_ON = "CYCLIC-AND-ON"
+    TRIGGERED = "TRIGGERED"

@@ -250,7 +250,7 @@
         "iumprGroup": {
           "type": "DiagnosticIumprGroup",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This aggregation allows for the variant modeling of the groupIdentifier. atpVariation"
         }

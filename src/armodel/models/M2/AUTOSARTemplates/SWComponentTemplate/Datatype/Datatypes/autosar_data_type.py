@@ -23,6 +23,8 @@ if TYPE_CHECKING:
         SwDataDefProps,
     )
 
+
+
 from abc import ABC, abstractmethod
 
 
@@ -43,6 +45,7 @@ class AutosarDataType(ARElement, ABC):
         """Initialize AutosarDataType."""
         super().__init__()
         self.sw_data_def_props: Optional[SwDataDefProps] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AutosarDataType to XML element.
 
@@ -50,7 +53,7 @@ class AutosarDataType(ARElement, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

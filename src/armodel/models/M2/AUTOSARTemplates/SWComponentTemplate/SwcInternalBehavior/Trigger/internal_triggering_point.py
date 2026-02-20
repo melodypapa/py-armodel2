@@ -36,6 +36,7 @@ class InternalTriggeringPoint(AbstractAccessPoint):
         """Initialize InternalTriggeringPoint."""
         super().__init__()
         self.sw_impl_policy_enum: Optional[SwImplPolicyEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize InternalTriggeringPoint to XML element.
 
@@ -43,7 +44,7 @@ class InternalTriggeringPoint(AbstractAccessPoint):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

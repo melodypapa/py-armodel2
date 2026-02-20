@@ -40,6 +40,7 @@ class IPSecConfig(ARObject):
         super().__init__()
         self.ip_sec_config: Optional[IPSecConfigProps] = None
         self.ip_sec_rules: list[IPSecRule] = []
+
     def serialize(self) -> ET.Element:
         """Serialize IPSecConfig to XML element.
 
@@ -47,7 +48,7 @@ class IPSecConfig(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize ip_sec_config

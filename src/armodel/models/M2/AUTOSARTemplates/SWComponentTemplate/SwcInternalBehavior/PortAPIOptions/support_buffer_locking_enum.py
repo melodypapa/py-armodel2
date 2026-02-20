@@ -26,5 +26,5 @@ class SupportBufferLockingEnum(AREnum):
         """
         self._value_ = value
 
-    DOES_NOT_SUPPORT_BUFFER_LOCKING = "doesNotSupportBufferLocking"
-    SUPPORTS_BUFFER_LOCKING = "supportsBufferLocking"
+    DOES_NOT_SUPPORT_BUFFER_LOCKING = "DOES-NOT-SUPPORT-BUFFER-LOCKING"
+    SUPPORTS_BUFFER_LOCKING = "SUPPORTS-BUFFER-LOCKING"

@@ -76,15 +76,15 @@
         }
       ],
       "attributes": {
-        "clientIds": {
+        "clientIdDefinitionSets": {
           "type": "ClientIdDefinitionSet",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Set of Client Identifiers that are used for inter-ECU communication in the System."
         },
-        "containerIPduHeaderByte": {
-          "type": "any (ByteOrderEnumOrder)",
+        "containerIPduHeaderByteOrder": {
+          "type": "ByteOrderEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -104,14 +104,14 @@
           "is_ref": false,
           "note": "Reference to ASAM FIBEX elements specifying Topology. Elements used within a System Description shall from the System Element. order to describe a product-line, all Fibex be optional. atpVariation"
         },
-        "interpolationRoutines": {
-          "type": "InterpolationRoutine",
+        "interpolationRoutineMappingSets": {
+          "type": "InterpolationRoutineMappingSet",
           "multiplicity": "*",
           "kind": "reference",
           "is_ref": false,
           "note": "This reference identifies the InterpolationRoutineMapping Sets that are relevant in the context of the enclosing"
         },
-        "j1939SharedAddresses": {
+        "j1939SharedAddressClusters": {
           "type": "J1939SharedAddressCluster",
           "multiplicity": "*",
           "kind": "attribute",
@@ -121,11 +121,11 @@
         "mappings": {
           "type": "SystemMapping",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Aggregation of all mapping aspects (mapping of SW ECUs, mapping of data elements to mapping constraints). to support OEM / Tier 1 interaction and shared one common System this aggregation is atpVariation. The content of System be provided by several parties using for the SystemMapping. is not required when the System description for a network-only use-case. atpVariation 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },
-        "pncVector": {
+        "pncVectorLength": {
           "type": "PositiveInteger",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -139,7 +139,7 @@
           "is_ref": false,
           "note": "Absolute offset (with respect to the NM-PDU) of the request release information vector that in bytes as an index starting with 0."
         },
-        "rootSoftware": {
+        "rootSoftwareComposition": {
           "type": "RootSwCompositionPrototype",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -153,7 +153,7 @@
           "is_ref": false,
           "note": "CP Software Clusters of this System atpVariation"
         },
-        "systems": {
+        "systemDocumentations": {
           "type": "Chapter",
           "multiplicity": "*",
           "kind": "attribute",
@@ -382,14 +382,14 @@
         "cryptoServices": {
           "type": "CryptoServiceMapping",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This aggregation represents the collection of crypto mappings in the context of the enclosing System atpVariation"
         },
         "dataMappings": {
           "type": "DataMapping",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "The data mappings defined. atpVariation 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate R23-11"
         },
@@ -403,7 +403,7 @@
         "ecuResources": {
           "type": "ECUMapping",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Mapping of hardware related topology elements onto their definitions in the ECU Resource Template. ECU Resource type might be variable. atpVariation"
         },
@@ -417,14 +417,14 @@
         "mappings": {
           "type": "MappingConstraint",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Constraints that limit the mapping freedom for the of SW components to ECUs. atpVariation"
         },
         "pncMappings": {
           "type": "PncMapping",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Mappings between Virtual Function Clusters and Partial atpVariation"
         },
@@ -494,21 +494,21 @@
         "swImplMappings": {
           "type": "SwcToImplMapping",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "The mappings of AtomicSoftwareComponent Instances to because SwcToEcuMapping is atpVariation"
         },
         "swMappings": {
           "type": "SwcToEcuMapping",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "The mappings of SW components to ECUs. shall be mapped to other ECUs. atpVariation"
         },
         "systemSignalGroupTos": {
           "type": "SystemSignalGroupToCommunicationResourceMapping",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Mapping of a communication resource to a SystemSignal Group. Stereotypes: atpSplitable; atpVariation Mapping Tags:"
         },
@@ -553,9 +553,9 @@
         "coms": {
           "type": "PortGroup",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
-          "note": "channel. This reference is optional in that the System Description doesn’t use a complete Description (VFB View). This inclusion of legacy systems. by: PortGroupInSystem"
+          "note": "channel. This reference is optional in that the System Description doesn\u2019t use a complete Description (VFB View). This inclusion of legacy systems. by: PortGroupInSystem"
         },
         "physicalChannels": {
           "type": "PhysicalChannel",
@@ -651,28 +651,28 @@
         "mode": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "communication resource implemented by: ModeDeclarationGroup"
         },
         "parameterDataInSystemInstanceRef": {
           "type": "ParameterDataPrototype",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "by: ParameterDataPrototype"
         },
         "trigger": {
           "type": "Trigger",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Trigger instance qualifying the communication resource."
         },
         "variableDataSystemInstanceRef": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "resource by: VariableDataPrototypeIn"
         }

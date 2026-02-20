@@ -42,6 +42,7 @@ class ClientServerOperationBlueprintMapping(ARObject):
         self.blueprint: Optional[DocumentationBlock] = None
         self.bsw_module_entry: BswModuleEntry = None
         self.client_server: ClientServerOperation = None
+
     def serialize(self) -> ET.Element:
         """Serialize ClientServerOperationBlueprintMapping to XML element.
 
@@ -49,7 +50,7 @@ class ClientServerOperationBlueprintMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize blueprint

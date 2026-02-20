@@ -106,7 +106,7 @@
         "contextPort": {
           "type": "PortPrototype",
           "multiplicity": "1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Tags: xml.sequenceOffset=40"
         },
@@ -171,14 +171,14 @@
         "contextPort": {
           "type": "PortPrototype",
           "multiplicity": "1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": ""
         },
         "targetData": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": ""
         }
@@ -230,14 +230,14 @@
         "contextPort": {
           "type": "PortPrototype",
           "multiplicity": "1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This represents the PortPrototype in which the target located."
         },
         "targetTrigger": {
           "type": "Trigger",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This represents the target Trigger."
         }
@@ -289,7 +289,7 @@
         "target": {
           "type": "PortGroup",
           "multiplicity": "1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Link to a PortGroup that is defined in a component which of this CompositionSwComponentType."
         }

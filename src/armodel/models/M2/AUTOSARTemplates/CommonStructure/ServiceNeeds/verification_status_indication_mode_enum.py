@@ -26,5 +26,5 @@ class VerificationStatusIndicationModeEnum(AREnum):
         """
         self._value_ = value
 
-    FAILURE_AND_SUCCESS = "failureAndSuccess"
-    FAILURE_ONLY = "failureOnly"
+    FAILURE_AND_SUCCESS = "FAILURE-AND-SUCCESS"
+    FAILURE_ONLY = "FAILURE-ONLY"

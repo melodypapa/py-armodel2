@@ -45,6 +45,7 @@ class RptExecutableEntityProperties(ARObject):
         self.min_rpt_event_id: Optional[PositiveInteger] = None
         self.rpt_execution_control: Optional[RptExecutionControlEnum] = None
         self.rpt_service_point_enum: Optional[RptServicePointEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RptExecutableEntityProperties to XML element.
 
@@ -52,7 +53,7 @@ class RptExecutableEntityProperties(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize max_rpt_event_id

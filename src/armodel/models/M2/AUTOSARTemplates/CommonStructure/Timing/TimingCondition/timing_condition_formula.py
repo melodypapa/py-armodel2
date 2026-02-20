@@ -49,6 +49,7 @@ class TimingConditionFormula(ARObject):
         self.timing_event: Optional[TimingDescriptionEvent] = None
         self.timing_mode: Optional[TimingModeInstance] = None
         self.timing_variable_instance: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TimingConditionFormula to XML element.
 
@@ -56,7 +57,7 @@ class TimingConditionFormula(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize timing_argument_argument_instance

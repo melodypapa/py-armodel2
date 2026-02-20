@@ -26,5 +26,5 @@ class SignalFanEnum(AREnum):
         """
         self._value_ = value
 
-    NFOLDINTERFACE = "nfoldinterface"
-    SINGLEINTERFACE = "singleinterface"
+    NFOLDINTERFACE = "NFOLDINTERFACE"
+    SINGLEINTERFACE = "SINGLEINTERFACE"

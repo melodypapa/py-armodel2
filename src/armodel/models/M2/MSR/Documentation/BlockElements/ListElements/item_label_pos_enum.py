@@ -26,6 +26,6 @@ class ItemLabelPosEnum(AREnum):
         """
         self._value_ = value
 
-    NEWLINE = "newline"
-    NEWLINE_IF_NECESSARY = "newlineIfNecessary"
-    NO_NEWLINE = "noNewline"
+    NEWLINE = "NEWLINE"
+    NEWLINE_IF_NECESSARY = "NEWLINE-IF-NECESSARY"
+    NO_NEWLINE = "NO-NEWLINE"

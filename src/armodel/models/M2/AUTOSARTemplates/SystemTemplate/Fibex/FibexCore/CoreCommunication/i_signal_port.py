@@ -52,6 +52,7 @@ class ISignalPort(CommConnectorPort):
         self.first_timeout: Optional[TimeValue] = None
         self.handle_invalid_enum: Optional[HandleInvalidEnum] = None
         self.timeout: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ISignalPort to XML element.
 
@@ -59,7 +60,7 @@ class ISignalPort(CommConnectorPort):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

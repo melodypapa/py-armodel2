@@ -26,6 +26,6 @@ class ReentrancyLevelEnum(AREnum):
         """
         self._value_ = value
 
-    MULTICORE_REENTRANTON = "multicoreReentranton"
-    NON_REENTRANT = "nonReentrant"
-    SINGLE_CORE_REENTRANT = "singleCoreReentrant"
+    MULTICORE_REENTRANTON = "MULTICORE-REENTRANTON"
+    NON_REENTRANT = "NON-REENTRANT"
+    SINGLE_CORE_REENTRANT = "SINGLE-CORE-REENTRANT"

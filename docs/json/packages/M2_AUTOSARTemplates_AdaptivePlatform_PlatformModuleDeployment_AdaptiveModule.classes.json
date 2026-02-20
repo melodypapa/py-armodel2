@@ -34,21 +34,21 @@
         }
       ],
       "attributes": {
-        "communication": {
-          "type": "any (EthernetCommunication)",
+        "communicationConnector": {
+          "type": "EthernetCommunicationConnector",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the CommunicationConnector (VLAN) for which the network configuration is defined."
         },
-        "ipv4MulticastIp": {
+        "ipv4MulticastIpAddress": {
           "type": "Ip4AddressString",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Multicast IPv4 Address to which the message will be"
         },
-        "ipv6MulticastIp": {
+        "ipv6MulticastIpAddress": {
           "type": "Ip6AddressString",
           "multiplicity": "0..1",
           "kind": "attribute",

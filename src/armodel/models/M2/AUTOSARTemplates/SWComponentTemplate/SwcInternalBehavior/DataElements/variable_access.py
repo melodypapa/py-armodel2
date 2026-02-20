@@ -44,6 +44,7 @@ class VariableAccess(AbstractAccessPoint):
         super().__init__()
         self.accessed_variable_ref: Optional[ARRef] = None
         self.scope: Optional[VariableAccessScopeEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize VariableAccess to XML element.
 
@@ -51,7 +52,7 @@ class VariableAccess(AbstractAccessPoint):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -69,7 +70,7 @@ class VariableAccess(AbstractAccessPoint):
             serialized = ARObject._serialize_item(self.accessed_variable_ref, "AutosarVariableRef")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ACCESSED-VARIABLE")
+                wrapped = ET.Element("ACCESSED-VARIABLE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -108,9 +109,9 @@ class VariableAccess(AbstractAccessPoint):
         obj = super(VariableAccess, cls).deserialize(element)
 
         # Parse accessed_variable_ref
-        child = ARObject._find_child_element(element, "ACCESSED-VARIABLE")
+        child = ARObject._find_child_element(element, "ACCESSED-VARIABLE-REF")
         if child is not None:
-            accessed_variable_ref_value = ARObject._deserialize_by_tag(child, "AutosarVariableRef")
+            accessed_variable_ref_value = ARRef.deserialize(child)
             obj.accessed_variable_ref = accessed_variable_ref_value
 
         # Parse scope

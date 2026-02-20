@@ -73,7 +73,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "Optional definition of a ISignal’s initValue in case the doesn’t use a complete Software (VFB View). This supports the legacy system signals. can be used to configure the Signal’s \"Init full DataMapping exist for the SystemSignal this be available from a configured Sender ReceiverComSpec. In this case the SenderComSpec and/or ReceiverComSpec optional value specification. Further from the RTE specification."
+          "note": "Optional definition of a ISignal\u2019s initValue in case the doesn\u2019t use a complete Software (VFB View). This supports the legacy system signals. can be used to configure the Signal\u2019s \"Init full DataMapping exist for the SystemSignal this be available from a configured Sender ReceiverComSpec. In this case the SenderComSpec and/or ReceiverComSpec optional value specification. Further from the RTE specification."
         },
         "iSignalProps": {
           "type": "ISignalProps",
@@ -174,7 +174,7 @@
         "containeds": {
           "type": "ISignalIPduGroup",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "An I-Pdu group can be included in other I-Pdu groups. I-Pdu groups shall not be referenced by the"
         },
@@ -275,7 +275,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "The system signal represents the communication system’s view of data exchanged between SW components which reside on different ECUs. The system signals allow to represent this communication in a flattened structure, with exactly one system signal defined for each data element prototype sent and received by connected SW component instances.",
+      "note": "The system signal represents the communication system\u2019s view of data exchanged between SW components which reside on different ECUs. The system signals allow to represent this communication in a flattened structure, with exactly one system signal defined for each data element prototype sent and received by connected SW component instances.",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_DiagnosticExtractTemplate.pdf",
@@ -377,7 +377,7 @@
         "pduToFrames": {
           "type": "PduToFrameMapping",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "A frames layout as a sequence of Pdus. The content of a frame can be variable. atpVariation"
         }
@@ -451,7 +451,7 @@
         "pduTriggerings": {
           "type": "PduTriggering",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This reference provides the relationship to the Pdu"
         }
@@ -546,7 +546,7 @@
         "iSignalToIPdus": {
           "type": "ISignalToIPduMapping",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This optional aggregation is used to describe NmUser that is transmitted in the NmPdu. The counting of starts at the beginning of the NmPdu Cbv or Nid are used."
         },
@@ -698,7 +698,7 @@
         "iSignals": {
           "type": "ISignalTriggering",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This reference provides the relationship to the ISignal that are implemented by the PduTriggering. is optional since no ISignalTriggering can for DCM and Multiplexed Pdus. atpVariation 318 Document ID 87: AUTOSAR_CP_TPS_ECUConfiguration ECU Configuration R23-11"
         },
@@ -712,7 +712,7 @@
         "triggerIPduSends": {
           "type": "TriggerIPduSendCondition",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Defines the trigger for the Com_TriggerIPDUSend API call. Only if all defined TriggerIPduSendConditions true (AND associated) the Com_Trigger shall be called."
         }
@@ -827,7 +827,7 @@
         "systemSignalGroup": {
           "type": "SystemSignalGroup",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to the SystemSignalGroup that is defined on level and that is supposed to be transmitted in the"
         },
@@ -893,7 +893,7 @@
         "iSignalToPdus": {
           "type": "ISignalToIPduMapping",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Definition of SignalToIPduMappings included in the Signal content of a PDU can be variable. atpVariation"
         },
@@ -1047,7 +1047,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "• ISignalPort with communicationDirection = in: timeout value in seconds for the reception of with communicationDirection = out: timeout value in seconds for transmission"
+          "note": "\u2022 ISignalPort with communicationDirection = in: timeout value in seconds for the reception of with communicationDirection = out: timeout value in seconds for transmission"
         },
         "handleInvalidEnum": {
           "type": "HandleInvalidEnum",
@@ -1061,7 +1061,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "• ISignalPort with communicationDirection = in: value in seconds for the reception of the attribute value is used to configure the Com the COM module. The RTE ignores this timeout can also be specified with the If a exists for the SystemSignal and the available in the configured ReceiverComSpec, timeout value in the ReceiverComSpec overrides timeout specification during the creation of Ecu Configuration of the COM module. with communicationDirection = out: value in seconds for the transmission of The attribute value is used to configure the the COM module. The RTE ignores this timeout can also be specified with the ender If DataMapping exists for the SystemSignal and the available in the configured SenderComSpec, then value in the SenderComSpec overrides this specification during the creation of the can be used in the following cases: signal where the System Description doesn’t complete Software Component Description (VFB where the DataMapping is missing. monitoring use cases in which the DataMapping is"
+          "note": "\u2022 ISignalPort with communicationDirection = in: value in seconds for the reception of the attribute value is used to configure the Com the COM module. The RTE ignores this timeout can also be specified with the If a exists for the SystemSignal and the available in the configured ReceiverComSpec, timeout value in the ReceiverComSpec overrides timeout specification during the creation of Ecu Configuration of the COM module. with communicationDirection = out: value in seconds for the transmission of The attribute value is used to configure the the COM module. The RTE ignores this timeout can also be specified with the ender If DataMapping exists for the SystemSignal and the available in the configured SenderComSpec, then value in the SenderComSpec overrides this specification during the creation of the can be used in the following cases: signal where the System Description doesn\u2019t complete Software Component Description (VFB where the DataMapping is missing. monitoring use cases in which the DataMapping is"
         }
       }
     },
@@ -1188,7 +1188,7 @@
         "iSignalGroup": {
           "type": "ISignalGroup",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to an ISignalGroup that is mapped into the an ISignalToIPduMapping for an ISignal defined, only the UpdateIndicationBitPosition transferProperty is relevant. The startPosition packingByteOrder shall be ignored. contained in the ISignalGroup shall be an IPdu by an own ISignalToIPduMapping. to the ISignal and to the ISignalGroup in are mutually exclusive."
         },
@@ -1267,7 +1267,7 @@
         "iSignalGroup": {
           "type": "ISignalGroup",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This reference shall be used if an ISignalGroup is the PhysicalChannel. This reference XOR relationship with the ISignal"
         },
@@ -1668,7 +1668,7 @@
         "iPdus": {
           "type": "PduTriggering",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to a set of IPdus, which are contained in the"
         }
@@ -1721,7 +1721,7 @@
         "containedPdus": {
           "type": "PduTriggering",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This PduTriggering shall be collected inside the Container"
         },
@@ -1735,7 +1735,7 @@
         "containerTrigger": {
           "type": "ContainerIPduTriggerEnum",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Defines if the transmission of the ContainerIPdu shall be right after the first ContainedIPdu was put into attribute shall be ignored on receiver side."
         },
@@ -1820,7 +1820,7 @@
         "containedPdu": {
           "type": "PduTriggering",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to Pdu for which the ContainedIPduProps are"
         },
@@ -1862,7 +1862,7 @@
         "trigger": {
           "type": "PduCollectionTriggerEnum",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Defines whether this IPdu does trigger the sending of the This attribute is ignored on receiver side."
         },
@@ -1936,7 +1936,7 @@
         "payload": {
           "type": "PduTriggering",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to a Pdu that will be protected against"
         },
@@ -2205,7 +2205,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "that the absolute position of the selectorField in the MultiplexedIPdu is determined by the definition of the selectorFieldByteOrder attribute of the Multiplexed Pdu. If Big Endian is specified, the start position indicates the bit position of the most significant bit in the IPdu. If Little Endian is specified, the start position indicates the bit position of the least significant bit in the IPdu. In AUTOSAR the bit counting is always set to \"sawtooth\" and the bit order is set to \"Decreasing\". The bit counting in byte 0 starts with bit 0 (least significant bit). The most significant bit in byte 0 is bit 7. In a complete System Description this attribute is mandatory. If a MultiplexedPdu is received by a Pdu Gateway and is not delivered to the IPduM but routed directly to a bus interface then the content of the MulitplexedPdu doesn’t need to be described in the System Extract/Ecu Extract. To support this use case the multiplicity is set to 0..1. staticPart StaticPart 0..1 aggr The static part of the multiplexed IPdu is the same regardless of the selector field. The static part is optional. atpVariation: Content of a multiplexed PDU can vary. Stereotypes: atpSplitable; atpVariation , staticPart.variationPoint.short Label vh.latestBindingTime=postBuild triggerMode TriggerMode 0..1 attr IPduM can be configured to send a transmission request for the new multiplexed IPdu to the PDU-Router because of the trigger conditions/ modes that are described in the TriggerMode enumeration. In a complete System Description this attribute is mandatory. If a MultiplexedPdu is received by a Pdu Gateway and is not delivered to the IPduM but routed directly to a bus interface then the content of the MulitplexedPdu doesn’t need to be described in the System Extract/Ecu Extract. To support this use case the multiplicity is set to 0..1. (cid:53) 409 of 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate System Template AUTOSAR CP R23-11 (cid:52)",
+      "note": "that the absolute position of the selectorField in the MultiplexedIPdu is determined by the definition of the selectorFieldByteOrder attribute of the Multiplexed Pdu. If Big Endian is specified, the start position indicates the bit position of the most significant bit in the IPdu. If Little Endian is specified, the start position indicates the bit position of the least significant bit in the IPdu. In AUTOSAR the bit counting is always set to \"sawtooth\" and the bit order is set to \"Decreasing\". The bit counting in byte 0 starts with bit 0 (least significant bit). The most significant bit in byte 0 is bit 7. In a complete System Description this attribute is mandatory. If a MultiplexedPdu is received by a Pdu Gateway and is not delivered to the IPduM but routed directly to a bus interface then the content of the MulitplexedPdu doesn\u2019t need to be described in the System Extract/Ecu Extract. To support this use case the multiplicity is set to 0..1. staticPart StaticPart 0..1 aggr The static part of the multiplexed IPdu is the same regardless of the selector field. The static part is optional. atpVariation: Content of a multiplexed PDU can vary. Stereotypes: atpSplitable; atpVariation , staticPart.variationPoint.short Label vh.latestBindingTime=postBuild triggerMode TriggerMode 0..1 attr IPduM can be configured to send a transmission request for the new multiplexed IPdu to the PDU-Router because of the trigger conditions/ modes that are described in the TriggerMode enumeration. In a complete System Description this attribute is mandatory. If a MultiplexedPdu is received by a Pdu Gateway and is not delivered to the IPduM but routed directly to a bus interface then the content of the MulitplexedPdu doesn\u2019t need to be described in the System Extract/Ecu Extract. To support this use case the multiplicity is set to 0..1. (cid:53) 409 of 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate System Template AUTOSAR CP R23-11 (cid:52)",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_SystemTemplate.pdf",
@@ -2414,7 +2414,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "that the absolute position of the segment in the MultiplexedIPdu is determined by the definition of the segmentByteOrder attribute of the SegmentPosition. If Big Endian is specified, the start position indicates the bit position of the most significant bit in the IPdu. If Little Endian is specified, the start position indicates the bit position of the least significant bit in the IPdu. In AUTOSAR the bit counting is always set to \"sawtooth\" and the bit order is set to \"Decreasing\". The bit counting in byte 0 starts with bit 0 (least significant bit). The most significant bit in byte 0 is bit 7. Table 6.77: SegmentPosition [constr_9182] Existence of SegmentPosition.segmentByteOrder (cid:100)For each SegmentPosition, the attribute segmentByteOrder shall exist at the time when the System Description is complete.(cid:99)() [constr_9183] Existence of SegmentPosition.segmentLength (cid:100)For each Seg- mentPosition, the attribute segmentLength shall exist at the time when the System Description is complete.(cid:99)() [constr_9184] Existence of SegmentPosition.segmentPosition (cid:100)For each SegmentPosition, the attribute segmentPosition shall exist at the time when the System Description is complete.(cid:99)() [constr_3247] Byte order mix within a MultiplexedIPdu is not allowed (cid:100)The segmentByteOrder of all SegmentPositions and the selectorFieldByte- Order shall have the same value in the MultiplexedIPdu.(cid:99)() [constr_3223] No ByteOrderEnum.opaque allowed for MultiplexedIPdu.se- lectorFieldByteOrder (cid:100)The values of MultiplexedIPdu.selectorFieldBy- teOrder are restricted to ByteOrderEnum.mostSignificantByteFirst and ByteOrderEnum.mostSignificantByteLast. I.e. the value ByteOrderEnum. opaque is not allowed.(cid:99)() [constr_3224] No ByteOrderEnum.opaque allowed for SegmentPosition.seg- mentByteOrder. (cid:100)The values of SegmentPosition.segmentByteOrder are re- stricted to ByteOrderEnum.mostSignificantByteFirst and ByteOrderEnum. 412 of 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate System Template AUTOSAR CP R23-11 mostSignificantByteLast. I.e. the value ByteOrderEnum.opaque is not al- lowed.(cid:99)() Figure 6.26 shows an example of an IPdu Multiplexer. The static part of the multiplexed IPdu contains ComIPduA. The value of the selector field in the dynamic part decides which content is transmitted. ComIPduB is transmitted if the selector field value is \"0\". ComIPduC is transmitted if the selector field value is \"1\". The static and the dynamic part can consist of more than one element. These sub parts of the static or dynamic parts are called segments. In Figure 6.26 the dynamic Part is segmented into two parts. More details can be found in [23]. MuxPdu: MultiplexedIPdu selectorFieldLength = 1 length = 64 selectorFieldStartPosition = 0 staticSegment: SegmentPosition :StaticPart segmentLength = 16 segmentPosition = 32 :DynamicPart dynamicSegment1: SegmentPosition segmentLength = 31 segmentPosition = 1 PduA: ISignalIPdu dynamicSegment2: SegmentPosition segmentLength = 16 segmentPosition = 48 PduC: ISignalIPdu alternative1: DynamicPartAlternative selectorFieldCode = 1 PduB: ISignalIPdu alternative2: DynamicPartAlternative selectorFieldCode = 0 Figure 6.26: I-Pdu Multiplexer Example Each of the following figures shows an example with an allowed IPduM configuration. Please note that the AUTOSAR IPduM module does not shift any part (static or dy- namic) IPdu and just merges the payload. ISignalIPdus that are referenced by the different DynamicPartAlternatives in one MultiplexedIPdu shall always have the same length. A configuration may be optimized with respect to unused data at end of a StaticPart ISignalIPdu. This is shown in figure 6.27 where the ISignalIPdu that is referenced by the StaticPart is shorter than the Multi- plexedIPdu. An optimization with respect to unused data at end of DynamicPar- tAlternative ISignalIPdus is shown in figure 6.28. 413 of 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate System Template AUTOSAR CP R23-11 0 48 64 MultiplexedPdu: Switch DynamicPart StaticPart DynamicPart All(cid:2)dynamic part Referenced ISignalIPdus:(cid:2)(cid:2) alternatives(cid:2)have the 0 8 same(cid:2)size,(cid:2)even if alternatives(cid:2)contain DynamicPartAlternative: 1 Signal1 Signal2 unused areas. 0 8 DynamicPartAlternative: 2 Signal3 Signal4 Signal5 0 8 DynamicPartAlternative: 3 Signal3 Signal4 Signal6 0 The(cid:2)static StaticPart: Signal6 part may be shorter Figure 6.27: Multiplexer configuration example optimized with respect to unused data at end of static part Pdu 0 48 64 MultiplexedPdu: Switch DynamicPart StaticPart Referenced ISignalIPdus:(cid:2)(cid:2) 0 8 DynamicPartAlternative: 1 Signal1 Signal2 All(cid:2)dynamic part The(cid:2)dynamic alternatives(cid:2)have the parts may be same(cid:2)size,(cid:2)even if 0 8 alternatives(cid:2)contain shorter than the static part unused areas. DynamicPartAlternative: 2 Signal3 Signal4 0 8 DynamicPartAlternative: 3 Signal3 Signal4 Signal5 0 48 StaticPart: Signal6 Figure 6.28: Multiplexer configuration example optimized with respect to unused data at end of dynamic part Pdus 414 of 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate System Template AUTOSAR CP R23-11 6.5.1 I-Pdu Multiplexer in System Extract/ECU Extract The processing in the ECU determines the description of MultiplexedIPdus in the System Extract/Ecu Extract. In case that a Gateway ECU only routes a Multi- plexedIPdu without being interested in the content leads to a reduced description in the System Extract/ECU Extract. The following items describe the different scenar- ios and the consequences for the System Extract/ECU Extract description. A complete System Description contains all information. [TPS_SYST_01080] Sending or receiving of a MultiplexedIPdu in System Ex- tract/ECU Extract (cid:100) • all attributes of the MultiplexedIPdu are mandatory • aggregated DynamicPart with associated ISignalIPdus is mandatory in case – of sending – of receiving if at least one DynamicPartAlternative is received by one Ecu of the Extract. • a PduTriggering shall be defined for the MultiplexedIPdu • a PduTriggering shall be defined for all included ISignalIPdus in the Dy- namicPart and StaticPart (cid:99)() The initial ECU Configuration Generator configures COM, PduR, IpduM and lower lay- ers with the information from the System Extract/ECU Extract. [TPS_SYST_01081] Gatewaying of a MultiplexedIPdu in System Extract/ECU Extract (cid:100) • StaticPart and DynamicPart definitions shall be omitted, thus no ISig- nalIPdu description shall be included • all attributes of the MultiplexedIPdu shall be omitted. • a PduTriggering shall be defined only for the gatewayed MultiplexedIPdu • an IPduMapping between the source and the target PduTriggerings shall be defined (cid:99)() The initial ECU Configuration Generator configures PduR and lower layers with the information from the System Extract/ECU Extract. [TPS_SYST_01082] Receiving and gatewaying of a MultiplexedIPdu in System Extract/ECU Extract (cid:100) • all attributes of the MultiplexedIPdu are mandatory 415 of 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate System Template AUTOSAR CP R23-11 • aggregated DynamicPart with associated ISignalIPdus is mandatory in case at least one DynamicPartAlternative is received by one Ecu of the Extract. • a PduTriggering shall be defined for the MultiplexedIPdu • an IPduMapping between the source and the target PduTriggerings shall be defined • a PduTriggering shall be defined for all included ISignalIPdus in the Dy- namicPart and StaticPart (cid:99)() The initial ECU Configuration Generator configures Com, PduR, IpduM and lower lay- ers with the information from the System Extract/ECU Extract. 416 of 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate System Template AUTOSAR CP R23-11 6.6 Frames Identifiable PhysicalChannel Identifiable FrameTriggering FibexElement Frame + frameLength: Integer [0..1] Identifiable «atpPrototype» FibexElement PduToFrameMapping UploadableDesignElement Pdu + packingByteOrder: ByteOrderEnum [0..1] + startPosition: Integer [0..1] + hasDynamicLength: Boolean [0..1] + updateIndicationBitPosition: Integer [0..1] + length: UnlimitedInteger [0..1] (cid:1) (cid:16) (cid:4) (cid:23) (cid:14) (cid:2) (cid:17) (cid:8) (cid:24) (cid:3) (cid:4) (cid:18) (cid:19) (cid:14) (cid:23) (cid:5) (cid:2) (cid:3) (cid:3) (cid:21) (cid:3) (cid:18) (cid:29) (cid:20) (cid:26) (cid:30) (cid:2) (cid:25) (cid:6) (cid:7) (cid:2) (cid:14) (cid:3) (cid:21) (cid:7) (cid:19) (cid:22) (cid:14) (cid:20) (cid:1) (cid:16) (cid:4) (cid:3) (cid:7) (cid:3) (cid:6) (cid:2) (cid:17) (cid:8) (cid:7) (cid:8) (cid:9) (cid:7) (cid:27) (cid:3) (cid:4) (cid:18) (cid:19) (cid:14) (cid:9) (cid:22) (cid:3) (cid:2) (cid:3) (cid:7) (cid:12) (cid:5) (cid:3) (cid:21) (cid:10) (cid:9) (cid:20) (cid:8) (cid:2) (cid:25) (cid:12) (cid:13) (cid:28) (cid:6) (cid:7) (cid:14) (cid:3) (cid:7) (cid:19) (cid:2) (cid:12) (cid:3) (cid:2) (cid:21) (cid:22) (cid:13) (cid:7) (cid:23) (cid:2) (cid:9) (cid:3) (cid:7) (cid:8) (cid:7) (cid:9) (cid:14) (cid:15) (cid:20) (cid:22) (cid:9) (cid:22) (cid:2) (cid:10) (cid:7) (cid:9) (cid:24) (cid:6) (cid:22) (cid:12) (cid:13) (cid:2) (cid:12) (cid:13) (cid:7) (cid:23) (cid:14) (cid:15) (cid:20) (cid:24) +managedPhysicalChannel 0..* «atpVariation,atpSplitable» +frameTriggering 0..* +frame 0..1 «atpVariation,atpSplitable» +pduToFrameMapping 0..* +pdu 0..1 Figure 6.29: Frame Overview (FibexCore: FrameOverview) [TPS_SYST_01083] Frame (cid:100)A Frame represents a general design object that is used to describe the layout of the included Pdus as a reusable asset.(cid:99)() [TPS_SYST_01084] FrameTriggering (cid:100)The FrameTriggering implements the reusable definition of a Frame within a concrete context and thus defines a Frame’s send behavior and identification on a certain PhysicalChannel.(cid:99)() [TPS_SYST_02255] Frame.frameLength usage for FlexrayFrames and Can- Frames (cid:100)The frameLength for a FlexrayFrame shall be equal or larger than the combined length of all Pdus that are mapped to the frame. The frameLength for a CanFrame is used to describe the minimum length of a re- ceived L-PDU to be accepted by a data length check. Therefore, it is possible to configure a frameLength which is smaller than the mapped Pdu to this frame. If data length check is not needed the frameLength of a CanFrame may be left unde- fined. The reason for that is that if the CanFrame.frameLength is larger than the Pdu.length of the mapped Pdu and data length check is used, a received Pdu will always be discarded due to a failing minimum length check.(cid:99)() 417 of 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate System Template AUTOSAR CP R23-11",
+      "note": "that the absolute position of the segment in the MultiplexedIPdu is determined by the definition of the segmentByteOrder attribute of the SegmentPosition. If Big Endian is specified, the start position indicates the bit position of the most significant bit in the IPdu. If Little Endian is specified, the start position indicates the bit position of the least significant bit in the IPdu. In AUTOSAR the bit counting is always set to \"sawtooth\" and the bit order is set to \"Decreasing\". The bit counting in byte 0 starts with bit 0 (least significant bit). The most significant bit in byte 0 is bit 7. Table 6.77: SegmentPosition [constr_9182] Existence of SegmentPosition.segmentByteOrder (cid:100)For each SegmentPosition, the attribute segmentByteOrder shall exist at the time when the System Description is complete.(cid:99)() [constr_9183] Existence of SegmentPosition.segmentLength (cid:100)For each Seg- mentPosition, the attribute segmentLength shall exist at the time when the System Description is complete.(cid:99)() [constr_9184] Existence of SegmentPosition.segmentPosition (cid:100)For each SegmentPosition, the attribute segmentPosition shall exist at the time when the System Description is complete.(cid:99)() [constr_3247] Byte order mix within a MultiplexedIPdu is not allowed (cid:100)The segmentByteOrder of all SegmentPositions and the selectorFieldByte- Order shall have the same value in the MultiplexedIPdu.(cid:99)() [constr_3223] No ByteOrderEnum.opaque allowed for MultiplexedIPdu.se- lectorFieldByteOrder (cid:100)The values of MultiplexedIPdu.selectorFieldBy- teOrder are restricted to ByteOrderEnum.mostSignificantByteFirst and ByteOrderEnum.mostSignificantByteLast. I.e. the value ByteOrderEnum. opaque is not allowed.(cid:99)() [constr_3224] No ByteOrderEnum.opaque allowed for SegmentPosition.seg- mentByteOrder. (cid:100)The values of SegmentPosition.segmentByteOrder are re- stricted to ByteOrderEnum.mostSignificantByteFirst and ByteOrderEnum. 412 of 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate System Template AUTOSAR CP R23-11 mostSignificantByteLast. I.e. the value ByteOrderEnum.opaque is not al- lowed.(cid:99)() Figure 6.26 shows an example of an IPdu Multiplexer. The static part of the multiplexed IPdu contains ComIPduA. The value of the selector field in the dynamic part decides which content is transmitted. ComIPduB is transmitted if the selector field value is \"0\". ComIPduC is transmitted if the selector field value is \"1\". The static and the dynamic part can consist of more than one element. These sub parts of the static or dynamic parts are called segments. In Figure 6.26 the dynamic Part is segmented into two parts. More details can be found in [23]. MuxPdu: MultiplexedIPdu selectorFieldLength = 1 length = 64 selectorFieldStartPosition = 0 staticSegment: SegmentPosition :StaticPart segmentLength = 16 segmentPosition = 32 :DynamicPart dynamicSegment1: SegmentPosition segmentLength = 31 segmentPosition = 1 PduA: ISignalIPdu dynamicSegment2: SegmentPosition segmentLength = 16 segmentPosition = 48 PduC: ISignalIPdu alternative1: DynamicPartAlternative selectorFieldCode = 1 PduB: ISignalIPdu alternative2: DynamicPartAlternative selectorFieldCode = 0 Figure 6.26: I-Pdu Multiplexer Example Each of the following figures shows an example with an allowed IPduM configuration. Please note that the AUTOSAR IPduM module does not shift any part (static or dy- namic) IPdu and just merges the payload. ISignalIPdus that are referenced by the different DynamicPartAlternatives in one MultiplexedIPdu shall always have the same length. A configuration may be optimized with respect to unused data at end of a StaticPart ISignalIPdu. This is shown in figure 6.27 where the ISignalIPdu that is referenced by the StaticPart is shorter than the Multi- plexedIPdu. An optimization with respect to unused data at end of DynamicPar- tAlternative ISignalIPdus is shown in figure 6.28. 413 of 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate System Template AUTOSAR CP R23-11 0 48 64 MultiplexedPdu: Switch DynamicPart StaticPart DynamicPart All(cid:2)dynamic part Referenced ISignalIPdus:(cid:2)(cid:2) alternatives(cid:2)have the 0 8 same(cid:2)size,(cid:2)even if alternatives(cid:2)contain DynamicPartAlternative: 1 Signal1 Signal2 unused areas. 0 8 DynamicPartAlternative: 2 Signal3 Signal4 Signal5 0 8 DynamicPartAlternative: 3 Signal3 Signal4 Signal6 0 The(cid:2)static StaticPart: Signal6 part may be shorter Figure 6.27: Multiplexer configuration example optimized with respect to unused data at end of static part Pdu 0 48 64 MultiplexedPdu: Switch DynamicPart StaticPart Referenced ISignalIPdus:(cid:2)(cid:2) 0 8 DynamicPartAlternative: 1 Signal1 Signal2 All(cid:2)dynamic part The(cid:2)dynamic alternatives(cid:2)have the parts may be same(cid:2)size,(cid:2)even if 0 8 alternatives(cid:2)contain shorter than the static part unused areas. DynamicPartAlternative: 2 Signal3 Signal4 0 8 DynamicPartAlternative: 3 Signal3 Signal4 Signal5 0 48 StaticPart: Signal6 Figure 6.28: Multiplexer configuration example optimized with respect to unused data at end of dynamic part Pdus 414 of 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate System Template AUTOSAR CP R23-11 6.5.1 I-Pdu Multiplexer in System Extract/ECU Extract The processing in the ECU determines the description of MultiplexedIPdus in the System Extract/Ecu Extract. In case that a Gateway ECU only routes a Multi- plexedIPdu without being interested in the content leads to a reduced description in the System Extract/ECU Extract. The following items describe the different scenar- ios and the consequences for the System Extract/ECU Extract description. A complete System Description contains all information. [TPS_SYST_01080] Sending or receiving of a MultiplexedIPdu in System Ex- tract/ECU Extract (cid:100) \u2022 all attributes of the MultiplexedIPdu are mandatory \u2022 aggregated DynamicPart with associated ISignalIPdus is mandatory in case \u2013 of sending \u2013 of receiving if at least one DynamicPartAlternative is received by one Ecu of the Extract. \u2022 a PduTriggering shall be defined for the MultiplexedIPdu \u2022 a PduTriggering shall be defined for all included ISignalIPdus in the Dy- namicPart and StaticPart (cid:99)() The initial ECU Configuration Generator configures COM, PduR, IpduM and lower lay- ers with the information from the System Extract/ECU Extract. [TPS_SYST_01081] Gatewaying of a MultiplexedIPdu in System Extract/ECU Extract (cid:100) \u2022 StaticPart and DynamicPart definitions shall be omitted, thus no ISig- nalIPdu description shall be included \u2022 all attributes of the MultiplexedIPdu shall be omitted. \u2022 a PduTriggering shall be defined only for the gatewayed MultiplexedIPdu \u2022 an IPduMapping between the source and the target PduTriggerings shall be defined (cid:99)() The initial ECU Configuration Generator configures PduR and lower layers with the information from the System Extract/ECU Extract. [TPS_SYST_01082] Receiving and gatewaying of a MultiplexedIPdu in System Extract/ECU Extract (cid:100) \u2022 all attributes of the MultiplexedIPdu are mandatory 415 of 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate System Template AUTOSAR CP R23-11 \u2022 aggregated DynamicPart with associated ISignalIPdus is mandatory in case at least one DynamicPartAlternative is received by one Ecu of the Extract. \u2022 a PduTriggering shall be defined for the MultiplexedIPdu \u2022 an IPduMapping between the source and the target PduTriggerings shall be defined \u2022 a PduTriggering shall be defined for all included ISignalIPdus in the Dy- namicPart and StaticPart (cid:99)() The initial ECU Configuration Generator configures Com, PduR, IpduM and lower lay- ers with the information from the System Extract/ECU Extract. 416 of 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate System Template AUTOSAR CP R23-11 6.6 Frames Identifiable PhysicalChannel Identifiable FrameTriggering FibexElement Frame + frameLength: Integer [0..1] Identifiable \u00abatpPrototype\u00bb FibexElement PduToFrameMapping UploadableDesignElement Pdu + packingByteOrder: ByteOrderEnum [0..1] + startPosition: Integer [0..1] + hasDynamicLength: Boolean [0..1] + updateIndicationBitPosition: Integer [0..1] + length: UnlimitedInteger [0..1] (cid:1) (cid:16) (cid:4) (cid:23) (cid:14) (cid:2) (cid:17) (cid:8) (cid:24) (cid:3) (cid:4) (cid:18) (cid:19) (cid:14) (cid:23) (cid:5) (cid:2) (cid:3) (cid:3) (cid:21) (cid:3) (cid:18) (cid:29) (cid:20) (cid:26) (cid:30) (cid:2) (cid:25) (cid:6) (cid:7) (cid:2) (cid:14) (cid:3) (cid:21) (cid:7) (cid:19) (cid:22) (cid:14) (cid:20) (cid:1) (cid:16) (cid:4) (cid:3) (cid:7) (cid:3) (cid:6) (cid:2) (cid:17) (cid:8) (cid:7) (cid:8) (cid:9) (cid:7) (cid:27) (cid:3) (cid:4) (cid:18) (cid:19) (cid:14) (cid:9) (cid:22) (cid:3) (cid:2) (cid:3) (cid:7) (cid:12) (cid:5) (cid:3) (cid:21) (cid:10) (cid:9) (cid:20) (cid:8) (cid:2) (cid:25) (cid:12) (cid:13) (cid:28) (cid:6) (cid:7) (cid:14) (cid:3) (cid:7) (cid:19) (cid:2) (cid:12) (cid:3) (cid:2) (cid:21) (cid:22) (cid:13) (cid:7) (cid:23) (cid:2) (cid:9) (cid:3) (cid:7) (cid:8) (cid:7) (cid:9) (cid:14) (cid:15) (cid:20) (cid:22) (cid:9) (cid:22) (cid:2) (cid:10) (cid:7) (cid:9) (cid:24) (cid:6) (cid:22) (cid:12) (cid:13) (cid:2) (cid:12) (cid:13) (cid:7) (cid:23) (cid:14) (cid:15) (cid:20) (cid:24) +managedPhysicalChannel 0..* \u00abatpVariation,atpSplitable\u00bb +frameTriggering 0..* +frame 0..1 \u00abatpVariation,atpSplitable\u00bb +pduToFrameMapping 0..* +pdu 0..1 Figure 6.29: Frame Overview (FibexCore: FrameOverview) [TPS_SYST_01083] Frame (cid:100)A Frame represents a general design object that is used to describe the layout of the included Pdus as a reusable asset.(cid:99)() [TPS_SYST_01084] FrameTriggering (cid:100)The FrameTriggering implements the reusable definition of a Frame within a concrete context and thus defines a Frame\u2019s send behavior and identification on a certain PhysicalChannel.(cid:99)() [TPS_SYST_02255] Frame.frameLength usage for FlexrayFrames and Can- Frames (cid:100)The frameLength for a FlexrayFrame shall be equal or larger than the combined length of all Pdus that are mapped to the frame. The frameLength for a CanFrame is used to describe the minimum length of a re- ceived L-PDU to be accepted by a data length check. Therefore, it is possible to configure a frameLength which is smaller than the mapped Pdu to this frame. If data length check is not needed the frameLength of a CanFrame may be left unde- fined. The reason for that is that if the CanFrame.frameLength is larger than the Pdu.length of the mapped Pdu and data length check is used, a received Pdu will always be discarded due to a failing minimum length check.(cid:99)() 417 of 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate System Template AUTOSAR CP R23-11",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_SystemTemplate.pdf",

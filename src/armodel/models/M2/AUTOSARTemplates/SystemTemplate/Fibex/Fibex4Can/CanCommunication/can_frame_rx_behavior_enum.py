@@ -26,6 +26,6 @@ class CanFrameRxBehaviorEnum(AREnum):
         """
         self._value_ = value
 
-    ANY = "any"
-    CAN20 = "can20"
-    CAN_FD = "canFd"
+    ANY = "ANY"
+    CAN20 = "CAN20"
+    CAN_FD = "CAN-FD"

@@ -37,6 +37,7 @@ class ComponentInCompositionInstanceRef(ARObject):
         self.base: Optional[CompositionSwComponentType] = None
         self.contexts: list[Any] = []
         self.target: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ComponentInCompositionInstanceRef to XML element.
 
@@ -44,7 +45,7 @@ class ComponentInCompositionInstanceRef(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize base

@@ -91,7 +91,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "Describes the specific properties of one data instance in order to support measurement and/or calibration of this data instance. The most important attributes are: • Its shortName is copied from the ECU Flat map (if applicable) and will be used as identifier and for display by the MC system. • The category is copied from the corresponding data type (ApplicationDataType if defined, otherwise ImplementationDataType) as far as applicable. • The symbol is the one used in the programming language. It will be used to find out the actual memory address by the final generation tool with the help of linker generated information. It is assumed that in the M1 model this part and all the aggregated and referred elements (with the exception of the Flat Map and the references from ImplementationElementInParameterInstanceRef and McAccessDetails) are completely generated from \"upstream\" information. This means, that even if an element like e.g. a CompuMethod is only used via reference here, it will be copied into the M1 artifact which holds the complete McSupportData for a given Implementation.",
+      "note": "Describes the specific properties of one data instance in order to support measurement and/or calibration of this data instance. The most important attributes are: \u2022 Its shortName is copied from the ECU Flat map (if applicable) and will be used as identifier and for display by the MC system. \u2022 The category is copied from the corresponding data type (ApplicationDataType if defined, otherwise ImplementationDataType) as far as applicable. \u2022 The symbol is the one used in the programming language. It will be used to find out the actual memory address by the final generation tool with the help of linker generated information. It is assumed that in the M1 model this part and all the aggregated and referred elements (with the exception of the Flat Map and the references from ImplementationElementInParameterInstanceRef and McAccessDetails) are completely generated from \"upstream\" information. This means, that even if an element like e.g. a CompuMethod is only used via reference here, it will be copied into the M1 artifact which holds the complete McSupportData for a given Implementation.",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf",
@@ -209,7 +209,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "This denotes the method used by the RTE to handle the calibration data. It is published by the RTE generator and can be used e.g. to generate the corresponding emulation method in a Complex Driver. According to the actual method given by the category attribute, not all attributes are always needed: • double pointered method: only baseReference is mandatory • single pointered method: only referenceTable is mandatory • initRam method: only elementGroup(s) are mandatory Note: For single/double pointered method the group locations are implicitly accessed via the reference table and their location can be found from the initial values in the M1 model of the respective pointers. Therefore, the description of elementGroups is not needed in these cases. Likewise, for double pointered method the reference table description can be accessed via the M1 model under baseReference.",
+      "note": "This denotes the method used by the RTE to handle the calibration data. It is published by the RTE generator and can be used e.g. to generate the corresponding emulation method in a Complex Driver. According to the actual method given by the category attribute, not all attributes are always needed: \u2022 double pointered method: only baseReference is mandatory \u2022 single pointered method: only referenceTable is mandatory \u2022 initRam method: only elementGroup(s) are mandatory Note: For single/double pointered method the group locations are implicitly accessed via the reference table and their location can be found from the initial values in the M1 model of the respective pointers. Therefore, the description of elementGroups is not needed in these cases. Likewise, for double pointered method the reference table description can be accessed via the M1 model under baseReference.",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf",
@@ -222,7 +222,7 @@
         "baseReference": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Refers to the base pointer in case of the double-pointered"
         },
@@ -243,7 +243,7 @@
         "referenceTable": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Refers to the pointer table in case of the single-pointered"
         },
@@ -285,14 +285,14 @@
         "ramLocation": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Refers to the RAM location of this parameter group. To be the init-RAM method."
         },
         "romLocation": {
           "type": "ParameterDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Refers to the ROM location of this parameter group. To"
         },
@@ -321,7 +321,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "that this class follows the pattern of an InstanceRef but is not implemented based on the abstract classes because the ImplementationDataType isn’t either, especially because ImplementationDataType Element isn’t derived from AtpPrototype.",
+      "note": "that this class follows the pattern of an InstanceRef but is not implemented based on the abstract classes because the ImplementationDataType isn\u2019t either, especially because ImplementationDataType Element isn\u2019t derived from AtpPrototype.",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf",
@@ -334,7 +334,7 @@
         "context": {
           "type": "ParameterDataPrototype",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "The context for the referred element."
         },
@@ -369,7 +369,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "Represents a functional element to be used as input to support measurement and calibration. It is used to • assign calibration parameters to a logical function • assign measurement variables to a logical function • structure functions hierarchically",
+      "note": "Represents a functional element to be used as input to support measurement and calibration. It is used to \u2022 assign calibration parameters to a logical function \u2022 assign measurement variables to a logical function \u2022 structure functions hierarchically",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf",
@@ -382,35 +382,35 @@
         "defCalprmSet": {
           "type": "McFunctionDataRefSet",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Refers to the set of adjustable data (= calibration in this function."
         },
         "inMeasurement": {
           "type": "McFunctionDataRefSet",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Refers to the set of measurable input data for this"
         },
         "loc": {
           "type": "McFunctionDataRefSet",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Refers to the set of measurable local data in this function. atpSplitable Set Tags:"
         },
         "out": {
           "type": "McFunctionDataRefSet",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Refers to the set of measurable output data from this atpSplitable"
         },
         "refCalprmSet": {
           "type": "McFunctionDataRefSet",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Refers to the set of adjustable data (= calibration by this function."
         },

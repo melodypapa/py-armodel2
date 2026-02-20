@@ -764,7 +764,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "This attribute defines the minimum amount of time two succeeding CFs of a 1:1 segmented seconds. Valid values are 0, 100µs, 200µs 1ms, 2ms .. 127ms. The value can be changed using the FrArTp_ChangeParameter interface. shall be an integer multiple cycle length multiplied with the multiplexing factor, = n * cycle * m, where n is >=0, cycle is FlexrayCluster.cycle, and m is the of those cycles where PDUs of the PDU scheduled. Due to the scheduling strategies of FrTp, only be kept to a degree the maximum temporal distance of the PDUs PDU pool within one FlexRay cycle. .. 0.127"
+          "note": "This attribute defines the minimum amount of time two succeeding CFs of a 1:1 segmented seconds. Valid values are 0, 100\u00b5s, 200\u00b5s 1ms, 2ms .. 127ms. The value can be changed using the FrArTp_ChangeParameter interface. shall be an integer multiple cycle length multiplied with the multiplexing factor, = n * cycle * m, where n is >=0, cycle is FlexrayCluster.cycle, and m is the of those cycles where PDUs of the PDU scheduled. Due to the scheduling strategies of FrTp, only be kept to a degree the maximum temporal distance of the PDUs PDU pool within one FlexRay cycle. .. 0.127"
         },
         "multicast": {
           "type": "Boolean",
@@ -1642,7 +1642,7 @@
         "tpSdus": {
           "type": "PduTriggering",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to a PduTriggering that shall be transported"
         }
@@ -1733,14 +1733,14 @@
         "tpSdu": {
           "type": "PduTriggering",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to an IPdu that is segmented by the Transport"
         },
         "transportPdu": {
           "type": "PduTriggering",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to the segmented IPdu."
         }

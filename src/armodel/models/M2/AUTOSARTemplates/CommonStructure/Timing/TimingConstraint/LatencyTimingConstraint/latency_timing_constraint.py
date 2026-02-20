@@ -49,6 +49,7 @@ class LatencyTimingConstraint(TimingConstraint):
         self.minimum: Optional[MultidimensionalTime] = None
         self.nominal: Optional[MultidimensionalTime] = None
         self.scope: Optional[TimingDescriptionEvent] = None
+
     def serialize(self) -> ET.Element:
         """Serialize LatencyTimingConstraint to XML element.
 
@@ -56,7 +57,7 @@ class LatencyTimingConstraint(TimingConstraint):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

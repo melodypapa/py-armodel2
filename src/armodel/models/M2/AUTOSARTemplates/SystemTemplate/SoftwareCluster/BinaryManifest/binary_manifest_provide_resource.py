@@ -38,6 +38,7 @@ class BinaryManifestProvideResource(BinaryManifestResource):
         super().__init__()
         self.number_of: Optional[PositiveInteger] = None
         self.supports: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BinaryManifestProvideResource to XML element.
 
@@ -45,7 +46,7 @@ class BinaryManifestProvideResource(BinaryManifestResource):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

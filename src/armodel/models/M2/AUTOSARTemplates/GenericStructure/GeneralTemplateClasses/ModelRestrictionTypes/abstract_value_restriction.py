@@ -44,6 +44,7 @@ class AbstractValueRestriction(ARObject, ABC):
         self.min: Optional[Limit] = None
         self.min_length: Optional[PositiveInteger] = None
         self.pattern: Optional[RegularExpression] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AbstractValueRestriction to XML element.
 
@@ -51,7 +52,7 @@ class AbstractValueRestriction(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize max

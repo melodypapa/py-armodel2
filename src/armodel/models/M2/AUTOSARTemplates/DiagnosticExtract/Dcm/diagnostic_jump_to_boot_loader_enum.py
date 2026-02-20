@@ -26,5 +26,5 @@ class DiagnosticJumpToBootLoaderEnum(AREnum):
         """
         self._value_ = value
 
-    SEND = "send"
-    SYSTEM_SUPPLIER_BOOT = "systemSupplierBoot"
+    SEND = "SEND"
+    SYSTEM_SUPPLIER_BOOT = "SYSTEM-SUPPLIER-BOOT"

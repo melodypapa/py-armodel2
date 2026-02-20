@@ -58,6 +58,7 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
         self.pcm_bit_depth: Optional[PositiveInteger] = None
         self.sparse: Optional[Boolean] = None
         self.streams_per: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize IEEE1722TpAafConnection to XML element.
 
@@ -65,7 +66,7 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

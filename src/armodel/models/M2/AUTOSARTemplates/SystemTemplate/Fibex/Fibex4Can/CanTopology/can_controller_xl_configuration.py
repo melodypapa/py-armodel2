@@ -51,6 +51,7 @@ class CanControllerXlConfiguration(ARObject):
         self.time_seg1: Optional[PositiveInteger] = None
         self.time_seg2: Optional[PositiveInteger] = None
         self.trcv_pwm_mode: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CanControllerXlConfiguration to XML element.
 
@@ -58,7 +59,7 @@ class CanControllerXlConfiguration(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize error_signaling

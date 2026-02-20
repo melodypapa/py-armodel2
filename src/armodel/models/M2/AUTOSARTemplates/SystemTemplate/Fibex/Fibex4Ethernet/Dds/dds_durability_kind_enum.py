@@ -26,4 +26,4 @@ class DdsDurabilityKindEnum(AREnum):
         """
         self._value_ = value
 
-    PERSISTENTTRANSIENTTRANSIENT_LOCALVOLATILE = "persistenttransienttransientLocalvolatile"
+    PERSISTENTTRANSIENTTRANSIENT_LOCALVOLATILE = "PERSISTENTTRANSIENTTRANSIENT-LOCALVOLATILE"

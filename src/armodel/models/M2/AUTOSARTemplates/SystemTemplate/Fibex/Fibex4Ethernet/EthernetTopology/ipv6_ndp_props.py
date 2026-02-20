@@ -58,6 +58,7 @@ class Ipv6NdpProps(ARObject):
         self.tcp_ip_ndp_rnd_rtr: Optional[Boolean] = None
         self.tcp_ip_ndp_rtr: Optional[TimeValue] = None
         self.tcp_ip_ndp_slaac: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Ipv6NdpProps to XML element.
 
@@ -65,7 +66,7 @@ class Ipv6NdpProps(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize tcp_ip_ndp_default

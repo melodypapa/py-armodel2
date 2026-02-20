@@ -37,6 +37,7 @@ class SwAxisGeneric(ARObject):
         super().__init__()
         self.sw_axis_type: Optional[SwAxisType] = None
         self.sw_generic_axis_params: list[SwGenericAxisParam] = []
+
     def serialize(self) -> ET.Element:
         """Serialize SwAxisGeneric to XML element.
 
@@ -44,7 +45,7 @@ class SwAxisGeneric(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize sw_axis_type

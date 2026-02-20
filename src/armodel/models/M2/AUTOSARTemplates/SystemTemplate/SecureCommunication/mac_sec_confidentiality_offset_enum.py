@@ -26,6 +26,6 @@ class MacSecConfidentialityOffsetEnum(AREnum):
         """
         self._value_ = value
 
-    CONFIDENTIALITY_OFFSET_0_OFFSET_30 = "ConfidentialityOffset_0Offset_30"
-    SYSTEM = "System"
-    AUTOSAR_OFFSET_50 = "AUTOSAROffset_50"
+    CONFIDENTIALITY_OFFSET_0_OFFSET_30 = "CONFIDENTIALITY-OFFSET_0-OFFSET_30"
+    SYSTEM = "SYSTEM"
+    AUTOSAR_OFFSET_50 = "A-U-T-O-S-A-R-OFFSET_50"

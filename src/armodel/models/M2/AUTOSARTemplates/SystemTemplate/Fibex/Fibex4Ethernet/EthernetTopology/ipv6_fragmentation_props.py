@@ -39,6 +39,7 @@ class Ipv6FragmentationProps(ARObject):
         self.tcp_ip_ip_reassembly_buffer_size: Optional[PositiveInteger] = None
         self.tcp_ip_ip_tx: Optional[PositiveInteger] = None
         self.tcp_ip_ip_tx_fragment_buffer_size: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Ipv6FragmentationProps to XML element.
 
@@ -46,7 +47,7 @@ class Ipv6FragmentationProps(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize tcp_ip_ip

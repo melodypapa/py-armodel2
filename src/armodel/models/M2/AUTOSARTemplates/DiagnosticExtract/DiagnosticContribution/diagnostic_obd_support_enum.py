@@ -26,7 +26,7 @@ class DiagnosticObdSupportEnum(AREnum):
         """
         self._value_ = value
 
-    MASTER_ECU = "masterEcu"
-    NO_OBD_SUPPORT = "noObdSupport"
-    PRIMARY_ECU = "primaryEcu"
-    SECONDARY_ECU = "secondaryEcu"
+    MASTER_ECU = "MASTER-ECU"
+    NO_OBD_SUPPORT = "NO-OBD-SUPPORT"
+    PRIMARY_ECU = "PRIMARY-ECU"
+    SECONDARY_ECU = "SECONDARY-ECU"

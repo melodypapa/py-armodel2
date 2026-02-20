@@ -73,6 +73,7 @@ class BswModuleEntity(ExecutableEntity, ABC):
         self.issued_trigger_refs: list[ARRef] = []
         self.managed_mode_refs: list[ARRef] = []
         self.scheduler_name: Optional[BswSchedulerNamePrefix] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BswModuleEntity to XML element.
 
@@ -80,7 +81,7 @@ class BswModuleEntity(ExecutableEntity, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -93,23 +94,37 @@ class BswModuleEntity(ExecutableEntity, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize accessed_mode_refs (list to container "ACCESSED-MODES")
+        # Serialize accessed_mode_refs (list to container "ACCESSED-MODE-REFS")
         if self.accessed_mode_refs:
-            wrapper = ET.Element("ACCESSED-MODES")
+            wrapper = ET.Element("ACCESSED-MODE-REFS")
             for item in self.accessed_mode_refs:
                 serialized = ARObject._serialize_item(item, "ModeDeclarationGroup")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("ACCESSED-MODE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize activation_point_refs (list to container "ACTIVATION-POINTS")
+        # Serialize activation_point_refs (list to container "ACTIVATION-POINT-REFS")
         if self.activation_point_refs:
-            wrapper = ET.Element("ACTIVATION-POINTS")
+            wrapper = ET.Element("ACTIVATION-POINT-REFS")
             for item in self.activation_point_refs:
                 serialized = ARObject._serialize_item(item, "BswInternalTriggeringPoint")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("ACTIVATION-POINT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -157,23 +172,37 @@ class BswModuleEntity(ExecutableEntity, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize issued_trigger_refs (list to container "ISSUED-TRIGGERS")
+        # Serialize issued_trigger_refs (list to container "ISSUED-TRIGGER-REFS")
         if self.issued_trigger_refs:
-            wrapper = ET.Element("ISSUED-TRIGGERS")
+            wrapper = ET.Element("ISSUED-TRIGGER-REFS")
             for item in self.issued_trigger_refs:
                 serialized = ARObject._serialize_item(item, "Trigger")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("ISSUED-TRIGGER-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize managed_mode_refs (list to container "MANAGED-MODES")
+        # Serialize managed_mode_refs (list to container "MANAGED-MODE-REFS")
         if self.managed_mode_refs:
-            wrapper = ET.Element("MANAGED-MODES")
+            wrapper = ET.Element("MANAGED-MODE-REFS")
             for item in self.managed_mode_refs:
                 serialized = ARObject._serialize_item(item, "ModeDeclarationGroup")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("MANAGED-MODE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -206,23 +235,35 @@ class BswModuleEntity(ExecutableEntity, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswModuleEntity, cls).deserialize(element)
 
-        # Parse accessed_mode_refs (list from container "ACCESSED-MODES")
+        # Parse accessed_mode_refs (list from container "ACCESSED-MODE-REFS")
         obj.accessed_mode_refs = []
-        container = ARObject._find_child_element(element, "ACCESSED-MODES")
+        container = ARObject._find_child_element(element, "ACCESSED-MODE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.accessed_mode_refs.append(child_value)
 
-        # Parse activation_point_refs (list from container "ACTIVATION-POINTS")
+        # Parse activation_point_refs (list from container "ACTIVATION-POINT-REFS")
         obj.activation_point_refs = []
-        container = ARObject._find_child_element(element, "ACTIVATION-POINTS")
+        container = ARObject._find_child_element(element, "ACTIVATION-POINT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.activation_point_refs.append(child_value)
 
@@ -262,23 +303,35 @@ class BswModuleEntity(ExecutableEntity, ABC):
             implemented_value = ARObject._deserialize_by_tag(child, "BswModuleEntry")
             obj.implemented = implemented_value
 
-        # Parse issued_trigger_refs (list from container "ISSUED-TRIGGERS")
+        # Parse issued_trigger_refs (list from container "ISSUED-TRIGGER-REFS")
         obj.issued_trigger_refs = []
-        container = ARObject._find_child_element(element, "ISSUED-TRIGGERS")
+        container = ARObject._find_child_element(element, "ISSUED-TRIGGER-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.issued_trigger_refs.append(child_value)
 
-        # Parse managed_mode_refs (list from container "MANAGED-MODES")
+        # Parse managed_mode_refs (list from container "MANAGED-MODE-REFS")
         obj.managed_mode_refs = []
-        container = ARObject._find_child_element(element, "MANAGED-MODES")
+        container = ARObject._find_child_element(element, "MANAGED-MODE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.managed_mode_refs.append(child_value)
 

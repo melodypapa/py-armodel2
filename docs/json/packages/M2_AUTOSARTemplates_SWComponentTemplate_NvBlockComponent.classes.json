@@ -52,7 +52,7 @@
         "dataTypes": {
           "type": "DataTypeMappingSet",
           "multiplicity": "*",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to the DataTypeMapping to be applied for the NVRAM Block."
         },
@@ -73,7 +73,7 @@
         "nvBlockDatas": {
           "type": "NvBlockDataMapping",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Defines the mapping between the VariableData in the NvBlockComponents ports and the the RAM Block. of NvBlockDataMapping is subject to the purpose to support the conditional nv data ports. atpVariation"
         },
@@ -87,14 +87,14 @@
         "ramBlock": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Defines the RAM Block of the NVRAM Block provided by"
         },
         "romBlock": {
           "type": "ParameterDataPrototype",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Defines the ROM Block of the NVRAM Block provided by"
         },
@@ -200,28 +200,28 @@
         "nvRamBlock": {
           "type": "AutosarVariableRef",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to a VariableDataPrototype of a RAM Block."
         },
         "readNvData": {
           "type": "AutosarVariableRef",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to a VariableDataPrototype of a pPort of the read access to the RAM is no PortPrototype providing read access reference can be omitted."
         },
         "writtenNvData": {
           "type": "AutosarVariableRef",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to a VariableDataPrototype of a rPort of the Nv write access to the RAM there is no port providing write access reference can be omitted."
         },
         "writtenReadNv": {
           "type": "AutosarVariableRef",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Reference to a VariableDataPrototype of a PRPort of the NvBlockSwComponentType providing read access to the RAM Block."
         }
@@ -264,14 +264,14 @@
         "bulkNvBlock": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This aggregation represents the actual bulk NVBlock."
         },
         "nvBlockDatas": {
           "type": "NvBlockDataMapping",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "Defines the mapping between the VariableData in the NvBlockComponents ports and the the non-volatile memory. of NvBlockDataMapping is subject to the purpose to support the conditional nv data ports. atpVariation"
         }

@@ -37,6 +37,7 @@ class EthernetPriorityRegeneration(Referrable):
         super().__init__()
         self.ingress_priority: Optional[PositiveInteger] = None
         self.regenerated: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EthernetPriorityRegeneration to XML element.
 
@@ -44,7 +45,7 @@ class EthernetPriorityRegeneration(Referrable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

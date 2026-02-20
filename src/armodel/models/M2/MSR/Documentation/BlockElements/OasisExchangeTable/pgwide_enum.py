@@ -26,7 +26,7 @@ class PgwideEnum(AREnum):
         """
         self._value_ = value
 
-    NO_PGWIDE = "noPgwide"
-    GENERIC = "Generic"
-    AUTOSAR = "AUTOSAR"
-    PGWIDE = "pgwide"
+    NO_PGWIDE = "NO-PGWIDE"
+    GENERIC = "GENERIC"
+    AUTOSAR = "A-U-T-O-S-A-R"
+    PGWIDE = "PGWIDE"

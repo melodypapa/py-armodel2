@@ -35,6 +35,7 @@ class HwPinConnector(Describable):
         """Initialize HwPinConnector."""
         super().__init__()
         self.hw_pins: list[HwPin] = []
+
     def serialize(self) -> ET.Element:
         """Serialize HwPinConnector to XML element.
 
@@ -42,7 +43,7 @@ class HwPinConnector(Describable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

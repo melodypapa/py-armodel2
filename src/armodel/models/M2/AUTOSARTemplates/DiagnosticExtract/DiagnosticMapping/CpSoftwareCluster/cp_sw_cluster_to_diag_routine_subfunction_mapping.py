@@ -40,6 +40,7 @@ class CpSwClusterToDiagRoutineSubfunctionMapping(DiagnosticMapping):
         super().__init__()
         self.cp_software_cluster: Optional[CpSoftwareCluster] = None
         self.routine: Optional[DiagnosticRoutine] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CpSwClusterToDiagRoutineSubfunctionMapping to XML element.
 
@@ -47,7 +48,7 @@ class CpSwClusterToDiagRoutineSubfunctionMapping(DiagnosticMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

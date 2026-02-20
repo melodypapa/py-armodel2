@@ -29,10 +29,12 @@ class LanguageSpecific(ARObject, ABC):
         return True
 
     l: LEnum
+    _text: Optional[str]
     def __init__(self) -> None:
         """Initialize LanguageSpecific."""
         super().__init__()
         self.l: LEnum = None
+        self._text: Optional[str] = None
     def serialize(self) -> ET.Element:
         """Serialize LanguageSpecific to XML element.
 
@@ -40,22 +42,16 @@ class LanguageSpecific(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize l
+        # Serialize l as XML attribute (not child element)
         if self.l is not None:
-            serialized = ARObject._serialize_item(self.l, "LEnum")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("L")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+            elem.set("L", str(self.l))
+
+        # Serialize text content directly to element text
+        if self._text is not None:
+            elem.text = self._text
 
         return elem
 
@@ -73,11 +69,14 @@ class LanguageSpecific(ARObject, ABC):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse l
-        child = ARObject._find_child_element(element, "L")
-        if child is not None:
-            l_value = LEnum.deserialize(child)
+        # Parse l from XML attribute (not child element)
+        l_value = element.get("L")
+        if l_value is not None:
             obj.l = l_value
+
+        # Parse text content from element
+        if element.text is not None and element.text.strip():
+            obj._text = element.text
 
         return obj
 

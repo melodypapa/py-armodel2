@@ -74,7 +74,7 @@
         "type": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "by a component"
         }
@@ -401,7 +401,7 @@
         "modeGroup": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "This is the corresponding ModeDeclarationGroup."
         }
@@ -436,7 +436,7 @@
         "firstModeGroupPrototype": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "ModeDeclarationGroupPrototype to be mapped."
         },
@@ -450,7 +450,7 @@
         "secondMode": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "0..1",
-          "kind": "reference",
+          "kind": "ref",
           "is_ref": true,
           "note": "ModeDeclarationGroupPrototype to be mapped."
         }

@@ -64,6 +64,7 @@ class Entry(ARObject):
         self.rowsep: Optional[TableSeparatorString] = None
         self.spanname: Optional[String] = None
         self.valign: Optional[ValignEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Entry to XML element.
 
@@ -71,7 +72,7 @@ class Entry(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize align

@@ -39,6 +39,7 @@ class TopicContent(ARObject):
         self.block_level: DocumentationBlock = None
         self.table: Optional[Table] = None
         self.traceable_table: Any = None
+
     def serialize(self) -> ET.Element:
         """Serialize TopicContent to XML element.
 
@@ -46,7 +47,7 @@ class TopicContent(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize block_level

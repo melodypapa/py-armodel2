@@ -27,8 +27,8 @@ class DiagnosticIndicatorTypeEnum(AREnum):
         """
         self._value_ = value
 
-    AMBER_WARNING = "amberWarning"
-    MALFUNCTION = "malfunction"
-    PROTECT_LAMP = "protectLamp"
-    RED_STOP_LAMP = "redStopLamp"
-    WARNING = "warning"
+    AMBER_WARNING = "AMBER-WARNING"
+    MALFUNCTION = "MALFUNCTION"
+    PROTECT_LAMP = "PROTECT-LAMP"
+    RED_STOP_LAMP = "RED-STOP-LAMP"
+    WARNING = "WARNING"

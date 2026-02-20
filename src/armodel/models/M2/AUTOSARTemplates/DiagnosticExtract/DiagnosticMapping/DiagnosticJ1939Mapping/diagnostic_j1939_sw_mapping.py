@@ -41,6 +41,7 @@ class DiagnosticJ1939SwMapping(DiagnosticSwMapping):
         super().__init__()
         self.node: Optional[DiagnosticJ1939Node] = None
         self.sw_component_prototype_composition_instance_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticJ1939SwMapping to XML element.
 
@@ -48,7 +49,7 @@ class DiagnosticJ1939SwMapping(DiagnosticSwMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -80,7 +81,7 @@ class DiagnosticJ1939SwMapping(DiagnosticSwMapping):
             serialized = ARObject._serialize_item(self.sw_component_prototype_composition_instance_ref, "SwComponentPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SW-COMPONENT-PROTOTYPE-COMPOSITION-INSTANCE-REF")
+                wrapped = ET.Element("SW-COMPONENT-PROTOTYPE-COMPOSITION-INSTANCE-REF-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -111,9 +112,9 @@ class DiagnosticJ1939SwMapping(DiagnosticSwMapping):
             obj.node = node_value
 
         # Parse sw_component_prototype_composition_instance_ref
-        child = ARObject._find_child_element(element, "SW-COMPONENT-PROTOTYPE-COMPOSITION-INSTANCE-REF")
+        child = ARObject._find_child_element(element, "SW-COMPONENT-PROTOTYPE-COMPOSITION-INSTANCE-REF-REF")
         if child is not None:
-            sw_component_prototype_composition_instance_ref_value = ARObject._deserialize_by_tag(child, "SwComponentPrototype")
+            sw_component_prototype_composition_instance_ref_value = ARRef.deserialize(child)
             obj.sw_component_prototype_composition_instance_ref = sw_component_prototype_composition_instance_ref_value
 
         return obj

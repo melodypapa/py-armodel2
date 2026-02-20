@@ -37,6 +37,7 @@ class FlexrayTpNode(Identifiable):
         super().__init__()
         self.connectors: list[Any] = []
         self.tp_address: Optional[TpAddress] = None
+
     def serialize(self) -> ET.Element:
         """Serialize FlexrayTpNode to XML element.
 
@@ -44,7 +45,7 @@ class FlexrayTpNode(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

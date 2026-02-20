@@ -40,6 +40,7 @@ class ROperationInAtomicSwcInstanceRef(OperationInAtomicSwcInstanceRef):
         super().__init__()
         self.context_r_port_prototype: Optional[AbstractRequiredPortPrototype] = None
         self.target_required_operation: Optional[ClientServerOperation] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ROperationInAtomicSwcInstanceRef to XML element.
 
@@ -47,7 +48,7 @@ class ROperationInAtomicSwcInstanceRef(OperationInAtomicSwcInstanceRef):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

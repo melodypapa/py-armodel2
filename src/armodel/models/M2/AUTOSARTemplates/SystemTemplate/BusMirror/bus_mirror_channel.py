@@ -37,6 +37,7 @@ class BusMirrorChannel(ARObject):
         super().__init__()
         self.bus_mirror: Optional[PositiveInteger] = None
         self.channel: Optional[PhysicalChannel] = None
+
     def serialize(self) -> ET.Element:
         """Serialize BusMirrorChannel to XML element.
 
@@ -44,7 +45,7 @@ class BusMirrorChannel(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize bus_mirror

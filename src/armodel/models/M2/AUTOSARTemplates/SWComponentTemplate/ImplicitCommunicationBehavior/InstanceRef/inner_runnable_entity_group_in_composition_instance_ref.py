@@ -40,6 +40,7 @@ class InnerRunnableEntityGroupInCompositionInstanceRef(ARObject):
         self.base: Optional[CompositionSwComponentType] = None
         self.context_sws: list[Any] = []
         self.target_runnable_ref: ARRef = None
+
     def serialize(self) -> ET.Element:
         """Serialize InnerRunnableEntityGroupInCompositionInstanceRef to XML element.
 
@@ -47,7 +48,7 @@ class InnerRunnableEntityGroupInCompositionInstanceRef(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize base
@@ -79,7 +80,7 @@ class InnerRunnableEntityGroupInCompositionInstanceRef(ARObject):
             serialized = ARObject._serialize_item(self.target_runnable_ref, "RunnableEntityGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TARGET-RUNNABLE")
+                wrapped = ET.Element("TARGET-RUNNABLE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -121,9 +122,9 @@ class InnerRunnableEntityGroupInCompositionInstanceRef(ARObject):
                     obj.context_sws.append(child_value)
 
         # Parse target_runnable_ref
-        child = ARObject._find_child_element(element, "TARGET-RUNNABLE")
+        child = ARObject._find_child_element(element, "TARGET-RUNNABLE-REF")
         if child is not None:
-            target_runnable_ref_value = ARObject._deserialize_by_tag(child, "RunnableEntityGroup")
+            target_runnable_ref_value = ARRef.deserialize(child)
             obj.target_runnable_ref = target_runnable_ref_value
 
         return obj

@@ -50,6 +50,7 @@ class SwRecordLayoutV(ARObject):
         self.short_label: Optional[Identifier] = None
         self.sw_generic_axis_param: Optional[SwGenericAxisParam] = None
         self.sw_record: Optional[NameToken] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwRecordLayoutV to XML element.
 
@@ -57,7 +58,7 @@ class SwRecordLayoutV(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize base_type
@@ -155,7 +156,7 @@ class SwRecordLayoutV(ARObject):
         # Parse desc
         child = ARObject._find_child_element(element, "DESC")
         if child is not None:
-            desc_value = ARObject._deserialize_by_tag(child, "MultiLanguageOverviewParagraph")
+            desc_value = ARObject._deserialize_with_type(child, "MultiLanguageOverviewParagraph")
             obj.desc = desc_value
 
         # Parse short_label

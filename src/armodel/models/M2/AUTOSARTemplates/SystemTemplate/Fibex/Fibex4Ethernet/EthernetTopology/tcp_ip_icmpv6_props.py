@@ -32,6 +32,7 @@ class TcpIpIcmpv6Props(ARObject):
         """Initialize TcpIpIcmpv6Props."""
         super().__init__()
         self.tcp_ip_icmp: Optional[Boolean] = None
+
     def serialize(self) -> ET.Element:
         """Serialize TcpIpIcmpv6Props to XML element.
 
@@ -39,7 +40,7 @@ class TcpIpIcmpv6Props(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize tcp_ip_icmp

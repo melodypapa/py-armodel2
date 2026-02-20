@@ -26,5 +26,5 @@ class BswEntryKindEnum(AREnum):
         """
         self._value_ = value
 
-    ABSTRACT = "abstract"
-    CONCRETE = "concrete"
+    ABSTRACT = "ABSTRACT"
+    CONCRETE = "CONCRETE"

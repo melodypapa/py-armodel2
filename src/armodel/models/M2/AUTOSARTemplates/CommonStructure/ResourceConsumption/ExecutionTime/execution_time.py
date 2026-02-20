@@ -68,6 +68,7 @@ class ExecutionTime(Identifiable, ABC):
         self.included_librarie_refs: list[ARRef] = []
         self.memory_section_locations: list[MemorySectionLocation] = []
         self.software_context: Optional[SoftwareContext] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ExecutionTime to XML element.
 
@@ -75,7 +76,7 @@ class ExecutionTime(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -144,13 +145,20 @@ class ExecutionTime(Identifiable, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize included_librarie_refs (list to container "INCLUDED-LIBRARIES")
+        # Serialize included_librarie_refs (list to container "INCLUDED-LIBRARIE-REFS")
         if self.included_librarie_refs:
-            wrapper = ET.Element("INCLUDED-LIBRARIES")
+            wrapper = ET.Element("INCLUDED-LIBRARIE-REFS")
             for item in self.included_librarie_refs:
                 serialized = ARObject._serialize_item(item, "DependencyOnArtifact")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("INCLUDED-LIBRARIE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -217,13 +225,19 @@ class ExecutionTime(Identifiable, ABC):
             hw_element_value = ARObject._deserialize_by_tag(child, "HwElement")
             obj.hw_element = hw_element_value
 
-        # Parse included_librarie_refs (list from container "INCLUDED-LIBRARIES")
+        # Parse included_librarie_refs (list from container "INCLUDED-LIBRARIE-REFS")
         obj.included_librarie_refs = []
-        container = ARObject._find_child_element(element, "INCLUDED-LIBRARIES")
+        container = ARObject._find_child_element(element, "INCLUDED-LIBRARIE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.included_librarie_refs.append(child_value)
 

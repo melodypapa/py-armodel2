@@ -26,5 +26,5 @@ class EthernetSwitchVlanIngressTagEnum(AREnum):
         """
         self._value_ = value
 
-    DROP_UNTAGGED = "dropUntagged"
-    FORWARD_AS_IS = "forwardAsIs"
+    DROP_UNTAGGED = "DROP-UNTAGGED"
+    FORWARD_AS_IS = "FORWARD-AS-IS"

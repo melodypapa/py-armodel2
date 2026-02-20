@@ -37,6 +37,7 @@ class DiagnosticFimAliasEventGroupMapping(DiagnosticMapping):
         super().__init__()
         self.actual_event: Optional[DiagnosticFimEventGroup] = None
         self.alias_event: Optional[Any] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticFimAliasEventGroupMapping to XML element.
 
@@ -44,7 +45,7 @@ class DiagnosticFimAliasEventGroupMapping(DiagnosticMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

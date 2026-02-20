@@ -27,10 +27,10 @@ class DataFilterTypeEnum(AREnum):
         """
         self._value_ = value
 
-    ALWAYS = "always"
-    MASKED_NEW_DIFFERS_MASKED_OLD = "maskedNewDiffersMaskedOld"
-    MASKED_NEW_DIFFERS_X = "maskedNewDiffersX"
-    MASKED_NEW_EQUALS_X = "maskedNewEqualsX"
-    NEVER = "never"
-    NEW_IS_OUTSIDE = "newIsOutside"
-    NEW_IS_WITHINMINONE_EVERY_N = "newIsWithinminoneEveryN"
+    ALWAYS = "ALWAYS"
+    MASKED_NEW_DIFFERS_MASKED_OLD = "MASKED-NEW-DIFFERS-MASKED-OLD"
+    MASKED_NEW_DIFFERS_X = "MASKED-NEW-DIFFERS-X"
+    MASKED_NEW_EQUALS_X = "MASKED-NEW-EQUALS-X"
+    NEVER = "NEVER"
+    NEW_IS_OUTSIDE = "NEW-IS-OUTSIDE"
+    NEW_IS_WITHINMINONE_EVERY_N = "NEW-IS-WITHINMINONE-EVERY-N"

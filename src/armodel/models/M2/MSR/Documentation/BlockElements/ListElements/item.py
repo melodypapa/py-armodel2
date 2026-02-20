@@ -38,6 +38,7 @@ class Item(Paginateable):
         """Initialize Item."""
         super().__init__()
         self.item_contents: DocumentationBlock = None
+
     def serialize(self) -> ET.Element:
         """Serialize Item to XML element.
 
@@ -45,7 +46,7 @@ class Item(Paginateable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -58,19 +59,13 @@ class Item(Paginateable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize item_contents
+        # Serialize item_contents as direct children (no ITEM-CONTENTS wrapper)
         if self.item_contents is not None:
-            serialized = ARObject._serialize_item(self.item_contents, "DocumentationBlock")
+            serialized = self.item_contents.serialize()
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ITEM-CONTENTS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                # Append all children from item_contents directly to ITEM element
                 for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                    elem.append(child)
 
         return elem
 
@@ -87,11 +82,12 @@ class Item(Paginateable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Item, cls).deserialize(element)
 
-        # Parse item_contents
-        child = ARObject._find_child_element(element, "ITEM-CONTENTS")
-        if child is not None:
-            item_contents_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
-            obj.item_contents = item_contents_value
+        # Parse item_contents from direct children (no ITEM-CONTENTS wrapper)
+        # Create a DocumentationBlock and parse DocumentationBlock-related children
+        from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import DocumentationBlock
+        item_contents_value = DocumentationBlock()
+        item_contents_value = DocumentationBlock.deserialize(element)
+        obj.item_contents = item_contents_value
 
         return obj
 

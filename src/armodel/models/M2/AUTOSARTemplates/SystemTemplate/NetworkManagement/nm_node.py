@@ -30,6 +30,8 @@ if TYPE_CHECKING:
         NmEcu,
     )
 
+
+
 from abc import ABC, abstractmethod
 
 
@@ -64,6 +66,7 @@ class NmNode(Identifiable, ABC):
         self.nm_passive: Optional[Boolean] = None
         self.rx_nm_pdus: list[NmPdu] = []
         self.tx_nm_pdus: list[NmPdu] = []
+
     def serialize(self) -> ET.Element:
         """Serialize NmNode to XML element.
 
@@ -71,7 +74,7 @@ class NmNode(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

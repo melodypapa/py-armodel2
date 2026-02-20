@@ -46,6 +46,7 @@ class ApplicationRuleBasedValueSpecification(CompositeRuleBasedValueArgument):
         self.category_specification: Optional[Identifier] = None
         self.sw_axis_conts: list[RuleBasedAxisCont] = []
         self.sw_value_cont: Optional[RuleBasedValueCont] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ApplicationRuleBasedValueSpecification to XML element.
 
@@ -53,7 +54,7 @@ class ApplicationRuleBasedValueSpecification(CompositeRuleBasedValueArgument):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

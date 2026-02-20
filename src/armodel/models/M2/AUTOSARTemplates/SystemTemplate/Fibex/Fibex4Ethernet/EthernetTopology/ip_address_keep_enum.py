@@ -26,5 +26,5 @@ class IpAddressKeepEnum(AREnum):
         """
         self._value_ = value
 
-    FORGET = "forget"
-    STORE_PERSISTENTLY = "storePersistently"
+    FORGET = "FORGET"
+    STORE_PERSISTENTLY = "STORE-PERSISTENTLY"

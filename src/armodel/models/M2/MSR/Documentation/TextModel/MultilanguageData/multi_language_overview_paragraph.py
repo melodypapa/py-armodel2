@@ -11,6 +11,7 @@ JSON Source: docs/json/packages/M2_MSR_Documentation_TextModel_MultilanguageData
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import l_prefix
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel.l_overview_paragraph import (
@@ -30,58 +31,22 @@ class MultiLanguageOverviewParagraph(ARObject):
         """
         return False
 
-    l2: LOverviewParagraph
+    _l2: list[LOverviewParagraph]
     def __init__(self) -> None:
         """Initialize MultiLanguageOverviewParagraph."""
         super().__init__()
-        self.l2: LOverviewParagraph = None
-    def serialize(self) -> ET.Element:
-        """Serialize MultiLanguageOverviewParagraph to XML element.
+        self._l2: list[LOverviewParagraph] = []
+    @property
+    @l_prefix("L-2")
+    def l2(self) -> list[LOverviewParagraph]:
+        """Get l2 with language-specific wrapper."""
+        return self._l2
 
-        Returns:
-            xml.etree.ElementTree.Element representing this object
-        """
-        # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
-        elem = ET.Element(tag)
+    @l2.setter
+    def l2(self, value: list[LOverviewParagraph]) -> None:
+        """Set l2 with language-specific wrapper."""
+        self._l2 = value
 
-        # Serialize l2
-        if self.l2 is not None:
-            serialized = ARObject._serialize_item(self.l2, "LOverviewParagraph")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("L2")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
-
-        return elem
-
-    @classmethod
-    def deserialize(cls, element: ET.Element) -> "MultiLanguageOverviewParagraph":
-        """Deserialize XML element to MultiLanguageOverviewParagraph object.
-
-        Args:
-            element: XML element to deserialize from
-
-        Returns:
-            Deserialized MultiLanguageOverviewParagraph object
-        """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
-
-        # Parse l2
-        child = ARObject._find_child_element(element, "L2")
-        if child is not None:
-            l2_value = ARObject._deserialize_by_tag(child, "LOverviewParagraph")
-            obj.l2 = l2_value
-
-        return obj
 
 
 

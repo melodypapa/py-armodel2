@@ -1,6 +1,6 @@
 """Decorators for XML serialization edge cases."""
 
-from typing import Any, Callable, Optional
+from typing import Any, Callable
 
 
 def xml_attribute(func: Any) -> Any:
@@ -27,67 +27,58 @@ def xml_attribute(func: Any) -> Any:
     return func
 
 
-def xml_tag(tag_name: str) -> Callable[[Any], Any]:
-    """Decorator to specify custom XML tag name for a class or attribute.
+def atp_variant() -> Callable[[Any], Any]:
+    """Decorator to mark a class as using AUTOSAR atpVariation pattern.
+
+    Classes with atpVariation wrap all their attributes in nested XML elements.
+    The wrapper path is automatically derived from the class name using AUTOSAR convention:
+    - First level: <CLASS-TAG>-VARIANTS
+    - Second level: <CLASS-TAG>-CONDITIONAL
 
     Usage:
-        @xml_tag("AUTOSAR")
-        class AUTOSAR(ARObject):
-            pass
+        @atp_variant()
+        class SwDataDefProps(ARObject):
+            base_type_ref: Optional[ARRef] = None
+            sw_calibration_access: Optional[SwCalibrationAccessEnum] = None
 
-    Args:
-        tag_name: Custom XML tag name to use
+    Generates wrapper path: "SW-DATA-DEF-PROPS-VARIANTS/SW-DATA-DEF-PROPS-CONDITIONAL"
+
+    The ARObject serialization framework automatically:
+    1. Creates the nested wrapper elements during serialization
+    2. Navigates through wrapper elements during deserialization
 
     Returns:
-        Decorator function that sets _xml_tag on the class/function
+        Decorator that sets _atp_variant flag on the class
     """
-    def decorator(cls_or_func: Any) -> Any:
-        cls_or_func._xml_tag = tag_name  # type: ignore[union-attr]
-        return cls_or_func
+    def decorator(cls: Any) -> Any:
+        cls._atp_variant = True  # type: ignore[union-attr]
+        return cls
     return decorator
 
 
-def xml_element_tag(xml_element_name: str, python_class_name: Optional[str] = None) -> Callable[[Any], Any]:
-    """Decorator to specify custom XML element name and optional Python class name for a class attribute/element.
+def l_prefix(xml_tag: str) -> Callable[[Any], Any]:
+    """Decorator to mark an attribute as using the l_prefix pattern.
 
-    Supports multi-level XML element names using '/' separator for nested elements.
+    The l_prefix pattern wraps child elements in language-specific XML tags.
+    This is used for MultiLanguage* classes where language-specific content
+    is wrapped in L-<number> elements.
+
+    For example, attribute `l10` with type `LPlainText` is serialized as:
+    <L-10 L="EN">English text</L-10>
 
     Usage:
-        # Single-level element
-        class CompuMethod(ARElement):
-            @xml_element_tag("COMPU-INTERNAL-TO-PHYS")
-            compu_internal_to_phys: Optional[Compu] = None
-
-        # Multi-level element with explicit Python class
-        class SwDataDefProps(ARElement):
-            @xml_element_tag("SW-DATA-DEF-PROPS-VARIANTS/SW-DATA-DEF-PROPS-CONDITIONAL", "SwDataDefPropsConditional")
-            variants: Optional[SwDataDefPropsConditional] = None
+        class MultiLanguagePlainText(ARObject):
+            @l_prefix("L-10")
+            l10: LPlainText = None
 
     Args:
-        xml_element_name: XML element name to use for this element. Can be single-level
-                          (e.g., "COMPU-INTERNAL-TO-PHYS") or multi-level
-                          (e.g., "SW-DATA-DEF-PROPS-VARIANTS/SW-DATA-DEF-PROPS-CONDITIONAL")
-        python_class_name: Optional Python class name to use for deserialization.
-                         If provided, ARObject will use this class instead of inferring
-                         from type hints. Useful for polymorphic types.
+        xml_tag: The XML tag to use for wrapping (e.g., "L-10", "L-4", "L-2")
 
     Returns:
-        Decorator function that sets _xml_element_tag and _xml_element_class on the class attribute
+        Decorator that sets _l_prefix and _l_prefix_tag on the attribute
     """
-    def decorator(cls_or_func: Any) -> Any:
-        # Split multi-level element name
-        element_path = xml_element_name.split('/')
-        cls_or_func._xml_element_tag = element_path  # type: ignore[union-attr]
-
-        # Store Python class name if provided
-        # Convert class object to class name string if needed
-        if python_class_name is not None:
-            if isinstance(python_class_name, type):
-                # It's a class object, get its name
-                cls_or_func._xml_element_class = python_class_name.__name__  # type: ignore[union-attr]
-            else:
-                # It's already a string
-                cls_or_func._xml_element_class = python_class_name  # type: ignore[union-attr]
-
-        return cls_or_func
+    def decorator(attr_or_func: Any) -> Any:
+        attr_or_func._l_prefix = True  # type: ignore[union-attr]
+        attr_or_func._l_prefix_tag = xml_tag  # type: ignore[union-attr]
+        return attr_or_func
     return decorator

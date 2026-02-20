@@ -42,6 +42,7 @@ class MultilanguageReferrable(Referrable, ABC):
         """Initialize MultilanguageReferrable."""
         super().__init__()
         self.long_name: Optional[MultilanguageLongName] = None
+
     def serialize(self) -> ET.Element:
         """Serialize MultilanguageReferrable to XML element.
 
@@ -49,7 +50,7 @@ class MultilanguageReferrable(Referrable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -94,7 +95,7 @@ class MultilanguageReferrable(Referrable, ABC):
         # Parse long_name
         child = ARObject._find_child_element(element, "LONG-NAME")
         if child is not None:
-            long_name_value = ARObject._deserialize_by_tag(child, "MultilanguageLongName")
+            long_name_value = ARObject._deserialize_with_type(child, "MultilanguageLongName")
             obj.long_name = long_name_value
 
         return obj

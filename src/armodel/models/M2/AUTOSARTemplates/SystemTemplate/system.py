@@ -12,7 +12,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
@@ -20,6 +20,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
+    ByteOrderEnum,
+)
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
     RevisionLabelString,
@@ -36,8 +39,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_softwa
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
     FibexElement,
 )
-from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.MeasurementAndCalibration.InterpolationRoutine.interpolation_routine import (
-    InterpolationRoutine,
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.MeasurementAndCalibration.InterpolationRoutine.interpolation_routine_mapping_set import (
+    InterpolationRoutineMappingSet,
 )
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.j1939_shared_address_cluster import (
     J1939SharedAddressCluster,
@@ -62,35 +65,36 @@ class System(ARElement):
         """
         return False
 
-    client_id_refs: list[ARRef]
-    container_i_pdu_header_byte: Optional[Any]
+    client_id_definition_set_refs: list[ARRef]
+    container_i_pdu_header_byte_order: Optional[ByteOrderEnum]
     ecu_extract_version: Optional[RevisionLabelString]
     fibex_elements: list[FibexElement]
-    interpolation_routines: list[InterpolationRoutine]
-    j1939_shared_addresses: list[J1939SharedAddressCluster]
+    interpolation_routine_mapping_sets: list[InterpolationRoutineMappingSet]
+    j1939_shared_address_clusters: list[J1939SharedAddressCluster]
     mapping_refs: list[ARRef]
-    pnc_vector: Optional[PositiveInteger]
+    pnc_vector_length: Optional[PositiveInteger]
     pnc_vector_offset: Optional[PositiveInteger]
-    root_software: Optional[RootSwCompositionPrototype]
+    root_software_composition: Optional[RootSwCompositionPrototype]
     sw_clusters: list[CpSoftwareCluster]
-    systems: list[Chapter]
+    system_documentations: list[Chapter]
     system_version: Optional[RevisionLabelString]
     def __init__(self) -> None:
         """Initialize System."""
         super().__init__()
-        self.client_id_refs: list[ARRef] = []
-        self.container_i_pdu_header_byte: Optional[Any] = None
+        self.client_id_definition_set_refs: list[ARRef] = []
+        self.container_i_pdu_header_byte_order: Optional[ByteOrderEnum] = None
         self.ecu_extract_version: Optional[RevisionLabelString] = None
         self.fibex_elements: list[FibexElement] = []
-        self.interpolation_routines: list[InterpolationRoutine] = []
-        self.j1939_shared_addresses: list[J1939SharedAddressCluster] = []
+        self.interpolation_routine_mapping_sets: list[InterpolationRoutineMappingSet] = []
+        self.j1939_shared_address_clusters: list[J1939SharedAddressCluster] = []
         self.mapping_refs: list[ARRef] = []
-        self.pnc_vector: Optional[PositiveInteger] = None
+        self.pnc_vector_length: Optional[PositiveInteger] = None
         self.pnc_vector_offset: Optional[PositiveInteger] = None
-        self.root_software: Optional[RootSwCompositionPrototype] = None
+        self.root_software_composition: Optional[RootSwCompositionPrototype] = None
         self.sw_clusters: list[CpSoftwareCluster] = []
-        self.systems: list[Chapter] = []
+        self.system_documentations: list[Chapter] = []
         self.system_version: Optional[RevisionLabelString] = None
+
     def serialize(self) -> ET.Element:
         """Serialize System to XML element.
 
@@ -98,7 +102,7 @@ class System(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -111,22 +115,29 @@ class System(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize client_id_refs (list to container "CLIENT-IDS")
-        if self.client_id_refs:
-            wrapper = ET.Element("CLIENT-IDS")
-            for item in self.client_id_refs:
+        # Serialize client_id_definition_set_refs (list to container "CLIENT-ID-DEFINITION-SET-REFS")
+        if self.client_id_definition_set_refs:
+            wrapper = ET.Element("CLIENT-ID-DEFINITION-SET-REFS")
+            for item in self.client_id_definition_set_refs:
                 serialized = ARObject._serialize_item(item, "ClientIdDefinitionSet")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("CLIENT-ID-DEFINITION-SET-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize container_i_pdu_header_byte
-        if self.container_i_pdu_header_byte is not None:
-            serialized = ARObject._serialize_item(self.container_i_pdu_header_byte, "Any")
+        # Serialize container_i_pdu_header_byte_order
+        if self.container_i_pdu_header_byte_order is not None:
+            serialized = ARObject._serialize_item(self.container_i_pdu_header_byte_order, "ByteOrderEnum")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONTAINER-I-PDU-HEADER-BYTE")
+                wrapped = ET.Element("CONTAINER-I-PDU-HEADER-BYTE-ORDER")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -159,42 +170,49 @@ class System(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize interpolation_routines (list to container "INTERPOLATION-ROUTINES")
-        if self.interpolation_routines:
-            wrapper = ET.Element("INTERPOLATION-ROUTINES")
-            for item in self.interpolation_routines:
-                serialized = ARObject._serialize_item(item, "InterpolationRoutine")
+        # Serialize interpolation_routine_mapping_sets (list to container "INTERPOLATION-ROUTINE-MAPPING-SETS")
+        if self.interpolation_routine_mapping_sets:
+            wrapper = ET.Element("INTERPOLATION-ROUTINE-MAPPING-SETS")
+            for item in self.interpolation_routine_mapping_sets:
+                serialized = ARObject._serialize_item(item, "InterpolationRoutineMappingSet")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize j1939_shared_addresses (list to container "J1939-SHARED-ADDRESSES")
-        if self.j1939_shared_addresses:
-            wrapper = ET.Element("J1939-SHARED-ADDRESSES")
-            for item in self.j1939_shared_addresses:
+        # Serialize j1939_shared_address_clusters (list to container "J1939-SHARED-ADDRESS-CLUSTERS")
+        if self.j1939_shared_address_clusters:
+            wrapper = ET.Element("J1939-SHARED-ADDRESS-CLUSTERS")
+            for item in self.j1939_shared_address_clusters:
                 serialized = ARObject._serialize_item(item, "J1939SharedAddressCluster")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize mapping_refs (list to container "MAPPINGS")
+        # Serialize mapping_refs (list to container "MAPPING-REFS")
         if self.mapping_refs:
-            wrapper = ET.Element("MAPPINGS")
+            wrapper = ET.Element("MAPPING-REFS")
             for item in self.mapping_refs:
                 serialized = ARObject._serialize_item(item, "SystemMapping")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("MAPPING-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize pnc_vector
-        if self.pnc_vector is not None:
-            serialized = ARObject._serialize_item(self.pnc_vector, "PositiveInteger")
+        # Serialize pnc_vector_length
+        if self.pnc_vector_length is not None:
+            serialized = ARObject._serialize_item(self.pnc_vector_length, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PNC-VECTOR")
+                wrapped = ET.Element("PNC-VECTOR-LENGTH")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -217,12 +235,12 @@ class System(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize root_software
-        if self.root_software is not None:
-            serialized = ARObject._serialize_item(self.root_software, "RootSwCompositionPrototype")
+        # Serialize root_software_composition
+        if self.root_software_composition is not None:
+            serialized = ARObject._serialize_item(self.root_software_composition, "RootSwCompositionPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ROOT-SOFTWARE")
+                wrapped = ET.Element("ROOT-SOFTWARE-COMPOSITION")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -241,10 +259,10 @@ class System(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize systems (list to container "SYSTEMS")
-        if self.systems:
-            wrapper = ET.Element("SYSTEMS")
-            for item in self.systems:
+        # Serialize system_documentations (list to container "SYSTEM-DOCUMENTATIONS")
+        if self.system_documentations:
+            wrapper = ET.Element("SYSTEM-DOCUMENTATIONS")
+            for item in self.system_documentations:
                 serialized = ARObject._serialize_item(item, "Chapter")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -280,21 +298,27 @@ class System(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(System, cls).deserialize(element)
 
-        # Parse client_id_refs (list from container "CLIENT-IDS")
-        obj.client_id_refs = []
-        container = ARObject._find_child_element(element, "CLIENT-IDS")
+        # Parse client_id_definition_set_refs (list from container "CLIENT-ID-DEFINITION-SET-REFS")
+        obj.client_id_definition_set_refs = []
+        container = ARObject._find_child_element(element, "CLIENT-ID-DEFINITION-SET-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.client_id_refs.append(child_value)
+                    obj.client_id_definition_set_refs.append(child_value)
 
-        # Parse container_i_pdu_header_byte
-        child = ARObject._find_child_element(element, "CONTAINER-I-PDU-HEADER-BYTE")
+        # Parse container_i_pdu_header_byte_order
+        child = ARObject._find_child_element(element, "CONTAINER-I-PDU-HEADER-BYTE-ORDER")
         if child is not None:
-            container_i_pdu_header_byte_value = child.text
-            obj.container_i_pdu_header_byte = container_i_pdu_header_byte_value
+            container_i_pdu_header_byte_order_value = ByteOrderEnum.deserialize(child)
+            obj.container_i_pdu_header_byte_order = container_i_pdu_header_byte_order_value
 
         # Parse ecu_extract_version
         child = ARObject._find_child_element(element, "ECU-EXTRACT-VERSION")
@@ -312,41 +336,47 @@ class System(ARElement):
                 if child_value is not None:
                     obj.fibex_elements.append(child_value)
 
-        # Parse interpolation_routines (list from container "INTERPOLATION-ROUTINES")
-        obj.interpolation_routines = []
-        container = ARObject._find_child_element(element, "INTERPOLATION-ROUTINES")
+        # Parse interpolation_routine_mapping_sets (list from container "INTERPOLATION-ROUTINE-MAPPING-SETS")
+        obj.interpolation_routine_mapping_sets = []
+        container = ARObject._find_child_element(element, "INTERPOLATION-ROUTINE-MAPPING-SETS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.interpolation_routines.append(child_value)
+                    obj.interpolation_routine_mapping_sets.append(child_value)
 
-        # Parse j1939_shared_addresses (list from container "J1939-SHARED-ADDRESSES")
-        obj.j1939_shared_addresses = []
-        container = ARObject._find_child_element(element, "J1939-SHARED-ADDRESSES")
+        # Parse j1939_shared_address_clusters (list from container "J1939-SHARED-ADDRESS-CLUSTERS")
+        obj.j1939_shared_address_clusters = []
+        container = ARObject._find_child_element(element, "J1939-SHARED-ADDRESS-CLUSTERS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.j1939_shared_addresses.append(child_value)
+                    obj.j1939_shared_address_clusters.append(child_value)
 
-        # Parse mapping_refs (list from container "MAPPINGS")
+        # Parse mapping_refs (list from container "MAPPING-REFS")
         obj.mapping_refs = []
-        container = ARObject._find_child_element(element, "MAPPINGS")
+        container = ARObject._find_child_element(element, "MAPPING-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.mapping_refs.append(child_value)
 
-        # Parse pnc_vector
-        child = ARObject._find_child_element(element, "PNC-VECTOR")
+        # Parse pnc_vector_length
+        child = ARObject._find_child_element(element, "PNC-VECTOR-LENGTH")
         if child is not None:
-            pnc_vector_value = child.text
-            obj.pnc_vector = pnc_vector_value
+            pnc_vector_length_value = child.text
+            obj.pnc_vector_length = pnc_vector_length_value
 
         # Parse pnc_vector_offset
         child = ARObject._find_child_element(element, "PNC-VECTOR-OFFSET")
@@ -354,11 +384,11 @@ class System(ARElement):
             pnc_vector_offset_value = child.text
             obj.pnc_vector_offset = pnc_vector_offset_value
 
-        # Parse root_software
-        child = ARObject._find_child_element(element, "ROOT-SOFTWARE")
+        # Parse root_software_composition
+        child = ARObject._find_child_element(element, "ROOT-SOFTWARE-COMPOSITION")
         if child is not None:
-            root_software_value = ARObject._deserialize_by_tag(child, "RootSwCompositionPrototype")
-            obj.root_software = root_software_value
+            root_software_composition_value = ARObject._deserialize_by_tag(child, "RootSwCompositionPrototype")
+            obj.root_software_composition = root_software_composition_value
 
         # Parse sw_clusters (list from container "SW-CLUSTERS")
         obj.sw_clusters = []
@@ -370,15 +400,15 @@ class System(ARElement):
                 if child_value is not None:
                     obj.sw_clusters.append(child_value)
 
-        # Parse systems (list from container "SYSTEMS")
-        obj.systems = []
-        container = ARObject._find_child_element(element, "SYSTEMS")
+        # Parse system_documentations (list from container "SYSTEM-DOCUMENTATIONS")
+        obj.system_documentations = []
+        container = ARObject._find_child_element(element, "SYSTEM-DOCUMENTATIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.systems.append(child_value)
+                    obj.system_documentations.append(child_value)
 
         # Parse system_version
         child = ARObject._find_child_element(element, "SYSTEM-VERSION")

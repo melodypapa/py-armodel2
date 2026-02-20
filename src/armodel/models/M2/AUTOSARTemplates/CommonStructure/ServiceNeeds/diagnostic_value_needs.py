@@ -48,6 +48,7 @@ class DiagnosticValueNeeds(DiagnosticCapabilityElement):
         self.diagnostic_value_access: Optional[DiagnosticValueAccessEnum] = None
         self.fixed_length: Optional[Boolean] = None
         self.processing_style: Optional[DiagnosticProcessingStyleEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticValueNeeds to XML element.
 
@@ -55,7 +56,7 @@ class DiagnosticValueNeeds(DiagnosticCapabilityElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

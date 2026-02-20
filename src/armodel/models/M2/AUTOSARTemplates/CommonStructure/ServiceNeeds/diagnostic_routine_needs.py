@@ -37,6 +37,7 @@ class DiagnosticRoutineNeeds(DiagnosticCapabilityElement):
         """Initialize DiagnosticRoutineNeeds."""
         super().__init__()
         self.diag_routine: Optional[DiagnosticRoutineTypeEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticRoutineNeeds to XML element.
 
@@ -44,7 +45,7 @@ class DiagnosticRoutineNeeds(DiagnosticCapabilityElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

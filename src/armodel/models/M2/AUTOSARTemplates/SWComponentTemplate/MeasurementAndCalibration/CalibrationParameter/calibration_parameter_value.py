@@ -43,6 +43,7 @@ class CalibrationParameterValue(ARObject):
         self.appl_init_value: Optional[ValueSpecification] = None
         self.impl_init_value: Optional[ValueSpecification] = None
         self.initialized: Optional[FlatInstanceDescriptor] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CalibrationParameterValue to XML element.
 
@@ -50,7 +51,7 @@ class CalibrationParameterValue(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize appl_init_value

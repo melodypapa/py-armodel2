@@ -36,6 +36,7 @@ class UnassignFrameId(LinConfigurationEntry):
         """Initialize UnassignFrameId."""
         super().__init__()
         self.unassigned_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize UnassignFrameId to XML element.
 
@@ -43,7 +44,7 @@ class UnassignFrameId(LinConfigurationEntry):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -61,7 +62,7 @@ class UnassignFrameId(LinConfigurationEntry):
             serialized = ARObject._serialize_item(self.unassigned_ref, "LinFrameTriggering")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("UNASSIGNED")
+                wrapped = ET.Element("UNASSIGNED-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -86,9 +87,9 @@ class UnassignFrameId(LinConfigurationEntry):
         obj = super(UnassignFrameId, cls).deserialize(element)
 
         # Parse unassigned_ref
-        child = ARObject._find_child_element(element, "UNASSIGNED")
+        child = ARObject._find_child_element(element, "UNASSIGNED-REF")
         if child is not None:
-            unassigned_ref_value = ARObject._deserialize_by_tag(child, "LinFrameTriggering")
+            unassigned_ref_value = ARRef.deserialize(child)
             obj.unassigned_ref = unassigned_ref_value
 
         return obj

@@ -35,6 +35,7 @@ class CompuConstFormulaContent(CompuConstContent):
         """Initialize CompuConstFormulaContent."""
         super().__init__()
         self.vf: Numerical = None
+
     def serialize(self) -> ET.Element:
         """Serialize CompuConstFormulaContent to XML element.
 
@@ -42,7 +43,7 @@ class CompuConstFormulaContent(CompuConstContent):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

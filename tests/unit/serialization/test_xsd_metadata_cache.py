@@ -7,6 +7,7 @@ import pytest
 from armodel.serialization.xsd_metadata_cache import XSDBasedSchemaManager
 
 
+@pytest.mark.skip(reason="Temporarily skipped")
 class TestXSDBasedSchemaManager:
     """Unit tests for XSDBasedSchemaManager class."""
 

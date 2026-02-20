@@ -67,6 +67,7 @@ class InternalBehavior(Identifiable, ABC):
         self.exclusive_areas: list[ExclusiveArea] = []
         self.exclusive_area_nestings: list[ExclusiveAreaNestingOrder] = []
         self.static_memorie_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize InternalBehavior to XML element.
 
@@ -74,7 +75,7 @@ class InternalBehavior(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -107,13 +108,20 @@ class InternalBehavior(Identifiable, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize data_type_refs (list to container "DATA-TYPES")
+        # Serialize data_type_refs (list to container "DATA-TYPE-REFS")
         if self.data_type_refs:
-            wrapper = ET.Element("DATA-TYPES")
+            wrapper = ET.Element("DATA-TYPE-REFS")
             for item in self.data_type_refs:
                 serialized = ARObject._serialize_item(item, "DataTypeMappingSet")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("DATA-TYPE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -137,13 +145,20 @@ class InternalBehavior(Identifiable, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize static_memorie_refs (list to container "STATIC-MEMORIES")
+        # Serialize static_memorie_refs (list to container "STATIC-MEMORIE-REFS")
         if self.static_memorie_refs:
-            wrapper = ET.Element("STATIC-MEMORIES")
+            wrapper = ET.Element("STATIC-MEMORIE-REFS")
             for item in self.static_memorie_refs:
                 serialized = ARObject._serialize_item(item, "VariableDataPrototype")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("STATIC-MEMORIE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -182,13 +197,19 @@ class InternalBehavior(Identifiable, ABC):
                 if child_value is not None:
                     obj.constant_values.append(child_value)
 
-        # Parse data_type_refs (list from container "DATA-TYPES")
+        # Parse data_type_refs (list from container "DATA-TYPE-REFS")
         obj.data_type_refs = []
-        container = ARObject._find_child_element(element, "DATA-TYPES")
+        container = ARObject._find_child_element(element, "DATA-TYPE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.data_type_refs.append(child_value)
 
@@ -212,13 +233,19 @@ class InternalBehavior(Identifiable, ABC):
                 if child_value is not None:
                     obj.exclusive_area_nestings.append(child_value)
 
-        # Parse static_memorie_refs (list from container "STATIC-MEMORIES")
+        # Parse static_memorie_refs (list from container "STATIC-MEMORIE-REFS")
         obj.static_memorie_refs = []
-        container = ARObject._find_child_element(element, "STATIC-MEMORIES")
+        container = ARObject._find_child_element(element, "STATIC-MEMORIE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.static_memorie_refs.append(child_value)
 

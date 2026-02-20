@@ -38,6 +38,7 @@ class ComplexDeviceDriverSwComponentType(AtomicSwComponentType):
         """Initialize ComplexDeviceDriverSwComponentType."""
         super().__init__()
         self.hardwares: list[HwDescriptionEntity] = []
+
     def serialize(self) -> ET.Element:
         """Serialize ComplexDeviceDriverSwComponentType to XML element.
 
@@ -45,7 +46,7 @@ class ComplexDeviceDriverSwComponentType(AtomicSwComponentType):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

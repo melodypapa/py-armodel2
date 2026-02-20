@@ -34,6 +34,7 @@ class RequestResponseDelay(ARObject):
         super().__init__()
         self.max_value: Optional[TimeValue] = None
         self.min_value: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RequestResponseDelay to XML element.
 
@@ -41,7 +42,7 @@ class RequestResponseDelay(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize max_value

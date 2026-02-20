@@ -32,6 +32,7 @@ class SpecificationScope(ARObject):
         """Initialize SpecificationScope."""
         super().__init__()
         self.specification_documents: list[SpecificationDocumentScope] = []
+
     def serialize(self) -> ET.Element:
         """Serialize SpecificationScope to XML element.
 
@@ -39,7 +40,7 @@ class SpecificationScope(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize specification_documents (list to container "SPECIFICATION-DOCUMENTS")

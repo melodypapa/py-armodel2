@@ -71,6 +71,7 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
         self.sw_min_axis: Optional[Integer] = None
         self.sw_variable_ref_proxie_refs: list[ARRef] = []
         self.unit: Optional[Unit] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwAxisIndividual to XML element.
 
@@ -78,7 +79,7 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -175,13 +176,20 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sw_variable_ref_proxie_refs (list to container "SW-VARIABLE-REF-PROXIES")
+        # Serialize sw_variable_ref_proxie_refs (list to container "SW-VARIABLE-REF-PROXIE-REFS")
         if self.sw_variable_ref_proxie_refs:
-            wrapper = ET.Element("SW-VARIABLE-REF-PROXIES")
+            wrapper = ET.Element("SW-VARIABLE-REF-PROXIE-REFS")
             for item in self.sw_variable_ref_proxie_refs:
                 serialized = ARObject._serialize_item(item, "SwVariableRefProxy")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("SW-VARIABLE-REF-PROXIE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -250,13 +258,19 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
             sw_min_axis_value = child.text
             obj.sw_min_axis = sw_min_axis_value
 
-        # Parse sw_variable_ref_proxie_refs (list from container "SW-VARIABLE-REF-PROXIES")
+        # Parse sw_variable_ref_proxie_refs (list from container "SW-VARIABLE-REF-PROXIE-REFS")
         obj.sw_variable_ref_proxie_refs = []
-        container = ARObject._find_child_element(element, "SW-VARIABLE-REF-PROXIES")
+        container = ARObject._find_child_element(element, "SW-VARIABLE-REF-PROXIE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.sw_variable_ref_proxie_refs.append(child_value)
 

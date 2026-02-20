@@ -104,6 +104,7 @@ class SwcInternalBehavior(InternalBehavior):
         self.shareds: list[ParameterDataPrototype] = []
         self.supports: Optional[Boolean] = None
         self.variation_point_proxies: list[VariationPointProxy] = []
+
     def serialize(self) -> ET.Element:
         """Serialize SwcInternalBehavior to XML element.
 
@@ -111,7 +112,7 @@ class SwcInternalBehavior(InternalBehavior):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -124,13 +125,20 @@ class SwcInternalBehavior(InternalBehavior):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize ar_typed_per_refs (list to container "AR-TYPED-PERS")
+        # Serialize ar_typed_per_refs (list to container "AR-TYPED-PER-REFS")
         if self.ar_typed_per_refs:
-            wrapper = ET.Element("AR-TYPED-PERS")
+            wrapper = ET.Element("AR-TYPED-PER-REFS")
             for item in self.ar_typed_per_refs:
                 serialized = ARObject._serialize_item(item, "VariableDataPrototype")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("AR-TYPED-PER-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -154,33 +162,54 @@ class SwcInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize explicit_inter_refs (list to container "EXPLICIT-INTERS")
+        # Serialize explicit_inter_refs (list to container "EXPLICIT-INTER-REFS")
         if self.explicit_inter_refs:
-            wrapper = ET.Element("EXPLICIT-INTERS")
+            wrapper = ET.Element("EXPLICIT-INTER-REFS")
             for item in self.explicit_inter_refs:
                 serialized = ARObject._serialize_item(item, "VariableDataPrototype")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("EXPLICIT-INTER-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize implicit_inter_refs (list to container "IMPLICIT-INTERS")
+        # Serialize implicit_inter_refs (list to container "IMPLICIT-INTER-REFS")
         if self.implicit_inter_refs:
-            wrapper = ET.Element("IMPLICIT-INTERS")
+            wrapper = ET.Element("IMPLICIT-INTER-REFS")
             for item in self.implicit_inter_refs:
                 serialized = ARObject._serialize_item(item, "VariableDataPrototype")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("IMPLICIT-INTER-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize included_data_type_set_refs (list to container "INCLUDED-DATA-TYPE-SETS")
+        # Serialize included_data_type_set_refs (list to container "INCLUDED-DATA-TYPE-SET-REFS")
         if self.included_data_type_set_refs:
-            wrapper = ET.Element("INCLUDED-DATA-TYPE-SETS")
+            wrapper = ET.Element("INCLUDED-DATA-TYPE-SET-REFS")
             for item in self.included_data_type_set_refs:
                 serialized = ARObject._serialize_item(item, "IncludedDataTypeSet")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("INCLUDED-DATA-TYPE-SET-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -303,13 +332,19 @@ class SwcInternalBehavior(InternalBehavior):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwcInternalBehavior, cls).deserialize(element)
 
-        # Parse ar_typed_per_refs (list from container "AR-TYPED-PERS")
+        # Parse ar_typed_per_refs (list from container "AR-TYPED-PER-REFS")
         obj.ar_typed_per_refs = []
-        container = ARObject._find_child_element(element, "AR-TYPED-PERS")
+        container = ARObject._find_child_element(element, "AR-TYPED-PER-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.ar_typed_per_refs.append(child_value)
 
@@ -333,33 +368,51 @@ class SwcInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.exclusive_areas.append(child_value)
 
-        # Parse explicit_inter_refs (list from container "EXPLICIT-INTERS")
+        # Parse explicit_inter_refs (list from container "EXPLICIT-INTER-REFS")
         obj.explicit_inter_refs = []
-        container = ARObject._find_child_element(element, "EXPLICIT-INTERS")
+        container = ARObject._find_child_element(element, "EXPLICIT-INTER-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.explicit_inter_refs.append(child_value)
 
-        # Parse implicit_inter_refs (list from container "IMPLICIT-INTERS")
+        # Parse implicit_inter_refs (list from container "IMPLICIT-INTER-REFS")
         obj.implicit_inter_refs = []
-        container = ARObject._find_child_element(element, "IMPLICIT-INTERS")
+        container = ARObject._find_child_element(element, "IMPLICIT-INTER-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.implicit_inter_refs.append(child_value)
 
-        # Parse included_data_type_set_refs (list from container "INCLUDED-DATA-TYPE-SETS")
+        # Parse included_data_type_set_refs (list from container "INCLUDED-DATA-TYPE-SET-REFS")
         obj.included_data_type_set_refs = []
-        container = ARObject._find_child_element(element, "INCLUDED-DATA-TYPE-SETS")
+        container = ARObject._find_child_element(element, "INCLUDED-DATA-TYPE-SET-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.included_data_type_set_refs.append(child_value)
 

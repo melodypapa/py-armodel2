@@ -48,6 +48,7 @@ class AliasNameAssignment(ARObject):
         self.identifiable: Optional[Identifiable] = None
         self.label: Optional[MultilanguageLongName] = None
         self.short_label: Optional[String] = None
+
     def serialize(self) -> ET.Element:
         """Serialize AliasNameAssignment to XML element.
 
@@ -55,7 +56,7 @@ class AliasNameAssignment(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize flat_instance
@@ -145,7 +146,7 @@ class AliasNameAssignment(ARObject):
         # Parse label
         child = ARObject._find_child_element(element, "LABEL")
         if child is not None:
-            label_value = ARObject._deserialize_by_tag(child, "MultilanguageLongName")
+            label_value = ARObject._deserialize_with_type(child, "MultilanguageLongName")
             obj.label = label_value
 
         # Parse short_label

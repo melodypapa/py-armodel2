@@ -32,6 +32,7 @@ class EventObdReadinessGroup(ARObject):
         """Initialize EventObdReadinessGroup."""
         super().__init__()
         self.event_obd: Optional[NameToken] = None
+
     def serialize(self) -> ET.Element:
         """Serialize EventObdReadinessGroup to XML element.
 
@@ -39,7 +40,7 @@ class EventObdReadinessGroup(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize event_obd

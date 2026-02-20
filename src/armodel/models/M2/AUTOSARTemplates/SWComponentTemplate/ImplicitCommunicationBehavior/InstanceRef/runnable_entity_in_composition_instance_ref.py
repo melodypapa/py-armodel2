@@ -39,6 +39,7 @@ class RunnableEntityInCompositionInstanceRef(ARObject):
         self.base: Optional[CompositionSwComponentType] = None
         self.context_sws: list[Any] = []
         self.target_runnable: Optional[RunnableEntity] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RunnableEntityInCompositionInstanceRef to XML element.
 
@@ -46,7 +47,7 @@ class RunnableEntityInCompositionInstanceRef(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize base

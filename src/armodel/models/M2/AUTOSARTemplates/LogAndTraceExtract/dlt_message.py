@@ -53,6 +53,7 @@ class DltMessage(Identifiable):
         self.message_source: Optional[String] = None
         self.message_type_info: Optional[String] = None
         self.privacy_level: Optional[PrivacyLevel] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DltMessage to XML element.
 
@@ -60,7 +61,7 @@ class DltMessage(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

@@ -35,6 +35,7 @@ class MsrQueryResultChapter(ARObject):
         """Initialize MsrQueryResultChapter."""
         super().__init__()
         self.chapters: list[Chapter] = []
+
     def serialize(self) -> ET.Element:
         """Serialize MsrQueryResultChapter to XML element.
 
@@ -42,7 +43,7 @@ class MsrQueryResultChapter(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize chapters (list to container "CHAPTERS")

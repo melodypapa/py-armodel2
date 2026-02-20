@@ -26,7 +26,7 @@ class CalprmAxisCategoryEnum(AREnum):
         """
         self._value_ = value
 
-    COM_AXIS = "comAxis"
-    FIX_AXIS = "fixAXIS"
-    RES_AXIS = "resAxis"
-    STD_AXIS = "stdAxis"
+    COM_AXIS = "COM-AXIS"
+    FIX_AXIS = "FIX-A-X-I-S"
+    RES_AXIS = "RES-AXIS"
+    STD_AXIS = "STD-AXIS"

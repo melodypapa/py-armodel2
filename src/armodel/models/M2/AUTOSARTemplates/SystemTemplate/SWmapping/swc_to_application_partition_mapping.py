@@ -41,6 +41,7 @@ class SwcToApplicationPartitionMapping(Identifiable):
         super().__init__()
         self.application: Optional[ApplicationPartition] = None
         self.sw_component_prototype_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwcToApplicationPartitionMapping to XML element.
 
@@ -48,7 +49,7 @@ class SwcToApplicationPartitionMapping(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -80,7 +81,7 @@ class SwcToApplicationPartitionMapping(Identifiable):
             serialized = ARObject._serialize_item(self.sw_component_prototype_ref, "SwComponentPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SW-COMPONENT-PROTOTYPE")
+                wrapped = ET.Element("SW-COMPONENT-PROTOTYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -111,9 +112,9 @@ class SwcToApplicationPartitionMapping(Identifiable):
             obj.application = application_value
 
         # Parse sw_component_prototype_ref
-        child = ARObject._find_child_element(element, "SW-COMPONENT-PROTOTYPE")
+        child = ARObject._find_child_element(element, "SW-COMPONENT-PROTOTYPE-REF")
         if child is not None:
-            sw_component_prototype_ref_value = ARObject._deserialize_by_tag(child, "SwComponentPrototype")
+            sw_component_prototype_ref_value = ARRef.deserialize(child)
             obj.sw_component_prototype_ref = sw_component_prototype_ref_value
 
         return obj

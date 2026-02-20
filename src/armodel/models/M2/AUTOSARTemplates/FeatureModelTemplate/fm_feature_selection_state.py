@@ -26,6 +26,6 @@ class FMFeatureSelectionState(AREnum):
         """
         self._value_ = value
 
-    DESELECTED = "deselected"
-    SELECTED = "selected"
-    UNDECIDED = "undecided"
+    DESELECTED = "DESELECTED"
+    SELECTED = "SELECTED"
+    UNDECIDED = "UNDECIDED"

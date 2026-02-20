@@ -47,6 +47,7 @@ class SwTextProps(ARObject):
         self.base_type: Optional[SwBaseType] = None
         self.sw_fill_character: Optional[Integer] = None
         self.sw_max_text_size: Optional[Integer] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SwTextProps to XML element.
 
@@ -54,7 +55,7 @@ class SwTextProps(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize array_size

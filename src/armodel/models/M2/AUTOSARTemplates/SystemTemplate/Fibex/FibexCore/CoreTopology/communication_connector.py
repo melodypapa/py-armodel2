@@ -54,6 +54,7 @@ class CommunicationConnector(Identifiable, ABC):
         self.ecu_comm_ports: list[CommConnectorPort] = []
         self.pnc_filter_arrays: list[PositiveInteger] = []
         self.pnc_gateway_type_enum: Optional[PncGatewayTypeEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize CommunicationConnector to XML element.
 
@@ -61,7 +62,7 @@ class CommunicationConnector(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

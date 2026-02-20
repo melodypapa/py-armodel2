@@ -34,6 +34,7 @@ class Modification(ARObject):
         super().__init__()
         self.change: MultiLanguageOverviewParagraph = None
         self.reason: Optional[MultiLanguageOverviewParagraph] = None
+
     def serialize(self) -> ET.Element:
         """Serialize Modification to XML element.
 
@@ -41,7 +42,7 @@ class Modification(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize change
@@ -91,13 +92,13 @@ class Modification(ARObject):
         # Parse change
         child = ARObject._find_child_element(element, "CHANGE")
         if child is not None:
-            change_value = ARObject._deserialize_by_tag(child, "MultiLanguageOverviewParagraph")
+            change_value = ARObject._deserialize_with_type(child, "MultiLanguageOverviewParagraph")
             obj.change = change_value
 
         # Parse reason
         child = ARObject._find_child_element(element, "REASON")
         if child is not None:
-            reason_value = ARObject._deserialize_by_tag(child, "MultiLanguageOverviewParagraph")
+            reason_value = ARObject._deserialize_with_type(child, "MultiLanguageOverviewParagraph")
             obj.reason = reason_value
 
         return obj

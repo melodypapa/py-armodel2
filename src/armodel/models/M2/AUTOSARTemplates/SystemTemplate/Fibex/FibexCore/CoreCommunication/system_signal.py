@@ -45,6 +45,7 @@ class SystemSignal(ARElement):
         super().__init__()
         self.dynamic_length: Optional[Boolean] = None
         self.physical_props: Optional[SwDataDefProps] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SystemSignal to XML element.
 
@@ -52,7 +53,7 @@ class SystemSignal(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

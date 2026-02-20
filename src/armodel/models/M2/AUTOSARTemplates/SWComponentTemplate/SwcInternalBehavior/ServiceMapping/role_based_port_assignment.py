@@ -41,6 +41,7 @@ class RoleBasedPortAssignment(ARObject):
         super().__init__()
         self.port_prototype_ref: Optional[ARRef] = None
         self.role: Optional[Identifier] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RoleBasedPortAssignment to XML element.
 
@@ -48,7 +49,7 @@ class RoleBasedPortAssignment(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize port_prototype_ref
@@ -56,7 +57,7 @@ class RoleBasedPortAssignment(ARObject):
             serialized = ARObject._serialize_item(self.port_prototype_ref, "PortPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PORT-PROTOTYPE")
+                wrapped = ET.Element("PORT-PROTOTYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -96,9 +97,9 @@ class RoleBasedPortAssignment(ARObject):
         obj.__init__()
 
         # Parse port_prototype_ref
-        child = ARObject._find_child_element(element, "PORT-PROTOTYPE")
+        child = ARObject._find_child_element(element, "PORT-PROTOTYPE-REF")
         if child is not None:
-            port_prototype_ref_value = ARObject._deserialize_by_tag(child, "PortPrototype")
+            port_prototype_ref_value = ARRef.deserialize(child)
             obj.port_prototype_ref = port_prototype_ref_value
 
         # Parse role

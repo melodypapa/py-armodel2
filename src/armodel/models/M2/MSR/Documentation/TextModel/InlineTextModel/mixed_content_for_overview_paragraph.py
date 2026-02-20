@@ -75,6 +75,7 @@ class MixedContentForOverviewParagraph(ARObject, ABC):
         self.tt: Tt = None
         self.xref: Xref = None
         self.xref_target: XrefTarget = None
+
     def serialize(self) -> ET.Element:
         """Serialize MixedContentForOverviewParagraph to XML element.
 
@@ -82,7 +83,7 @@ class MixedContentForOverviewParagraph(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize br

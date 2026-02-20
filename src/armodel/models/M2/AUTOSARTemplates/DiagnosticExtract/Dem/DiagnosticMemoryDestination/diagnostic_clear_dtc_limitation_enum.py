@@ -26,5 +26,5 @@ class DiagnosticClearDtcLimitationEnum(AREnum):
         """
         self._value_ = value
 
-    ALL_SUPPORTED_DTCS = "allSupportedDtcs"
-    CLEAR_ALL_DTCS = "clearAllDtcs"
+    ALL_SUPPORTED_DTCS = "ALL-SUPPORTED-DTCS"
+    CLEAR_ALL_DTCS = "CLEAR-ALL-DTCS"

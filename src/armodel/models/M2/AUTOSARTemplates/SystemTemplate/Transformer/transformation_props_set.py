@@ -35,6 +35,7 @@ class TransformationPropsSet(ARElement):
         """Initialize TransformationPropsSet."""
         super().__init__()
         self.transformation_props_propses: list[TransformationProps] = []
+
     def serialize(self) -> ET.Element:
         """Serialize TransformationPropsSet to XML element.
 
@@ -42,7 +43,7 @@ class TransformationPropsSet(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

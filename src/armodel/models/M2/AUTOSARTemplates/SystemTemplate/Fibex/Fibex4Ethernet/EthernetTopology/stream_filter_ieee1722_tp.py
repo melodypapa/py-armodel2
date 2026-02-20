@@ -32,6 +32,7 @@ class StreamFilterIEEE1722Tp(ARObject):
         """Initialize StreamFilterIEEE1722Tp."""
         super().__init__()
         self.stream_id: Optional[PositiveUnlimitedInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize StreamFilterIEEE1722Tp to XML element.
 
@@ -39,7 +40,7 @@ class StreamFilterIEEE1722Tp(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize stream_id

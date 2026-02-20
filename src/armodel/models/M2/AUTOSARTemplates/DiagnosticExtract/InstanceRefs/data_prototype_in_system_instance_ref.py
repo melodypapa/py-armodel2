@@ -57,6 +57,7 @@ class DataPrototypeInSystemInstanceRef(ARObject):
         self.context_root: Optional[RootSwCompositionPrototype] = None
         self.root_data_prototype_ref: Optional[ARRef] = None
         self.target_data_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DataPrototypeInSystemInstanceRef to XML element.
 
@@ -64,7 +65,7 @@ class DataPrototypeInSystemInstanceRef(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize base
@@ -106,7 +107,7 @@ class DataPrototypeInSystemInstanceRef(ARObject):
             serialized = ARObject._serialize_item(self.context_port_ref, "PortPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT-PORT")
+                wrapped = ET.Element("CONTEXT-PORT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -134,7 +135,7 @@ class DataPrototypeInSystemInstanceRef(ARObject):
             serialized = ARObject._serialize_item(self.root_data_prototype_ref, "AutosarDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ROOT-DATA-PROTOTYPE")
+                wrapped = ET.Element("ROOT-DATA-PROTOTYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -148,7 +149,7 @@ class DataPrototypeInSystemInstanceRef(ARObject):
             serialized = ARObject._serialize_item(self.target_data_ref, "DataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TARGET-DATA")
+                wrapped = ET.Element("TARGET-DATA-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -200,9 +201,9 @@ class DataPrototypeInSystemInstanceRef(ARObject):
                     obj.context_datas.append(child_value)
 
         # Parse context_port_ref
-        child = ARObject._find_child_element(element, "CONTEXT-PORT")
+        child = ARObject._find_child_element(element, "CONTEXT-PORT-REF")
         if child is not None:
-            context_port_ref_value = ARObject._deserialize_by_tag(child, "PortPrototype")
+            context_port_ref_value = ARRef.deserialize(child)
             obj.context_port_ref = context_port_ref_value
 
         # Parse context_root
@@ -212,15 +213,15 @@ class DataPrototypeInSystemInstanceRef(ARObject):
             obj.context_root = context_root_value
 
         # Parse root_data_prototype_ref
-        child = ARObject._find_child_element(element, "ROOT-DATA-PROTOTYPE")
+        child = ARObject._find_child_element(element, "ROOT-DATA-PROTOTYPE-REF")
         if child is not None:
-            root_data_prototype_ref_value = ARObject._deserialize_by_tag(child, "AutosarDataPrototype")
+            root_data_prototype_ref_value = ARRef.deserialize(child)
             obj.root_data_prototype_ref = root_data_prototype_ref_value
 
         # Parse target_data_ref
-        child = ARObject._find_child_element(element, "TARGET-DATA")
+        child = ARObject._find_child_element(element, "TARGET-DATA-REF")
         if child is not None:
-            target_data_ref_value = ARObject._deserialize_by_tag(child, "DataPrototype")
+            target_data_ref_value = ARRef.deserialize(child)
             obj.target_data_ref = target_data_ref_value
 
         return obj

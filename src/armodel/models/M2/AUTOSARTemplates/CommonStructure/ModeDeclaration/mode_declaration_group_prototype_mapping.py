@@ -40,6 +40,7 @@ class ModeDeclarationGroupPrototypeMapping(ARObject):
         self.first_mode_group_prototype_ref: Optional[ARRef] = None
         self.mode: Optional[ModeDeclaration] = None
         self.second_mode_ref: Optional[ARRef] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ModeDeclarationGroupPrototypeMapping to XML element.
 
@@ -47,7 +48,7 @@ class ModeDeclarationGroupPrototypeMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize first_mode_group_prototype_ref
@@ -55,7 +56,7 @@ class ModeDeclarationGroupPrototypeMapping(ARObject):
             serialized = ARObject._serialize_item(self.first_mode_group_prototype_ref, "ModeDeclarationGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("FIRST-MODE-GROUP-PROTOTYPE")
+                wrapped = ET.Element("FIRST-MODE-GROUP-PROTOTYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -83,7 +84,7 @@ class ModeDeclarationGroupPrototypeMapping(ARObject):
             serialized = ARObject._serialize_item(self.second_mode_ref, "ModeDeclarationGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SECOND-MODE")
+                wrapped = ET.Element("SECOND-MODE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -109,9 +110,9 @@ class ModeDeclarationGroupPrototypeMapping(ARObject):
         obj.__init__()
 
         # Parse first_mode_group_prototype_ref
-        child = ARObject._find_child_element(element, "FIRST-MODE-GROUP-PROTOTYPE")
+        child = ARObject._find_child_element(element, "FIRST-MODE-GROUP-PROTOTYPE-REF")
         if child is not None:
-            first_mode_group_prototype_ref_value = ARObject._deserialize_by_tag(child, "ModeDeclarationGroup")
+            first_mode_group_prototype_ref_value = ARRef.deserialize(child)
             obj.first_mode_group_prototype_ref = first_mode_group_prototype_ref_value
 
         # Parse mode
@@ -121,9 +122,9 @@ class ModeDeclarationGroupPrototypeMapping(ARObject):
             obj.mode = mode_value
 
         # Parse second_mode_ref
-        child = ARObject._find_child_element(element, "SECOND-MODE")
+        child = ARObject._find_child_element(element, "SECOND-MODE-REF")
         if child is not None:
-            second_mode_ref_value = ARObject._deserialize_by_tag(child, "ModeDeclarationGroup")
+            second_mode_ref_value = ARRef.deserialize(child)
             obj.second_mode_ref = second_mode_ref_value
 
         return obj

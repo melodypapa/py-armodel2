@@ -29,6 +29,7 @@ class DdsDestinationOrder(ARObject):
         """Initialize DdsDestinationOrder."""
         super().__init__()
         self.destination: Optional[DdsDestinationOrder] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DdsDestinationOrder to XML element.
 
@@ -36,7 +37,7 @@ class DdsDestinationOrder(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize destination

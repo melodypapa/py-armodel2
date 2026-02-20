@@ -40,6 +40,7 @@ class LinEventTriggeredFrame(LinFrame):
         super().__init__()
         self.collision_schedule: Optional[LinScheduleTable] = None
         self.lin_unconditional_frames: list[LinUnconditionalFrame] = []
+
     def serialize(self) -> ET.Element:
         """Serialize LinEventTriggeredFrame to XML element.
 
@@ -47,7 +48,7 @@ class LinEventTriggeredFrame(LinFrame):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

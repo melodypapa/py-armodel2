@@ -50,6 +50,7 @@ class EcuResourceEstimation(ARObject):
         self.introduction: Optional[DocumentationBlock] = None
         self.rte_resource: Optional[ResourceConsumption] = None
         self.sw_comp_to_ecu_refs: list[ARRef] = []
+
     def serialize(self) -> ET.Element:
         """Serialize EcuResourceEstimation to XML element.
 
@@ -57,7 +58,7 @@ class EcuResourceEstimation(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize bsw_resource
@@ -116,13 +117,20 @@ class EcuResourceEstimation(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sw_comp_to_ecu_refs (list to container "SW-COMP-TO-ECUS")
+        # Serialize sw_comp_to_ecu_refs (list to container "SW-COMP-TO-ECU-REFS")
         if self.sw_comp_to_ecu_refs:
-            wrapper = ET.Element("SW-COMP-TO-ECUS")
+            wrapper = ET.Element("SW-COMP-TO-ECU-REFS")
             for item in self.sw_comp_to_ecu_refs:
                 serialized = ARObject._serialize_item(item, "SwcToEcuMapping")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("SW-COMP-TO-ECU-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -166,13 +174,19 @@ class EcuResourceEstimation(ARObject):
             rte_resource_value = ARObject._deserialize_by_tag(child, "ResourceConsumption")
             obj.rte_resource = rte_resource_value
 
-        # Parse sw_comp_to_ecu_refs (list from container "SW-COMP-TO-ECUS")
+        # Parse sw_comp_to_ecu_refs (list from container "SW-COMP-TO-ECU-REFS")
         obj.sw_comp_to_ecu_refs = []
-        container = ARObject._find_child_element(element, "SW-COMP-TO-ECUS")
+        container = ARObject._find_child_element(element, "SW-COMP-TO-ECU-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.sw_comp_to_ecu_refs.append(child_value)
 

@@ -31,7 +31,7 @@
         "arParameter": {
           "type": "AutosarParameterRef",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This represents a Parameter within AUTOSAR. Note that of the referenced ParameterDataPrototype an ApplicationDataType of category VALUE."
         },
@@ -76,7 +76,7 @@
         "autosarVariableRef": {
           "type": "AutosarVariableRef",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "This represents the reference to a Variable in an Autosar that the target of the reference within be typed by a primitive data type"
         },

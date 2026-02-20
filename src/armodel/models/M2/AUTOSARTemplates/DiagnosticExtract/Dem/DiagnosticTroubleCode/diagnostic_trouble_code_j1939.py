@@ -49,6 +49,7 @@ class DiagnosticTroubleCodeJ1939(DiagnosticTroubleCode):
         self.kind: Optional[DiagnosticTroubleCode] = None
         self.node: Optional[DiagnosticJ1939Node] = None
         self.spn: Optional[DiagnosticJ1939Spn] = None
+
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticTroubleCodeJ1939 to XML element.
 
@@ -56,7 +57,7 @@ class DiagnosticTroubleCodeJ1939(DiagnosticTroubleCode):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

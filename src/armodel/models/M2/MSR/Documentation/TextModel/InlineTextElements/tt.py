@@ -37,6 +37,7 @@ class Tt(ARObject):
         self.term: String = None
         self.tex_render: Optional[String] = None
         self.type: NameToken = None
+
     def serialize(self) -> ET.Element:
         """Serialize Tt to XML element.
 
@@ -44,7 +45,7 @@ class Tt(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize term

@@ -43,6 +43,7 @@ class StreamFilterRuleDataLinkLayer(ARObject):
         self.source_mac: Optional[StreamFilterMACAddress] = None
         self.vlan_id: Optional[PositiveInteger] = None
         self.vlan_priority: Optional[PositiveInteger] = None
+
     def serialize(self) -> ET.Element:
         """Serialize StreamFilterRuleDataLinkLayer to XML element.
 
@@ -50,7 +51,7 @@ class StreamFilterRuleDataLinkLayer(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize destination_mac

@@ -42,6 +42,7 @@ class SenderRecArrayElementMapping(ARObject):
         self.complex_type: Optional[SenderRecCompositeTypeMapping] = None
         self.indexed_array: Optional[IndexedArrayElement] = None
         self.system_signal: Optional[SystemSignal] = None
+
     def serialize(self) -> ET.Element:
         """Serialize SenderRecArrayElementMapping to XML element.
 
@@ -49,7 +50,7 @@ class SenderRecArrayElementMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize complex_type

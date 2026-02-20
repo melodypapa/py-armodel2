@@ -26,4 +26,4 @@ class DdsOwnershipKindEnum(AREnum):
         """
         self._value_ = value
 
-    EXCLUSIVESHARED = "exclusiveshared"
+    EXCLUSIVESHARED = "EXCLUSIVESHARED"

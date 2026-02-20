@@ -62,6 +62,7 @@ class IPSecConfigProps(ARElement):
         self.sa_over_time: Optional[PositiveInteger] = None
         self.sa_rand_time: Optional[TimeValue] = None
         self.sa_rekey_time: Optional[TimeValue] = None
+
     def serialize(self) -> ET.Element:
         """Serialize IPSecConfigProps to XML element.
 
@@ -69,7 +70,7 @@ class IPSecConfigProps(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

@@ -36,6 +36,7 @@ class RptImplPolicy(ARObject):
         super().__init__()
         self.rpt_enabler_impl: Optional[RptEnablerImplTypeEnum] = None
         self.rpt_preparation_enum: Optional[RptPreparationEnum] = None
+
     def serialize(self) -> ET.Element:
         """Serialize RptImplPolicy to XML element.
 
@@ -43,7 +44,7 @@ class RptImplPolicy(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # Serialize rpt_enabler_impl

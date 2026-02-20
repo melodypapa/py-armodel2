@@ -26,6 +26,6 @@ class EthernetCouplingPortSchedulerEnum(AREnum):
         """
         self._value_ = value
 
-    DEFICIT_ROUND_ROBIN = "deficitRoundRobin"
-    STRICT_PRIORITY = "strictPriority"
-    WEIGHTED_ROUND_ROBIN = "weightedRoundRobin"
+    DEFICIT_ROUND_ROBIN = "DEFICIT-ROUND-ROBIN"
+    STRICT_PRIORITY = "STRICT-PRIORITY"
+    WEIGHTED_ROUND_ROBIN = "WEIGHTED-ROUND-ROBIN"

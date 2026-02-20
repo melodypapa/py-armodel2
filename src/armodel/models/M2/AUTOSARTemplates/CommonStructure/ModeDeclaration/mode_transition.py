@@ -38,6 +38,7 @@ class ModeTransition(Identifiable):
         super().__init__()
         self.entered_mode: Optional[ModeDeclaration] = None
         self.exited_mode: Optional[ModeDeclaration] = None
+
     def serialize(self) -> ET.Element:
         """Serialize ModeTransition to XML element.
 
@@ -45,7 +46,7 @@ class ModeTransition(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = ARObject._get_xml_tag(self)
+        tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

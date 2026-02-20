@@ -27,8 +27,8 @@ class RptPreparationEnum(AREnum):
         """
         self._value_ = value
 
-    NONE = "none"
-    RPT_LEVEL1 = "rptLevel1"
-    RPT_LEVEL2 = "rptLevel2"
-    RPT_LEVEL3 = "rptLevel3"
-    ORIGINAL = "original"
+    NONE = "NONE"
+    RPT_LEVEL1 = "RPT-LEVEL1"
+    RPT_LEVEL2 = "RPT-LEVEL2"
+    RPT_LEVEL3 = "RPT-LEVEL3"
+    ORIGINAL = "ORIGINAL"

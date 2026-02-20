@@ -26,4 +26,4 @@ class DdsReliabilityKindEnum(AREnum):
         """
         self._value_ = value
 
-    BEST_EFFORTRELIABLE = "bestEffortreliable"
+    BEST_EFFORTRELIABLE = "BEST-EFFORTRELIABLE"

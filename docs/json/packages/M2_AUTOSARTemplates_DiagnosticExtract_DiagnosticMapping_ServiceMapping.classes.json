@@ -53,7 +53,7 @@
         "mappedData": {
           "type": "DataPrototype",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "that is accessed for diagnostic purpose. This applicable on the classic platform. by: DataPrototypeInSystem"
         },
@@ -176,7 +176,7 @@
         "accessedData": {
           "type": "DataPrototype",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "ref",
           "is_ref": true,
           "note": "to be accessed in the context of the operation by: DataPrototypeInClient"
         },
