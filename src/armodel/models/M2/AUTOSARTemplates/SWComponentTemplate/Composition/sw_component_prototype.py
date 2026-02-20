@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.sw_component_type import (
     SwComponentType,
 )
@@ -38,11 +39,11 @@ class SwComponentPrototype(Identifiable):
         """
         return False
 
-    type: Optional[SwComponentType]
+    type_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SwComponentPrototype."""
         super().__init__()
-        self.type: Optional[SwComponentType] = None
+        self.type_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize SwComponentPrototype to XML element.
@@ -64,12 +65,12 @@ class SwComponentPrototype(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize type
-        if self.type is not None:
-            serialized = ARObject._serialize_item(self.type, "SwComponentType")
+        # Serialize type_ref
+        if self.type_ref is not None:
+            serialized = ARObject._serialize_item(self.type_ref, "SwComponentType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TYPE")
+                wrapped = ET.Element("TYPE-TREF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -93,11 +94,11 @@ class SwComponentPrototype(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwComponentPrototype, cls).deserialize(element)
 
-        # Parse type
-        child = ARObject._find_child_element(element, "TYPE")
+        # Parse type_ref
+        child = ARObject._find_child_element(element, "TYPE-TREF")
         if child is not None:
-            type_value = ARObject._deserialize_by_tag(child, "SwComponentType")
-            obj.type = type_value
+            type_ref_value = ARRef.deserialize(child)
+            obj.type_ref = type_ref_value
 
         return obj
 

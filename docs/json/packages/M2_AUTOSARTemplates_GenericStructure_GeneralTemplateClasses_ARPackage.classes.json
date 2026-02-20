@@ -412,12 +412,12 @@
         }
       ],
       "attributes": {
-        "arPackages": {
-          "type": "ARPackage",
+        "referenceBases": {
+          "type": "ReferenceBase",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
-          "note": "This represents a sub package within an ARPackage, for an unlimited package hierarchy. atpVariation"
+          "note": "This denotes the reference bases for the package. This is"
         },
         "elements": {
           "type": "PackageableElement",
@@ -426,12 +426,12 @@
           "is_ref": false,
           "note": "Elements that are part of this package atpVariation"
         },
-        "referenceBases": {
-          "type": "ReferenceBase",
+        "arPackages": {
+          "type": "ARPackage",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
-          "note": "This denotes the reference bases for the package. This is"
+          "note": "This represents a sub package within an ARPackage, for an unlimited package hierarchy. atpVariation"
         }
       }
     },

@@ -12,7 +12,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Components.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
@@ -51,18 +51,18 @@ class SwComponentType(ARElement, ABC):
         return True
 
     consistency_needses: list[ConsistencyNeeds]
-    port_refs: list[ARRef]
-    port_group_refs: list[ARRef]
-    swc_mapping_refs: list[Any]
+    ports: list[PortPrototype]
+    port_groups: list[PortGroup]
+    swc_mapping_constraint_refs: list[ARRef]
     sw_component_documentation: Optional[SwComponentDocumentation]
     unit_group_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize SwComponentType."""
         super().__init__()
         self.consistency_needses: list[ConsistencyNeeds] = []
-        self.port_refs: list[ARRef] = []
-        self.port_group_refs: list[ARRef] = []
-        self.swc_mapping_refs: list[Any] = []
+        self.ports: list[PortPrototype] = []
+        self.port_groups: list[PortGroup] = []
+        self.swc_mapping_constraint_refs: list[ARRef] = []
         self.sw_component_documentation: Optional[SwComponentDocumentation] = None
         self.unit_group_refs: list[ARRef] = []
 
@@ -96,47 +96,33 @@ class SwComponentType(ARElement, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize port_refs (list to container "PORT-REFS")
-        if self.port_refs:
-            wrapper = ET.Element("PORT-REFS")
-            for item in self.port_refs:
+        # Serialize ports (list to container "PORTS")
+        if self.ports:
+            wrapper = ET.Element("PORTS")
+            for item in self.ports:
                 serialized = ARObject._serialize_item(item, "PortPrototype")
                 if serialized is not None:
-                    child_elem = ET.Element("PORT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize port_group_refs (list to container "PORT-GROUP-REFS")
-        if self.port_group_refs:
-            wrapper = ET.Element("PORT-GROUP-REFS")
-            for item in self.port_group_refs:
+        # Serialize port_groups (list to container "PORT-GROUPS")
+        if self.port_groups:
+            wrapper = ET.Element("PORT-GROUPS")
+            for item in self.port_groups:
                 serialized = ARObject._serialize_item(item, "PortGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("PORT-GROUP-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize swc_mapping_refs (list to container "SWC-MAPPING-REFS")
-        if self.swc_mapping_refs:
-            wrapper = ET.Element("SWC-MAPPING-REFS")
-            for item in self.swc_mapping_refs:
-                serialized = ARObject._serialize_item(item, "Any")
+        # Serialize swc_mapping_constraint_refs (list to container "SWC-MAPPING-CONSTRAINT-REFS")
+        if self.swc_mapping_constraint_refs:
+            wrapper = ET.Element("SWC-MAPPING-CONSTRAINT-REFS")
+            for item in self.swc_mapping_constraint_refs:
+                serialized = ARObject._serialize_item(item, "SwComponentMappingConstraints")
                 if serialized is not None:
-                    child_elem = ET.Element("SWC-MAPPING-REF")
+                    child_elem = ET.Element("SWC-MAPPING-CONSTRAINT-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -203,41 +189,29 @@ class SwComponentType(ARElement, ABC):
                 if child_value is not None:
                     obj.consistency_needses.append(child_value)
 
-        # Parse port_refs (list from container "PORT-REFS")
-        obj.port_refs = []
-        container = ARObject._find_child_element(element, "PORT-REFS")
+        # Parse ports (list from container "PORTS")
+        obj.ports = []
+        container = ARObject._find_child_element(element, "PORTS")
         if container is not None:
             for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
-                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.port_refs.append(child_value)
+                    obj.ports.append(child_value)
 
-        # Parse port_group_refs (list from container "PORT-GROUP-REFS")
-        obj.port_group_refs = []
-        container = ARObject._find_child_element(element, "PORT-GROUP-REFS")
+        # Parse port_groups (list from container "PORT-GROUPS")
+        obj.port_groups = []
+        container = ARObject._find_child_element(element, "PORT-GROUPS")
         if container is not None:
             for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
-                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                # Deserialize each child element dynamically based on its tag
+                child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.port_group_refs.append(child_value)
+                    obj.port_groups.append(child_value)
 
-        # Parse swc_mapping_refs (list from container "SWC-MAPPING-REFS")
-        obj.swc_mapping_refs = []
-        container = ARObject._find_child_element(element, "SWC-MAPPING-REFS")
+        # Parse swc_mapping_constraint_refs (list from container "SWC-MAPPING-CONSTRAINT-REFS")
+        obj.swc_mapping_constraint_refs = []
+        container = ARObject._find_child_element(element, "SWC-MAPPING-CONSTRAINT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -249,7 +223,7 @@ class SwComponentType(ARElement, ABC):
                     # Deserialize each child element dynamically based on its tag
                     child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.swc_mapping_refs.append(child_value)
+                    obj.swc_mapping_constraint_refs.append(child_value)
 
         # Parse sw_component_documentation
         child = ARObject._find_child_element(element, "SW-COMPONENT-DOCUMENTATION")

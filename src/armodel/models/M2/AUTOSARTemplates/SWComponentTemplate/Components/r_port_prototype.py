@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_
     AbstractRequiredPortPrototype,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -37,13 +38,13 @@ class RPortPrototype(AbstractRequiredPortPrototype):
         """
         return False
 
-    may_be: Optional[Boolean]
-    required: Optional[PortInterface]
+    may_be_unconnected: Optional[Boolean]
+    required_interface_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize RPortPrototype."""
         super().__init__()
-        self.may_be: Optional[Boolean] = None
-        self.required: Optional[PortInterface] = None
+        self.may_be_unconnected: Optional[Boolean] = None
+        self.required_interface_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize RPortPrototype to XML element.
@@ -65,12 +66,12 @@ class RPortPrototype(AbstractRequiredPortPrototype):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize may_be
-        if self.may_be is not None:
-            serialized = ARObject._serialize_item(self.may_be, "Boolean")
+        # Serialize may_be_unconnected
+        if self.may_be_unconnected is not None:
+            serialized = ARObject._serialize_item(self.may_be_unconnected, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("MAY-BE")
+                wrapped = ET.Element("MAY-BE-UNCONNECTED")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -79,12 +80,12 @@ class RPortPrototype(AbstractRequiredPortPrototype):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize required
-        if self.required is not None:
-            serialized = ARObject._serialize_item(self.required, "PortInterface")
+        # Serialize required_interface_ref
+        if self.required_interface_ref is not None:
+            serialized = ARObject._serialize_item(self.required_interface_ref, "PortInterface")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("REQUIRED")
+                wrapped = ET.Element("REQUIRED-INTERFACE-TREF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -108,17 +109,17 @@ class RPortPrototype(AbstractRequiredPortPrototype):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RPortPrototype, cls).deserialize(element)
 
-        # Parse may_be
-        child = ARObject._find_child_element(element, "MAY-BE")
+        # Parse may_be_unconnected
+        child = ARObject._find_child_element(element, "MAY-BE-UNCONNECTED")
         if child is not None:
-            may_be_value = child.text
-            obj.may_be = may_be_value
+            may_be_unconnected_value = child.text
+            obj.may_be_unconnected = may_be_unconnected_value
 
-        # Parse required
-        child = ARObject._find_child_element(element, "REQUIRED")
+        # Parse required_interface_ref
+        child = ARObject._find_child_element(element, "REQUIRED-INTERFACE-TREF")
         if child is not None:
-            required_value = ARObject._deserialize_by_tag(child, "PortInterface")
-            obj.required = required_value
+            required_interface_ref_value = ARRef.deserialize(child)
+            obj.required_interface_ref = required_interface_ref_value
 
         return obj
 

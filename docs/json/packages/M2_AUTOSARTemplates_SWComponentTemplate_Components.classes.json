@@ -661,11 +661,11 @@
         }
       ],
       "attributes": {
-        "provided": {
+        "providedInterface": {
           "type": "PortInterface",
           "multiplicity": "0..1",
-          "kind": "attribute",
-          "is_ref": false,
+          "kind": "tref",
+          "is_ref": true,
           "note": "isOfType"
         }
       }
@@ -761,19 +761,19 @@
         "ports": {
           "type": "PortPrototype",
           "multiplicity": "*",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "The PortPrototypes through which this SwComponent communicate. of PortPrototype is subject to variability purpose to support the conditional existence of atpVariation"
         },
         "portGroups": {
           "type": "PortGroup",
           "multiplicity": "*",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "A port group being part of this component. atpVariation"
         },
-        "swcMappings": {
-          "type": "any (SwComponentMapping)",
+        "swcMappingConstraints": {
+          "type": "SwComponentMappingConstraints",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
@@ -1033,18 +1033,18 @@
         }
       ],
       "attributes": {
-        "mayBe": {
+        "mayBeUnconnected": {
           "type": "Boolean",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "If set to true, this attribute indicates that the enclosing"
         },
-        "required": {
+        "requiredInterface": {
           "type": "PortInterface",
           "multiplicity": "0..1",
-          "kind": "attribute",
-          "is_ref": false,
+          "kind": "tref",
+          "is_ref": true,
           "note": "isOfType"
         }
       }

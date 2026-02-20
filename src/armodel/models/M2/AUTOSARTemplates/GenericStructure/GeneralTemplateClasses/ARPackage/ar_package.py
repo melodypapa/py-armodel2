@@ -45,15 +45,15 @@ class ARPackage(CollectableElement):
         """
         return False
 
-    ar_packages: list[ARPackage]
-    elements: list[PackageableElement]
     reference_bases: list[ReferenceBase]
+    elements: list[PackageableElement]
+    ar_packages: list[ARPackage]
     def __init__(self) -> None:
         """Initialize ARPackage."""
         super().__init__()
-        self.ar_packages: list[ARPackage] = []
-        self.elements: list[PackageableElement] = []
         self.reference_bases: list[ReferenceBase] = []
+        self.elements: list[PackageableElement] = []
+        self.ar_packages: list[ARPackage] = []
     def serialize(self) -> ET.Element:
         """Serialize ARPackage to XML element.
 
@@ -73,16 +73,6 @@ class ARPackage(CollectableElement):
         # Copy all children from parent element
         for child in parent_elem:
             elem.append(child)
-
-        # Serialize ar_packages (list to container "AR-PACKAGES")
-        if self.ar_packages:
-            wrapper = ET.Element("AR-PACKAGES")
-            for item in self.ar_packages:
-                serialized = ARObject._serialize_item(item, "ARPackage")
-                if serialized is not None:
-                    wrapper.append(serialized)
-            if len(wrapper) > 0:
-                elem.append(wrapper)
 
         # Serialize reference_bases (list to container "REFERENCE-BASES")
         if self.reference_bases:
@@ -104,6 +94,16 @@ class ARPackage(CollectableElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
+        # Serialize ar_packages (list to container "AR-PACKAGES")
+        if self.ar_packages:
+            wrapper = ET.Element("AR-PACKAGES")
+            for item in self.ar_packages:
+                serialized = ARObject._serialize_item(item, "ARPackage")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
         return elem
 
     @classmethod
@@ -119,15 +119,15 @@ class ARPackage(CollectableElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ARPackage, cls).deserialize(element)
 
-        # Parse ar_packages (list from container "AR-PACKAGES")
-        obj.ar_packages = []
-        container = ARObject._find_child_element(element, "AR-PACKAGES")
+        # Parse reference_bases (list from container "REFERENCE-BASES")
+        obj.reference_bases = []
+        container = ARObject._find_child_element(element, "REFERENCE-BASES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.ar_packages.append(child_value)
+                    obj.reference_bases.append(child_value)
 
         # Parse elements (list from container "ELEMENTS")
         obj.elements = []
@@ -139,15 +139,15 @@ class ARPackage(CollectableElement):
                 if child_value is not None:
                     obj.elements.append(child_value)
 
-        # Parse reference_bases (list from container "REFERENCE-BASES")
-        obj.reference_bases = []
-        container = ARObject._find_child_element(element, "REFERENCE-BASES")
+        # Parse ar_packages (list from container "AR-PACKAGES")
+        obj.ar_packages = []
+        container = ARObject._find_child_element(element, "AR-PACKAGES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.reference_bases.append(child_value)
+                    obj.ar_packages.append(child_value)
 
         return obj
 
