@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTroubleC
     DiagnosticTroubleCode,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTroubleCode import (
     DiagnosticUdsSeverityEnum,
     DiagnosticWwhObdDtcClassEnum,
@@ -39,7 +40,7 @@ class DiagnosticTroubleCodeUds(DiagnosticTroubleCode):
         return False
 
     consider_pto: Optional[Boolean]
-    dtc_props_props: Optional[DiagnosticTroubleCode]
+    dtc_props_props_ref: Optional[ARRef]
     event_readiness: Optional[EventObdReadinessGroup]
     functional_unit: Optional[PositiveInteger]
     obd_dtc: Optional[PositiveInteger]
@@ -50,7 +51,7 @@ class DiagnosticTroubleCodeUds(DiagnosticTroubleCode):
         """Initialize DiagnosticTroubleCodeUds."""
         super().__init__()
         self.consider_pto: Optional[Boolean] = None
-        self.dtc_props_props: Optional[DiagnosticTroubleCode] = None
+        self.dtc_props_props_ref: Optional[ARRef] = None
         self.event_readiness: Optional[EventObdReadinessGroup] = None
         self.functional_unit: Optional[PositiveInteger] = None
         self.obd_dtc: Optional[PositiveInteger] = None
@@ -92,12 +93,12 @@ class DiagnosticTroubleCodeUds(DiagnosticTroubleCode):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize dtc_props_props
-        if self.dtc_props_props is not None:
-            serialized = ARObject._serialize_item(self.dtc_props_props, "DiagnosticTroubleCode")
+        # Serialize dtc_props_props_ref
+        if self.dtc_props_props_ref is not None:
+            serialized = ARObject._serialize_item(self.dtc_props_props_ref, "DiagnosticTroubleCode")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DTC-PROPS-PROPS")
+                wrapped = ET.Element("DTC-PROPS-PROPS-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -211,11 +212,11 @@ class DiagnosticTroubleCodeUds(DiagnosticTroubleCode):
             consider_pto_value = child.text
             obj.consider_pto = consider_pto_value
 
-        # Parse dtc_props_props
-        child = ARObject._find_child_element(element, "DTC-PROPS-PROPS")
+        # Parse dtc_props_props_ref
+        child = ARObject._find_child_element(element, "DTC-PROPS-PROPS-REF")
         if child is not None:
-            dtc_props_props_value = ARObject._deserialize_by_tag(child, "DiagnosticTroubleCode")
-            obj.dtc_props_props = dtc_props_props_value
+            dtc_props_props_ref_value = ARRef.deserialize(child)
+            obj.dtc_props_props_ref = dtc_props_props_ref_value
 
         # Parse event_readiness
         child = ARObject._find_child_element(element, "EVENT-READINESS")

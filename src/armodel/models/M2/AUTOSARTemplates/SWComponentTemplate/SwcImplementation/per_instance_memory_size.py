@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -31,13 +32,13 @@ class PerInstanceMemorySize(ARObject):
         return False
 
     alignment: Optional[PositiveInteger]
-    per_instance_memory_memory: Optional[PerInstanceMemory]
+    per_instance_memory_memory_ref: Optional[ARRef]
     size: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize PerInstanceMemorySize."""
         super().__init__()
         self.alignment: Optional[PositiveInteger] = None
-        self.per_instance_memory_memory: Optional[PerInstanceMemory] = None
+        self.per_instance_memory_memory_ref: Optional[ARRef] = None
         self.size: Optional[PositiveInteger] = None
 
     def serialize(self) -> ET.Element:
@@ -64,12 +65,12 @@ class PerInstanceMemorySize(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize per_instance_memory_memory
-        if self.per_instance_memory_memory is not None:
-            serialized = ARObject._serialize_item(self.per_instance_memory_memory, "PerInstanceMemory")
+        # Serialize per_instance_memory_memory_ref
+        if self.per_instance_memory_memory_ref is not None:
+            serialized = ARObject._serialize_item(self.per_instance_memory_memory_ref, "PerInstanceMemory")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PER-INSTANCE-MEMORY-MEMORY")
+                wrapped = ET.Element("PER-INSTANCE-MEMORY-MEMORY-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -114,11 +115,11 @@ class PerInstanceMemorySize(ARObject):
             alignment_value = child.text
             obj.alignment = alignment_value
 
-        # Parse per_instance_memory_memory
-        child = ARObject._find_child_element(element, "PER-INSTANCE-MEMORY-MEMORY")
+        # Parse per_instance_memory_memory_ref
+        child = ARObject._find_child_element(element, "PER-INSTANCE-MEMORY-MEMORY-REF")
         if child is not None:
-            per_instance_memory_memory_value = ARObject._deserialize_by_tag(child, "PerInstanceMemory")
-            obj.per_instance_memory_memory = per_instance_memory_memory_value
+            per_instance_memory_memory_ref_value = ARRef.deserialize(child)
+            obj.per_instance_memory_memory_ref = per_instance_memory_memory_ref_value
 
         # Parse size
         child = ARObject._find_child_element(element, "SIZE")

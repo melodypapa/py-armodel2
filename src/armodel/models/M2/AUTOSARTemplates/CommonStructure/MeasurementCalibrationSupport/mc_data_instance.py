@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
     McdIdentifier,
@@ -60,7 +61,7 @@ class McDataInstance(Identifiable):
 
     array_size: Optional[PositiveInteger]
     display_identifier: Optional[McdIdentifier]
-    flat_map_entry: Optional[FlatInstanceDescriptor]
+    flat_map_entry_ref: Optional[ARRef]
     instance_in: Optional[ImplementationElementInParameterInstanceRef]
     mc_data_access_details: Optional[McDataAccessDetails]
     mc_datas: list[RoleBasedMcDataAssignment]
@@ -75,7 +76,7 @@ class McDataInstance(Identifiable):
         super().__init__()
         self.array_size: Optional[PositiveInteger] = None
         self.display_identifier: Optional[McdIdentifier] = None
-        self.flat_map_entry: Optional[FlatInstanceDescriptor] = None
+        self.flat_map_entry_ref: Optional[ARRef] = None
         self.instance_in: Optional[ImplementationElementInParameterInstanceRef] = None
         self.mc_data_access_details: Optional[McDataAccessDetails] = None
         self.mc_datas: list[RoleBasedMcDataAssignment] = []
@@ -134,12 +135,12 @@ class McDataInstance(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize flat_map_entry
-        if self.flat_map_entry is not None:
-            serialized = ARObject._serialize_item(self.flat_map_entry, "FlatInstanceDescriptor")
+        # Serialize flat_map_entry_ref
+        if self.flat_map_entry_ref is not None:
+            serialized = ARObject._serialize_item(self.flat_map_entry_ref, "FlatInstanceDescriptor")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("FLAT-MAP-ENTRY")
+                wrapped = ET.Element("FLAT-MAP-ENTRY-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -293,11 +294,11 @@ class McDataInstance(Identifiable):
             display_identifier_value = child.text
             obj.display_identifier = display_identifier_value
 
-        # Parse flat_map_entry
-        child = ARObject._find_child_element(element, "FLAT-MAP-ENTRY")
+        # Parse flat_map_entry_ref
+        child = ARObject._find_child_element(element, "FLAT-MAP-ENTRY-REF")
         if child is not None:
-            flat_map_entry_value = ARObject._deserialize_by_tag(child, "FlatInstanceDescriptor")
-            obj.flat_map_entry = flat_map_entry_value
+            flat_map_entry_ref_value = ARRef.deserialize(child)
+            obj.flat_map_entry_ref = flat_map_entry_ref_value
 
         # Parse instance_in
         child = ARObject._find_child_element(element, "INSTANCE-IN")

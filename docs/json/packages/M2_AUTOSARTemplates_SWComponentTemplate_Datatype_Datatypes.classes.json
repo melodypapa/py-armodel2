@@ -313,15 +313,15 @@
         "applicationDataType": {
           "type": "ApplicationDataType",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This is the corresponding ApplicationDataType"
         },
         "implementation": {
           "type": "AbstractImplementationDataType",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This is the corresponding AbstractImplementationData"
         }
       }

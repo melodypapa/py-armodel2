@@ -573,8 +573,8 @@
         "access": {
           "type": "DiagnosticAccessPermission",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference represents the access permission of the owning routine subfunction."
         }
       }

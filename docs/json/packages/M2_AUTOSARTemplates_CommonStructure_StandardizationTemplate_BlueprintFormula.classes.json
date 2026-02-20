@@ -30,8 +30,8 @@
         "ecuc": {
           "type": "EcucDefinitionElement",
           "multiplicity": "1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The EcucDefinitionElement serves as a argument for the"
         },
         "verbatim": {

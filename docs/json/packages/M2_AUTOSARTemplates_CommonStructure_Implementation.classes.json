@@ -117,8 +117,8 @@
         "buildActionManifest": {
           "type": "BuildActionManifest",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "A manifest specifying the intended build actions for the delivered with this implementation. atpVariation"
         },
         "codeDescriptors": {
@@ -145,8 +145,8 @@
         "hwElements": {
           "type": "HwElement",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The hardware elements (e.g. the processor) required for"
         },
         "linkers": {
@@ -266,8 +266,8 @@
         "callbackHeaders": {
           "type": "ServiceNeeds",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The association callbackHeader describes in which"
         }
       }

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
     String,
@@ -33,13 +34,13 @@ class BinaryManifestResource(Identifiable, ABC):
         return True
 
     global_resource: Optional[PositiveInteger]
-    resource: Optional[Any]
+    resource_ref: Optional[Any]
     resource_guard: Optional[String]
     def __init__(self) -> None:
         """Initialize BinaryManifestResource."""
         super().__init__()
         self.global_resource: Optional[PositiveInteger] = None
-        self.resource: Optional[Any] = None
+        self.resource_ref: Optional[Any] = None
         self.resource_guard: Optional[String] = None
 
     def serialize(self) -> ET.Element:
@@ -76,12 +77,12 @@ class BinaryManifestResource(Identifiable, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize resource
-        if self.resource is not None:
-            serialized = ARObject._serialize_item(self.resource, "Any")
+        # Serialize resource_ref
+        if self.resource_ref is not None:
+            serialized = ARObject._serialize_item(self.resource_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("RESOURCE")
+                wrapped = ET.Element("RESOURCE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -125,11 +126,11 @@ class BinaryManifestResource(Identifiable, ABC):
             global_resource_value = child.text
             obj.global_resource = global_resource_value
 
-        # Parse resource
-        child = ARObject._find_child_element(element, "RESOURCE")
+        # Parse resource_ref
+        child = ARObject._find_child_element(element, "RESOURCE-REF")
         if child is not None:
-            resource_value = child.text
-            obj.resource = resource_value
+            resource_ref_value = ARRef.deserialize(child)
+            obj.resource_ref = resource_ref_value
 
         # Parse resource_guard
         child = ARObject._find_child_element(element, "RESOURCE-GUARD")

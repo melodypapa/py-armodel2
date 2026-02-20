@@ -38,15 +38,15 @@ class ISignalTriggering(Identifiable):
         """
         return False
 
-    i_signal: Optional[ISignal]
+    i_signal_ref: Optional[ARRef]
     i_signal_group_ref: Optional[ARRef]
-    i_signal_ports: list[ISignalPort]
+    i_signal_port_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize ISignalTriggering."""
         super().__init__()
-        self.i_signal: Optional[ISignal] = None
+        self.i_signal_ref: Optional[ARRef] = None
         self.i_signal_group_ref: Optional[ARRef] = None
-        self.i_signal_ports: list[ISignalPort] = []
+        self.i_signal_port_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize ISignalTriggering to XML element.
@@ -68,12 +68,12 @@ class ISignalTriggering(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize i_signal
-        if self.i_signal is not None:
-            serialized = ARObject._serialize_item(self.i_signal, "ISignal")
+        # Serialize i_signal_ref
+        if self.i_signal_ref is not None:
+            serialized = ARObject._serialize_item(self.i_signal_ref, "ISignal")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("I-SIGNAL")
+                wrapped = ET.Element("I-SIGNAL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -96,13 +96,20 @@ class ISignalTriggering(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize i_signal_ports (list to container "I-SIGNAL-PORTS")
-        if self.i_signal_ports:
-            wrapper = ET.Element("I-SIGNAL-PORTS")
-            for item in self.i_signal_ports:
+        # Serialize i_signal_port_refs (list to container "I-SIGNAL-PORT-REFS")
+        if self.i_signal_port_refs:
+            wrapper = ET.Element("I-SIGNAL-PORT-REFS")
+            for item in self.i_signal_port_refs:
                 serialized = ARObject._serialize_item(item, "ISignalPort")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("I-SIGNAL-PORT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -121,11 +128,11 @@ class ISignalTriggering(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ISignalTriggering, cls).deserialize(element)
 
-        # Parse i_signal
-        child = ARObject._find_child_element(element, "I-SIGNAL")
+        # Parse i_signal_ref
+        child = ARObject._find_child_element(element, "I-SIGNAL-REF")
         if child is not None:
-            i_signal_value = ARObject._deserialize_by_tag(child, "ISignal")
-            obj.i_signal = i_signal_value
+            i_signal_ref_value = ARRef.deserialize(child)
+            obj.i_signal_ref = i_signal_ref_value
 
         # Parse i_signal_group_ref
         child = ARObject._find_child_element(element, "I-SIGNAL-GROUP-REF")
@@ -133,15 +140,21 @@ class ISignalTriggering(Identifiable):
             i_signal_group_ref_value = ARRef.deserialize(child)
             obj.i_signal_group_ref = i_signal_group_ref_value
 
-        # Parse i_signal_ports (list from container "I-SIGNAL-PORTS")
-        obj.i_signal_ports = []
-        container = ARObject._find_child_element(element, "I-SIGNAL-PORTS")
+        # Parse i_signal_port_refs (list from container "I-SIGNAL-PORT-REFS")
+        obj.i_signal_port_refs = []
+        container = ARObject._find_child_element(element, "I-SIGNAL-PORT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.i_signal_ports.append(child_value)
+                    obj.i_signal_port_refs.append(child_value)
 
         return obj
 

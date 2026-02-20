@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_abstract_data_identifier import (
     DiagnosticAbstractDataIdentifier,
 )
@@ -31,11 +32,11 @@ class DiagnosticDataByIdentifier(DiagnosticServiceInstance, ABC):
         """
         return True
 
-    data_identifier: Optional[DiagnosticAbstractDataIdentifier]
+    data_identifier_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DiagnosticDataByIdentifier."""
         super().__init__()
-        self.data_identifier: Optional[DiagnosticAbstractDataIdentifier] = None
+        self.data_identifier_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticDataByIdentifier to XML element.
@@ -57,12 +58,12 @@ class DiagnosticDataByIdentifier(DiagnosticServiceInstance, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize data_identifier
-        if self.data_identifier is not None:
-            serialized = ARObject._serialize_item(self.data_identifier, "DiagnosticAbstractDataIdentifier")
+        # Serialize data_identifier_ref
+        if self.data_identifier_ref is not None:
+            serialized = ARObject._serialize_item(self.data_identifier_ref, "DiagnosticAbstractDataIdentifier")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DATA-IDENTIFIER")
+                wrapped = ET.Element("DATA-IDENTIFIER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -86,11 +87,11 @@ class DiagnosticDataByIdentifier(DiagnosticServiceInstance, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticDataByIdentifier, cls).deserialize(element)
 
-        # Parse data_identifier
-        child = ARObject._find_child_element(element, "DATA-IDENTIFIER")
+        # Parse data_identifier_ref
+        child = ARObject._find_child_element(element, "DATA-IDENTIFIER-REF")
         if child is not None:
-            data_identifier_value = ARObject._deserialize_by_tag(child, "DiagnosticAbstractDataIdentifier")
-            obj.data_identifier = data_identifier_value
+            data_identifier_ref_value = ARRef.deserialize(child)
+            obj.data_identifier_ref = data_identifier_ref_value
 
         return obj
 

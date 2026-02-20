@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.EnvironmentalCondi
     DiagnosticEnvCompareCondition,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
 class DiagnosticEnvModeCondition(DiagnosticEnvCompareCondition):
@@ -27,11 +28,11 @@ class DiagnosticEnvModeCondition(DiagnosticEnvCompareCondition):
         """
         return False
 
-    mode_element: Optional[Any]
+    mode_element_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticEnvModeCondition."""
         super().__init__()
-        self.mode_element: Optional[Any] = None
+        self.mode_element_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticEnvModeCondition to XML element.
@@ -53,12 +54,12 @@ class DiagnosticEnvModeCondition(DiagnosticEnvCompareCondition):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize mode_element
-        if self.mode_element is not None:
-            serialized = ARObject._serialize_item(self.mode_element, "Any")
+        # Serialize mode_element_ref
+        if self.mode_element_ref is not None:
+            serialized = ARObject._serialize_item(self.mode_element_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("MODE-ELEMENT")
+                wrapped = ET.Element("MODE-ELEMENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -82,11 +83,11 @@ class DiagnosticEnvModeCondition(DiagnosticEnvCompareCondition):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticEnvModeCondition, cls).deserialize(element)
 
-        # Parse mode_element
-        child = ARObject._find_child_element(element, "MODE-ELEMENT")
+        # Parse mode_element_ref
+        child = ARObject._find_child_element(element, "MODE-ELEMENT-REF")
         if child is not None:
-            mode_element_value = child.text
-            obj.mode_element = mode_element_value
+            mode_element_ref_value = ARRef.deserialize(child)
+            obj.mode_element_ref = mode_element_ref_value
 
         return obj
 

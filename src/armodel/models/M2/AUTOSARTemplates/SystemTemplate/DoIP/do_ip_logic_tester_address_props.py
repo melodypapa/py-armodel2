@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DoIP.abstract_do_ip_logic
     AbstractDoIpLogicAddressProps,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DoIP.do_ip_routing_activation import (
     DoIpRoutingActivation,
 )
@@ -30,11 +31,11 @@ class DoIpLogicTesterAddressProps(AbstractDoIpLogicAddressProps):
         """
         return False
 
-    do_ip_testers: list[DoIpRoutingActivation]
+    do_ip_tester_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize DoIpLogicTesterAddressProps."""
         super().__init__()
-        self.do_ip_testers: list[DoIpRoutingActivation] = []
+        self.do_ip_tester_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize DoIpLogicTesterAddressProps to XML element.
@@ -56,13 +57,20 @@ class DoIpLogicTesterAddressProps(AbstractDoIpLogicAddressProps):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize do_ip_testers (list to container "DO-IP-TESTERS")
-        if self.do_ip_testers:
-            wrapper = ET.Element("DO-IP-TESTERS")
-            for item in self.do_ip_testers:
+        # Serialize do_ip_tester_refs (list to container "DO-IP-TESTER-REFS")
+        if self.do_ip_tester_refs:
+            wrapper = ET.Element("DO-IP-TESTER-REFS")
+            for item in self.do_ip_tester_refs:
                 serialized = ARObject._serialize_item(item, "DoIpRoutingActivation")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("DO-IP-TESTER-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -81,15 +89,21 @@ class DoIpLogicTesterAddressProps(AbstractDoIpLogicAddressProps):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DoIpLogicTesterAddressProps, cls).deserialize(element)
 
-        # Parse do_ip_testers (list from container "DO-IP-TESTERS")
-        obj.do_ip_testers = []
-        container = ARObject._find_child_element(element, "DO-IP-TESTERS")
+        # Parse do_ip_tester_refs (list from container "DO-IP-TESTER-REFS")
+        obj.do_ip_tester_refs = []
+        container = ARObject._find_child_element(element, "DO-IP-TESTER-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.do_ip_testers.append(child_value)
+                    obj.do_ip_tester_refs.append(child_value)
 
         return obj
 

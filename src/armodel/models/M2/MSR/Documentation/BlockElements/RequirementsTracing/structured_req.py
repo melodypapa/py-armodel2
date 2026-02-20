@@ -16,6 +16,7 @@ from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginat
     Paginateable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.DocumentationOnM1 import (
     StandardNameEnum,
 )
@@ -56,7 +57,7 @@ class StructuredReq(Paginateable):
     rationale: Optional[DocumentationBlock]
     remark: Optional[DocumentationBlock]
     supporting: Optional[DocumentationBlock]
-    tested_items: list[Traceable]
+    tested_item_refs: list[ARRef]
     type: String
     use_case: Optional[DocumentationBlock]
     def __init__(self) -> None:
@@ -72,7 +73,7 @@ class StructuredReq(Paginateable):
         self.rationale: Optional[DocumentationBlock] = None
         self.remark: Optional[DocumentationBlock] = None
         self.supporting: Optional[DocumentationBlock] = None
-        self.tested_items: list[Traceable] = []
+        self.tested_item_refs: list[ARRef] = []
         self.type: String = None
         self.use_case: Optional[DocumentationBlock] = None
 
@@ -232,13 +233,20 @@ class StructuredReq(Paginateable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize tested_items (list to container "TESTED-ITEMS")
-        if self.tested_items:
-            wrapper = ET.Element("TESTED-ITEMS")
-            for item in self.tested_items:
+        # Serialize tested_item_refs (list to container "TESTED-ITEM-REFS")
+        if self.tested_item_refs:
+            wrapper = ET.Element("TESTED-ITEM-REFS")
+            for item in self.tested_item_refs:
                 serialized = ARObject._serialize_item(item, "Traceable")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("TESTED-ITEM-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -349,15 +357,21 @@ class StructuredReq(Paginateable):
             supporting_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
             obj.supporting = supporting_value
 
-        # Parse tested_items (list from container "TESTED-ITEMS")
-        obj.tested_items = []
-        container = ARObject._find_child_element(element, "TESTED-ITEMS")
+        # Parse tested_item_refs (list from container "TESTED-ITEM-REFS")
+        obj.tested_item_refs = []
+        container = ARObject._find_child_element(element, "TESTED-ITEM-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.tested_items.append(child_value)
+                    obj.tested_item_refs.append(child_value)
 
         # Parse type
         child = ARObject._find_child_element(element, "TYPE")

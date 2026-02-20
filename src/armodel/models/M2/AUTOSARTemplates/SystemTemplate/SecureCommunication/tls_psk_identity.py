@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -30,13 +31,13 @@ class TlsPskIdentity(ARObject):
         """
         return False
 
-    pre_shared_key: Optional[CryptoServiceKey]
+    pre_shared_key_ref: Optional[ARRef]
     psk_identity: Optional[String]
     psk_identity_hint: Optional[String]
     def __init__(self) -> None:
         """Initialize TlsPskIdentity."""
         super().__init__()
-        self.pre_shared_key: Optional[CryptoServiceKey] = None
+        self.pre_shared_key_ref: Optional[ARRef] = None
         self.psk_identity: Optional[String] = None
         self.psk_identity_hint: Optional[String] = None
 
@@ -50,12 +51,12 @@ class TlsPskIdentity(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize pre_shared_key
-        if self.pre_shared_key is not None:
-            serialized = ARObject._serialize_item(self.pre_shared_key, "CryptoServiceKey")
+        # Serialize pre_shared_key_ref
+        if self.pre_shared_key_ref is not None:
+            serialized = ARObject._serialize_item(self.pre_shared_key_ref, "CryptoServiceKey")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PRE-SHARED-KEY")
+                wrapped = ET.Element("PRE-SHARED-KEY-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -108,11 +109,11 @@ class TlsPskIdentity(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse pre_shared_key
-        child = ARObject._find_child_element(element, "PRE-SHARED-KEY")
+        # Parse pre_shared_key_ref
+        child = ARObject._find_child_element(element, "PRE-SHARED-KEY-REF")
         if child is not None:
-            pre_shared_key_value = ARObject._deserialize_by_tag(child, "CryptoServiceKey")
-            obj.pre_shared_key = pre_shared_key_value
+            pre_shared_key_ref_value = ARRef.deserialize(child)
+            obj.pre_shared_key_ref = pre_shared_key_ref_value
 
         # Parse psk_identity
         child = ARObject._find_child_element(element, "PSK-IDENTITY")

@@ -23,7 +23,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "The Data Exchange Point describes the relationship between a work product and its intended use in the methodology with a tailoring of the AUTOSAR templates. An informal description is provided by the ’desc’ and ’introduction’ attributes of the DataExchangePoint. The informal description SHOULD include the subject that is described by this data exchange point. E.g. • producible data of tool A, version x • consumable data of tool B, version y • agreed profile between partner A and partner B in project xyz",
+      "note": "The Data Exchange Point describes the relationship between a work product and its intended use in the methodology with a tailoring of the AUTOSAR templates. An informal description is provided by the \u2019desc\u2019 and \u2019introduction\u2019 attributes of the DataExchangePoint. The informal description SHOULD include the subject that is described by this data exchange point. E.g. \u2022 producible data of tool A, version x \u2022 consumable data of tool B, version y \u2022 agreed profile between partner A and partner B in project xyz",
       "sources": [
         {
           "pdf_file": "AUTOSAR_FO_TPS_StandardizationTemplate.pdf",
@@ -92,15 +92,15 @@
         "customSdgDefs": {
           "type": "SdgDef",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to custom SdgDefs that extend the data format"
         },
         "customs": {
           "type": "Documentation",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to custom specifications that extend this"
         },
         "standards": {

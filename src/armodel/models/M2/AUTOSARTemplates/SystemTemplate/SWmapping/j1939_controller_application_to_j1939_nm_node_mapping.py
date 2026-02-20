@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.j1939_nm_node import (
     J1939NmNode,
 )
@@ -27,13 +28,13 @@ class J1939ControllerApplicationToJ1939NmNodeMapping(ARObject):
         """
         return False
 
-    j1939_controller: Optional[Any]
-    j1939_nm_node: Optional[J1939NmNode]
+    j1939_controller_ref: Optional[Any]
+    j1939_nm_node_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize J1939ControllerApplicationToJ1939NmNodeMapping."""
         super().__init__()
-        self.j1939_controller: Optional[Any] = None
-        self.j1939_nm_node: Optional[J1939NmNode] = None
+        self.j1939_controller_ref: Optional[Any] = None
+        self.j1939_nm_node_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize J1939ControllerApplicationToJ1939NmNodeMapping to XML element.
@@ -45,12 +46,12 @@ class J1939ControllerApplicationToJ1939NmNodeMapping(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize j1939_controller
-        if self.j1939_controller is not None:
-            serialized = ARObject._serialize_item(self.j1939_controller, "Any")
+        # Serialize j1939_controller_ref
+        if self.j1939_controller_ref is not None:
+            serialized = ARObject._serialize_item(self.j1939_controller_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("J1939-CONTROLLER")
+                wrapped = ET.Element("J1939-CONTROLLER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -59,12 +60,12 @@ class J1939ControllerApplicationToJ1939NmNodeMapping(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize j1939_nm_node
-        if self.j1939_nm_node is not None:
-            serialized = ARObject._serialize_item(self.j1939_nm_node, "J1939NmNode")
+        # Serialize j1939_nm_node_ref
+        if self.j1939_nm_node_ref is not None:
+            serialized = ARObject._serialize_item(self.j1939_nm_node_ref, "J1939NmNode")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("J1939-NM-NODE")
+                wrapped = ET.Element("J1939-NM-NODE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -89,17 +90,17 @@ class J1939ControllerApplicationToJ1939NmNodeMapping(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse j1939_controller
-        child = ARObject._find_child_element(element, "J1939-CONTROLLER")
+        # Parse j1939_controller_ref
+        child = ARObject._find_child_element(element, "J1939-CONTROLLER-REF")
         if child is not None:
-            j1939_controller_value = child.text
-            obj.j1939_controller = j1939_controller_value
+            j1939_controller_ref_value = ARRef.deserialize(child)
+            obj.j1939_controller_ref = j1939_controller_ref_value
 
-        # Parse j1939_nm_node
-        child = ARObject._find_child_element(element, "J1939-NM-NODE")
+        # Parse j1939_nm_node_ref
+        child = ARObject._find_child_element(element, "J1939-NM-NODE-REF")
         if child is not None:
-            j1939_nm_node_value = ARObject._deserialize_by_tag(child, "J1939NmNode")
-            obj.j1939_nm_node = j1939_nm_node_value
+            j1939_nm_node_ref_value = ARRef.deserialize(child)
+            obj.j1939_nm_node_ref = j1939_nm_node_ref_value
 
         return obj
 

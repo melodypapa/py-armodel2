@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.AsamHdo.Units.physical_dimension import (
     PhysicalDimension,
 )
@@ -27,13 +28,13 @@ class PhysicalDimensionMapping(ARObject):
         """
         return False
 
-    first_physical: Optional[PhysicalDimension]
-    second_physical: Optional[PhysicalDimension]
+    first_physical_ref: Optional[ARRef]
+    second_physical_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize PhysicalDimensionMapping."""
         super().__init__()
-        self.first_physical: Optional[PhysicalDimension] = None
-        self.second_physical: Optional[PhysicalDimension] = None
+        self.first_physical_ref: Optional[ARRef] = None
+        self.second_physical_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize PhysicalDimensionMapping to XML element.
@@ -45,12 +46,12 @@ class PhysicalDimensionMapping(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize first_physical
-        if self.first_physical is not None:
-            serialized = ARObject._serialize_item(self.first_physical, "PhysicalDimension")
+        # Serialize first_physical_ref
+        if self.first_physical_ref is not None:
+            serialized = ARObject._serialize_item(self.first_physical_ref, "PhysicalDimension")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("FIRST-PHYSICAL")
+                wrapped = ET.Element("FIRST-PHYSICAL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -59,12 +60,12 @@ class PhysicalDimensionMapping(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize second_physical
-        if self.second_physical is not None:
-            serialized = ARObject._serialize_item(self.second_physical, "PhysicalDimension")
+        # Serialize second_physical_ref
+        if self.second_physical_ref is not None:
+            serialized = ARObject._serialize_item(self.second_physical_ref, "PhysicalDimension")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SECOND-PHYSICAL")
+                wrapped = ET.Element("SECOND-PHYSICAL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -89,17 +90,17 @@ class PhysicalDimensionMapping(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse first_physical
-        child = ARObject._find_child_element(element, "FIRST-PHYSICAL")
+        # Parse first_physical_ref
+        child = ARObject._find_child_element(element, "FIRST-PHYSICAL-REF")
         if child is not None:
-            first_physical_value = ARObject._deserialize_by_tag(child, "PhysicalDimension")
-            obj.first_physical = first_physical_value
+            first_physical_ref_value = ARRef.deserialize(child)
+            obj.first_physical_ref = first_physical_ref_value
 
-        # Parse second_physical
-        child = ARObject._find_child_element(element, "SECOND-PHYSICAL")
+        # Parse second_physical_ref
+        child = ARObject._find_child_element(element, "SECOND-PHYSICAL-REF")
         if child is not None:
-            second_physical_value = ARObject._deserialize_by_tag(child, "PhysicalDimension")
-            obj.second_physical = second_physical_value
+            second_physical_ref_value = ARRef.deserialize(child)
+            obj.second_physical_ref = second_physical_ref_value
 
         return obj
 

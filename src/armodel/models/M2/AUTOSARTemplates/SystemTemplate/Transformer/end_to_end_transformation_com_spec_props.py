@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.transf
     TransformationComSpecProps,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -37,7 +38,7 @@ class EndToEndTransformationComSpecProps(TransformationComSpecProps):
 
     clear_from_valid: Optional[Boolean]
     disable_end_to: Optional[Boolean]
-    e2e_profile: Optional[E2EProfileCompatibilityProps]
+    e2e_profile_ref: Optional[ARRef]
     max_delta: Optional[PositiveInteger]
     max_error_state: Optional[PositiveInteger]
     max_no_new_or: Optional[PositiveInteger]
@@ -51,7 +52,7 @@ class EndToEndTransformationComSpecProps(TransformationComSpecProps):
         super().__init__()
         self.clear_from_valid: Optional[Boolean] = None
         self.disable_end_to: Optional[Boolean] = None
-        self.e2e_profile: Optional[E2EProfileCompatibilityProps] = None
+        self.e2e_profile_ref: Optional[ARRef] = None
         self.max_delta: Optional[PositiveInteger] = None
         self.max_error_state: Optional[PositiveInteger] = None
         self.max_no_new_or: Optional[PositiveInteger] = None
@@ -109,12 +110,12 @@ class EndToEndTransformationComSpecProps(TransformationComSpecProps):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize e2e_profile
-        if self.e2e_profile is not None:
-            serialized = ARObject._serialize_item(self.e2e_profile, "E2EProfileCompatibilityProps")
+        # Serialize e2e_profile_ref
+        if self.e2e_profile_ref is not None:
+            serialized = ARObject._serialize_item(self.e2e_profile_ref, "E2EProfileCompatibilityProps")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("E2E-PROFILE")
+                wrapped = ET.Element("E2E-PROFILE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -262,11 +263,11 @@ class EndToEndTransformationComSpecProps(TransformationComSpecProps):
             disable_end_to_value = child.text
             obj.disable_end_to = disable_end_to_value
 
-        # Parse e2e_profile
-        child = ARObject._find_child_element(element, "E2E-PROFILE")
+        # Parse e2e_profile_ref
+        child = ARObject._find_child_element(element, "E2E-PROFILE-REF")
         if child is not None:
-            e2e_profile_value = ARObject._deserialize_by_tag(child, "E2EProfileCompatibilityProps")
-            obj.e2e_profile = e2e_profile_value
+            e2e_profile_ref_value = ARRef.deserialize(child)
+            obj.e2e_profile_ref = e2e_profile_ref_value
 
         # Parse max_delta
         child = ARObject._find_child_element(element, "MAX-DELTA")

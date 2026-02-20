@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
 )
@@ -33,14 +34,14 @@ class AppOsTaskProxyToEcuTaskProxyMapping(Identifiable):
         """
         return False
 
-    app_task_proxy: Optional[OsTaskProxy]
-    ecu_task_proxy: Optional[OsTaskProxy]
+    app_task_proxy_ref: Optional[ARRef]
+    ecu_task_proxy_ref: Optional[ARRef]
     offset: Optional[Integer]
     def __init__(self) -> None:
         """Initialize AppOsTaskProxyToEcuTaskProxyMapping."""
         super().__init__()
-        self.app_task_proxy: Optional[OsTaskProxy] = None
-        self.ecu_task_proxy: Optional[OsTaskProxy] = None
+        self.app_task_proxy_ref: Optional[ARRef] = None
+        self.ecu_task_proxy_ref: Optional[ARRef] = None
         self.offset: Optional[Integer] = None
 
     def serialize(self) -> ET.Element:
@@ -63,12 +64,12 @@ class AppOsTaskProxyToEcuTaskProxyMapping(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize app_task_proxy
-        if self.app_task_proxy is not None:
-            serialized = ARObject._serialize_item(self.app_task_proxy, "OsTaskProxy")
+        # Serialize app_task_proxy_ref
+        if self.app_task_proxy_ref is not None:
+            serialized = ARObject._serialize_item(self.app_task_proxy_ref, "OsTaskProxy")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("APP-TASK-PROXY")
+                wrapped = ET.Element("APP-TASK-PROXY-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -77,12 +78,12 @@ class AppOsTaskProxyToEcuTaskProxyMapping(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize ecu_task_proxy
-        if self.ecu_task_proxy is not None:
-            serialized = ARObject._serialize_item(self.ecu_task_proxy, "OsTaskProxy")
+        # Serialize ecu_task_proxy_ref
+        if self.ecu_task_proxy_ref is not None:
+            serialized = ARObject._serialize_item(self.ecu_task_proxy_ref, "OsTaskProxy")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ECU-TASK-PROXY")
+                wrapped = ET.Element("ECU-TASK-PROXY-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -120,17 +121,17 @@ class AppOsTaskProxyToEcuTaskProxyMapping(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AppOsTaskProxyToEcuTaskProxyMapping, cls).deserialize(element)
 
-        # Parse app_task_proxy
-        child = ARObject._find_child_element(element, "APP-TASK-PROXY")
+        # Parse app_task_proxy_ref
+        child = ARObject._find_child_element(element, "APP-TASK-PROXY-REF")
         if child is not None:
-            app_task_proxy_value = ARObject._deserialize_by_tag(child, "OsTaskProxy")
-            obj.app_task_proxy = app_task_proxy_value
+            app_task_proxy_ref_value = ARRef.deserialize(child)
+            obj.app_task_proxy_ref = app_task_proxy_ref_value
 
-        # Parse ecu_task_proxy
-        child = ARObject._find_child_element(element, "ECU-TASK-PROXY")
+        # Parse ecu_task_proxy_ref
+        child = ARObject._find_child_element(element, "ECU-TASK-PROXY-REF")
         if child is not None:
-            ecu_task_proxy_value = ARObject._deserialize_by_tag(child, "OsTaskProxy")
-            obj.ecu_task_proxy = ecu_task_proxy_value
+            ecu_task_proxy_ref_value = ARRef.deserialize(child)
+            obj.ecu_task_proxy_ref = ecu_task_proxy_ref_value
 
         # Parse offset
         child = ARObject._find_child_element(element, "OFFSET")

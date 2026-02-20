@@ -59,15 +59,15 @@
         "aclOperations": {
           "type": "AclOperation",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This denotes an operation which is granted by the given"
         },
         "aclRoles": {
           "type": "AclRole",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This denotes the role (individual or even organization) for"
         },
         "aclScope": {
@@ -144,8 +144,8 @@
         "derivedFroms": {
           "type": "AtpBlueprint",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This association indicates that the considered objects are"
         },
         "engineerings": {
@@ -232,8 +232,8 @@
         "implieds": {
           "type": "AclOperation",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This indicates that the related operations are also implied. the permission is also granted for this"
         }
       }

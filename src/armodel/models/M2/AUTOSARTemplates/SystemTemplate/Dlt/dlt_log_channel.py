@@ -45,9 +45,9 @@ class DltLogChannel(Identifiable):
         """
         return False
 
-    applications: list[DltContext]
+    application_refs: list[ARRef]
     default_trace: Optional[DltDefaultTraceStateEnum]
-    dlt_messages: list[DltMessage]
+    dlt_message_refs: list[ARRef]
     log_channel_id: Optional[String]
     log_trace_default_log: Optional[LogTraceDefaultLogLevelEnum]
     non_verbose: Optional[Boolean]
@@ -57,9 +57,9 @@ class DltLogChannel(Identifiable):
     def __init__(self) -> None:
         """Initialize DltLogChannel."""
         super().__init__()
-        self.applications: list[DltContext] = []
+        self.application_refs: list[ARRef] = []
         self.default_trace: Optional[DltDefaultTraceStateEnum] = None
-        self.dlt_messages: list[DltMessage] = []
+        self.dlt_message_refs: list[ARRef] = []
         self.log_channel_id: Optional[String] = None
         self.log_trace_default_log: Optional[LogTraceDefaultLogLevelEnum] = None
         self.non_verbose: Optional[Boolean] = None
@@ -87,13 +87,20 @@ class DltLogChannel(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize applications (list to container "APPLICATIONS")
-        if self.applications:
-            wrapper = ET.Element("APPLICATIONS")
-            for item in self.applications:
+        # Serialize application_refs (list to container "APPLICATION-REFS")
+        if self.application_refs:
+            wrapper = ET.Element("APPLICATION-REFS")
+            for item in self.application_refs:
                 serialized = ARObject._serialize_item(item, "DltContext")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("APPLICATION-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -111,13 +118,20 @@ class DltLogChannel(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize dlt_messages (list to container "DLT-MESSAGES")
-        if self.dlt_messages:
-            wrapper = ET.Element("DLT-MESSAGES")
-            for item in self.dlt_messages:
+        # Serialize dlt_message_refs (list to container "DLT-MESSAGE-REFS")
+        if self.dlt_message_refs:
+            wrapper = ET.Element("DLT-MESSAGE-REFS")
+            for item in self.dlt_message_refs:
                 serialized = ARObject._serialize_item(item, "DltMessage")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("DLT-MESSAGE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -220,15 +234,21 @@ class DltLogChannel(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DltLogChannel, cls).deserialize(element)
 
-        # Parse applications (list from container "APPLICATIONS")
-        obj.applications = []
-        container = ARObject._find_child_element(element, "APPLICATIONS")
+        # Parse application_refs (list from container "APPLICATION-REFS")
+        obj.application_refs = []
+        container = ARObject._find_child_element(element, "APPLICATION-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.applications.append(child_value)
+                    obj.application_refs.append(child_value)
 
         # Parse default_trace
         child = ARObject._find_child_element(element, "DEFAULT-TRACE")
@@ -236,15 +256,21 @@ class DltLogChannel(Identifiable):
             default_trace_value = DltDefaultTraceStateEnum.deserialize(child)
             obj.default_trace = default_trace_value
 
-        # Parse dlt_messages (list from container "DLT-MESSAGES")
-        obj.dlt_messages = []
-        container = ARObject._find_child_element(element, "DLT-MESSAGES")
+        # Parse dlt_message_refs (list from container "DLT-MESSAGE-REFS")
+        obj.dlt_message_refs = []
+        container = ARObject._find_child_element(element, "DLT-MESSAGE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.dlt_messages.append(child_value)
+                    obj.dlt_message_refs.append(child_value)
 
         # Parse log_channel_id
         child = ARObject._find_child_element(element, "LOG-CHANNEL-ID")

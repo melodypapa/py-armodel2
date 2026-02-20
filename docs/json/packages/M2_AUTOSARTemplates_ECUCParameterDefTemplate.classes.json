@@ -74,8 +74,8 @@
         "refinedModule": {
           "type": "EcucModuleDef",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Optional reference from the Vendor Specific Module"
         },
         "supporteds": {
@@ -131,8 +131,8 @@
         "modules": {
           "type": "EcucModuleDef",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "References to the module definitions of individual"
         }
       }
@@ -192,8 +192,8 @@
         "destinationUris": {
           "type": "EcucDestinationUriDef",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Several destinationUris can be defined for an Ecuc such destinationUris an Ecuc applicable for several EcucUriReference"
         },
         "multiplicities": {
@@ -396,8 +396,8 @@
         "relatedTrace": {
           "type": "Traceable",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This contains a sloppy reference to the Autosar"
         },
         "scope": {
@@ -1402,8 +1402,8 @@
         "destination": {
           "type": "EcucContainerDef",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Exactly one reference to a parameter container is allowed"
         }
       }
@@ -1453,8 +1453,8 @@
         "destinations": {
           "type": "EcucContainerDef",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "All the possible parameter containers for the reference"
         }
       }
@@ -1601,8 +1601,8 @@
         "destinationUri": {
           "type": "EcucDestinationUriDef",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Any EcucContainerDef with a destinationUri that is the destinationUri that is referenced here valid target."
         }
       }
@@ -1824,8 +1824,8 @@
         "ecucQuery": {
           "type": "EcucQuery",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This indicates that the referenced query shall return a"
         }
       }
@@ -1899,8 +1899,8 @@
         "configElement": {
           "type": "EcucDefinitionElement",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The EcucQueryExpression points to an EcucDefinition that is used to find an element in the Ecuc order to find the right element in the Ecuc search is necessary. If the search is of the same module that contains the local reference shall be used. Due to the of the EcucQueryExpression several EcucDefintionElements can be used in one"
         }
       }
@@ -1986,8 +1986,8 @@
         "ecucQuery": {
           "type": "EcucQuery",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This indicates that the referenced query shall return a"
         }
       }

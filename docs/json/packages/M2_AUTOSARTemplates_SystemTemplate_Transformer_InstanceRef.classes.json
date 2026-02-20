@@ -33,15 +33,15 @@
         "baseInterface": {
           "type": "any (SenderReceiver)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Stereotypes: atpDerived"
         },
         "contextDatas": {
           "type": "any (ApplicationComposite)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Tags: xml.sequenceOffset=20"
         },
         "rootDataPrototypeInSr": {
@@ -93,15 +93,15 @@
         "base": {
           "type": "ClientServerInterface",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Stereotypes: atpDerived"
         },
         "contextDatas": {
           "type": "any (ApplicationComposite)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Tags: xml.sequenceOffset=20"
         },
         "rootDataPrototypeInCs": {
@@ -151,8 +151,8 @@
         "contexts": {
           "type": "any (AbstractImplementation)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This is a context in case there are subelements with explicit types. The reference has to be ordered to reflect the nested structure. xml.sequenceOffset=20"
         },
         "rootData": {
@@ -165,8 +165,8 @@
         "target": {
           "type": "AbstractImplementationDataType",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This is a target ImplementationDataTypeElement in case that the rootDataPrototype is composite and the target is xml.sequenceOffset=30"
         }
       }
@@ -206,15 +206,15 @@
         "abstractBase": {
           "type": "PortInterface",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Stereotypes: atpAbstract"
         },
         "contextDatas": {
           "type": "any (ApplicationComposite)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Stereotypes: atpAbstract Tags: xml.sequenceOffset=20"
         },
         "rootData": {

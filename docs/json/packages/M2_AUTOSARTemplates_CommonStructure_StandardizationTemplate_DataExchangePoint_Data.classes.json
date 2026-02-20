@@ -232,8 +232,8 @@
         "aggregation": {
           "type": "AggregationTailoring",
           "multiplicity": "1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The aggregation that has to be accepted by the this AggregationCondition"
         }
       }
@@ -505,8 +505,8 @@
         "attribute": {
           "type": "any (PrimitiveAttribute)",
           "multiplicity": "1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The primitive attribute that has to be accepted by the of this PrimitiveAttributeCondition"
         }
       }
@@ -833,8 +833,8 @@
         "constraint": {
           "type": "TraceableText",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to custom specification of constraint."
         }
       }
@@ -876,8 +876,8 @@
         "sdgClass": {
           "type": "SdgClass",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Specification of the structure of the Special Data Group."
         }
       }

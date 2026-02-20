@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
     DiagnosticMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
 class DiagnosticAuthTransmitCertificateMapping(DiagnosticMapping):
@@ -27,13 +28,13 @@ class DiagnosticAuthTransmitCertificateMapping(DiagnosticMapping):
         """
         return False
 
-    crypto_services: list[Any]
-    service_instance: Optional[Any]
+    crypto_service_refs: list[Any]
+    service_instance_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticAuthTransmitCertificateMapping."""
         super().__init__()
-        self.crypto_services: list[Any] = []
-        self.service_instance: Optional[Any] = None
+        self.crypto_service_refs: list[Any] = []
+        self.service_instance_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticAuthTransmitCertificateMapping to XML element.
@@ -55,22 +56,29 @@ class DiagnosticAuthTransmitCertificateMapping(DiagnosticMapping):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize crypto_services (list to container "CRYPTO-SERVICES")
-        if self.crypto_services:
-            wrapper = ET.Element("CRYPTO-SERVICES")
-            for item in self.crypto_services:
+        # Serialize crypto_service_refs (list to container "CRYPTO-SERVICE-REFS")
+        if self.crypto_service_refs:
+            wrapper = ET.Element("CRYPTO-SERVICE-REFS")
+            for item in self.crypto_service_refs:
                 serialized = ARObject._serialize_item(item, "Any")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("CRYPTO-SERVICE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize service_instance
-        if self.service_instance is not None:
-            serialized = ARObject._serialize_item(self.service_instance, "Any")
+        # Serialize service_instance_ref
+        if self.service_instance_ref is not None:
+            serialized = ARObject._serialize_item(self.service_instance_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SERVICE-INSTANCE")
+                wrapped = ET.Element("SERVICE-INSTANCE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -94,21 +102,27 @@ class DiagnosticAuthTransmitCertificateMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticAuthTransmitCertificateMapping, cls).deserialize(element)
 
-        # Parse crypto_services (list from container "CRYPTO-SERVICES")
-        obj.crypto_services = []
-        container = ARObject._find_child_element(element, "CRYPTO-SERVICES")
+        # Parse crypto_service_refs (list from container "CRYPTO-SERVICE-REFS")
+        obj.crypto_service_refs = []
+        container = ARObject._find_child_element(element, "CRYPTO-SERVICE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.crypto_services.append(child_value)
+                    obj.crypto_service_refs.append(child_value)
 
-        # Parse service_instance
-        child = ARObject._find_child_element(element, "SERVICE-INSTANCE")
+        # Parse service_instance_ref
+        child = ARObject._find_child_element(element, "SERVICE-INSTANCE-REF")
         if child is not None:
-            service_instance_value = child.text
-            obj.service_instance = service_instance_value
+            service_instance_ref_value = ARRef.deserialize(child)
+            obj.service_instance_ref = service_instance_ref_value
 
         return obj
 

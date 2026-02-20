@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
     CommunicationConnector,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -35,7 +36,7 @@ class EthernetCommunicationConnector(CommunicationConnector):
         """
         return False
 
-    eth_ip_props: Optional[EthIpProps]
+    eth_ip_props_ref: Optional[ARRef]
     maximum: Optional[PositiveInteger]
     neighbor_cache: Optional[PositiveInteger]
     path_mtu: Optional[Boolean]
@@ -43,7 +44,7 @@ class EthernetCommunicationConnector(CommunicationConnector):
     def __init__(self) -> None:
         """Initialize EthernetCommunicationConnector."""
         super().__init__()
-        self.eth_ip_props: Optional[EthIpProps] = None
+        self.eth_ip_props_ref: Optional[ARRef] = None
         self.maximum: Optional[PositiveInteger] = None
         self.neighbor_cache: Optional[PositiveInteger] = None
         self.path_mtu: Optional[Boolean] = None
@@ -69,12 +70,12 @@ class EthernetCommunicationConnector(CommunicationConnector):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize eth_ip_props
-        if self.eth_ip_props is not None:
-            serialized = ARObject._serialize_item(self.eth_ip_props, "EthIpProps")
+        # Serialize eth_ip_props_ref
+        if self.eth_ip_props_ref is not None:
+            serialized = ARObject._serialize_item(self.eth_ip_props_ref, "EthIpProps")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ETH-IP-PROPS")
+                wrapped = ET.Element("ETH-IP-PROPS-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -154,11 +155,11 @@ class EthernetCommunicationConnector(CommunicationConnector):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EthernetCommunicationConnector, cls).deserialize(element)
 
-        # Parse eth_ip_props
-        child = ARObject._find_child_element(element, "ETH-IP-PROPS")
+        # Parse eth_ip_props_ref
+        child = ARObject._find_child_element(element, "ETH-IP-PROPS-REF")
         if child is not None:
-            eth_ip_props_value = ARObject._deserialize_by_tag(child, "EthIpProps")
-            obj.eth_ip_props = eth_ip_props_value
+            eth_ip_props_ref_value = ARRef.deserialize(child)
+            obj.eth_ip_props_ref = eth_ip_props_ref_value
 
         # Parse maximum
         child = ARObject._find_child_element(element, "MAXIMUM")

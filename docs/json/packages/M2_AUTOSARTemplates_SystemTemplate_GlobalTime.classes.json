@@ -80,8 +80,8 @@
         "globalTimeSubs": {
           "type": "GlobalTimeDomain",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "By this means it is possible to create a hierarchy of sub where one global time domain can declare one other global time domains as its subDomains. atpVariation"
         },
         "network": {
@@ -94,8 +94,8 @@
         "offsetTime": {
           "type": "GlobalTimeDomain",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to a synchronized time domain this offset time is based on. The reference source is the offset The reference target is the synchronized 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate R23-11"
         },
         "pduTriggering": {
@@ -233,8 +233,8 @@
         "communicationConnector": {
           "type": "CommunicationConnector",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The GlobalTimeMaster is bound to the Communication"
         },
         "icvSecured": {
@@ -310,8 +310,8 @@
         "communicationConnector": {
           "type": "CommunicationConnector",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The GlobalTimeSlave is bound to the Communication"
         },
         "followUpTimeoutValue": {
@@ -383,22 +383,22 @@
         "host": {
           "type": "EcuInstance",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The GlobalTimeGateway is hosted by the referenced Ecu"
         },
         "master": {
           "type": "GlobalTimeMaster",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the master of the global time gateway."
         },
         "slave": {
           "type": "GlobalTimeSlave",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the slave of the GlobalTimeGateway."
         }
       }

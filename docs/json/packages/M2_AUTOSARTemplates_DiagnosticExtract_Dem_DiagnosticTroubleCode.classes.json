@@ -45,8 +45,8 @@
         "dtcPropsProps": {
           "type": "DiagnosticTroubleCode",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Defined properties associated with the DemDTC."
         },
         "eventReadiness": {
@@ -137,8 +137,8 @@
         "dtcPropsProps": {
           "type": "DiagnosticTroubleCode",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Defined properties associated with the DemDTC. 719 Document ID 673: AUTOSAR_CP_TPS_DiagnosticExtractTemplate Template R23-11"
         },
         "eventReadiness": {
@@ -271,8 +271,8 @@
         "dtcs": {
           "type": "DiagnosticTroubleCode",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the collection of DiagnosticTroubleCodes this DiagnosticTroubleCodeGroup. atpVariation"
         },
         "groupNumber": {
@@ -320,29 +320,29 @@
         "aging": {
           "type": "DiagnosticAging",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to an aging algorithm in case that an aging/ the event is allowed."
         },
         "diagnosticMemory": {
           "type": "any (DiagnosticMemory)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the applicable DiagnosticMemory Destination. 719 Document ID 673: AUTOSAR_CP_TPS_DiagnosticExtractTemplate Template R23-11"
         },
         "extendedDatas": {
           "type": "DiagnosticExtendedDataRecord",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Defines the links to an extended data class sampler. Stereotypes: atpSplitable; atpVariation"
         },
         "freezeFrames": {
           "type": "DiagnosticFreezeFrame",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Define the links to a freeze frame class sampler. atpVariation"
         },
         "immediateNv": {
@@ -355,8 +355,8 @@
         "legislated": {
           "type": "DiagnosticDataIdentifier",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the layout of legislated freeze frames used for emission related diagnostics over the protocol such as OBDonUDS or WWH-OBD. atpVariation"
         },
         "maxNumber": {
@@ -383,8 +383,8 @@
         "snapshot": {
           "type": "DiagnosticDataIdentifier",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the freeze frame layout as a set of DIDs. Stereotypes: atpSplitable; atpVariation"
         }
       }
@@ -425,8 +425,8 @@
         "dataIdentifiers": {
           "type": "DiagnosticDataIdentifier",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to an ordered list of Data Identifiers."
         }
       }
@@ -468,8 +468,8 @@
         "dtcPropsProps": {
           "type": "DiagnosticTroubleCode",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Defined properties associated with the J1939 DTC."
         },
         "fmi": {
@@ -489,15 +489,15 @@
         "node": {
           "type": "DiagnosticJ1939Node",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the related DiagnosticJ1939Node."
         },
         "spn": {
           "type": "DiagnosticJ1939Spn",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the releated SPN."
         }
       }

@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -36,13 +37,13 @@ class DltContext(ARElement):
 
     context: Optional[String]
     context_id: Optional[String]
-    dlt_messages: list[DltMessage]
+    dlt_message_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize DltContext."""
         super().__init__()
         self.context: Optional[String] = None
         self.context_id: Optional[String] = None
-        self.dlt_messages: list[DltMessage] = []
+        self.dlt_message_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize DltContext to XML element.
@@ -92,13 +93,20 @@ class DltContext(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize dlt_messages (list to container "DLT-MESSAGES")
-        if self.dlt_messages:
-            wrapper = ET.Element("DLT-MESSAGES")
-            for item in self.dlt_messages:
+        # Serialize dlt_message_refs (list to container "DLT-MESSAGE-REFS")
+        if self.dlt_message_refs:
+            wrapper = ET.Element("DLT-MESSAGE-REFS")
+            for item in self.dlt_message_refs:
                 serialized = ARObject._serialize_item(item, "DltMessage")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("DLT-MESSAGE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -129,15 +137,21 @@ class DltContext(ARElement):
             context_id_value = child.text
             obj.context_id = context_id_value
 
-        # Parse dlt_messages (list from container "DLT-MESSAGES")
-        obj.dlt_messages = []
-        container = ARObject._find_child_element(element, "DLT-MESSAGES")
+        # Parse dlt_message_refs (list from container "DLT-MESSAGE-REFS")
+        obj.dlt_message_refs = []
+        container = ARObject._find_child_element(element, "DLT-MESSAGE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.dlt_messages.append(child_value)
+                    obj.dlt_message_refs.append(child_value)
 
         return obj
 

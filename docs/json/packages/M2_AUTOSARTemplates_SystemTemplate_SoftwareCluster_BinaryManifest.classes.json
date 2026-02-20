@@ -36,8 +36,8 @@
         "cpSoftwareCluster": {
           "type": "CpSoftwareCluster",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the CpSoftwareCluster to which enclosing CpSoftwareClusterBinaryManifest is an integration phase while the referenced Cp a design element. Therefore, sense to use a reference rather than an the relation of the two meta-classes."
         },
         "metaDataFields": {
@@ -166,8 +166,8 @@
         "resource": {
           "type": "any (BinaryManifest)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "this reference identifies the definition of the Binary"
         },
         "resourceGuard": {

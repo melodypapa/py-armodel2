@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -38,7 +39,7 @@ class SecurityEventContextProps(Identifiable):
     context_data: Optional[Any]
     default: Optional[Any]
     persistent: Optional[Boolean]
-    security_event: Optional[SecurityEventDefinition]
+    security_event_ref: Optional[ARRef]
     sensor_instance: Optional[PositiveInteger]
     severity: Optional[PositiveInteger]
     def __init__(self) -> None:
@@ -47,7 +48,7 @@ class SecurityEventContextProps(Identifiable):
         self.context_data: Optional[Any] = None
         self.default: Optional[Any] = None
         self.persistent: Optional[Boolean] = None
-        self.security_event: Optional[SecurityEventDefinition] = None
+        self.security_event_ref: Optional[ARRef] = None
         self.sensor_instance: Optional[PositiveInteger] = None
         self.severity: Optional[PositiveInteger] = None
 
@@ -113,12 +114,12 @@ class SecurityEventContextProps(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize security_event
-        if self.security_event is not None:
-            serialized = ARObject._serialize_item(self.security_event, "SecurityEventDefinition")
+        # Serialize security_event_ref
+        if self.security_event_ref is not None:
+            serialized = ARObject._serialize_item(self.security_event_ref, "SecurityEventDefinition")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SECURITY-EVENT")
+                wrapped = ET.Element("SECURITY-EVENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -188,11 +189,11 @@ class SecurityEventContextProps(Identifiable):
             persistent_value = child.text
             obj.persistent = persistent_value
 
-        # Parse security_event
-        child = ARObject._find_child_element(element, "SECURITY-EVENT")
+        # Parse security_event_ref
+        child = ARObject._find_child_element(element, "SECURITY-EVENT-REF")
         if child is not None:
-            security_event_value = ARObject._deserialize_by_tag(child, "SecurityEventDefinition")
-            obj.security_event = security_event_value
+            security_event_ref_value = ARRef.deserialize(child)
+            obj.security_event_ref = security_event_ref_value
 
         # Parse sensor_instance
         child = ARObject._find_child_element(element, "SENSOR-INSTANCE")

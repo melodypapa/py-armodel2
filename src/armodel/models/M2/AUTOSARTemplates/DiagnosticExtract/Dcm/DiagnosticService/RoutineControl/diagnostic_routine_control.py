@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_routine import (
     DiagnosticRoutine,
 )
@@ -30,13 +31,13 @@ class DiagnosticRoutineControl(DiagnosticServiceInstance):
         """
         return False
 
-    routine: Optional[DiagnosticRoutine]
-    routine_control: Optional[DiagnosticRoutine]
+    routine_ref: Optional[ARRef]
+    routine_control_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DiagnosticRoutineControl."""
         super().__init__()
-        self.routine: Optional[DiagnosticRoutine] = None
-        self.routine_control: Optional[DiagnosticRoutine] = None
+        self.routine_ref: Optional[ARRef] = None
+        self.routine_control_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticRoutineControl to XML element.
@@ -58,12 +59,12 @@ class DiagnosticRoutineControl(DiagnosticServiceInstance):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize routine
-        if self.routine is not None:
-            serialized = ARObject._serialize_item(self.routine, "DiagnosticRoutine")
+        # Serialize routine_ref
+        if self.routine_ref is not None:
+            serialized = ARObject._serialize_item(self.routine_ref, "DiagnosticRoutine")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ROUTINE")
+                wrapped = ET.Element("ROUTINE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -72,12 +73,12 @@ class DiagnosticRoutineControl(DiagnosticServiceInstance):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize routine_control
-        if self.routine_control is not None:
-            serialized = ARObject._serialize_item(self.routine_control, "DiagnosticRoutine")
+        # Serialize routine_control_ref
+        if self.routine_control_ref is not None:
+            serialized = ARObject._serialize_item(self.routine_control_ref, "DiagnosticRoutine")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ROUTINE-CONTROL")
+                wrapped = ET.Element("ROUTINE-CONTROL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -101,17 +102,17 @@ class DiagnosticRoutineControl(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticRoutineControl, cls).deserialize(element)
 
-        # Parse routine
-        child = ARObject._find_child_element(element, "ROUTINE")
+        # Parse routine_ref
+        child = ARObject._find_child_element(element, "ROUTINE-REF")
         if child is not None:
-            routine_value = ARObject._deserialize_by_tag(child, "DiagnosticRoutine")
-            obj.routine = routine_value
+            routine_ref_value = ARRef.deserialize(child)
+            obj.routine_ref = routine_ref_value
 
-        # Parse routine_control
-        child = ARObject._find_child_element(element, "ROUTINE-CONTROL")
+        # Parse routine_control_ref
+        child = ARObject._find_child_element(element, "ROUTINE-CONTROL-REF")
         if child is not None:
-            routine_control_value = ARObject._deserialize_by_tag(child, "DiagnosticRoutine")
-            obj.routine_control = routine_control_value
+            routine_control_ref_value = ARRef.deserialize(child)
+            obj.routine_control_ref = routine_control_ref_value
 
         return obj
 

@@ -189,15 +189,15 @@
         "access": {
           "type": "DiagnosticAccessPermission",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the collection of DiagnosticAccess Permissions that allow for the execution of the referencing 719 Document ID 673: AUTOSAR_CP_TPS_DiagnosticExtractTemplate Template R23-11"
         },
         "serviceClass": {
           "type": "DiagnosticServiceClass",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the corresponding \"class\", i.e. this properties that are shared among all applicable sub-classes of DiagnosticService that affected by this pattern implement the applicable \"class\"-role that substantiate reference."
         }
       }

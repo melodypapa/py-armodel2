@@ -34,8 +34,8 @@
         "base": {
           "type": "BswModuleDescription",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Stereotypes: atpDerived"
         },
         "contextModeGroup": {
@@ -48,8 +48,8 @@
         "targetMode": {
           "type": "ModeDeclaration",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Tags: xml.sequenceOffset=30"
         }
       }

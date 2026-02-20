@@ -38,8 +38,8 @@
         "clearDiagnostic": {
           "type": "any (DiagnosticClear)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference substantiates that abstract reference in the role serviceClass for this specific concrete class. among all DiagnosticClearDiagnostic the given context."
         }
       }

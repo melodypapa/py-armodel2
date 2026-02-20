@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.mc_data_instance import (
     McDataInstance,
 )
@@ -40,7 +41,7 @@ class McSupportData(ARObject):
     emulations: list[McSwEmulationMethodSupport]
     mc_parameters: list[McDataInstance]
     mc_variables: list[McDataInstance]
-    measurables: list[SwSystemconstantValueSet]
+    measurable_refs: list[ARRef]
     rpt_support_data: Optional[RptSupportData]
     def __init__(self) -> None:
         """Initialize McSupportData."""
@@ -48,7 +49,7 @@ class McSupportData(ARObject):
         self.emulations: list[McSwEmulationMethodSupport] = []
         self.mc_parameters: list[McDataInstance] = []
         self.mc_variables: list[McDataInstance] = []
-        self.measurables: list[SwSystemconstantValueSet] = []
+        self.measurable_refs: list[ARRef] = []
         self.rpt_support_data: Optional[RptSupportData] = None
 
     def serialize(self) -> ET.Element:
@@ -91,13 +92,20 @@ class McSupportData(ARObject):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize measurables (list to container "MEASURABLES")
-        if self.measurables:
-            wrapper = ET.Element("MEASURABLES")
-            for item in self.measurables:
+        # Serialize measurable_refs (list to container "MEASURABLE-REFS")
+        if self.measurable_refs:
+            wrapper = ET.Element("MEASURABLE-REFS")
+            for item in self.measurable_refs:
                 serialized = ARObject._serialize_item(item, "SwSystemconstantValueSet")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("MEASURABLE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -161,15 +169,21 @@ class McSupportData(ARObject):
                 if child_value is not None:
                     obj.mc_variables.append(child_value)
 
-        # Parse measurables (list from container "MEASURABLES")
-        obj.measurables = []
-        container = ARObject._find_child_element(element, "MEASURABLES")
+        # Parse measurable_refs (list from container "MEASURABLE-REFS")
+        obj.measurable_refs = []
+        container = ARObject._find_child_element(element, "MEASURABLE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.measurables.append(child_value)
+                    obj.measurable_refs.append(child_value)
 
         # Parse rpt_support_data
         child = ARObject._find_child_element(element, "RPT-SUPPORT-DATA")

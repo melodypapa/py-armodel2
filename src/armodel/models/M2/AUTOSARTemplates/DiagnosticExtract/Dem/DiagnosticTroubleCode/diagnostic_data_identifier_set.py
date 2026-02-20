@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_data_identifier import (
     DiagnosticDataIdentifier,
 )
@@ -30,11 +31,11 @@ class DiagnosticDataIdentifierSet(DiagnosticCommonElement):
         """
         return False
 
-    data_identifiers: list[DiagnosticDataIdentifier]
+    data_identifier_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize DiagnosticDataIdentifierSet."""
         super().__init__()
-        self.data_identifiers: list[DiagnosticDataIdentifier] = []
+        self.data_identifier_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticDataIdentifierSet to XML element.
@@ -56,13 +57,20 @@ class DiagnosticDataIdentifierSet(DiagnosticCommonElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize data_identifiers (list to container "DATA-IDENTIFIERS")
-        if self.data_identifiers:
-            wrapper = ET.Element("DATA-IDENTIFIERS")
-            for item in self.data_identifiers:
+        # Serialize data_identifier_refs (list to container "DATA-IDENTIFIER-REFS")
+        if self.data_identifier_refs:
+            wrapper = ET.Element("DATA-IDENTIFIER-REFS")
+            for item in self.data_identifier_refs:
                 serialized = ARObject._serialize_item(item, "DiagnosticDataIdentifier")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("DATA-IDENTIFIER-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -81,15 +89,21 @@ class DiagnosticDataIdentifierSet(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticDataIdentifierSet, cls).deserialize(element)
 
-        # Parse data_identifiers (list from container "DATA-IDENTIFIERS")
-        obj.data_identifiers = []
-        container = ARObject._find_child_element(element, "DATA-IDENTIFIERS")
+        # Parse data_identifier_refs (list from container "DATA-IDENTIFIER-REFS")
+        obj.data_identifier_refs = []
+        container = ARObject._find_child_element(element, "DATA-IDENTIFIER-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.data_identifiers.append(child_value)
+                    obj.data_identifier_refs.append(child_value)
 
         return obj
 

@@ -37,8 +37,8 @@
         "tpConnections": {
           "type": "IEEE1722TpConnection",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Collection of IEEE1722Tp connections. atpVariation"
         }
       }

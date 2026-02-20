@@ -61,8 +61,8 @@
         "interface": {
           "type": "PortInterface",
           "multiplicity": "1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This is the interface for which the blueprint is defined. It a blueprint itself or a standardized PortInterface"
         },
         "providedComs": {

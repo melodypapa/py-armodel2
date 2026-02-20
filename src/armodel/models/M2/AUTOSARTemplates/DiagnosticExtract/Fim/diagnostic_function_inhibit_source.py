@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
 class DiagnosticFunctionInhibitSource(Identifiable):
@@ -27,13 +28,13 @@ class DiagnosticFunctionInhibitSource(Identifiable):
         """
         return False
 
-    event: Optional[Any]
-    event_group: Optional[Any]
+    event_ref: Optional[Any]
+    event_group_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticFunctionInhibitSource."""
         super().__init__()
-        self.event: Optional[Any] = None
-        self.event_group: Optional[Any] = None
+        self.event_ref: Optional[Any] = None
+        self.event_group_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticFunctionInhibitSource to XML element.
@@ -55,12 +56,12 @@ class DiagnosticFunctionInhibitSource(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize event
-        if self.event is not None:
-            serialized = ARObject._serialize_item(self.event, "Any")
+        # Serialize event_ref
+        if self.event_ref is not None:
+            serialized = ARObject._serialize_item(self.event_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("EVENT")
+                wrapped = ET.Element("EVENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -69,12 +70,12 @@ class DiagnosticFunctionInhibitSource(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize event_group
-        if self.event_group is not None:
-            serialized = ARObject._serialize_item(self.event_group, "Any")
+        # Serialize event_group_ref
+        if self.event_group_ref is not None:
+            serialized = ARObject._serialize_item(self.event_group_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("EVENT-GROUP")
+                wrapped = ET.Element("EVENT-GROUP-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -98,17 +99,17 @@ class DiagnosticFunctionInhibitSource(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticFunctionInhibitSource, cls).deserialize(element)
 
-        # Parse event
-        child = ARObject._find_child_element(element, "EVENT")
+        # Parse event_ref
+        child = ARObject._find_child_element(element, "EVENT-REF")
         if child is not None:
-            event_value = child.text
-            obj.event = event_value
+            event_ref_value = ARRef.deserialize(child)
+            obj.event_ref = event_ref_value
 
-        # Parse event_group
-        child = ARObject._find_child_element(element, "EVENT-GROUP")
+        # Parse event_group_ref
+        child = ARObject._find_child_element(element, "EVENT-GROUP-REF")
         if child is not None:
-            event_group_value = child.text
-            obj.event_group = event_group_value
+            event_group_ref_value = ARRef.deserialize(child)
+            obj.event_group_ref = event_group_ref_value
 
         return obj
 

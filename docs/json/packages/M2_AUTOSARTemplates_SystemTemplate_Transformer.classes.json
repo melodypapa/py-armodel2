@@ -53,8 +53,8 @@
         "transformers": {
           "type": "any (Transformation)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This attribute represents the definition of a chain of"
         }
       }
@@ -287,8 +287,8 @@
         "e2eProfile": {
           "type": "E2EProfileCompatibilityProps",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to additional settings for the E2E state machine."
         },
         "maxDelta": {
@@ -470,8 +470,8 @@
         "e2eProfile": {
           "type": "E2EProfileCompatibilityProps",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to additional settings for the E2E state machine."
         },
         "maxDelta": {
@@ -686,8 +686,8 @@
         "transformer": {
           "type": "any (Transformation)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the TransformationTechnology description"
         }
       }
@@ -1026,8 +1026,8 @@
         "transformationProps": {
           "type": "TransformationProps",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Collection of AutosarDataPrototype related configuration for a transformer."
         }
       }
@@ -1317,15 +1317,15 @@
         "tlv": {
           "type": "AbstractImplementationDataType",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference associates the definition of a TLV data id with a given AbstractImplementationDataTypeElement."
         },
         "tlvRecord": {
           "type": "any (ApplicationRecord)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference associates the definition of a TLV data id with a given ApplicationRecordElement."
         }
       }

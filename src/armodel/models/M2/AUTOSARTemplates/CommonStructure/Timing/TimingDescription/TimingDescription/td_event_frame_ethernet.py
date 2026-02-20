@@ -37,14 +37,14 @@ class TDEventFrameEthernet(TDEventCom):
         """
         return False
 
-    static_socket: Optional[StaticSocketConnection]
+    static_socket_ref: Optional[ARRef]
     td_event_type: Optional[TDEventFrameEthernet]
     td_header_id_filters: list[TDHeaderIdRange]
     td_pdu_triggering_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize TDEventFrameEthernet."""
         super().__init__()
-        self.static_socket: Optional[StaticSocketConnection] = None
+        self.static_socket_ref: Optional[ARRef] = None
         self.td_event_type: Optional[TDEventFrameEthernet] = None
         self.td_header_id_filters: list[TDHeaderIdRange] = []
         self.td_pdu_triggering_refs: list[ARRef] = []
@@ -69,12 +69,12 @@ class TDEventFrameEthernet(TDEventCom):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize static_socket
-        if self.static_socket is not None:
-            serialized = ARObject._serialize_item(self.static_socket, "StaticSocketConnection")
+        # Serialize static_socket_ref
+        if self.static_socket_ref is not None:
+            serialized = ARObject._serialize_item(self.static_socket_ref, "StaticSocketConnection")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("STATIC-SOCKET")
+                wrapped = ET.Element("STATIC-SOCKET-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -139,11 +139,11 @@ class TDEventFrameEthernet(TDEventCom):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDEventFrameEthernet, cls).deserialize(element)
 
-        # Parse static_socket
-        child = ARObject._find_child_element(element, "STATIC-SOCKET")
+        # Parse static_socket_ref
+        child = ARObject._find_child_element(element, "STATIC-SOCKET-REF")
         if child is not None:
-            static_socket_value = ARObject._deserialize_by_tag(child, "StaticSocketConnection")
-            obj.static_socket = static_socket_value
+            static_socket_ref_value = ARRef.deserialize(child)
+            obj.static_socket_ref = static_socket_ref_value
 
         # Parse td_event_type
         child = ARObject._find_child_element(element, "TD-EVENT-TYPE")

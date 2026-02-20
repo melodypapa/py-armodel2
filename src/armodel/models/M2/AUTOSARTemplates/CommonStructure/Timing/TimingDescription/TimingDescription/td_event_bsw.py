@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
     TimingDescriptionEvent,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswOverview.bsw_module_description import (
     BswModuleDescription,
 )
@@ -31,11 +32,11 @@ class TDEventBsw(TimingDescriptionEvent, ABC):
         """
         return True
 
-    bsw_module_description: Optional[BswModuleDescription]
+    bsw_module_description_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize TDEventBsw."""
         super().__init__()
-        self.bsw_module_description: Optional[BswModuleDescription] = None
+        self.bsw_module_description_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize TDEventBsw to XML element.
@@ -57,12 +58,12 @@ class TDEventBsw(TimingDescriptionEvent, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize bsw_module_description
-        if self.bsw_module_description is not None:
-            serialized = ARObject._serialize_item(self.bsw_module_description, "BswModuleDescription")
+        # Serialize bsw_module_description_ref
+        if self.bsw_module_description_ref is not None:
+            serialized = ARObject._serialize_item(self.bsw_module_description_ref, "BswModuleDescription")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("BSW-MODULE-DESCRIPTION")
+                wrapped = ET.Element("BSW-MODULE-DESCRIPTION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -86,11 +87,11 @@ class TDEventBsw(TimingDescriptionEvent, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDEventBsw, cls).deserialize(element)
 
-        # Parse bsw_module_description
-        child = ARObject._find_child_element(element, "BSW-MODULE-DESCRIPTION")
+        # Parse bsw_module_description_ref
+        child = ARObject._find_child_element(element, "BSW-MODULE-DESCRIPTION-REF")
         if child is not None:
-            bsw_module_description_value = ARObject._deserialize_by_tag(child, "BswModuleDescription")
-            obj.bsw_module_description = bsw_module_description_value
+            bsw_module_description_ref_value = ARRef.deserialize(child)
+            obj.bsw_module_description_ref = bsw_module_description_ref_value
 
         return obj
 

@@ -31,22 +31,22 @@
         "compuMethod": {
           "type": "CompuMethod",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This is the compuMethod which is expected for the axis. It in early stages if the particular input-value is not"
         },
         "dataConstr": {
           "type": "DataConstr",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Refers to constraints, e.g. for plausibility checks."
         },
         "inputVariable": {
           "type": "ApplicationPrimitiveDataType",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This is the datatype of the input value for the axis. This allows to define e.g. a type of curve, where the input finalized at the access point."
         },
         "swAxisGeneric": {
@@ -80,8 +80,8 @@
         "unit": {
           "type": "Unit",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the physical unit of the input value of the"
         }
       }
@@ -115,8 +115,8 @@
         "swAxisType": {
           "type": "SwAxisType",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Associated axis calculation strategy."
         },
         "swGenericAxisParams": {
@@ -205,8 +205,8 @@
         "swGenericAxisParam": {
           "type": "SwGenericAxisParam",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Parameter type defined on a corresponding axis type. References can only be made to axis parameters types defined within the referenced axis type. Numerical * attr This attribute represents the value of the generic axis"
         }
       }
@@ -243,8 +243,8 @@
         "dataConstr": {
           "type": "DataConstr",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference denoted data constraints applicable to the"
         }
       }
@@ -279,8 +279,8 @@
         "sharedAxisType": {
           "type": "ApplicationPrimitiveDataType",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This is the datatype of the calibration parameter providing shared axis."
         },
         "swAxisIndex": {

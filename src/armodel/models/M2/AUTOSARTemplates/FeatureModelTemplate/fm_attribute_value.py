@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Numerical,
 )
@@ -30,12 +31,12 @@ class FMAttributeValue(ARObject):
         """
         return False
 
-    definition: Optional[FMAttributeDef]
+    definition_ref: Optional[ARRef]
     value: Optional[Numerical]
     def __init__(self) -> None:
         """Initialize FMAttributeValue."""
         super().__init__()
-        self.definition: Optional[FMAttributeDef] = None
+        self.definition_ref: Optional[ARRef] = None
         self.value: Optional[Numerical] = None
 
     def serialize(self) -> ET.Element:
@@ -48,12 +49,12 @@ class FMAttributeValue(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize definition
-        if self.definition is not None:
-            serialized = ARObject._serialize_item(self.definition, "FMAttributeDef")
+        # Serialize definition_ref
+        if self.definition_ref is not None:
+            serialized = ARObject._serialize_item(self.definition_ref, "FMAttributeDef")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DEFINITION")
+                wrapped = ET.Element("DEFINITION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -92,11 +93,11 @@ class FMAttributeValue(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse definition
-        child = ARObject._find_child_element(element, "DEFINITION")
+        # Parse definition_ref
+        child = ARObject._find_child_element(element, "DEFINITION-REF")
         if child is not None:
-            definition_value = ARObject._deserialize_by_tag(child, "FMAttributeDef")
-            obj.definition = definition_value
+            definition_ref_value = ARRef.deserialize(child)
+            obj.definition_ref = definition_ref_value
 
         # Parse value
         child = ARObject._find_child_element(element, "VALUE")

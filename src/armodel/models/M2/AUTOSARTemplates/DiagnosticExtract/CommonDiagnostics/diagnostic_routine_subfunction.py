@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.diagnostic_access_permission import (
     DiagnosticAccessPermission,
 )
@@ -31,11 +32,11 @@ class DiagnosticRoutineSubfunction(Identifiable, ABC):
         """
         return True
 
-    access: Optional[DiagnosticAccessPermission]
+    access_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DiagnosticRoutineSubfunction."""
         super().__init__()
-        self.access: Optional[DiagnosticAccessPermission] = None
+        self.access_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticRoutineSubfunction to XML element.
@@ -57,12 +58,12 @@ class DiagnosticRoutineSubfunction(Identifiable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize access
-        if self.access is not None:
-            serialized = ARObject._serialize_item(self.access, "DiagnosticAccessPermission")
+        # Serialize access_ref
+        if self.access_ref is not None:
+            serialized = ARObject._serialize_item(self.access_ref, "DiagnosticAccessPermission")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ACCESS")
+                wrapped = ET.Element("ACCESS-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -86,11 +87,11 @@ class DiagnosticRoutineSubfunction(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticRoutineSubfunction, cls).deserialize(element)
 
-        # Parse access
-        child = ARObject._find_child_element(element, "ACCESS")
+        # Parse access_ref
+        child = ARObject._find_child_element(element, "ACCESS-REF")
         if child is not None:
-            access_value = ARObject._deserialize_by_tag(child, "DiagnosticAccessPermission")
-            obj.access = access_value
+            access_ref_value = ARRef.deserialize(child)
+            obj.access_ref = access_ref_value
 
         return obj
 

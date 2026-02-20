@@ -87,15 +87,15 @@
         "expectedEntries": {
           "type": "BswModuleEntry",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Indicates an entry which is required by this module. outgoingCallback / requiredEntry. atpVariation"
         },
         "implementeds": {
           "type": "BswModuleEntry",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Specifies an entry provided by this module which can be by other modules. This includes \"main\" functions, and callbacks. Replacement of expectedCallback. atpVariation"
         },
         "internalBehaviors": {

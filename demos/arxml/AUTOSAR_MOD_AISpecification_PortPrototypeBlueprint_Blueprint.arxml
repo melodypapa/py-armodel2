@@ -7660,6 +7660,11 @@ Typical Receiver: Transmission</L-1>
                     <L-2 L="EN">Torque at crankshaft reduced by ancillary losses.</L-2>
                   </DESC>
                   <INTRODUCTION>
+                    <FIGURE>
+                      <L-GRAPHIC L="EN">
+                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"/>
+                      </L-GRAPHIC>
+                    </FIGURE>
                     <P>
                       <L-1 L="EN">Indicated engine torque calculated based on injection timing and injected fuel, ignition angle and air mass, plus
 1) Internal engine torque losses such as friction, pumping, mechanically driven water pump, etc.
@@ -7684,11 +7689,6 @@ Typical Receiver: Transmission</L-1>
 Example: “Soot limitation” is marked with an “X” to indicate that it is considered in the signal.
 </L-1>
                     </P>
-                    <FIGURE>
-                      <L-GRAPHIC L="EN">
-                        <GRAPHIC FILENAME="Images\Detailed_signal_content_of_Torque_at_Clutch_Signals.pdf"/>
-                      </L-GRAPHIC>
-                    </FIGURE>
                   </INTRODUCTION>
                   <INTERFACE-REF BASE="PortInterfaces" DEST="SENDER-RECEIVER-INTERFACE">EngTqCrksftRedByAncllryLoss1</INTERFACE-REF>
                 </PORT-PROTOTYPE-BLUEPRINT>

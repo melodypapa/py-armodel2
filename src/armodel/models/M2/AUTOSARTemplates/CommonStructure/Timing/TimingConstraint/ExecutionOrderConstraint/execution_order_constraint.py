@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.
     TimingConstraint,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -33,7 +34,7 @@ class ExecutionOrderConstraint(TimingConstraint):
         """
         return False
 
-    base: Optional[CompositionSwComponentType]
+    base_ref: Optional[ARRef]
     execution_order: Optional[Any]
     ignore_order: Optional[Boolean]
     is_event: Optional[Boolean]
@@ -42,7 +43,7 @@ class ExecutionOrderConstraint(TimingConstraint):
     def __init__(self) -> None:
         """Initialize ExecutionOrderConstraint."""
         super().__init__()
-        self.base: Optional[CompositionSwComponentType] = None
+        self.base_ref: Optional[ARRef] = None
         self.execution_order: Optional[Any] = None
         self.ignore_order: Optional[Boolean] = None
         self.is_event: Optional[Boolean] = None
@@ -69,12 +70,12 @@ class ExecutionOrderConstraint(TimingConstraint):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize base
-        if self.base is not None:
-            serialized = ARObject._serialize_item(self.base, "CompositionSwComponentType")
+        # Serialize base_ref
+        if self.base_ref is not None:
+            serialized = ARObject._serialize_item(self.base_ref, "CompositionSwComponentType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("BASE")
+                wrapped = ET.Element("BASE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -164,11 +165,11 @@ class ExecutionOrderConstraint(TimingConstraint):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ExecutionOrderConstraint, cls).deserialize(element)
 
-        # Parse base
-        child = ARObject._find_child_element(element, "BASE")
+        # Parse base_ref
+        child = ARObject._find_child_element(element, "BASE-REF")
         if child is not None:
-            base_value = ARObject._deserialize_by_tag(child, "CompositionSwComponentType")
-            obj.base = base_value
+            base_ref_value = ARRef.deserialize(child)
+            obj.base_ref = base_ref_value
 
         # Parse execution_order
         child = ARObject._find_child_element(element, "EXECUTION-ORDER")

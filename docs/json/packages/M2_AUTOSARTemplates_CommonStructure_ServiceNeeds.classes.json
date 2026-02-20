@@ -118,8 +118,8 @@
         "usedPim": {
           "type": "PerInstanceMemory",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The (untyped) PerInstanceMemory used in this role (e.g. Permanent RAM Block for an NVRAM Block)."
         }
       }
@@ -480,8 +480,8 @@
         "checkpointses": {
           "type": "any (SupervisedEntity)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference indicates the checkpoints belonging to the Entity. atpVariation"
         },
         "enable": {
@@ -1134,8 +1134,8 @@
         "currentValue": {
           "type": "DiagnosticValueNeeds",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the DiagnosticValueNeeds indicating the the current value via signalBasedDiagnostics."
         },
         "freezeCurrent": {
@@ -1371,8 +1371,8 @@
         "deferringFids": {
           "type": "FunctionInhibitionNeeds",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference contains the link to a function identifier FiM which is used by the monitor before result."
         },
         "diagEventDebounce": {
@@ -1385,15 +1385,15 @@
         "inhibitingFid": {
           "type": "FunctionInhibitionNeeds",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the primary Function Inhibition Identifier inhibition of the diagnostic monitor. The FID inhibit the monitoring of a symptom or the detected faults."
         },
         "inhibitings": {
           "type": "FunctionInhibitionNeeds",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the secondary Function Inhibition used for inhibition of the diagnostic monitor. Any FID inhibitions leads to an inhibition of the a symptom or the reporting of detected"
         },
         "prestored": {
@@ -2003,8 +2003,8 @@
         "controlledFid": {
           "type": "FunctionInhibitionNeeds",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference represents the controlled FID"
         }
       }
@@ -2217,15 +2217,15 @@
         "applicationData": {
           "type": "ApplicationDataType",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "reference to an ApplicationDataType that describes the of the data reported by the software-component to"
         },
         "eventNeeds": {
           "type": "DiagnosticEventNeeds",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the corresponding diagnostic"
         },
         "unitAndScalingId": {
@@ -2713,15 +2713,15 @@
         "rateBasedMonitoredEvent": {
           "type": "DiagnosticEventNeeds",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The rate based monitored Diagnostic Event."
         },
         "usedFid": {
           "type": "FunctionInhibitionNeeds",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the primary Function Inhibition Identifier the rate based monitor. This is an optional"
         }
       }

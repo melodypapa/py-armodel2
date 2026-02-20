@@ -42,8 +42,8 @@
         "functionalRequests": {
           "type": "TpConnectionIdent",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to functional request messages. 719 Document ID 673: AUTOSAR_CP_TPS_DiagnosticExtractTemplate Template R23-11"
         },
         "periodicResponseUudts": {
@@ -56,22 +56,22 @@
         "physicalRequest": {
           "type": "TpConnectionIdent",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to a physical request message."
         },
         "response": {
           "type": "TpConnectionIdent",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "In the vast majority of cases a response is required. are also cases where providing the not possible and/or not allowed."
         },
         "responseOn": {
           "type": "TpConnectionIdent",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to a ROE message. atp.Status=obsolete"
         }
       }
@@ -140,15 +140,15 @@
         "doIpSource": {
           "type": "DoIpLogicAddress",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the address of the sender of the tpSdu."
         },
         "doIpTarget": {
           "type": "DoIpLogicAddress",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the address of the receiver of the tpSdu."
         },
         "tpSdu": {

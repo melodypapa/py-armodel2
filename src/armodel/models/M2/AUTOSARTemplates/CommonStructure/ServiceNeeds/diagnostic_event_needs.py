@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_
     DiagnosticCapabilityElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -35,19 +36,19 @@ class DiagnosticEventNeeds(DiagnosticCapabilityElement):
         """
         return False
 
-    deferring_fids: list[FunctionInhibitionNeeds]
+    deferring_fid_refs: list[ARRef]
     diag_event_debounce: Optional[Any]
-    inhibiting_fid: Optional[FunctionInhibitionNeeds]
-    inhibitings: list[FunctionInhibitionNeeds]
+    inhibiting_fid_ref: Optional[ARRef]
+    inhibiting_refs: list[ARRef]
     prestored: Optional[Boolean]
     uses_monitor: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize DiagnosticEventNeeds."""
         super().__init__()
-        self.deferring_fids: list[FunctionInhibitionNeeds] = []
+        self.deferring_fid_refs: list[ARRef] = []
         self.diag_event_debounce: Optional[Any] = None
-        self.inhibiting_fid: Optional[FunctionInhibitionNeeds] = None
-        self.inhibitings: list[FunctionInhibitionNeeds] = []
+        self.inhibiting_fid_ref: Optional[ARRef] = None
+        self.inhibiting_refs: list[ARRef] = []
         self.prestored: Optional[Boolean] = None
         self.uses_monitor: Optional[Boolean] = None
 
@@ -71,13 +72,20 @@ class DiagnosticEventNeeds(DiagnosticCapabilityElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize deferring_fids (list to container "DEFERRING-FIDS")
-        if self.deferring_fids:
-            wrapper = ET.Element("DEFERRING-FIDS")
-            for item in self.deferring_fids:
+        # Serialize deferring_fid_refs (list to container "DEFERRING-FID-REFS")
+        if self.deferring_fid_refs:
+            wrapper = ET.Element("DEFERRING-FID-REFS")
+            for item in self.deferring_fid_refs:
                 serialized = ARObject._serialize_item(item, "FunctionInhibitionNeeds")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("DEFERRING-FID-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -95,12 +103,12 @@ class DiagnosticEventNeeds(DiagnosticCapabilityElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize inhibiting_fid
-        if self.inhibiting_fid is not None:
-            serialized = ARObject._serialize_item(self.inhibiting_fid, "FunctionInhibitionNeeds")
+        # Serialize inhibiting_fid_ref
+        if self.inhibiting_fid_ref is not None:
+            serialized = ARObject._serialize_item(self.inhibiting_fid_ref, "FunctionInhibitionNeeds")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("INHIBITING-FID")
+                wrapped = ET.Element("INHIBITING-FID-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -109,13 +117,20 @@ class DiagnosticEventNeeds(DiagnosticCapabilityElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize inhibitings (list to container "INHIBITINGS")
-        if self.inhibitings:
-            wrapper = ET.Element("INHIBITINGS")
-            for item in self.inhibitings:
+        # Serialize inhibiting_refs (list to container "INHIBITING-REFS")
+        if self.inhibiting_refs:
+            wrapper = ET.Element("INHIBITING-REFS")
+            for item in self.inhibiting_refs:
                 serialized = ARObject._serialize_item(item, "FunctionInhibitionNeeds")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("INHIBITING-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -162,15 +177,21 @@ class DiagnosticEventNeeds(DiagnosticCapabilityElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticEventNeeds, cls).deserialize(element)
 
-        # Parse deferring_fids (list from container "DEFERRING-FIDS")
-        obj.deferring_fids = []
-        container = ARObject._find_child_element(element, "DEFERRING-FIDS")
+        # Parse deferring_fid_refs (list from container "DEFERRING-FID-REFS")
+        obj.deferring_fid_refs = []
+        container = ARObject._find_child_element(element, "DEFERRING-FID-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.deferring_fids.append(child_value)
+                    obj.deferring_fid_refs.append(child_value)
 
         # Parse diag_event_debounce
         child = ARObject._find_child_element(element, "DIAG-EVENT-DEBOUNCE")
@@ -178,21 +199,27 @@ class DiagnosticEventNeeds(DiagnosticCapabilityElement):
             diag_event_debounce_value = child.text
             obj.diag_event_debounce = diag_event_debounce_value
 
-        # Parse inhibiting_fid
-        child = ARObject._find_child_element(element, "INHIBITING-FID")
+        # Parse inhibiting_fid_ref
+        child = ARObject._find_child_element(element, "INHIBITING-FID-REF")
         if child is not None:
-            inhibiting_fid_value = ARObject._deserialize_by_tag(child, "FunctionInhibitionNeeds")
-            obj.inhibiting_fid = inhibiting_fid_value
+            inhibiting_fid_ref_value = ARRef.deserialize(child)
+            obj.inhibiting_fid_ref = inhibiting_fid_ref_value
 
-        # Parse inhibitings (list from container "INHIBITINGS")
-        obj.inhibitings = []
-        container = ARObject._find_child_element(element, "INHIBITINGS")
+        # Parse inhibiting_refs (list from container "INHIBITING-REFS")
+        obj.inhibiting_refs = []
+        container = ARObject._find_child_element(element, "INHIBITING-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.inhibitings.append(child_value)
+                    obj.inhibiting_refs.append(child_value)
 
         # Parse prestored
         child = ARObject._find_child_element(element, "PRESTORED")

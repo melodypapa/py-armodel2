@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
     NameToken,
@@ -35,14 +36,14 @@ class BuildActionIoElement(ARObject):
         return False
 
     category: NameToken
-    ecuc_definition: Optional[EcucDefinitionElement]
+    ecuc_definition_ref: Optional[ARRef]
     role: Optional[Identifier]
     sdgs: list[Sdg]
     def __init__(self) -> None:
         """Initialize BuildActionIoElement."""
         super().__init__()
         self.category: NameToken = None
-        self.ecuc_definition: Optional[EcucDefinitionElement] = None
+        self.ecuc_definition_ref: Optional[ARRef] = None
         self.role: Optional[Identifier] = None
         self.sdgs: list[Sdg] = []
 
@@ -70,12 +71,12 @@ class BuildActionIoElement(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize ecuc_definition
-        if self.ecuc_definition is not None:
-            serialized = ARObject._serialize_item(self.ecuc_definition, "EcucDefinitionElement")
+        # Serialize ecuc_definition_ref
+        if self.ecuc_definition_ref is not None:
+            serialized = ARObject._serialize_item(self.ecuc_definition_ref, "EcucDefinitionElement")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ECUC-DEFINITION")
+                wrapped = ET.Element("ECUC-DEFINITION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -130,11 +131,11 @@ class BuildActionIoElement(ARObject):
             category_value = child.text
             obj.category = category_value
 
-        # Parse ecuc_definition
-        child = ARObject._find_child_element(element, "ECUC-DEFINITION")
+        # Parse ecuc_definition_ref
+        child = ARObject._find_child_element(element, "ECUC-DEFINITION-REF")
         if child is not None:
-            ecuc_definition_value = ARObject._deserialize_by_tag(child, "EcucDefinitionElement")
-            obj.ecuc_definition = ecuc_definition_value
+            ecuc_definition_ref_value = ARRef.deserialize(child)
+            obj.ecuc_definition_ref = ecuc_definition_ref_value
 
         # Parse role
         child = ARObject._find_child_element(element, "ROLE")

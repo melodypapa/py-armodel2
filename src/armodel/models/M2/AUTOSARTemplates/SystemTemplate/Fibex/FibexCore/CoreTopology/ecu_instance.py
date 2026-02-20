@@ -69,7 +69,7 @@ class EcuInstance(FibexElement):
         return False
 
     associated_com_refs: list[ARRef]
-    associateds: list[ConsumedProvidedServiceInstanceGroup]
+    associated_refs: list[ARRef]
     associated_pdur_refs: list[ARRef]
     channel: Optional[Boolean]
     client_id_range: Optional[ClientIdRange]
@@ -79,24 +79,24 @@ class EcuInstance(FibexElement):
     connectors: list[Any]
     dlt_config: Optional[DltConfig]
     do_ip_config: Optional[DoIpConfig]
-    ecu_task_proxies: list[OsTaskProxy]
+    ecu_task_proxie_refs: list[ARRef]
     eth_switch_port: Optional[Boolean]
-    firewall_rules: list[StateDependentFirewall]
+    firewall_rule_refs: list[ARRef]
     partitions: list[EcuPartition]
     pnc_nm_request: Optional[Boolean]
     pnc_prepare: Optional[TimeValue]
     pnc: Optional[Boolean]
     pn_reset_time: Optional[TimeValue]
     sleep_mode: Optional[Boolean]
-    tcp_ip_icmp_props: Optional[EthTcpIpIcmpProps]
-    tcp_ip_props: Optional[EthTcpIpProps]
+    tcp_ip_icmp_props_ref: Optional[ARRef]
+    tcp_ip_props_ref: Optional[ARRef]
     v2x_supported: Optional[Any]
     wake_up_over_bus_supported: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize EcuInstance."""
         super().__init__()
         self.associated_com_refs: list[ARRef] = []
-        self.associateds: list[ConsumedProvidedServiceInstanceGroup] = []
+        self.associated_refs: list[ARRef] = []
         self.associated_pdur_refs: list[ARRef] = []
         self.channel: Optional[Boolean] = None
         self.client_id_range: Optional[ClientIdRange] = None
@@ -106,17 +106,17 @@ class EcuInstance(FibexElement):
         self.connectors: list[Any] = []
         self.dlt_config: Optional[DltConfig] = None
         self.do_ip_config: Optional[DoIpConfig] = None
-        self.ecu_task_proxies: list[OsTaskProxy] = []
+        self.ecu_task_proxie_refs: list[ARRef] = []
         self.eth_switch_port: Optional[Boolean] = None
-        self.firewall_rules: list[StateDependentFirewall] = []
+        self.firewall_rule_refs: list[ARRef] = []
         self.partitions: list[EcuPartition] = []
         self.pnc_nm_request: Optional[Boolean] = None
         self.pnc_prepare: Optional[TimeValue] = None
         self.pnc: Optional[Boolean] = None
         self.pn_reset_time: Optional[TimeValue] = None
         self.sleep_mode: Optional[Boolean] = None
-        self.tcp_ip_icmp_props: Optional[EthTcpIpIcmpProps] = None
-        self.tcp_ip_props: Optional[EthTcpIpProps] = None
+        self.tcp_ip_icmp_props_ref: Optional[ARRef] = None
+        self.tcp_ip_props_ref: Optional[ARRef] = None
         self.v2x_supported: Optional[Any] = None
         self.wake_up_over_bus_supported: Optional[Boolean] = None
 
@@ -157,13 +157,20 @@ class EcuInstance(FibexElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize associateds (list to container "ASSOCIATEDS")
-        if self.associateds:
-            wrapper = ET.Element("ASSOCIATEDS")
-            for item in self.associateds:
+        # Serialize associated_refs (list to container "ASSOCIATED-REFS")
+        if self.associated_refs:
+            wrapper = ET.Element("ASSOCIATED-REFS")
+            for item in self.associated_refs:
                 serialized = ARObject._serialize_item(item, "ConsumedProvidedServiceInstanceGroup")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("ASSOCIATED-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -288,13 +295,20 @@ class EcuInstance(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize ecu_task_proxies (list to container "ECU-TASK-PROXIES")
-        if self.ecu_task_proxies:
-            wrapper = ET.Element("ECU-TASK-PROXIES")
-            for item in self.ecu_task_proxies:
+        # Serialize ecu_task_proxie_refs (list to container "ECU-TASK-PROXIE-REFS")
+        if self.ecu_task_proxie_refs:
+            wrapper = ET.Element("ECU-TASK-PROXIE-REFS")
+            for item in self.ecu_task_proxie_refs:
                 serialized = ARObject._serialize_item(item, "OsTaskProxy")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("ECU-TASK-PROXIE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -312,13 +326,20 @@ class EcuInstance(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize firewall_rules (list to container "FIREWALL-RULES")
-        if self.firewall_rules:
-            wrapper = ET.Element("FIREWALL-RULES")
-            for item in self.firewall_rules:
+        # Serialize firewall_rule_refs (list to container "FIREWALL-RULE-REFS")
+        if self.firewall_rule_refs:
+            wrapper = ET.Element("FIREWALL-RULE-REFS")
+            for item in self.firewall_rule_refs:
                 serialized = ARObject._serialize_item(item, "StateDependentFirewall")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("FIREWALL-RULE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -402,12 +423,12 @@ class EcuInstance(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize tcp_ip_icmp_props
-        if self.tcp_ip_icmp_props is not None:
-            serialized = ARObject._serialize_item(self.tcp_ip_icmp_props, "EthTcpIpIcmpProps")
+        # Serialize tcp_ip_icmp_props_ref
+        if self.tcp_ip_icmp_props_ref is not None:
+            serialized = ARObject._serialize_item(self.tcp_ip_icmp_props_ref, "EthTcpIpIcmpProps")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TCP-IP-ICMP-PROPS")
+                wrapped = ET.Element("TCP-IP-ICMP-PROPS-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -416,12 +437,12 @@ class EcuInstance(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize tcp_ip_props
-        if self.tcp_ip_props is not None:
-            serialized = ARObject._serialize_item(self.tcp_ip_props, "EthTcpIpProps")
+        # Serialize tcp_ip_props_ref
+        if self.tcp_ip_props_ref is not None:
+            serialized = ARObject._serialize_item(self.tcp_ip_props_ref, "EthTcpIpProps")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TCP-IP-PROPS")
+                wrapped = ET.Element("TCP-IP-PROPS-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -489,15 +510,21 @@ class EcuInstance(FibexElement):
                 if child_value is not None:
                     obj.associated_com_refs.append(child_value)
 
-        # Parse associateds (list from container "ASSOCIATEDS")
-        obj.associateds = []
-        container = ARObject._find_child_element(element, "ASSOCIATEDS")
+        # Parse associated_refs (list from container "ASSOCIATED-REFS")
+        obj.associated_refs = []
+        container = ARObject._find_child_element(element, "ASSOCIATED-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.associateds.append(child_value)
+                    obj.associated_refs.append(child_value)
 
         # Parse associated_pdur_refs (list from container "ASSOCIATED-PDUR-REFS")
         obj.associated_pdur_refs = []
@@ -571,15 +598,21 @@ class EcuInstance(FibexElement):
             do_ip_config_value = ARObject._deserialize_by_tag(child, "DoIpConfig")
             obj.do_ip_config = do_ip_config_value
 
-        # Parse ecu_task_proxies (list from container "ECU-TASK-PROXIES")
-        obj.ecu_task_proxies = []
-        container = ARObject._find_child_element(element, "ECU-TASK-PROXIES")
+        # Parse ecu_task_proxie_refs (list from container "ECU-TASK-PROXIE-REFS")
+        obj.ecu_task_proxie_refs = []
+        container = ARObject._find_child_element(element, "ECU-TASK-PROXIE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.ecu_task_proxies.append(child_value)
+                    obj.ecu_task_proxie_refs.append(child_value)
 
         # Parse eth_switch_port
         child = ARObject._find_child_element(element, "ETH-SWITCH-PORT")
@@ -587,15 +620,21 @@ class EcuInstance(FibexElement):
             eth_switch_port_value = child.text
             obj.eth_switch_port = eth_switch_port_value
 
-        # Parse firewall_rules (list from container "FIREWALL-RULES")
-        obj.firewall_rules = []
-        container = ARObject._find_child_element(element, "FIREWALL-RULES")
+        # Parse firewall_rule_refs (list from container "FIREWALL-RULE-REFS")
+        obj.firewall_rule_refs = []
+        container = ARObject._find_child_element(element, "FIREWALL-RULE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.firewall_rules.append(child_value)
+                    obj.firewall_rule_refs.append(child_value)
 
         # Parse partitions (list from container "PARTITIONS")
         obj.partitions = []
@@ -637,17 +676,17 @@ class EcuInstance(FibexElement):
             sleep_mode_value = child.text
             obj.sleep_mode = sleep_mode_value
 
-        # Parse tcp_ip_icmp_props
-        child = ARObject._find_child_element(element, "TCP-IP-ICMP-PROPS")
+        # Parse tcp_ip_icmp_props_ref
+        child = ARObject._find_child_element(element, "TCP-IP-ICMP-PROPS-REF")
         if child is not None:
-            tcp_ip_icmp_props_value = ARObject._deserialize_by_tag(child, "EthTcpIpIcmpProps")
-            obj.tcp_ip_icmp_props = tcp_ip_icmp_props_value
+            tcp_ip_icmp_props_ref_value = ARRef.deserialize(child)
+            obj.tcp_ip_icmp_props_ref = tcp_ip_icmp_props_ref_value
 
-        # Parse tcp_ip_props
-        child = ARObject._find_child_element(element, "TCP-IP-PROPS")
+        # Parse tcp_ip_props_ref
+        child = ARObject._find_child_element(element, "TCP-IP-PROPS-REF")
         if child is not None:
-            tcp_ip_props_value = ARObject._deserialize_by_tag(child, "EthTcpIpProps")
-            obj.tcp_ip_props = tcp_ip_props_value
+            tcp_ip_props_ref_value = ARRef.deserialize(child)
+            obj.tcp_ip_props_ref = tcp_ip_props_ref_value
 
         # Parse v2x_supported
         child = ARObject._find_child_element(element, "V2X-SUPPORTED")

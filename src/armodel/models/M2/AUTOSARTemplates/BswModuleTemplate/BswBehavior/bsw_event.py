@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.abstrac
     AbstractEvent,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_distinguished_partition import (
     BswDistinguishedPartition,
 )
@@ -38,15 +39,15 @@ class BswEvent(AbstractEvent, ABC):
         """
         return True
 
-    contexts: list[BswDistinguishedPartition]
+    context_refs: list[ARRef]
     disabled_in_mode_description_instance_refs: list[ModeDeclaration]
-    starts_on_event: Optional[BswModuleEntity]
+    starts_on_event_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize BswEvent."""
         super().__init__()
-        self.contexts: list[BswDistinguishedPartition] = []
+        self.context_refs: list[ARRef] = []
         self.disabled_in_mode_description_instance_refs: list[ModeDeclaration] = []
-        self.starts_on_event: Optional[BswModuleEntity] = None
+        self.starts_on_event_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize BswEvent to XML element.
@@ -68,13 +69,20 @@ class BswEvent(AbstractEvent, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize contexts (list to container "CONTEXTS")
-        if self.contexts:
-            wrapper = ET.Element("CONTEXTS")
-            for item in self.contexts:
+        # Serialize context_refs (list to container "CONTEXT-REFS")
+        if self.context_refs:
+            wrapper = ET.Element("CONTEXT-REFS")
+            for item in self.context_refs:
                 serialized = ARObject._serialize_item(item, "BswDistinguishedPartition")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("CONTEXT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -88,12 +96,12 @@ class BswEvent(AbstractEvent, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize starts_on_event
-        if self.starts_on_event is not None:
-            serialized = ARObject._serialize_item(self.starts_on_event, "BswModuleEntity")
+        # Serialize starts_on_event_ref
+        if self.starts_on_event_ref is not None:
+            serialized = ARObject._serialize_item(self.starts_on_event_ref, "BswModuleEntity")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("STARTS-ON-EVENT")
+                wrapped = ET.Element("STARTS-ON-EVENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -117,15 +125,21 @@ class BswEvent(AbstractEvent, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswEvent, cls).deserialize(element)
 
-        # Parse contexts (list from container "CONTEXTS")
-        obj.contexts = []
-        container = ARObject._find_child_element(element, "CONTEXTS")
+        # Parse context_refs (list from container "CONTEXT-REFS")
+        obj.context_refs = []
+        container = ARObject._find_child_element(element, "CONTEXT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.contexts.append(child_value)
+                    obj.context_refs.append(child_value)
 
         # Parse disabled_in_mode_description_instance_refs (list from container "DISABLED-IN-MODE-DESCRIPTION-INSTANCE-REFS")
         obj.disabled_in_mode_description_instance_refs = []
@@ -137,11 +151,11 @@ class BswEvent(AbstractEvent, ABC):
                 if child_value is not None:
                     obj.disabled_in_mode_description_instance_refs.append(child_value)
 
-        # Parse starts_on_event
-        child = ARObject._find_child_element(element, "STARTS-ON-EVENT")
+        # Parse starts_on_event_ref
+        child = ARObject._find_child_element(element, "STARTS-ON-EVENT-REF")
         if child is not None:
-            starts_on_event_value = ARObject._deserialize_by_tag(child, "BswModuleEntity")
-            obj.starts_on_event = starts_on_event_value
+            starts_on_event_ref_value = ARRef.deserialize(child)
+            obj.starts_on_event_ref = starts_on_event_ref_value
 
         return obj
 

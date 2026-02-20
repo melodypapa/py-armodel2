@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Serv
     AbstractServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
     String,
@@ -38,19 +39,19 @@ class DdsCpServiceInstance(AbstractServiceInstance, ABC):
         """
         return True
 
-    dds_field_reply: Optional[DdsCpTopic]
-    dds_field: Optional[DdsCpTopic]
-    dds_method: Optional[DdsCpTopic]
-    dds_service_qos: Optional[DdsCpQosProfile]
+    dds_field_reply_ref: Optional[ARRef]
+    dds_field_ref: Optional[ARRef]
+    dds_method_ref: Optional[ARRef]
+    dds_service_qos_ref: Optional[ARRef]
     service_instance: Optional[PositiveInteger]
     service_interface: Optional[String]
     def __init__(self) -> None:
         """Initialize DdsCpServiceInstance."""
         super().__init__()
-        self.dds_field_reply: Optional[DdsCpTopic] = None
-        self.dds_field: Optional[DdsCpTopic] = None
-        self.dds_method: Optional[DdsCpTopic] = None
-        self.dds_service_qos: Optional[DdsCpQosProfile] = None
+        self.dds_field_reply_ref: Optional[ARRef] = None
+        self.dds_field_ref: Optional[ARRef] = None
+        self.dds_method_ref: Optional[ARRef] = None
+        self.dds_service_qos_ref: Optional[ARRef] = None
         self.service_instance: Optional[PositiveInteger] = None
         self.service_interface: Optional[String] = None
 
@@ -74,12 +75,12 @@ class DdsCpServiceInstance(AbstractServiceInstance, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize dds_field_reply
-        if self.dds_field_reply is not None:
-            serialized = ARObject._serialize_item(self.dds_field_reply, "DdsCpTopic")
+        # Serialize dds_field_reply_ref
+        if self.dds_field_reply_ref is not None:
+            serialized = ARObject._serialize_item(self.dds_field_reply_ref, "DdsCpTopic")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DDS-FIELD-REPLY")
+                wrapped = ET.Element("DDS-FIELD-REPLY-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -88,12 +89,12 @@ class DdsCpServiceInstance(AbstractServiceInstance, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize dds_field
-        if self.dds_field is not None:
-            serialized = ARObject._serialize_item(self.dds_field, "DdsCpTopic")
+        # Serialize dds_field_ref
+        if self.dds_field_ref is not None:
+            serialized = ARObject._serialize_item(self.dds_field_ref, "DdsCpTopic")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DDS-FIELD")
+                wrapped = ET.Element("DDS-FIELD-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -102,12 +103,12 @@ class DdsCpServiceInstance(AbstractServiceInstance, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize dds_method
-        if self.dds_method is not None:
-            serialized = ARObject._serialize_item(self.dds_method, "DdsCpTopic")
+        # Serialize dds_method_ref
+        if self.dds_method_ref is not None:
+            serialized = ARObject._serialize_item(self.dds_method_ref, "DdsCpTopic")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DDS-METHOD")
+                wrapped = ET.Element("DDS-METHOD-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -116,12 +117,12 @@ class DdsCpServiceInstance(AbstractServiceInstance, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize dds_service_qos
-        if self.dds_service_qos is not None:
-            serialized = ARObject._serialize_item(self.dds_service_qos, "DdsCpQosProfile")
+        # Serialize dds_service_qos_ref
+        if self.dds_service_qos_ref is not None:
+            serialized = ARObject._serialize_item(self.dds_service_qos_ref, "DdsCpQosProfile")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DDS-SERVICE-QOS")
+                wrapped = ET.Element("DDS-SERVICE-QOS-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -173,29 +174,29 @@ class DdsCpServiceInstance(AbstractServiceInstance, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DdsCpServiceInstance, cls).deserialize(element)
 
-        # Parse dds_field_reply
-        child = ARObject._find_child_element(element, "DDS-FIELD-REPLY")
+        # Parse dds_field_reply_ref
+        child = ARObject._find_child_element(element, "DDS-FIELD-REPLY-REF")
         if child is not None:
-            dds_field_reply_value = ARObject._deserialize_by_tag(child, "DdsCpTopic")
-            obj.dds_field_reply = dds_field_reply_value
+            dds_field_reply_ref_value = ARRef.deserialize(child)
+            obj.dds_field_reply_ref = dds_field_reply_ref_value
 
-        # Parse dds_field
-        child = ARObject._find_child_element(element, "DDS-FIELD")
+        # Parse dds_field_ref
+        child = ARObject._find_child_element(element, "DDS-FIELD-REF")
         if child is not None:
-            dds_field_value = ARObject._deserialize_by_tag(child, "DdsCpTopic")
-            obj.dds_field = dds_field_value
+            dds_field_ref_value = ARRef.deserialize(child)
+            obj.dds_field_ref = dds_field_ref_value
 
-        # Parse dds_method
-        child = ARObject._find_child_element(element, "DDS-METHOD")
+        # Parse dds_method_ref
+        child = ARObject._find_child_element(element, "DDS-METHOD-REF")
         if child is not None:
-            dds_method_value = ARObject._deserialize_by_tag(child, "DdsCpTopic")
-            obj.dds_method = dds_method_value
+            dds_method_ref_value = ARRef.deserialize(child)
+            obj.dds_method_ref = dds_method_ref_value
 
-        # Parse dds_service_qos
-        child = ARObject._find_child_element(element, "DDS-SERVICE-QOS")
+        # Parse dds_service_qos_ref
+        child = ARObject._find_child_element(element, "DDS-SERVICE-QOS-REF")
         if child is not None:
-            dds_service_qos_value = ARObject._deserialize_by_tag(child, "DdsCpQosProfile")
-            obj.dds_service_qos = dds_service_qos_value
+            dds_service_qos_ref_value = ARRef.deserialize(child)
+            obj.dds_service_qos_ref = dds_service_qos_ref_value
 
         # Parse service_instance
         child = ARObject._find_child_element(element, "SERVICE-INSTANCE")

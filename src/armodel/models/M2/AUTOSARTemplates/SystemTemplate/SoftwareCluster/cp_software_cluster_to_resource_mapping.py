@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
     CpSoftwareCluster,
 )
@@ -30,15 +31,15 @@ class CpSoftwareClusterToResourceMapping(Identifiable):
         """
         return False
 
-    provider: Optional[CpSoftwareCluster]
-    requesters: list[CpSoftwareCluster]
-    service: Optional[CpSoftwareCluster]
+    provider_ref: Optional[ARRef]
+    requester_refs: list[ARRef]
+    service_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterToResourceMapping."""
         super().__init__()
-        self.provider: Optional[CpSoftwareCluster] = None
-        self.requesters: list[CpSoftwareCluster] = []
-        self.service: Optional[CpSoftwareCluster] = None
+        self.provider_ref: Optional[ARRef] = None
+        self.requester_refs: list[ARRef] = []
+        self.service_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize CpSoftwareClusterToResourceMapping to XML element.
@@ -60,12 +61,12 @@ class CpSoftwareClusterToResourceMapping(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize provider
-        if self.provider is not None:
-            serialized = ARObject._serialize_item(self.provider, "CpSoftwareCluster")
+        # Serialize provider_ref
+        if self.provider_ref is not None:
+            serialized = ARObject._serialize_item(self.provider_ref, "CpSoftwareCluster")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PROVIDER")
+                wrapped = ET.Element("PROVIDER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -74,22 +75,29 @@ class CpSoftwareClusterToResourceMapping(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize requesters (list to container "REQUESTERS")
-        if self.requesters:
-            wrapper = ET.Element("REQUESTERS")
-            for item in self.requesters:
+        # Serialize requester_refs (list to container "REQUESTER-REFS")
+        if self.requester_refs:
+            wrapper = ET.Element("REQUESTER-REFS")
+            for item in self.requester_refs:
                 serialized = ARObject._serialize_item(item, "CpSoftwareCluster")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("REQUESTER-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize service
-        if self.service is not None:
-            serialized = ARObject._serialize_item(self.service, "CpSoftwareCluster")
+        # Serialize service_ref
+        if self.service_ref is not None:
+            serialized = ARObject._serialize_item(self.service_ref, "CpSoftwareCluster")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SERVICE")
+                wrapped = ET.Element("SERVICE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -113,27 +121,33 @@ class CpSoftwareClusterToResourceMapping(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CpSoftwareClusterToResourceMapping, cls).deserialize(element)
 
-        # Parse provider
-        child = ARObject._find_child_element(element, "PROVIDER")
+        # Parse provider_ref
+        child = ARObject._find_child_element(element, "PROVIDER-REF")
         if child is not None:
-            provider_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
-            obj.provider = provider_value
+            provider_ref_value = ARRef.deserialize(child)
+            obj.provider_ref = provider_ref_value
 
-        # Parse requesters (list from container "REQUESTERS")
-        obj.requesters = []
-        container = ARObject._find_child_element(element, "REQUESTERS")
+        # Parse requester_refs (list from container "REQUESTER-REFS")
+        obj.requester_refs = []
+        container = ARObject._find_child_element(element, "REQUESTER-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.requesters.append(child_value)
+                    obj.requester_refs.append(child_value)
 
-        # Parse service
-        child = ARObject._find_child_element(element, "SERVICE")
+        # Parse service_ref
+        child = ARObject._find_child_element(element, "SERVICE-REF")
         if child is not None:
-            service_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
-            obj.service = service_value
+            service_ref_value = ARRef.deserialize(child)
+            obj.service_ref = service_ref_value
 
         return obj
 

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
     DiagnosticMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_start_routine import (
     DiagnosticStartRoutine,
 )
@@ -30,13 +31,13 @@ class DiagnosticSecureCodingMapping(DiagnosticMapping):
         """
         return False
 
-    data_identifiers: list[Any]
-    validation: Optional[DiagnosticStartRoutine]
+    data_identifier_refs: list[Any]
+    validation_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DiagnosticSecureCodingMapping."""
         super().__init__()
-        self.data_identifiers: list[Any] = []
-        self.validation: Optional[DiagnosticStartRoutine] = None
+        self.data_identifier_refs: list[Any] = []
+        self.validation_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticSecureCodingMapping to XML element.
@@ -58,22 +59,29 @@ class DiagnosticSecureCodingMapping(DiagnosticMapping):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize data_identifiers (list to container "DATA-IDENTIFIERS")
-        if self.data_identifiers:
-            wrapper = ET.Element("DATA-IDENTIFIERS")
-            for item in self.data_identifiers:
+        # Serialize data_identifier_refs (list to container "DATA-IDENTIFIER-REFS")
+        if self.data_identifier_refs:
+            wrapper = ET.Element("DATA-IDENTIFIER-REFS")
+            for item in self.data_identifier_refs:
                 serialized = ARObject._serialize_item(item, "Any")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("DATA-IDENTIFIER-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize validation
-        if self.validation is not None:
-            serialized = ARObject._serialize_item(self.validation, "DiagnosticStartRoutine")
+        # Serialize validation_ref
+        if self.validation_ref is not None:
+            serialized = ARObject._serialize_item(self.validation_ref, "DiagnosticStartRoutine")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("VALIDATION")
+                wrapped = ET.Element("VALIDATION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -97,21 +105,27 @@ class DiagnosticSecureCodingMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticSecureCodingMapping, cls).deserialize(element)
 
-        # Parse data_identifiers (list from container "DATA-IDENTIFIERS")
-        obj.data_identifiers = []
-        container = ARObject._find_child_element(element, "DATA-IDENTIFIERS")
+        # Parse data_identifier_refs (list from container "DATA-IDENTIFIER-REFS")
+        obj.data_identifier_refs = []
+        container = ARObject._find_child_element(element, "DATA-IDENTIFIER-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.data_identifiers.append(child_value)
+                    obj.data_identifier_refs.append(child_value)
 
-        # Parse validation
-        child = ARObject._find_child_element(element, "VALIDATION")
+        # Parse validation_ref
+        child = ARObject._find_child_element(element, "VALIDATION-REF")
         if child is not None:
-            validation_value = ARObject._deserialize_by_tag(child, "DiagnosticStartRoutine")
-            obj.validation = validation_value
+            validation_ref_value = ARRef.deserialize(child)
+            obj.validation_ref = validation_ref_value
 
         return obj
 

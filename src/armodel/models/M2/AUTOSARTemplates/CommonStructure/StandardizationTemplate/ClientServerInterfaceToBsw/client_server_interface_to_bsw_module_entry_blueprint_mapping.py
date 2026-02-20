@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_interface import (
     ClientServerInterface,
 )
@@ -36,13 +37,13 @@ class ClientServerInterfaceToBswModuleEntryBlueprintMapping(ARElement):
         """
         return False
 
-    client_server: ClientServerInterface
+    client_server_ref: ARRef
     operation: ClientServerOperation
     port_defined_arguments: list[PortDefinedArgumentValue]
     def __init__(self) -> None:
         """Initialize ClientServerInterfaceToBswModuleEntryBlueprintMapping."""
         super().__init__()
-        self.client_server: ClientServerInterface = None
+        self.client_server_ref: ARRef = None
         self.operation: ClientServerOperation = None
         self.port_defined_arguments: list[PortDefinedArgumentValue] = []
 
@@ -66,12 +67,12 @@ class ClientServerInterfaceToBswModuleEntryBlueprintMapping(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize client_server
-        if self.client_server is not None:
-            serialized = ARObject._serialize_item(self.client_server, "ClientServerInterface")
+        # Serialize client_server_ref
+        if self.client_server_ref is not None:
+            serialized = ARObject._serialize_item(self.client_server_ref, "ClientServerInterface")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CLIENT-SERVER")
+                wrapped = ET.Element("CLIENT-SERVER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -119,11 +120,11 @@ class ClientServerInterfaceToBswModuleEntryBlueprintMapping(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ClientServerInterfaceToBswModuleEntryBlueprintMapping, cls).deserialize(element)
 
-        # Parse client_server
-        child = ARObject._find_child_element(element, "CLIENT-SERVER")
+        # Parse client_server_ref
+        child = ARObject._find_child_element(element, "CLIENT-SERVER-REF")
         if child is not None:
-            client_server_value = ARObject._deserialize_by_tag(child, "ClientServerInterface")
-            obj.client_server = client_server_value
+            client_server_ref_value = ARRef.deserialize(child)
+            obj.client_server_ref = client_server_ref_value
 
         # Parse operation
         child = ARObject._find_child_element(element, "OPERATION")

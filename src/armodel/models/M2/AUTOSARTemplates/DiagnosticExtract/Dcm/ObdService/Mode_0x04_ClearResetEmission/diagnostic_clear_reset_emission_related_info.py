@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
 class DiagnosticClearResetEmissionRelatedInfo(DiagnosticServiceInstance):
@@ -27,11 +28,11 @@ class DiagnosticClearResetEmissionRelatedInfo(DiagnosticServiceInstance):
         """
         return False
 
-    clear_reset: Optional[Any]
+    clear_reset_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticClearResetEmissionRelatedInfo."""
         super().__init__()
-        self.clear_reset: Optional[Any] = None
+        self.clear_reset_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticClearResetEmissionRelatedInfo to XML element.
@@ -53,12 +54,12 @@ class DiagnosticClearResetEmissionRelatedInfo(DiagnosticServiceInstance):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize clear_reset
-        if self.clear_reset is not None:
-            serialized = ARObject._serialize_item(self.clear_reset, "Any")
+        # Serialize clear_reset_ref
+        if self.clear_reset_ref is not None:
+            serialized = ARObject._serialize_item(self.clear_reset_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CLEAR-RESET")
+                wrapped = ET.Element("CLEAR-RESET-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -82,11 +83,11 @@ class DiagnosticClearResetEmissionRelatedInfo(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticClearResetEmissionRelatedInfo, cls).deserialize(element)
 
-        # Parse clear_reset
-        child = ARObject._find_child_element(element, "CLEAR-RESET")
+        # Parse clear_reset_ref
+        child = ARObject._find_child_element(element, "CLEAR-RESET-REF")
         if child is not None:
-            clear_reset_value = child.text
-            obj.clear_reset = clear_reset_value
+            clear_reset_ref_value = ARRef.deserialize(child)
+            obj.clear_reset_ref = clear_reset_ref_value
 
         return obj
 

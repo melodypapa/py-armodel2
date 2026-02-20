@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.root_sw_composition_prototype import (
     RootSwCompositionPrototype,
 )
@@ -30,15 +31,15 @@ class ComponentInSystemInstanceRef(ARObject):
         """
         return False
 
-    base: Optional[System]
-    context: Optional[RootSwCompositionPrototype]
-    target: Any
+    base_ref: Optional[ARRef]
+    context_ref: Optional[ARRef]
+    target_ref: Any
     def __init__(self) -> None:
         """Initialize ComponentInSystemInstanceRef."""
         super().__init__()
-        self.base: Optional[System] = None
-        self.context: Optional[RootSwCompositionPrototype] = None
-        self.target: Any = None
+        self.base_ref: Optional[ARRef] = None
+        self.context_ref: Optional[ARRef] = None
+        self.target_ref: Any = None
 
     def serialize(self) -> ET.Element:
         """Serialize ComponentInSystemInstanceRef to XML element.
@@ -50,12 +51,12 @@ class ComponentInSystemInstanceRef(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize base
-        if self.base is not None:
-            serialized = ARObject._serialize_item(self.base, "System")
+        # Serialize base_ref
+        if self.base_ref is not None:
+            serialized = ARObject._serialize_item(self.base_ref, "System")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("BASE")
+                wrapped = ET.Element("BASE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -64,12 +65,12 @@ class ComponentInSystemInstanceRef(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize context
-        if self.context is not None:
-            serialized = ARObject._serialize_item(self.context, "RootSwCompositionPrototype")
+        # Serialize context_ref
+        if self.context_ref is not None:
+            serialized = ARObject._serialize_item(self.context_ref, "RootSwCompositionPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT")
+                wrapped = ET.Element("CONTEXT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -78,12 +79,12 @@ class ComponentInSystemInstanceRef(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize target
-        if self.target is not None:
-            serialized = ARObject._serialize_item(self.target, "Any")
+        # Serialize target_ref
+        if self.target_ref is not None:
+            serialized = ARObject._serialize_item(self.target_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TARGET")
+                wrapped = ET.Element("TARGET-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -108,23 +109,23 @@ class ComponentInSystemInstanceRef(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse base
-        child = ARObject._find_child_element(element, "BASE")
+        # Parse base_ref
+        child = ARObject._find_child_element(element, "BASE-REF")
         if child is not None:
-            base_value = ARObject._deserialize_by_tag(child, "System")
-            obj.base = base_value
+            base_ref_value = ARRef.deserialize(child)
+            obj.base_ref = base_ref_value
 
-        # Parse context
-        child = ARObject._find_child_element(element, "CONTEXT")
+        # Parse context_ref
+        child = ARObject._find_child_element(element, "CONTEXT-REF")
         if child is not None:
-            context_value = ARObject._deserialize_by_tag(child, "RootSwCompositionPrototype")
-            obj.context = context_value
+            context_ref_value = ARRef.deserialize(child)
+            obj.context_ref = context_ref_value
 
-        # Parse target
-        child = ARObject._find_child_element(element, "TARGET")
+        # Parse target_ref
+        child = ARObject._find_child_element(element, "TARGET-REF")
         if child is not None:
-            target_value = child.text
-            obj.target = target_value
+            target_ref_value = ARRef.deserialize(child)
+            obj.target_ref = target_ref_value
 
         return obj
 

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.AbstractStructure.atp_feature import (
     AtpFeature,
 )
@@ -46,7 +47,7 @@ class RptContainer(Identifiable):
         return False
 
     by_pass_points: list[AtpFeature]
-    explicit_rpts: list[RptProfile]
+    explicit_rpt_refs: list[ARRef]
     rpt_containers: list[RptContainer]
     rpt_executable_entity: Optional[RptExecutableEntity]
     rpt_hook: Optional[RptHook]
@@ -56,7 +57,7 @@ class RptContainer(Identifiable):
         """Initialize RptContainer."""
         super().__init__()
         self.by_pass_points: list[AtpFeature] = []
-        self.explicit_rpts: list[RptProfile] = []
+        self.explicit_rpt_refs: list[ARRef] = []
         self.rpt_containers: list[RptContainer] = []
         self.rpt_executable_entity: Optional[RptExecutableEntity] = None
         self.rpt_hook: Optional[RptHook] = None
@@ -93,13 +94,20 @@ class RptContainer(Identifiable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize explicit_rpts (list to container "EXPLICIT-RPTS")
-        if self.explicit_rpts:
-            wrapper = ET.Element("EXPLICIT-RPTS")
-            for item in self.explicit_rpts:
+        # Serialize explicit_rpt_refs (list to container "EXPLICIT-RPT-REFS")
+        if self.explicit_rpt_refs:
+            wrapper = ET.Element("EXPLICIT-RPT-REFS")
+            for item in self.explicit_rpt_refs:
                 serialized = ARObject._serialize_item(item, "RptProfile")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("EXPLICIT-RPT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -194,15 +202,21 @@ class RptContainer(Identifiable):
                 if child_value is not None:
                     obj.by_pass_points.append(child_value)
 
-        # Parse explicit_rpts (list from container "EXPLICIT-RPTS")
-        obj.explicit_rpts = []
-        container = ARObject._find_child_element(element, "EXPLICIT-RPTS")
+        # Parse explicit_rpt_refs (list from container "EXPLICIT-RPT-REFS")
+        obj.explicit_rpt_refs = []
+        container = ARObject._find_child_element(element, "EXPLICIT-RPT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.explicit_rpts.append(child_value)
+                    obj.explicit_rpt_refs.append(child_value)
 
         # Parse rpt_containers (list from container "RPT-CONTAINERS")
         obj.rpt_containers = []

@@ -57,8 +57,8 @@
         "measurables": {
           "type": "SwSystemconstantValueSet",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Sets of system constant values to be transferred to the MCD system, because the system constants have been with \"swCalibrationAccess\" = readonly."
         },
         "rptSupportData": {
@@ -124,8 +124,8 @@
         "flatMapEntry": {
           "type": "FlatInstanceDescriptor",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the corresponding entry in the ECU Flat allows to trace back to the original specification generated data instance. This link shall be added RTE generator mainly for documentation purposes. is optional because McDataInstance may represent an array or struct only the subElements correspond to FlatMap McDataInstance may represent a task local buffer prototyping access which is different from the used for measurement access."
         },
         "instanceIn": {
@@ -341,8 +341,8 @@
         "target": {
           "type": "any (AbstractImplementation)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The referred data element. xml.sequenceOffset=30"
         }
       }
@@ -417,8 +417,8 @@
         "subFunctions": {
           "type": "McFunction",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "A sub-function that is seen as part of the enclosing"
         }
       }
@@ -498,15 +498,15 @@
         "executions": {
           "type": "RptExecutionContext",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Determines the executionContext in which the McData describing a local (e.g Task-Local) buffer of a is valid."
         },
         "mcDataInstances": {
           "type": "McDataInstance",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The target of the assignment."
         },
         "role": {

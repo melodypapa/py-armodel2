@@ -34,15 +34,15 @@ class ModeInBswInstanceRef(ARObject):
         """
         return False
 
-    context_bsw: Optional[BswImplementation]
+    context_bsw_ref: Optional[ARRef]
     context_mode_ref: Optional[ARRef]
-    target_mode: Optional[ModeDeclaration]
+    target_mode_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ModeInBswInstanceRef."""
         super().__init__()
-        self.context_bsw: Optional[BswImplementation] = None
+        self.context_bsw_ref: Optional[ARRef] = None
         self.context_mode_ref: Optional[ARRef] = None
-        self.target_mode: Optional[ModeDeclaration] = None
+        self.target_mode_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize ModeInBswInstanceRef to XML element.
@@ -54,12 +54,12 @@ class ModeInBswInstanceRef(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize context_bsw
-        if self.context_bsw is not None:
-            serialized = ARObject._serialize_item(self.context_bsw, "BswImplementation")
+        # Serialize context_bsw_ref
+        if self.context_bsw_ref is not None:
+            serialized = ARObject._serialize_item(self.context_bsw_ref, "BswImplementation")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT-BSW")
+                wrapped = ET.Element("CONTEXT-BSW-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -82,12 +82,12 @@ class ModeInBswInstanceRef(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize target_mode
-        if self.target_mode is not None:
-            serialized = ARObject._serialize_item(self.target_mode, "ModeDeclaration")
+        # Serialize target_mode_ref
+        if self.target_mode_ref is not None:
+            serialized = ARObject._serialize_item(self.target_mode_ref, "ModeDeclaration")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TARGET-MODE")
+                wrapped = ET.Element("TARGET-MODE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -112,11 +112,11 @@ class ModeInBswInstanceRef(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse context_bsw
-        child = ARObject._find_child_element(element, "CONTEXT-BSW")
+        # Parse context_bsw_ref
+        child = ARObject._find_child_element(element, "CONTEXT-BSW-REF")
         if child is not None:
-            context_bsw_value = ARObject._deserialize_by_tag(child, "BswImplementation")
-            obj.context_bsw = context_bsw_value
+            context_bsw_ref_value = ARRef.deserialize(child)
+            obj.context_bsw_ref = context_bsw_ref_value
 
         # Parse context_mode_ref
         child = ARObject._find_child_element(element, "CONTEXT-MODE-REF")
@@ -124,11 +124,11 @@ class ModeInBswInstanceRef(ARObject):
             context_mode_ref_value = ARRef.deserialize(child)
             obj.context_mode_ref = context_mode_ref_value
 
-        # Parse target_mode
-        child = ARObject._find_child_element(element, "TARGET-MODE")
+        # Parse target_mode_ref
+        child = ARObject._find_child_element(element, "TARGET-MODE-REF")
         if child is not None:
-            target_mode_value = ARObject._deserialize_by_tag(child, "ModeDeclaration")
-            obj.target_mode = target_mode_value
+            target_mode_ref_value = ARRef.deserialize(child)
+            obj.target_mode_ref = target_mode_ref_value
 
         return obj
 

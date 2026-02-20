@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -37,15 +38,15 @@ class AliasNameAssignment(ARObject):
         """
         return False
 
-    flat_instance: Optional[FlatInstanceDescriptor]
-    identifiable: Optional[Identifiable]
+    flat_instance_ref: Optional[ARRef]
+    identifiable_ref: Optional[ARRef]
     label: Optional[MultilanguageLongName]
     short_label: Optional[String]
     def __init__(self) -> None:
         """Initialize AliasNameAssignment."""
         super().__init__()
-        self.flat_instance: Optional[FlatInstanceDescriptor] = None
-        self.identifiable: Optional[Identifiable] = None
+        self.flat_instance_ref: Optional[ARRef] = None
+        self.identifiable_ref: Optional[ARRef] = None
         self.label: Optional[MultilanguageLongName] = None
         self.short_label: Optional[String] = None
 
@@ -59,12 +60,12 @@ class AliasNameAssignment(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize flat_instance
-        if self.flat_instance is not None:
-            serialized = ARObject._serialize_item(self.flat_instance, "FlatInstanceDescriptor")
+        # Serialize flat_instance_ref
+        if self.flat_instance_ref is not None:
+            serialized = ARObject._serialize_item(self.flat_instance_ref, "FlatInstanceDescriptor")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("FLAT-INSTANCE")
+                wrapped = ET.Element("FLAT-INSTANCE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -73,12 +74,12 @@ class AliasNameAssignment(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize identifiable
-        if self.identifiable is not None:
-            serialized = ARObject._serialize_item(self.identifiable, "Identifiable")
+        # Serialize identifiable_ref
+        if self.identifiable_ref is not None:
+            serialized = ARObject._serialize_item(self.identifiable_ref, "Identifiable")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("IDENTIFIABLE")
+                wrapped = ET.Element("IDENTIFIABLE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -131,17 +132,17 @@ class AliasNameAssignment(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse flat_instance
-        child = ARObject._find_child_element(element, "FLAT-INSTANCE")
+        # Parse flat_instance_ref
+        child = ARObject._find_child_element(element, "FLAT-INSTANCE-REF")
         if child is not None:
-            flat_instance_value = ARObject._deserialize_by_tag(child, "FlatInstanceDescriptor")
-            obj.flat_instance = flat_instance_value
+            flat_instance_ref_value = ARRef.deserialize(child)
+            obj.flat_instance_ref = flat_instance_ref_value
 
-        # Parse identifiable
-        child = ARObject._find_child_element(element, "IDENTIFIABLE")
+        # Parse identifiable_ref
+        child = ARObject._find_child_element(element, "IDENTIFIABLE-REF")
         if child is not None:
-            identifiable_value = ARObject._deserialize_by_tag(child, "Identifiable")
-            obj.identifiable = identifiable_value
+            identifiable_ref_value = ARRef.deserialize(child)
+            obj.identifiable_ref = identifiable_ref_value
 
         # Parse label
         child = ARObject._find_child_element(element, "LABEL")

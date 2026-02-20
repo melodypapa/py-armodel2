@@ -40,14 +40,14 @@ class PortPrototypeBlueprint(ARElement):
         return False
 
     init_value_refs: list[ARRef]
-    interface: PortInterface
+    interface_ref: ARRef
     provided_coms: list[PPortComSpec]
     required_coms: list[RPortComSpec]
     def __init__(self) -> None:
         """Initialize PortPrototypeBlueprint."""
         super().__init__()
         self.init_value_refs: list[ARRef] = []
-        self.interface: PortInterface = None
+        self.interface_ref: ARRef = None
         self.provided_coms: list[PPortComSpec] = []
         self.required_coms: list[RPortComSpec] = []
 
@@ -88,12 +88,12 @@ class PortPrototypeBlueprint(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize interface
-        if self.interface is not None:
-            serialized = ARObject._serialize_item(self.interface, "PortInterface")
+        # Serialize interface_ref
+        if self.interface_ref is not None:
+            serialized = ARObject._serialize_item(self.interface_ref, "PortInterface")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("INTERFACE")
+                wrapped = ET.Element("INTERFACE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -153,11 +153,11 @@ class PortPrototypeBlueprint(ARElement):
                 if child_value is not None:
                     obj.init_value_refs.append(child_value)
 
-        # Parse interface
-        child = ARObject._find_child_element(element, "INTERFACE")
+        # Parse interface_ref
+        child = ARObject._find_child_element(element, "INTERFACE-REF")
         if child is not None:
-            interface_value = ARObject._deserialize_by_tag(child, "PortInterface")
-            obj.interface = interface_value
+            interface_ref_value = ARRef.deserialize(child)
+            obj.interface_ref = interface_ref_value
 
         # Parse provided_coms (list from container "PROVIDED-COMS")
         obj.provided_coms = []

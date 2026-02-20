@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
 )
@@ -36,14 +37,14 @@ class RoleBasedMcDataAssignment(ARObject):
         """
         return False
 
-    executions: list[RptExecutionContext]
-    mc_data_instances: list[McDataInstance]
+    execution_refs: list[ARRef]
+    mc_data_instance_refs: list[ARRef]
     role: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize RoleBasedMcDataAssignment."""
         super().__init__()
-        self.executions: list[RptExecutionContext] = []
-        self.mc_data_instances: list[McDataInstance] = []
+        self.execution_refs: list[ARRef] = []
+        self.mc_data_instance_refs: list[ARRef] = []
         self.role: Optional[Identifier] = None
 
     def serialize(self) -> ET.Element:
@@ -56,23 +57,37 @@ class RoleBasedMcDataAssignment(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize executions (list to container "EXECUTIONS")
-        if self.executions:
-            wrapper = ET.Element("EXECUTIONS")
-            for item in self.executions:
+        # Serialize execution_refs (list to container "EXECUTION-REFS")
+        if self.execution_refs:
+            wrapper = ET.Element("EXECUTION-REFS")
+            for item in self.execution_refs:
                 serialized = ARObject._serialize_item(item, "RptExecutionContext")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("EXECUTION-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize mc_data_instances (list to container "MC-DATA-INSTANCES")
-        if self.mc_data_instances:
-            wrapper = ET.Element("MC-DATA-INSTANCES")
-            for item in self.mc_data_instances:
+        # Serialize mc_data_instance_refs (list to container "MC-DATA-INSTANCE-REFS")
+        if self.mc_data_instance_refs:
+            wrapper = ET.Element("MC-DATA-INSTANCE-REFS")
+            for item in self.mc_data_instance_refs:
                 serialized = ARObject._serialize_item(item, "McDataInstance")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("MC-DATA-INSTANCE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -106,25 +121,37 @@ class RoleBasedMcDataAssignment(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse executions (list from container "EXECUTIONS")
-        obj.executions = []
-        container = ARObject._find_child_element(element, "EXECUTIONS")
+        # Parse execution_refs (list from container "EXECUTION-REFS")
+        obj.execution_refs = []
+        container = ARObject._find_child_element(element, "EXECUTION-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.executions.append(child_value)
+                    obj.execution_refs.append(child_value)
 
-        # Parse mc_data_instances (list from container "MC-DATA-INSTANCES")
-        obj.mc_data_instances = []
-        container = ARObject._find_child_element(element, "MC-DATA-INSTANCES")
+        # Parse mc_data_instance_refs (list from container "MC-DATA-INSTANCE-REFS")
+        obj.mc_data_instance_refs = []
+        container = ARObject._find_child_element(element, "MC-DATA-INSTANCE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.mc_data_instances.append(child_value)
+                    obj.mc_data_instance_refs.append(child_value)
 
         # Parse role
         child = ARObject._find_child_element(element, "ROLE")

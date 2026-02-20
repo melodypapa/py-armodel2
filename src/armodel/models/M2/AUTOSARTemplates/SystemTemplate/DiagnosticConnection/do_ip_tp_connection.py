@@ -34,14 +34,14 @@ class DoIpTpConnection(TpConnection):
         """
         return False
 
-    do_ip_source: Optional[DoIpLogicAddress]
-    do_ip_target: Optional[DoIpLogicAddress]
+    do_ip_source_ref: Optional[ARRef]
+    do_ip_target_ref: Optional[ARRef]
     tp_sdu_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DoIpTpConnection."""
         super().__init__()
-        self.do_ip_source: Optional[DoIpLogicAddress] = None
-        self.do_ip_target: Optional[DoIpLogicAddress] = None
+        self.do_ip_source_ref: Optional[ARRef] = None
+        self.do_ip_target_ref: Optional[ARRef] = None
         self.tp_sdu_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
@@ -64,12 +64,12 @@ class DoIpTpConnection(TpConnection):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize do_ip_source
-        if self.do_ip_source is not None:
-            serialized = ARObject._serialize_item(self.do_ip_source, "DoIpLogicAddress")
+        # Serialize do_ip_source_ref
+        if self.do_ip_source_ref is not None:
+            serialized = ARObject._serialize_item(self.do_ip_source_ref, "DoIpLogicAddress")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DO-IP-SOURCE")
+                wrapped = ET.Element("DO-IP-SOURCE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -78,12 +78,12 @@ class DoIpTpConnection(TpConnection):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize do_ip_target
-        if self.do_ip_target is not None:
-            serialized = ARObject._serialize_item(self.do_ip_target, "DoIpLogicAddress")
+        # Serialize do_ip_target_ref
+        if self.do_ip_target_ref is not None:
+            serialized = ARObject._serialize_item(self.do_ip_target_ref, "DoIpLogicAddress")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DO-IP-TARGET")
+                wrapped = ET.Element("DO-IP-TARGET-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -121,17 +121,17 @@ class DoIpTpConnection(TpConnection):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DoIpTpConnection, cls).deserialize(element)
 
-        # Parse do_ip_source
-        child = ARObject._find_child_element(element, "DO-IP-SOURCE")
+        # Parse do_ip_source_ref
+        child = ARObject._find_child_element(element, "DO-IP-SOURCE-REF")
         if child is not None:
-            do_ip_source_value = ARObject._deserialize_by_tag(child, "DoIpLogicAddress")
-            obj.do_ip_source = do_ip_source_value
+            do_ip_source_ref_value = ARRef.deserialize(child)
+            obj.do_ip_source_ref = do_ip_source_ref_value
 
-        # Parse do_ip_target
-        child = ARObject._find_child_element(element, "DO-IP-TARGET")
+        # Parse do_ip_target_ref
+        child = ARObject._find_child_element(element, "DO-IP-TARGET-REF")
         if child is not None:
-            do_ip_target_value = ARObject._deserialize_by_tag(child, "DoIpLogicAddress")
-            obj.do_ip_target = do_ip_target_value
+            do_ip_target_ref_value = ARRef.deserialize(child)
+            obj.do_ip_target_ref = do_ip_target_ref_value
 
         # Parse tp_sdu_ref
         child = ARObject._find_child_element(element, "TP-SDU-REF")

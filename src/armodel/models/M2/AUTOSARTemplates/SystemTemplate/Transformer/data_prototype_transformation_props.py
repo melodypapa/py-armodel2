@@ -39,13 +39,13 @@ class DataPrototypeTransformationProps(ARObject):
 
     data_prototype_in_ref: Optional[ARRef]
     network: Optional[SwDataDefProps]
-    transformation_props: Optional[TransformationProps]
+    transformation_props_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DataPrototypeTransformationProps."""
         super().__init__()
         self.data_prototype_in_ref: Optional[ARRef] = None
         self.network: Optional[SwDataDefProps] = None
-        self.transformation_props: Optional[TransformationProps] = None
+        self.transformation_props_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DataPrototypeTransformationProps to XML element.
@@ -85,12 +85,12 @@ class DataPrototypeTransformationProps(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize transformation_props
-        if self.transformation_props is not None:
-            serialized = ARObject._serialize_item(self.transformation_props, "TransformationProps")
+        # Serialize transformation_props_ref
+        if self.transformation_props_ref is not None:
+            serialized = ARObject._serialize_item(self.transformation_props_ref, "TransformationProps")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TRANSFORMATION-PROPS")
+                wrapped = ET.Element("TRANSFORMATION-PROPS-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -127,11 +127,11 @@ class DataPrototypeTransformationProps(ARObject):
             network_value = ARObject._deserialize_by_tag(child, "SwDataDefProps")
             obj.network = network_value
 
-        # Parse transformation_props
-        child = ARObject._find_child_element(element, "TRANSFORMATION-PROPS")
+        # Parse transformation_props_ref
+        child = ARObject._find_child_element(element, "TRANSFORMATION-PROPS-REF")
         if child is not None:
-            transformation_props_value = ARObject._deserialize_by_tag(child, "TransformationProps")
-            obj.transformation_props = transformation_props_value
+            transformation_props_ref_value = ARRef.deserialize(child)
+            obj.transformation_props_ref = transformation_props_ref_value
 
         return obj
 

@@ -13,6 +13,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes import (
     ArraySizeSemanticsEnum,
 )
@@ -37,14 +38,14 @@ class SwTextProps(ARObject):
         return False
 
     array_size: Optional[ArraySizeSemanticsEnum]
-    base_type: Optional[SwBaseType]
+    base_type_ref: Optional[ARRef]
     sw_fill_character: Optional[Integer]
     sw_max_text_size: Optional[Integer]
     def __init__(self) -> None:
         """Initialize SwTextProps."""
         super().__init__()
         self.array_size: Optional[ArraySizeSemanticsEnum] = None
-        self.base_type: Optional[SwBaseType] = None
+        self.base_type_ref: Optional[ARRef] = None
         self.sw_fill_character: Optional[Integer] = None
         self.sw_max_text_size: Optional[Integer] = None
 
@@ -72,12 +73,12 @@ class SwTextProps(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize base_type
-        if self.base_type is not None:
-            serialized = ARObject._serialize_item(self.base_type, "SwBaseType")
+        # Serialize base_type_ref
+        if self.base_type_ref is not None:
+            serialized = ARObject._serialize_item(self.base_type_ref, "SwBaseType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("BASE-TYPE")
+                wrapped = ET.Element("BASE-TYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -136,11 +137,11 @@ class SwTextProps(ARObject):
             array_size_value = ArraySizeSemanticsEnum.deserialize(child)
             obj.array_size = array_size_value
 
-        # Parse base_type
-        child = ARObject._find_child_element(element, "BASE-TYPE")
+        # Parse base_type_ref
+        child = ARObject._find_child_element(element, "BASE-TYPE-REF")
         if child is not None:
-            base_type_value = ARObject._deserialize_by_tag(child, "SwBaseType")
-            obj.base_type = base_type_value
+            base_type_ref_value = ARRef.deserialize(child)
+            obj.base_type_ref = base_type_ref_value
 
         # Parse sw_fill_character
         child = ARObject._find_child_element(element, "SW-FILL-CHARACTER")

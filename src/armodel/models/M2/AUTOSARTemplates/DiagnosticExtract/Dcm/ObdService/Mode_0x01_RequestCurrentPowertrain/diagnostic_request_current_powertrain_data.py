@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_parameter import (
     DiagnosticParameter,
 )
@@ -30,13 +31,13 @@ class DiagnosticRequestCurrentPowertrainData(DiagnosticServiceInstance):
         """
         return False
 
-    pid: Optional[DiagnosticParameter]
-    request_current: Optional[Any]
+    pid_ref: Optional[ARRef]
+    request_current_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticRequestCurrentPowertrainData."""
         super().__init__()
-        self.pid: Optional[DiagnosticParameter] = None
-        self.request_current: Optional[Any] = None
+        self.pid_ref: Optional[ARRef] = None
+        self.request_current_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticRequestCurrentPowertrainData to XML element.
@@ -58,12 +59,12 @@ class DiagnosticRequestCurrentPowertrainData(DiagnosticServiceInstance):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize pid
-        if self.pid is not None:
-            serialized = ARObject._serialize_item(self.pid, "DiagnosticParameter")
+        # Serialize pid_ref
+        if self.pid_ref is not None:
+            serialized = ARObject._serialize_item(self.pid_ref, "DiagnosticParameter")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PID")
+                wrapped = ET.Element("PID-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -72,12 +73,12 @@ class DiagnosticRequestCurrentPowertrainData(DiagnosticServiceInstance):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize request_current
-        if self.request_current is not None:
-            serialized = ARObject._serialize_item(self.request_current, "Any")
+        # Serialize request_current_ref
+        if self.request_current_ref is not None:
+            serialized = ARObject._serialize_item(self.request_current_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("REQUEST-CURRENT")
+                wrapped = ET.Element("REQUEST-CURRENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -101,17 +102,17 @@ class DiagnosticRequestCurrentPowertrainData(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticRequestCurrentPowertrainData, cls).deserialize(element)
 
-        # Parse pid
-        child = ARObject._find_child_element(element, "PID")
+        # Parse pid_ref
+        child = ARObject._find_child_element(element, "PID-REF")
         if child is not None:
-            pid_value = ARObject._deserialize_by_tag(child, "DiagnosticParameter")
-            obj.pid = pid_value
+            pid_ref_value = ARRef.deserialize(child)
+            obj.pid_ref = pid_ref_value
 
-        # Parse request_current
-        child = ARObject._find_child_element(element, "REQUEST-CURRENT")
+        # Parse request_current_ref
+        child = ARObject._find_child_element(element, "REQUEST-CURRENT-REF")
         if child is not None:
-            request_current_value = child.text
-            obj.request_current = request_current_value
+            request_current_ref_value = ARRef.deserialize(child)
+            obj.request_current_ref = request_current_ref_value
 
         return obj
 

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
     DiagnosticMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_data_element import (
     DiagnosticDataElement,
 )
@@ -30,13 +31,13 @@ class DiagnosticSecurityEventReportingModeMapping(DiagnosticMapping):
         """
         return False
 
-    data_element: Optional[DiagnosticDataElement]
-    security_event_context: Optional[Any]
+    data_element_ref: Optional[ARRef]
+    security_event_context_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticSecurityEventReportingModeMapping."""
         super().__init__()
-        self.data_element: Optional[DiagnosticDataElement] = None
-        self.security_event_context: Optional[Any] = None
+        self.data_element_ref: Optional[ARRef] = None
+        self.security_event_context_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticSecurityEventReportingModeMapping to XML element.
@@ -58,12 +59,12 @@ class DiagnosticSecurityEventReportingModeMapping(DiagnosticMapping):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize data_element
-        if self.data_element is not None:
-            serialized = ARObject._serialize_item(self.data_element, "DiagnosticDataElement")
+        # Serialize data_element_ref
+        if self.data_element_ref is not None:
+            serialized = ARObject._serialize_item(self.data_element_ref, "DiagnosticDataElement")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DATA-ELEMENT")
+                wrapped = ET.Element("DATA-ELEMENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -72,12 +73,12 @@ class DiagnosticSecurityEventReportingModeMapping(DiagnosticMapping):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize security_event_context
-        if self.security_event_context is not None:
-            serialized = ARObject._serialize_item(self.security_event_context, "Any")
+        # Serialize security_event_context_ref
+        if self.security_event_context_ref is not None:
+            serialized = ARObject._serialize_item(self.security_event_context_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SECURITY-EVENT-CONTEXT")
+                wrapped = ET.Element("SECURITY-EVENT-CONTEXT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -101,17 +102,17 @@ class DiagnosticSecurityEventReportingModeMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticSecurityEventReportingModeMapping, cls).deserialize(element)
 
-        # Parse data_element
-        child = ARObject._find_child_element(element, "DATA-ELEMENT")
+        # Parse data_element_ref
+        child = ARObject._find_child_element(element, "DATA-ELEMENT-REF")
         if child is not None:
-            data_element_value = ARObject._deserialize_by_tag(child, "DiagnosticDataElement")
-            obj.data_element = data_element_value
+            data_element_ref_value = ARRef.deserialize(child)
+            obj.data_element_ref = data_element_ref_value
 
-        # Parse security_event_context
-        child = ARObject._find_child_element(element, "SECURITY-EVENT-CONTEXT")
+        # Parse security_event_context_ref
+        child = ARObject._find_child_element(element, "SECURITY-EVENT-CONTEXT-REF")
         if child is not None:
-            security_event_context_value = child.text
-            obj.security_event_context = security_event_context_value
+            security_event_context_ref_value = ARRef.deserialize(child)
+            obj.security_event_context_ref = security_event_context_ref_value
 
         return obj
 

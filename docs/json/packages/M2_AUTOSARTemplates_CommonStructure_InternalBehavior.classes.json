@@ -80,8 +80,8 @@
         "constantValues": {
           "type": "ConstantSpecification",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the ConstantSpecificationMapping to be applied for the particular InternalBehavior"
         },
         "dataTypes": {
@@ -175,15 +175,15 @@
         "canEnters": {
           "type": "ExclusiveArea",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This means that the executable entity can enter/leave the"
         },
         "exclusiveAreaNestings": {
           "type": "ExclusiveAreaNestingOrder",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the set of ExclusiveAreaNestingOrders recognized by this ExecutableEntity."
         },
         "minimumStart": {
@@ -203,15 +203,15 @@
         "runsInsides": {
           "type": "ExclusiveArea",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The executable entity runs completely inside the"
         },
         "swAddrMethod": {
           "type": "SwAddrMethod",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Addressing method related to this code entity. Via an the same SwAddrMethod, it can be several code entities (even of different components) shall be located in the same already specifying the memory section"
         }
       }
@@ -288,8 +288,8 @@
         "exclusiveAreas": {
           "type": "ExclusiveArea",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents a specific scenario of how Exclusive"
         }
       }
@@ -379,8 +379,8 @@
         "activation": {
           "type": "ExecutableEntity",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "If the activationReasonRepresentation is referenced from the enclosing AbstractEvent this shall be taken as an that the latter contributes to the activating this ExecutableEntity that owns the referenced"
         }
       }

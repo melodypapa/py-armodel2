@@ -43,15 +43,15 @@
         "elements": {
           "type": "any (DiagnosticCommon)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents a DiagnosticCommonElement considered the context of the DiagnosticContributionSet atpVariation 719 Document ID 673: AUTOSAR_CP_TPS_DiagnosticExtractTemplate Template R23-11"
         },
         "serviceTables": {
           "type": "DiagnosticServiceTable",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the collection of DiagnosticServiceTables considered in the scope of this Diagnostic atpVariation"
         }
       }
@@ -92,8 +92,8 @@
         "diagnostics": {
           "type": "DiagnosticConnection",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the collection of applicable Diagnostic for this DiagnosticProtocol. atpVariation"
         },
         "priority": {
@@ -120,8 +120,8 @@
         "serviceTable": {
           "type": "DiagnosticServiceTable",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the service table applicable for the given atpVariation"
         }
       }
@@ -162,15 +162,15 @@
         "diagnostics": {
           "type": "DiagnosticConnection",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the DiagnosticConnection that is taken handling the data transmission for the enclosing possible to refer to more than one diagnostic order to support more than one diagnostic atpVariation"
         },
         "ecuInstance": {
           "type": "EcuInstance",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the applicable EcuInstance for this"
         },
         "protocolKind": {
@@ -183,8 +183,8 @@
         "serviceInstances": {
           "type": "any (DiagnosticService)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the collection of DiagnosticService to be considered in the scope of this Diagnostic"
         }
       }
@@ -225,8 +225,8 @@
         "ecuInstances": {
           "type": "EcuInstance",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the actual EcuInstance to which the in the DiagnosticEcuInstance"
         },
         "obdSupport": {

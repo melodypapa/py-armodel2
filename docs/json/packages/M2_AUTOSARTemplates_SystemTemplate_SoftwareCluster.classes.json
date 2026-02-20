@@ -100,8 +100,8 @@
         "resource": {
           "type": "CpSoftwareCluster",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to resource for which the dependency is"
         },
         "role": {
@@ -174,8 +174,8 @@
         "swCompositionComponentTypes": {
           "type": "CompositionSwComponentType",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Software Components in the context of a CompositionSw can be used to describe the belonging the CP Software Cluster is described out of of a System, e.g. reusable CP Software atpVariation"
         }
       }
@@ -212,8 +212,8 @@
         "ecuInstance": {
           "type": "EcuInstance",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to a specific ECU Instance description."
         },
         "machineId": {
@@ -226,8 +226,8 @@
         "swClusters": {
           "type": "CpSoftwareCluster",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The mapped CP Software Cluster atpVariation"
         }
       }
@@ -265,15 +265,15 @@
         "application": {
           "type": "ApplicationPartition",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "ApplicationPartition for which the mapping applies."
         },
         "resource": {
           "type": "CpSoftwareCluster",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Software Cluster Resource for which the mapping applies."
         }
       }
@@ -373,15 +373,15 @@
         "applications": {
           "type": "ApplicationPartition",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Collection of ApplicationPartitions available in the Cp"
         },
         "softwareCluster": {
           "type": "CpSoftwareCluster",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Software Cluster Resource for which the mapping applies"
         }
       }
@@ -418,15 +418,15 @@
         "softwareCluster": {
           "type": "CpSoftwareCluster",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Communication resource for which the mapping applies."
         },
         "systemSignal": {
           "type": "SystemSignal",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "SystemSignal to which the communication resource is"
         }
       }
@@ -463,8 +463,8 @@
         "softwareCluster": {
           "type": "CpSoftwareCluster",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Communication resource for which the mapping applies."
         },
         "systemSignalGroup": {
@@ -546,8 +546,8 @@
         "ecuScopes": {
           "type": "EcuInstance",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the EcuInstance in which the is defined."
         },
         "resources": {
@@ -743,8 +743,8 @@
         "resourceNeedses": {
           "type": "EcucContainerValue",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Refernce(s) to one or multiple EcucContainerValue(s) characteristics of the resource."
         }
       }
@@ -782,22 +782,22 @@
         "provider": {
           "type": "CpSoftwareCluster",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "CP Software Cluster providing the resource"
         },
         "requesters": {
           "type": "CpSoftwareCluster",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "CP Software Cluster requesting the resource"
         },
         "service": {
           "type": "CpSoftwareCluster",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Service resource for which the mapping applies."
         }
       }

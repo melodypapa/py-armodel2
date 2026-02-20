@@ -38,15 +38,15 @@
         "freezeFrameFreezeFrame": {
           "type": "DiagnosticPowertrainFreezeFrame",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the associated freeze-frame."
         },
         "request": {
           "type": "any (DiagnosticRequest)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference substantiates that abstract reference in the role serviceClass for this specific concrete class. Thereby, the reference represents the ability to access Data shared attributes among all DiagnosticRequestPowertrain the given context."
         }
       }
@@ -122,8 +122,8 @@
         "pids": {
           "type": "DiagnosticParameter",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the PID associated with this instance of OBD mode 0x02 service."
         }
       }

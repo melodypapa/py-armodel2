@@ -151,8 +151,8 @@
         "sdgConstraints": {
           "type": "TraceableText",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Semantic constraints that restrict the structure of the group."
         }
       }
@@ -329,7 +329,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "Describes that the Sdg may contain another Sdg. The gid of the nested Sdg is defined by subSdg. Represents ’sdg’.",
+      "note": "Describes that the Sdg may contain another Sdg. The gid of the nested Sdg is defined by subSdg. Represents \u2019sdg\u2019.",
       "sources": [
         {
           "pdf_file": "AUTOSAR_FO_TPS_GenericStructureTemplate.pdf",
@@ -342,8 +342,8 @@
         "subSdg": {
           "type": "SdgClass",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Supported sub Sdg Class"
         }
       }
@@ -382,8 +382,8 @@
         "destSdg": {
           "type": "SdgClass",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Refers to a SdgClass which is used on the definition side the destination type of the referenced Sdg. On side the reference is realized by means of the defining an sdgx attribute which refers to of the referenced Sdg."
         }
       }

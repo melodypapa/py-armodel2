@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.VariantHandling.sw_systemconstant_value_set import (
     SwSystemconstantValueSet,
 )
@@ -38,15 +39,15 @@ class FMFeatureMapElement(Identifiable):
 
     assertions: list[FMFeatureMap]
     conditions: list[FMFeatureMap]
-    post_build_variants: list[Any]
-    sw_value_sets: list[SwSystemconstantValueSet]
+    post_build_variant_refs: list[Any]
+    sw_value_set_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize FMFeatureMapElement."""
         super().__init__()
         self.assertions: list[FMFeatureMap] = []
         self.conditions: list[FMFeatureMap] = []
-        self.post_build_variants: list[Any] = []
-        self.sw_value_sets: list[SwSystemconstantValueSet] = []
+        self.post_build_variant_refs: list[Any] = []
+        self.sw_value_set_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize FMFeatureMapElement to XML element.
@@ -88,23 +89,37 @@ class FMFeatureMapElement(Identifiable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize post_build_variants (list to container "POST-BUILD-VARIANTS")
-        if self.post_build_variants:
-            wrapper = ET.Element("POST-BUILD-VARIANTS")
-            for item in self.post_build_variants:
+        # Serialize post_build_variant_refs (list to container "POST-BUILD-VARIANT-REFS")
+        if self.post_build_variant_refs:
+            wrapper = ET.Element("POST-BUILD-VARIANT-REFS")
+            for item in self.post_build_variant_refs:
                 serialized = ARObject._serialize_item(item, "Any")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("POST-BUILD-VARIANT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize sw_value_sets (list to container "SW-VALUE-SETS")
-        if self.sw_value_sets:
-            wrapper = ET.Element("SW-VALUE-SETS")
-            for item in self.sw_value_sets:
+        # Serialize sw_value_set_refs (list to container "SW-VALUE-SET-REFS")
+        if self.sw_value_set_refs:
+            wrapper = ET.Element("SW-VALUE-SET-REFS")
+            for item in self.sw_value_set_refs:
                 serialized = ARObject._serialize_item(item, "SwSystemconstantValueSet")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("SW-VALUE-SET-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -143,25 +158,37 @@ class FMFeatureMapElement(Identifiable):
                 if child_value is not None:
                     obj.conditions.append(child_value)
 
-        # Parse post_build_variants (list from container "POST-BUILD-VARIANTS")
-        obj.post_build_variants = []
-        container = ARObject._find_child_element(element, "POST-BUILD-VARIANTS")
+        # Parse post_build_variant_refs (list from container "POST-BUILD-VARIANT-REFS")
+        obj.post_build_variant_refs = []
+        container = ARObject._find_child_element(element, "POST-BUILD-VARIANT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.post_build_variants.append(child_value)
+                    obj.post_build_variant_refs.append(child_value)
 
-        # Parse sw_value_sets (list from container "SW-VALUE-SETS")
-        obj.sw_value_sets = []
-        container = ARObject._find_child_element(element, "SW-VALUE-SETS")
+        # Parse sw_value_set_refs (list from container "SW-VALUE-SET-REFS")
+        obj.sw_value_set_refs = []
+        container = ARObject._find_child_element(element, "SW-VALUE-SET-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.sw_value_sets.append(child_value)
+                    obj.sw_value_set_refs.append(child_value)
 
         return obj
 

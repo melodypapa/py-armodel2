@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_event 
     BswEvent,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_module_client_server_entry import (
     BswModuleClientServerEntry,
 )
@@ -30,11 +31,11 @@ class BswOperationInvokedEvent(BswEvent):
         """
         return False
 
-    entry: Optional[BswModuleClientServerEntry]
+    entry_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize BswOperationInvokedEvent."""
         super().__init__()
-        self.entry: Optional[BswModuleClientServerEntry] = None
+        self.entry_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize BswOperationInvokedEvent to XML element.
@@ -56,12 +57,12 @@ class BswOperationInvokedEvent(BswEvent):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize entry
-        if self.entry is not None:
-            serialized = ARObject._serialize_item(self.entry, "BswModuleClientServerEntry")
+        # Serialize entry_ref
+        if self.entry_ref is not None:
+            serialized = ARObject._serialize_item(self.entry_ref, "BswModuleClientServerEntry")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ENTRY")
+                wrapped = ET.Element("ENTRY-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -85,11 +86,11 @@ class BswOperationInvokedEvent(BswEvent):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswOperationInvokedEvent, cls).deserialize(element)
 
-        # Parse entry
-        child = ARObject._find_child_element(element, "ENTRY")
+        # Parse entry_ref
+        child = ARObject._find_child_element(element, "ENTRY-REF")
         if child is not None:
-            entry_value = ARObject._deserialize_by_tag(child, "BswModuleClientServerEntry")
-            obj.entry = entry_value
+            entry_ref_value = ARRef.deserialize(child)
+            obj.entry_ref = entry_ref_value
 
         return obj
 

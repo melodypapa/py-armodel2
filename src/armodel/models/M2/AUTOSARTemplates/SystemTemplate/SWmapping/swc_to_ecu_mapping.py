@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.ecu_instance import (
     EcuInstance,
 )
@@ -34,16 +35,16 @@ class SwcToEcuMapping(Identifiable):
         return False
 
     components: list[Any]
-    controlled_hw: Optional[HwElement]
-    ecu_instance: Optional[EcuInstance]
-    processing_unit: Optional[HwElement]
+    controlled_hw_ref: Optional[ARRef]
+    ecu_instance_ref: Optional[ARRef]
+    processing_unit_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SwcToEcuMapping."""
         super().__init__()
         self.components: list[Any] = []
-        self.controlled_hw: Optional[HwElement] = None
-        self.ecu_instance: Optional[EcuInstance] = None
-        self.processing_unit: Optional[HwElement] = None
+        self.controlled_hw_ref: Optional[ARRef] = None
+        self.ecu_instance_ref: Optional[ARRef] = None
+        self.processing_unit_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize SwcToEcuMapping to XML element.
@@ -75,12 +76,12 @@ class SwcToEcuMapping(Identifiable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize controlled_hw
-        if self.controlled_hw is not None:
-            serialized = ARObject._serialize_item(self.controlled_hw, "HwElement")
+        # Serialize controlled_hw_ref
+        if self.controlled_hw_ref is not None:
+            serialized = ARObject._serialize_item(self.controlled_hw_ref, "HwElement")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONTROLLED-HW")
+                wrapped = ET.Element("CONTROLLED-HW-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -89,12 +90,12 @@ class SwcToEcuMapping(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize ecu_instance
-        if self.ecu_instance is not None:
-            serialized = ARObject._serialize_item(self.ecu_instance, "EcuInstance")
+        # Serialize ecu_instance_ref
+        if self.ecu_instance_ref is not None:
+            serialized = ARObject._serialize_item(self.ecu_instance_ref, "EcuInstance")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ECU-INSTANCE")
+                wrapped = ET.Element("ECU-INSTANCE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -103,12 +104,12 @@ class SwcToEcuMapping(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize processing_unit
-        if self.processing_unit is not None:
-            serialized = ARObject._serialize_item(self.processing_unit, "HwElement")
+        # Serialize processing_unit_ref
+        if self.processing_unit_ref is not None:
+            serialized = ARObject._serialize_item(self.processing_unit_ref, "HwElement")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PROCESSING-UNIT")
+                wrapped = ET.Element("PROCESSING-UNIT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -142,23 +143,23 @@ class SwcToEcuMapping(Identifiable):
                 if child_value is not None:
                     obj.components.append(child_value)
 
-        # Parse controlled_hw
-        child = ARObject._find_child_element(element, "CONTROLLED-HW")
+        # Parse controlled_hw_ref
+        child = ARObject._find_child_element(element, "CONTROLLED-HW-REF")
         if child is not None:
-            controlled_hw_value = ARObject._deserialize_by_tag(child, "HwElement")
-            obj.controlled_hw = controlled_hw_value
+            controlled_hw_ref_value = ARRef.deserialize(child)
+            obj.controlled_hw_ref = controlled_hw_ref_value
 
-        # Parse ecu_instance
-        child = ARObject._find_child_element(element, "ECU-INSTANCE")
+        # Parse ecu_instance_ref
+        child = ARObject._find_child_element(element, "ECU-INSTANCE-REF")
         if child is not None:
-            ecu_instance_value = ARObject._deserialize_by_tag(child, "EcuInstance")
-            obj.ecu_instance = ecu_instance_value
+            ecu_instance_ref_value = ARRef.deserialize(child)
+            obj.ecu_instance_ref = ecu_instance_ref_value
 
-        # Parse processing_unit
-        child = ARObject._find_child_element(element, "PROCESSING-UNIT")
+        # Parse processing_unit_ref
+        child = ARObject._find_child_element(element, "PROCESSING-UNIT-REF")
         if child is not None:
-            processing_unit_value = ARObject._deserialize_by_tag(child, "HwElement")
-            obj.processing_unit = processing_unit_value
+            processing_unit_ref_value = ARRef.deserialize(child)
+            obj.processing_unit_ref = processing_unit_ref_value
 
         return obj
 

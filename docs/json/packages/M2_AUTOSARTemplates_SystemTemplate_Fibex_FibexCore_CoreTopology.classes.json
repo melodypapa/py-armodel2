@@ -138,8 +138,8 @@
         "associateds": {
           "type": "ConsumedProvidedServiceInstanceGroup",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "With this reference it is possible to identify which ConsumedProvidedServiceInstanceGroups are for which ECUInstance. atpSplitable; atpVariation Group Tags:"
         },
         "associatedPdurs": {
@@ -208,8 +208,8 @@
         "ecuTaskProxies": {
           "type": "OsTaskProxy",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to OsTaskProxies assigned to the Ecu"
         },
         "ethSwitchPort": {
@@ -222,8 +222,8 @@
         "firewallRules": {
           "type": "StateDependentFirewall",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Firewall rules defined in the context of an EcuInstance."
         },
         "partitions": {
@@ -271,15 +271,15 @@
         "tcpIpIcmpProps": {
           "type": "EthTcpIpIcmpProps",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "EcuInstance specific ICMP (Internet Control Message"
         },
         "tcpIpProps": {
           "type": "EthTcpIpProps",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "EcuInstance specific TcpIp Stack attributes."
         },
         "v2xSupported": {
@@ -353,8 +353,8 @@
         "commConnectors": {
           "type": "CommunicationConnector",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the ECUInstance via a Communication assignment of Physical Channels to is expressed with atpVariation"
         },
         "frameTriggerings": {
@@ -374,8 +374,8 @@
         "manageds": {
           "type": "PhysicalChannel",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference between a channel with role managing and a channel with role managed channel."
         },
         "pduTriggerings": {
@@ -525,8 +525,8 @@
         "commController": {
           "type": "any (Communication)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the communication controller. The"
         },
         "createEcu": {

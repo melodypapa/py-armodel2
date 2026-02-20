@@ -266,7 +266,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "Number of bits used by the node to transmit the ’idle’ part"
+          "note": "Number of bits used by the node to transmit the \u2019idle\u2019 part"
         }
       }
     },
@@ -548,8 +548,8 @@
         "channel": {
           "type": "FlexrayPhysicalChannel",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Fifo channel admittance criteria."
         },
         "cycleRepetition": {

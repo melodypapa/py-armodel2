@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.application_error import (
     ApplicationError,
 )
@@ -27,13 +28,13 @@ class ClientServerApplicationErrorMapping(ARObject):
         """
         return False
 
-    first_application: Optional[ApplicationError]
-    second: Optional[ApplicationError]
+    first_application_ref: Optional[ARRef]
+    second_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ClientServerApplicationErrorMapping."""
         super().__init__()
-        self.first_application: Optional[ApplicationError] = None
-        self.second: Optional[ApplicationError] = None
+        self.first_application_ref: Optional[ARRef] = None
+        self.second_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize ClientServerApplicationErrorMapping to XML element.
@@ -45,12 +46,12 @@ class ClientServerApplicationErrorMapping(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize first_application
-        if self.first_application is not None:
-            serialized = ARObject._serialize_item(self.first_application, "ApplicationError")
+        # Serialize first_application_ref
+        if self.first_application_ref is not None:
+            serialized = ARObject._serialize_item(self.first_application_ref, "ApplicationError")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("FIRST-APPLICATION")
+                wrapped = ET.Element("FIRST-APPLICATION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -59,12 +60,12 @@ class ClientServerApplicationErrorMapping(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize second
-        if self.second is not None:
-            serialized = ARObject._serialize_item(self.second, "ApplicationError")
+        # Serialize second_ref
+        if self.second_ref is not None:
+            serialized = ARObject._serialize_item(self.second_ref, "ApplicationError")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SECOND")
+                wrapped = ET.Element("SECOND-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -89,17 +90,17 @@ class ClientServerApplicationErrorMapping(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse first_application
-        child = ARObject._find_child_element(element, "FIRST-APPLICATION")
+        # Parse first_application_ref
+        child = ARObject._find_child_element(element, "FIRST-APPLICATION-REF")
         if child is not None:
-            first_application_value = ARObject._deserialize_by_tag(child, "ApplicationError")
-            obj.first_application = first_application_value
+            first_application_ref_value = ARRef.deserialize(child)
+            obj.first_application_ref = first_application_ref_value
 
-        # Parse second
-        child = ARObject._find_child_element(element, "SECOND")
+        # Parse second_ref
+        child = ARObject._find_child_element(element, "SECOND-REF")
         if child is not None:
-            second_value = ARObject._deserialize_by_tag(child, "ApplicationError")
-            obj.second = second_value
+            second_ref_value = ARRef.deserialize(child)
+            obj.second_ref = second_ref_value
 
         return obj
 

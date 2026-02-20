@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -33,12 +34,12 @@ class DiagnosticTroubleCodeGroup(DiagnosticCommonElement):
         """
         return False
 
-    dtcs: list[DiagnosticTroubleCode]
+    dtc_refs: list[ARRef]
     group_number: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DiagnosticTroubleCodeGroup."""
         super().__init__()
-        self.dtcs: list[DiagnosticTroubleCode] = []
+        self.dtc_refs: list[ARRef] = []
         self.group_number: Optional[PositiveInteger] = None
 
     def serialize(self) -> ET.Element:
@@ -61,13 +62,20 @@ class DiagnosticTroubleCodeGroup(DiagnosticCommonElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize dtcs (list to container "DTCS")
-        if self.dtcs:
-            wrapper = ET.Element("DTCS")
-            for item in self.dtcs:
+        # Serialize dtc_refs (list to container "DTC-REFS")
+        if self.dtc_refs:
+            wrapper = ET.Element("DTC-REFS")
+            for item in self.dtc_refs:
                 serialized = ARObject._serialize_item(item, "DiagnosticTroubleCode")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("DTC-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -100,15 +108,21 @@ class DiagnosticTroubleCodeGroup(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticTroubleCodeGroup, cls).deserialize(element)
 
-        # Parse dtcs (list from container "DTCS")
-        obj.dtcs = []
-        container = ARObject._find_child_element(element, "DTCS")
+        # Parse dtc_refs (list from container "DTC-REFS")
+        obj.dtc_refs = []
+        container = ARObject._find_child_element(element, "DTC-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.dtcs.append(child_value)
+                    obj.dtc_refs.append(child_value)
 
         # Parse group_number
         child = ARObject._find_child_element(element, "GROUP-NUMBER")

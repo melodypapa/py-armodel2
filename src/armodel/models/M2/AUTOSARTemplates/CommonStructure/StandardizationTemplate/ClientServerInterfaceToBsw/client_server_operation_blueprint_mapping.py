@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_module_entry import (
     BswModuleEntry,
 )
@@ -34,14 +35,14 @@ class ClientServerOperationBlueprintMapping(ARObject):
         return False
 
     blueprint: Optional[DocumentationBlock]
-    bsw_module_entry: BswModuleEntry
-    client_server: ClientServerOperation
+    bsw_module_entry_ref: ARRef
+    client_server_ref: ARRef
     def __init__(self) -> None:
         """Initialize ClientServerOperationBlueprintMapping."""
         super().__init__()
         self.blueprint: Optional[DocumentationBlock] = None
-        self.bsw_module_entry: BswModuleEntry = None
-        self.client_server: ClientServerOperation = None
+        self.bsw_module_entry_ref: ARRef = None
+        self.client_server_ref: ARRef = None
 
     def serialize(self) -> ET.Element:
         """Serialize ClientServerOperationBlueprintMapping to XML element.
@@ -67,12 +68,12 @@ class ClientServerOperationBlueprintMapping(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize bsw_module_entry
-        if self.bsw_module_entry is not None:
-            serialized = ARObject._serialize_item(self.bsw_module_entry, "BswModuleEntry")
+        # Serialize bsw_module_entry_ref
+        if self.bsw_module_entry_ref is not None:
+            serialized = ARObject._serialize_item(self.bsw_module_entry_ref, "BswModuleEntry")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("BSW-MODULE-ENTRY")
+                wrapped = ET.Element("BSW-MODULE-ENTRY-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -81,12 +82,12 @@ class ClientServerOperationBlueprintMapping(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize client_server
-        if self.client_server is not None:
-            serialized = ARObject._serialize_item(self.client_server, "ClientServerOperation")
+        # Serialize client_server_ref
+        if self.client_server_ref is not None:
+            serialized = ARObject._serialize_item(self.client_server_ref, "ClientServerOperation")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CLIENT-SERVER")
+                wrapped = ET.Element("CLIENT-SERVER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -117,17 +118,17 @@ class ClientServerOperationBlueprintMapping(ARObject):
             blueprint_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
             obj.blueprint = blueprint_value
 
-        # Parse bsw_module_entry
-        child = ARObject._find_child_element(element, "BSW-MODULE-ENTRY")
+        # Parse bsw_module_entry_ref
+        child = ARObject._find_child_element(element, "BSW-MODULE-ENTRY-REF")
         if child is not None:
-            bsw_module_entry_value = ARObject._deserialize_by_tag(child, "BswModuleEntry")
-            obj.bsw_module_entry = bsw_module_entry_value
+            bsw_module_entry_ref_value = ARRef.deserialize(child)
+            obj.bsw_module_entry_ref = bsw_module_entry_ref_value
 
-        # Parse client_server
-        child = ARObject._find_child_element(element, "CLIENT-SERVER")
+        # Parse client_server_ref
+        child = ARObject._find_child_element(element, "CLIENT-SERVER-REF")
         if child is not None:
-            client_server_value = ARObject._deserialize_by_tag(child, "ClientServerOperation")
-            obj.client_server = client_server_value
+            client_server_ref_value = ARRef.deserialize(child)
+            obj.client_server_ref = client_server_ref_value
 
         return obj
 

@@ -60,8 +60,8 @@
         "securityEvent": {
           "type": "SecurityEventDefinition",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference defines the security event that is mapped by SecurityEventMappingProps with properties. atpVariation"
         },
         "sensorInstance": {
@@ -174,8 +174,8 @@
         "elements": {
           "type": "IdsCommonElement",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference includes an element with IDS related the IdsDesign. atpVariation"
         }
       }
@@ -316,8 +316,8 @@
         "blockIfStates": {
           "type": "BlockState",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "For the CP, this reference defines the states of the block That means, if a security event (mapped to the filter which the SecurityEventStateFilter belongs to) is the currently active block state in the IdsM of the referenced block listed states, the IdsM shall reported security event."
         }
       }
@@ -594,15 +594,15 @@
         "filterChain": {
           "type": "any (SecurityEventFilter)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference defines the filter chain to be applied to of the referenced security events (depending on the atpVariation"
         },
         "idsmInstance": {
           "type": "IdsmInstance",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference defines the IdsmInstance onto which the are mapped. atpVariation 97 Document ID 980: AUTOSAR_FO_TPS_SecurityExtractTemplate Template R23-11"
         },
         "mappedSecurities": {
@@ -746,8 +746,8 @@
         "commConnectors": {
           "type": "CommunicationConnector",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the respective Communication atpVariation"
         }
       }
@@ -843,8 +843,8 @@
         "ecuInstance": {
           "type": "EcuInstance",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the EcuInstance whose security any type) shall be limited by the specific class atpVariation"
         },
         "idsmInstanceId": {
@@ -857,15 +857,15 @@
         "idsmModule": {
           "type": "IdsmModuleInstantiation",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the meta-class that defines the attributes for the IdsM configuration on a specific"
         },
         "rateLimitation": {
           "type": "IdsmRateLimitation",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the applicable rate limitation filter all security events on the related EcuInstance. atpVariation"
         },
         "signature": {
@@ -885,8 +885,8 @@
         "trafficLimitation": {
           "type": "IdsmTrafficLimitation",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the applicable traffic limitation for all security events on the related EcuInstance. atpVariation"
         }
       }
@@ -1095,8 +1095,8 @@
         "keySlot": {
           "type": "CryptoKeySlot",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference denotes the cryptographic key to be used"
         }
       }
@@ -1130,15 +1130,15 @@
         "authentication": {
           "type": "CryptoServicePrimitive",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference dennotes the cryptographic primitives for information in QSEv messages."
         },
         "cryptoServiceKey": {
           "type": "CryptoServiceKey",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference denotes the cryptographic key to be used the cryptographic algorithm for providing in QSEv messages."
         }
       }

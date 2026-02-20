@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
 class DiagnosticClearDiagnosticInformation(DiagnosticServiceInstance):
@@ -27,11 +28,11 @@ class DiagnosticClearDiagnosticInformation(DiagnosticServiceInstance):
         """
         return False
 
-    clear_diagnostic: Optional[Any]
+    clear_diagnostic_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticClearDiagnosticInformation."""
         super().__init__()
-        self.clear_diagnostic: Optional[Any] = None
+        self.clear_diagnostic_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticClearDiagnosticInformation to XML element.
@@ -53,12 +54,12 @@ class DiagnosticClearDiagnosticInformation(DiagnosticServiceInstance):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize clear_diagnostic
-        if self.clear_diagnostic is not None:
-            serialized = ARObject._serialize_item(self.clear_diagnostic, "Any")
+        # Serialize clear_diagnostic_ref
+        if self.clear_diagnostic_ref is not None:
+            serialized = ARObject._serialize_item(self.clear_diagnostic_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CLEAR-DIAGNOSTIC")
+                wrapped = ET.Element("CLEAR-DIAGNOSTIC-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -82,11 +83,11 @@ class DiagnosticClearDiagnosticInformation(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticClearDiagnosticInformation, cls).deserialize(element)
 
-        # Parse clear_diagnostic
-        child = ARObject._find_child_element(element, "CLEAR-DIAGNOSTIC")
+        # Parse clear_diagnostic_ref
+        child = ARObject._find_child_element(element, "CLEAR-DIAGNOSTIC-REF")
         if child is not None:
-            clear_diagnostic_value = child.text
-            obj.clear_diagnostic = clear_diagnostic_value
+            clear_diagnostic_ref_value = ARRef.deserialize(child)
+            obj.clear_diagnostic_ref = clear_diagnostic_ref_value
 
         return obj
 

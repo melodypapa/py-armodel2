@@ -38,15 +38,15 @@ class ECUMapping(Identifiable):
         return False
 
     comm_controllers: list[Any]
-    ecu: Optional[HwElement]
-    ecu_instance: Optional[EcuInstance]
+    ecu_ref: Optional[ARRef]
+    ecu_instance_ref: Optional[ARRef]
     hw_port_mapping_ref: ARRef
     def __init__(self) -> None:
         """Initialize ECUMapping."""
         super().__init__()
         self.comm_controllers: list[Any] = []
-        self.ecu: Optional[HwElement] = None
-        self.ecu_instance: Optional[EcuInstance] = None
+        self.ecu_ref: Optional[ARRef] = None
+        self.ecu_instance_ref: Optional[ARRef] = None
         self.hw_port_mapping_ref: ARRef = None
 
     def serialize(self) -> ET.Element:
@@ -79,12 +79,12 @@ class ECUMapping(Identifiable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize ecu
-        if self.ecu is not None:
-            serialized = ARObject._serialize_item(self.ecu, "HwElement")
+        # Serialize ecu_ref
+        if self.ecu_ref is not None:
+            serialized = ARObject._serialize_item(self.ecu_ref, "HwElement")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ECU")
+                wrapped = ET.Element("ECU-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -93,12 +93,12 @@ class ECUMapping(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize ecu_instance
-        if self.ecu_instance is not None:
-            serialized = ARObject._serialize_item(self.ecu_instance, "EcuInstance")
+        # Serialize ecu_instance_ref
+        if self.ecu_instance_ref is not None:
+            serialized = ARObject._serialize_item(self.ecu_instance_ref, "EcuInstance")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ECU-INSTANCE")
+                wrapped = ET.Element("ECU-INSTANCE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -146,17 +146,17 @@ class ECUMapping(Identifiable):
                 if child_value is not None:
                     obj.comm_controllers.append(child_value)
 
-        # Parse ecu
-        child = ARObject._find_child_element(element, "ECU")
+        # Parse ecu_ref
+        child = ARObject._find_child_element(element, "ECU-REF")
         if child is not None:
-            ecu_value = ARObject._deserialize_by_tag(child, "HwElement")
-            obj.ecu = ecu_value
+            ecu_ref_value = ARRef.deserialize(child)
+            obj.ecu_ref = ecu_ref_value
 
-        # Parse ecu_instance
-        child = ARObject._find_child_element(element, "ECU-INSTANCE")
+        # Parse ecu_instance_ref
+        child = ARObject._find_child_element(element, "ECU-INSTANCE-REF")
         if child is not None:
-            ecu_instance_value = ARObject._deserialize_by_tag(child, "EcuInstance")
-            obj.ecu_instance = ecu_instance_value
+            ecu_instance_ref_value = ARRef.deserialize(child)
+            obj.ecu_instance_ref = ecu_instance_ref_value
 
         # Parse hw_port_mapping_ref
         child = ARObject._find_child_element(element, "HW-PORT-MAPPING-REF")

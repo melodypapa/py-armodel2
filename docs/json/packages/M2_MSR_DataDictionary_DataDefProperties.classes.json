@@ -48,8 +48,8 @@
         "functionPointer": {
           "type": "BswModuleEntry",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The referenced BswModuleEntry serves as the signature a function pointer definition. Primary use case: function as argument to other function."
         },
         "swDataDef": {
@@ -428,8 +428,8 @@
         "baseType": {
           "type": "SwBaseType",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This is the base type of one character in the string. In baseType denotes the intended encoding of in the string on level of ApplicationData"
         },
         "swFillCharacter": {

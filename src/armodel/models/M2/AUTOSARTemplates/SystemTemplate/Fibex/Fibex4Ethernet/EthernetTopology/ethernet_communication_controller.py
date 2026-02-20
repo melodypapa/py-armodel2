@@ -11,6 +11,7 @@ import xml.etree.ElementTree as ET
 from armodel.serialization.decorators import atp_variant
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology import (
     EthernetMacLayerTypeEnum,
 )
@@ -39,7 +40,7 @@ class EthernetCommunicationController(ARObject):
         """
         return False
 
-    can_xl_config: Optional[Any]
+    can_xl_config_ref: Optional[Any]
     coupling_ports: list[CouplingPort]
     mac_layer_type: Optional[EthernetMacLayerTypeEnum]
     mac_unicast: Optional[MacAddressString]
@@ -49,7 +50,7 @@ class EthernetCommunicationController(ARObject):
     def __init__(self) -> None:
         """Initialize EthernetCommunicationController."""
         super().__init__()
-        self.can_xl_config: Optional[Any] = None
+        self.can_xl_config_ref: Optional[Any] = None
         self.coupling_ports: list[CouplingPort] = []
         self.mac_layer_type: Optional[EthernetMacLayerTypeEnum] = None
         self.mac_unicast: Optional[MacAddressString] = None

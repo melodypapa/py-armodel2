@@ -41,14 +41,14 @@ class SenderReceiverToSignalMapping(DataMapping):
     data_element_system_instance_ref: Optional[ARRef]
     sender_to_signal_ref: Optional[ARRef]
     signal_to_ref: Optional[ARRef]
-    system_signal: Optional[SystemSignal]
+    system_signal_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SenderReceiverToSignalMapping."""
         super().__init__()
         self.data_element_system_instance_ref: Optional[ARRef] = None
         self.sender_to_signal_ref: Optional[ARRef] = None
         self.signal_to_ref: Optional[ARRef] = None
-        self.system_signal: Optional[SystemSignal] = None
+        self.system_signal_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize SenderReceiverToSignalMapping to XML element.
@@ -112,12 +112,12 @@ class SenderReceiverToSignalMapping(DataMapping):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize system_signal
-        if self.system_signal is not None:
-            serialized = ARObject._serialize_item(self.system_signal, "SystemSignal")
+        # Serialize system_signal_ref
+        if self.system_signal_ref is not None:
+            serialized = ARObject._serialize_item(self.system_signal_ref, "SystemSignal")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SYSTEM-SIGNAL")
+                wrapped = ET.Element("SYSTEM-SIGNAL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -159,11 +159,11 @@ class SenderReceiverToSignalMapping(DataMapping):
             signal_to_ref_value = ARRef.deserialize(child)
             obj.signal_to_ref = signal_to_ref_value
 
-        # Parse system_signal
-        child = ARObject._find_child_element(element, "SYSTEM-SIGNAL")
+        # Parse system_signal_ref
+        child = ARObject._find_child_element(element, "SYSTEM-SIGNAL-REF")
         if child is not None:
-            system_signal_value = ARObject._deserialize_by_tag(child, "SystemSignal")
-            obj.system_signal = system_signal_value
+            system_signal_ref_value = ARRef.deserialize(child)
+            obj.system_signal_ref = system_signal_ref_value
 
         return obj
 

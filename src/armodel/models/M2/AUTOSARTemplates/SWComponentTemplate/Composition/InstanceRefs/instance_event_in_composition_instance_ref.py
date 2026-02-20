@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.composition_sw_component_type import (
     CompositionSwComponentType,
 )
@@ -30,15 +31,15 @@ class InstanceEventInCompositionInstanceRef(ARObject):
         """
         return False
 
-    base: Optional[CompositionSwComponentType]
-    context_prototypes: list[Any]
-    target_event: Optional[RTEEvent]
+    base_ref: Optional[ARRef]
+    context_prototype_refs: list[Any]
+    target_event_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize InstanceEventInCompositionInstanceRef."""
         super().__init__()
-        self.base: Optional[CompositionSwComponentType] = None
-        self.context_prototypes: list[Any] = []
-        self.target_event: Optional[RTEEvent] = None
+        self.base_ref: Optional[ARRef] = None
+        self.context_prototype_refs: list[Any] = []
+        self.target_event_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize InstanceEventInCompositionInstanceRef to XML element.
@@ -50,12 +51,12 @@ class InstanceEventInCompositionInstanceRef(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize base
-        if self.base is not None:
-            serialized = ARObject._serialize_item(self.base, "CompositionSwComponentType")
+        # Serialize base_ref
+        if self.base_ref is not None:
+            serialized = ARObject._serialize_item(self.base_ref, "CompositionSwComponentType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("BASE")
+                wrapped = ET.Element("BASE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -64,22 +65,29 @@ class InstanceEventInCompositionInstanceRef(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize context_prototypes (list to container "CONTEXT-PROTOTYPES")
-        if self.context_prototypes:
-            wrapper = ET.Element("CONTEXT-PROTOTYPES")
-            for item in self.context_prototypes:
+        # Serialize context_prototype_refs (list to container "CONTEXT-PROTOTYPE-REFS")
+        if self.context_prototype_refs:
+            wrapper = ET.Element("CONTEXT-PROTOTYPE-REFS")
+            for item in self.context_prototype_refs:
                 serialized = ARObject._serialize_item(item, "Any")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("CONTEXT-PROTOTYPE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize target_event
-        if self.target_event is not None:
-            serialized = ARObject._serialize_item(self.target_event, "RTEEvent")
+        # Serialize target_event_ref
+        if self.target_event_ref is not None:
+            serialized = ARObject._serialize_item(self.target_event_ref, "RTEEvent")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TARGET-EVENT")
+                wrapped = ET.Element("TARGET-EVENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -104,27 +112,33 @@ class InstanceEventInCompositionInstanceRef(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse base
-        child = ARObject._find_child_element(element, "BASE")
+        # Parse base_ref
+        child = ARObject._find_child_element(element, "BASE-REF")
         if child is not None:
-            base_value = ARObject._deserialize_by_tag(child, "CompositionSwComponentType")
-            obj.base = base_value
+            base_ref_value = ARRef.deserialize(child)
+            obj.base_ref = base_ref_value
 
-        # Parse context_prototypes (list from container "CONTEXT-PROTOTYPES")
-        obj.context_prototypes = []
-        container = ARObject._find_child_element(element, "CONTEXT-PROTOTYPES")
+        # Parse context_prototype_refs (list from container "CONTEXT-PROTOTYPE-REFS")
+        obj.context_prototype_refs = []
+        container = ARObject._find_child_element(element, "CONTEXT-PROTOTYPE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.context_prototypes.append(child_value)
+                    obj.context_prototype_refs.append(child_value)
 
-        # Parse target_event
-        child = ARObject._find_child_element(element, "TARGET-EVENT")
+        # Parse target_event_ref
+        child = ARObject._find_child_element(element, "TARGET-EVENT-REF")
         if child is not None:
-            target_event_value = ARObject._deserialize_by_tag(child, "RTEEvent")
-            obj.target_event = target_event_value
+            target_event_ref_value = ARRef.deserialize(child)
+            obj.target_event_ref = target_event_ref_value
 
         return obj
 

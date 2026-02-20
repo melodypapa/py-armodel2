@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.Instance
     PortInCompositionTypeInstanceRef,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_required_port_prototype import (
     AbstractRequiredPortPrototype,
 )
@@ -31,13 +32,13 @@ class RPortInCompositionInstanceRef(PortInCompositionTypeInstanceRef):
         """
         return False
 
-    context: Optional[Any]
-    target_r_port_prototype: Optional[AbstractRequiredPortPrototype]
+    context_ref: Optional[Any]
+    target_r_port_prototype_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize RPortInCompositionInstanceRef."""
         super().__init__()
-        self.context: Optional[Any] = None
-        self.target_r_port_prototype: Optional[AbstractRequiredPortPrototype] = None
+        self.context_ref: Optional[Any] = None
+        self.target_r_port_prototype_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize RPortInCompositionInstanceRef to XML element.
@@ -59,12 +60,12 @@ class RPortInCompositionInstanceRef(PortInCompositionTypeInstanceRef):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize context
-        if self.context is not None:
-            serialized = ARObject._serialize_item(self.context, "Any")
+        # Serialize context_ref
+        if self.context_ref is not None:
+            serialized = ARObject._serialize_item(self.context_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT")
+                wrapped = ET.Element("CONTEXT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -73,12 +74,12 @@ class RPortInCompositionInstanceRef(PortInCompositionTypeInstanceRef):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize target_r_port_prototype
-        if self.target_r_port_prototype is not None:
-            serialized = ARObject._serialize_item(self.target_r_port_prototype, "AbstractRequiredPortPrototype")
+        # Serialize target_r_port_prototype_ref
+        if self.target_r_port_prototype_ref is not None:
+            serialized = ARObject._serialize_item(self.target_r_port_prototype_ref, "AbstractRequiredPortPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TARGET-R-PORT-PROTOTYPE")
+                wrapped = ET.Element("TARGET-R-PORT-PROTOTYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -102,17 +103,17 @@ class RPortInCompositionInstanceRef(PortInCompositionTypeInstanceRef):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RPortInCompositionInstanceRef, cls).deserialize(element)
 
-        # Parse context
-        child = ARObject._find_child_element(element, "CONTEXT")
+        # Parse context_ref
+        child = ARObject._find_child_element(element, "CONTEXT-REF")
         if child is not None:
-            context_value = child.text
-            obj.context = context_value
+            context_ref_value = ARRef.deserialize(child)
+            obj.context_ref = context_ref_value
 
-        # Parse target_r_port_prototype
-        child = ARObject._find_child_element(element, "TARGET-R-PORT-PROTOTYPE")
+        # Parse target_r_port_prototype_ref
+        child = ARObject._find_child_element(element, "TARGET-R-PORT-PROTOTYPE-REF")
         if child is not None:
-            target_r_port_prototype_value = ARObject._deserialize_by_tag(child, "AbstractRequiredPortPrototype")
-            obj.target_r_port_prototype = target_r_port_prototype_value
+            target_r_port_prototype_ref_value = ARRef.deserialize(child)
+            obj.target_r_port_prototype_ref = target_r_port_prototype_ref_value
 
         return obj
 

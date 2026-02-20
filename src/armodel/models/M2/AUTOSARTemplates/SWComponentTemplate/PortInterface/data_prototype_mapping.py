@@ -39,18 +39,18 @@ class DataPrototypeMapping(ARObject):
         return False
 
     first_data_ref: Optional[ARRef]
-    first_to_second: Optional[DataTransformation]
+    first_to_second_ref: Optional[ARRef]
     second_data_ref: Optional[ARRef]
-    second_to_first: Optional[DataTransformation]
+    second_to_first_ref: Optional[ARRef]
     sub_element_refs: list[ARRef]
     text_table_ref: ARRef
     def __init__(self) -> None:
         """Initialize DataPrototypeMapping."""
         super().__init__()
         self.first_data_ref: Optional[ARRef] = None
-        self.first_to_second: Optional[DataTransformation] = None
+        self.first_to_second_ref: Optional[ARRef] = None
         self.second_data_ref: Optional[ARRef] = None
-        self.second_to_first: Optional[DataTransformation] = None
+        self.second_to_first_ref: Optional[ARRef] = None
         self.sub_element_refs: list[ARRef] = []
         self.text_table_ref: ARRef = None
 
@@ -78,12 +78,12 @@ class DataPrototypeMapping(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize first_to_second
-        if self.first_to_second is not None:
-            serialized = ARObject._serialize_item(self.first_to_second, "DataTransformation")
+        # Serialize first_to_second_ref
+        if self.first_to_second_ref is not None:
+            serialized = ARObject._serialize_item(self.first_to_second_ref, "DataTransformation")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("FIRST-TO-SECOND")
+                wrapped = ET.Element("FIRST-TO-SECOND-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -106,12 +106,12 @@ class DataPrototypeMapping(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize second_to_first
-        if self.second_to_first is not None:
-            serialized = ARObject._serialize_item(self.second_to_first, "DataTransformation")
+        # Serialize second_to_first_ref
+        if self.second_to_first_ref is not None:
+            serialized = ARObject._serialize_item(self.second_to_first_ref, "DataTransformation")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SECOND-TO-FIRST")
+                wrapped = ET.Element("SECOND-TO-FIRST-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -173,11 +173,11 @@ class DataPrototypeMapping(ARObject):
             first_data_ref_value = ARRef.deserialize(child)
             obj.first_data_ref = first_data_ref_value
 
-        # Parse first_to_second
-        child = ARObject._find_child_element(element, "FIRST-TO-SECOND")
+        # Parse first_to_second_ref
+        child = ARObject._find_child_element(element, "FIRST-TO-SECOND-REF")
         if child is not None:
-            first_to_second_value = ARObject._deserialize_by_tag(child, "DataTransformation")
-            obj.first_to_second = first_to_second_value
+            first_to_second_ref_value = ARRef.deserialize(child)
+            obj.first_to_second_ref = first_to_second_ref_value
 
         # Parse second_data_ref
         child = ARObject._find_child_element(element, "SECOND-DATA-REF")
@@ -185,11 +185,11 @@ class DataPrototypeMapping(ARObject):
             second_data_ref_value = ARRef.deserialize(child)
             obj.second_data_ref = second_data_ref_value
 
-        # Parse second_to_first
-        child = ARObject._find_child_element(element, "SECOND-TO-FIRST")
+        # Parse second_to_first_ref
+        child = ARObject._find_child_element(element, "SECOND-TO-FIRST-REF")
         if child is not None:
-            second_to_first_value = ARObject._deserialize_by_tag(child, "DataTransformation")
-            obj.second_to_first = second_to_first_value
+            second_to_first_ref_value = ARRef.deserialize(child)
+            obj.second_to_first_ref = second_to_first_ref_value
 
         # Parse sub_element_refs (list from container "SUB-ELEMENT-REFS")
         obj.sub_element_refs = []

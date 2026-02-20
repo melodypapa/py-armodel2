@@ -16,6 +16,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_method import (
     CompuMethod,
 )
@@ -33,11 +34,11 @@ class PostBuildVariantCriterion(ARElement):
         """
         return False
 
-    compu_method: CompuMethod
+    compu_method_ref: ARRef
     def __init__(self) -> None:
         """Initialize PostBuildVariantCriterion."""
         super().__init__()
-        self.compu_method: CompuMethod = None
+        self.compu_method_ref: ARRef = None
 
     def serialize(self) -> ET.Element:
         """Serialize PostBuildVariantCriterion to XML element.
@@ -59,12 +60,12 @@ class PostBuildVariantCriterion(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize compu_method
-        if self.compu_method is not None:
-            serialized = ARObject._serialize_item(self.compu_method, "CompuMethod")
+        # Serialize compu_method_ref
+        if self.compu_method_ref is not None:
+            serialized = ARObject._serialize_item(self.compu_method_ref, "CompuMethod")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("COMPU-METHOD")
+                wrapped = ET.Element("COMPU-METHOD-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -88,11 +89,11 @@ class PostBuildVariantCriterion(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PostBuildVariantCriterion, cls).deserialize(element)
 
-        # Parse compu_method
-        child = ARObject._find_child_element(element, "COMPU-METHOD")
+        # Parse compu_method_ref
+        child = ARObject._find_child_element(element, "COMPU-METHOD-REF")
         if child is not None:
-            compu_method_value = ARObject._deserialize_by_tag(child, "CompuMethod")
-            obj.compu_method = compu_method_value
+            compu_method_ref_value = ARRef.deserialize(child)
+            obj.compu_method_ref = compu_method_ref_value
 
         return obj
 

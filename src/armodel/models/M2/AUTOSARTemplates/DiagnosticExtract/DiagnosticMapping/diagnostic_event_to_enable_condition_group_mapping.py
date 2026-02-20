@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
     DiagnosticMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_event import (
     DiagnosticEvent,
 )
@@ -30,13 +31,13 @@ class DiagnosticEventToEnableConditionGroupMapping(DiagnosticMapping):
         """
         return False
 
-    diagnostic_event: Optional[DiagnosticEvent]
-    enable_condition: Optional[Any]
+    diagnostic_event_ref: Optional[ARRef]
+    enable_condition_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticEventToEnableConditionGroupMapping."""
         super().__init__()
-        self.diagnostic_event: Optional[DiagnosticEvent] = None
-        self.enable_condition: Optional[Any] = None
+        self.diagnostic_event_ref: Optional[ARRef] = None
+        self.enable_condition_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticEventToEnableConditionGroupMapping to XML element.
@@ -58,12 +59,12 @@ class DiagnosticEventToEnableConditionGroupMapping(DiagnosticMapping):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize diagnostic_event
-        if self.diagnostic_event is not None:
-            serialized = ARObject._serialize_item(self.diagnostic_event, "DiagnosticEvent")
+        # Serialize diagnostic_event_ref
+        if self.diagnostic_event_ref is not None:
+            serialized = ARObject._serialize_item(self.diagnostic_event_ref, "DiagnosticEvent")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DIAGNOSTIC-EVENT")
+                wrapped = ET.Element("DIAGNOSTIC-EVENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -72,12 +73,12 @@ class DiagnosticEventToEnableConditionGroupMapping(DiagnosticMapping):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize enable_condition
-        if self.enable_condition is not None:
-            serialized = ARObject._serialize_item(self.enable_condition, "Any")
+        # Serialize enable_condition_ref
+        if self.enable_condition_ref is not None:
+            serialized = ARObject._serialize_item(self.enable_condition_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ENABLE-CONDITION")
+                wrapped = ET.Element("ENABLE-CONDITION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -101,17 +102,17 @@ class DiagnosticEventToEnableConditionGroupMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticEventToEnableConditionGroupMapping, cls).deserialize(element)
 
-        # Parse diagnostic_event
-        child = ARObject._find_child_element(element, "DIAGNOSTIC-EVENT")
+        # Parse diagnostic_event_ref
+        child = ARObject._find_child_element(element, "DIAGNOSTIC-EVENT-REF")
         if child is not None:
-            diagnostic_event_value = ARObject._deserialize_by_tag(child, "DiagnosticEvent")
-            obj.diagnostic_event = diagnostic_event_value
+            diagnostic_event_ref_value = ARRef.deserialize(child)
+            obj.diagnostic_event_ref = diagnostic_event_ref_value
 
-        # Parse enable_condition
-        child = ARObject._find_child_element(element, "ENABLE-CONDITION")
+        # Parse enable_condition_ref
+        child = ARObject._find_child_element(element, "ENABLE-CONDITION-REF")
         if child is not None:
-            enable_condition_value = child.text
-            obj.enable_condition = enable_condition_value
+            enable_condition_ref_value = ARRef.deserialize(child)
+            obj.enable_condition_ref = enable_condition_ref_value
 
         return obj
 

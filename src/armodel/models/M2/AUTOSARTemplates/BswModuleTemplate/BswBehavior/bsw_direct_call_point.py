@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_module
     BswModuleCallPoint,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_module_entry import (
     BswModuleEntry,
 )
@@ -33,13 +34,13 @@ class BswDirectCallPoint(BswModuleCallPoint):
         """
         return False
 
-    called_entry: Optional[BswModuleEntry]
-    called_from: Optional[ExclusiveAreaNestingOrder]
+    called_entry_ref: Optional[ARRef]
+    called_from_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize BswDirectCallPoint."""
         super().__init__()
-        self.called_entry: Optional[BswModuleEntry] = None
-        self.called_from: Optional[ExclusiveAreaNestingOrder] = None
+        self.called_entry_ref: Optional[ARRef] = None
+        self.called_from_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize BswDirectCallPoint to XML element.
@@ -61,12 +62,12 @@ class BswDirectCallPoint(BswModuleCallPoint):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize called_entry
-        if self.called_entry is not None:
-            serialized = ARObject._serialize_item(self.called_entry, "BswModuleEntry")
+        # Serialize called_entry_ref
+        if self.called_entry_ref is not None:
+            serialized = ARObject._serialize_item(self.called_entry_ref, "BswModuleEntry")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CALLED-ENTRY")
+                wrapped = ET.Element("CALLED-ENTRY-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -75,12 +76,12 @@ class BswDirectCallPoint(BswModuleCallPoint):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize called_from
-        if self.called_from is not None:
-            serialized = ARObject._serialize_item(self.called_from, "ExclusiveAreaNestingOrder")
+        # Serialize called_from_ref
+        if self.called_from_ref is not None:
+            serialized = ARObject._serialize_item(self.called_from_ref, "ExclusiveAreaNestingOrder")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CALLED-FROM")
+                wrapped = ET.Element("CALLED-FROM-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -104,17 +105,17 @@ class BswDirectCallPoint(BswModuleCallPoint):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswDirectCallPoint, cls).deserialize(element)
 
-        # Parse called_entry
-        child = ARObject._find_child_element(element, "CALLED-ENTRY")
+        # Parse called_entry_ref
+        child = ARObject._find_child_element(element, "CALLED-ENTRY-REF")
         if child is not None:
-            called_entry_value = ARObject._deserialize_by_tag(child, "BswModuleEntry")
-            obj.called_entry = called_entry_value
+            called_entry_ref_value = ARRef.deserialize(child)
+            obj.called_entry_ref = called_entry_ref_value
 
-        # Parse called_from
-        child = ARObject._find_child_element(element, "CALLED-FROM")
+        # Parse called_from_ref
+        child = ARObject._find_child_element(element, "CALLED-FROM-REF")
         if child is not None:
-            called_from_value = ARObject._deserialize_by_tag(child, "ExclusiveAreaNestingOrder")
-            obj.called_from = called_from_value
+            called_from_ref_value = ARRef.deserialize(child)
+            obj.called_from_ref = called_from_ref_value
 
         return obj
 

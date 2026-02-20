@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.
     EOCExecutableEntityRefAbstract,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswImplementation.bsw_implementation import (
     BswImplementation,
 )
@@ -33,17 +34,17 @@ class EOCExecutableEntityRef(EOCExecutableEntityRefAbstract):
         """
         return False
 
-    bsw_module: Optional[BswImplementation]
+    bsw_module_ref: Optional[ARRef]
     component: Optional[Any]
-    executable_entity: Optional[ExecutableEntity]
-    successors: list[Any]
+    executable_entity_ref: Optional[ARRef]
+    successor_refs: list[Any]
     def __init__(self) -> None:
         """Initialize EOCExecutableEntityRef."""
         super().__init__()
-        self.bsw_module: Optional[BswImplementation] = None
+        self.bsw_module_ref: Optional[ARRef] = None
         self.component: Optional[Any] = None
-        self.executable_entity: Optional[ExecutableEntity] = None
-        self.successors: list[Any] = []
+        self.executable_entity_ref: Optional[ARRef] = None
+        self.successor_refs: list[Any] = []
 
     def serialize(self) -> ET.Element:
         """Serialize EOCExecutableEntityRef to XML element.
@@ -65,12 +66,12 @@ class EOCExecutableEntityRef(EOCExecutableEntityRefAbstract):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize bsw_module
-        if self.bsw_module is not None:
-            serialized = ARObject._serialize_item(self.bsw_module, "BswImplementation")
+        # Serialize bsw_module_ref
+        if self.bsw_module_ref is not None:
+            serialized = ARObject._serialize_item(self.bsw_module_ref, "BswImplementation")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("BSW-MODULE")
+                wrapped = ET.Element("BSW-MODULE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -93,12 +94,12 @@ class EOCExecutableEntityRef(EOCExecutableEntityRefAbstract):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize executable_entity
-        if self.executable_entity is not None:
-            serialized = ARObject._serialize_item(self.executable_entity, "ExecutableEntity")
+        # Serialize executable_entity_ref
+        if self.executable_entity_ref is not None:
+            serialized = ARObject._serialize_item(self.executable_entity_ref, "ExecutableEntity")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("EXECUTABLE-ENTITY")
+                wrapped = ET.Element("EXECUTABLE-ENTITY-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -107,13 +108,20 @@ class EOCExecutableEntityRef(EOCExecutableEntityRefAbstract):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize successors (list to container "SUCCESSORS")
-        if self.successors:
-            wrapper = ET.Element("SUCCESSORS")
-            for item in self.successors:
+        # Serialize successor_refs (list to container "SUCCESSOR-REFS")
+        if self.successor_refs:
+            wrapper = ET.Element("SUCCESSOR-REFS")
+            for item in self.successor_refs:
                 serialized = ARObject._serialize_item(item, "Any")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("SUCCESSOR-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -132,11 +140,11 @@ class EOCExecutableEntityRef(EOCExecutableEntityRefAbstract):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EOCExecutableEntityRef, cls).deserialize(element)
 
-        # Parse bsw_module
-        child = ARObject._find_child_element(element, "BSW-MODULE")
+        # Parse bsw_module_ref
+        child = ARObject._find_child_element(element, "BSW-MODULE-REF")
         if child is not None:
-            bsw_module_value = ARObject._deserialize_by_tag(child, "BswImplementation")
-            obj.bsw_module = bsw_module_value
+            bsw_module_ref_value = ARRef.deserialize(child)
+            obj.bsw_module_ref = bsw_module_ref_value
 
         # Parse component
         child = ARObject._find_child_element(element, "COMPONENT")
@@ -144,21 +152,27 @@ class EOCExecutableEntityRef(EOCExecutableEntityRefAbstract):
             component_value = child.text
             obj.component = component_value
 
-        # Parse executable_entity
-        child = ARObject._find_child_element(element, "EXECUTABLE-ENTITY")
+        # Parse executable_entity_ref
+        child = ARObject._find_child_element(element, "EXECUTABLE-ENTITY-REF")
         if child is not None:
-            executable_entity_value = ARObject._deserialize_by_tag(child, "ExecutableEntity")
-            obj.executable_entity = executable_entity_value
+            executable_entity_ref_value = ARRef.deserialize(child)
+            obj.executable_entity_ref = executable_entity_ref_value
 
-        # Parse successors (list from container "SUCCESSORS")
-        obj.successors = []
-        container = ARObject._find_child_element(element, "SUCCESSORS")
+        # Parse successor_refs (list from container "SUCCESSOR-REFS")
+        obj.successor_refs = []
+        container = ARObject._find_child_element(element, "SUCCESSOR-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.successors.append(child_value)
+                    obj.successor_refs.append(child_value)
 
         return obj
 

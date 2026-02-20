@@ -153,8 +153,8 @@
         "communicationCluster": {
           "type": "CommunicationCluster",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Association to a CommunicationCluster in the topology"
         },
         "nmChannel": {
@@ -247,8 +247,8 @@
         "ecuInstance": {
           "type": "EcuInstance",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Association to an ECUInstance in the topology"
         },
         "nmBusSynchronization": {
@@ -396,8 +396,8 @@
         "nmNodes": {
           "type": "NmNode",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "reference to busses (via NmNodes) that are coordinated NmCoordinator."
         }
       }
@@ -444,8 +444,8 @@
         "controller": {
           "type": "any (Communication)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Association to an CommunicationController in the"
         },
         "nmCoordCluster": {
@@ -465,8 +465,8 @@
         "nmIfEcu": {
           "type": "NmEcu",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the NmEcu that contains this NmNode."
         },
         "nmNodeId": {
@@ -486,15 +486,15 @@
         "rxNmPdus": {
           "type": "NmPdu",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "receive NM Pdu."
         },
         "txNmPdus": {
           "type": "NmPdu",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "transmit NM Pdu"
         }
       }
@@ -688,8 +688,8 @@
         "coupledClusters": {
           "type": "FlexrayNmCluster",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to coupled FlexRay Clusters."
         },
         "nmSchedule": {
@@ -906,8 +906,8 @@
         "coupledClusters": {
           "type": "CanNmCluster",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to coupled CAN Clusters."
         },
         "nmBusloadReduction": {
@@ -1082,8 +1082,8 @@
         "vlan": {
           "type": "any (EthernetPhysical)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the vlan (represented by the Ethernet this UdpNmCluster shall apply to."
         }
       }
@@ -1146,8 +1146,8 @@
         "coupledClusters": {
           "type": "UdpNmCluster",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to coupled UdpNm Clusters."
         },
         "nmImmediate": {

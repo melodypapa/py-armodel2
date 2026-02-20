@@ -38,13 +38,13 @@ class ParameterSwComponentType(SwComponentType):
         """
         return False
 
-    constants: list[ConstantSpecification]
+    constant_refs: list[ARRef]
     data_type_refs: list[ARRef]
     instantiation_data_defs: list[InstantiationDataDefProps]
     def __init__(self) -> None:
         """Initialize ParameterSwComponentType."""
         super().__init__()
-        self.constants: list[ConstantSpecification] = []
+        self.constant_refs: list[ARRef] = []
         self.data_type_refs: list[ARRef] = []
         self.instantiation_data_defs: list[InstantiationDataDefProps] = []
 
@@ -68,13 +68,20 @@ class ParameterSwComponentType(SwComponentType):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize constants (list to container "CONSTANTS")
-        if self.constants:
-            wrapper = ET.Element("CONSTANTS")
-            for item in self.constants:
+        # Serialize constant_refs (list to container "CONSTANT-REFS")
+        if self.constant_refs:
+            wrapper = ET.Element("CONSTANT-REFS")
+            for item in self.constant_refs:
                 serialized = ARObject._serialize_item(item, "ConstantSpecification")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("CONSTANT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -120,15 +127,21 @@ class ParameterSwComponentType(SwComponentType):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ParameterSwComponentType, cls).deserialize(element)
 
-        # Parse constants (list from container "CONSTANTS")
-        obj.constants = []
-        container = ARObject._find_child_element(element, "CONSTANTS")
+        # Parse constant_refs (list from container "CONSTANT-REFS")
+        obj.constant_refs = []
+        container = ARObject._find_child_element(element, "CONSTANT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.constants.append(child_value)
+                    obj.constant_refs.append(child_value)
 
         # Parse data_type_refs (list from container "DATA-TYPE-REFS")
         obj.data_type_refs = []

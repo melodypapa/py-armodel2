@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.p_port
     PPortComSpec,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -33,13 +34,13 @@ class ServerComSpec(PPortComSpec):
         """
         return False
 
-    operation: Optional[ClientServerOperation]
+    operation_ref: Optional[ARRef]
     queue_length: Optional[PositiveInteger]
     transformation_coms: list[Any]
     def __init__(self) -> None:
         """Initialize ServerComSpec."""
         super().__init__()
-        self.operation: Optional[ClientServerOperation] = None
+        self.operation_ref: Optional[ARRef] = None
         self.queue_length: Optional[PositiveInteger] = None
         self.transformation_coms: list[Any] = []
 
@@ -63,12 +64,12 @@ class ServerComSpec(PPortComSpec):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize operation
-        if self.operation is not None:
-            serialized = ARObject._serialize_item(self.operation, "ClientServerOperation")
+        # Serialize operation_ref
+        if self.operation_ref is not None:
+            serialized = ARObject._serialize_item(self.operation_ref, "ClientServerOperation")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("OPERATION")
+                wrapped = ET.Element("OPERATION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -116,11 +117,11 @@ class ServerComSpec(PPortComSpec):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ServerComSpec, cls).deserialize(element)
 
-        # Parse operation
-        child = ARObject._find_child_element(element, "OPERATION")
+        # Parse operation_ref
+        child = ARObject._find_child_element(element, "OPERATION-REF")
         if child is not None:
-            operation_value = ARObject._deserialize_by_tag(child, "ClientServerOperation")
-            obj.operation = operation_value
+            operation_ref_value = ARRef.deserialize(child)
+            obj.operation_ref = operation_ref_value
 
         # Parse queue_length
         child = ARObject._find_child_element(element, "QUEUE-LENGTH")

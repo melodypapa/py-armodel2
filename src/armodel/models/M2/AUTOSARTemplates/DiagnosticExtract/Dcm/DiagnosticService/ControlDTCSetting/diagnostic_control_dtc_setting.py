@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
 class DiagnosticControlDTCSetting(DiagnosticServiceInstance):
@@ -27,11 +28,11 @@ class DiagnosticControlDTCSetting(DiagnosticServiceInstance):
         """
         return False
 
-    dtc_setting_class: Optional[Any]
+    dtc_setting_class_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticControlDTCSetting."""
         super().__init__()
-        self.dtc_setting_class: Optional[Any] = None
+        self.dtc_setting_class_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticControlDTCSetting to XML element.
@@ -53,12 +54,12 @@ class DiagnosticControlDTCSetting(DiagnosticServiceInstance):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize dtc_setting_class
-        if self.dtc_setting_class is not None:
-            serialized = ARObject._serialize_item(self.dtc_setting_class, "Any")
+        # Serialize dtc_setting_class_ref
+        if self.dtc_setting_class_ref is not None:
+            serialized = ARObject._serialize_item(self.dtc_setting_class_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DTC-SETTING-CLASS")
+                wrapped = ET.Element("DTC-SETTING-CLASS-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -82,11 +83,11 @@ class DiagnosticControlDTCSetting(DiagnosticServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticControlDTCSetting, cls).deserialize(element)
 
-        # Parse dtc_setting_class
-        child = ARObject._find_child_element(element, "DTC-SETTING-CLASS")
+        # Parse dtc_setting_class_ref
+        child = ARObject._find_child_element(element, "DTC-SETTING-CLASS-REF")
         if child is not None:
-            dtc_setting_class_value = child.text
-            obj.dtc_setting_class = dtc_setting_class_value
+            dtc_setting_class_ref_value = ARRef.deserialize(child)
+            obj.dtc_setting_class_ref = dtc_setting_class_ref_value
 
         return obj
 

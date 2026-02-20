@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from abc import ABC, abstractmethod
 
 
@@ -28,11 +29,11 @@ class DiagnosticAuthentication(DiagnosticServiceInstance, ABC):
         """
         return True
 
-    authentication: Optional[Any]
+    authentication_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticAuthentication."""
         super().__init__()
-        self.authentication: Optional[Any] = None
+        self.authentication_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticAuthentication to XML element.
@@ -54,12 +55,12 @@ class DiagnosticAuthentication(DiagnosticServiceInstance, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize authentication
-        if self.authentication is not None:
-            serialized = ARObject._serialize_item(self.authentication, "Any")
+        # Serialize authentication_ref
+        if self.authentication_ref is not None:
+            serialized = ARObject._serialize_item(self.authentication_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("AUTHENTICATION")
+                wrapped = ET.Element("AUTHENTICATION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -83,11 +84,11 @@ class DiagnosticAuthentication(DiagnosticServiceInstance, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticAuthentication, cls).deserialize(element)
 
-        # Parse authentication
-        child = ARObject._find_child_element(element, "AUTHENTICATION")
+        # Parse authentication_ref
+        child = ARObject._find_child_element(element, "AUTHENTICATION-REF")
         if child is not None:
-            authentication_value = child.text
-            obj.authentication = authentication_value
+            authentication_ref_value = ARRef.deserialize(child)
+            obj.authentication_ref = authentication_ref_value
 
         return obj
 

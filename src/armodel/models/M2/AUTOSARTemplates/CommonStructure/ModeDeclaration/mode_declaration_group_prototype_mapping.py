@@ -32,13 +32,13 @@ class ModeDeclarationGroupPrototypeMapping(ARObject):
         return False
 
     first_mode_group_prototype_ref: Optional[ARRef]
-    mode: Optional[ModeDeclaration]
+    mode_ref: Optional[ARRef]
     second_mode_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ModeDeclarationGroupPrototypeMapping."""
         super().__init__()
         self.first_mode_group_prototype_ref: Optional[ARRef] = None
-        self.mode: Optional[ModeDeclaration] = None
+        self.mode_ref: Optional[ARRef] = None
         self.second_mode_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
@@ -65,12 +65,12 @@ class ModeDeclarationGroupPrototypeMapping(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize mode
-        if self.mode is not None:
-            serialized = ARObject._serialize_item(self.mode, "ModeDeclaration")
+        # Serialize mode_ref
+        if self.mode_ref is not None:
+            serialized = ARObject._serialize_item(self.mode_ref, "ModeDeclaration")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("MODE")
+                wrapped = ET.Element("MODE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -115,11 +115,11 @@ class ModeDeclarationGroupPrototypeMapping(ARObject):
             first_mode_group_prototype_ref_value = ARRef.deserialize(child)
             obj.first_mode_group_prototype_ref = first_mode_group_prototype_ref_value
 
-        # Parse mode
-        child = ARObject._find_child_element(element, "MODE")
+        # Parse mode_ref
+        child = ARObject._find_child_element(element, "MODE-REF")
         if child is not None:
-            mode_value = ARObject._deserialize_by_tag(child, "ModeDeclaration")
-            obj.mode = mode_value
+            mode_ref_value = ARRef.deserialize(child)
+            obj.mode_ref = mode_ref_value
 
         # Parse second_mode_ref
         child = ARObject._find_child_element(element, "SECOND-MODE-REF")

@@ -90,8 +90,8 @@
         "swRecord": {
           "type": "SwRecordLayout",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This refers to the record layout which is mapped to"
         }
       }
@@ -131,8 +131,8 @@
         "interpolation": {
           "type": "BswModuleEntry",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This specifies a BswModuleEntry which implements the interpolation method for the given record layout."
         },
         "isDefault": {

@@ -33,15 +33,15 @@
         "base": {
           "type": "DataInterface",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the SenderReceiverInterface that acts as in this InstanceRef definition"
         },
         "contextDatas": {
           "type": "any (ApplicationComposite)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents a context ApplicationCompositeData Prototype xml.sequenceOffset=20 1228 Document ID 62: AUTOSAR_CP_TPS_SoftwareComponentTemplate Template R23-11"
         },
         "rootData": {
@@ -54,8 +54,8 @@
         "targetData": {
           "type": "any (ApplicationComposite)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the referenced ApplicationComposite DataPrototype."
         }
       }

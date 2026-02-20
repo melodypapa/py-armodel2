@@ -59,7 +59,7 @@ class NvBlockDescriptor(Identifiable):
         return False
 
     client_server_ports: list[RoleBasedPortAssignment]
-    constant_values: list[ConstantSpecification]
+    constant_value_refs: list[ARRef]
     data_type_refs: list[ARRef]
     instantiation_data_defs: list[InstantiationDataDefProps]
     mode_switch_events: list[Any]
@@ -68,13 +68,13 @@ class NvBlockDescriptor(Identifiable):
     ram_block_ref: Optional[ARRef]
     rom_block_ref: Optional[ARRef]
     support_dirty: Optional[Boolean]
-    timing_event: Optional[TimingEvent]
+    timing_event_ref: Optional[ARRef]
     writing_strategies: list[Any]
     def __init__(self) -> None:
         """Initialize NvBlockDescriptor."""
         super().__init__()
         self.client_server_ports: list[RoleBasedPortAssignment] = []
-        self.constant_values: list[ConstantSpecification] = []
+        self.constant_value_refs: list[ARRef] = []
         self.data_type_refs: list[ARRef] = []
         self.instantiation_data_defs: list[InstantiationDataDefProps] = []
         self.mode_switch_events: list[Any] = []
@@ -83,7 +83,7 @@ class NvBlockDescriptor(Identifiable):
         self.ram_block_ref: Optional[ARRef] = None
         self.rom_block_ref: Optional[ARRef] = None
         self.support_dirty: Optional[Boolean] = None
-        self.timing_event: Optional[TimingEvent] = None
+        self.timing_event_ref: Optional[ARRef] = None
         self.writing_strategies: list[Any] = []
 
     def serialize(self) -> ET.Element:
@@ -116,13 +116,20 @@ class NvBlockDescriptor(Identifiable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize constant_values (list to container "CONSTANT-VALUES")
-        if self.constant_values:
-            wrapper = ET.Element("CONSTANT-VALUES")
-            for item in self.constant_values:
+        # Serialize constant_value_refs (list to container "CONSTANT-VALUE-REFS")
+        if self.constant_value_refs:
+            wrapper = ET.Element("CONSTANT-VALUE-REFS")
+            for item in self.constant_value_refs:
                 serialized = ARObject._serialize_item(item, "ConstantSpecification")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("CONSTANT-VALUE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -236,12 +243,12 @@ class NvBlockDescriptor(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize timing_event
-        if self.timing_event is not None:
-            serialized = ARObject._serialize_item(self.timing_event, "TimingEvent")
+        # Serialize timing_event_ref
+        if self.timing_event_ref is not None:
+            serialized = ARObject._serialize_item(self.timing_event_ref, "TimingEvent")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TIMING-EVENT")
+                wrapped = ET.Element("TIMING-EVENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -285,15 +292,21 @@ class NvBlockDescriptor(Identifiable):
                 if child_value is not None:
                     obj.client_server_ports.append(child_value)
 
-        # Parse constant_values (list from container "CONSTANT-VALUES")
-        obj.constant_values = []
-        container = ARObject._find_child_element(element, "CONSTANT-VALUES")
+        # Parse constant_value_refs (list from container "CONSTANT-VALUE-REFS")
+        obj.constant_value_refs = []
+        container = ARObject._find_child_element(element, "CONSTANT-VALUE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.constant_values.append(child_value)
+                    obj.constant_value_refs.append(child_value)
 
         # Parse data_type_refs (list from container "DATA-TYPE-REFS")
         obj.data_type_refs = []
@@ -371,11 +384,11 @@ class NvBlockDescriptor(Identifiable):
             support_dirty_value = child.text
             obj.support_dirty = support_dirty_value
 
-        # Parse timing_event
-        child = ARObject._find_child_element(element, "TIMING-EVENT")
+        # Parse timing_event_ref
+        child = ARObject._find_child_element(element, "TIMING-EVENT-REF")
         if child is not None:
-            timing_event_value = ARObject._deserialize_by_tag(child, "TimingEvent")
-            obj.timing_event = timing_event_value
+            timing_event_ref_value = ARRef.deserialize(child)
+            obj.timing_event_ref = timing_event_ref_value
 
         # Parse writing_strategies (list from container "WRITING-STRATEGIES")
         obj.writing_strategies = []

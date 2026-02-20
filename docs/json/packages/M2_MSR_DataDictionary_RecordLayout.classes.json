@@ -77,8 +77,8 @@
         "baseType": {
           "type": "SwBaseType",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This association allows to refer to a base type in case a is intended. If no base type is referred, type referenced initially in the corresponding to be used."
         },
         "desc": {
@@ -98,8 +98,8 @@
         "swGenericAxisParam": {
           "type": "SwGenericAxisParam",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This association supports the case that a value from a generic axis definition shall be stored. This value is a particular generic axis parameter type. 1228 Document ID 62: AUTOSAR_CP_TPS_SoftwareComponentTemplate Template R23-11"
         },
         "swRecord": {
@@ -168,8 +168,8 @@
         "swGenericAxisParam": {
           "type": "SwGenericAxisParam",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This association allows to specify record layout groups to iterate over generic axis parameters. For example, if the parameter is an array, the record layout iterate over this array. axis referred to by swRecordLayoutGroup be a generic axis in which the referenced Sw aggregated."
         },
         "swRecord": {

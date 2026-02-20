@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -37,13 +38,13 @@ class CpSoftwareCluster(ARElement):
 
     software_cluster: Optional[PositiveInteger]
     sw_components: list[Any]
-    sw_composition_component_types: list[CompositionSwComponentType]
+    sw_composition_component_type_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize CpSoftwareCluster."""
         super().__init__()
         self.software_cluster: Optional[PositiveInteger] = None
         self.sw_components: list[Any] = []
-        self.sw_composition_component_types: list[CompositionSwComponentType] = []
+        self.sw_composition_component_type_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize CpSoftwareCluster to XML element.
@@ -89,13 +90,20 @@ class CpSoftwareCluster(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize sw_composition_component_types (list to container "SW-COMPOSITION-COMPONENT-TYPES")
-        if self.sw_composition_component_types:
-            wrapper = ET.Element("SW-COMPOSITION-COMPONENT-TYPES")
-            for item in self.sw_composition_component_types:
+        # Serialize sw_composition_component_type_refs (list to container "SW-COMPOSITION-COMPONENT-TYPE-REFS")
+        if self.sw_composition_component_type_refs:
+            wrapper = ET.Element("SW-COMPOSITION-COMPONENT-TYPE-REFS")
+            for item in self.sw_composition_component_type_refs:
                 serialized = ARObject._serialize_item(item, "CompositionSwComponentType")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("SW-COMPOSITION-COMPONENT-TYPE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -130,15 +138,21 @@ class CpSoftwareCluster(ARElement):
                 if child_value is not None:
                     obj.sw_components.append(child_value)
 
-        # Parse sw_composition_component_types (list from container "SW-COMPOSITION-COMPONENT-TYPES")
-        obj.sw_composition_component_types = []
-        container = ARObject._find_child_element(element, "SW-COMPOSITION-COMPONENT-TYPES")
+        # Parse sw_composition_component_type_refs (list from container "SW-COMPOSITION-COMPONENT-TYPE-REFS")
+        obj.sw_composition_component_type_refs = []
+        container = ARObject._find_child_element(element, "SW-COMPOSITION-COMPONENT-TYPE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.sw_composition_component_types.append(child_value)
+                    obj.sw_composition_component_type_refs.append(child_value)
 
         return obj
 

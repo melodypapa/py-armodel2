@@ -111,8 +111,8 @@
         "systemSignal": {
           "type": "SystemSignal",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the system signal used to carry the data"
         }
       }
@@ -324,8 +324,8 @@
         "applicationRecord": {
           "type": "any (ApplicationRecord)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to an ApplicationRecordElement in the context of the dataElement or in the context of a composite"
         },
         "complexType": {
@@ -338,8 +338,8 @@
         "implementation": {
           "type": "any (ImplementationData)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to an ImplementationRecordElement in the context of the dataElement or in the context of a"
         },
         "senderToSignal": {
@@ -359,8 +359,8 @@
         "systemSignal": {
           "type": "SystemSignal",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the system signal used to carry the primitive"
         }
       }
@@ -408,8 +408,8 @@
         "systemSignal": {
           "type": "SystemSignal",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the system signal used to carry the primitive"
         }
       }
@@ -443,15 +443,15 @@
         "applicationArray": {
           "type": "any (ApplicationArray)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to an ApplicationArrayElement in an array."
         },
         "implementation": {
           "type": "any (ImplementationData)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to an ImplementationDataTypeElement in an array."
         },
         "index": {
@@ -493,8 +493,8 @@
         "callSignal": {
           "type": "SystemSignal",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the callSignal to which the IN and INOUT"
         },
         "clientServer": {
@@ -507,8 +507,8 @@
         "returnSignal": {
           "type": "SystemSignal",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the returnSignal to which the OUT and"
         }
       }
@@ -550,8 +550,8 @@
         "systemSignal": {
           "type": "SystemSignal",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the SystemSignal to which one primitive of"
         },
         "typeMapping": {
@@ -593,8 +593,8 @@
         "systemSignal": {
           "type": "SystemSignal",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This is the SystemSignal taken to transport the Trigger"
         },
         "trigger": {

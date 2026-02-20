@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.MeasurementAndCalibration.InterpolationRoutine.interpolation_routine import (
     InterpolationRoutine,
 )
@@ -32,12 +33,12 @@ class InterpolationRoutineMapping(ARObject):
         return False
 
     interpolation_routines: list[InterpolationRoutine]
-    sw_record: Optional[SwRecordLayout]
+    sw_record_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize InterpolationRoutineMapping."""
         super().__init__()
         self.interpolation_routines: list[InterpolationRoutine] = []
-        self.sw_record: Optional[SwRecordLayout] = None
+        self.sw_record_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize InterpolationRoutineMapping to XML element.
@@ -59,12 +60,12 @@ class InterpolationRoutineMapping(ARObject):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize sw_record
-        if self.sw_record is not None:
-            serialized = ARObject._serialize_item(self.sw_record, "SwRecordLayout")
+        # Serialize sw_record_ref
+        if self.sw_record_ref is not None:
+            serialized = ARObject._serialize_item(self.sw_record_ref, "SwRecordLayout")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SW-RECORD")
+                wrapped = ET.Element("SW-RECORD-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -99,11 +100,11 @@ class InterpolationRoutineMapping(ARObject):
                 if child_value is not None:
                     obj.interpolation_routines.append(child_value)
 
-        # Parse sw_record
-        child = ARObject._find_child_element(element, "SW-RECORD")
+        # Parse sw_record_ref
+        child = ARObject._find_child_element(element, "SW-RECORD-REF")
         if child is not None:
-            sw_record_value = ARObject._deserialize_by_tag(child, "SwRecordLayout")
-            obj.sw_record = sw_record_value
+            sw_record_ref_value = ARRef.deserialize(child)
+            obj.sw_record_ref = sw_record_ref_value
 
         return obj
 

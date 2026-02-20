@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
 )
@@ -37,13 +38,13 @@ class RteEventInSystemToOsTaskProxyMapping(Identifiable):
         return False
 
     offset: Optional[Integer]
-    os_task_proxy: Optional[OsTaskProxy]
+    os_task_proxy_ref: Optional[ARRef]
     rte_event_instance_ref: Optional[RTEEvent]
     def __init__(self) -> None:
         """Initialize RteEventInSystemToOsTaskProxyMapping."""
         super().__init__()
         self.offset: Optional[Integer] = None
-        self.os_task_proxy: Optional[OsTaskProxy] = None
+        self.os_task_proxy_ref: Optional[ARRef] = None
         self.rte_event_instance_ref: Optional[RTEEvent] = None
 
     def serialize(self) -> ET.Element:
@@ -80,12 +81,12 @@ class RteEventInSystemToOsTaskProxyMapping(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize os_task_proxy
-        if self.os_task_proxy is not None:
-            serialized = ARObject._serialize_item(self.os_task_proxy, "OsTaskProxy")
+        # Serialize os_task_proxy_ref
+        if self.os_task_proxy_ref is not None:
+            serialized = ARObject._serialize_item(self.os_task_proxy_ref, "OsTaskProxy")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("OS-TASK-PROXY")
+                wrapped = ET.Element("OS-TASK-PROXY-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -129,11 +130,11 @@ class RteEventInSystemToOsTaskProxyMapping(Identifiable):
             offset_value = child.text
             obj.offset = offset_value
 
-        # Parse os_task_proxy
-        child = ARObject._find_child_element(element, "OS-TASK-PROXY")
+        # Parse os_task_proxy_ref
+        child = ARObject._find_child_element(element, "OS-TASK-PROXY-REF")
         if child is not None:
-            os_task_proxy_value = ARObject._deserialize_by_tag(child, "OsTaskProxy")
-            obj.os_task_proxy = os_task_proxy_value
+            os_task_proxy_ref_value = ARRef.deserialize(child)
+            obj.os_task_proxy_ref = os_task_proxy_ref_value
 
         # Parse rte_event_instance_ref
         child = ARObject._find_child_element(element, "RTE-EVENT-INSTANCE-REF")

@@ -59,22 +59,22 @@
         "base": {
           "type": "AtpClassifier",
           "multiplicity": "1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This is the base from which navigation path begins."
         },
         "contextElements": {
           "type": "AtpFeature",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This is one step in the navigation path specified by the"
         },
         "target": {
           "type": "AtpFeature",
           "multiplicity": "1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This is the target of the instance ref."
         }
       }

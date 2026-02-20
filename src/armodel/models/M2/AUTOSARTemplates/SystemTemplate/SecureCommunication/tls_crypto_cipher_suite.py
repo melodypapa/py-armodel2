@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication import (
     TlsVersionEnum,
 )
@@ -46,34 +47,34 @@ class TlsCryptoCipherSuite(Identifiable):
         """
         return False
 
-    authentication: Optional[CryptoServicePrimitive]
-    certificate: Optional[Any]
+    authentication_ref: Optional[ARRef]
+    certificate_ref: Optional[Any]
     cipher_suite_id: Optional[PositiveInteger]
     cipher_suite: Optional[String]
-    elliptic_curves: list[CryptoEllipticCurveProps]
-    encryption: Optional[CryptoServicePrimitive]
-    key_exchanges: list[CryptoServicePrimitive]
+    elliptic_curve_refs: list[ARRef]
+    encryption_ref: Optional[ARRef]
+    key_exchange_refs: list[ARRef]
     priority: Optional[PositiveInteger]
     props: Optional[TlsCryptoCipherSuite]
     psk_identity: Optional[TlsPskIdentity]
-    remote: Optional[Any]
-    signatures: list[CryptoSignatureScheme]
+    remote_ref: Optional[Any]
+    signature_refs: list[ARRef]
     version: Optional[TlsVersionEnum]
     def __init__(self) -> None:
         """Initialize TlsCryptoCipherSuite."""
         super().__init__()
-        self.authentication: Optional[CryptoServicePrimitive] = None
-        self.certificate: Optional[Any] = None
+        self.authentication_ref: Optional[ARRef] = None
+        self.certificate_ref: Optional[Any] = None
         self.cipher_suite_id: Optional[PositiveInteger] = None
         self.cipher_suite: Optional[String] = None
-        self.elliptic_curves: list[CryptoEllipticCurveProps] = []
-        self.encryption: Optional[CryptoServicePrimitive] = None
-        self.key_exchanges: list[CryptoServicePrimitive] = []
+        self.elliptic_curve_refs: list[ARRef] = []
+        self.encryption_ref: Optional[ARRef] = None
+        self.key_exchange_refs: list[ARRef] = []
         self.priority: Optional[PositiveInteger] = None
         self.props: Optional[TlsCryptoCipherSuite] = None
         self.psk_identity: Optional[TlsPskIdentity] = None
-        self.remote: Optional[Any] = None
-        self.signatures: list[CryptoSignatureScheme] = []
+        self.remote_ref: Optional[Any] = None
+        self.signature_refs: list[ARRef] = []
         self.version: Optional[TlsVersionEnum] = None
 
     def serialize(self) -> ET.Element:
@@ -96,12 +97,12 @@ class TlsCryptoCipherSuite(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize authentication
-        if self.authentication is not None:
-            serialized = ARObject._serialize_item(self.authentication, "CryptoServicePrimitive")
+        # Serialize authentication_ref
+        if self.authentication_ref is not None:
+            serialized = ARObject._serialize_item(self.authentication_ref, "CryptoServicePrimitive")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("AUTHENTICATION")
+                wrapped = ET.Element("AUTHENTICATION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -110,12 +111,12 @@ class TlsCryptoCipherSuite(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize certificate
-        if self.certificate is not None:
-            serialized = ARObject._serialize_item(self.certificate, "Any")
+        # Serialize certificate_ref
+        if self.certificate_ref is not None:
+            serialized = ARObject._serialize_item(self.certificate_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CERTIFICATE")
+                wrapped = ET.Element("CERTIFICATE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -152,22 +153,29 @@ class TlsCryptoCipherSuite(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize elliptic_curves (list to container "ELLIPTIC-CURVES")
-        if self.elliptic_curves:
-            wrapper = ET.Element("ELLIPTIC-CURVES")
-            for item in self.elliptic_curves:
+        # Serialize elliptic_curve_refs (list to container "ELLIPTIC-CURVE-REFS")
+        if self.elliptic_curve_refs:
+            wrapper = ET.Element("ELLIPTIC-CURVE-REFS")
+            for item in self.elliptic_curve_refs:
                 serialized = ARObject._serialize_item(item, "CryptoEllipticCurveProps")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("ELLIPTIC-CURVE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize encryption
-        if self.encryption is not None:
-            serialized = ARObject._serialize_item(self.encryption, "CryptoServicePrimitive")
+        # Serialize encryption_ref
+        if self.encryption_ref is not None:
+            serialized = ARObject._serialize_item(self.encryption_ref, "CryptoServicePrimitive")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ENCRYPTION")
+                wrapped = ET.Element("ENCRYPTION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -176,13 +184,20 @@ class TlsCryptoCipherSuite(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize key_exchanges (list to container "KEY-EXCHANGES")
-        if self.key_exchanges:
-            wrapper = ET.Element("KEY-EXCHANGES")
-            for item in self.key_exchanges:
+        # Serialize key_exchange_refs (list to container "KEY-EXCHANGE-REFS")
+        if self.key_exchange_refs:
+            wrapper = ET.Element("KEY-EXCHANGE-REFS")
+            for item in self.key_exchange_refs:
                 serialized = ARObject._serialize_item(item, "CryptoServicePrimitive")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("KEY-EXCHANGE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -228,12 +243,12 @@ class TlsCryptoCipherSuite(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize remote
-        if self.remote is not None:
-            serialized = ARObject._serialize_item(self.remote, "Any")
+        # Serialize remote_ref
+        if self.remote_ref is not None:
+            serialized = ARObject._serialize_item(self.remote_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("REMOTE")
+                wrapped = ET.Element("REMOTE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -242,13 +257,20 @@ class TlsCryptoCipherSuite(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize signatures (list to container "SIGNATURES")
-        if self.signatures:
-            wrapper = ET.Element("SIGNATURES")
-            for item in self.signatures:
+        # Serialize signature_refs (list to container "SIGNATURE-REFS")
+        if self.signature_refs:
+            wrapper = ET.Element("SIGNATURE-REFS")
+            for item in self.signature_refs:
                 serialized = ARObject._serialize_item(item, "CryptoSignatureScheme")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("SIGNATURE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -281,17 +303,17 @@ class TlsCryptoCipherSuite(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TlsCryptoCipherSuite, cls).deserialize(element)
 
-        # Parse authentication
-        child = ARObject._find_child_element(element, "AUTHENTICATION")
+        # Parse authentication_ref
+        child = ARObject._find_child_element(element, "AUTHENTICATION-REF")
         if child is not None:
-            authentication_value = ARObject._deserialize_by_tag(child, "CryptoServicePrimitive")
-            obj.authentication = authentication_value
+            authentication_ref_value = ARRef.deserialize(child)
+            obj.authentication_ref = authentication_ref_value
 
-        # Parse certificate
-        child = ARObject._find_child_element(element, "CERTIFICATE")
+        # Parse certificate_ref
+        child = ARObject._find_child_element(element, "CERTIFICATE-REF")
         if child is not None:
-            certificate_value = child.text
-            obj.certificate = certificate_value
+            certificate_ref_value = ARRef.deserialize(child)
+            obj.certificate_ref = certificate_ref_value
 
         # Parse cipher_suite_id
         child = ARObject._find_child_element(element, "CIPHER-SUITE-ID")
@@ -305,31 +327,43 @@ class TlsCryptoCipherSuite(Identifiable):
             cipher_suite_value = child.text
             obj.cipher_suite = cipher_suite_value
 
-        # Parse elliptic_curves (list from container "ELLIPTIC-CURVES")
-        obj.elliptic_curves = []
-        container = ARObject._find_child_element(element, "ELLIPTIC-CURVES")
+        # Parse elliptic_curve_refs (list from container "ELLIPTIC-CURVE-REFS")
+        obj.elliptic_curve_refs = []
+        container = ARObject._find_child_element(element, "ELLIPTIC-CURVE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.elliptic_curves.append(child_value)
+                    obj.elliptic_curve_refs.append(child_value)
 
-        # Parse encryption
-        child = ARObject._find_child_element(element, "ENCRYPTION")
+        # Parse encryption_ref
+        child = ARObject._find_child_element(element, "ENCRYPTION-REF")
         if child is not None:
-            encryption_value = ARObject._deserialize_by_tag(child, "CryptoServicePrimitive")
-            obj.encryption = encryption_value
+            encryption_ref_value = ARRef.deserialize(child)
+            obj.encryption_ref = encryption_ref_value
 
-        # Parse key_exchanges (list from container "KEY-EXCHANGES")
-        obj.key_exchanges = []
-        container = ARObject._find_child_element(element, "KEY-EXCHANGES")
+        # Parse key_exchange_refs (list from container "KEY-EXCHANGE-REFS")
+        obj.key_exchange_refs = []
+        container = ARObject._find_child_element(element, "KEY-EXCHANGE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.key_exchanges.append(child_value)
+                    obj.key_exchange_refs.append(child_value)
 
         # Parse priority
         child = ARObject._find_child_element(element, "PRIORITY")
@@ -349,21 +383,27 @@ class TlsCryptoCipherSuite(Identifiable):
             psk_identity_value = ARObject._deserialize_by_tag(child, "TlsPskIdentity")
             obj.psk_identity = psk_identity_value
 
-        # Parse remote
-        child = ARObject._find_child_element(element, "REMOTE")
+        # Parse remote_ref
+        child = ARObject._find_child_element(element, "REMOTE-REF")
         if child is not None:
-            remote_value = child.text
-            obj.remote = remote_value
+            remote_ref_value = ARRef.deserialize(child)
+            obj.remote_ref = remote_ref_value
 
-        # Parse signatures (list from container "SIGNATURES")
-        obj.signatures = []
-        container = ARObject._find_child_element(element, "SIGNATURES")
+        # Parse signature_refs (list from container "SIGNATURE-REFS")
+        obj.signature_refs = []
+        container = ARObject._find_child_element(element, "SIGNATURE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.signatures.append(child_value)
+                    obj.signature_refs.append(child_value)
 
         # Parse version
         child = ARObject._find_child_element(element, "VERSION")

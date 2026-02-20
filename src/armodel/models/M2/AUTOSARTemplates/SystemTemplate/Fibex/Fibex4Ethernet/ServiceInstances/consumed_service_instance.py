@@ -50,35 +50,35 @@ class ConsumedServiceInstance(AbstractServiceInstance):
         """
         return False
 
-    allowed_services: list[NetworkEndpoint]
+    allowed_service_refs: list[ARRef]
     auto_require: Optional[Boolean]
     blocklisteds: list[SomeipServiceVersion]
     consumed_event_group_refs: list[ARRef]
-    event_multicast: Optional[ApplicationEndpoint]
+    event_multicast_ref: Optional[ARRef]
     instance: Optional[AnyServiceInstanceId]
     local_unicast: ApplicationEndpoint
     minor_version: Optional[AnyVersionString]
-    provided_service: Optional[Any]
+    provided_service_ref: Optional[Any]
     remote_unicast: ApplicationEndpoint
     sd_client_config: Optional[Any]
-    sd_client_timer: Optional[SomeipSdClientServiceInstanceConfig]
+    sd_client_timer_ref: Optional[ARRef]
     service_identifier: Optional[PositiveInteger]
     version_driven: Optional[Any]
     def __init__(self) -> None:
         """Initialize ConsumedServiceInstance."""
         super().__init__()
-        self.allowed_services: list[NetworkEndpoint] = []
+        self.allowed_service_refs: list[ARRef] = []
         self.auto_require: Optional[Boolean] = None
         self.blocklisteds: list[SomeipServiceVersion] = []
         self.consumed_event_group_refs: list[ARRef] = []
-        self.event_multicast: Optional[ApplicationEndpoint] = None
+        self.event_multicast_ref: Optional[ARRef] = None
         self.instance: Optional[AnyServiceInstanceId] = None
         self.local_unicast: ApplicationEndpoint = None
         self.minor_version: Optional[AnyVersionString] = None
-        self.provided_service: Optional[Any] = None
+        self.provided_service_ref: Optional[Any] = None
         self.remote_unicast: ApplicationEndpoint = None
         self.sd_client_config: Optional[Any] = None
-        self.sd_client_timer: Optional[SomeipSdClientServiceInstanceConfig] = None
+        self.sd_client_timer_ref: Optional[ARRef] = None
         self.service_identifier: Optional[PositiveInteger] = None
         self.version_driven: Optional[Any] = None
 
@@ -102,13 +102,20 @@ class ConsumedServiceInstance(AbstractServiceInstance):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize allowed_services (list to container "ALLOWED-SERVICES")
-        if self.allowed_services:
-            wrapper = ET.Element("ALLOWED-SERVICES")
-            for item in self.allowed_services:
+        # Serialize allowed_service_refs (list to container "ALLOWED-SERVICE-REFS")
+        if self.allowed_service_refs:
+            wrapper = ET.Element("ALLOWED-SERVICE-REFS")
+            for item in self.allowed_service_refs:
                 serialized = ARObject._serialize_item(item, "NetworkEndpoint")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("ALLOWED-SERVICE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -153,12 +160,12 @@ class ConsumedServiceInstance(AbstractServiceInstance):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize event_multicast
-        if self.event_multicast is not None:
-            serialized = ARObject._serialize_item(self.event_multicast, "ApplicationEndpoint")
+        # Serialize event_multicast_ref
+        if self.event_multicast_ref is not None:
+            serialized = ARObject._serialize_item(self.event_multicast_ref, "ApplicationEndpoint")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("EVENT-MULTICAST")
+                wrapped = ET.Element("EVENT-MULTICAST-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -209,12 +216,12 @@ class ConsumedServiceInstance(AbstractServiceInstance):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize provided_service
-        if self.provided_service is not None:
-            serialized = ARObject._serialize_item(self.provided_service, "Any")
+        # Serialize provided_service_ref
+        if self.provided_service_ref is not None:
+            serialized = ARObject._serialize_item(self.provided_service_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PROVIDED-SERVICE")
+                wrapped = ET.Element("PROVIDED-SERVICE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -251,12 +258,12 @@ class ConsumedServiceInstance(AbstractServiceInstance):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sd_client_timer
-        if self.sd_client_timer is not None:
-            serialized = ARObject._serialize_item(self.sd_client_timer, "SomeipSdClientServiceInstanceConfig")
+        # Serialize sd_client_timer_ref
+        if self.sd_client_timer_ref is not None:
+            serialized = ARObject._serialize_item(self.sd_client_timer_ref, "SomeipSdClientServiceInstanceConfig")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SD-CLIENT-TIMER")
+                wrapped = ET.Element("SD-CLIENT-TIMER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -308,15 +315,21 @@ class ConsumedServiceInstance(AbstractServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ConsumedServiceInstance, cls).deserialize(element)
 
-        # Parse allowed_services (list from container "ALLOWED-SERVICES")
-        obj.allowed_services = []
-        container = ARObject._find_child_element(element, "ALLOWED-SERVICES")
+        # Parse allowed_service_refs (list from container "ALLOWED-SERVICE-REFS")
+        obj.allowed_service_refs = []
+        container = ARObject._find_child_element(element, "ALLOWED-SERVICE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.allowed_services.append(child_value)
+                    obj.allowed_service_refs.append(child_value)
 
         # Parse auto_require
         child = ARObject._find_child_element(element, "AUTO-REQUIRE")
@@ -350,11 +363,11 @@ class ConsumedServiceInstance(AbstractServiceInstance):
                 if child_value is not None:
                     obj.consumed_event_group_refs.append(child_value)
 
-        # Parse event_multicast
-        child = ARObject._find_child_element(element, "EVENT-MULTICAST")
+        # Parse event_multicast_ref
+        child = ARObject._find_child_element(element, "EVENT-MULTICAST-REF")
         if child is not None:
-            event_multicast_value = ARObject._deserialize_by_tag(child, "ApplicationEndpoint")
-            obj.event_multicast = event_multicast_value
+            event_multicast_ref_value = ARRef.deserialize(child)
+            obj.event_multicast_ref = event_multicast_ref_value
 
         # Parse instance
         child = ARObject._find_child_element(element, "INSTANCE")
@@ -374,11 +387,11 @@ class ConsumedServiceInstance(AbstractServiceInstance):
             minor_version_value = child.text
             obj.minor_version = minor_version_value
 
-        # Parse provided_service
-        child = ARObject._find_child_element(element, "PROVIDED-SERVICE")
+        # Parse provided_service_ref
+        child = ARObject._find_child_element(element, "PROVIDED-SERVICE-REF")
         if child is not None:
-            provided_service_value = child.text
-            obj.provided_service = provided_service_value
+            provided_service_ref_value = ARRef.deserialize(child)
+            obj.provided_service_ref = provided_service_ref_value
 
         # Parse remote_unicast
         child = ARObject._find_child_element(element, "REMOTE-UNICAST")
@@ -392,11 +405,11 @@ class ConsumedServiceInstance(AbstractServiceInstance):
             sd_client_config_value = child.text
             obj.sd_client_config = sd_client_config_value
 
-        # Parse sd_client_timer
-        child = ARObject._find_child_element(element, "SD-CLIENT-TIMER")
+        # Parse sd_client_timer_ref
+        child = ARObject._find_child_element(element, "SD-CLIENT-TIMER-REF")
         if child is not None:
-            sd_client_timer_value = ARObject._deserialize_by_tag(child, "SomeipSdClientServiceInstanceConfig")
-            obj.sd_client_timer = sd_client_timer_value
+            sd_client_timer_ref_value = ARRef.deserialize(child)
+            obj.sd_client_timer_ref = sd_client_timer_ref_value
 
         # Parse service_identifier
         child = ARObject._find_child_element(element, "SERVICE-IDENTIFIER")

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Dds.
     DdsCpServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -33,17 +34,17 @@ class DdsCpProvidedServiceInstance(DdsCpServiceInstance):
         """
         return False
 
-    local_unicast: Optional[ApplicationEndpoint]
+    local_unicast_ref: Optional[ARRef]
     minor_version: Optional[PositiveInteger]
     provided_ddses: list[DdsCpServiceInstance]
-    static_remotes: list[ApplicationEndpoint]
+    static_remote_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize DdsCpProvidedServiceInstance."""
         super().__init__()
-        self.local_unicast: Optional[ApplicationEndpoint] = None
+        self.local_unicast_ref: Optional[ARRef] = None
         self.minor_version: Optional[PositiveInteger] = None
         self.provided_ddses: list[DdsCpServiceInstance] = []
-        self.static_remotes: list[ApplicationEndpoint] = []
+        self.static_remote_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize DdsCpProvidedServiceInstance to XML element.
@@ -65,12 +66,12 @@ class DdsCpProvidedServiceInstance(DdsCpServiceInstance):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize local_unicast
-        if self.local_unicast is not None:
-            serialized = ARObject._serialize_item(self.local_unicast, "ApplicationEndpoint")
+        # Serialize local_unicast_ref
+        if self.local_unicast_ref is not None:
+            serialized = ARObject._serialize_item(self.local_unicast_ref, "ApplicationEndpoint")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("LOCAL-UNICAST")
+                wrapped = ET.Element("LOCAL-UNICAST-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -103,13 +104,20 @@ class DdsCpProvidedServiceInstance(DdsCpServiceInstance):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize static_remotes (list to container "STATIC-REMOTES")
-        if self.static_remotes:
-            wrapper = ET.Element("STATIC-REMOTES")
-            for item in self.static_remotes:
+        # Serialize static_remote_refs (list to container "STATIC-REMOTE-REFS")
+        if self.static_remote_refs:
+            wrapper = ET.Element("STATIC-REMOTE-REFS")
+            for item in self.static_remote_refs:
                 serialized = ARObject._serialize_item(item, "ApplicationEndpoint")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("STATIC-REMOTE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -128,11 +136,11 @@ class DdsCpProvidedServiceInstance(DdsCpServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DdsCpProvidedServiceInstance, cls).deserialize(element)
 
-        # Parse local_unicast
-        child = ARObject._find_child_element(element, "LOCAL-UNICAST")
+        # Parse local_unicast_ref
+        child = ARObject._find_child_element(element, "LOCAL-UNICAST-REF")
         if child is not None:
-            local_unicast_value = ARObject._deserialize_by_tag(child, "ApplicationEndpoint")
-            obj.local_unicast = local_unicast_value
+            local_unicast_ref_value = ARRef.deserialize(child)
+            obj.local_unicast_ref = local_unicast_ref_value
 
         # Parse minor_version
         child = ARObject._find_child_element(element, "MINOR-VERSION")
@@ -150,15 +158,21 @@ class DdsCpProvidedServiceInstance(DdsCpServiceInstance):
                 if child_value is not None:
                     obj.provided_ddses.append(child_value)
 
-        # Parse static_remotes (list from container "STATIC-REMOTES")
-        obj.static_remotes = []
-        container = ARObject._find_child_element(element, "STATIC-REMOTES")
+        # Parse static_remote_refs (list from container "STATIC-REMOTE-REFS")
+        obj.static_remote_refs = []
+        container = ARObject._find_child_element(element, "STATIC-REMOTE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.static_remotes.append(child_value)
+                    obj.static_remote_refs.append(child_value)
 
         return obj
 

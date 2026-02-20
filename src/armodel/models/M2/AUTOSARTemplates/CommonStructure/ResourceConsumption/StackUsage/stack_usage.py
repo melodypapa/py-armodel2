@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.executable_entity import (
     ExecutableEntity,
 )
@@ -41,16 +42,16 @@ class StackUsage(Identifiable, ABC):
         """
         return True
 
-    executable_entity: Optional[ExecutableEntity]
+    executable_entity_ref: Optional[ARRef]
     hardware: Optional[HardwareConfiguration]
-    hw_element: Optional[HwElement]
+    hw_element_ref: Optional[ARRef]
     software_context: Optional[SoftwareContext]
     def __init__(self) -> None:
         """Initialize StackUsage."""
         super().__init__()
-        self.executable_entity: Optional[ExecutableEntity] = None
+        self.executable_entity_ref: Optional[ARRef] = None
         self.hardware: Optional[HardwareConfiguration] = None
-        self.hw_element: Optional[HwElement] = None
+        self.hw_element_ref: Optional[ARRef] = None
         self.software_context: Optional[SoftwareContext] = None
 
     def serialize(self) -> ET.Element:
@@ -73,12 +74,12 @@ class StackUsage(Identifiable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize executable_entity
-        if self.executable_entity is not None:
-            serialized = ARObject._serialize_item(self.executable_entity, "ExecutableEntity")
+        # Serialize executable_entity_ref
+        if self.executable_entity_ref is not None:
+            serialized = ARObject._serialize_item(self.executable_entity_ref, "ExecutableEntity")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("EXECUTABLE-ENTITY")
+                wrapped = ET.Element("EXECUTABLE-ENTITY-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -101,12 +102,12 @@ class StackUsage(Identifiable, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize hw_element
-        if self.hw_element is not None:
-            serialized = ARObject._serialize_item(self.hw_element, "HwElement")
+        # Serialize hw_element_ref
+        if self.hw_element_ref is not None:
+            serialized = ARObject._serialize_item(self.hw_element_ref, "HwElement")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("HW-ELEMENT")
+                wrapped = ET.Element("HW-ELEMENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -144,11 +145,11 @@ class StackUsage(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(StackUsage, cls).deserialize(element)
 
-        # Parse executable_entity
-        child = ARObject._find_child_element(element, "EXECUTABLE-ENTITY")
+        # Parse executable_entity_ref
+        child = ARObject._find_child_element(element, "EXECUTABLE-ENTITY-REF")
         if child is not None:
-            executable_entity_value = ARObject._deserialize_by_tag(child, "ExecutableEntity")
-            obj.executable_entity = executable_entity_value
+            executable_entity_ref_value = ARRef.deserialize(child)
+            obj.executable_entity_ref = executable_entity_ref_value
 
         # Parse hardware
         child = ARObject._find_child_element(element, "HARDWARE")
@@ -156,11 +157,11 @@ class StackUsage(Identifiable, ABC):
             hardware_value = ARObject._deserialize_by_tag(child, "HardwareConfiguration")
             obj.hardware = hardware_value
 
-        # Parse hw_element
-        child = ARObject._find_child_element(element, "HW-ELEMENT")
+        # Parse hw_element_ref
+        child = ARObject._find_child_element(element, "HW-ELEMENT-REF")
         if child is not None:
-            hw_element_value = ARObject._deserialize_by_tag(child, "HwElement")
-            obj.hw_element = hw_element_value
+            hw_element_ref_value = ARRef.deserialize(child)
+            obj.hw_element_ref = hw_element_ref_value
 
         # Parse software_context
         child = ARObject._find_child_element(element, "SOFTWARE-CONTEXT")

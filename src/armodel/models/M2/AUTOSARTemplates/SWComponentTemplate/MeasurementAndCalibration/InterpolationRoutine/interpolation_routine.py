@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     Identifier,
@@ -32,13 +33,13 @@ class InterpolationRoutine(ARObject):
         """
         return False
 
-    interpolation: Optional[BswModuleEntry]
+    interpolation_ref: Optional[ARRef]
     is_default: Optional[Boolean]
     short_label: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize InterpolationRoutine."""
         super().__init__()
-        self.interpolation: Optional[BswModuleEntry] = None
+        self.interpolation_ref: Optional[ARRef] = None
         self.is_default: Optional[Boolean] = None
         self.short_label: Optional[Identifier] = None
 
@@ -52,12 +53,12 @@ class InterpolationRoutine(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize interpolation
-        if self.interpolation is not None:
-            serialized = ARObject._serialize_item(self.interpolation, "BswModuleEntry")
+        # Serialize interpolation_ref
+        if self.interpolation_ref is not None:
+            serialized = ARObject._serialize_item(self.interpolation_ref, "BswModuleEntry")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("INTERPOLATION")
+                wrapped = ET.Element("INTERPOLATION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -110,11 +111,11 @@ class InterpolationRoutine(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse interpolation
-        child = ARObject._find_child_element(element, "INTERPOLATION")
+        # Parse interpolation_ref
+        child = ARObject._find_child_element(element, "INTERPOLATION-REF")
         if child is not None:
-            interpolation_value = ARObject._deserialize_by_tag(child, "BswModuleEntry")
-            obj.interpolation = interpolation_value
+            interpolation_ref_value = ARRef.deserialize(child)
+            obj.interpolation_ref = interpolation_ref_value
 
         # Parse is_default
         child = ARObject._find_child_element(element, "IS-DEFAULT")

@@ -32,15 +32,15 @@
         "blueprint": {
           "type": "AtpBlueprint",
           "multiplicity": "1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the mapped blueprint."
         },
         "derivedObject": {
           "type": "AtpBlueprintable",
           "multiplicity": "1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the object which was derived from the"
         }
       }

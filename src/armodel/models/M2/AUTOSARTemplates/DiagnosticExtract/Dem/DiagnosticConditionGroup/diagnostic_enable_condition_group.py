@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticConditio
     DiagnosticConditionGroup,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
 class DiagnosticEnableConditionGroup(DiagnosticConditionGroup):
@@ -27,11 +28,11 @@ class DiagnosticEnableConditionGroup(DiagnosticConditionGroup):
         """
         return False
 
-    enable_conditions: list[Any]
+    enable_condition_refs: list[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticEnableConditionGroup."""
         super().__init__()
-        self.enable_conditions: list[Any] = []
+        self.enable_condition_refs: list[Any] = []
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticEnableConditionGroup to XML element.
@@ -53,13 +54,20 @@ class DiagnosticEnableConditionGroup(DiagnosticConditionGroup):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize enable_conditions (list to container "ENABLE-CONDITIONS")
-        if self.enable_conditions:
-            wrapper = ET.Element("ENABLE-CONDITIONS")
-            for item in self.enable_conditions:
+        # Serialize enable_condition_refs (list to container "ENABLE-CONDITION-REFS")
+        if self.enable_condition_refs:
+            wrapper = ET.Element("ENABLE-CONDITION-REFS")
+            for item in self.enable_condition_refs:
                 serialized = ARObject._serialize_item(item, "Any")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("ENABLE-CONDITION-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -78,15 +86,21 @@ class DiagnosticEnableConditionGroup(DiagnosticConditionGroup):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticEnableConditionGroup, cls).deserialize(element)
 
-        # Parse enable_conditions (list from container "ENABLE-CONDITIONS")
-        obj.enable_conditions = []
-        container = ARObject._find_child_element(element, "ENABLE-CONDITIONS")
+        # Parse enable_condition_refs (list from container "ENABLE-CONDITION-REFS")
+        obj.enable_condition_refs = []
+        container = ARObject._find_child_element(element, "ENABLE-CONDITION-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.enable_conditions.append(child_value)
+                    obj.enable_condition_refs.append(child_value)
 
         return obj
 

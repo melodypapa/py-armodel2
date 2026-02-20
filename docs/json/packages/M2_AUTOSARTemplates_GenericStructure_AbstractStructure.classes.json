@@ -89,8 +89,8 @@
         "atpBase": {
           "type": "AtpClassifier",
           "multiplicity": "1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This is the base from which the navigaion path starts."
         },
         "atpContexts": {
@@ -103,8 +103,8 @@
         "atpTarget": {
           "type": "AtpFeature",
           "multiplicity": "1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This is the target of the instance ref. In other words it is"
         }
       }
@@ -221,8 +221,8 @@
         "atpType": {
           "type": "AtpType",
           "multiplicity": "1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This is the type of the feature."
         }
       }

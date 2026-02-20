@@ -45,15 +45,15 @@
         "physicalChannels": {
           "type": "PhysicalChannel",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference maps the partial network to a channel."
         },
         "pncConsumeds": {
           "type": "ConsumedProvidedServiceInstanceGroup",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "ConsumedProvidedServiceInstanceGroup used in a Partial Network Cluster. This reference is optional, since could be used for starting and stopping Consumed according the requested but is not necessarily needed. atpVariation"
         },
         "pncGroups": {
@@ -87,8 +87,8 @@
         "relevantFors": {
           "type": "EcuInstance",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to a PNC Gateway ECU for PNCs which do have a static channel mapping. This is needed to dynamic PNCs that can be learned only at which have no relation to an ISignalIPdu"
         },
         "shortLabel": {

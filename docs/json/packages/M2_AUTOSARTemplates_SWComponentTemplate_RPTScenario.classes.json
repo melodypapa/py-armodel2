@@ -156,8 +156,8 @@
         "hostSystem": {
           "type": "System",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "System which describes the software components of the"
         },
         "rptContainers": {
@@ -177,8 +177,8 @@
         "rptSystem": {
           "type": "System",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "System which describes the rapid prototyping algorithm in"
         }
       }
@@ -273,8 +273,8 @@
         "explicitRpts": {
           "type": "RptProfile",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This attribute defines the applicable RptProfiles for the"
         },
         "rptContainers": {

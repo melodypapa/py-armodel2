@@ -34,15 +34,15 @@ class TDEventBswModeDeclaration(TDEventBsw):
         """
         return False
 
-    entry_mode: Optional[ModeDeclaration]
-    exit_mode: Optional[ModeDeclaration]
+    entry_mode_ref: Optional[ARRef]
+    exit_mode_ref: Optional[ARRef]
     mode_ref: Optional[ARRef]
     td_event_bsw_declaration_type: Optional[Any]
     def __init__(self) -> None:
         """Initialize TDEventBswModeDeclaration."""
         super().__init__()
-        self.entry_mode: Optional[ModeDeclaration] = None
-        self.exit_mode: Optional[ModeDeclaration] = None
+        self.entry_mode_ref: Optional[ARRef] = None
+        self.exit_mode_ref: Optional[ARRef] = None
         self.mode_ref: Optional[ARRef] = None
         self.td_event_bsw_declaration_type: Optional[Any] = None
 
@@ -66,12 +66,12 @@ class TDEventBswModeDeclaration(TDEventBsw):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize entry_mode
-        if self.entry_mode is not None:
-            serialized = ARObject._serialize_item(self.entry_mode, "ModeDeclaration")
+        # Serialize entry_mode_ref
+        if self.entry_mode_ref is not None:
+            serialized = ARObject._serialize_item(self.entry_mode_ref, "ModeDeclaration")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ENTRY-MODE")
+                wrapped = ET.Element("ENTRY-MODE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -80,12 +80,12 @@ class TDEventBswModeDeclaration(TDEventBsw):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize exit_mode
-        if self.exit_mode is not None:
-            serialized = ARObject._serialize_item(self.exit_mode, "ModeDeclaration")
+        # Serialize exit_mode_ref
+        if self.exit_mode_ref is not None:
+            serialized = ARObject._serialize_item(self.exit_mode_ref, "ModeDeclaration")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("EXIT-MODE")
+                wrapped = ET.Element("EXIT-MODE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -137,17 +137,17 @@ class TDEventBswModeDeclaration(TDEventBsw):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDEventBswModeDeclaration, cls).deserialize(element)
 
-        # Parse entry_mode
-        child = ARObject._find_child_element(element, "ENTRY-MODE")
+        # Parse entry_mode_ref
+        child = ARObject._find_child_element(element, "ENTRY-MODE-REF")
         if child is not None:
-            entry_mode_value = ARObject._deserialize_by_tag(child, "ModeDeclaration")
-            obj.entry_mode = entry_mode_value
+            entry_mode_ref_value = ARRef.deserialize(child)
+            obj.entry_mode_ref = entry_mode_ref_value
 
-        # Parse exit_mode
-        child = ARObject._find_child_element(element, "EXIT-MODE")
+        # Parse exit_mode_ref
+        child = ARObject._find_child_element(element, "EXIT-MODE-REF")
         if child is not None:
-            exit_mode_value = ARObject._deserialize_by_tag(child, "ModeDeclaration")
-            obj.exit_mode = exit_mode_value
+            exit_mode_ref_value = ARRef.deserialize(child)
+            obj.exit_mode_ref = exit_mode_ref_value
 
         # Parse mode_ref
         child = ARObject._find_child_element(element, "MODE-REF")

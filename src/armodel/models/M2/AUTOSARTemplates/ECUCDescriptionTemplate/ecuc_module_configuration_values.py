@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     RevisionLabelString,
@@ -43,19 +44,19 @@ class EcucModuleConfigurationValues(ARElement):
         return False
 
     containers: list[EcucContainerValue]
-    definition: Optional[EcucModuleDef]
+    definition_ref: Optional[ARRef]
     ecuc_def_edition: Optional[RevisionLabelString]
     implementation: Optional[Any]
-    module: Optional[BswImplementation]
+    module_ref: Optional[ARRef]
     post_build_variant: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize EcucModuleConfigurationValues."""
         super().__init__()
         self.containers: list[EcucContainerValue] = []
-        self.definition: Optional[EcucModuleDef] = None
+        self.definition_ref: Optional[ARRef] = None
         self.ecuc_def_edition: Optional[RevisionLabelString] = None
         self.implementation: Optional[Any] = None
-        self.module: Optional[BswImplementation] = None
+        self.module_ref: Optional[ARRef] = None
         self.post_build_variant: Optional[Boolean] = None
 
     def serialize(self) -> ET.Element:
@@ -88,12 +89,12 @@ class EcucModuleConfigurationValues(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize definition
-        if self.definition is not None:
-            serialized = ARObject._serialize_item(self.definition, "EcucModuleDef")
+        # Serialize definition_ref
+        if self.definition_ref is not None:
+            serialized = ARObject._serialize_item(self.definition_ref, "EcucModuleDef")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DEFINITION")
+                wrapped = ET.Element("DEFINITION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -130,12 +131,12 @@ class EcucModuleConfigurationValues(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize module
-        if self.module is not None:
-            serialized = ARObject._serialize_item(self.module, "BswImplementation")
+        # Serialize module_ref
+        if self.module_ref is not None:
+            serialized = ARObject._serialize_item(self.module_ref, "BswImplementation")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("MODULE")
+                wrapped = ET.Element("MODULE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -183,11 +184,11 @@ class EcucModuleConfigurationValues(ARElement):
                 if child_value is not None:
                     obj.containers.append(child_value)
 
-        # Parse definition
-        child = ARObject._find_child_element(element, "DEFINITION")
+        # Parse definition_ref
+        child = ARObject._find_child_element(element, "DEFINITION-REF")
         if child is not None:
-            definition_value = ARObject._deserialize_by_tag(child, "EcucModuleDef")
-            obj.definition = definition_value
+            definition_ref_value = ARRef.deserialize(child)
+            obj.definition_ref = definition_ref_value
 
         # Parse ecuc_def_edition
         child = ARObject._find_child_element(element, "ECUC-DEF-EDITION")
@@ -201,11 +202,11 @@ class EcucModuleConfigurationValues(ARElement):
             implementation_value = child.text
             obj.implementation = implementation_value
 
-        # Parse module
-        child = ARObject._find_child_element(element, "MODULE")
+        # Parse module_ref
+        child = ARObject._find_child_element(element, "MODULE-REF")
         if child is not None:
-            module_value = ARObject._deserialize_by_tag(child, "BswImplementation")
-            obj.module = module_value
+            module_ref_value = ARRef.deserialize(child)
+            obj.module_ref = module_ref_value
 
         # Parse post_build_variant
         child = ARObject._find_child_element(element, "POST-BUILD-VARIANT")

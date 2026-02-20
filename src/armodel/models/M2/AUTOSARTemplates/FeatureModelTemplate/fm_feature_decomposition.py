@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     CategoryString,
     PositiveInteger,
@@ -32,14 +33,14 @@ class FMFeatureDecomposition(ARObject):
         return False
 
     category: Optional[CategoryString]
-    features: list[FMFeature]
+    feature_refs: list[ARRef]
     max: Optional[PositiveInteger]
     min: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize FMFeatureDecomposition."""
         super().__init__()
         self.category: Optional[CategoryString] = None
-        self.features: list[FMFeature] = []
+        self.feature_refs: list[ARRef] = []
         self.max: Optional[PositiveInteger] = None
         self.min: Optional[PositiveInteger] = None
 
@@ -67,13 +68,20 @@ class FMFeatureDecomposition(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize features (list to container "FEATURES")
-        if self.features:
-            wrapper = ET.Element("FEATURES")
-            for item in self.features:
+        # Serialize feature_refs (list to container "FEATURE-REFS")
+        if self.feature_refs:
+            wrapper = ET.Element("FEATURE-REFS")
+            for item in self.feature_refs:
                 serialized = ARObject._serialize_item(item, "FMFeature")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("FEATURE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -127,15 +135,21 @@ class FMFeatureDecomposition(ARObject):
             category_value = child.text
             obj.category = category_value
 
-        # Parse features (list from container "FEATURES")
-        obj.features = []
-        container = ARObject._find_child_element(element, "FEATURES")
+        # Parse feature_refs (list from container "FEATURE-REFS")
+        obj.feature_refs = []
+        container = ARObject._find_child_element(element, "FEATURE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.features.append(child_value)
+                    obj.feature_refs.append(child_value)
 
         # Parse max
         child = ARObject._find_child_element(element, "MAX")

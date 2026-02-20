@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -30,14 +31,14 @@ class DiagnosticComControlSpecificChannel(ARObject):
         """
         return False
 
-    specific_channel: Optional[CommunicationCluster]
-    specific_physical: Optional[Any]
+    specific_channel_ref: Optional[ARRef]
+    specific_physical_ref: Optional[Any]
     subnet_number: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DiagnosticComControlSpecificChannel."""
         super().__init__()
-        self.specific_channel: Optional[CommunicationCluster] = None
-        self.specific_physical: Optional[Any] = None
+        self.specific_channel_ref: Optional[ARRef] = None
+        self.specific_physical_ref: Optional[Any] = None
         self.subnet_number: Optional[PositiveInteger] = None
 
     def serialize(self) -> ET.Element:
@@ -50,12 +51,12 @@ class DiagnosticComControlSpecificChannel(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize specific_channel
-        if self.specific_channel is not None:
-            serialized = ARObject._serialize_item(self.specific_channel, "CommunicationCluster")
+        # Serialize specific_channel_ref
+        if self.specific_channel_ref is not None:
+            serialized = ARObject._serialize_item(self.specific_channel_ref, "CommunicationCluster")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SPECIFIC-CHANNEL")
+                wrapped = ET.Element("SPECIFIC-CHANNEL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -64,12 +65,12 @@ class DiagnosticComControlSpecificChannel(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize specific_physical
-        if self.specific_physical is not None:
-            serialized = ARObject._serialize_item(self.specific_physical, "Any")
+        # Serialize specific_physical_ref
+        if self.specific_physical_ref is not None:
+            serialized = ARObject._serialize_item(self.specific_physical_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SPECIFIC-PHYSICAL")
+                wrapped = ET.Element("SPECIFIC-PHYSICAL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -108,17 +109,17 @@ class DiagnosticComControlSpecificChannel(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse specific_channel
-        child = ARObject._find_child_element(element, "SPECIFIC-CHANNEL")
+        # Parse specific_channel_ref
+        child = ARObject._find_child_element(element, "SPECIFIC-CHANNEL-REF")
         if child is not None:
-            specific_channel_value = ARObject._deserialize_by_tag(child, "CommunicationCluster")
-            obj.specific_channel = specific_channel_value
+            specific_channel_ref_value = ARRef.deserialize(child)
+            obj.specific_channel_ref = specific_channel_ref_value
 
-        # Parse specific_physical
-        child = ARObject._find_child_element(element, "SPECIFIC-PHYSICAL")
+        # Parse specific_physical_ref
+        child = ARObject._find_child_element(element, "SPECIFIC-PHYSICAL-REF")
         if child is not None:
-            specific_physical_value = child.text
-            obj.specific_physical = specific_physical_value
+            specific_physical_ref_value = ARRef.deserialize(child)
+            obj.specific_physical_ref = specific_physical_ref_value
 
         # Parse subnet_number
         child = ARObject._find_child_element(element, "SUBNET-NUMBER")

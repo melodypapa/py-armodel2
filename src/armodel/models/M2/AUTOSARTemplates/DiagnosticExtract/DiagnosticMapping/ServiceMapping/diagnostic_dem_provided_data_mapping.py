@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
     DiagnosticMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     NameToken,
 )
@@ -33,12 +34,12 @@ class DiagnosticDemProvidedDataMapping(DiagnosticMapping):
         """
         return False
 
-    data_element: Optional[DiagnosticDataElement]
+    data_element_ref: Optional[ARRef]
     data_provider: Optional[NameToken]
     def __init__(self) -> None:
         """Initialize DiagnosticDemProvidedDataMapping."""
         super().__init__()
-        self.data_element: Optional[DiagnosticDataElement] = None
+        self.data_element_ref: Optional[ARRef] = None
         self.data_provider: Optional[NameToken] = None
 
     def serialize(self) -> ET.Element:
@@ -61,12 +62,12 @@ class DiagnosticDemProvidedDataMapping(DiagnosticMapping):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize data_element
-        if self.data_element is not None:
-            serialized = ARObject._serialize_item(self.data_element, "DiagnosticDataElement")
+        # Serialize data_element_ref
+        if self.data_element_ref is not None:
+            serialized = ARObject._serialize_item(self.data_element_ref, "DiagnosticDataElement")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DATA-ELEMENT")
+                wrapped = ET.Element("DATA-ELEMENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -104,11 +105,11 @@ class DiagnosticDemProvidedDataMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticDemProvidedDataMapping, cls).deserialize(element)
 
-        # Parse data_element
-        child = ARObject._find_child_element(element, "DATA-ELEMENT")
+        # Parse data_element_ref
+        child = ARObject._find_child_element(element, "DATA-ELEMENT-REF")
         if child is not None:
-            data_element_value = ARObject._deserialize_by_tag(child, "DiagnosticDataElement")
-            obj.data_element = data_element_value
+            data_element_ref_value = ARRef.deserialize(child)
+            obj.data_element_ref = data_element_ref_value
 
         # Parse data_provider
         child = ARObject._find_child_element(element, "DATA-PROVIDER")

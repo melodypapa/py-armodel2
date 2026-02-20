@@ -122,8 +122,8 @@
         "units": {
           "type": "Unit",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents one particular unit in the UnitGroup."
         }
       }
@@ -174,12 +174,12 @@
           "is_ref": false,
           "note": "The exponent of the physical dimension \"length\"."
         },
-        "luminous": {
+        "luminousIntensityExp": {
           "type": "Numerical",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "The exponent of the physical dimension \"luminous"
+          "note": "The exponent of the physical dimension \"luminous intensity\"."
         },
         "massExp": {
           "type": "Numerical",
@@ -188,7 +188,7 @@
           "is_ref": false,
           "note": "The exponent of the physical dimension \"mass\"."
         },
-        "molarAmount": {
+        "molarAmountExp": {
           "type": "Numerical",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -240,15 +240,15 @@
         "firstPhysical": {
           "type": "PhysicalDimension",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the first PhysicalDimension of the PhysicalDimensionMapping."
         },
         "secondPhysical": {
           "type": "PhysicalDimension",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the first PhysicalDimension of the PhysicalDimensionMapping."
         }
       }

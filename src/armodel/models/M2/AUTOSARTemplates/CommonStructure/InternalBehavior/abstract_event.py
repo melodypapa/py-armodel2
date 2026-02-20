@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.executable_entity import (
     ExecutableEntity,
 )
@@ -32,11 +33,11 @@ class AbstractEvent(Identifiable, ABC):
         """
         return True
 
-    activation: Optional[ExecutableEntity]
+    activation_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize AbstractEvent."""
         super().__init__()
-        self.activation: Optional[ExecutableEntity] = None
+        self.activation_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize AbstractEvent to XML element.
@@ -58,12 +59,12 @@ class AbstractEvent(Identifiable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize activation
-        if self.activation is not None:
-            serialized = ARObject._serialize_item(self.activation, "ExecutableEntity")
+        # Serialize activation_ref
+        if self.activation_ref is not None:
+            serialized = ARObject._serialize_item(self.activation_ref, "ExecutableEntity")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ACTIVATION")
+                wrapped = ET.Element("ACTIVATION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -87,11 +88,11 @@ class AbstractEvent(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AbstractEvent, cls).deserialize(element)
 
-        # Parse activation
-        child = ARObject._find_child_element(element, "ACTIVATION")
+        # Parse activation_ref
+        child = ARObject._find_child_element(element, "ACTIVATION-REF")
         if child is not None:
-            activation_value = ARObject._deserialize_by_tag(child, "ExecutableEntity")
-            obj.activation = activation_value
+            activation_ref_value = ARRef.deserialize(child)
+            obj.activation_ref = activation_ref_value
 
         return obj
 

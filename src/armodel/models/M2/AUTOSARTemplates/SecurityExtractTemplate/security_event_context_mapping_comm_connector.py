@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.security_event_c
     SecurityEventContextMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_connector import (
     CommunicationConnector,
 )
@@ -30,11 +31,11 @@ class SecurityEventContextMappingCommConnector(SecurityEventContextMapping):
         """
         return False
 
-    comm_connectors: list[CommunicationConnector]
+    comm_connector_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize SecurityEventContextMappingCommConnector."""
         super().__init__()
-        self.comm_connectors: list[CommunicationConnector] = []
+        self.comm_connector_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize SecurityEventContextMappingCommConnector to XML element.
@@ -56,13 +57,20 @@ class SecurityEventContextMappingCommConnector(SecurityEventContextMapping):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize comm_connectors (list to container "COMM-CONNECTORS")
-        if self.comm_connectors:
-            wrapper = ET.Element("COMM-CONNECTORS")
-            for item in self.comm_connectors:
+        # Serialize comm_connector_refs (list to container "COMM-CONNECTOR-REFS")
+        if self.comm_connector_refs:
+            wrapper = ET.Element("COMM-CONNECTOR-REFS")
+            for item in self.comm_connector_refs:
                 serialized = ARObject._serialize_item(item, "CommunicationConnector")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("COMM-CONNECTOR-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -81,15 +89,21 @@ class SecurityEventContextMappingCommConnector(SecurityEventContextMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SecurityEventContextMappingCommConnector, cls).deserialize(element)
 
-        # Parse comm_connectors (list from container "COMM-CONNECTORS")
-        obj.comm_connectors = []
-        container = ARObject._find_child_element(element, "COMM-CONNECTORS")
+        # Parse comm_connector_refs (list from container "COMM-CONNECTOR-REFS")
+        obj.comm_connector_refs = []
+        container = ARObject._find_child_element(element, "COMM-CONNECTOR-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.comm_connectors.append(child_value)
+                    obj.comm_connector_refs.append(child_value)
 
         return obj
 

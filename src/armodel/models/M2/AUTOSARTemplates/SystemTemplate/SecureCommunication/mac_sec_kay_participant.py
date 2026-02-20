@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.crypto_service_key import (
     CryptoServiceKey,
 )
@@ -33,15 +34,15 @@ class MacSecKayParticipant(Identifiable):
         """
         return False
 
-    ckn: Optional[CryptoServiceKey]
+    ckn_ref: Optional[ARRef]
     crypto_algo: Optional[MacSecCryptoAlgoConfig]
-    sak: Optional[CryptoServiceKey]
+    sak_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize MacSecKayParticipant."""
         super().__init__()
-        self.ckn: Optional[CryptoServiceKey] = None
+        self.ckn_ref: Optional[ARRef] = None
         self.crypto_algo: Optional[MacSecCryptoAlgoConfig] = None
-        self.sak: Optional[CryptoServiceKey] = None
+        self.sak_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize MacSecKayParticipant to XML element.
@@ -63,12 +64,12 @@ class MacSecKayParticipant(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize ckn
-        if self.ckn is not None:
-            serialized = ARObject._serialize_item(self.ckn, "CryptoServiceKey")
+        # Serialize ckn_ref
+        if self.ckn_ref is not None:
+            serialized = ARObject._serialize_item(self.ckn_ref, "CryptoServiceKey")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CKN")
+                wrapped = ET.Element("CKN-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -91,12 +92,12 @@ class MacSecKayParticipant(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sak
-        if self.sak is not None:
-            serialized = ARObject._serialize_item(self.sak, "CryptoServiceKey")
+        # Serialize sak_ref
+        if self.sak_ref is not None:
+            serialized = ARObject._serialize_item(self.sak_ref, "CryptoServiceKey")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SAK")
+                wrapped = ET.Element("SAK-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -120,11 +121,11 @@ class MacSecKayParticipant(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(MacSecKayParticipant, cls).deserialize(element)
 
-        # Parse ckn
-        child = ARObject._find_child_element(element, "CKN")
+        # Parse ckn_ref
+        child = ARObject._find_child_element(element, "CKN-REF")
         if child is not None:
-            ckn_value = ARObject._deserialize_by_tag(child, "CryptoServiceKey")
-            obj.ckn = ckn_value
+            ckn_ref_value = ARRef.deserialize(child)
+            obj.ckn_ref = ckn_ref_value
 
         # Parse crypto_algo
         child = ARObject._find_child_element(element, "CRYPTO-ALGO")
@@ -132,11 +133,11 @@ class MacSecKayParticipant(Identifiable):
             crypto_algo_value = ARObject._deserialize_by_tag(child, "MacSecCryptoAlgoConfig")
             obj.crypto_algo = crypto_algo_value
 
-        # Parse sak
-        child = ARObject._find_child_element(element, "SAK")
+        # Parse sak_ref
+        child = ARObject._find_child_element(element, "SAK-REF")
         if child is not None:
-            sak_value = ARObject._deserialize_by_tag(child, "CryptoServiceKey")
-            obj.sak = sak_value
+            sak_ref_value = ARRef.deserialize(child)
+            obj.sak_ref = sak_ref_value
 
         return obj
 

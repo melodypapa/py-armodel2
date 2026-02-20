@@ -100,15 +100,15 @@
         "fibexElements": {
           "type": "FibexElement",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to ASAM FIBEX elements specifying Topology. Elements used within a System Description shall from the System Element. order to describe a product-line, all Fibex be optional. atpVariation"
         },
         "interpolationRoutineMappingSets": {
           "type": "InterpolationRoutineMappingSet",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the InterpolationRoutineMapping Sets that are relevant in the context of the enclosing"
         },
         "j1939SharedAddressClusters": {
@@ -149,8 +149,8 @@
         "swClusters": {
           "type": "CpSoftwareCluster",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "CP Software Clusters of this System atpVariation"
         },
         "systemDocumentations": {
@@ -223,15 +223,15 @@
         "calibrations": {
           "type": "any (CalibrationParameter)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Used CalibrationParameterValueSet for instance specific initialization of calibration parameters. atpSplitable"
         },
         "flatMap": {
           "type": "FlatMap",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The FlatMap used in the scope of this RootSw"
         },
         "software": {
@@ -560,8 +560,8 @@
         "physicalChannels": {
           "type": "PhysicalChannel",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference maps the Mode Management PortGroup network to communication channels."
         }
       }
@@ -598,8 +598,8 @@
         "participatings": {
           "type": "J1939Cluster",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This identifies the J1939Clusters that share a common"
         }
       }
@@ -644,8 +644,8 @@
         "communication": {
           "type": "CpSoftwareCluster",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Communication resource for which the mapping applies."
         },
         "mode": {

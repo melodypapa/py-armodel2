@@ -30,15 +30,15 @@
         "ddsTopic": {
           "type": "DdsCpTopic",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the DdsTopic."
         },
         "iSignal": {
           "type": "ISignal",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the ISignal."
         }
       }
@@ -82,29 +82,29 @@
         "ddsFieldReply": {
           "type": "DdsCpTopic",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the DdsTopic used as fragment for the topic"
         },
         "ddsField": {
           "type": "DdsCpTopic",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the DdsTopic used as fragment for the topic"
         },
         "ddsMethod": {
           "type": "DdsCpTopic",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the DdsTopic used as fragment for the topic"
         },
         "ddsServiceQos": {
           "type": "DdsCpQosProfile",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the QOS Profile used for the service. atp.Status=candidate"
         },
         "serviceInstance": {
@@ -157,8 +157,8 @@
         "localUnicast": {
           "type": "ApplicationEndpoint",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The local address over which the Service is provided. atpSplitable; atpVariation"
         },
         "minorVersion": {
@@ -178,8 +178,8 @@
         "staticRemotes": {
           "type": "ApplicationEndpoint",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference defines the remote unicast addresses of consumers. shall ONLY be used if the remote unicast the clients is determined from the not at runtime. atpVariation"
         }
       }
@@ -225,8 +225,8 @@
         "localUnicast": {
           "type": "ApplicationEndpoint",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The local address over which the Service is consumed. atpSplitable; atpVariation"
         },
         "minorVersion": {
@@ -239,8 +239,8 @@
         "staticRemote": {
           "type": "ApplicationEndpoint",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference defines the remote unicast address of the provider. shall ONLY be used if the remote unicast the server is determined from the not at runtime. atpVariation"
         }
       }
@@ -282,15 +282,15 @@
         "ddsEventQos": {
           "type": "DdsCpQosProfile",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the QOS Profile used for this Event. atp.Status=candidate"
         },
         "ddsEventTopic": {
           "type": "DdsCpTopic",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the DDS Topic used for this Event."
         }
       }
@@ -463,8 +463,8 @@
         "ddsPartition": {
           "type": "DdsCpPartition",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the DDS Partition this topic is"
         },
         "topicName": {

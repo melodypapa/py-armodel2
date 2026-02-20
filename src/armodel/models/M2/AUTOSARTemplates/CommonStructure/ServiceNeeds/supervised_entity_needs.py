@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_nee
     ServiceNeeds,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -34,7 +35,7 @@ class SupervisedEntityNeeds(ServiceNeeds):
         return False
 
     activate_at_start: Optional[Boolean]
-    checkpointses: list[Any]
+    checkpointse_refs: list[Any]
     enable: Optional[Boolean]
     expected_alive: Optional[TimeValue]
     max_alive_cycle: Optional[TimeValue]
@@ -44,7 +45,7 @@ class SupervisedEntityNeeds(ServiceNeeds):
         """Initialize SupervisedEntityNeeds."""
         super().__init__()
         self.activate_at_start: Optional[Boolean] = None
-        self.checkpointses: list[Any] = []
+        self.checkpointse_refs: list[Any] = []
         self.enable: Optional[Boolean] = None
         self.expected_alive: Optional[TimeValue] = None
         self.max_alive_cycle: Optional[TimeValue] = None
@@ -85,13 +86,20 @@ class SupervisedEntityNeeds(ServiceNeeds):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize checkpointses (list to container "CHECKPOINTSES")
-        if self.checkpointses:
-            wrapper = ET.Element("CHECKPOINTSES")
-            for item in self.checkpointses:
+        # Serialize checkpointse_refs (list to container "CHECKPOINTSE-REFS")
+        if self.checkpointse_refs:
+            wrapper = ET.Element("CHECKPOINTSE-REFS")
+            for item in self.checkpointse_refs:
                 serialized = ARObject._serialize_item(item, "Any")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("CHECKPOINTSE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -186,15 +194,21 @@ class SupervisedEntityNeeds(ServiceNeeds):
             activate_at_start_value = child.text
             obj.activate_at_start = activate_at_start_value
 
-        # Parse checkpointses (list from container "CHECKPOINTSES")
-        obj.checkpointses = []
-        container = ARObject._find_child_element(element, "CHECKPOINTSES")
+        # Parse checkpointse_refs (list from container "CHECKPOINTSE-REFS")
+        obj.checkpointse_refs = []
+        container = ARObject._find_child_element(element, "CHECKPOINTSE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.checkpointses.append(child_value)
+                    obj.checkpointse_refs.append(child_value)
 
         # Parse enable
         child = ARObject._find_child_element(element, "ENABLE")

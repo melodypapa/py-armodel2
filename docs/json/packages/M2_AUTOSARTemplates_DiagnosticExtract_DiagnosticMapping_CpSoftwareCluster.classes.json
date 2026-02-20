@@ -38,15 +38,15 @@
         "cpSoftwareCluster": {
           "type": "CpSoftwareCluster",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the mapped CpSoftwareCluster Resource. atp.Status=draft"
         },
         "diagnosticEvent": {
           "type": "DiagnosticEvent",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the mapped DiagnosticEvent."
         }
       }
@@ -88,15 +88,15 @@
         "cpSoftwareCluster": {
           "type": "CpSoftwareCluster",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the affected CpSoftwareClusterResource. Tags: atp.Status=draft Resource"
         },
         "diagnosticData": {
           "type": "DiagnosticDataElement",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference represents the affected DiagnosticData"
         }
       }
@@ -138,15 +138,15 @@
         "cpSoftwareCluster": {
           "type": "CpSoftwareCluster",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the mapped CpSoftwareCluster Resource. atp.Status=draft"
         },
         "routine": {
           "type": "DiagnosticRoutine",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the mapped subfunction of a DiagnosticRoutine."
         }
       }
@@ -188,15 +188,15 @@
         "cpSoftwareCluster": {
           "type": "CpSoftwareCluster",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the mapped CpSoftwareCluster Resource. atp.Status=draft"
         },
         "function": {
           "type": "any (DiagnosticFunction)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the mapped DiagnosticFunction Identifier."
         }
       }

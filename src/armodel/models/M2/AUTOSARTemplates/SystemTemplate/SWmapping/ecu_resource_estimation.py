@@ -38,7 +38,7 @@ class EcuResourceEstimation(ARObject):
         return False
 
     bsw_resource: Optional[ResourceConsumption]
-    ecu_instance: Optional[EcuInstance]
+    ecu_instance_ref: Optional[ARRef]
     introduction: Optional[DocumentationBlock]
     rte_resource: Optional[ResourceConsumption]
     sw_comp_to_ecu_refs: list[ARRef]
@@ -46,7 +46,7 @@ class EcuResourceEstimation(ARObject):
         """Initialize EcuResourceEstimation."""
         super().__init__()
         self.bsw_resource: Optional[ResourceConsumption] = None
-        self.ecu_instance: Optional[EcuInstance] = None
+        self.ecu_instance_ref: Optional[ARRef] = None
         self.introduction: Optional[DocumentationBlock] = None
         self.rte_resource: Optional[ResourceConsumption] = None
         self.sw_comp_to_ecu_refs: list[ARRef] = []
@@ -75,12 +75,12 @@ class EcuResourceEstimation(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize ecu_instance
-        if self.ecu_instance is not None:
-            serialized = ARObject._serialize_item(self.ecu_instance, "EcuInstance")
+        # Serialize ecu_instance_ref
+        if self.ecu_instance_ref is not None:
+            serialized = ARObject._serialize_item(self.ecu_instance_ref, "EcuInstance")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ECU-INSTANCE")
+                wrapped = ET.Element("ECU-INSTANCE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -156,11 +156,11 @@ class EcuResourceEstimation(ARObject):
             bsw_resource_value = ARObject._deserialize_by_tag(child, "ResourceConsumption")
             obj.bsw_resource = bsw_resource_value
 
-        # Parse ecu_instance
-        child = ARObject._find_child_element(element, "ECU-INSTANCE")
+        # Parse ecu_instance_ref
+        child = ARObject._find_child_element(element, "ECU-INSTANCE-REF")
         if child is not None:
-            ecu_instance_value = ARObject._deserialize_by_tag(child, "EcuInstance")
-            obj.ecu_instance = ecu_instance_value
+            ecu_instance_ref_value = ARRef.deserialize(child)
+            obj.ecu_instance_ref = ecu_instance_ref_value
 
         # Parse introduction
         child = ARObject._find_child_element(element, "INTRODUCTION")

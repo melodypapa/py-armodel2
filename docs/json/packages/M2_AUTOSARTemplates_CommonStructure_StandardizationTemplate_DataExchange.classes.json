@@ -70,8 +70,8 @@
         "customDocumentation": {
           "type": "Documentation",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "reference to a custom defined specification."
         },
         "documents": {
@@ -117,15 +117,15 @@
         "customDocument": {
           "type": "any (TraceableElement)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to a custom defined specification element."
         },
         "tailorings": {
           "type": "any (DataFormatElement)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Data Format Element that is implied by this element in the Used to share one rationale for more"
         }
       }

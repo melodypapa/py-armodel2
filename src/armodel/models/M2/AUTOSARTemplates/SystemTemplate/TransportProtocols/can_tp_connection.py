@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DiagnosticConnection.tp_c
     TpConnection,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols import (
     CanTpAddressingFormatType,
     NetworkTargetAddressType,
@@ -53,39 +54,39 @@ class CanTpConnection(TpConnection):
 
     addressing: Optional[CanTpAddressingFormatType]
     cancellation: Optional[Boolean]
-    can_tp_channel: Optional[CanTpChannel]
-    data_pdu: Optional[NPdu]
-    flow_control_pdu: Optional[NPdu]
+    can_tp_channel_ref: Optional[ARRef]
+    data_pdu_ref: Optional[ARRef]
+    flow_control_pdu_ref: Optional[ARRef]
     max_block_size: Optional[Integer]
-    multicast: Optional[CanTpAddress]
+    multicast_ref: Optional[ARRef]
     padding: Optional[Boolean]
-    receivers: list[CanTpNode]
+    receiver_refs: list[ARRef]
     ta_type_type: Optional[NetworkTargetAddressType]
     timeout_br: Optional[TimeValue]
     timeout_bs: Optional[TimeValue]
     timeout_cr: Optional[TimeValue]
     timeout_cs: Optional[TimeValue]
-    tp_sdu: Optional[IPdu]
-    transmitter: Optional[CanTpNode]
+    tp_sdu_ref: Optional[ARRef]
+    transmitter_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize CanTpConnection."""
         super().__init__()
         self.addressing: Optional[CanTpAddressingFormatType] = None
         self.cancellation: Optional[Boolean] = None
-        self.can_tp_channel: Optional[CanTpChannel] = None
-        self.data_pdu: Optional[NPdu] = None
-        self.flow_control_pdu: Optional[NPdu] = None
+        self.can_tp_channel_ref: Optional[ARRef] = None
+        self.data_pdu_ref: Optional[ARRef] = None
+        self.flow_control_pdu_ref: Optional[ARRef] = None
         self.max_block_size: Optional[Integer] = None
-        self.multicast: Optional[CanTpAddress] = None
+        self.multicast_ref: Optional[ARRef] = None
         self.padding: Optional[Boolean] = None
-        self.receivers: list[CanTpNode] = []
+        self.receiver_refs: list[ARRef] = []
         self.ta_type_type: Optional[NetworkTargetAddressType] = None
         self.timeout_br: Optional[TimeValue] = None
         self.timeout_bs: Optional[TimeValue] = None
         self.timeout_cr: Optional[TimeValue] = None
         self.timeout_cs: Optional[TimeValue] = None
-        self.tp_sdu: Optional[IPdu] = None
-        self.transmitter: Optional[CanTpNode] = None
+        self.tp_sdu_ref: Optional[ARRef] = None
+        self.transmitter_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize CanTpConnection to XML element.
@@ -135,12 +136,12 @@ class CanTpConnection(TpConnection):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize can_tp_channel
-        if self.can_tp_channel is not None:
-            serialized = ARObject._serialize_item(self.can_tp_channel, "CanTpChannel")
+        # Serialize can_tp_channel_ref
+        if self.can_tp_channel_ref is not None:
+            serialized = ARObject._serialize_item(self.can_tp_channel_ref, "CanTpChannel")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CAN-TP-CHANNEL")
+                wrapped = ET.Element("CAN-TP-CHANNEL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -149,12 +150,12 @@ class CanTpConnection(TpConnection):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize data_pdu
-        if self.data_pdu is not None:
-            serialized = ARObject._serialize_item(self.data_pdu, "NPdu")
+        # Serialize data_pdu_ref
+        if self.data_pdu_ref is not None:
+            serialized = ARObject._serialize_item(self.data_pdu_ref, "NPdu")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DATA-PDU")
+                wrapped = ET.Element("DATA-PDU-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -163,12 +164,12 @@ class CanTpConnection(TpConnection):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize flow_control_pdu
-        if self.flow_control_pdu is not None:
-            serialized = ARObject._serialize_item(self.flow_control_pdu, "NPdu")
+        # Serialize flow_control_pdu_ref
+        if self.flow_control_pdu_ref is not None:
+            serialized = ARObject._serialize_item(self.flow_control_pdu_ref, "NPdu")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("FLOW-CONTROL-PDU")
+                wrapped = ET.Element("FLOW-CONTROL-PDU-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -191,12 +192,12 @@ class CanTpConnection(TpConnection):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize multicast
-        if self.multicast is not None:
-            serialized = ARObject._serialize_item(self.multicast, "CanTpAddress")
+        # Serialize multicast_ref
+        if self.multicast_ref is not None:
+            serialized = ARObject._serialize_item(self.multicast_ref, "CanTpAddress")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("MULTICAST")
+                wrapped = ET.Element("MULTICAST-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -219,13 +220,20 @@ class CanTpConnection(TpConnection):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize receivers (list to container "RECEIVERS")
-        if self.receivers:
-            wrapper = ET.Element("RECEIVERS")
-            for item in self.receivers:
+        # Serialize receiver_refs (list to container "RECEIVER-REFS")
+        if self.receiver_refs:
+            wrapper = ET.Element("RECEIVER-REFS")
+            for item in self.receiver_refs:
                 serialized = ARObject._serialize_item(item, "CanTpNode")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("RECEIVER-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -299,12 +307,12 @@ class CanTpConnection(TpConnection):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize tp_sdu
-        if self.tp_sdu is not None:
-            serialized = ARObject._serialize_item(self.tp_sdu, "IPdu")
+        # Serialize tp_sdu_ref
+        if self.tp_sdu_ref is not None:
+            serialized = ARObject._serialize_item(self.tp_sdu_ref, "IPdu")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TP-SDU")
+                wrapped = ET.Element("TP-SDU-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -313,12 +321,12 @@ class CanTpConnection(TpConnection):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize transmitter
-        if self.transmitter is not None:
-            serialized = ARObject._serialize_item(self.transmitter, "CanTpNode")
+        # Serialize transmitter_ref
+        if self.transmitter_ref is not None:
+            serialized = ARObject._serialize_item(self.transmitter_ref, "CanTpNode")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TRANSMITTER")
+                wrapped = ET.Element("TRANSMITTER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -354,23 +362,23 @@ class CanTpConnection(TpConnection):
             cancellation_value = child.text
             obj.cancellation = cancellation_value
 
-        # Parse can_tp_channel
-        child = ARObject._find_child_element(element, "CAN-TP-CHANNEL")
+        # Parse can_tp_channel_ref
+        child = ARObject._find_child_element(element, "CAN-TP-CHANNEL-REF")
         if child is not None:
-            can_tp_channel_value = ARObject._deserialize_by_tag(child, "CanTpChannel")
-            obj.can_tp_channel = can_tp_channel_value
+            can_tp_channel_ref_value = ARRef.deserialize(child)
+            obj.can_tp_channel_ref = can_tp_channel_ref_value
 
-        # Parse data_pdu
-        child = ARObject._find_child_element(element, "DATA-PDU")
+        # Parse data_pdu_ref
+        child = ARObject._find_child_element(element, "DATA-PDU-REF")
         if child is not None:
-            data_pdu_value = ARObject._deserialize_by_tag(child, "NPdu")
-            obj.data_pdu = data_pdu_value
+            data_pdu_ref_value = ARRef.deserialize(child)
+            obj.data_pdu_ref = data_pdu_ref_value
 
-        # Parse flow_control_pdu
-        child = ARObject._find_child_element(element, "FLOW-CONTROL-PDU")
+        # Parse flow_control_pdu_ref
+        child = ARObject._find_child_element(element, "FLOW-CONTROL-PDU-REF")
         if child is not None:
-            flow_control_pdu_value = ARObject._deserialize_by_tag(child, "NPdu")
-            obj.flow_control_pdu = flow_control_pdu_value
+            flow_control_pdu_ref_value = ARRef.deserialize(child)
+            obj.flow_control_pdu_ref = flow_control_pdu_ref_value
 
         # Parse max_block_size
         child = ARObject._find_child_element(element, "MAX-BLOCK-SIZE")
@@ -378,11 +386,11 @@ class CanTpConnection(TpConnection):
             max_block_size_value = child.text
             obj.max_block_size = max_block_size_value
 
-        # Parse multicast
-        child = ARObject._find_child_element(element, "MULTICAST")
+        # Parse multicast_ref
+        child = ARObject._find_child_element(element, "MULTICAST-REF")
         if child is not None:
-            multicast_value = ARObject._deserialize_by_tag(child, "CanTpAddress")
-            obj.multicast = multicast_value
+            multicast_ref_value = ARRef.deserialize(child)
+            obj.multicast_ref = multicast_ref_value
 
         # Parse padding
         child = ARObject._find_child_element(element, "PADDING")
@@ -390,15 +398,21 @@ class CanTpConnection(TpConnection):
             padding_value = child.text
             obj.padding = padding_value
 
-        # Parse receivers (list from container "RECEIVERS")
-        obj.receivers = []
-        container = ARObject._find_child_element(element, "RECEIVERS")
+        # Parse receiver_refs (list from container "RECEIVER-REFS")
+        obj.receiver_refs = []
+        container = ARObject._find_child_element(element, "RECEIVER-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.receivers.append(child_value)
+                    obj.receiver_refs.append(child_value)
 
         # Parse ta_type_type
         child = ARObject._find_child_element(element, "TA-TYPE-TYPE")
@@ -430,17 +444,17 @@ class CanTpConnection(TpConnection):
             timeout_cs_value = child.text
             obj.timeout_cs = timeout_cs_value
 
-        # Parse tp_sdu
-        child = ARObject._find_child_element(element, "TP-SDU")
+        # Parse tp_sdu_ref
+        child = ARObject._find_child_element(element, "TP-SDU-REF")
         if child is not None:
-            tp_sdu_value = ARObject._deserialize_by_tag(child, "IPdu")
-            obj.tp_sdu = tp_sdu_value
+            tp_sdu_ref_value = ARRef.deserialize(child)
+            obj.tp_sdu_ref = tp_sdu_ref_value
 
-        # Parse transmitter
-        child = ARObject._find_child_element(element, "TRANSMITTER")
+        # Parse transmitter_ref
+        child = ARObject._find_child_element(element, "TRANSMITTER-REF")
         if child is not None:
-            transmitter_value = ARObject._deserialize_by_tag(child, "CanTpNode")
-            obj.transmitter = transmitter_value
+            transmitter_ref_value = ARRef.deserialize(child)
+            obj.transmitter_ref = transmitter_ref_value
 
         return obj
 

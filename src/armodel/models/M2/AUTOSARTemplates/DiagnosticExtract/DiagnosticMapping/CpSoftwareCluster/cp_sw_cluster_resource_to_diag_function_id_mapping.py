@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
     DiagnosticMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
     CpSoftwareCluster,
 )
@@ -30,13 +31,13 @@ class CpSwClusterResourceToDiagFunctionIdMapping(DiagnosticMapping):
         """
         return False
 
-    cp_software_cluster: Optional[CpSoftwareCluster]
-    function: Optional[Any]
+    cp_software_cluster_ref: Optional[ARRef]
+    function_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize CpSwClusterResourceToDiagFunctionIdMapping."""
         super().__init__()
-        self.cp_software_cluster: Optional[CpSoftwareCluster] = None
-        self.function: Optional[Any] = None
+        self.cp_software_cluster_ref: Optional[ARRef] = None
+        self.function_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize CpSwClusterResourceToDiagFunctionIdMapping to XML element.
@@ -58,12 +59,12 @@ class CpSwClusterResourceToDiagFunctionIdMapping(DiagnosticMapping):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize cp_software_cluster
-        if self.cp_software_cluster is not None:
-            serialized = ARObject._serialize_item(self.cp_software_cluster, "CpSoftwareCluster")
+        # Serialize cp_software_cluster_ref
+        if self.cp_software_cluster_ref is not None:
+            serialized = ARObject._serialize_item(self.cp_software_cluster_ref, "CpSoftwareCluster")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CP-SOFTWARE-CLUSTER")
+                wrapped = ET.Element("CP-SOFTWARE-CLUSTER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -72,12 +73,12 @@ class CpSwClusterResourceToDiagFunctionIdMapping(DiagnosticMapping):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize function
-        if self.function is not None:
-            serialized = ARObject._serialize_item(self.function, "Any")
+        # Serialize function_ref
+        if self.function_ref is not None:
+            serialized = ARObject._serialize_item(self.function_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("FUNCTION")
+                wrapped = ET.Element("FUNCTION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -101,17 +102,17 @@ class CpSwClusterResourceToDiagFunctionIdMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CpSwClusterResourceToDiagFunctionIdMapping, cls).deserialize(element)
 
-        # Parse cp_software_cluster
-        child = ARObject._find_child_element(element, "CP-SOFTWARE-CLUSTER")
+        # Parse cp_software_cluster_ref
+        child = ARObject._find_child_element(element, "CP-SOFTWARE-CLUSTER-REF")
         if child is not None:
-            cp_software_cluster_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
-            obj.cp_software_cluster = cp_software_cluster_value
+            cp_software_cluster_ref_value = ARRef.deserialize(child)
+            obj.cp_software_cluster_ref = cp_software_cluster_ref_value
 
-        # Parse function
-        child = ARObject._find_child_element(element, "FUNCTION")
+        # Parse function_ref
+        child = ARObject._find_child_element(element, "FUNCTION-REF")
         if child is not None:
-            function_value = child.text
-            obj.function = function_value
+            function_ref_value = ARRef.deserialize(child)
+            obj.function_ref = function_ref_value
 
         return obj
 

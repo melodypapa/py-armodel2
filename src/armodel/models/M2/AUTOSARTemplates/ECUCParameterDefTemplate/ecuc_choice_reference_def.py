@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_abstract_i
     EcucAbstractInternalReferenceDef,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_container_def import (
     EcucContainerDef,
 )
@@ -31,11 +32,11 @@ class EcucChoiceReferenceDef(EcucAbstractInternalReferenceDef):
         """
         return False
 
-    destinations: list[EcucContainerDef]
+    destination_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize EcucChoiceReferenceDef."""
         super().__init__()
-        self.destinations: list[EcucContainerDef] = []
+        self.destination_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize EcucChoiceReferenceDef to XML element.
@@ -57,13 +58,20 @@ class EcucChoiceReferenceDef(EcucAbstractInternalReferenceDef):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize destinations (list to container "DESTINATIONS")
-        if self.destinations:
-            wrapper = ET.Element("DESTINATIONS")
-            for item in self.destinations:
+        # Serialize destination_refs (list to container "DESTINATION-REFS")
+        if self.destination_refs:
+            wrapper = ET.Element("DESTINATION-REFS")
+            for item in self.destination_refs:
                 serialized = ARObject._serialize_item(item, "EcucContainerDef")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("DESTINATION-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -82,15 +90,21 @@ class EcucChoiceReferenceDef(EcucAbstractInternalReferenceDef):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucChoiceReferenceDef, cls).deserialize(element)
 
-        # Parse destinations (list from container "DESTINATIONS")
-        obj.destinations = []
-        container = ARObject._find_child_element(element, "DESTINATIONS")
+        # Parse destination_refs (list from container "DESTINATION-REFS")
+        obj.destination_refs = []
+        container = ARObject._find_child_element(element, "DESTINATION-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.destinations.append(child_value)
+                    obj.destination_refs.append(child_value)
 
         return obj
 

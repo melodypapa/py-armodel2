@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceClass,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_cluster import (
     CommunicationCluster,
 )
@@ -33,15 +34,15 @@ class DiagnosticComControlClass(DiagnosticServiceClass):
         """
         return False
 
-    all_channelses: list[CommunicationCluster]
-    all_physicals: list[Any]
+    all_channelse_refs: list[ARRef]
+    all_physical_refs: list[Any]
     specific_channels: list[DiagnosticComControl]
     sub_nodes: list[DiagnosticComControl]
     def __init__(self) -> None:
         """Initialize DiagnosticComControlClass."""
         super().__init__()
-        self.all_channelses: list[CommunicationCluster] = []
-        self.all_physicals: list[Any] = []
+        self.all_channelse_refs: list[ARRef] = []
+        self.all_physical_refs: list[Any] = []
         self.specific_channels: list[DiagnosticComControl] = []
         self.sub_nodes: list[DiagnosticComControl] = []
 
@@ -65,23 +66,37 @@ class DiagnosticComControlClass(DiagnosticServiceClass):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize all_channelses (list to container "ALL-CHANNELSES")
-        if self.all_channelses:
-            wrapper = ET.Element("ALL-CHANNELSES")
-            for item in self.all_channelses:
+        # Serialize all_channelse_refs (list to container "ALL-CHANNELSE-REFS")
+        if self.all_channelse_refs:
+            wrapper = ET.Element("ALL-CHANNELSE-REFS")
+            for item in self.all_channelse_refs:
                 serialized = ARObject._serialize_item(item, "CommunicationCluster")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("ALL-CHANNELSE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize all_physicals (list to container "ALL-PHYSICALS")
-        if self.all_physicals:
-            wrapper = ET.Element("ALL-PHYSICALS")
-            for item in self.all_physicals:
+        # Serialize all_physical_refs (list to container "ALL-PHYSICAL-REFS")
+        if self.all_physical_refs:
+            wrapper = ET.Element("ALL-PHYSICAL-REFS")
+            for item in self.all_physical_refs:
                 serialized = ARObject._serialize_item(item, "Any")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("ALL-PHYSICAL-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -120,25 +135,37 @@ class DiagnosticComControlClass(DiagnosticServiceClass):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticComControlClass, cls).deserialize(element)
 
-        # Parse all_channelses (list from container "ALL-CHANNELSES")
-        obj.all_channelses = []
-        container = ARObject._find_child_element(element, "ALL-CHANNELSES")
+        # Parse all_channelse_refs (list from container "ALL-CHANNELSE-REFS")
+        obj.all_channelse_refs = []
+        container = ARObject._find_child_element(element, "ALL-CHANNELSE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.all_channelses.append(child_value)
+                    obj.all_channelse_refs.append(child_value)
 
-        # Parse all_physicals (list from container "ALL-PHYSICALS")
-        obj.all_physicals = []
-        container = ARObject._find_child_element(element, "ALL-PHYSICALS")
+        # Parse all_physical_refs (list from container "ALL-PHYSICAL-REFS")
+        obj.all_physical_refs = []
+        container = ARObject._find_child_element(element, "ALL-PHYSICAL-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.all_physicals.append(child_value)
+                    obj.all_physical_refs.append(child_value)
 
         # Parse specific_channels (list from container "SPECIFIC-CHANNELS")
         obj.specific_channels = []

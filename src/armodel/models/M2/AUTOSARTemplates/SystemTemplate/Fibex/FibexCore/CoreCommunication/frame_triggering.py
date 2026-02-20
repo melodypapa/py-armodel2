@@ -40,14 +40,14 @@ class FrameTriggering(Identifiable, ABC):
         """
         return True
 
-    frame: Optional[Frame]
-    frame_ports: list[FramePort]
+    frame_ref: Optional[ARRef]
+    frame_port_refs: list[ARRef]
     pdu_triggering_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize FrameTriggering."""
         super().__init__()
-        self.frame: Optional[Frame] = None
-        self.frame_ports: list[FramePort] = []
+        self.frame_ref: Optional[ARRef] = None
+        self.frame_port_refs: list[ARRef] = []
         self.pdu_triggering_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
@@ -70,12 +70,12 @@ class FrameTriggering(Identifiable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize frame
-        if self.frame is not None:
-            serialized = ARObject._serialize_item(self.frame, "Frame")
+        # Serialize frame_ref
+        if self.frame_ref is not None:
+            serialized = ARObject._serialize_item(self.frame_ref, "Frame")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("FRAME")
+                wrapped = ET.Element("FRAME-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -84,13 +84,20 @@ class FrameTriggering(Identifiable, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize frame_ports (list to container "FRAME-PORTS")
-        if self.frame_ports:
-            wrapper = ET.Element("FRAME-PORTS")
-            for item in self.frame_ports:
+        # Serialize frame_port_refs (list to container "FRAME-PORT-REFS")
+        if self.frame_port_refs:
+            wrapper = ET.Element("FRAME-PORT-REFS")
+            for item in self.frame_port_refs:
                 serialized = ARObject._serialize_item(item, "FramePort")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("FRAME-PORT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -126,21 +133,27 @@ class FrameTriggering(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FrameTriggering, cls).deserialize(element)
 
-        # Parse frame
-        child = ARObject._find_child_element(element, "FRAME")
+        # Parse frame_ref
+        child = ARObject._find_child_element(element, "FRAME-REF")
         if child is not None:
-            frame_value = ARObject._deserialize_by_tag(child, "Frame")
-            obj.frame = frame_value
+            frame_ref_value = ARRef.deserialize(child)
+            obj.frame_ref = frame_ref_value
 
-        # Parse frame_ports (list from container "FRAME-PORTS")
-        obj.frame_ports = []
-        container = ARObject._find_child_element(element, "FRAME-PORTS")
+        # Parse frame_port_refs (list from container "FRAME-PORT-REFS")
+        obj.frame_port_refs = []
+        container = ARObject._find_child_element(element, "FRAME-PORT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.frame_ports.append(child_value)
+                    obj.frame_port_refs.append(child_value)
 
         # Parse pdu_triggering_refs (list from container "PDU-TRIGGERING-REFS")
         obj.pdu_triggering_refs = []

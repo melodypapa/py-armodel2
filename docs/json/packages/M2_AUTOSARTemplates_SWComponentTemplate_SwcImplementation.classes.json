@@ -49,8 +49,8 @@
         "behavior": {
           "type": "SwcInternalBehavior",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The internal behavior implemented by this 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },
         "perInstanceMemories": {
@@ -105,8 +105,8 @@
         "perInstanceMemoryMemory": {
           "type": "PerInstanceMemory",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the referenced PerInstanceMemory."
         },
         "size": {

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
     DiagnosticMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTroubleCode.diagnostic_trouble_code import (
     DiagnosticTroubleCode,
 )
@@ -30,13 +31,13 @@ class DiagnosticTroubleCodeUdsToTroubleCodeObdMapping(DiagnosticMapping):
         """
         return False
 
-    trouble_code: Optional[DiagnosticTroubleCode]
-    trouble_code_uds: Optional[DiagnosticTroubleCode]
+    trouble_code_ref: Optional[ARRef]
+    trouble_code_uds_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DiagnosticTroubleCodeUdsToTroubleCodeObdMapping."""
         super().__init__()
-        self.trouble_code: Optional[DiagnosticTroubleCode] = None
-        self.trouble_code_uds: Optional[DiagnosticTroubleCode] = None
+        self.trouble_code_ref: Optional[ARRef] = None
+        self.trouble_code_uds_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticTroubleCodeUdsToTroubleCodeObdMapping to XML element.
@@ -58,12 +59,12 @@ class DiagnosticTroubleCodeUdsToTroubleCodeObdMapping(DiagnosticMapping):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize trouble_code
-        if self.trouble_code is not None:
-            serialized = ARObject._serialize_item(self.trouble_code, "DiagnosticTroubleCode")
+        # Serialize trouble_code_ref
+        if self.trouble_code_ref is not None:
+            serialized = ARObject._serialize_item(self.trouble_code_ref, "DiagnosticTroubleCode")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TROUBLE-CODE")
+                wrapped = ET.Element("TROUBLE-CODE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -72,12 +73,12 @@ class DiagnosticTroubleCodeUdsToTroubleCodeObdMapping(DiagnosticMapping):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize trouble_code_uds
-        if self.trouble_code_uds is not None:
-            serialized = ARObject._serialize_item(self.trouble_code_uds, "DiagnosticTroubleCode")
+        # Serialize trouble_code_uds_ref
+        if self.trouble_code_uds_ref is not None:
+            serialized = ARObject._serialize_item(self.trouble_code_uds_ref, "DiagnosticTroubleCode")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TROUBLE-CODE-UDS")
+                wrapped = ET.Element("TROUBLE-CODE-UDS-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -101,17 +102,17 @@ class DiagnosticTroubleCodeUdsToTroubleCodeObdMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticTroubleCodeUdsToTroubleCodeObdMapping, cls).deserialize(element)
 
-        # Parse trouble_code
-        child = ARObject._find_child_element(element, "TROUBLE-CODE")
+        # Parse trouble_code_ref
+        child = ARObject._find_child_element(element, "TROUBLE-CODE-REF")
         if child is not None:
-            trouble_code_value = ARObject._deserialize_by_tag(child, "DiagnosticTroubleCode")
-            obj.trouble_code = trouble_code_value
+            trouble_code_ref_value = ARRef.deserialize(child)
+            obj.trouble_code_ref = trouble_code_ref_value
 
-        # Parse trouble_code_uds
-        child = ARObject._find_child_element(element, "TROUBLE-CODE-UDS")
+        # Parse trouble_code_uds_ref
+        child = ARObject._find_child_element(element, "TROUBLE-CODE-UDS-REF")
         if child is not None:
-            trouble_code_uds_value = ARObject._deserialize_by_tag(child, "DiagnosticTroubleCode")
-            obj.trouble_code_uds = trouble_code_uds_value
+            trouble_code_uds_ref_value = ARRef.deserialize(child)
+            obj.trouble_code_uds_ref = trouble_code_uds_ref_value
 
         return obj
 

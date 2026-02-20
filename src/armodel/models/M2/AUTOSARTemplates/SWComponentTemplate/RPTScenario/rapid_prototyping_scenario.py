@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.RPTScenario.rpt_container import (
     RptContainer,
 )
@@ -37,17 +38,17 @@ class RapidPrototypingScenario(ARElement):
         """
         return False
 
-    host_system: Optional[System]
+    host_system_ref: Optional[ARRef]
     rpt_containers: list[RptContainer]
     rpt_profiles: list[RptProfile]
-    rpt_system: Optional[System]
+    rpt_system_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize RapidPrototypingScenario."""
         super().__init__()
-        self.host_system: Optional[System] = None
+        self.host_system_ref: Optional[ARRef] = None
         self.rpt_containers: list[RptContainer] = []
         self.rpt_profiles: list[RptProfile] = []
-        self.rpt_system: Optional[System] = None
+        self.rpt_system_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize RapidPrototypingScenario to XML element.
@@ -69,12 +70,12 @@ class RapidPrototypingScenario(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize host_system
-        if self.host_system is not None:
-            serialized = ARObject._serialize_item(self.host_system, "System")
+        # Serialize host_system_ref
+        if self.host_system_ref is not None:
+            serialized = ARObject._serialize_item(self.host_system_ref, "System")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("HOST-SYSTEM")
+                wrapped = ET.Element("HOST-SYSTEM-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -103,12 +104,12 @@ class RapidPrototypingScenario(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize rpt_system
-        if self.rpt_system is not None:
-            serialized = ARObject._serialize_item(self.rpt_system, "System")
+        # Serialize rpt_system_ref
+        if self.rpt_system_ref is not None:
+            serialized = ARObject._serialize_item(self.rpt_system_ref, "System")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("RPT-SYSTEM")
+                wrapped = ET.Element("RPT-SYSTEM-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -132,11 +133,11 @@ class RapidPrototypingScenario(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RapidPrototypingScenario, cls).deserialize(element)
 
-        # Parse host_system
-        child = ARObject._find_child_element(element, "HOST-SYSTEM")
+        # Parse host_system_ref
+        child = ARObject._find_child_element(element, "HOST-SYSTEM-REF")
         if child is not None:
-            host_system_value = ARObject._deserialize_by_tag(child, "System")
-            obj.host_system = host_system_value
+            host_system_ref_value = ARRef.deserialize(child)
+            obj.host_system_ref = host_system_ref_value
 
         # Parse rpt_containers (list from container "RPT-CONTAINERS")
         obj.rpt_containers = []
@@ -158,11 +159,11 @@ class RapidPrototypingScenario(ARElement):
                 if child_value is not None:
                     obj.rpt_profiles.append(child_value)
 
-        # Parse rpt_system
-        child = ARObject._find_child_element(element, "RPT-SYSTEM")
+        # Parse rpt_system_ref
+        child = ARObject._find_child_element(element, "RPT-SYSTEM-REF")
         if child is not None:
-            rpt_system_value = ARObject._deserialize_by_tag(child, "System")
-            obj.rpt_system = rpt_system_value
+            rpt_system_ref_value = ARRef.deserialize(child)
+            obj.rpt_system_ref = rpt_system_ref_value
 
         return obj
 

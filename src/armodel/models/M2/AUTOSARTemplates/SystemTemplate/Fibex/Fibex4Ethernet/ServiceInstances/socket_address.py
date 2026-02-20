@@ -54,10 +54,10 @@ class SocketAddress(Identifiable):
     allowed_i_pv6_ext_ref: Optional[ARRef]
     allowed_tcp_ref: Optional[ARRef]
     application_endpoint_endpoint: Optional[ApplicationEndpoint]
-    connector: Optional[Any]
+    connector_ref: Optional[Any]
     differentiated: Optional[PositiveInteger]
     flow_label: Optional[PositiveInteger]
-    multicasts: list[Any]
+    multicast_refs: list[Any]
     path_mtu: Optional[Boolean]
     pdu_collection: Optional[TimeValue]
     static_sockets: list[StaticSocketConnection]
@@ -68,10 +68,10 @@ class SocketAddress(Identifiable):
         self.allowed_i_pv6_ext_ref: Optional[ARRef] = None
         self.allowed_tcp_ref: Optional[ARRef] = None
         self.application_endpoint_endpoint: Optional[ApplicationEndpoint] = None
-        self.connector: Optional[Any] = None
+        self.connector_ref: Optional[Any] = None
         self.differentiated: Optional[PositiveInteger] = None
         self.flow_label: Optional[PositiveInteger] = None
-        self.multicasts: list[Any] = []
+        self.multicast_refs: list[Any] = []
         self.path_mtu: Optional[Boolean] = None
         self.pdu_collection: Optional[TimeValue] = None
         self.static_sockets: list[StaticSocketConnection] = []
@@ -139,12 +139,12 @@ class SocketAddress(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize connector
-        if self.connector is not None:
-            serialized = ARObject._serialize_item(self.connector, "Any")
+        # Serialize connector_ref
+        if self.connector_ref is not None:
+            serialized = ARObject._serialize_item(self.connector_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONNECTOR")
+                wrapped = ET.Element("CONNECTOR-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -181,13 +181,20 @@ class SocketAddress(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize multicasts (list to container "MULTICASTS")
-        if self.multicasts:
-            wrapper = ET.Element("MULTICASTS")
-            for item in self.multicasts:
+        # Serialize multicast_refs (list to container "MULTICAST-REFS")
+        if self.multicast_refs:
+            wrapper = ET.Element("MULTICAST-REFS")
+            for item in self.multicast_refs:
                 serialized = ARObject._serialize_item(item, "Any")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("MULTICAST-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -276,11 +283,11 @@ class SocketAddress(Identifiable):
             application_endpoint_endpoint_value = ARObject._deserialize_by_tag(child, "ApplicationEndpoint")
             obj.application_endpoint_endpoint = application_endpoint_endpoint_value
 
-        # Parse connector
-        child = ARObject._find_child_element(element, "CONNECTOR")
+        # Parse connector_ref
+        child = ARObject._find_child_element(element, "CONNECTOR-REF")
         if child is not None:
-            connector_value = child.text
-            obj.connector = connector_value
+            connector_ref_value = ARRef.deserialize(child)
+            obj.connector_ref = connector_ref_value
 
         # Parse differentiated
         child = ARObject._find_child_element(element, "DIFFERENTIATED")
@@ -294,15 +301,21 @@ class SocketAddress(Identifiable):
             flow_label_value = child.text
             obj.flow_label = flow_label_value
 
-        # Parse multicasts (list from container "MULTICASTS")
-        obj.multicasts = []
-        container = ARObject._find_child_element(element, "MULTICASTS")
+        # Parse multicast_refs (list from container "MULTICAST-REFS")
+        obj.multicast_refs = []
+        container = ARObject._find_child_element(element, "MULTICAST-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.multicasts.append(child_value)
+                    obj.multicast_refs.append(child_value)
 
         # Parse path_mtu
         child = ARObject._find_child_element(element, "PATH-MTU")

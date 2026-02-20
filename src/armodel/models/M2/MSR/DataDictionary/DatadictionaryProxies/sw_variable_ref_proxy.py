@@ -35,12 +35,12 @@ class SwVariableRefProxy(ARObject):
         return False
 
     autosar_variable_ref: Optional[ARRef]
-    mc_data_instance: Optional[McDataInstance]
+    mc_data_instance_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SwVariableRefProxy."""
         super().__init__()
         self.autosar_variable_ref: Optional[ARRef] = None
-        self.mc_data_instance: Optional[McDataInstance] = None
+        self.mc_data_instance_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize SwVariableRefProxy to XML element.
@@ -66,12 +66,12 @@ class SwVariableRefProxy(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize mc_data_instance
-        if self.mc_data_instance is not None:
-            serialized = ARObject._serialize_item(self.mc_data_instance, "McDataInstance")
+        # Serialize mc_data_instance_ref
+        if self.mc_data_instance_ref is not None:
+            serialized = ARObject._serialize_item(self.mc_data_instance_ref, "McDataInstance")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("MC-DATA-INSTANCE")
+                wrapped = ET.Element("MC-DATA-INSTANCE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -102,11 +102,11 @@ class SwVariableRefProxy(ARObject):
             autosar_variable_ref_value = ARRef.deserialize(child)
             obj.autosar_variable_ref = autosar_variable_ref_value
 
-        # Parse mc_data_instance
-        child = ARObject._find_child_element(element, "MC-DATA-INSTANCE")
+        # Parse mc_data_instance_ref
+        child = ARObject._find_child_element(element, "MC-DATA-INSTANCE-REF")
         if child is not None:
-            mc_data_instance_value = ARObject._deserialize_by_tag(child, "McDataInstance")
-            obj.mc_data_instance = mc_data_instance_value
+            mc_data_instance_ref_value = ARRef.deserialize(child)
+            obj.mc_data_instance_ref = mc_data_instance_ref_value
 
         return obj
 

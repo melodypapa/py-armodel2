@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
     MultiplexedPart,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_signal_i_pdu import (
     ISignalIPdu,
 )
@@ -30,11 +31,11 @@ class StaticPart(MultiplexedPart):
         """
         return False
 
-    i_pdu: Optional[ISignalIPdu]
+    i_pdu_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize StaticPart."""
         super().__init__()
-        self.i_pdu: Optional[ISignalIPdu] = None
+        self.i_pdu_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize StaticPart to XML element.
@@ -56,12 +57,12 @@ class StaticPart(MultiplexedPart):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize i_pdu
-        if self.i_pdu is not None:
-            serialized = ARObject._serialize_item(self.i_pdu, "ISignalIPdu")
+        # Serialize i_pdu_ref
+        if self.i_pdu_ref is not None:
+            serialized = ARObject._serialize_item(self.i_pdu_ref, "ISignalIPdu")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("I-PDU")
+                wrapped = ET.Element("I-PDU-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -85,11 +86,11 @@ class StaticPart(MultiplexedPart):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(StaticPart, cls).deserialize(element)
 
-        # Parse i_pdu
-        child = ARObject._find_child_element(element, "I-PDU")
+        # Parse i_pdu_ref
+        child = ARObject._find_child_element(element, "I-PDU-REF")
         if child is not None:
-            i_pdu_value = ARObject._deserialize_by_tag(child, "ISignalIPdu")
-            obj.i_pdu = i_pdu_value
+            i_pdu_ref_value = ARRef.deserialize(child)
+            obj.i_pdu_ref = i_pdu_ref_value
 
         return obj
 

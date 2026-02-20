@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -31,12 +32,12 @@ class DiagnosticControlEnableMaskBit(ARObject):
         return False
 
     bit_number: Optional[PositiveInteger]
-    controlled_datas: list[DiagnosticDataElement]
+    controlled_data_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize DiagnosticControlEnableMaskBit."""
         super().__init__()
         self.bit_number: Optional[PositiveInteger] = None
-        self.controlled_datas: list[DiagnosticDataElement] = []
+        self.controlled_data_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticControlEnableMaskBit to XML element.
@@ -62,13 +63,20 @@ class DiagnosticControlEnableMaskBit(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize controlled_datas (list to container "CONTROLLED-DATAS")
-        if self.controlled_datas:
-            wrapper = ET.Element("CONTROLLED-DATAS")
-            for item in self.controlled_datas:
+        # Serialize controlled_data_refs (list to container "CONTROLLED-DATA-REFS")
+        if self.controlled_data_refs:
+            wrapper = ET.Element("CONTROLLED-DATA-REFS")
+            for item in self.controlled_data_refs:
                 serialized = ARObject._serialize_item(item, "DiagnosticDataElement")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("CONTROLLED-DATA-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -94,15 +102,21 @@ class DiagnosticControlEnableMaskBit(ARObject):
             bit_number_value = child.text
             obj.bit_number = bit_number_value
 
-        # Parse controlled_datas (list from container "CONTROLLED-DATAS")
-        obj.controlled_datas = []
-        container = ARObject._find_child_element(element, "CONTROLLED-DATAS")
+        # Parse controlled_data_refs (list from container "CONTROLLED-DATA-REFS")
+        obj.controlled_data_refs = []
+        container = ARObject._find_child_element(element, "CONTROLLED-DATA-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.controlled_datas.append(child_value)
+                    obj.controlled_data_refs.append(child_value)
 
         return obj
 

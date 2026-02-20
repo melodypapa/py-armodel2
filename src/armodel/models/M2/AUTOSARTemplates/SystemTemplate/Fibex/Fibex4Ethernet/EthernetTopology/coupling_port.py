@@ -55,7 +55,7 @@ class CouplingPort(Identifiable):
     connection: Optional[EthernetConnectionNegotiationEnum]
     coupling_port_details: Optional[CouplingPortDetails]
     coupling_port_role_enum: Optional[CouplingPortRoleEnum]
-    default_vlan: Optional[Any]
+    default_vlan_ref: Optional[Any]
     mac_layer_type_enum: Optional[EthernetMacLayerTypeEnum]
     mac_multicast_group_refs: list[ARRef]
     mac_sec_propses: list[MacSecProps]
@@ -64,15 +64,15 @@ class CouplingPort(Identifiable):
     pnc_mapping_ident_refs: list[ARRef]
     receive_activity: Optional[Any]
     vlans: list[VlanMembership]
-    vlan_modifier: Optional[Any]
-    wakeup_sleep: Optional[Any]
+    vlan_modifier_ref: Optional[Any]
+    wakeup_sleep_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize CouplingPort."""
         super().__init__()
         self.connection: Optional[EthernetConnectionNegotiationEnum] = None
         self.coupling_port_details: Optional[CouplingPortDetails] = None
         self.coupling_port_role_enum: Optional[CouplingPortRoleEnum] = None
-        self.default_vlan: Optional[Any] = None
+        self.default_vlan_ref: Optional[Any] = None
         self.mac_layer_type_enum: Optional[EthernetMacLayerTypeEnum] = None
         self.mac_multicast_group_refs: list[ARRef] = []
         self.mac_sec_propses: list[MacSecProps] = []
@@ -81,8 +81,8 @@ class CouplingPort(Identifiable):
         self.pnc_mapping_ident_refs: list[ARRef] = []
         self.receive_activity: Optional[Any] = None
         self.vlans: list[VlanMembership] = []
-        self.vlan_modifier: Optional[Any] = None
-        self.wakeup_sleep: Optional[Any] = None
+        self.vlan_modifier_ref: Optional[Any] = None
+        self.wakeup_sleep_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize CouplingPort to XML element.
@@ -146,12 +146,12 @@ class CouplingPort(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize default_vlan
-        if self.default_vlan is not None:
-            serialized = ARObject._serialize_item(self.default_vlan, "Any")
+        # Serialize default_vlan_ref
+        if self.default_vlan_ref is not None:
+            serialized = ARObject._serialize_item(self.default_vlan_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DEFAULT-VLAN")
+                wrapped = ET.Element("DEFAULT-VLAN-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -270,12 +270,12 @@ class CouplingPort(Identifiable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize vlan_modifier
-        if self.vlan_modifier is not None:
-            serialized = ARObject._serialize_item(self.vlan_modifier, "Any")
+        # Serialize vlan_modifier_ref
+        if self.vlan_modifier_ref is not None:
+            serialized = ARObject._serialize_item(self.vlan_modifier_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("VLAN-MODIFIER")
+                wrapped = ET.Element("VLAN-MODIFIER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -284,12 +284,12 @@ class CouplingPort(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize wakeup_sleep
-        if self.wakeup_sleep is not None:
-            serialized = ARObject._serialize_item(self.wakeup_sleep, "Any")
+        # Serialize wakeup_sleep_ref
+        if self.wakeup_sleep_ref is not None:
+            serialized = ARObject._serialize_item(self.wakeup_sleep_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("WAKEUP-SLEEP")
+                wrapped = ET.Element("WAKEUP-SLEEP-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -331,11 +331,11 @@ class CouplingPort(Identifiable):
             coupling_port_role_enum_value = CouplingPortRoleEnum.deserialize(child)
             obj.coupling_port_role_enum = coupling_port_role_enum_value
 
-        # Parse default_vlan
-        child = ARObject._find_child_element(element, "DEFAULT-VLAN")
+        # Parse default_vlan_ref
+        child = ARObject._find_child_element(element, "DEFAULT-VLAN-REF")
         if child is not None:
-            default_vlan_value = child.text
-            obj.default_vlan = default_vlan_value
+            default_vlan_ref_value = ARRef.deserialize(child)
+            obj.default_vlan_ref = default_vlan_ref_value
 
         # Parse mac_layer_type_enum
         child = ARObject._find_child_element(element, "MAC-LAYER-TYPE-ENUM")
@@ -413,17 +413,17 @@ class CouplingPort(Identifiable):
                 if child_value is not None:
                     obj.vlans.append(child_value)
 
-        # Parse vlan_modifier
-        child = ARObject._find_child_element(element, "VLAN-MODIFIER")
+        # Parse vlan_modifier_ref
+        child = ARObject._find_child_element(element, "VLAN-MODIFIER-REF")
         if child is not None:
-            vlan_modifier_value = child.text
-            obj.vlan_modifier = vlan_modifier_value
+            vlan_modifier_ref_value = ARRef.deserialize(child)
+            obj.vlan_modifier_ref = vlan_modifier_ref_value
 
-        # Parse wakeup_sleep
-        child = ARObject._find_child_element(element, "WAKEUP-SLEEP")
+        # Parse wakeup_sleep_ref
+        child = ARObject._find_child_element(element, "WAKEUP-SLEEP-REF")
         if child is not None:
-            wakeup_sleep_value = child.text
-            obj.wakeup_sleep = wakeup_sleep_value
+            wakeup_sleep_ref_value = ARRef.deserialize(child)
+            obj.wakeup_sleep_ref = wakeup_sleep_ref_value
 
         return obj
 

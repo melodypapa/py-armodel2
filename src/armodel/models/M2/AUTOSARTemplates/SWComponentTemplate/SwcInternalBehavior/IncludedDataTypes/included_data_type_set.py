@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
 )
@@ -30,12 +31,12 @@ class IncludedDataTypeSet(ARObject):
         """
         return False
 
-    data_types: list[AutosarDataType]
+    data_type_refs: list[ARRef]
     literal_prefix: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize IncludedDataTypeSet."""
         super().__init__()
-        self.data_types: list[AutosarDataType] = []
+        self.data_type_refs: list[ARRef] = []
         self.literal_prefix: Optional[Identifier] = None
 
     def serialize(self) -> ET.Element:
@@ -48,13 +49,20 @@ class IncludedDataTypeSet(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize data_types (list to container "DATA-TYPES")
-        if self.data_types:
-            wrapper = ET.Element("DATA-TYPES")
-            for item in self.data_types:
+        # Serialize data_type_refs (list to container "DATA-TYPE-REFS")
+        if self.data_type_refs:
+            wrapper = ET.Element("DATA-TYPE-REFS")
+            for item in self.data_type_refs:
                 serialized = ARObject._serialize_item(item, "AutosarDataType")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("DATA-TYPE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -88,15 +96,21 @@ class IncludedDataTypeSet(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse data_types (list from container "DATA-TYPES")
-        obj.data_types = []
-        container = ARObject._find_child_element(element, "DATA-TYPES")
+        # Parse data_type_refs (list from container "DATA-TYPE-REFS")
+        obj.data_type_refs = []
+        container = ARObject._find_child_element(element, "DATA-TYPE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.data_types.append(child_value)
+                    obj.data_type_refs.append(child_value)
 
         # Parse literal_prefix
         child = ARObject._find_child_element(element, "LITERAL-PREFIX")

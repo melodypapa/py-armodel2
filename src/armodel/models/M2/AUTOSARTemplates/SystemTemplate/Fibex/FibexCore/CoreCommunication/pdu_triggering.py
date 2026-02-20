@@ -45,18 +45,18 @@ class PduTriggering(Identifiable):
         """
         return False
 
-    i_pdu: Optional[Pdu]
-    i_pdu_ports: list[IPduPort]
+    i_pdu_ref: Optional[ARRef]
+    i_pdu_port_refs: list[ARRef]
     i_signal_refs: list[ARRef]
-    sec_oc_crypto_service: Optional[SecOcCryptoServiceMapping]
+    sec_oc_crypto_service_ref: Optional[ARRef]
     trigger_i_pdu_send_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize PduTriggering."""
         super().__init__()
-        self.i_pdu: Optional[Pdu] = None
-        self.i_pdu_ports: list[IPduPort] = []
+        self.i_pdu_ref: Optional[ARRef] = None
+        self.i_pdu_port_refs: list[ARRef] = []
         self.i_signal_refs: list[ARRef] = []
-        self.sec_oc_crypto_service: Optional[SecOcCryptoServiceMapping] = None
+        self.sec_oc_crypto_service_ref: Optional[ARRef] = None
         self.trigger_i_pdu_send_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
@@ -79,12 +79,12 @@ class PduTriggering(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize i_pdu
-        if self.i_pdu is not None:
-            serialized = ARObject._serialize_item(self.i_pdu, "Pdu")
+        # Serialize i_pdu_ref
+        if self.i_pdu_ref is not None:
+            serialized = ARObject._serialize_item(self.i_pdu_ref, "Pdu")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("I-PDU")
+                wrapped = ET.Element("I-PDU-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -93,13 +93,20 @@ class PduTriggering(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize i_pdu_ports (list to container "I-PDU-PORTS")
-        if self.i_pdu_ports:
-            wrapper = ET.Element("I-PDU-PORTS")
-            for item in self.i_pdu_ports:
+        # Serialize i_pdu_port_refs (list to container "I-PDU-PORT-REFS")
+        if self.i_pdu_port_refs:
+            wrapper = ET.Element("I-PDU-PORT-REFS")
+            for item in self.i_pdu_port_refs:
                 serialized = ARObject._serialize_item(item, "IPduPort")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("I-PDU-PORT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -120,12 +127,12 @@ class PduTriggering(Identifiable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize sec_oc_crypto_service
-        if self.sec_oc_crypto_service is not None:
-            serialized = ARObject._serialize_item(self.sec_oc_crypto_service, "SecOcCryptoServiceMapping")
+        # Serialize sec_oc_crypto_service_ref
+        if self.sec_oc_crypto_service_ref is not None:
+            serialized = ARObject._serialize_item(self.sec_oc_crypto_service_ref, "SecOcCryptoServiceMapping")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SEC-OC-CRYPTO-SERVICE")
+                wrapped = ET.Element("SEC-OC-CRYPTO-SERVICE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -166,21 +173,27 @@ class PduTriggering(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PduTriggering, cls).deserialize(element)
 
-        # Parse i_pdu
-        child = ARObject._find_child_element(element, "I-PDU")
+        # Parse i_pdu_ref
+        child = ARObject._find_child_element(element, "I-PDU-REF")
         if child is not None:
-            i_pdu_value = ARObject._deserialize_by_tag(child, "Pdu")
-            obj.i_pdu = i_pdu_value
+            i_pdu_ref_value = ARRef.deserialize(child)
+            obj.i_pdu_ref = i_pdu_ref_value
 
-        # Parse i_pdu_ports (list from container "I-PDU-PORTS")
-        obj.i_pdu_ports = []
-        container = ARObject._find_child_element(element, "I-PDU-PORTS")
+        # Parse i_pdu_port_refs (list from container "I-PDU-PORT-REFS")
+        obj.i_pdu_port_refs = []
+        container = ARObject._find_child_element(element, "I-PDU-PORT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.i_pdu_ports.append(child_value)
+                    obj.i_pdu_port_refs.append(child_value)
 
         # Parse i_signal_refs (list from container "I-SIGNAL-REFS")
         obj.i_signal_refs = []
@@ -198,11 +211,11 @@ class PduTriggering(Identifiable):
                 if child_value is not None:
                     obj.i_signal_refs.append(child_value)
 
-        # Parse sec_oc_crypto_service
-        child = ARObject._find_child_element(element, "SEC-OC-CRYPTO-SERVICE")
+        # Parse sec_oc_crypto_service_ref
+        child = ARObject._find_child_element(element, "SEC-OC-CRYPTO-SERVICE-REF")
         if child is not None:
-            sec_oc_crypto_service_value = ARObject._deserialize_by_tag(child, "SecOcCryptoServiceMapping")
-            obj.sec_oc_crypto_service = sec_oc_crypto_service_value
+            sec_oc_crypto_service_ref_value = ARRef.deserialize(child)
+            obj.sec_oc_crypto_service_ref = sec_oc_crypto_service_ref_value
 
         # Parse trigger_i_pdu_send_refs (list from container "TRIGGER-I-PDU-SEND-REFS")
         obj.trigger_i_pdu_send_refs = []

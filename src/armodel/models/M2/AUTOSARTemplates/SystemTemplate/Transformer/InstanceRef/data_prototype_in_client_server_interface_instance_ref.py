@@ -37,15 +37,15 @@ class DataPrototypeInClientServerInterfaceInstanceRef(DataPrototypeInPortInterfa
         """
         return False
 
-    base: Optional[ClientServerInterface]
-    context_datas: list[Any]
+    base_ref: Optional[ARRef]
+    context_data_refs: list[Any]
     root_data_prototype_in_cs_ref: Optional[ARRef]
     target_data_prototype_in_cs_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DataPrototypeInClientServerInterfaceInstanceRef."""
         super().__init__()
-        self.base: Optional[ClientServerInterface] = None
-        self.context_datas: list[Any] = []
+        self.base_ref: Optional[ARRef] = None
+        self.context_data_refs: list[Any] = []
         self.root_data_prototype_in_cs_ref: Optional[ARRef] = None
         self.target_data_prototype_in_cs_ref: Optional[ARRef] = None
 
@@ -69,12 +69,12 @@ class DataPrototypeInClientServerInterfaceInstanceRef(DataPrototypeInPortInterfa
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize base
-        if self.base is not None:
-            serialized = ARObject._serialize_item(self.base, "ClientServerInterface")
+        # Serialize base_ref
+        if self.base_ref is not None:
+            serialized = ARObject._serialize_item(self.base_ref, "ClientServerInterface")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("BASE")
+                wrapped = ET.Element("BASE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -83,13 +83,20 @@ class DataPrototypeInClientServerInterfaceInstanceRef(DataPrototypeInPortInterfa
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize context_datas (list to container "CONTEXT-DATAS")
-        if self.context_datas:
-            wrapper = ET.Element("CONTEXT-DATAS")
-            for item in self.context_datas:
+        # Serialize context_data_refs (list to container "CONTEXT-DATA-REFS")
+        if self.context_data_refs:
+            wrapper = ET.Element("CONTEXT-DATA-REFS")
+            for item in self.context_data_refs:
                 serialized = ARObject._serialize_item(item, "Any")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("CONTEXT-DATA-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -136,21 +143,27 @@ class DataPrototypeInClientServerInterfaceInstanceRef(DataPrototypeInPortInterfa
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DataPrototypeInClientServerInterfaceInstanceRef, cls).deserialize(element)
 
-        # Parse base
-        child = ARObject._find_child_element(element, "BASE")
+        # Parse base_ref
+        child = ARObject._find_child_element(element, "BASE-REF")
         if child is not None:
-            base_value = ARObject._deserialize_by_tag(child, "ClientServerInterface")
-            obj.base = base_value
+            base_ref_value = ARRef.deserialize(child)
+            obj.base_ref = base_ref_value
 
-        # Parse context_datas (list from container "CONTEXT-DATAS")
-        obj.context_datas = []
-        container = ARObject._find_child_element(element, "CONTEXT-DATAS")
+        # Parse context_data_refs (list from container "CONTEXT-DATA-REFS")
+        obj.context_data_refs = []
+        container = ARObject._find_child_element(element, "CONTEXT-DATA-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.context_datas.append(child_value)
+                    obj.context_data_refs.append(child_value)
 
         # Parse root_data_prototype_in_cs_ref
         child = ARObject._find_child_element(element, "ROOT-DATA-PROTOTYPE-IN-CS-REF")

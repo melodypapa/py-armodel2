@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.VariantHandling.condition_by_formula import (
     ConditionByFormula,
 )
@@ -38,14 +39,14 @@ class VariationPointProxy(Identifiable):
         return False
 
     condition_access: Optional[ConditionByFormula]
-    implementation: Optional[AbstractImplementationDataType]
-    post_build_value: Optional[Any]
+    implementation_ref: Optional[ARRef]
+    post_build_value_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize VariationPointProxy."""
         super().__init__()
         self.condition_access: Optional[ConditionByFormula] = None
-        self.implementation: Optional[AbstractImplementationDataType] = None
-        self.post_build_value: Optional[Any] = None
+        self.implementation_ref: Optional[ARRef] = None
+        self.post_build_value_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize VariationPointProxy to XML element.
@@ -81,12 +82,12 @@ class VariationPointProxy(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize implementation
-        if self.implementation is not None:
-            serialized = ARObject._serialize_item(self.implementation, "AbstractImplementationDataType")
+        # Serialize implementation_ref
+        if self.implementation_ref is not None:
+            serialized = ARObject._serialize_item(self.implementation_ref, "AbstractImplementationDataType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("IMPLEMENTATION")
+                wrapped = ET.Element("IMPLEMENTATION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -95,12 +96,12 @@ class VariationPointProxy(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize post_build_value
-        if self.post_build_value is not None:
-            serialized = ARObject._serialize_item(self.post_build_value, "Any")
+        # Serialize post_build_value_ref
+        if self.post_build_value_ref is not None:
+            serialized = ARObject._serialize_item(self.post_build_value_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("POST-BUILD-VALUE")
+                wrapped = ET.Element("POST-BUILD-VALUE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -130,17 +131,17 @@ class VariationPointProxy(Identifiable):
             condition_access_value = ARObject._deserialize_by_tag(child, "ConditionByFormula")
             obj.condition_access = condition_access_value
 
-        # Parse implementation
-        child = ARObject._find_child_element(element, "IMPLEMENTATION")
+        # Parse implementation_ref
+        child = ARObject._find_child_element(element, "IMPLEMENTATION-REF")
         if child is not None:
-            implementation_value = ARObject._deserialize_by_tag(child, "AbstractImplementationDataType")
-            obj.implementation = implementation_value
+            implementation_ref_value = ARRef.deserialize(child)
+            obj.implementation_ref = implementation_ref_value
 
-        # Parse post_build_value
-        child = ARObject._find_child_element(element, "POST-BUILD-VALUE")
+        # Parse post_build_value_ref
+        child = ARObject._find_child_element(element, "POST-BUILD-VALUE-REF")
         if child is not None:
-            post_build_value_value = child.text
-            obj.post_build_value = post_build_value_value
+            post_build_value_ref_value = ARRef.deserialize(child)
+            obj.post_build_value_ref = post_build_value_ref_value
 
         return obj
 

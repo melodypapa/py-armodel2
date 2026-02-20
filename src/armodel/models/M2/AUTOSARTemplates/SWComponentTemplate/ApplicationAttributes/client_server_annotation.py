@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     GeneralAnnotation,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_operation import (
     ClientServerOperation,
 )
@@ -30,11 +31,11 @@ class ClientServerAnnotation(GeneralAnnotation):
         """
         return False
 
-    operation: Optional[ClientServerOperation]
+    operation_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ClientServerAnnotation."""
         super().__init__()
-        self.operation: Optional[ClientServerOperation] = None
+        self.operation_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize ClientServerAnnotation to XML element.
@@ -56,12 +57,12 @@ class ClientServerAnnotation(GeneralAnnotation):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize operation
-        if self.operation is not None:
-            serialized = ARObject._serialize_item(self.operation, "ClientServerOperation")
+        # Serialize operation_ref
+        if self.operation_ref is not None:
+            serialized = ARObject._serialize_item(self.operation_ref, "ClientServerOperation")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("OPERATION")
+                wrapped = ET.Element("OPERATION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -85,11 +86,11 @@ class ClientServerAnnotation(GeneralAnnotation):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ClientServerAnnotation, cls).deserialize(element)
 
-        # Parse operation
-        child = ARObject._find_child_element(element, "OPERATION")
+        # Parse operation_ref
+        child = ARObject._find_child_element(element, "OPERATION-REF")
         if child is not None:
-            operation_value = ARObject._deserialize_by_tag(child, "ClientServerOperation")
-            obj.operation = operation_value
+            operation_ref_value = ARRef.deserialize(child)
+            obj.operation_ref = operation_ref_value
 
         return obj
 

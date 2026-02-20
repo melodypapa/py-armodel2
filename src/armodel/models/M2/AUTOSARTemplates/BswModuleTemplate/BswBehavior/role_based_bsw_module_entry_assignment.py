@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
 )
@@ -30,12 +31,12 @@ class RoleBasedBswModuleEntryAssignment(ARObject):
         """
         return False
 
-    assigned_entry: Optional[BswModuleEntry]
+    assigned_entry_ref: Optional[ARRef]
     role: Optional[Identifier]
     def __init__(self) -> None:
         """Initialize RoleBasedBswModuleEntryAssignment."""
         super().__init__()
-        self.assigned_entry: Optional[BswModuleEntry] = None
+        self.assigned_entry_ref: Optional[ARRef] = None
         self.role: Optional[Identifier] = None
 
     def serialize(self) -> ET.Element:
@@ -48,12 +49,12 @@ class RoleBasedBswModuleEntryAssignment(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize assigned_entry
-        if self.assigned_entry is not None:
-            serialized = ARObject._serialize_item(self.assigned_entry, "BswModuleEntry")
+        # Serialize assigned_entry_ref
+        if self.assigned_entry_ref is not None:
+            serialized = ARObject._serialize_item(self.assigned_entry_ref, "BswModuleEntry")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ASSIGNED-ENTRY")
+                wrapped = ET.Element("ASSIGNED-ENTRY-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -92,11 +93,11 @@ class RoleBasedBswModuleEntryAssignment(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse assigned_entry
-        child = ARObject._find_child_element(element, "ASSIGNED-ENTRY")
+        # Parse assigned_entry_ref
+        child = ARObject._find_child_element(element, "ASSIGNED-ENTRY-REF")
         if child is not None:
-            assigned_entry_value = ARObject._deserialize_by_tag(child, "BswModuleEntry")
-            obj.assigned_entry = assigned_entry_value
+            assigned_entry_ref_value = ARRef.deserialize(child)
+            obj.assigned_entry_ref = assigned_entry_ref_value
 
         # Parse role
         child = ARObject._find_child_element(element, "ROLE")

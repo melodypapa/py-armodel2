@@ -23,7 +23,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "This constraint is used to restrict the timing behavior of different, but correlated events or event chains, with regard to synchronization. Two scenarios are supported: • If (synchronizationConstraintType==responseSynchronization) – TimingDescriptionEvents: An arbitrary number of correlated events which play the role of responses shall occur synchronously with respect to a predefined tolerance. – TimingDescriptionEventChains: An arbitrary number of correlated event chains with a common stimulus, but different responses, where the responses shall occur synchronously with respect to a predefined tolerance. • If (synchronizationConstraintType==stimulusSynchronization) – TimingDescriptionEvents:An arbitrary number of correlated events which play the role of stimuli shall occur synchronously with respect to a predefined tolerance. – TimingDescriptionEventChains: An arbitrary number of correlated event chains with a common response, but different stimuli, where the stimuli shall occur synchronously with respect to a predefined tolerance. In case the constraint is imposed on events the following two scenarios are supported: • If (eventOccurrenceKind==singleOccurrence): any of the events shall occur only once in the given time interval. • If (eventOccurrenceKind==multipleOccurrences): any of the events may occur more than once in the given time interval. In other words multiple occurrences of an event within the given time interval are permitted.",
+      "note": "This constraint is used to restrict the timing behavior of different, but correlated events or event chains, with regard to synchronization. Two scenarios are supported: \u2022 If (synchronizationConstraintType==responseSynchronization) \u2013 TimingDescriptionEvents: An arbitrary number of correlated events which play the role of responses shall occur synchronously with respect to a predefined tolerance. \u2013 TimingDescriptionEventChains: An arbitrary number of correlated event chains with a common stimulus, but different responses, where the responses shall occur synchronously with respect to a predefined tolerance. \u2022 If (synchronizationConstraintType==stimulusSynchronization) \u2013 TimingDescriptionEvents:An arbitrary number of correlated events which play the role of stimuli shall occur synchronously with respect to a predefined tolerance. \u2013 TimingDescriptionEventChains: An arbitrary number of correlated event chains with a common response, but different stimuli, where the stimuli shall occur synchronously with respect to a predefined tolerance. In case the constraint is imposed on events the following two scenarios are supported: \u2022 If (eventOccurrenceKind==singleOccurrence): any of the events shall occur only once in the given time interval. \u2022 If (eventOccurrenceKind==multipleOccurrences): any of the events may occur more than once in the given time interval. In other words multiple occurrences of an event within the given time interval are permitted.",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_TimingExtensions.pdf",
@@ -43,15 +43,15 @@
         "scopes": {
           "type": "TimingDescriptionEvent",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The event chains that are in the scope of the constraint. exclusive to scopeEvent, see ([constr_4522])."
         },
         "scopeEvents": {
           "type": "TimingDescriptionEvent",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The events that are in the scope of the constraint. to scope, see ([constr_4522])"
         },
         "synchronization": {

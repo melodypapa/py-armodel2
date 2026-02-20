@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DiagnosticConnection.tp_c
     TpConnection,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
 )
@@ -42,27 +43,27 @@ class LinTpConnection(TpConnection):
         """
         return False
 
-    data_pdu: Optional[NPdu]
-    flow_control: Optional[NPdu]
-    lin_tp_n_sdu: Optional[IPdu]
-    multicast: Optional[TpAddress]
-    receivers: list[LinTpNode]
+    data_pdu_ref: Optional[ARRef]
+    flow_control_ref: Optional[ARRef]
+    lin_tp_n_sdu_ref: Optional[ARRef]
+    multicast_ref: Optional[ARRef]
+    receiver_refs: list[ARRef]
     timeout_as: Optional[TimeValue]
     timeout_cr: Optional[TimeValue]
     timeout_cs: Optional[TimeValue]
-    transmitter: Optional[LinTpNode]
+    transmitter_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize LinTpConnection."""
         super().__init__()
-        self.data_pdu: Optional[NPdu] = None
-        self.flow_control: Optional[NPdu] = None
-        self.lin_tp_n_sdu: Optional[IPdu] = None
-        self.multicast: Optional[TpAddress] = None
-        self.receivers: list[LinTpNode] = []
+        self.data_pdu_ref: Optional[ARRef] = None
+        self.flow_control_ref: Optional[ARRef] = None
+        self.lin_tp_n_sdu_ref: Optional[ARRef] = None
+        self.multicast_ref: Optional[ARRef] = None
+        self.receiver_refs: list[ARRef] = []
         self.timeout_as: Optional[TimeValue] = None
         self.timeout_cr: Optional[TimeValue] = None
         self.timeout_cs: Optional[TimeValue] = None
-        self.transmitter: Optional[LinTpNode] = None
+        self.transmitter_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize LinTpConnection to XML element.
@@ -84,12 +85,12 @@ class LinTpConnection(TpConnection):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize data_pdu
-        if self.data_pdu is not None:
-            serialized = ARObject._serialize_item(self.data_pdu, "NPdu")
+        # Serialize data_pdu_ref
+        if self.data_pdu_ref is not None:
+            serialized = ARObject._serialize_item(self.data_pdu_ref, "NPdu")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DATA-PDU")
+                wrapped = ET.Element("DATA-PDU-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -98,12 +99,12 @@ class LinTpConnection(TpConnection):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize flow_control
-        if self.flow_control is not None:
-            serialized = ARObject._serialize_item(self.flow_control, "NPdu")
+        # Serialize flow_control_ref
+        if self.flow_control_ref is not None:
+            serialized = ARObject._serialize_item(self.flow_control_ref, "NPdu")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("FLOW-CONTROL")
+                wrapped = ET.Element("FLOW-CONTROL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -112,12 +113,12 @@ class LinTpConnection(TpConnection):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize lin_tp_n_sdu
-        if self.lin_tp_n_sdu is not None:
-            serialized = ARObject._serialize_item(self.lin_tp_n_sdu, "IPdu")
+        # Serialize lin_tp_n_sdu_ref
+        if self.lin_tp_n_sdu_ref is not None:
+            serialized = ARObject._serialize_item(self.lin_tp_n_sdu_ref, "IPdu")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("LIN-TP-N-SDU")
+                wrapped = ET.Element("LIN-TP-N-SDU-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -126,12 +127,12 @@ class LinTpConnection(TpConnection):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize multicast
-        if self.multicast is not None:
-            serialized = ARObject._serialize_item(self.multicast, "TpAddress")
+        # Serialize multicast_ref
+        if self.multicast_ref is not None:
+            serialized = ARObject._serialize_item(self.multicast_ref, "TpAddress")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("MULTICAST")
+                wrapped = ET.Element("MULTICAST-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -140,13 +141,20 @@ class LinTpConnection(TpConnection):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize receivers (list to container "RECEIVERS")
-        if self.receivers:
-            wrapper = ET.Element("RECEIVERS")
-            for item in self.receivers:
+        # Serialize receiver_refs (list to container "RECEIVER-REFS")
+        if self.receiver_refs:
+            wrapper = ET.Element("RECEIVER-REFS")
+            for item in self.receiver_refs:
                 serialized = ARObject._serialize_item(item, "LinTpNode")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("RECEIVER-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -192,12 +200,12 @@ class LinTpConnection(TpConnection):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize transmitter
-        if self.transmitter is not None:
-            serialized = ARObject._serialize_item(self.transmitter, "LinTpNode")
+        # Serialize transmitter_ref
+        if self.transmitter_ref is not None:
+            serialized = ARObject._serialize_item(self.transmitter_ref, "LinTpNode")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TRANSMITTER")
+                wrapped = ET.Element("TRANSMITTER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -221,39 +229,45 @@ class LinTpConnection(TpConnection):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(LinTpConnection, cls).deserialize(element)
 
-        # Parse data_pdu
-        child = ARObject._find_child_element(element, "DATA-PDU")
+        # Parse data_pdu_ref
+        child = ARObject._find_child_element(element, "DATA-PDU-REF")
         if child is not None:
-            data_pdu_value = ARObject._deserialize_by_tag(child, "NPdu")
-            obj.data_pdu = data_pdu_value
+            data_pdu_ref_value = ARRef.deserialize(child)
+            obj.data_pdu_ref = data_pdu_ref_value
 
-        # Parse flow_control
-        child = ARObject._find_child_element(element, "FLOW-CONTROL")
+        # Parse flow_control_ref
+        child = ARObject._find_child_element(element, "FLOW-CONTROL-REF")
         if child is not None:
-            flow_control_value = ARObject._deserialize_by_tag(child, "NPdu")
-            obj.flow_control = flow_control_value
+            flow_control_ref_value = ARRef.deserialize(child)
+            obj.flow_control_ref = flow_control_ref_value
 
-        # Parse lin_tp_n_sdu
-        child = ARObject._find_child_element(element, "LIN-TP-N-SDU")
+        # Parse lin_tp_n_sdu_ref
+        child = ARObject._find_child_element(element, "LIN-TP-N-SDU-REF")
         if child is not None:
-            lin_tp_n_sdu_value = ARObject._deserialize_by_tag(child, "IPdu")
-            obj.lin_tp_n_sdu = lin_tp_n_sdu_value
+            lin_tp_n_sdu_ref_value = ARRef.deserialize(child)
+            obj.lin_tp_n_sdu_ref = lin_tp_n_sdu_ref_value
 
-        # Parse multicast
-        child = ARObject._find_child_element(element, "MULTICAST")
+        # Parse multicast_ref
+        child = ARObject._find_child_element(element, "MULTICAST-REF")
         if child is not None:
-            multicast_value = ARObject._deserialize_by_tag(child, "TpAddress")
-            obj.multicast = multicast_value
+            multicast_ref_value = ARRef.deserialize(child)
+            obj.multicast_ref = multicast_ref_value
 
-        # Parse receivers (list from container "RECEIVERS")
-        obj.receivers = []
-        container = ARObject._find_child_element(element, "RECEIVERS")
+        # Parse receiver_refs (list from container "RECEIVER-REFS")
+        obj.receiver_refs = []
+        container = ARObject._find_child_element(element, "RECEIVER-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.receivers.append(child_value)
+                    obj.receiver_refs.append(child_value)
 
         # Parse timeout_as
         child = ARObject._find_child_element(element, "TIMEOUT-AS")
@@ -273,11 +287,11 @@ class LinTpConnection(TpConnection):
             timeout_cs_value = child.text
             obj.timeout_cs = timeout_cs_value
 
-        # Parse transmitter
-        child = ARObject._find_child_element(element, "TRANSMITTER")
+        # Parse transmitter_ref
+        child = ARObject._find_child_element(element, "TRANSMITTER-REF")
         if child is not None:
-            transmitter_value = ARObject._deserialize_by_tag(child, "LinTpNode")
-            obj.transmitter = transmitter_value
+            transmitter_ref_value = ARRef.deserialize(child)
+            obj.transmitter_ref = transmitter_ref_value
 
         return obj
 

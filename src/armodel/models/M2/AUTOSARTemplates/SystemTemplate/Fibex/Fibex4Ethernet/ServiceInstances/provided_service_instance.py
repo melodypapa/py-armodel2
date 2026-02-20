@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Serv
     AbstractServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -41,7 +42,7 @@ class ProvidedServiceInstance(AbstractServiceInstance):
         """
         return False
 
-    allowed_services: list[NetworkEndpoint]
+    allowed_service_refs: list[ARRef]
     auto_available: Optional[Boolean]
     event_handlers: list[EventHandler]
     instance: Optional[PositiveInteger]
@@ -49,15 +50,15 @@ class ProvidedServiceInstance(AbstractServiceInstance):
     local_unicast: ApplicationEndpoint
     minor_version: Optional[PositiveInteger]
     priority: Optional[PositiveInteger]
-    remote_multicasts: list[ApplicationEndpoint]
-    remote_unicasts: list[ApplicationEndpoint]
+    remote_multicast_refs: list[ARRef]
+    remote_unicast_refs: list[ARRef]
     sd_server_config: Optional[Any]
-    sd_server_timer: Optional[Any]
+    sd_server_timer_ref: Optional[Any]
     service_identifier: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize ProvidedServiceInstance."""
         super().__init__()
-        self.allowed_services: list[NetworkEndpoint] = []
+        self.allowed_service_refs: list[ARRef] = []
         self.auto_available: Optional[Boolean] = None
         self.event_handlers: list[EventHandler] = []
         self.instance: Optional[PositiveInteger] = None
@@ -65,10 +66,10 @@ class ProvidedServiceInstance(AbstractServiceInstance):
         self.local_unicast: ApplicationEndpoint = None
         self.minor_version: Optional[PositiveInteger] = None
         self.priority: Optional[PositiveInteger] = None
-        self.remote_multicasts: list[ApplicationEndpoint] = []
-        self.remote_unicasts: list[ApplicationEndpoint] = []
+        self.remote_multicast_refs: list[ARRef] = []
+        self.remote_unicast_refs: list[ARRef] = []
         self.sd_server_config: Optional[Any] = None
-        self.sd_server_timer: Optional[Any] = None
+        self.sd_server_timer_ref: Optional[Any] = None
         self.service_identifier: Optional[PositiveInteger] = None
 
     def serialize(self) -> ET.Element:
@@ -91,13 +92,20 @@ class ProvidedServiceInstance(AbstractServiceInstance):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize allowed_services (list to container "ALLOWED-SERVICES")
-        if self.allowed_services:
-            wrapper = ET.Element("ALLOWED-SERVICES")
-            for item in self.allowed_services:
+        # Serialize allowed_service_refs (list to container "ALLOWED-SERVICE-REFS")
+        if self.allowed_service_refs:
+            wrapper = ET.Element("ALLOWED-SERVICE-REFS")
+            for item in self.allowed_service_refs:
                 serialized = ARObject._serialize_item(item, "NetworkEndpoint")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("ALLOWED-SERVICE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -195,23 +203,37 @@ class ProvidedServiceInstance(AbstractServiceInstance):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize remote_multicasts (list to container "REMOTE-MULTICASTS")
-        if self.remote_multicasts:
-            wrapper = ET.Element("REMOTE-MULTICASTS")
-            for item in self.remote_multicasts:
+        # Serialize remote_multicast_refs (list to container "REMOTE-MULTICAST-REFS")
+        if self.remote_multicast_refs:
+            wrapper = ET.Element("REMOTE-MULTICAST-REFS")
+            for item in self.remote_multicast_refs:
                 serialized = ARObject._serialize_item(item, "ApplicationEndpoint")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("REMOTE-MULTICAST-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize remote_unicasts (list to container "REMOTE-UNICASTS")
-        if self.remote_unicasts:
-            wrapper = ET.Element("REMOTE-UNICASTS")
-            for item in self.remote_unicasts:
+        # Serialize remote_unicast_refs (list to container "REMOTE-UNICAST-REFS")
+        if self.remote_unicast_refs:
+            wrapper = ET.Element("REMOTE-UNICAST-REFS")
+            for item in self.remote_unicast_refs:
                 serialized = ARObject._serialize_item(item, "ApplicationEndpoint")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("REMOTE-UNICAST-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -229,12 +251,12 @@ class ProvidedServiceInstance(AbstractServiceInstance):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sd_server_timer
-        if self.sd_server_timer is not None:
-            serialized = ARObject._serialize_item(self.sd_server_timer, "Any")
+        # Serialize sd_server_timer_ref
+        if self.sd_server_timer_ref is not None:
+            serialized = ARObject._serialize_item(self.sd_server_timer_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SD-SERVER-TIMER")
+                wrapped = ET.Element("SD-SERVER-TIMER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -272,15 +294,21 @@ class ProvidedServiceInstance(AbstractServiceInstance):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ProvidedServiceInstance, cls).deserialize(element)
 
-        # Parse allowed_services (list from container "ALLOWED-SERVICES")
-        obj.allowed_services = []
-        container = ARObject._find_child_element(element, "ALLOWED-SERVICES")
+        # Parse allowed_service_refs (list from container "ALLOWED-SERVICE-REFS")
+        obj.allowed_service_refs = []
+        container = ARObject._find_child_element(element, "ALLOWED-SERVICE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.allowed_services.append(child_value)
+                    obj.allowed_service_refs.append(child_value)
 
         # Parse auto_available
         child = ARObject._find_child_element(element, "AUTO-AVAILABLE")
@@ -328,25 +356,37 @@ class ProvidedServiceInstance(AbstractServiceInstance):
             priority_value = child.text
             obj.priority = priority_value
 
-        # Parse remote_multicasts (list from container "REMOTE-MULTICASTS")
-        obj.remote_multicasts = []
-        container = ARObject._find_child_element(element, "REMOTE-MULTICASTS")
+        # Parse remote_multicast_refs (list from container "REMOTE-MULTICAST-REFS")
+        obj.remote_multicast_refs = []
+        container = ARObject._find_child_element(element, "REMOTE-MULTICAST-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.remote_multicasts.append(child_value)
+                    obj.remote_multicast_refs.append(child_value)
 
-        # Parse remote_unicasts (list from container "REMOTE-UNICASTS")
-        obj.remote_unicasts = []
-        container = ARObject._find_child_element(element, "REMOTE-UNICASTS")
+        # Parse remote_unicast_refs (list from container "REMOTE-UNICAST-REFS")
+        obj.remote_unicast_refs = []
+        container = ARObject._find_child_element(element, "REMOTE-UNICAST-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.remote_unicasts.append(child_value)
+                    obj.remote_unicast_refs.append(child_value)
 
         # Parse sd_server_config
         child = ARObject._find_child_element(element, "SD-SERVER-CONFIG")
@@ -354,11 +394,11 @@ class ProvidedServiceInstance(AbstractServiceInstance):
             sd_server_config_value = child.text
             obj.sd_server_config = sd_server_config_value
 
-        # Parse sd_server_timer
-        child = ARObject._find_child_element(element, "SD-SERVER-TIMER")
+        # Parse sd_server_timer_ref
+        child = ARObject._find_child_element(element, "SD-SERVER-TIMER-REF")
         if child is not None:
-            sd_server_timer_value = child.text
-            obj.sd_server_timer = sd_server_timer_value
+            sd_server_timer_ref_value = ARRef.deserialize(child)
+            obj.sd_server_timer_ref = sd_server_timer_ref_value
 
         # Parse service_identifier
         child = ARObject._find_child_element(element, "SERVICE-IDENTIFIER")

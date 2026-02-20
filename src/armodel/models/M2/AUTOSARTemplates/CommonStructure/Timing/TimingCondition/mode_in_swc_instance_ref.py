@@ -37,19 +37,19 @@ class ModeInSwcInstanceRef(ARObject):
         """
         return False
 
-    base: Optional[SwComponentType]
-    contexts: list[Any]
+    base_ref: Optional[ARRef]
+    context_refs: list[Any]
     context_mode_ref: Optional[ARRef]
     context_port_ref: Optional[ARRef]
-    target_mode: Optional[ModeDeclaration]
+    target_mode_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ModeInSwcInstanceRef."""
         super().__init__()
-        self.base: Optional[SwComponentType] = None
-        self.contexts: list[Any] = []
+        self.base_ref: Optional[ARRef] = None
+        self.context_refs: list[Any] = []
         self.context_mode_ref: Optional[ARRef] = None
         self.context_port_ref: Optional[ARRef] = None
-        self.target_mode: Optional[ModeDeclaration] = None
+        self.target_mode_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize ModeInSwcInstanceRef to XML element.
@@ -61,12 +61,12 @@ class ModeInSwcInstanceRef(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize base
-        if self.base is not None:
-            serialized = ARObject._serialize_item(self.base, "SwComponentType")
+        # Serialize base_ref
+        if self.base_ref is not None:
+            serialized = ARObject._serialize_item(self.base_ref, "SwComponentType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("BASE")
+                wrapped = ET.Element("BASE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -75,13 +75,20 @@ class ModeInSwcInstanceRef(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize contexts (list to container "CONTEXTS")
-        if self.contexts:
-            wrapper = ET.Element("CONTEXTS")
-            for item in self.contexts:
+        # Serialize context_refs (list to container "CONTEXT-REFS")
+        if self.context_refs:
+            wrapper = ET.Element("CONTEXT-REFS")
+            for item in self.context_refs:
                 serialized = ARObject._serialize_item(item, "Any")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("CONTEXT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -113,12 +120,12 @@ class ModeInSwcInstanceRef(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize target_mode
-        if self.target_mode is not None:
-            serialized = ARObject._serialize_item(self.target_mode, "ModeDeclaration")
+        # Serialize target_mode_ref
+        if self.target_mode_ref is not None:
+            serialized = ARObject._serialize_item(self.target_mode_ref, "ModeDeclaration")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TARGET-MODE")
+                wrapped = ET.Element("TARGET-MODE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -143,21 +150,27 @@ class ModeInSwcInstanceRef(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse base
-        child = ARObject._find_child_element(element, "BASE")
+        # Parse base_ref
+        child = ARObject._find_child_element(element, "BASE-REF")
         if child is not None:
-            base_value = ARObject._deserialize_by_tag(child, "SwComponentType")
-            obj.base = base_value
+            base_ref_value = ARRef.deserialize(child)
+            obj.base_ref = base_ref_value
 
-        # Parse contexts (list from container "CONTEXTS")
-        obj.contexts = []
-        container = ARObject._find_child_element(element, "CONTEXTS")
+        # Parse context_refs (list from container "CONTEXT-REFS")
+        obj.context_refs = []
+        container = ARObject._find_child_element(element, "CONTEXT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.contexts.append(child_value)
+                    obj.context_refs.append(child_value)
 
         # Parse context_mode_ref
         child = ARObject._find_child_element(element, "CONTEXT-MODE-REF")
@@ -171,11 +184,11 @@ class ModeInSwcInstanceRef(ARObject):
             context_port_ref_value = ARRef.deserialize(child)
             obj.context_port_ref = context_port_ref_value
 
-        # Parse target_mode
-        child = ARObject._find_child_element(element, "TARGET-MODE")
+        # Parse target_mode_ref
+        child = ARObject._find_child_element(element, "TARGET-MODE-REF")
         if child is not None:
-            target_mode_value = ARObject._deserialize_by_tag(child, "ModeDeclaration")
-            obj.target_mode = target_mode_value
+            target_mode_ref_value = ARRef.deserialize(child)
+            obj.target_mode_ref = target_mode_ref_value
 
         return obj
 

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Describable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     Identifier,
@@ -39,7 +40,7 @@ class SocketConnection(Describable):
         return False
 
     client_ip_addr: Optional[Boolean]
-    client_port: Optional[SocketAddress]
+    client_port_ref: Optional[ARRef]
     client_port_from: Optional[Boolean]
     pdus: list[SocketConnectionIpduIdentifierSet]
     pdu_collection: Optional[TimeValue]
@@ -50,7 +51,7 @@ class SocketConnection(Describable):
         """Initialize SocketConnection."""
         super().__init__()
         self.client_ip_addr: Optional[Boolean] = None
-        self.client_port: Optional[SocketAddress] = None
+        self.client_port_ref: Optional[ARRef] = None
         self.client_port_from: Optional[Boolean] = None
         self.pdus: list[SocketConnectionIpduIdentifierSet] = []
         self.pdu_collection: Optional[TimeValue] = None
@@ -92,12 +93,12 @@ class SocketConnection(Describable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize client_port
-        if self.client_port is not None:
-            serialized = ARObject._serialize_item(self.client_port, "SocketAddress")
+        # Serialize client_port_ref
+        if self.client_port_ref is not None:
+            serialized = ARObject._serialize_item(self.client_port_ref, "SocketAddress")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CLIENT-PORT")
+                wrapped = ET.Element("CLIENT-PORT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -207,11 +208,11 @@ class SocketConnection(Describable):
             client_ip_addr_value = child.text
             obj.client_ip_addr = client_ip_addr_value
 
-        # Parse client_port
-        child = ARObject._find_child_element(element, "CLIENT-PORT")
+        # Parse client_port_ref
+        child = ARObject._find_child_element(element, "CLIENT-PORT-REF")
         if child is not None:
-            client_port_value = ARObject._deserialize_by_tag(child, "SocketAddress")
-            obj.client_port = client_port_value
+            client_port_ref_value = ARRef.deserialize(child)
+            obj.client_port_ref = client_port_ref_value
 
         # Parse client_port_from
         child = ARObject._find_child_element(element, "CLIENT-PORT-FROM")

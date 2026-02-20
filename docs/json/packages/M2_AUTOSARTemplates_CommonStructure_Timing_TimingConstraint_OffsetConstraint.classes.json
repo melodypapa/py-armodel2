@@ -50,15 +50,15 @@
         "source": {
           "type": "TimingDescriptionEvent",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The timing event that the target event is to be"
         },
         "target": {
           "type": "TimingDescriptionEvent",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The timing event which is expected to occur timely after event."
         }
       }

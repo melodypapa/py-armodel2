@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
 )
@@ -34,13 +35,13 @@ class PostBuildVariantCriterionValue(ARObject):
 
     annotations: list[Annotation]
     value: Integer
-    variant_criterion: Any
+    variant_criterion_ref: Any
     def __init__(self) -> None:
         """Initialize PostBuildVariantCriterionValue."""
         super().__init__()
         self.annotations: list[Annotation] = []
         self.value: Integer = None
-        self.variant_criterion: Any = None
+        self.variant_criterion_ref: Any = None
 
     def serialize(self) -> ET.Element:
         """Serialize PostBuildVariantCriterionValue to XML element.
@@ -76,12 +77,12 @@ class PostBuildVariantCriterionValue(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize variant_criterion
-        if self.variant_criterion is not None:
-            serialized = ARObject._serialize_item(self.variant_criterion, "Any")
+        # Serialize variant_criterion_ref
+        if self.variant_criterion_ref is not None:
+            serialized = ARObject._serialize_item(self.variant_criterion_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("VARIANT-CRITERION")
+                wrapped = ET.Element("VARIANT-CRITERION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -122,11 +123,11 @@ class PostBuildVariantCriterionValue(ARObject):
             value_value = child.text
             obj.value = value_value
 
-        # Parse variant_criterion
-        child = ARObject._find_child_element(element, "VARIANT-CRITERION")
+        # Parse variant_criterion_ref
+        child = ARObject._find_child_element(element, "VARIANT-CRITERION-REF")
         if child is not None:
-            variant_criterion_value = child.text
-            obj.variant_criterion = variant_criterion_value
+            variant_criterion_ref_value = ARRef.deserialize(child)
+            obj.variant_criterion_ref = variant_criterion_ref_value
 
         return obj
 

@@ -704,8 +704,8 @@
         "operation": {
           "type": "ClientServerOperation",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the corresponding ClientServerOperation."
         },
         "transformationComs": {
@@ -748,8 +748,8 @@
         "operation": {
           "type": "ClientServerOperation",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Operation these communication attributes apply to."
         },
         "queueLength": {

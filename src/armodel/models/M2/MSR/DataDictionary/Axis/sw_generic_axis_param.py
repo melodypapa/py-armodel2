@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
 class SwGenericAxisParam(ARObject):
@@ -24,11 +25,11 @@ class SwGenericAxisParam(ARObject):
         """
         return False
 
-    sw_generic_axis_param: Optional[SwGenericAxisParam]
+    sw_generic_axis_param_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SwGenericAxisParam."""
         super().__init__()
-        self.sw_generic_axis_param: Optional[SwGenericAxisParam] = None
+        self.sw_generic_axis_param_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize SwGenericAxisParam to XML element.
@@ -40,12 +41,12 @@ class SwGenericAxisParam(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize sw_generic_axis_param
-        if self.sw_generic_axis_param is not None:
-            serialized = ARObject._serialize_item(self.sw_generic_axis_param, "SwGenericAxisParam")
+        # Serialize sw_generic_axis_param_ref
+        if self.sw_generic_axis_param_ref is not None:
+            serialized = ARObject._serialize_item(self.sw_generic_axis_param_ref, "SwGenericAxisParam")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SW-GENERIC-AXIS-PARAM")
+                wrapped = ET.Element("SW-GENERIC-AXIS-PARAM-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -70,11 +71,11 @@ class SwGenericAxisParam(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse sw_generic_axis_param
-        child = ARObject._find_child_element(element, "SW-GENERIC-AXIS-PARAM")
+        # Parse sw_generic_axis_param_ref
+        child = ARObject._find_child_element(element, "SW-GENERIC-AXIS-PARAM-REF")
         if child is not None:
-            sw_generic_axis_param_value = ARObject._deserialize_by_tag(child, "SwGenericAxisParam")
-            obj.sw_generic_axis_param = sw_generic_axis_param_value
+            sw_generic_axis_param_ref_value = ARRef.deserialize(child)
+            obj.sw_generic_axis_param_ref = sw_generic_axis_param_ref_value
 
         return obj
 

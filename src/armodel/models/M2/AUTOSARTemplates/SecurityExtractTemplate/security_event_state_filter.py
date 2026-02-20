@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.abstract_securit
     AbstractSecurityEventFilter,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.block_state import (
     BlockState,
 )
@@ -30,11 +31,11 @@ class SecurityEventStateFilter(AbstractSecurityEventFilter):
         """
         return False
 
-    block_if_states: list[BlockState]
+    block_if_state_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize SecurityEventStateFilter."""
         super().__init__()
-        self.block_if_states: list[BlockState] = []
+        self.block_if_state_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize SecurityEventStateFilter to XML element.
@@ -56,13 +57,20 @@ class SecurityEventStateFilter(AbstractSecurityEventFilter):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize block_if_states (list to container "BLOCK-IF-STATES")
-        if self.block_if_states:
-            wrapper = ET.Element("BLOCK-IF-STATES")
-            for item in self.block_if_states:
+        # Serialize block_if_state_refs (list to container "BLOCK-IF-STATE-REFS")
+        if self.block_if_state_refs:
+            wrapper = ET.Element("BLOCK-IF-STATE-REFS")
+            for item in self.block_if_state_refs:
                 serialized = ARObject._serialize_item(item, "BlockState")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("BLOCK-IF-STATE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -81,15 +89,21 @@ class SecurityEventStateFilter(AbstractSecurityEventFilter):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SecurityEventStateFilter, cls).deserialize(element)
 
-        # Parse block_if_states (list from container "BLOCK-IF-STATES")
-        obj.block_if_states = []
-        container = ARObject._find_child_element(element, "BLOCK-IF-STATES")
+        # Parse block_if_state_refs (list from container "BLOCK-IF-STATE-REFS")
+        obj.block_if_state_refs = []
+        container = ARObject._find_child_element(element, "BLOCK-IF-STATE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.block_if_states.append(child_value)
+                    obj.block_if_state_refs.append(child_value)
 
         return obj
 

@@ -106,8 +106,8 @@
         "function": {
           "type": "any (DiagnosticFunction)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the corresponding function identifier."
         },
         "inhibitionMask": {
@@ -158,15 +158,15 @@
         "event": {
           "type": "any (DiagnosticFimAlias)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the alias event applicable for the inhibition source."
         },
         "eventGroup": {
           "type": "any (DiagnosticFimAlias)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the event group applicable for the inhibition source."
         }
       }
@@ -207,8 +207,8 @@
         "events": {
           "type": "DiagnosticEvent",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference represents the way of grouping diagnostic a summary event in the context of the Fim."
         }
       }
@@ -250,8 +250,8 @@
         "groupedAliases": {
           "type": "any (DiagnosticFimAlias)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "By means of this reference the grouping of Diagnostic AliasEvents within the DiagnosticFimSummaryEvent can"
         }
       }

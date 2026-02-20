@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.
     TimingConstraint,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
     MultidimensionalTime,
 )
@@ -35,13 +36,13 @@ class AgeConstraint(TimingConstraint):
 
     maximum: Optional[MultidimensionalTime]
     minimum: Optional[MultidimensionalTime]
-    scope: Optional[TimingDescriptionEvent]
+    scope_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize AgeConstraint."""
         super().__init__()
         self.maximum: Optional[MultidimensionalTime] = None
         self.minimum: Optional[MultidimensionalTime] = None
-        self.scope: Optional[TimingDescriptionEvent] = None
+        self.scope_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize AgeConstraint to XML element.
@@ -91,12 +92,12 @@ class AgeConstraint(TimingConstraint):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize scope
-        if self.scope is not None:
-            serialized = ARObject._serialize_item(self.scope, "TimingDescriptionEvent")
+        # Serialize scope_ref
+        if self.scope_ref is not None:
+            serialized = ARObject._serialize_item(self.scope_ref, "TimingDescriptionEvent")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SCOPE")
+                wrapped = ET.Element("SCOPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -132,11 +133,11 @@ class AgeConstraint(TimingConstraint):
             minimum_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
             obj.minimum = minimum_value
 
-        # Parse scope
-        child = ARObject._find_child_element(element, "SCOPE")
+        # Parse scope_ref
+        child = ARObject._find_child_element(element, "SCOPE-REF")
         if child is not None:
-            scope_value = ARObject._deserialize_by_tag(child, "TimingDescriptionEvent")
-            obj.scope = scope_value
+            scope_ref_value = ARRef.deserialize(child)
+            obj.scope_ref = scope_ref_value
 
         return obj
 

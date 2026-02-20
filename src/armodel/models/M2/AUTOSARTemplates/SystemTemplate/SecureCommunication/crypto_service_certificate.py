@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication import (
     CryptoCertificateFormatEnum,
 )
@@ -38,7 +39,7 @@ class CryptoServiceCertificate(ARElement):
     algorithm_family: Optional[Any]
     format: Optional[CryptoCertificateFormatEnum]
     maximum: Optional[PositiveInteger]
-    next_higher: Optional[Any]
+    next_higher_ref: Optional[Any]
     server_name: Optional[String]
     def __init__(self) -> None:
         """Initialize CryptoServiceCertificate."""
@@ -46,7 +47,7 @@ class CryptoServiceCertificate(ARElement):
         self.algorithm_family: Optional[Any] = None
         self.format: Optional[CryptoCertificateFormatEnum] = None
         self.maximum: Optional[PositiveInteger] = None
-        self.next_higher: Optional[Any] = None
+        self.next_higher_ref: Optional[Any] = None
         self.server_name: Optional[String] = None
 
     def serialize(self) -> ET.Element:
@@ -111,12 +112,12 @@ class CryptoServiceCertificate(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize next_higher
-        if self.next_higher is not None:
-            serialized = ARObject._serialize_item(self.next_higher, "Any")
+        # Serialize next_higher_ref
+        if self.next_higher_ref is not None:
+            serialized = ARObject._serialize_item(self.next_higher_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("NEXT-HIGHER")
+                wrapped = ET.Element("NEXT-HIGHER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -172,11 +173,11 @@ class CryptoServiceCertificate(ARElement):
             maximum_value = child.text
             obj.maximum = maximum_value
 
-        # Parse next_higher
-        child = ARObject._find_child_element(element, "NEXT-HIGHER")
+        # Parse next_higher_ref
+        child = ARObject._find_child_element(element, "NEXT-HIGHER-REF")
         if child is not None:
-            next_higher_value = child.text
-            obj.next_higher = next_higher_value
+            next_higher_ref_value = ARRef.deserialize(child)
+            obj.next_higher_ref = next_higher_ref_value
 
         # Parse server_name
         child = ARObject._find_child_element(element, "SERVER-NAME")

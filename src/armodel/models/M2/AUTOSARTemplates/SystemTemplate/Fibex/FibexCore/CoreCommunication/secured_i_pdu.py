@@ -37,9 +37,9 @@ class SecuredIPdu(IPdu):
         """
         return False
 
-    authentication: Optional[Any]
+    authentication_ref: Optional[Any]
     dynamic: Optional[Boolean]
-    freshness_props: Optional[Any]
+    freshness_props_ref: Optional[Any]
     payload_ref: Optional[ARRef]
     secure: Optional[Any]
     use_as: Optional[Boolean]
@@ -47,9 +47,9 @@ class SecuredIPdu(IPdu):
     def __init__(self) -> None:
         """Initialize SecuredIPdu."""
         super().__init__()
-        self.authentication: Optional[Any] = None
+        self.authentication_ref: Optional[Any] = None
         self.dynamic: Optional[Boolean] = None
-        self.freshness_props: Optional[Any] = None
+        self.freshness_props_ref: Optional[Any] = None
         self.payload_ref: Optional[ARRef] = None
         self.secure: Optional[Any] = None
         self.use_as: Optional[Boolean] = None
@@ -75,12 +75,12 @@ class SecuredIPdu(IPdu):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize authentication
-        if self.authentication is not None:
-            serialized = ARObject._serialize_item(self.authentication, "Any")
+        # Serialize authentication_ref
+        if self.authentication_ref is not None:
+            serialized = ARObject._serialize_item(self.authentication_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("AUTHENTICATION")
+                wrapped = ET.Element("AUTHENTICATION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -103,12 +103,12 @@ class SecuredIPdu(IPdu):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize freshness_props
-        if self.freshness_props is not None:
-            serialized = ARObject._serialize_item(self.freshness_props, "Any")
+        # Serialize freshness_props_ref
+        if self.freshness_props_ref is not None:
+            serialized = ARObject._serialize_item(self.freshness_props_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("FRESHNESS-PROPS")
+                wrapped = ET.Element("FRESHNESS-PROPS-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -188,11 +188,11 @@ class SecuredIPdu(IPdu):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SecuredIPdu, cls).deserialize(element)
 
-        # Parse authentication
-        child = ARObject._find_child_element(element, "AUTHENTICATION")
+        # Parse authentication_ref
+        child = ARObject._find_child_element(element, "AUTHENTICATION-REF")
         if child is not None:
-            authentication_value = child.text
-            obj.authentication = authentication_value
+            authentication_ref_value = ARRef.deserialize(child)
+            obj.authentication_ref = authentication_ref_value
 
         # Parse dynamic
         child = ARObject._find_child_element(element, "DYNAMIC")
@@ -200,11 +200,11 @@ class SecuredIPdu(IPdu):
             dynamic_value = child.text
             obj.dynamic = dynamic_value
 
-        # Parse freshness_props
-        child = ARObject._find_child_element(element, "FRESHNESS-PROPS")
+        # Parse freshness_props_ref
+        child = ARObject._find_child_element(element, "FRESHNESS-PROPS-REF")
         if child is not None:
-            freshness_props_value = child.text
-            obj.freshness_props = freshness_props_value
+            freshness_props_ref_value = ARRef.deserialize(child)
+            obj.freshness_props_ref = freshness_props_ref_value
 
         # Parse payload_ref
         child = ARObject._find_child_element(element, "PAYLOAD-REF")

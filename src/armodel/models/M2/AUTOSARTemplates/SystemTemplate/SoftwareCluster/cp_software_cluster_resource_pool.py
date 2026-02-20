@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
     CpSoftwareCluster,
 )
@@ -33,12 +34,12 @@ class CpSoftwareClusterResourcePool(ARElement):
         """
         return False
 
-    ecu_scopes: list[EcuInstance]
+    ecu_scope_refs: list[ARRef]
     resources: list[CpSoftwareCluster]
     def __init__(self) -> None:
         """Initialize CpSoftwareClusterResourcePool."""
         super().__init__()
-        self.ecu_scopes: list[EcuInstance] = []
+        self.ecu_scope_refs: list[ARRef] = []
         self.resources: list[CpSoftwareCluster] = []
 
     def serialize(self) -> ET.Element:
@@ -61,13 +62,20 @@ class CpSoftwareClusterResourcePool(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize ecu_scopes (list to container "ECU-SCOPES")
-        if self.ecu_scopes:
-            wrapper = ET.Element("ECU-SCOPES")
-            for item in self.ecu_scopes:
+        # Serialize ecu_scope_refs (list to container "ECU-SCOPE-REFS")
+        if self.ecu_scope_refs:
+            wrapper = ET.Element("ECU-SCOPE-REFS")
+            for item in self.ecu_scope_refs:
                 serialized = ARObject._serialize_item(item, "EcuInstance")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("ECU-SCOPE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -96,15 +104,21 @@ class CpSoftwareClusterResourcePool(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CpSoftwareClusterResourcePool, cls).deserialize(element)
 
-        # Parse ecu_scopes (list from container "ECU-SCOPES")
-        obj.ecu_scopes = []
-        container = ARObject._find_child_element(element, "ECU-SCOPES")
+        # Parse ecu_scope_refs (list from container "ECU-SCOPE-REFS")
+        obj.ecu_scope_refs = []
+        container = ARObject._find_child_element(element, "ECU-SCOPE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.ecu_scopes.append(child_value)
+                    obj.ecu_scope_refs.append(child_value)
 
         # Parse resources (list from container "RESOURCES")
         obj.resources = []

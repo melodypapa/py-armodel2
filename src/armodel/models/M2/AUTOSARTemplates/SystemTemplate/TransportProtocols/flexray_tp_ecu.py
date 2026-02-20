@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     TimeValue,
@@ -33,14 +34,14 @@ class FlexrayTpEcu(ARObject):
 
     cancellation: Optional[Boolean]
     cycle_time_main: Optional[TimeValue]
-    ecu_instance: Optional[EcuInstance]
+    ecu_instance_ref: Optional[ARRef]
     full_duplex: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize FlexrayTpEcu."""
         super().__init__()
         self.cancellation: Optional[Boolean] = None
         self.cycle_time_main: Optional[TimeValue] = None
-        self.ecu_instance: Optional[EcuInstance] = None
+        self.ecu_instance_ref: Optional[ARRef] = None
         self.full_duplex: Optional[Boolean] = None
 
     def serialize(self) -> ET.Element:
@@ -81,12 +82,12 @@ class FlexrayTpEcu(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize ecu_instance
-        if self.ecu_instance is not None:
-            serialized = ARObject._serialize_item(self.ecu_instance, "EcuInstance")
+        # Serialize ecu_instance_ref
+        if self.ecu_instance_ref is not None:
+            serialized = ARObject._serialize_item(self.ecu_instance_ref, "EcuInstance")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ECU-INSTANCE")
+                wrapped = ET.Element("ECU-INSTANCE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -137,11 +138,11 @@ class FlexrayTpEcu(ARObject):
             cycle_time_main_value = child.text
             obj.cycle_time_main = cycle_time_main_value
 
-        # Parse ecu_instance
-        child = ARObject._find_child_element(element, "ECU-INSTANCE")
+        # Parse ecu_instance_ref
+        child = ARObject._find_child_element(element, "ECU-INSTANCE-REF")
         if child is not None:
-            ecu_instance_value = ARObject._deserialize_by_tag(child, "EcuInstance")
-            obj.ecu_instance = ecu_instance_value
+            ecu_instance_ref_value = ARRef.deserialize(child)
+            obj.ecu_instance_ref = ecu_instance_ref_value
 
         # Parse full_duplex
         child = ARObject._find_child_element(element, "FULL-DUPLEX")

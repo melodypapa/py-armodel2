@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
     ServerCallPoint,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.exclusive_area_nesting_order import (
     ExclusiveAreaNestingOrder,
 )
@@ -31,11 +32,11 @@ class SynchronousServerCallPoint(ServerCallPoint):
         """
         return False
 
-    called_from: Optional[ExclusiveAreaNestingOrder]
+    called_from_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SynchronousServerCallPoint."""
         super().__init__()
-        self.called_from: Optional[ExclusiveAreaNestingOrder] = None
+        self.called_from_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize SynchronousServerCallPoint to XML element.
@@ -57,12 +58,12 @@ class SynchronousServerCallPoint(ServerCallPoint):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize called_from
-        if self.called_from is not None:
-            serialized = ARObject._serialize_item(self.called_from, "ExclusiveAreaNestingOrder")
+        # Serialize called_from_ref
+        if self.called_from_ref is not None:
+            serialized = ARObject._serialize_item(self.called_from_ref, "ExclusiveAreaNestingOrder")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CALLED-FROM")
+                wrapped = ET.Element("CALLED-FROM-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -86,11 +87,11 @@ class SynchronousServerCallPoint(ServerCallPoint):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SynchronousServerCallPoint, cls).deserialize(element)
 
-        # Parse called_from
-        child = ARObject._find_child_element(element, "CALLED-FROM")
+        # Parse called_from_ref
+        child = ARObject._find_child_element(element, "CALLED-FROM-REF")
         if child is not None:
-            called_from_value = ARObject._deserialize_by_tag(child, "ExclusiveAreaNestingOrder")
-            obj.called_from = called_from_value
+            called_from_ref_value = ARRef.deserialize(child)
+            obj.called_from_ref = called_from_ref_value
 
         return obj
 

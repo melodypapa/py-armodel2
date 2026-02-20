@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.
     TimingConstraint,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
     MultidimensionalTime,
 )
@@ -35,15 +36,15 @@ class OffsetTimingConstraint(TimingConstraint):
 
     maximum: Optional[MultidimensionalTime]
     minimum: Optional[MultidimensionalTime]
-    source: Optional[TimingDescriptionEvent]
-    target: Optional[TimingDescriptionEvent]
+    source_ref: Optional[ARRef]
+    target_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize OffsetTimingConstraint."""
         super().__init__()
         self.maximum: Optional[MultidimensionalTime] = None
         self.minimum: Optional[MultidimensionalTime] = None
-        self.source: Optional[TimingDescriptionEvent] = None
-        self.target: Optional[TimingDescriptionEvent] = None
+        self.source_ref: Optional[ARRef] = None
+        self.target_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize OffsetTimingConstraint to XML element.
@@ -93,12 +94,12 @@ class OffsetTimingConstraint(TimingConstraint):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize source
-        if self.source is not None:
-            serialized = ARObject._serialize_item(self.source, "TimingDescriptionEvent")
+        # Serialize source_ref
+        if self.source_ref is not None:
+            serialized = ARObject._serialize_item(self.source_ref, "TimingDescriptionEvent")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SOURCE")
+                wrapped = ET.Element("SOURCE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -107,12 +108,12 @@ class OffsetTimingConstraint(TimingConstraint):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize target
-        if self.target is not None:
-            serialized = ARObject._serialize_item(self.target, "TimingDescriptionEvent")
+        # Serialize target_ref
+        if self.target_ref is not None:
+            serialized = ARObject._serialize_item(self.target_ref, "TimingDescriptionEvent")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TARGET")
+                wrapped = ET.Element("TARGET-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -148,17 +149,17 @@ class OffsetTimingConstraint(TimingConstraint):
             minimum_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
             obj.minimum = minimum_value
 
-        # Parse source
-        child = ARObject._find_child_element(element, "SOURCE")
+        # Parse source_ref
+        child = ARObject._find_child_element(element, "SOURCE-REF")
         if child is not None:
-            source_value = ARObject._deserialize_by_tag(child, "TimingDescriptionEvent")
-            obj.source = source_value
+            source_ref_value = ARRef.deserialize(child)
+            obj.source_ref = source_ref_value
 
-        # Parse target
-        child = ARObject._find_child_element(element, "TARGET")
+        # Parse target_ref
+        child = ARObject._find_child_element(element, "TARGET-REF")
         if child is not None:
-            target_value = ARObject._deserialize_by_tag(child, "TimingDescriptionEvent")
-            obj.target = target_value
+            target_ref_value = ARRef.deserialize(child)
+            obj.target_ref = target_ref_value
 
         return obj
 

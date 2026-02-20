@@ -88,15 +88,15 @@
         "appTaskProxy": {
           "type": "OsTaskProxy",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to an OsTaskProxy that is created in the"
         },
         "ecuTaskProxy": {
           "type": "OsTaskProxy",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to an OsTaskProxy that is created in the"
         },
         "offset": {
@@ -147,8 +147,8 @@
         "osTaskProxy": {
           "type": "OsTaskProxy",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to OsTaskProxy to which the RteEvent is"
         },
         "rteEventInstanceRef": {
@@ -237,8 +237,8 @@
         "osTaskProxy": {
           "type": "OsTaskProxy",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to OsTaskProxy to which the RteEvent is"
         },
         "rteEventInstanceRef": {

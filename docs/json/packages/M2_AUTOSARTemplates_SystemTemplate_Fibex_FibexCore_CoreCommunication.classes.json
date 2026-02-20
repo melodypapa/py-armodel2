@@ -57,8 +57,8 @@
         "data": {
           "type": "DataTransformation",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Optional reference to a DataTransformation which the transformer chain that is used to transform that shall be placed inside this ISignal. atpVariation"
         },
         "dataTypePolicyEnum": {
@@ -106,8 +106,8 @@
         "systemSignal": {
           "type": "SystemSignal",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the System Signal that is supposed to be"
         },
         "timeout": {
@@ -181,15 +181,15 @@
         "iSignalIPdus": {
           "type": "ISignalIPdu",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to a set of Signal I-Pdus, which are contained"
         },
         "nmPdus": {
           "type": "NmPdu",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to a set of NmPdus with NmUserData, which"
         }
       }
@@ -437,15 +437,15 @@
         "frame": {
           "type": "Frame",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "One frame can be triggered several times, e.g. on"
         },
         "framePorts": {
           "type": "FramePort",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "References to the FramePort on every ECU of the system and/or receives the frame. both the sender and the receiver side included when the system is completely defined."
         },
         "pduTriggerings": {
@@ -684,15 +684,15 @@
         "iPdu": {
           "type": "Pdu",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the Pdu for which the PduTriggering is"
         },
         "iPduPorts": {
           "type": "IPduPort",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "References to the IPduPort on every ECU of the system and/or receives the I-PDU. both the sender and the receiver side included when the system is completely defined."
         },
         "iSignals": {
@@ -705,8 +705,8 @@
         "secOcCryptoService": {
           "type": "SecOcCryptoServiceMapping",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the crypto profile applicable to the usage (send, receive) of the also referenced Secured reference is only applicable if the references a SecuredIPdu in the role i"
         },
         "triggerIPduSends": {
@@ -813,15 +813,15 @@
         "comBased": {
           "type": "DataTransformation",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Optional reference to a DataTransformation which the transformer chain that is used to transform data that shall be placed inside this ISignalGroup the COMBasedTransformer approach. atpVariation"
         },
         "iSignals": {
           "type": "ISignal",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to a set of ISignals that shall always be kept"
         },
         "systemSignalGroup": {
@@ -1038,8 +1038,8 @@
         "ddsQosProfile": {
           "type": "DdsCpQosProfile",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the DDS Qos profile used for this ISignal."
         },
         "firstTimeout": {
@@ -1135,15 +1135,15 @@
         "systemSignals": {
           "type": "SystemSignal",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to a set of SystemSignals that shall always be"
         },
         "transforming": {
           "type": "SystemSignal",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Optional reference to the SystemSignal which shall"
         }
       }
@@ -1181,8 +1181,8 @@
         "iSignal": {
           "type": "ISignal",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to a ISignal that is mapped into the ISignal"
         },
         "iSignalGroup": {
@@ -1260,8 +1260,8 @@
         "iSignal": {
           "type": "ISignal",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference shall be used if an ISignal is transported"
         },
         "iSignalGroup": {
@@ -1274,8 +1274,8 @@
         "iSignalPorts": {
           "type": "ISignalPort",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "References to the ISignalPort on every ECU of the sends and/or receives the ISignal. both the sender and the receiver side included when the system is completely defined."
         }
       }
@@ -1563,8 +1563,8 @@
         "pdu": {
           "type": "Pdu",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to a I-Pdu, N-Pdu or NmPdu that is transmitted"
         },
         "startPosition": {
@@ -1915,8 +1915,8 @@
         "authentication": {
           "type": "any (SecureCommunication)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to authentication properties that are valid for this SecuredIPdu."
         },
         "dynamic": {
@@ -1929,8 +1929,8 @@
         "freshnessProps": {
           "type": "any (SecureCommunication)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to freshness properties that are valid for this"
         },
         "payload": {
@@ -2268,8 +2268,8 @@
         "iPdu": {
           "type": "ISignalIPdu",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to a Com IPdu which is routed to the IPduM"
         }
       }
@@ -2346,8 +2346,8 @@
         "iPdu": {
           "type": "ISignalIPdu",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to a Com IPdu which is routed to the IPduM"
         },
         "selectorField": {

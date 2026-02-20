@@ -178,8 +178,8 @@
         "authRoles": {
           "type": "DiagnosticAuthRole",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the collection of applicable"
         },
         "memoryId": {

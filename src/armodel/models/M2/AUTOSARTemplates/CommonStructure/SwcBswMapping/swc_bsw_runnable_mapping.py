@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_module_entity import (
     BswModuleEntity,
 )
@@ -30,13 +31,13 @@ class SwcBswRunnableMapping(ARObject):
         """
         return False
 
-    bsw_entity: Optional[BswModuleEntity]
-    swc_runnable: Optional[RunnableEntity]
+    bsw_entity_ref: Optional[ARRef]
+    swc_runnable_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SwcBswRunnableMapping."""
         super().__init__()
-        self.bsw_entity: Optional[BswModuleEntity] = None
-        self.swc_runnable: Optional[RunnableEntity] = None
+        self.bsw_entity_ref: Optional[ARRef] = None
+        self.swc_runnable_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize SwcBswRunnableMapping to XML element.
@@ -48,12 +49,12 @@ class SwcBswRunnableMapping(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize bsw_entity
-        if self.bsw_entity is not None:
-            serialized = ARObject._serialize_item(self.bsw_entity, "BswModuleEntity")
+        # Serialize bsw_entity_ref
+        if self.bsw_entity_ref is not None:
+            serialized = ARObject._serialize_item(self.bsw_entity_ref, "BswModuleEntity")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("BSW-ENTITY")
+                wrapped = ET.Element("BSW-ENTITY-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -62,12 +63,12 @@ class SwcBswRunnableMapping(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize swc_runnable
-        if self.swc_runnable is not None:
-            serialized = ARObject._serialize_item(self.swc_runnable, "RunnableEntity")
+        # Serialize swc_runnable_ref
+        if self.swc_runnable_ref is not None:
+            serialized = ARObject._serialize_item(self.swc_runnable_ref, "RunnableEntity")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SWC-RUNNABLE")
+                wrapped = ET.Element("SWC-RUNNABLE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -92,17 +93,17 @@ class SwcBswRunnableMapping(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse bsw_entity
-        child = ARObject._find_child_element(element, "BSW-ENTITY")
+        # Parse bsw_entity_ref
+        child = ARObject._find_child_element(element, "BSW-ENTITY-REF")
         if child is not None:
-            bsw_entity_value = ARObject._deserialize_by_tag(child, "BswModuleEntity")
-            obj.bsw_entity = bsw_entity_value
+            bsw_entity_ref_value = ARRef.deserialize(child)
+            obj.bsw_entity_ref = bsw_entity_ref_value
 
-        # Parse swc_runnable
-        child = ARObject._find_child_element(element, "SWC-RUNNABLE")
+        # Parse swc_runnable_ref
+        child = ARObject._find_child_element(element, "SWC-RUNNABLE-REF")
         if child is not None:
-            swc_runnable_value = ARObject._deserialize_by_tag(child, "RunnableEntity")
-            obj.swc_runnable = swc_runnable_value
+            swc_runnable_ref_value = ARRef.deserialize(child)
+            obj.swc_runnable_ref = swc_runnable_ref_value
 
         return obj
 

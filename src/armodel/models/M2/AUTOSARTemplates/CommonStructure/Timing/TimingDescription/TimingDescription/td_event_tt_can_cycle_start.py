@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
     TDEventCycleStart,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ttcan.TtcanTopology.ttcan_cluster import (
     TtcanCluster,
 )
@@ -30,11 +31,11 @@ class TDEventTTCanCycleStart(TDEventCycleStart):
         """
         return False
 
-    tt_can_cluster: Optional[TtcanCluster]
+    tt_can_cluster_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize TDEventTTCanCycleStart."""
         super().__init__()
-        self.tt_can_cluster: Optional[TtcanCluster] = None
+        self.tt_can_cluster_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize TDEventTTCanCycleStart to XML element.
@@ -56,12 +57,12 @@ class TDEventTTCanCycleStart(TDEventCycleStart):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize tt_can_cluster
-        if self.tt_can_cluster is not None:
-            serialized = ARObject._serialize_item(self.tt_can_cluster, "TtcanCluster")
+        # Serialize tt_can_cluster_ref
+        if self.tt_can_cluster_ref is not None:
+            serialized = ARObject._serialize_item(self.tt_can_cluster_ref, "TtcanCluster")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TT-CAN-CLUSTER")
+                wrapped = ET.Element("TT-CAN-CLUSTER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -85,11 +86,11 @@ class TDEventTTCanCycleStart(TDEventCycleStart):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDEventTTCanCycleStart, cls).deserialize(element)
 
-        # Parse tt_can_cluster
-        child = ARObject._find_child_element(element, "TT-CAN-CLUSTER")
+        # Parse tt_can_cluster_ref
+        child = ARObject._find_child_element(element, "TT-CAN-CLUSTER-REF")
         if child is not None:
-            tt_can_cluster_value = ARObject._deserialize_by_tag(child, "TtcanCluster")
-            obj.tt_can_cluster = tt_can_cluster_value
+            tt_can_cluster_ref_value = ARRef.deserialize(child)
+            obj.tt_can_cluster_ref = tt_can_cluster_ref_value
 
         return obj
 

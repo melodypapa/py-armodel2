@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
 )
@@ -29,12 +30,12 @@ class PostBuildVariantCondition(ARObject):
         """
         return False
 
-    matching: Any
+    matching_ref: Any
     value: Integer
     def __init__(self) -> None:
         """Initialize PostBuildVariantCondition."""
         super().__init__()
-        self.matching: Any = None
+        self.matching_ref: Any = None
         self.value: Integer = None
 
     def serialize(self) -> ET.Element:
@@ -47,12 +48,12 @@ class PostBuildVariantCondition(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize matching
-        if self.matching is not None:
-            serialized = ARObject._serialize_item(self.matching, "Any")
+        # Serialize matching_ref
+        if self.matching_ref is not None:
+            serialized = ARObject._serialize_item(self.matching_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("MATCHING")
+                wrapped = ET.Element("MATCHING-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -91,11 +92,11 @@ class PostBuildVariantCondition(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse matching
-        child = ARObject._find_child_element(element, "MATCHING")
+        # Parse matching_ref
+        child = ARObject._find_child_element(element, "MATCHING-REF")
         if child is not None:
-            matching_value = child.text
-            obj.matching = matching_value
+            matching_ref_value = ARRef.deserialize(child)
+            obj.matching_ref = matching_ref_value
 
         # Parse value
         child = ARObject._find_child_element(element, "VALUE")

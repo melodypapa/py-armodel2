@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -31,12 +32,12 @@ class OrderedMaster(ARObject):
         return False
 
     index: Optional[PositiveInteger]
-    time_sync_server_configuration: Optional[TimeSyncServerConfiguration]
+    time_sync_server_configuration_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize OrderedMaster."""
         super().__init__()
         self.index: Optional[PositiveInteger] = None
-        self.time_sync_server_configuration: Optional[TimeSyncServerConfiguration] = None
+        self.time_sync_server_configuration_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize OrderedMaster to XML element.
@@ -62,12 +63,12 @@ class OrderedMaster(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize time_sync_server_configuration
-        if self.time_sync_server_configuration is not None:
-            serialized = ARObject._serialize_item(self.time_sync_server_configuration, "TimeSyncServerConfiguration")
+        # Serialize time_sync_server_configuration_ref
+        if self.time_sync_server_configuration_ref is not None:
+            serialized = ARObject._serialize_item(self.time_sync_server_configuration_ref, "TimeSyncServerConfiguration")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TIME-SYNC-SERVER-CONFIGURATION")
+                wrapped = ET.Element("TIME-SYNC-SERVER-CONFIGURATION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -98,11 +99,11 @@ class OrderedMaster(ARObject):
             index_value = child.text
             obj.index = index_value
 
-        # Parse time_sync_server_configuration
-        child = ARObject._find_child_element(element, "TIME-SYNC-SERVER-CONFIGURATION")
+        # Parse time_sync_server_configuration_ref
+        child = ARObject._find_child_element(element, "TIME-SYNC-SERVER-CONFIGURATION-REF")
         if child is not None:
-            time_sync_server_configuration_value = ARObject._deserialize_by_tag(child, "TimeSyncServerConfiguration")
-            obj.time_sync_server_configuration = time_sync_server_configuration_value
+            time_sync_server_configuration_ref_value = ARRef.deserialize(child)
+            obj.time_sync_server_configuration_ref = time_sync_server_configuration_ref_value
 
         return obj
 

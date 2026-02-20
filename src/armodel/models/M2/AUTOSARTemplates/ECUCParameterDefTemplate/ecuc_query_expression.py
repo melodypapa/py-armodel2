@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 if TYPE_CHECKING:
     from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_definition_element import (
@@ -30,11 +31,11 @@ class EcucQueryExpression(ARObject):
         """
         return False
 
-    config_element: Optional[EcucDefinitionElement]
+    config_element_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize EcucQueryExpression."""
         super().__init__()
-        self.config_element: Optional[EcucDefinitionElement] = None
+        self.config_element_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize EcucQueryExpression to XML element.
@@ -46,12 +47,12 @@ class EcucQueryExpression(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize config_element
-        if self.config_element is not None:
-            serialized = ARObject._serialize_item(self.config_element, "EcucDefinitionElement")
+        # Serialize config_element_ref
+        if self.config_element_ref is not None:
+            serialized = ARObject._serialize_item(self.config_element_ref, "EcucDefinitionElement")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONFIG-ELEMENT")
+                wrapped = ET.Element("CONFIG-ELEMENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -76,11 +77,11 @@ class EcucQueryExpression(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse config_element
-        child = ARObject._find_child_element(element, "CONFIG-ELEMENT")
+        # Parse config_element_ref
+        child = ARObject._find_child_element(element, "CONFIG-ELEMENT-REF")
         if child is not None:
-            config_element_value = ARObject._deserialize_by_tag(child, "EcucDefinitionElement")
-            obj.config_element = config_element_value
+            config_element_ref_value = ARRef.deserialize(child)
+            obj.config_element_ref = config_element_ref_value
 
         return obj
 

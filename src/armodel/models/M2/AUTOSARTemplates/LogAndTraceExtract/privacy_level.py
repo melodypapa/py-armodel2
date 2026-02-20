@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -30,12 +31,12 @@ class PrivacyLevel(ARObject):
         """
         return False
 
-    compu_method: Optional[CompuMethod]
+    compu_method_ref: Optional[ARRef]
     privacy_level: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize PrivacyLevel."""
         super().__init__()
-        self.compu_method: Optional[CompuMethod] = None
+        self.compu_method_ref: Optional[ARRef] = None
         self.privacy_level: Optional[PositiveInteger] = None
 
     def serialize(self) -> ET.Element:
@@ -48,12 +49,12 @@ class PrivacyLevel(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize compu_method
-        if self.compu_method is not None:
-            serialized = ARObject._serialize_item(self.compu_method, "CompuMethod")
+        # Serialize compu_method_ref
+        if self.compu_method_ref is not None:
+            serialized = ARObject._serialize_item(self.compu_method_ref, "CompuMethod")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("COMPU-METHOD")
+                wrapped = ET.Element("COMPU-METHOD-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -92,11 +93,11 @@ class PrivacyLevel(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse compu_method
-        child = ARObject._find_child_element(element, "COMPU-METHOD")
+        # Parse compu_method_ref
+        child = ARObject._find_child_element(element, "COMPU-METHOD-REF")
         if child is not None:
-            compu_method_value = ARObject._deserialize_by_tag(child, "CompuMethod")
-            obj.compu_method = compu_method_value
+            compu_method_ref_value = ARRef.deserialize(child)
+            obj.compu_method_ref = compu_method_ref_value
 
         # Parse privacy_level
         child = ARObject._find_child_element(element, "PRIVACY-LEVEL")

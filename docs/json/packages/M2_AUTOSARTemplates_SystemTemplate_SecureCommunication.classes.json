@@ -65,8 +65,8 @@
         "nextHigher": {
           "type": "any (CryptoService)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The reference identifies the next higher certificate in the certificate chain."
         },
         "serverName": {
@@ -170,8 +170,8 @@
         "globalKayProps": {
           "type": "MacSecGlobalKayProps",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to properties that are shared between MAC Key Agreement Entities."
         },
         "keyServer": {
@@ -184,8 +184,8 @@
         "mkaParticipants": {
           "type": "MacSecKayParticipant",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to MKA participant settings supported on the 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate R23-11"
         },
         "role": {
@@ -291,8 +291,8 @@
         "ethernetCluster": {
           "type": "EthernetCluster",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the EthernetCluster (Link) on which the KaY located"
         },
         "mkaParticipants": {
@@ -336,8 +336,8 @@
         "ckn": {
           "type": "CryptoServiceKey",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the key where the ckn (Connectivity is stored."
         },
         "cryptoAlgo": {
@@ -350,8 +350,8 @@
         "sak": {
           "type": "CryptoServiceKey",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the key where SAK shall be stored."
         }
       }
@@ -516,22 +516,22 @@
         "authentication": {
           "type": "CryptoServicePrimitive",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the applicable crypto primitive for"
         },
         "cryptoServiceKey": {
           "type": "CryptoServiceKey",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the applicable crypto key."
         },
         "cryptoServiceQueue": {
           "type": "CryptoServiceQueue",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the CryptoServiceQueue the of this SecOcCryptoServiceMapping shall be"
         }
       }
@@ -750,8 +750,8 @@
         "keyExchanges": {
           "type": "CryptoServicePrimitive",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the shared(i.e. applicable for the aggregated cipher suites) crypto service the execution of key exchange during the"
         },
         "tlsCipherSuites": {
@@ -810,15 +810,15 @@
         "authentication": {
           "type": "CryptoServicePrimitive",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the crypto service primitive for and verification of MACs."
         },
         "certificate": {
           "type": "any (CryptoService)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the applicable local certificate."
         },
         "cipherSuiteId": {
@@ -838,22 +838,22 @@
         "ellipticCurves": {
           "type": "CryptoEllipticCurveProps",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This references point to the properties of elliptic curves."
         },
         "encryption": {
           "type": "CryptoServicePrimitive",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the crypto service primitive for of encryption."
         },
         "keyExchanges": {
           "type": "CryptoServicePrimitive",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the crypto service primitives for generation and verification of signatures during the algorithm."
         },
         "priority": {
@@ -880,15 +880,15 @@
         "remote": {
           "type": "any (CryptoService)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the applicable remote certificate."
         },
         "signatures": {
           "type": "CryptoSignatureScheme",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference points to the properties of a TLS Signature Scheme."
         },
         "version": {
@@ -929,8 +929,8 @@
         "preSharedKey": {
           "type": "CryptoServiceKey",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the applicable cryptographic key."
         },
         "pskIdentity": {
@@ -1098,8 +1098,8 @@
         "ipSecConfig": {
           "type": "IPSecConfigProps",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Global IPsec configuration settings that are valid for all that are defined on the NetworkEndpoint."
         },
         "ipSecRules": {
@@ -1164,8 +1164,8 @@
         "localCertificates": {
           "type": "any (CryptoService)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the applicable certificate used for local authentication."
         },
         "localId": {
@@ -1180,7 +1180,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "This attribute restricts the traffic monitoring and defines a value for the local port range. attribute is not set then this rule shall be effective local ports. that port ranges are currently not supported AUTOSAR AP’s operating system backend. If AP involved, each IPsec rule may only contain a"
+          "note": "This attribute restricts the traffic monitoring and defines a value for the local port range. attribute is not set then this rule shall be effective local ports. that port ranges are currently not supported AUTOSAR AP\u2019s operating system backend. If AP involved, each IPsec rule may only contain a"
         },
         "mode": {
           "type": "IPsecModeEnum",
@@ -1199,8 +1199,8 @@
         "preSharedKey": {
           "type": "CryptoServiceKey",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the applicable cryptograhic key authentication."
         },
         "priority": {
@@ -1213,8 +1213,8 @@
         "remotes": {
           "type": "any (CryptoService)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the applicable certificate used for a remote authentication."
         },
         "remoteId": {
@@ -1227,8 +1227,8 @@
         "remoteIps": {
           "type": "NetworkEndpoint",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Definition of the remote NetworkEndpoint. With this the connection between the local Network the remote NetworkEndpoint is described the traffic is monitored."
         },
         "remotePort": {
@@ -1236,7 +1236,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "This attribute restricts the traffic monitoring and defines a value for the remote port range. attribute is not set then this rule shall be effective local ports. that port ranges are currently not supported AUTOSAR AP’s operating system backend. If AP involved, each IPsec rule may only contain a"
+          "note": "This attribute restricts the traffic monitoring and defines a value for the remote port range. attribute is not set then this rule shall be effective local ports. that port ranges are currently not supported AUTOSAR AP\u2019s operating system backend. If AP involved, each IPsec rule may only contain a"
         }
       }
     },

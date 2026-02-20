@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
 class DiagnosticRequestEmissionRelatedDTCPermanentStatus(DiagnosticServiceInstance):
@@ -27,11 +28,11 @@ class DiagnosticRequestEmissionRelatedDTCPermanentStatus(DiagnosticServiceInstan
         """
         return False
 
-    request: Optional[Any]
+    request_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticRequestEmissionRelatedDTCPermanentStatus."""
         super().__init__()
-        self.request: Optional[Any] = None
+        self.request_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticRequestEmissionRelatedDTCPermanentStatus to XML element.
@@ -53,12 +54,12 @@ class DiagnosticRequestEmissionRelatedDTCPermanentStatus(DiagnosticServiceInstan
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize request
-        if self.request is not None:
-            serialized = ARObject._serialize_item(self.request, "Any")
+        # Serialize request_ref
+        if self.request_ref is not None:
+            serialized = ARObject._serialize_item(self.request_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("REQUEST")
+                wrapped = ET.Element("REQUEST-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -82,11 +83,11 @@ class DiagnosticRequestEmissionRelatedDTCPermanentStatus(DiagnosticServiceInstan
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticRequestEmissionRelatedDTCPermanentStatus, cls).deserialize(element)
 
-        # Parse request
-        child = ARObject._find_child_element(element, "REQUEST")
+        # Parse request_ref
+        child = ARObject._find_child_element(element, "REQUEST-REF")
         if child is not None:
-            request_value = child.text
-            obj.request = request_value
+            request_ref_value = ARRef.deserialize(child)
+            obj.request_ref = request_ref_value
 
         return obj
 

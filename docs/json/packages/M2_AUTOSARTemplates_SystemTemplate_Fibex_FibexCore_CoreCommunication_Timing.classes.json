@@ -115,8 +115,8 @@
         "modes": {
           "type": "ModeDeclaration",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to one modeDeclaration which is OR in the context of the ModeDrivenTransmission"
         }
       }
@@ -395,8 +395,8 @@
         "modes": {
           "type": "ModeDeclaration",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to one modeDeclaration which is OR in the context of the TriggerIPduSend"
         }
       }

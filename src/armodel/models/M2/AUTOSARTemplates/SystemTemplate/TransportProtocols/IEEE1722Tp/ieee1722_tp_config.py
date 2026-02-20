@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.tp_con
     TpConfig,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.ieee1722_tp_connection import (
     IEEE1722TpConnection,
 )
@@ -30,11 +31,11 @@ class IEEE1722TpConfig(TpConfig):
         """
         return False
 
-    tp_connections: list[IEEE1722TpConnection]
+    tp_connection_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize IEEE1722TpConfig."""
         super().__init__()
-        self.tp_connections: list[IEEE1722TpConnection] = []
+        self.tp_connection_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize IEEE1722TpConfig to XML element.
@@ -56,13 +57,20 @@ class IEEE1722TpConfig(TpConfig):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize tp_connections (list to container "TP-CONNECTIONS")
-        if self.tp_connections:
-            wrapper = ET.Element("TP-CONNECTIONS")
-            for item in self.tp_connections:
+        # Serialize tp_connection_refs (list to container "TP-CONNECTION-REFS")
+        if self.tp_connection_refs:
+            wrapper = ET.Element("TP-CONNECTION-REFS")
+            for item in self.tp_connection_refs:
                 serialized = ARObject._serialize_item(item, "IEEE1722TpConnection")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("TP-CONNECTION-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -81,15 +89,21 @@ class IEEE1722TpConfig(TpConfig):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(IEEE1722TpConfig, cls).deserialize(element)
 
-        # Parse tp_connections (list from container "TP-CONNECTIONS")
-        obj.tp_connections = []
-        container = ARObject._find_child_element(element, "TP-CONNECTIONS")
+        # Parse tp_connection_refs (list from container "TP-CONNECTION-REFS")
+        obj.tp_connection_refs = []
+        container = ARObject._find_child_element(element, "TP-CONNECTION-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.tp_connections.append(child_value)
+                    obj.tp_connection_refs.append(child_value)
 
         return obj
 

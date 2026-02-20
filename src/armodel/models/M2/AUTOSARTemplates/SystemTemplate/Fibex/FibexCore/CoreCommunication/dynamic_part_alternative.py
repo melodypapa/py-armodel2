@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     Integer,
@@ -32,13 +33,13 @@ class DynamicPartAlternative(ARObject):
         return False
 
     initial_dynamic: Optional[Boolean]
-    i_pdu: Optional[ISignalIPdu]
+    i_pdu_ref: Optional[ARRef]
     selector_field: Optional[Integer]
     def __init__(self) -> None:
         """Initialize DynamicPartAlternative."""
         super().__init__()
         self.initial_dynamic: Optional[Boolean] = None
-        self.i_pdu: Optional[ISignalIPdu] = None
+        self.i_pdu_ref: Optional[ARRef] = None
         self.selector_field: Optional[Integer] = None
 
     def serialize(self) -> ET.Element:
@@ -65,12 +66,12 @@ class DynamicPartAlternative(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize i_pdu
-        if self.i_pdu is not None:
-            serialized = ARObject._serialize_item(self.i_pdu, "ISignalIPdu")
+        # Serialize i_pdu_ref
+        if self.i_pdu_ref is not None:
+            serialized = ARObject._serialize_item(self.i_pdu_ref, "ISignalIPdu")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("I-PDU")
+                wrapped = ET.Element("I-PDU-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -115,11 +116,11 @@ class DynamicPartAlternative(ARObject):
             initial_dynamic_value = child.text
             obj.initial_dynamic = initial_dynamic_value
 
-        # Parse i_pdu
-        child = ARObject._find_child_element(element, "I-PDU")
+        # Parse i_pdu_ref
+        child = ARObject._find_child_element(element, "I-PDU-REF")
         if child is not None:
-            i_pdu_value = ARObject._deserialize_by_tag(child, "ISignalIPdu")
-            obj.i_pdu = i_pdu_value
+            i_pdu_ref_value = ARRef.deserialize(child)
+            obj.i_pdu_ref = i_pdu_ref_value
 
         # Parse selector_field
         child = ARObject._find_child_element(element, "SELECTOR-FIELD")

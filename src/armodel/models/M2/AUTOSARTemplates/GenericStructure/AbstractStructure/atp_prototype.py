@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.AbstractStructure.atp_type import (
     AtpType,
 )
@@ -31,11 +32,11 @@ class AtpPrototype(Identifiable, ABC):
         """
         return True
 
-    atp_type: AtpType
+    atp_type_ref: ARRef
     def __init__(self) -> None:
         """Initialize AtpPrototype."""
         super().__init__()
-        self.atp_type: AtpType = None
+        self.atp_type_ref: ARRef = None
 
     def serialize(self) -> ET.Element:
         """Serialize AtpPrototype to XML element.
@@ -57,12 +58,12 @@ class AtpPrototype(Identifiable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize atp_type
-        if self.atp_type is not None:
-            serialized = ARObject._serialize_item(self.atp_type, "AtpType")
+        # Serialize atp_type_ref
+        if self.atp_type_ref is not None:
+            serialized = ARObject._serialize_item(self.atp_type_ref, "AtpType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ATP-TYPE")
+                wrapped = ET.Element("ATP-TYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -86,11 +87,11 @@ class AtpPrototype(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AtpPrototype, cls).deserialize(element)
 
-        # Parse atp_type
-        child = ARObject._find_child_element(element, "ATP-TYPE")
+        # Parse atp_type_ref
+        child = ARObject._find_child_element(element, "ATP-TYPE-REF")
         if child is not None:
-            atp_type_value = ARObject._deserialize_by_tag(child, "AtpType")
-            obj.atp_type = atp_type_value
+            atp_type_ref_value = ARRef.deserialize(child)
+            obj.atp_type_ref = atp_type_ref_value
 
         return obj
 

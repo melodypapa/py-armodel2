@@ -43,7 +43,7 @@ class ISignalToIPduMapping(Identifiable):
         """
         return False
 
-    i_signal: Optional[ISignal]
+    i_signal_ref: Optional[ARRef]
     i_signal_group_ref: Optional[ARRef]
     packing_byte: Optional[ByteOrderEnum]
     start_position: Optional[UnlimitedInteger]
@@ -52,7 +52,7 @@ class ISignalToIPduMapping(Identifiable):
     def __init__(self) -> None:
         """Initialize ISignalToIPduMapping."""
         super().__init__()
-        self.i_signal: Optional[ISignal] = None
+        self.i_signal_ref: Optional[ARRef] = None
         self.i_signal_group_ref: Optional[ARRef] = None
         self.packing_byte: Optional[ByteOrderEnum] = None
         self.start_position: Optional[UnlimitedInteger] = None
@@ -79,12 +79,12 @@ class ISignalToIPduMapping(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize i_signal
-        if self.i_signal is not None:
-            serialized = ARObject._serialize_item(self.i_signal, "ISignal")
+        # Serialize i_signal_ref
+        if self.i_signal_ref is not None:
+            serialized = ARObject._serialize_item(self.i_signal_ref, "ISignal")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("I-SIGNAL")
+                wrapped = ET.Element("I-SIGNAL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -178,11 +178,11 @@ class ISignalToIPduMapping(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ISignalToIPduMapping, cls).deserialize(element)
 
-        # Parse i_signal
-        child = ARObject._find_child_element(element, "I-SIGNAL")
+        # Parse i_signal_ref
+        child = ARObject._find_child_element(element, "I-SIGNAL-REF")
         if child is not None:
-            i_signal_value = ARObject._deserialize_by_tag(child, "ISignal")
-            obj.i_signal = i_signal_value
+            i_signal_ref_value = ARRef.deserialize(child)
+            obj.i_signal_ref = i_signal_ref_value
 
         # Parse i_signal_group_ref
         child = ARObject._find_child_element(element, "I-SIGNAL-GROUP-REF")

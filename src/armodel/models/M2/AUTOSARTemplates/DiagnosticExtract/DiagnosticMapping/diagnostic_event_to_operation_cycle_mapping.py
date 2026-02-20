@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
     DiagnosticMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_event import (
     DiagnosticEvent,
 )
@@ -30,13 +31,13 @@ class DiagnosticEventToOperationCycleMapping(DiagnosticMapping):
         """
         return False
 
-    diagnostic_event: Optional[DiagnosticEvent]
-    operation_cycle: Optional[Any]
+    diagnostic_event_ref: Optional[ARRef]
+    operation_cycle_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticEventToOperationCycleMapping."""
         super().__init__()
-        self.diagnostic_event: Optional[DiagnosticEvent] = None
-        self.operation_cycle: Optional[Any] = None
+        self.diagnostic_event_ref: Optional[ARRef] = None
+        self.operation_cycle_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticEventToOperationCycleMapping to XML element.
@@ -58,12 +59,12 @@ class DiagnosticEventToOperationCycleMapping(DiagnosticMapping):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize diagnostic_event
-        if self.diagnostic_event is not None:
-            serialized = ARObject._serialize_item(self.diagnostic_event, "DiagnosticEvent")
+        # Serialize diagnostic_event_ref
+        if self.diagnostic_event_ref is not None:
+            serialized = ARObject._serialize_item(self.diagnostic_event_ref, "DiagnosticEvent")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DIAGNOSTIC-EVENT")
+                wrapped = ET.Element("DIAGNOSTIC-EVENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -72,12 +73,12 @@ class DiagnosticEventToOperationCycleMapping(DiagnosticMapping):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize operation_cycle
-        if self.operation_cycle is not None:
-            serialized = ARObject._serialize_item(self.operation_cycle, "Any")
+        # Serialize operation_cycle_ref
+        if self.operation_cycle_ref is not None:
+            serialized = ARObject._serialize_item(self.operation_cycle_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("OPERATION-CYCLE")
+                wrapped = ET.Element("OPERATION-CYCLE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -101,17 +102,17 @@ class DiagnosticEventToOperationCycleMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticEventToOperationCycleMapping, cls).deserialize(element)
 
-        # Parse diagnostic_event
-        child = ARObject._find_child_element(element, "DIAGNOSTIC-EVENT")
+        # Parse diagnostic_event_ref
+        child = ARObject._find_child_element(element, "DIAGNOSTIC-EVENT-REF")
         if child is not None:
-            diagnostic_event_value = ARObject._deserialize_by_tag(child, "DiagnosticEvent")
-            obj.diagnostic_event = diagnostic_event_value
+            diagnostic_event_ref_value = ARRef.deserialize(child)
+            obj.diagnostic_event_ref = diagnostic_event_ref_value
 
-        # Parse operation_cycle
-        child = ARObject._find_child_element(element, "OPERATION-CYCLE")
+        # Parse operation_cycle_ref
+        child = ARObject._find_child_element(element, "OPERATION-CYCLE-REF")
         if child is not None:
-            operation_cycle_value = child.text
-            obj.operation_cycle = operation_cycle_value
+            operation_cycle_ref_value = ARRef.deserialize(child)
+            obj.operation_cycle_ref = operation_cycle_ref_value
 
         return obj
 

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.ids_common_eleme
     IdsCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
     String,
@@ -47,24 +48,24 @@ class IdsmInstance(IdsCommonElement):
         return False
 
     block_states: list[BlockState]
-    ecu_instance: Optional[EcuInstance]
+    ecu_instance_ref: Optional[ARRef]
     idsm_instance_id: Optional[PositiveInteger]
-    idsm_module: Optional[IdsmModuleInstantiation]
-    rate_limitation: Optional[IdsmRateLimitation]
+    idsm_module_ref: Optional[ARRef]
+    rate_limitation_ref: Optional[ARRef]
     signature: Optional[Any]
     timestamp: Optional[String]
-    traffic_limitation: Optional[IdsmTrafficLimitation]
+    traffic_limitation_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize IdsmInstance."""
         super().__init__()
         self.block_states: list[BlockState] = []
-        self.ecu_instance: Optional[EcuInstance] = None
+        self.ecu_instance_ref: Optional[ARRef] = None
         self.idsm_instance_id: Optional[PositiveInteger] = None
-        self.idsm_module: Optional[IdsmModuleInstantiation] = None
-        self.rate_limitation: Optional[IdsmRateLimitation] = None
+        self.idsm_module_ref: Optional[ARRef] = None
+        self.rate_limitation_ref: Optional[ARRef] = None
         self.signature: Optional[Any] = None
         self.timestamp: Optional[String] = None
-        self.traffic_limitation: Optional[IdsmTrafficLimitation] = None
+        self.traffic_limitation_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize IdsmInstance to XML element.
@@ -96,12 +97,12 @@ class IdsmInstance(IdsCommonElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize ecu_instance
-        if self.ecu_instance is not None:
-            serialized = ARObject._serialize_item(self.ecu_instance, "EcuInstance")
+        # Serialize ecu_instance_ref
+        if self.ecu_instance_ref is not None:
+            serialized = ARObject._serialize_item(self.ecu_instance_ref, "EcuInstance")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ECU-INSTANCE")
+                wrapped = ET.Element("ECU-INSTANCE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -124,12 +125,12 @@ class IdsmInstance(IdsCommonElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize idsm_module
-        if self.idsm_module is not None:
-            serialized = ARObject._serialize_item(self.idsm_module, "IdsmModuleInstantiation")
+        # Serialize idsm_module_ref
+        if self.idsm_module_ref is not None:
+            serialized = ARObject._serialize_item(self.idsm_module_ref, "IdsmModuleInstantiation")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("IDSM-MODULE")
+                wrapped = ET.Element("IDSM-MODULE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -138,12 +139,12 @@ class IdsmInstance(IdsCommonElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize rate_limitation
-        if self.rate_limitation is not None:
-            serialized = ARObject._serialize_item(self.rate_limitation, "IdsmRateLimitation")
+        # Serialize rate_limitation_ref
+        if self.rate_limitation_ref is not None:
+            serialized = ARObject._serialize_item(self.rate_limitation_ref, "IdsmRateLimitation")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("RATE-LIMITATION")
+                wrapped = ET.Element("RATE-LIMITATION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -180,12 +181,12 @@ class IdsmInstance(IdsCommonElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize traffic_limitation
-        if self.traffic_limitation is not None:
-            serialized = ARObject._serialize_item(self.traffic_limitation, "IdsmTrafficLimitation")
+        # Serialize traffic_limitation_ref
+        if self.traffic_limitation_ref is not None:
+            serialized = ARObject._serialize_item(self.traffic_limitation_ref, "IdsmTrafficLimitation")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TRAFFIC-LIMITATION")
+                wrapped = ET.Element("TRAFFIC-LIMITATION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -219,11 +220,11 @@ class IdsmInstance(IdsCommonElement):
                 if child_value is not None:
                     obj.block_states.append(child_value)
 
-        # Parse ecu_instance
-        child = ARObject._find_child_element(element, "ECU-INSTANCE")
+        # Parse ecu_instance_ref
+        child = ARObject._find_child_element(element, "ECU-INSTANCE-REF")
         if child is not None:
-            ecu_instance_value = ARObject._deserialize_by_tag(child, "EcuInstance")
-            obj.ecu_instance = ecu_instance_value
+            ecu_instance_ref_value = ARRef.deserialize(child)
+            obj.ecu_instance_ref = ecu_instance_ref_value
 
         # Parse idsm_instance_id
         child = ARObject._find_child_element(element, "IDSM-INSTANCE-ID")
@@ -231,17 +232,17 @@ class IdsmInstance(IdsCommonElement):
             idsm_instance_id_value = child.text
             obj.idsm_instance_id = idsm_instance_id_value
 
-        # Parse idsm_module
-        child = ARObject._find_child_element(element, "IDSM-MODULE")
+        # Parse idsm_module_ref
+        child = ARObject._find_child_element(element, "IDSM-MODULE-REF")
         if child is not None:
-            idsm_module_value = ARObject._deserialize_by_tag(child, "IdsmModuleInstantiation")
-            obj.idsm_module = idsm_module_value
+            idsm_module_ref_value = ARRef.deserialize(child)
+            obj.idsm_module_ref = idsm_module_ref_value
 
-        # Parse rate_limitation
-        child = ARObject._find_child_element(element, "RATE-LIMITATION")
+        # Parse rate_limitation_ref
+        child = ARObject._find_child_element(element, "RATE-LIMITATION-REF")
         if child is not None:
-            rate_limitation_value = ARObject._deserialize_by_tag(child, "IdsmRateLimitation")
-            obj.rate_limitation = rate_limitation_value
+            rate_limitation_ref_value = ARRef.deserialize(child)
+            obj.rate_limitation_ref = rate_limitation_ref_value
 
         # Parse signature
         child = ARObject._find_child_element(element, "SIGNATURE")
@@ -255,11 +256,11 @@ class IdsmInstance(IdsCommonElement):
             timestamp_value = child.text
             obj.timestamp = timestamp_value
 
-        # Parse traffic_limitation
-        child = ARObject._find_child_element(element, "TRAFFIC-LIMITATION")
+        # Parse traffic_limitation_ref
+        child = ARObject._find_child_element(element, "TRAFFIC-LIMITATION-REF")
         if child is not None:
-            traffic_limitation_value = ARObject._deserialize_by_tag(child, "IdsmTrafficLimitation")
-            obj.traffic_limitation = traffic_limitation_value
+            traffic_limitation_ref_value = ARRef.deserialize(child)
+            obj.traffic_limitation_ref = traffic_limitation_ref_value
 
         return obj
 

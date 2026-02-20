@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.AsamHdo.Constraints.GlobalConstraints.data_constr import (
     DataConstr,
 )
@@ -30,11 +31,11 @@ class SwGenericAxisParamType(Identifiable):
         """
         return False
 
-    data_constr: Optional[DataConstr]
+    data_constr_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SwGenericAxisParamType."""
         super().__init__()
-        self.data_constr: Optional[DataConstr] = None
+        self.data_constr_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize SwGenericAxisParamType to XML element.
@@ -56,12 +57,12 @@ class SwGenericAxisParamType(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize data_constr
-        if self.data_constr is not None:
-            serialized = ARObject._serialize_item(self.data_constr, "DataConstr")
+        # Serialize data_constr_ref
+        if self.data_constr_ref is not None:
+            serialized = ARObject._serialize_item(self.data_constr_ref, "DataConstr")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DATA-CONSTR")
+                wrapped = ET.Element("DATA-CONSTR-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -85,11 +86,11 @@ class SwGenericAxisParamType(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwGenericAxisParamType, cls).deserialize(element)
 
-        # Parse data_constr
-        child = ARObject._find_child_element(element, "DATA-CONSTR")
+        # Parse data_constr_ref
+        child = ARObject._find_child_element(element, "DATA-CONSTR-REF")
         if child is not None:
-            data_constr_value = ARObject._deserialize_by_tag(child, "DataConstr")
-            obj.data_constr = data_constr_value
+            data_constr_ref_value = ARRef.deserialize(child)
+            obj.data_constr_ref = data_constr_ref_value
 
         return obj
 

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticMemoryByAddress,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
 class DiagnosticTransferExit(DiagnosticMemoryByAddress):
@@ -27,11 +28,11 @@ class DiagnosticTransferExit(DiagnosticMemoryByAddress):
         """
         return False
 
-    transfer_exit: Optional[DiagnosticTransferExit]
+    transfer_exit_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DiagnosticTransferExit."""
         super().__init__()
-        self.transfer_exit: Optional[DiagnosticTransferExit] = None
+        self.transfer_exit_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticTransferExit to XML element.
@@ -53,12 +54,12 @@ class DiagnosticTransferExit(DiagnosticMemoryByAddress):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize transfer_exit
-        if self.transfer_exit is not None:
-            serialized = ARObject._serialize_item(self.transfer_exit, "DiagnosticTransferExit")
+        # Serialize transfer_exit_ref
+        if self.transfer_exit_ref is not None:
+            serialized = ARObject._serialize_item(self.transfer_exit_ref, "DiagnosticTransferExit")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TRANSFER-EXIT")
+                wrapped = ET.Element("TRANSFER-EXIT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -82,11 +83,11 @@ class DiagnosticTransferExit(DiagnosticMemoryByAddress):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticTransferExit, cls).deserialize(element)
 
-        # Parse transfer_exit
-        child = ARObject._find_child_element(element, "TRANSFER-EXIT")
+        # Parse transfer_exit_ref
+        child = ARObject._find_child_element(element, "TRANSFER-EXIT-REF")
         if child is not None:
-            transfer_exit_value = ARObject._deserialize_by_tag(child, "DiagnosticTransferExit")
-            obj.transfer_exit = transfer_exit_value
+            transfer_exit_ref_value = ARRef.deserialize(child)
+            obj.transfer_exit_ref = transfer_exit_ref_value
 
         return obj
 

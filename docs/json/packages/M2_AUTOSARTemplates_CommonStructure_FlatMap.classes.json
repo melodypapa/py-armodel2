@@ -92,15 +92,15 @@
         "flatInstance": {
           "type": "FlatInstanceDescriptor",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Assignment of a unique name to a flat representation."
         },
         "identifiable": {
           "type": "Identifiable",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Assignment of a unique name to an Identifiable."
         },
         "label": {
@@ -288,15 +288,15 @@
         "associated": {
           "type": "EcucContainerValue",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This associates a communication graph to a specific RTE Plug-in handling cross Software Cluster"
         },
         "associatedRte": {
           "type": "EcucContainerValue",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This associates a communication graph to a specific RTE Plug-in handling local Software Cluster communication in a non-cluster ECU."
         }
       }

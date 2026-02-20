@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology import (
     PncGatewayTypeEnum,
 )
@@ -39,7 +40,7 @@ class CommunicationConnector(Identifiable, ABC):
         """
         return True
 
-    comm_controller: Optional[Any]
+    comm_controller_ref: Optional[Any]
     create_ecu: Optional[Boolean]
     dynamic_pnc_to: Optional[Boolean]
     ecu_comm_ports: list[CommConnectorPort]
@@ -48,7 +49,7 @@ class CommunicationConnector(Identifiable, ABC):
     def __init__(self) -> None:
         """Initialize CommunicationConnector."""
         super().__init__()
-        self.comm_controller: Optional[Any] = None
+        self.comm_controller_ref: Optional[Any] = None
         self.create_ecu: Optional[Boolean] = None
         self.dynamic_pnc_to: Optional[Boolean] = None
         self.ecu_comm_ports: list[CommConnectorPort] = []
@@ -75,12 +76,12 @@ class CommunicationConnector(Identifiable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize comm_controller
-        if self.comm_controller is not None:
-            serialized = ARObject._serialize_item(self.comm_controller, "Any")
+        # Serialize comm_controller_ref
+        if self.comm_controller_ref is not None:
+            serialized = ARObject._serialize_item(self.comm_controller_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("COMM-CONTROLLER")
+                wrapped = ET.Element("COMM-CONTROLLER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -166,11 +167,11 @@ class CommunicationConnector(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CommunicationConnector, cls).deserialize(element)
 
-        # Parse comm_controller
-        child = ARObject._find_child_element(element, "COMM-CONTROLLER")
+        # Parse comm_controller_ref
+        child = ARObject._find_child_element(element, "COMM-CONTROLLER-REF")
         if child is not None:
-            comm_controller_value = child.text
-            obj.comm_controller = comm_controller_value
+            comm_controller_ref_value = ARRef.deserialize(child)
+            obj.comm_controller_ref = comm_controller_ref_value
 
         # Parse create_ecu
         child = ARObject._find_child_element(element, "CREATE-ECU")

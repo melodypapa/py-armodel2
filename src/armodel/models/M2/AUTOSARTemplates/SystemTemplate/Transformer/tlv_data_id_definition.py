@@ -39,15 +39,15 @@ class TlvDataIdDefinition(ARObject):
 
     id: Optional[PositiveInteger]
     tlv_argument_ref: Optional[ARRef]
-    tlv: Optional[AbstractImplementationDataType]
-    tlv_record: Optional[Any]
+    tlv_ref: Optional[ARRef]
+    tlv_record_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize TlvDataIdDefinition."""
         super().__init__()
         self.id: Optional[PositiveInteger] = None
         self.tlv_argument_ref: Optional[ARRef] = None
-        self.tlv: Optional[AbstractImplementationDataType] = None
-        self.tlv_record: Optional[Any] = None
+        self.tlv_ref: Optional[ARRef] = None
+        self.tlv_record_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize TlvDataIdDefinition to XML element.
@@ -87,12 +87,12 @@ class TlvDataIdDefinition(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize tlv
-        if self.tlv is not None:
-            serialized = ARObject._serialize_item(self.tlv, "AbstractImplementationDataType")
+        # Serialize tlv_ref
+        if self.tlv_ref is not None:
+            serialized = ARObject._serialize_item(self.tlv_ref, "AbstractImplementationDataType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TLV")
+                wrapped = ET.Element("TLV-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -101,12 +101,12 @@ class TlvDataIdDefinition(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize tlv_record
-        if self.tlv_record is not None:
-            serialized = ARObject._serialize_item(self.tlv_record, "Any")
+        # Serialize tlv_record_ref
+        if self.tlv_record_ref is not None:
+            serialized = ARObject._serialize_item(self.tlv_record_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TLV-RECORD")
+                wrapped = ET.Element("TLV-RECORD-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -143,17 +143,17 @@ class TlvDataIdDefinition(ARObject):
             tlv_argument_ref_value = ARRef.deserialize(child)
             obj.tlv_argument_ref = tlv_argument_ref_value
 
-        # Parse tlv
-        child = ARObject._find_child_element(element, "TLV")
+        # Parse tlv_ref
+        child = ARObject._find_child_element(element, "TLV-REF")
         if child is not None:
-            tlv_value = ARObject._deserialize_by_tag(child, "AbstractImplementationDataType")
-            obj.tlv = tlv_value
+            tlv_ref_value = ARRef.deserialize(child)
+            obj.tlv_ref = tlv_ref_value
 
-        # Parse tlv_record
-        child = ARObject._find_child_element(element, "TLV-RECORD")
+        # Parse tlv_record_ref
+        child = ARObject._find_child_element(element, "TLV-RECORD-REF")
         if child is not None:
-            tlv_record_value = child.text
-            obj.tlv_record = tlv_record_value
+            tlv_record_ref_value = ARRef.deserialize(child)
+            obj.tlv_record_ref = tlv_record_ref_value
 
         return obj
 

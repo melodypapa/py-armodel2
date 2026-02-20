@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.AbstractBlueprintStructure.atp_blueprint import (
     AtpBlueprint,
 )
@@ -31,13 +32,13 @@ class AtpBlueprintMapping(ARObject, ABC):
         """
         return True
 
-    atp_blueprint: AtpBlueprint
-    atp_blueprinted: AtpBlueprintable
+    atp_blueprint_ref: ARRef
+    atp_blueprinted_ref: ARRef
     def __init__(self) -> None:
         """Initialize AtpBlueprintMapping."""
         super().__init__()
-        self.atp_blueprint: AtpBlueprint = None
-        self.atp_blueprinted: AtpBlueprintable = None
+        self.atp_blueprint_ref: ARRef = None
+        self.atp_blueprinted_ref: ARRef = None
 
     def serialize(self) -> ET.Element:
         """Serialize AtpBlueprintMapping to XML element.
@@ -49,12 +50,12 @@ class AtpBlueprintMapping(ARObject, ABC):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize atp_blueprint
-        if self.atp_blueprint is not None:
-            serialized = ARObject._serialize_item(self.atp_blueprint, "AtpBlueprint")
+        # Serialize atp_blueprint_ref
+        if self.atp_blueprint_ref is not None:
+            serialized = ARObject._serialize_item(self.atp_blueprint_ref, "AtpBlueprint")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ATP-BLUEPRINT")
+                wrapped = ET.Element("ATP-BLUEPRINT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -63,12 +64,12 @@ class AtpBlueprintMapping(ARObject, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize atp_blueprinted
-        if self.atp_blueprinted is not None:
-            serialized = ARObject._serialize_item(self.atp_blueprinted, "AtpBlueprintable")
+        # Serialize atp_blueprinted_ref
+        if self.atp_blueprinted_ref is not None:
+            serialized = ARObject._serialize_item(self.atp_blueprinted_ref, "AtpBlueprintable")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ATP-BLUEPRINTED")
+                wrapped = ET.Element("ATP-BLUEPRINTED-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -93,17 +94,17 @@ class AtpBlueprintMapping(ARObject, ABC):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse atp_blueprint
-        child = ARObject._find_child_element(element, "ATP-BLUEPRINT")
+        # Parse atp_blueprint_ref
+        child = ARObject._find_child_element(element, "ATP-BLUEPRINT-REF")
         if child is not None:
-            atp_blueprint_value = ARObject._deserialize_by_tag(child, "AtpBlueprint")
-            obj.atp_blueprint = atp_blueprint_value
+            atp_blueprint_ref_value = ARRef.deserialize(child)
+            obj.atp_blueprint_ref = atp_blueprint_ref_value
 
-        # Parse atp_blueprinted
-        child = ARObject._find_child_element(element, "ATP-BLUEPRINTED")
+        # Parse atp_blueprinted_ref
+        child = ARObject._find_child_element(element, "ATP-BLUEPRINTED-REF")
         if child is not None:
-            atp_blueprinted_value = ARObject._deserialize_by_tag(child, "AtpBlueprintable")
-            obj.atp_blueprinted = atp_blueprinted_value
+            atp_blueprinted_ref_value = ARRef.deserialize(child)
+            obj.atp_blueprinted_ref = atp_blueprinted_ref_value
 
         return obj
 

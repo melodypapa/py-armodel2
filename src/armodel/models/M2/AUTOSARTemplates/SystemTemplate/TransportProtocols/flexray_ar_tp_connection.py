@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DiagnosticConnection.tp_c
     TpConnection,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
 )
@@ -40,20 +41,20 @@ class FlexrayArTpConnection(TpConnection):
         return False
 
     connection_prio: Optional[Integer]
-    direct_tp_sdu: Optional[IPdu]
-    multicast: Optional[TpAddress]
-    reversed_tp_sdu: Optional[IPdu]
-    source: Optional[FlexrayArTpNode]
-    targets: list[FlexrayArTpNode]
+    direct_tp_sdu_ref: Optional[ARRef]
+    multicast_ref: Optional[ARRef]
+    reversed_tp_sdu_ref: Optional[ARRef]
+    source_ref: Optional[ARRef]
+    target_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize FlexrayArTpConnection."""
         super().__init__()
         self.connection_prio: Optional[Integer] = None
-        self.direct_tp_sdu: Optional[IPdu] = None
-        self.multicast: Optional[TpAddress] = None
-        self.reversed_tp_sdu: Optional[IPdu] = None
-        self.source: Optional[FlexrayArTpNode] = None
-        self.targets: list[FlexrayArTpNode] = []
+        self.direct_tp_sdu_ref: Optional[ARRef] = None
+        self.multicast_ref: Optional[ARRef] = None
+        self.reversed_tp_sdu_ref: Optional[ARRef] = None
+        self.source_ref: Optional[ARRef] = None
+        self.target_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize FlexrayArTpConnection to XML element.
@@ -89,12 +90,12 @@ class FlexrayArTpConnection(TpConnection):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize direct_tp_sdu
-        if self.direct_tp_sdu is not None:
-            serialized = ARObject._serialize_item(self.direct_tp_sdu, "IPdu")
+        # Serialize direct_tp_sdu_ref
+        if self.direct_tp_sdu_ref is not None:
+            serialized = ARObject._serialize_item(self.direct_tp_sdu_ref, "IPdu")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DIRECT-TP-SDU")
+                wrapped = ET.Element("DIRECT-TP-SDU-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -103,12 +104,12 @@ class FlexrayArTpConnection(TpConnection):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize multicast
-        if self.multicast is not None:
-            serialized = ARObject._serialize_item(self.multicast, "TpAddress")
+        # Serialize multicast_ref
+        if self.multicast_ref is not None:
+            serialized = ARObject._serialize_item(self.multicast_ref, "TpAddress")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("MULTICAST")
+                wrapped = ET.Element("MULTICAST-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -117,12 +118,12 @@ class FlexrayArTpConnection(TpConnection):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize reversed_tp_sdu
-        if self.reversed_tp_sdu is not None:
-            serialized = ARObject._serialize_item(self.reversed_tp_sdu, "IPdu")
+        # Serialize reversed_tp_sdu_ref
+        if self.reversed_tp_sdu_ref is not None:
+            serialized = ARObject._serialize_item(self.reversed_tp_sdu_ref, "IPdu")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("REVERSED-TP-SDU")
+                wrapped = ET.Element("REVERSED-TP-SDU-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -131,12 +132,12 @@ class FlexrayArTpConnection(TpConnection):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize source
-        if self.source is not None:
-            serialized = ARObject._serialize_item(self.source, "FlexrayArTpNode")
+        # Serialize source_ref
+        if self.source_ref is not None:
+            serialized = ARObject._serialize_item(self.source_ref, "FlexrayArTpNode")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SOURCE")
+                wrapped = ET.Element("SOURCE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -145,13 +146,20 @@ class FlexrayArTpConnection(TpConnection):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize targets (list to container "TARGETS")
-        if self.targets:
-            wrapper = ET.Element("TARGETS")
-            for item in self.targets:
+        # Serialize target_refs (list to container "TARGET-REFS")
+        if self.target_refs:
+            wrapper = ET.Element("TARGET-REFS")
+            for item in self.target_refs:
                 serialized = ARObject._serialize_item(item, "FlexrayArTpNode")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("TARGET-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -176,39 +184,45 @@ class FlexrayArTpConnection(TpConnection):
             connection_prio_value = child.text
             obj.connection_prio = connection_prio_value
 
-        # Parse direct_tp_sdu
-        child = ARObject._find_child_element(element, "DIRECT-TP-SDU")
+        # Parse direct_tp_sdu_ref
+        child = ARObject._find_child_element(element, "DIRECT-TP-SDU-REF")
         if child is not None:
-            direct_tp_sdu_value = ARObject._deserialize_by_tag(child, "IPdu")
-            obj.direct_tp_sdu = direct_tp_sdu_value
+            direct_tp_sdu_ref_value = ARRef.deserialize(child)
+            obj.direct_tp_sdu_ref = direct_tp_sdu_ref_value
 
-        # Parse multicast
-        child = ARObject._find_child_element(element, "MULTICAST")
+        # Parse multicast_ref
+        child = ARObject._find_child_element(element, "MULTICAST-REF")
         if child is not None:
-            multicast_value = ARObject._deserialize_by_tag(child, "TpAddress")
-            obj.multicast = multicast_value
+            multicast_ref_value = ARRef.deserialize(child)
+            obj.multicast_ref = multicast_ref_value
 
-        # Parse reversed_tp_sdu
-        child = ARObject._find_child_element(element, "REVERSED-TP-SDU")
+        # Parse reversed_tp_sdu_ref
+        child = ARObject._find_child_element(element, "REVERSED-TP-SDU-REF")
         if child is not None:
-            reversed_tp_sdu_value = ARObject._deserialize_by_tag(child, "IPdu")
-            obj.reversed_tp_sdu = reversed_tp_sdu_value
+            reversed_tp_sdu_ref_value = ARRef.deserialize(child)
+            obj.reversed_tp_sdu_ref = reversed_tp_sdu_ref_value
 
-        # Parse source
-        child = ARObject._find_child_element(element, "SOURCE")
+        # Parse source_ref
+        child = ARObject._find_child_element(element, "SOURCE-REF")
         if child is not None:
-            source_value = ARObject._deserialize_by_tag(child, "FlexrayArTpNode")
-            obj.source = source_value
+            source_ref_value = ARRef.deserialize(child)
+            obj.source_ref = source_ref_value
 
-        # Parse targets (list from container "TARGETS")
-        obj.targets = []
-        container = ARObject._find_child_element(element, "TARGETS")
+        # Parse target_refs (list from container "TARGET-REFS")
+        obj.target_refs = []
+        container = ARObject._find_child_element(element, "TARGET-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.targets.append(child_value)
+                    obj.target_refs.append(child_value)
 
         return obj
 

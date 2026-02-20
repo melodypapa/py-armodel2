@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -40,20 +41,20 @@ class SwitchStreamFilterEntry(Identifiable):
         """
         return False
 
-    asynchronous: Optional[CouplingPort]
+    asynchronous_ref: Optional[ARRef]
     filter_priority: Optional[PositiveInteger]
-    flow_metering: Optional[SwitchFlowMeteringEntry]
+    flow_metering_ref: Optional[ARRef]
     max_sdu_size: Optional[PositiveInteger]
-    stream_gate: Optional[SwitchStreamGateEntry]
+    stream_gate_ref: Optional[ARRef]
     stream: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize SwitchStreamFilterEntry."""
         super().__init__()
-        self.asynchronous: Optional[CouplingPort] = None
+        self.asynchronous_ref: Optional[ARRef] = None
         self.filter_priority: Optional[PositiveInteger] = None
-        self.flow_metering: Optional[SwitchFlowMeteringEntry] = None
+        self.flow_metering_ref: Optional[ARRef] = None
         self.max_sdu_size: Optional[PositiveInteger] = None
-        self.stream_gate: Optional[SwitchStreamGateEntry] = None
+        self.stream_gate_ref: Optional[ARRef] = None
         self.stream: Optional[Boolean] = None
 
     def serialize(self) -> ET.Element:
@@ -76,12 +77,12 @@ class SwitchStreamFilterEntry(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize asynchronous
-        if self.asynchronous is not None:
-            serialized = ARObject._serialize_item(self.asynchronous, "CouplingPort")
+        # Serialize asynchronous_ref
+        if self.asynchronous_ref is not None:
+            serialized = ARObject._serialize_item(self.asynchronous_ref, "CouplingPort")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ASYNCHRONOUS")
+                wrapped = ET.Element("ASYNCHRONOUS-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -104,12 +105,12 @@ class SwitchStreamFilterEntry(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize flow_metering
-        if self.flow_metering is not None:
-            serialized = ARObject._serialize_item(self.flow_metering, "SwitchFlowMeteringEntry")
+        # Serialize flow_metering_ref
+        if self.flow_metering_ref is not None:
+            serialized = ARObject._serialize_item(self.flow_metering_ref, "SwitchFlowMeteringEntry")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("FLOW-METERING")
+                wrapped = ET.Element("FLOW-METERING-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -132,12 +133,12 @@ class SwitchStreamFilterEntry(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize stream_gate
-        if self.stream_gate is not None:
-            serialized = ARObject._serialize_item(self.stream_gate, "SwitchStreamGateEntry")
+        # Serialize stream_gate_ref
+        if self.stream_gate_ref is not None:
+            serialized = ARObject._serialize_item(self.stream_gate_ref, "SwitchStreamGateEntry")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("STREAM-GATE")
+                wrapped = ET.Element("STREAM-GATE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -175,11 +176,11 @@ class SwitchStreamFilterEntry(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwitchStreamFilterEntry, cls).deserialize(element)
 
-        # Parse asynchronous
-        child = ARObject._find_child_element(element, "ASYNCHRONOUS")
+        # Parse asynchronous_ref
+        child = ARObject._find_child_element(element, "ASYNCHRONOUS-REF")
         if child is not None:
-            asynchronous_value = ARObject._deserialize_by_tag(child, "CouplingPort")
-            obj.asynchronous = asynchronous_value
+            asynchronous_ref_value = ARRef.deserialize(child)
+            obj.asynchronous_ref = asynchronous_ref_value
 
         # Parse filter_priority
         child = ARObject._find_child_element(element, "FILTER-PRIORITY")
@@ -187,11 +188,11 @@ class SwitchStreamFilterEntry(Identifiable):
             filter_priority_value = child.text
             obj.filter_priority = filter_priority_value
 
-        # Parse flow_metering
-        child = ARObject._find_child_element(element, "FLOW-METERING")
+        # Parse flow_metering_ref
+        child = ARObject._find_child_element(element, "FLOW-METERING-REF")
         if child is not None:
-            flow_metering_value = ARObject._deserialize_by_tag(child, "SwitchFlowMeteringEntry")
-            obj.flow_metering = flow_metering_value
+            flow_metering_ref_value = ARRef.deserialize(child)
+            obj.flow_metering_ref = flow_metering_ref_value
 
         # Parse max_sdu_size
         child = ARObject._find_child_element(element, "MAX-SDU-SIZE")
@@ -199,11 +200,11 @@ class SwitchStreamFilterEntry(Identifiable):
             max_sdu_size_value = child.text
             obj.max_sdu_size = max_sdu_size_value
 
-        # Parse stream_gate
-        child = ARObject._find_child_element(element, "STREAM-GATE")
+        # Parse stream_gate_ref
+        child = ARObject._find_child_element(element, "STREAM-GATE-REF")
         if child is not None:
-            stream_gate_value = ARObject._deserialize_by_tag(child, "SwitchStreamGateEntry")
-            obj.stream_gate = stream_gate_value
+            stream_gate_ref_value = ARRef.deserialize(child)
+            obj.stream_gate_ref = stream_gate_ref_value
 
         # Parse stream
         child = ARObject._find_child_element(element, "STREAM")

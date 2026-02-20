@@ -68,22 +68,22 @@
         "behavior": {
           "type": "BswInternalBehavior",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The behavior of this implementation. is made as an association because follows the pattern of the SWCT ARElement cannot be splitted, but we want implementation later, the Bsw not aggregated in BswBehavior"
         },
         "preconfigureds": {
           "type": "any (EcucModule)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the set of preconfigured (i.e. fixed) configuration values for this BswImplementation. BswImplementation represents a cluster of several than one EcucModuleConfigurationValues be referred (at most one per module), most one such element can be referred."
         },
         "recommendeds": {
           "type": "any (EcucModule)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to one or more sets of recommended configuration values for this module or module cluster."
         },
         "vendorApiInfix": {
@@ -96,8 +96,8 @@
         "vendorSpecifics": {
           "type": "EcucModuleDef",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to"
         }
       }

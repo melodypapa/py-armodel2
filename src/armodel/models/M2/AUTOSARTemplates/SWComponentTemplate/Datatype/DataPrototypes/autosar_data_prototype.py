@@ -16,6 +16,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
     DataPrototype,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.autosar_data_type import (
     AutosarDataType,
 )
@@ -34,11 +35,11 @@ class AutosarDataPrototype(DataPrototype, ABC):
         """
         return True
 
-    type: Optional[AutosarDataType]
+    type_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize AutosarDataPrototype."""
         super().__init__()
-        self.type: Optional[AutosarDataType] = None
+        self.type_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize AutosarDataPrototype to XML element.
@@ -60,12 +61,12 @@ class AutosarDataPrototype(DataPrototype, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize type
-        if self.type is not None:
-            serialized = ARObject._serialize_item(self.type, "AutosarDataType")
+        # Serialize type_ref
+        if self.type_ref is not None:
+            serialized = ARObject._serialize_item(self.type_ref, "AutosarDataType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TYPE")
+                wrapped = ET.Element("TYPE-TREF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -89,11 +90,11 @@ class AutosarDataPrototype(DataPrototype, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AutosarDataPrototype, cls).deserialize(element)
 
-        # Parse type
-        child = ARObject._find_child_element(element, "TYPE")
+        # Parse type_ref
+        child = ARObject._find_child_element(element, "TYPE-TREF")
         if child is not None:
-            type_value = ARObject._deserialize_by_tag(child, "AutosarDataType")
-            obj.type = type_value
+            type_ref_value = ARRef.deserialize(child)
+            obj.type_ref = type_ref_value
 
         return obj
 

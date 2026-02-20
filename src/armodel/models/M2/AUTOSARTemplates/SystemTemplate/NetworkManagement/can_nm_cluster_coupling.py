@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.nm_clus
     NmClusterCoupling,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -33,13 +34,13 @@ class CanNmClusterCoupling(NmClusterCoupling):
         """
         return False
 
-    coupled_clusters: list[CanNmCluster]
+    coupled_cluster_refs: list[ARRef]
     nm_busload_reduction: Optional[Any]
     nm_immediate: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize CanNmClusterCoupling."""
         super().__init__()
-        self.coupled_clusters: list[CanNmCluster] = []
+        self.coupled_cluster_refs: list[ARRef] = []
         self.nm_busload_reduction: Optional[Any] = None
         self.nm_immediate: Optional[Boolean] = None
 
@@ -63,13 +64,20 @@ class CanNmClusterCoupling(NmClusterCoupling):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize coupled_clusters (list to container "COUPLED-CLUSTERS")
-        if self.coupled_clusters:
-            wrapper = ET.Element("COUPLED-CLUSTERS")
-            for item in self.coupled_clusters:
+        # Serialize coupled_cluster_refs (list to container "COUPLED-CLUSTER-REFS")
+        if self.coupled_cluster_refs:
+            wrapper = ET.Element("COUPLED-CLUSTER-REFS")
+            for item in self.coupled_cluster_refs:
                 serialized = ARObject._serialize_item(item, "CanNmCluster")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("COUPLED-CLUSTER-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -116,15 +124,21 @@ class CanNmClusterCoupling(NmClusterCoupling):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CanNmClusterCoupling, cls).deserialize(element)
 
-        # Parse coupled_clusters (list from container "COUPLED-CLUSTERS")
-        obj.coupled_clusters = []
-        container = ARObject._find_child_element(element, "COUPLED-CLUSTERS")
+        # Parse coupled_cluster_refs (list from container "COUPLED-CLUSTER-REFS")
+        obj.coupled_cluster_refs = []
+        container = ARObject._find_child_element(element, "COUPLED-CLUSTER-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.coupled_clusters.append(child_value)
+                    obj.coupled_cluster_refs.append(child_value)
 
         # Parse nm_busload_reduction
         child = ARObject._find_child_element(element, "NM-BUSLOAD-REDUCTION")

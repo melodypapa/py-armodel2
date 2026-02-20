@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_definition_element import (
     EcucDefinitionElement,
 )
@@ -30,12 +31,12 @@ class BlueprintFormula(ARObject):
         """
         return False
 
-    ecuc: EcucDefinitionElement
+    ecuc_ref: ARRef
     verbatim: MultiLanguageVerbatim
     def __init__(self) -> None:
         """Initialize BlueprintFormula."""
         super().__init__()
-        self.ecuc: EcucDefinitionElement = None
+        self.ecuc_ref: ARRef = None
         self.verbatim: MultiLanguageVerbatim = None
 
     def serialize(self) -> ET.Element:
@@ -48,12 +49,12 @@ class BlueprintFormula(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize ecuc
-        if self.ecuc is not None:
-            serialized = ARObject._serialize_item(self.ecuc, "EcucDefinitionElement")
+        # Serialize ecuc_ref
+        if self.ecuc_ref is not None:
+            serialized = ARObject._serialize_item(self.ecuc_ref, "EcucDefinitionElement")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ECUC")
+                wrapped = ET.Element("ECUC-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -92,11 +93,11 @@ class BlueprintFormula(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse ecuc
-        child = ARObject._find_child_element(element, "ECUC")
+        # Parse ecuc_ref
+        child = ARObject._find_child_element(element, "ECUC-REF")
         if child is not None:
-            ecuc_value = ARObject._deserialize_by_tag(child, "EcucDefinitionElement")
-            obj.ecuc = ecuc_value
+            ecuc_ref_value = ARRef.deserialize(child)
+            obj.ecuc_ref = ecuc_ref_value
 
         # Parse verbatim
         child = ARObject._find_child_element(element, "VERBATIM")

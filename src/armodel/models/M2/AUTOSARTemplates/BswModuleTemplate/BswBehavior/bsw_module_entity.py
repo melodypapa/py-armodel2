@@ -57,10 +57,10 @@ class BswModuleEntity(ExecutableEntity, ABC):
     call_points: list[BswModuleCallPoint]
     data_receives: list[BswVariableAccess]
     data_send_points: list[BswVariableAccess]
-    implemented: Optional[BswModuleEntry]
+    implemented_ref: Optional[ARRef]
     issued_trigger_refs: list[ARRef]
     managed_mode_refs: list[ARRef]
-    scheduler_name: Optional[BswSchedulerNamePrefix]
+    scheduler_name_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize BswModuleEntity."""
         super().__init__()
@@ -69,10 +69,10 @@ class BswModuleEntity(ExecutableEntity, ABC):
         self.call_points: list[BswModuleCallPoint] = []
         self.data_receives: list[BswVariableAccess] = []
         self.data_send_points: list[BswVariableAccess] = []
-        self.implemented: Optional[BswModuleEntry] = None
+        self.implemented_ref: Optional[ARRef] = None
         self.issued_trigger_refs: list[ARRef] = []
         self.managed_mode_refs: list[ARRef] = []
-        self.scheduler_name: Optional[BswSchedulerNamePrefix] = None
+        self.scheduler_name_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize BswModuleEntity to XML element.
@@ -158,12 +158,12 @@ class BswModuleEntity(ExecutableEntity, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize implemented
-        if self.implemented is not None:
-            serialized = ARObject._serialize_item(self.implemented, "BswModuleEntry")
+        # Serialize implemented_ref
+        if self.implemented_ref is not None:
+            serialized = ARObject._serialize_item(self.implemented_ref, "BswModuleEntry")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("IMPLEMENTED")
+                wrapped = ET.Element("IMPLEMENTED-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -206,12 +206,12 @@ class BswModuleEntity(ExecutableEntity, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize scheduler_name
-        if self.scheduler_name is not None:
-            serialized = ARObject._serialize_item(self.scheduler_name, "BswSchedulerNamePrefix")
+        # Serialize scheduler_name_ref
+        if self.scheduler_name_ref is not None:
+            serialized = ARObject._serialize_item(self.scheduler_name_ref, "BswSchedulerNamePrefix")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SCHEDULER-NAME")
+                wrapped = ET.Element("SCHEDULER-NAME-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -297,11 +297,11 @@ class BswModuleEntity(ExecutableEntity, ABC):
                 if child_value is not None:
                     obj.data_send_points.append(child_value)
 
-        # Parse implemented
-        child = ARObject._find_child_element(element, "IMPLEMENTED")
+        # Parse implemented_ref
+        child = ARObject._find_child_element(element, "IMPLEMENTED-REF")
         if child is not None:
-            implemented_value = ARObject._deserialize_by_tag(child, "BswModuleEntry")
-            obj.implemented = implemented_value
+            implemented_ref_value = ARRef.deserialize(child)
+            obj.implemented_ref = implemented_ref_value
 
         # Parse issued_trigger_refs (list from container "ISSUED-TRIGGER-REFS")
         obj.issued_trigger_refs = []
@@ -335,11 +335,11 @@ class BswModuleEntity(ExecutableEntity, ABC):
                 if child_value is not None:
                     obj.managed_mode_refs.append(child_value)
 
-        # Parse scheduler_name
-        child = ARObject._find_child_element(element, "SCHEDULER-NAME")
+        # Parse scheduler_name_ref
+        child = ARObject._find_child_element(element, "SCHEDULER-NAME-REF")
         if child is not None:
-            scheduler_name_value = ARObject._deserialize_by_tag(child, "BswSchedulerNamePrefix")
-            obj.scheduler_name = scheduler_name_value
+            scheduler_name_ref_value = ARRef.deserialize(child)
+            obj.scheduler_name_ref = scheduler_name_ref_value
 
         return obj
 

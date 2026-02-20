@@ -35,16 +35,16 @@ class ClientServerOperationMapping(ARObject):
         return False
 
     argument_refs: list[ARRef]
-    first_operation: Optional[ClientServerOperation]
-    first_to_second: Optional[DataTransformation]
-    second: Optional[ClientServerOperation]
+    first_operation_ref: Optional[ARRef]
+    first_to_second_ref: Optional[ARRef]
+    second_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ClientServerOperationMapping."""
         super().__init__()
         self.argument_refs: list[ARRef] = []
-        self.first_operation: Optional[ClientServerOperation] = None
-        self.first_to_second: Optional[DataTransformation] = None
-        self.second: Optional[ClientServerOperation] = None
+        self.first_operation_ref: Optional[ARRef] = None
+        self.first_to_second_ref: Optional[ARRef] = None
+        self.second_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize ClientServerOperationMapping to XML element.
@@ -73,12 +73,12 @@ class ClientServerOperationMapping(ARObject):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize first_operation
-        if self.first_operation is not None:
-            serialized = ARObject._serialize_item(self.first_operation, "ClientServerOperation")
+        # Serialize first_operation_ref
+        if self.first_operation_ref is not None:
+            serialized = ARObject._serialize_item(self.first_operation_ref, "ClientServerOperation")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("FIRST-OPERATION")
+                wrapped = ET.Element("FIRST-OPERATION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -87,12 +87,12 @@ class ClientServerOperationMapping(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize first_to_second
-        if self.first_to_second is not None:
-            serialized = ARObject._serialize_item(self.first_to_second, "DataTransformation")
+        # Serialize first_to_second_ref
+        if self.first_to_second_ref is not None:
+            serialized = ARObject._serialize_item(self.first_to_second_ref, "DataTransformation")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("FIRST-TO-SECOND")
+                wrapped = ET.Element("FIRST-TO-SECOND-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -101,12 +101,12 @@ class ClientServerOperationMapping(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize second
-        if self.second is not None:
-            serialized = ARObject._serialize_item(self.second, "ClientServerOperation")
+        # Serialize second_ref
+        if self.second_ref is not None:
+            serialized = ARObject._serialize_item(self.second_ref, "ClientServerOperation")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SECOND")
+                wrapped = ET.Element("SECOND-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -147,23 +147,23 @@ class ClientServerOperationMapping(ARObject):
                 if child_value is not None:
                     obj.argument_refs.append(child_value)
 
-        # Parse first_operation
-        child = ARObject._find_child_element(element, "FIRST-OPERATION")
+        # Parse first_operation_ref
+        child = ARObject._find_child_element(element, "FIRST-OPERATION-REF")
         if child is not None:
-            first_operation_value = ARObject._deserialize_by_tag(child, "ClientServerOperation")
-            obj.first_operation = first_operation_value
+            first_operation_ref_value = ARRef.deserialize(child)
+            obj.first_operation_ref = first_operation_ref_value
 
-        # Parse first_to_second
-        child = ARObject._find_child_element(element, "FIRST-TO-SECOND")
+        # Parse first_to_second_ref
+        child = ARObject._find_child_element(element, "FIRST-TO-SECOND-REF")
         if child is not None:
-            first_to_second_value = ARObject._deserialize_by_tag(child, "DataTransformation")
-            obj.first_to_second = first_to_second_value
+            first_to_second_ref_value = ARRef.deserialize(child)
+            obj.first_to_second_ref = first_to_second_ref_value
 
-        # Parse second
-        child = ARObject._find_child_element(element, "SECOND")
+        # Parse second_ref
+        child = ARObject._find_child_element(element, "SECOND-REF")
         if child is not None:
-            second_value = ARObject._deserialize_by_tag(child, "ClientServerOperation")
-            obj.second = second_value
+            second_ref_value = ARRef.deserialize(child)
+            obj.second_ref = second_ref_value
 
         return obj
 

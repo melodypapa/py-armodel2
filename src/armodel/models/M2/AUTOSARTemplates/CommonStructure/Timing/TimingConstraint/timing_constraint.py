@@ -13,6 +13,7 @@ from armodel.models.M2.MSR.Documentation.BlockElements.RequirementsTracing.trace
     Traceable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingCondition.timing_condition import (
     TimingCondition,
 )
@@ -31,11 +32,11 @@ class TimingConstraint(Traceable, ABC):
         """
         return True
 
-    timing_condition: Optional[TimingCondition]
+    timing_condition_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize TimingConstraint."""
         super().__init__()
-        self.timing_condition: Optional[TimingCondition] = None
+        self.timing_condition_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize TimingConstraint to XML element.
@@ -57,12 +58,12 @@ class TimingConstraint(Traceable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize timing_condition
-        if self.timing_condition is not None:
-            serialized = ARObject._serialize_item(self.timing_condition, "TimingCondition")
+        # Serialize timing_condition_ref
+        if self.timing_condition_ref is not None:
+            serialized = ARObject._serialize_item(self.timing_condition_ref, "TimingCondition")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TIMING-CONDITION")
+                wrapped = ET.Element("TIMING-CONDITION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -86,11 +87,11 @@ class TimingConstraint(Traceable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TimingConstraint, cls).deserialize(element)
 
-        # Parse timing_condition
-        child = ARObject._find_child_element(element, "TIMING-CONDITION")
+        # Parse timing_condition_ref
+        child = ARObject._find_child_element(element, "TIMING-CONDITION-REF")
         if child is not None:
-            timing_condition_value = ARObject._deserialize_by_tag(child, "TimingCondition")
-            obj.timing_condition = timing_condition_value
+            timing_condition_ref_value = ARRef.deserialize(child)
+            obj.timing_condition_ref = timing_condition_ref_value
 
         return obj
 

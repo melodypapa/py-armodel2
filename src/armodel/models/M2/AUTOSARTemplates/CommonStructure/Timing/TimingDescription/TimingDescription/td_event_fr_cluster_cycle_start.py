@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
     TDEventCycleStart,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Flexray.FlexrayTopology.flexray_cluster import (
     FlexrayCluster,
 )
@@ -30,11 +31,11 @@ class TDEventFrClusterCycleStart(TDEventCycleStart):
         """
         return False
 
-    fr_cluster: Optional[FlexrayCluster]
+    fr_cluster_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize TDEventFrClusterCycleStart."""
         super().__init__()
-        self.fr_cluster: Optional[FlexrayCluster] = None
+        self.fr_cluster_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize TDEventFrClusterCycleStart to XML element.
@@ -56,12 +57,12 @@ class TDEventFrClusterCycleStart(TDEventCycleStart):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize fr_cluster
-        if self.fr_cluster is not None:
-            serialized = ARObject._serialize_item(self.fr_cluster, "FlexrayCluster")
+        # Serialize fr_cluster_ref
+        if self.fr_cluster_ref is not None:
+            serialized = ARObject._serialize_item(self.fr_cluster_ref, "FlexrayCluster")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("FR-CLUSTER")
+                wrapped = ET.Element("FR-CLUSTER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -85,11 +86,11 @@ class TDEventFrClusterCycleStart(TDEventCycleStart):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TDEventFrClusterCycleStart, cls).deserialize(element)
 
-        # Parse fr_cluster
-        child = ARObject._find_child_element(element, "FR-CLUSTER")
+        # Parse fr_cluster_ref
+        child = ARObject._find_child_element(element, "FR-CLUSTER-REF")
         if child is not None:
-            fr_cluster_value = ARObject._deserialize_by_tag(child, "FlexrayCluster")
-            obj.fr_cluster = fr_cluster_value
+            fr_cluster_ref_value = ARRef.deserialize(child)
+            obj.fr_cluster_ref = fr_cluster_ref_value
 
         return obj
 

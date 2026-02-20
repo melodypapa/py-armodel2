@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
     RTEEvent,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.variable_access import (
     VariableAccess,
 )
@@ -30,11 +31,11 @@ class DataWriteCompletedEvent(RTEEvent):
         """
         return False
 
-    event_source: Optional[VariableAccess]
+    event_source_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DataWriteCompletedEvent."""
         super().__init__()
-        self.event_source: Optional[VariableAccess] = None
+        self.event_source_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DataWriteCompletedEvent to XML element.
@@ -56,12 +57,12 @@ class DataWriteCompletedEvent(RTEEvent):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize event_source
-        if self.event_source is not None:
-            serialized = ARObject._serialize_item(self.event_source, "VariableAccess")
+        # Serialize event_source_ref
+        if self.event_source_ref is not None:
+            serialized = ARObject._serialize_item(self.event_source_ref, "VariableAccess")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("EVENT-SOURCE")
+                wrapped = ET.Element("EVENT-SOURCE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -85,11 +86,11 @@ class DataWriteCompletedEvent(RTEEvent):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DataWriteCompletedEvent, cls).deserialize(element)
 
-        # Parse event_source
-        child = ARObject._find_child_element(element, "EVENT-SOURCE")
+        # Parse event_source_ref
+        child = ARObject._find_child_element(element, "EVENT-SOURCE-REF")
         if child is not None:
-            event_source_value = ARObject._deserialize_by_tag(child, "VariableAccess")
-            obj.event_source = event_source_value
+            event_source_ref_value = ARRef.deserialize(child)
+            obj.event_source_ref = event_source_ref_value
 
         return obj
 

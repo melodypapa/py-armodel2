@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.diagnostic_access_permission import (
     DiagnosticAccessPermission,
 )
@@ -34,13 +35,13 @@ class DiagnosticServiceInstance(DiagnosticCommonElement, ABC):
         """
         return True
 
-    access: Optional[DiagnosticAccessPermission]
-    service_class: Optional[DiagnosticServiceClass]
+    access_ref: Optional[ARRef]
+    service_class_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DiagnosticServiceInstance."""
         super().__init__()
-        self.access: Optional[DiagnosticAccessPermission] = None
-        self.service_class: Optional[DiagnosticServiceClass] = None
+        self.access_ref: Optional[ARRef] = None
+        self.service_class_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticServiceInstance to XML element.
@@ -62,12 +63,12 @@ class DiagnosticServiceInstance(DiagnosticCommonElement, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize access
-        if self.access is not None:
-            serialized = ARObject._serialize_item(self.access, "DiagnosticAccessPermission")
+        # Serialize access_ref
+        if self.access_ref is not None:
+            serialized = ARObject._serialize_item(self.access_ref, "DiagnosticAccessPermission")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ACCESS")
+                wrapped = ET.Element("ACCESS-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -76,12 +77,12 @@ class DiagnosticServiceInstance(DiagnosticCommonElement, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize service_class
-        if self.service_class is not None:
-            serialized = ARObject._serialize_item(self.service_class, "DiagnosticServiceClass")
+        # Serialize service_class_ref
+        if self.service_class_ref is not None:
+            serialized = ARObject._serialize_item(self.service_class_ref, "DiagnosticServiceClass")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SERVICE-CLASS")
+                wrapped = ET.Element("SERVICE-CLASS-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -105,17 +106,17 @@ class DiagnosticServiceInstance(DiagnosticCommonElement, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticServiceInstance, cls).deserialize(element)
 
-        # Parse access
-        child = ARObject._find_child_element(element, "ACCESS")
+        # Parse access_ref
+        child = ARObject._find_child_element(element, "ACCESS-REF")
         if child is not None:
-            access_value = ARObject._deserialize_by_tag(child, "DiagnosticAccessPermission")
-            obj.access = access_value
+            access_ref_value = ARRef.deserialize(child)
+            obj.access_ref = access_ref_value
 
-        # Parse service_class
-        child = ARObject._find_child_element(element, "SERVICE-CLASS")
+        # Parse service_class_ref
+        child = ARObject._find_child_element(element, "SERVICE-CLASS-REF")
         if child is not None:
-            service_class_value = ARObject._deserialize_by_tag(child, "DiagnosticServiceClass")
-            obj.service_class = service_class_value
+            service_class_ref_value = ARRef.deserialize(child)
+            obj.service_class_ref = service_class_ref_value
 
         return obj
 

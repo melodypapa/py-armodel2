@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_
     DiagnosticCapabilityElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
     DiagnosticMonitorUpdateKindEnum,
 )
@@ -40,15 +41,15 @@ class ObdMonitorServiceNeeds(DiagnosticCapabilityElement):
         """
         return False
 
-    application_data: Optional[ApplicationDataType]
-    event_needs: Optional[DiagnosticEventNeeds]
+    application_data_ref: Optional[ARRef]
+    event_needs_ref: Optional[ARRef]
     unit_and_scaling_id: Optional[PositiveInteger]
     update_kind: Optional[DiagnosticMonitorUpdateKindEnum]
     def __init__(self) -> None:
         """Initialize ObdMonitorServiceNeeds."""
         super().__init__()
-        self.application_data: Optional[ApplicationDataType] = None
-        self.event_needs: Optional[DiagnosticEventNeeds] = None
+        self.application_data_ref: Optional[ARRef] = None
+        self.event_needs_ref: Optional[ARRef] = None
         self.unit_and_scaling_id: Optional[PositiveInteger] = None
         self.update_kind: Optional[DiagnosticMonitorUpdateKindEnum] = None
 
@@ -72,12 +73,12 @@ class ObdMonitorServiceNeeds(DiagnosticCapabilityElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize application_data
-        if self.application_data is not None:
-            serialized = ARObject._serialize_item(self.application_data, "ApplicationDataType")
+        # Serialize application_data_ref
+        if self.application_data_ref is not None:
+            serialized = ARObject._serialize_item(self.application_data_ref, "ApplicationDataType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("APPLICATION-DATA")
+                wrapped = ET.Element("APPLICATION-DATA-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -86,12 +87,12 @@ class ObdMonitorServiceNeeds(DiagnosticCapabilityElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize event_needs
-        if self.event_needs is not None:
-            serialized = ARObject._serialize_item(self.event_needs, "DiagnosticEventNeeds")
+        # Serialize event_needs_ref
+        if self.event_needs_ref is not None:
+            serialized = ARObject._serialize_item(self.event_needs_ref, "DiagnosticEventNeeds")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("EVENT-NEEDS")
+                wrapped = ET.Element("EVENT-NEEDS-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -143,17 +144,17 @@ class ObdMonitorServiceNeeds(DiagnosticCapabilityElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ObdMonitorServiceNeeds, cls).deserialize(element)
 
-        # Parse application_data
-        child = ARObject._find_child_element(element, "APPLICATION-DATA")
+        # Parse application_data_ref
+        child = ARObject._find_child_element(element, "APPLICATION-DATA-REF")
         if child is not None:
-            application_data_value = ARObject._deserialize_by_tag(child, "ApplicationDataType")
-            obj.application_data = application_data_value
+            application_data_ref_value = ARRef.deserialize(child)
+            obj.application_data_ref = application_data_ref_value
 
-        # Parse event_needs
-        child = ARObject._find_child_element(element, "EVENT-NEEDS")
+        # Parse event_needs_ref
+        child = ARObject._find_child_element(element, "EVENT-NEEDS-REF")
         if child is not None:
-            event_needs_value = ARObject._deserialize_by_tag(child, "DiagnosticEventNeeds")
-            obj.event_needs = event_needs_value
+            event_needs_ref_value = ARRef.deserialize(child)
+            obj.event_needs_ref = event_needs_ref_value
 
         # Parse unit_and_scaling_id
         child = ARObject._find_child_element(element, "UNIT-AND-SCALING-ID")

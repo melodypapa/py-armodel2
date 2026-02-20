@@ -84,8 +84,8 @@
         "platformTime": {
           "type": "GlobalTimeDomain",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Refers to a physical time base reference on the atpVariation"
         }
       }
@@ -129,15 +129,15 @@
         "lower": {
           "type": "TimingClock",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "References a target clock"
         },
         "upper": {
           "type": "TimingClock",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "References a source clock"
         }
       }

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_module
     BswModuleCallPoint,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_module_client_server_entry import (
     BswModuleClientServerEntry,
 )
@@ -30,11 +31,11 @@ class BswAsynchronousServerCallPoint(BswModuleCallPoint):
         """
         return False
 
-    called_entry_entry: Optional[BswModuleClientServerEntry]
+    called_entry_entry_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize BswAsynchronousServerCallPoint."""
         super().__init__()
-        self.called_entry_entry: Optional[BswModuleClientServerEntry] = None
+        self.called_entry_entry_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize BswAsynchronousServerCallPoint to XML element.
@@ -56,12 +57,12 @@ class BswAsynchronousServerCallPoint(BswModuleCallPoint):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize called_entry_entry
-        if self.called_entry_entry is not None:
-            serialized = ARObject._serialize_item(self.called_entry_entry, "BswModuleClientServerEntry")
+        # Serialize called_entry_entry_ref
+        if self.called_entry_entry_ref is not None:
+            serialized = ARObject._serialize_item(self.called_entry_entry_ref, "BswModuleClientServerEntry")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CALLED-ENTRY-ENTRY")
+                wrapped = ET.Element("CALLED-ENTRY-ENTRY-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -85,11 +86,11 @@ class BswAsynchronousServerCallPoint(BswModuleCallPoint):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswAsynchronousServerCallPoint, cls).deserialize(element)
 
-        # Parse called_entry_entry
-        child = ARObject._find_child_element(element, "CALLED-ENTRY-ENTRY")
+        # Parse called_entry_entry_ref
+        child = ARObject._find_child_element(element, "CALLED-ENTRY-ENTRY-REF")
         if child is not None:
-            called_entry_entry_value = ARObject._deserialize_by_tag(child, "BswModuleClientServerEntry")
-            obj.called_entry_entry = called_entry_entry_value
+            called_entry_entry_ref_value = ARRef.deserialize(child)
+            obj.called_entry_entry_ref = called_entry_entry_ref_value
 
         return obj
 

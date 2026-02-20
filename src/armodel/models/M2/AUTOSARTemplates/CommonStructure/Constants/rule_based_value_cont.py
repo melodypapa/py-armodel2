@@ -34,13 +34,13 @@ class RuleBasedValueCont(ARObject):
 
     rule_based: Optional[Any]
     sw_arraysize_ref: Optional[ARRef]
-    unit: Optional[Unit]
+    unit_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize RuleBasedValueCont."""
         super().__init__()
         self.rule_based: Optional[Any] = None
         self.sw_arraysize_ref: Optional[ARRef] = None
-        self.unit: Optional[Unit] = None
+        self.unit_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize RuleBasedValueCont to XML element.
@@ -80,12 +80,12 @@ class RuleBasedValueCont(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize unit
-        if self.unit is not None:
-            serialized = ARObject._serialize_item(self.unit, "Unit")
+        # Serialize unit_ref
+        if self.unit_ref is not None:
+            serialized = ARObject._serialize_item(self.unit_ref, "Unit")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("UNIT")
+                wrapped = ET.Element("UNIT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -122,11 +122,11 @@ class RuleBasedValueCont(ARObject):
             sw_arraysize_ref_value = ARRef.deserialize(child)
             obj.sw_arraysize_ref = sw_arraysize_ref_value
 
-        # Parse unit
-        child = ARObject._find_child_element(element, "UNIT")
+        # Parse unit_ref
+        child = ARObject._find_child_element(element, "UNIT-REF")
         if child is not None:
-            unit_value = ARObject._deserialize_by_tag(child, "Unit")
-            obj.unit = unit_value
+            unit_ref_value = ARRef.deserialize(child)
+            obj.unit_ref = unit_ref_value
 
         return obj
 

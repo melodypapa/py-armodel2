@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     SdgElementWithGid,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     MetaClassName,
@@ -41,14 +42,14 @@ class SdgClass(SdgElementWithGid):
     attributes: list[SdgAttribute]
     caption: Optional[Boolean]
     extends_meta: Optional[MetaClassName]
-    sdg_constraints: list[TraceableText]
+    sdg_constraint_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize SdgClass."""
         super().__init__()
         self.attributes: list[SdgAttribute] = []
         self.caption: Optional[Boolean] = None
         self.extends_meta: Optional[MetaClassName] = None
-        self.sdg_constraints: list[TraceableText] = []
+        self.sdg_constraint_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize SdgClass to XML element.
@@ -108,13 +109,20 @@ class SdgClass(SdgElementWithGid):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sdg_constraints (list to container "SDG-CONSTRAINTS")
-        if self.sdg_constraints:
-            wrapper = ET.Element("SDG-CONSTRAINTS")
-            for item in self.sdg_constraints:
+        # Serialize sdg_constraint_refs (list to container "SDG-CONSTRAINT-REFS")
+        if self.sdg_constraint_refs:
+            wrapper = ET.Element("SDG-CONSTRAINT-REFS")
+            for item in self.sdg_constraint_refs:
                 serialized = ARObject._serialize_item(item, "TraceableText")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("SDG-CONSTRAINT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -155,15 +163,21 @@ class SdgClass(SdgElementWithGid):
             extends_meta_value = child.text
             obj.extends_meta = extends_meta_value
 
-        # Parse sdg_constraints (list from container "SDG-CONSTRAINTS")
-        obj.sdg_constraints = []
-        container = ARObject._find_child_element(element, "SDG-CONSTRAINTS")
+        # Parse sdg_constraint_refs (list from container "SDG-CONSTRAINT-REFS")
+        obj.sdg_constraint_refs = []
+        container = ARObject._find_child_element(element, "SDG-CONSTRAINT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.sdg_constraints.append(child_value)
+                    obj.sdg_constraint_refs.append(child_value)
 
         return obj
 

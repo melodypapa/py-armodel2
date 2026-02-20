@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
     DiagnosticMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.J1939.diagnostic_j1939_node import (
     DiagnosticJ1939Node,
 )
@@ -36,15 +37,15 @@ class DiagnosticJ1939SpnMapping(DiagnosticMapping):
         """
         return False
 
-    sending_nodes: list[DiagnosticJ1939Node]
-    spn: Optional[DiagnosticJ1939Spn]
-    system_signal: Optional[SystemSignal]
+    sending_node_refs: list[ARRef]
+    spn_ref: Optional[ARRef]
+    system_signal_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DiagnosticJ1939SpnMapping."""
         super().__init__()
-        self.sending_nodes: list[DiagnosticJ1939Node] = []
-        self.spn: Optional[DiagnosticJ1939Spn] = None
-        self.system_signal: Optional[SystemSignal] = None
+        self.sending_node_refs: list[ARRef] = []
+        self.spn_ref: Optional[ARRef] = None
+        self.system_signal_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticJ1939SpnMapping to XML element.
@@ -66,22 +67,29 @@ class DiagnosticJ1939SpnMapping(DiagnosticMapping):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize sending_nodes (list to container "SENDING-NODES")
-        if self.sending_nodes:
-            wrapper = ET.Element("SENDING-NODES")
-            for item in self.sending_nodes:
+        # Serialize sending_node_refs (list to container "SENDING-NODE-REFS")
+        if self.sending_node_refs:
+            wrapper = ET.Element("SENDING-NODE-REFS")
+            for item in self.sending_node_refs:
                 serialized = ARObject._serialize_item(item, "DiagnosticJ1939Node")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("SENDING-NODE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize spn
-        if self.spn is not None:
-            serialized = ARObject._serialize_item(self.spn, "DiagnosticJ1939Spn")
+        # Serialize spn_ref
+        if self.spn_ref is not None:
+            serialized = ARObject._serialize_item(self.spn_ref, "DiagnosticJ1939Spn")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SPN")
+                wrapped = ET.Element("SPN-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -90,12 +98,12 @@ class DiagnosticJ1939SpnMapping(DiagnosticMapping):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize system_signal
-        if self.system_signal is not None:
-            serialized = ARObject._serialize_item(self.system_signal, "SystemSignal")
+        # Serialize system_signal_ref
+        if self.system_signal_ref is not None:
+            serialized = ARObject._serialize_item(self.system_signal_ref, "SystemSignal")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SYSTEM-SIGNAL")
+                wrapped = ET.Element("SYSTEM-SIGNAL-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -119,27 +127,33 @@ class DiagnosticJ1939SpnMapping(DiagnosticMapping):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticJ1939SpnMapping, cls).deserialize(element)
 
-        # Parse sending_nodes (list from container "SENDING-NODES")
-        obj.sending_nodes = []
-        container = ARObject._find_child_element(element, "SENDING-NODES")
+        # Parse sending_node_refs (list from container "SENDING-NODE-REFS")
+        obj.sending_node_refs = []
+        container = ARObject._find_child_element(element, "SENDING-NODE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.sending_nodes.append(child_value)
+                    obj.sending_node_refs.append(child_value)
 
-        # Parse spn
-        child = ARObject._find_child_element(element, "SPN")
+        # Parse spn_ref
+        child = ARObject._find_child_element(element, "SPN-REF")
         if child is not None:
-            spn_value = ARObject._deserialize_by_tag(child, "DiagnosticJ1939Spn")
-            obj.spn = spn_value
+            spn_ref_value = ARRef.deserialize(child)
+            obj.spn_ref = spn_ref_value
 
-        # Parse system_signal
-        child = ARObject._find_child_element(element, "SYSTEM-SIGNAL")
+        # Parse system_signal_ref
+        child = ARObject._find_child_element(element, "SYSTEM-SIGNAL-REF")
         if child is not None:
-            system_signal_value = ARObject._deserialize_by_tag(child, "SystemSignal")
-            obj.system_signal = system_signal_value
+            system_signal_ref_value = ARRef.deserialize(child)
+            obj.system_signal_ref = system_signal_ref_value
 
         return obj
 

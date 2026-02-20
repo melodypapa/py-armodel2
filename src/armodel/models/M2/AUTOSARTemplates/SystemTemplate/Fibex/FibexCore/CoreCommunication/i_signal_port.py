@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
     CommConnectorPort,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication import (
     HandleInvalidEnum,
 )
@@ -40,7 +41,7 @@ class ISignalPort(CommConnectorPort):
         return False
 
     data_filter: Optional[DataFilter]
-    dds_qos_profile: Optional[DdsCpQosProfile]
+    dds_qos_profile_ref: Optional[ARRef]
     first_timeout: Optional[TimeValue]
     handle_invalid_enum: Optional[HandleInvalidEnum]
     timeout: Optional[TimeValue]
@@ -48,7 +49,7 @@ class ISignalPort(CommConnectorPort):
         """Initialize ISignalPort."""
         super().__init__()
         self.data_filter: Optional[DataFilter] = None
-        self.dds_qos_profile: Optional[DdsCpQosProfile] = None
+        self.dds_qos_profile_ref: Optional[ARRef] = None
         self.first_timeout: Optional[TimeValue] = None
         self.handle_invalid_enum: Optional[HandleInvalidEnum] = None
         self.timeout: Optional[TimeValue] = None
@@ -87,12 +88,12 @@ class ISignalPort(CommConnectorPort):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize dds_qos_profile
-        if self.dds_qos_profile is not None:
-            serialized = ARObject._serialize_item(self.dds_qos_profile, "DdsCpQosProfile")
+        # Serialize dds_qos_profile_ref
+        if self.dds_qos_profile_ref is not None:
+            serialized = ARObject._serialize_item(self.dds_qos_profile_ref, "DdsCpQosProfile")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DDS-QOS-PROFILE")
+                wrapped = ET.Element("DDS-QOS-PROFILE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -164,11 +165,11 @@ class ISignalPort(CommConnectorPort):
             data_filter_value = ARObject._deserialize_by_tag(child, "DataFilter")
             obj.data_filter = data_filter_value
 
-        # Parse dds_qos_profile
-        child = ARObject._find_child_element(element, "DDS-QOS-PROFILE")
+        # Parse dds_qos_profile_ref
+        child = ARObject._find_child_element(element, "DDS-QOS-PROFILE-REF")
         if child is not None:
-            dds_qos_profile_value = ARObject._deserialize_by_tag(child, "DdsCpQosProfile")
-            obj.dds_qos_profile = dds_qos_profile_value
+            dds_qos_profile_ref_value = ARRef.deserialize(child)
+            obj.dds_qos_profile_ref = dds_qos_profile_ref_value
 
         # Parse first_timeout
         child = ARObject._find_child_element(element, "FIRST-TIMEOUT")

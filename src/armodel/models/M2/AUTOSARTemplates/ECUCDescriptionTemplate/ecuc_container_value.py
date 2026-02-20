@@ -37,14 +37,14 @@ class EcucContainerValue(Identifiable):
         """
         return False
 
-    definition: Optional[EcucContainerDef]
+    definition_ref: Optional[ARRef]
     parameter_values: list[EcucParameterValue]
     reference_value_refs: list[Any]
     sub_containers: list[EcucContainerValue]
     def __init__(self) -> None:
         """Initialize EcucContainerValue."""
         super().__init__()
-        self.definition: Optional[EcucContainerDef] = None
+        self.definition_ref: Optional[ARRef] = None
         self.parameter_values: list[EcucParameterValue] = []
         self.reference_value_refs: list[Any] = []
         self.sub_containers: list[EcucContainerValue] = []
@@ -69,12 +69,12 @@ class EcucContainerValue(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize definition
-        if self.definition is not None:
-            serialized = ARObject._serialize_item(self.definition, "EcucContainerDef")
+        # Serialize definition_ref
+        if self.definition_ref is not None:
+            serialized = ARObject._serialize_item(self.definition_ref, "EcucContainerDef")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DEFINITION")
+                wrapped = ET.Element("DEFINITION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -135,11 +135,11 @@ class EcucContainerValue(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucContainerValue, cls).deserialize(element)
 
-        # Parse definition
-        child = ARObject._find_child_element(element, "DEFINITION")
+        # Parse definition_ref
+        child = ARObject._find_child_element(element, "DEFINITION-REF")
         if child is not None:
-            definition_value = ARObject._deserialize_by_tag(child, "EcucContainerDef")
-            obj.definition = definition_value
+            definition_ref_value = ARRef.deserialize(child)
+            obj.definition_ref = definition_ref_value
 
         # Parse parameter_values (list from container "PARAMETER-VALUES")
         obj.parameter_values = []

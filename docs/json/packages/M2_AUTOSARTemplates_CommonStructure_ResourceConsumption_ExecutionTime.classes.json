@@ -49,15 +49,15 @@
         "exclusiveArea": {
           "type": "ExclusiveArea",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the ExclusiveArea this execution time is"
         },
         "executableEntity": {
           "type": "ExecutableEntity",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The executable entity for which this execution time is"
         },
         "hardware": {
@@ -70,8 +70,8 @@
         "hwElement": {
           "type": "HwElement",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The hardware element (e.g. type of ECU) for which the is specified."
         },
         "includedLibraries": {
@@ -126,15 +126,15 @@
         "providedMemory": {
           "type": "HwElement",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the hardware ProvidedMemorySegment."
         },
         "software": {
           "type": "MemorySection",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the MemorySection which is mapped on a"
         }
       }

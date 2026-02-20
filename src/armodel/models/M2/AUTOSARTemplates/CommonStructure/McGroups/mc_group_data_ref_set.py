@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from armodel.serialization.decorators import atp_variant
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.FlatMap.flat_instance_descriptor import (
     FlatInstanceDescriptor,
 )
@@ -34,13 +35,13 @@ class McGroupDataRefSet(ARObject):
         """
         return False
 
-    flat_map_entries: list[FlatInstanceDescriptor]
-    mc_data_instances: list[McDataInstance]
+    flat_map_entrie_refs: list[ARRef]
+    mc_data_instance_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize McGroupDataRefSet."""
         super().__init__()
-        self.flat_map_entries: list[FlatInstanceDescriptor] = []
-        self.mc_data_instances: list[McDataInstance] = []
+        self.flat_map_entrie_refs: list[ARRef] = []
+        self.mc_data_instance_refs: list[ARRef] = []
 
 
 

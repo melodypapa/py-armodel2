@@ -43,18 +43,18 @@ class PhysicalChannel(Identifiable, ABC):
         """
         return True
 
-    comm_connectors: list[CommunicationConnector]
+    comm_connector_refs: list[ARRef]
     frame_triggering_refs: list[ARRef]
     i_signal_refs: list[ARRef]
-    manageds: list[PhysicalChannel]
+    managed_refs: list[ARRef]
     pdu_triggering_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize PhysicalChannel."""
         super().__init__()
-        self.comm_connectors: list[CommunicationConnector] = []
+        self.comm_connector_refs: list[ARRef] = []
         self.frame_triggering_refs: list[ARRef] = []
         self.i_signal_refs: list[ARRef] = []
-        self.manageds: list[PhysicalChannel] = []
+        self.managed_refs: list[ARRef] = []
         self.pdu_triggering_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
@@ -77,13 +77,20 @@ class PhysicalChannel(Identifiable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize comm_connectors (list to container "COMM-CONNECTORS")
-        if self.comm_connectors:
-            wrapper = ET.Element("COMM-CONNECTORS")
-            for item in self.comm_connectors:
+        # Serialize comm_connector_refs (list to container "COMM-CONNECTOR-REFS")
+        if self.comm_connector_refs:
+            wrapper = ET.Element("COMM-CONNECTOR-REFS")
+            for item in self.comm_connector_refs:
                 serialized = ARObject._serialize_item(item, "CommunicationConnector")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("COMM-CONNECTOR-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -121,13 +128,20 @@ class PhysicalChannel(Identifiable, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize manageds (list to container "MANAGEDS")
-        if self.manageds:
-            wrapper = ET.Element("MANAGEDS")
-            for item in self.manageds:
+        # Serialize managed_refs (list to container "MANAGED-REFS")
+        if self.managed_refs:
+            wrapper = ET.Element("MANAGED-REFS")
+            for item in self.managed_refs:
                 serialized = ARObject._serialize_item(item, "PhysicalChannel")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("MANAGED-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -163,15 +177,21 @@ class PhysicalChannel(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PhysicalChannel, cls).deserialize(element)
 
-        # Parse comm_connectors (list from container "COMM-CONNECTORS")
-        obj.comm_connectors = []
-        container = ARObject._find_child_element(element, "COMM-CONNECTORS")
+        # Parse comm_connector_refs (list from container "COMM-CONNECTOR-REFS")
+        obj.comm_connector_refs = []
+        container = ARObject._find_child_element(element, "COMM-CONNECTOR-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.comm_connectors.append(child_value)
+                    obj.comm_connector_refs.append(child_value)
 
         # Parse frame_triggering_refs (list from container "FRAME-TRIGGERING-REFS")
         obj.frame_triggering_refs = []
@@ -205,15 +225,21 @@ class PhysicalChannel(Identifiable, ABC):
                 if child_value is not None:
                     obj.i_signal_refs.append(child_value)
 
-        # Parse manageds (list from container "MANAGEDS")
-        obj.manageds = []
-        container = ARObject._find_child_element(element, "MANAGEDS")
+        # Parse managed_refs (list from container "MANAGED-REFS")
+        obj.managed_refs = []
+        container = ARObject._find_child_element(element, "MANAGED-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.manageds.append(child_value)
+                    obj.managed_refs.append(child_value)
 
         # Parse pdu_triggering_refs (list from container "PDU-TRIGGERING-REFS")
         obj.pdu_triggering_refs = []

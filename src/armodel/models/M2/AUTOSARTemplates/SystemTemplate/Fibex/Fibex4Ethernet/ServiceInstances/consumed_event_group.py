@@ -45,27 +45,27 @@ class ConsumedEventGroup(Identifiable):
         """
         return False
 
-    application_endpoint: Optional[ApplicationEndpoint]
+    application_endpoint_ref: Optional[ARRef]
     auto_require: Optional[Boolean]
     event_group: Optional[PositiveInteger]
-    event_multicasts: list[ApplicationEndpoint]
+    event_multicast_refs: list[ARRef]
     pdu_activation_routings: list[PduActivationRoutingGroup]
     priority: Optional[PositiveInteger]
     routing_group_refs: list[ARRef]
     sd_client_config: Optional[Any]
-    sd_client_timer: Optional[SomeipSdClientEventGroupTimingConfig]
+    sd_client_timer_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ConsumedEventGroup."""
         super().__init__()
-        self.application_endpoint: Optional[ApplicationEndpoint] = None
+        self.application_endpoint_ref: Optional[ARRef] = None
         self.auto_require: Optional[Boolean] = None
         self.event_group: Optional[PositiveInteger] = None
-        self.event_multicasts: list[ApplicationEndpoint] = []
+        self.event_multicast_refs: list[ARRef] = []
         self.pdu_activation_routings: list[PduActivationRoutingGroup] = []
         self.priority: Optional[PositiveInteger] = None
         self.routing_group_refs: list[ARRef] = []
         self.sd_client_config: Optional[Any] = None
-        self.sd_client_timer: Optional[SomeipSdClientEventGroupTimingConfig] = None
+        self.sd_client_timer_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize ConsumedEventGroup to XML element.
@@ -87,12 +87,12 @@ class ConsumedEventGroup(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize application_endpoint
-        if self.application_endpoint is not None:
-            serialized = ARObject._serialize_item(self.application_endpoint, "ApplicationEndpoint")
+        # Serialize application_endpoint_ref
+        if self.application_endpoint_ref is not None:
+            serialized = ARObject._serialize_item(self.application_endpoint_ref, "ApplicationEndpoint")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("APPLICATION-ENDPOINT")
+                wrapped = ET.Element("APPLICATION-ENDPOINT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -129,13 +129,20 @@ class ConsumedEventGroup(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize event_multicasts (list to container "EVENT-MULTICASTS")
-        if self.event_multicasts:
-            wrapper = ET.Element("EVENT-MULTICASTS")
-            for item in self.event_multicasts:
+        # Serialize event_multicast_refs (list to container "EVENT-MULTICAST-REFS")
+        if self.event_multicast_refs:
+            wrapper = ET.Element("EVENT-MULTICAST-REFS")
+            for item in self.event_multicast_refs:
                 serialized = ARObject._serialize_item(item, "ApplicationEndpoint")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("EVENT-MULTICAST-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -194,12 +201,12 @@ class ConsumedEventGroup(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sd_client_timer
-        if self.sd_client_timer is not None:
-            serialized = ARObject._serialize_item(self.sd_client_timer, "SomeipSdClientEventGroupTimingConfig")
+        # Serialize sd_client_timer_ref
+        if self.sd_client_timer_ref is not None:
+            serialized = ARObject._serialize_item(self.sd_client_timer_ref, "SomeipSdClientEventGroupTimingConfig")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SD-CLIENT-TIMER")
+                wrapped = ET.Element("SD-CLIENT-TIMER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -223,11 +230,11 @@ class ConsumedEventGroup(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ConsumedEventGroup, cls).deserialize(element)
 
-        # Parse application_endpoint
-        child = ARObject._find_child_element(element, "APPLICATION-ENDPOINT")
+        # Parse application_endpoint_ref
+        child = ARObject._find_child_element(element, "APPLICATION-ENDPOINT-REF")
         if child is not None:
-            application_endpoint_value = ARObject._deserialize_by_tag(child, "ApplicationEndpoint")
-            obj.application_endpoint = application_endpoint_value
+            application_endpoint_ref_value = ARRef.deserialize(child)
+            obj.application_endpoint_ref = application_endpoint_ref_value
 
         # Parse auto_require
         child = ARObject._find_child_element(element, "AUTO-REQUIRE")
@@ -241,15 +248,21 @@ class ConsumedEventGroup(Identifiable):
             event_group_value = child.text
             obj.event_group = event_group_value
 
-        # Parse event_multicasts (list from container "EVENT-MULTICASTS")
-        obj.event_multicasts = []
-        container = ARObject._find_child_element(element, "EVENT-MULTICASTS")
+        # Parse event_multicast_refs (list from container "EVENT-MULTICAST-REFS")
+        obj.event_multicast_refs = []
+        container = ARObject._find_child_element(element, "EVENT-MULTICAST-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.event_multicasts.append(child_value)
+                    obj.event_multicast_refs.append(child_value)
 
         # Parse pdu_activation_routings (list from container "PDU-ACTIVATION-ROUTINGS")
         obj.pdu_activation_routings = []
@@ -289,11 +302,11 @@ class ConsumedEventGroup(Identifiable):
             sd_client_config_value = child.text
             obj.sd_client_config = sd_client_config_value
 
-        # Parse sd_client_timer
-        child = ARObject._find_child_element(element, "SD-CLIENT-TIMER")
+        # Parse sd_client_timer_ref
+        child = ARObject._find_child_element(element, "SD-CLIENT-TIMER-REF")
         if child is not None:
-            sd_client_timer_value = ARObject._deserialize_by_tag(child, "SomeipSdClientEventGroupTimingConfig")
-            obj.sd_client_timer = sd_client_timer_value
+            sd_client_timer_ref_value = ARRef.deserialize(child)
+            obj.sd_client_timer_ref = sd_client_timer_ref_value
 
         return obj
 

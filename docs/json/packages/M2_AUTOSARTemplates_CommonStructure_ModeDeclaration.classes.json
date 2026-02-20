@@ -146,8 +146,8 @@
         "initialMode": {
           "type": "ModeDeclaration",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The initial mode of the ModeDeclarationGroup. This active before any mode switches occurred."
         },
         "modes": {
@@ -297,15 +297,15 @@
         "enteredMode": {
           "type": "ModeDeclaration",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the entered model of the ModeTransition."
         },
         "exitedMode": {
           "type": "ModeDeclaration",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the exited mode of the ModeTransition"
         }
       }
@@ -346,8 +346,8 @@
         "defaultMode": {
           "type": "ModeDeclaration",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the ModeDeclaration that is considered mode in the context of the enclosing Mode"
         },
         "errorReaction": {
@@ -394,8 +394,8 @@
         "implementation": {
           "type": "AbstractImplementationDataType",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This is the corresponding AbstractImplementationData type."
         },
         "modeGroup": {
@@ -443,8 +443,8 @@
         "mode": {
           "type": "ModeDeclaration",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the available mappings of Mode Declarations in the context ot this ModeDeclarationGroup"
         },
         "secondMode": {

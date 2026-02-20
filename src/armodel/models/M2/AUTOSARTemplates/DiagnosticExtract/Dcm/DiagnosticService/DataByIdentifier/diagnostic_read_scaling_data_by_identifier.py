@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticDataByIdentifier,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
 class DiagnosticReadScalingDataByIdentifier(DiagnosticDataByIdentifier):
@@ -27,11 +28,11 @@ class DiagnosticReadScalingDataByIdentifier(DiagnosticDataByIdentifier):
         """
         return False
 
-    read_scaling: Optional[Any]
+    read_scaling_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticReadScalingDataByIdentifier."""
         super().__init__()
-        self.read_scaling: Optional[Any] = None
+        self.read_scaling_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticReadScalingDataByIdentifier to XML element.
@@ -53,12 +54,12 @@ class DiagnosticReadScalingDataByIdentifier(DiagnosticDataByIdentifier):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize read_scaling
-        if self.read_scaling is not None:
-            serialized = ARObject._serialize_item(self.read_scaling, "Any")
+        # Serialize read_scaling_ref
+        if self.read_scaling_ref is not None:
+            serialized = ARObject._serialize_item(self.read_scaling_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("READ-SCALING")
+                wrapped = ET.Element("READ-SCALING-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -82,11 +83,11 @@ class DiagnosticReadScalingDataByIdentifier(DiagnosticDataByIdentifier):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticReadScalingDataByIdentifier, cls).deserialize(element)
 
-        # Parse read_scaling
-        child = ARObject._find_child_element(element, "READ-SCALING")
+        # Parse read_scaling_ref
+        child = ARObject._find_child_element(element, "READ-SCALING-REF")
         if child is not None:
-            read_scaling_value = child.text
-            obj.read_scaling = read_scaling_value
+            read_scaling_ref_value = ARRef.deserialize(child)
+            obj.read_scaling_ref = read_scaling_ref_value
 
         return obj
 

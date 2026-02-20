@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.nm_clus
     NmCluster,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
     PositiveInteger,
@@ -41,7 +42,7 @@ class UdpNmCluster(NmCluster):
     nm_remote: Optional[TimeValue]
     nm_repeat: Optional[TimeValue]
     nm_wait_bus: Optional[TimeValue]
-    vlan: Optional[Any]
+    vlan_ref: Optional[Any]
     def __init__(self) -> None:
         """Initialize UdpNmCluster."""
         super().__init__()
@@ -54,7 +55,7 @@ class UdpNmCluster(NmCluster):
         self.nm_remote: Optional[TimeValue] = None
         self.nm_repeat: Optional[TimeValue] = None
         self.nm_wait_bus: Optional[TimeValue] = None
-        self.vlan: Optional[Any] = None
+        self.vlan_ref: Optional[Any] = None
 
     def serialize(self) -> ET.Element:
         """Serialize UdpNmCluster to XML element.
@@ -202,12 +203,12 @@ class UdpNmCluster(NmCluster):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize vlan
-        if self.vlan is not None:
-            serialized = ARObject._serialize_item(self.vlan, "Any")
+        # Serialize vlan_ref
+        if self.vlan_ref is not None:
+            serialized = ARObject._serialize_item(self.vlan_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("VLAN")
+                wrapped = ET.Element("VLAN-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -285,11 +286,11 @@ class UdpNmCluster(NmCluster):
             nm_wait_bus_value = child.text
             obj.nm_wait_bus = nm_wait_bus_value
 
-        # Parse vlan
-        child = ARObject._find_child_element(element, "VLAN")
+        # Parse vlan_ref
+        child = ARObject._find_child_element(element, "VLAN-REF")
         if child is not None:
-            vlan_value = child.text
-            obj.vlan = vlan_value
+            vlan_ref_value = ARRef.deserialize(child)
+            obj.vlan_ref = vlan_ref_value
 
         return obj
 

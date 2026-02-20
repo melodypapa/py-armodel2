@@ -297,8 +297,8 @@
         "implemented": {
           "type": "BswModuleEntry",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The entry which is implemented by this module entity."
         },
         "issuedTriggers": {
@@ -318,8 +318,8 @@
         "schedulerName": {
           "type": "BswSchedulerNamePrefix",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "A prefix to be used in generated names for the Bsw ModuleScheduler in the context of this BswModuleEntity, entry point prototypes, macros for dealing areas, header file names. defined in the SWS RTE. supersedes default rules for the prefix of those"
         }
       }
@@ -493,8 +493,8 @@
         "contexts": {
           "type": "BswDistinguishedPartition",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The existence of this reference indicates that the call point is used only in the context of the referred Bsw"
         }
       }
@@ -530,15 +530,15 @@
         "calledEntry": {
           "type": "BswModuleEntry",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The BswModuleEntry called at this point."
         },
         "calledFrom": {
           "type": "ExclusiveAreaNestingOrder",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This indicates that the call point is located at the deepest level inside one or more ExclusiveAreas that are nested the given order."
         }
       }
@@ -574,15 +574,15 @@
         "calledEntryEntry": {
           "type": "BswModuleClientServerEntry",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The entry to be called."
         },
         "calledFrom": {
           "type": "ExclusiveAreaNestingOrder",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This indicates that the call point is located at the deepest level inside one or more ExclusiveAreas that are nested the given order."
         }
       }
@@ -618,8 +618,8 @@
         "calledEntryEntry": {
           "type": "BswModuleClientServerEntry",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The entry to be called."
         }
       }
@@ -655,8 +655,8 @@
         "asynchronous": {
           "type": "any (BswAsynchronous)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The call point invoking the call to which the result belongs."
         }
       }
@@ -699,8 +699,8 @@
         "contexts": {
           "type": "BswDistinguishedPartition",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The existence of this reference indicates that the variable is received resp. sent only in the context of the referred"
         }
       }
@@ -742,8 +742,8 @@
         "exclusiveArea": {
           "type": "ExclusiveArea",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The ExclusiveArea for which the BSW Scheduler using"
         }
       }
@@ -824,8 +824,8 @@
         "contexts": {
           "type": "BswDistinguishedPartition",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The existence of this reference indicates that the usage of the event is limited to the context of the referred Bsw"
         },
         "disabledInModeDescriptionInstanceRefs": {
@@ -838,8 +838,8 @@
         "startsOnEvent": {
           "type": "BswModuleEntity",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The entity which is started by the event."
         }
       }
@@ -1320,8 +1320,8 @@
         "entry": {
           "type": "BswModuleClientServerEntry",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The providedClientServerEntry invoked by this event."
         }
       }
@@ -1361,8 +1361,8 @@
         "eventSource": {
           "type": "any (BswAsynchronous)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The call point to be used for retrieving the result."
         }
       }
@@ -1800,8 +1800,8 @@
         "assignedEntry": {
           "type": "BswModuleEntry",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The assigned entry. It should be an implementedEntry or the module or cluster that requires the"
         },
         "role": {

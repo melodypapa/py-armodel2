@@ -91,8 +91,8 @@
         "initialized": {
           "type": "FlatInstanceDescriptor",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the parameter that is initialized by the"
         }
       }

@@ -167,8 +167,8 @@
         "hardwares": {
           "type": "HwDescriptionEntity",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference from the ComplexDeviceDriverSwComponent to the description of the used HwElements."
         }
       }
@@ -233,8 +233,8 @@
         "hardwares": {
           "type": "HwDescriptionEntity",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference from the EcuAbstractionComponentType to the of the used HwElements."
         }
       }
@@ -842,8 +842,8 @@
         "constants": {
           "type": "ConstantSpecification",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the ConstantSpecificationMapping to be applied for the particular ParameterSwComponentType"
         },
         "dataTypes": {
@@ -1206,8 +1206,8 @@
         "sensorActuator": {
           "type": "HwDescriptionEntity",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference from the Sensor Actuator Software Component the description of the actual hardware."
         }
       }

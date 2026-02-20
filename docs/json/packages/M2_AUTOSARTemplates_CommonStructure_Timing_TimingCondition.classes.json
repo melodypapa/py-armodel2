@@ -69,36 +69,36 @@
         "timingArgumentArgumentInstance": {
           "type": "AutosarOperationArgumentInstance",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This refers to an argument of an operation call."
         },
         "timingCondition": {
           "type": "TimingCondition",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This refers to a timing condition that is part of an the dependency on a specific"
         },
         "timingEvent": {
           "type": "TimingDescriptionEvent",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This refers to a timing event."
         },
         "timingMode": {
           "type": "TimingModeInstance",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This refers to a mode declaration."
         },
         "timingVariableInstance": {
           "type": "any (AutosarVariable)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This refers to a variable."
         }
       }
@@ -224,8 +224,8 @@
         "contextBsw": {
           "type": "BswImplementation",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Specifies the BSW implementation that manifests the"
         },
         "contextMode": {
@@ -238,8 +238,8 @@
         "targetMode": {
           "type": "ModeDeclaration",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Specifies the specific mode declaration in the given"
         }
       }
@@ -276,15 +276,15 @@
         "base": {
           "type": "SwComponentType",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Specifies the SW component representing the base of the"
         },
         "contexts": {
           "type": "any (SwComponent)",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Specifies the SW component prototype representing the"
         },
         "contextMode": {
@@ -304,8 +304,8 @@
         "targetMode": {
           "type": "ModeDeclaration",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Specifies the specific mode declaration in the given"
         }
       }

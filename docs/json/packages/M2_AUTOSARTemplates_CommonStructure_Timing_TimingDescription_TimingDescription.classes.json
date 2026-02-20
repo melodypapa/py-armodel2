@@ -82,8 +82,8 @@
         "referencedTDEventVfb": {
           "type": "TDEventVfb",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The referenced timing description event."
         }
       }
@@ -244,8 +244,8 @@
         "operation": {
           "type": "ClientServerOperation",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The referenced operation."
         },
         "tdEvent": {
@@ -293,15 +293,15 @@
         "entryMode": {
           "type": "ModeDeclaration",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Optional parameter which refines the scope of the If the parameter is set, the only if the mode declaration group prototype enter into the referenced ModeDeclaration."
         },
         "exitMode": {
           "type": "ModeDeclaration",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Optional parameter which refines the scope of the If the parameter is set, the only if the mode declaration group prototype exit from the referenced ModeDeclaration."
         },
         "mode": {
@@ -450,8 +450,8 @@
         "runnable": {
           "type": "RunnableEntity",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The scope of this timing event."
         },
         "tdEventSwcBehaviorType": {
@@ -464,8 +464,8 @@
         "variableAccess": {
           "type": "VariableAccess",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The scope of this timing event."
         }
       }
@@ -505,8 +505,8 @@
         "referencedTDEventSwc": {
           "type": "TDEventSwc",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The referenced timing description event."
         }
       }
@@ -557,8 +557,8 @@
         "ecuInstance": {
           "type": "EcuInstance",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The ECU context for a particular timing event. The link is the EcuInstance can not be defined for type TDEventCycleStart."
         }
       }
@@ -598,15 +598,15 @@
         "iSignal": {
           "type": "ISignal",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The scope of this timing event."
         },
         "physicalChannel": {
           "type": "PhysicalChannel",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The PhysicalChannel on which the ISignal is transmitted."
         },
         "tdEventTypeEnum": {
@@ -653,15 +653,15 @@
         "iPdu": {
           "type": "IPdu",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The scope of this timing event."
         },
         "physicalChannel": {
           "type": "PhysicalChannel",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The PhysicalChannel on which the IPdu is transmitted."
         },
         "tdEventType": {
@@ -708,15 +708,15 @@
         "frame": {
           "type": "Frame",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The scope of this timing event."
         },
         "physicalChannel": {
           "type": "PhysicalChannel",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The PhysicalChannel on which the Frame is transmitted."
         },
         "tdEventTypeEnum": {
@@ -763,8 +763,8 @@
         "staticSocket": {
           "type": "StaticSocketConnection",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Specifies the SocketConnection by the means of which Data Units (PDU) are transmitted or received Ethernet Frame."
         },
         "tdEventType": {
@@ -915,8 +915,8 @@
         "frCluster": {
           "type": "FlexrayCluster",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The scope of this timing event."
         }
       }
@@ -957,8 +957,8 @@
         "ttCanCluster": {
           "type": "TtcanCluster",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The scope of this timing event."
         }
       }
@@ -997,8 +997,8 @@
         "bswModuleEntityEntity": {
           "type": "BswModuleEntity",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The scope of this timing event."
         },
         "tdEventBswBehaviorType": {
@@ -1045,8 +1045,8 @@
         "bswModuleEntryEntry": {
           "type": "BswModuleEntry",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The scope of this timing event."
         },
         "tdEventBsw": {
@@ -1093,15 +1093,15 @@
         "entryMode": {
           "type": "ModeDeclaration",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Optional parameter which refines the scope of the If the parameter is set, the only if the mode declaration group prototype enter into the referenced ModeDeclaration."
         },
         "exitMode": {
           "type": "ModeDeclaration",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Optional parameter which refines the scope of the If the parameter is set, the only if the mode declaration group prototype exit from the referenced ModeDeclaration."
         },
         "mode": {
@@ -1279,29 +1279,29 @@
         "argument": {
           "type": "AutosarOperationArgumentInstance",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This is one particular argument value used in the formula."
         },
         "event": {
           "type": "TimingDescriptionEvent",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This is one particular timing description event used in the"
         },
         "mode": {
           "type": "TimingModeInstance",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This is one particular mode used in the expression"
         },
         "variable": {
           "type": "any (AutosarVariable)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This is one particular variable value used in the formula."
         }
       }
@@ -1424,8 +1424,8 @@
         "bswModuleDescription": {
           "type": "BswModuleDescription",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The scope of this timing event."
         }
       }

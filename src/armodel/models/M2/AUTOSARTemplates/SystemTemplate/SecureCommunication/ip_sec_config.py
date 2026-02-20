@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.ip_sec_config_props import (
     IPSecConfigProps,
 )
@@ -33,12 +34,12 @@ class IPSecConfig(ARObject):
         """
         return False
 
-    ip_sec_config: Optional[IPSecConfigProps]
+    ip_sec_config_ref: Optional[ARRef]
     ip_sec_rules: list[IPSecRule]
     def __init__(self) -> None:
         """Initialize IPSecConfig."""
         super().__init__()
-        self.ip_sec_config: Optional[IPSecConfigProps] = None
+        self.ip_sec_config_ref: Optional[ARRef] = None
         self.ip_sec_rules: list[IPSecRule] = []
 
     def serialize(self) -> ET.Element:
@@ -51,12 +52,12 @@ class IPSecConfig(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize ip_sec_config
-        if self.ip_sec_config is not None:
-            serialized = ARObject._serialize_item(self.ip_sec_config, "IPSecConfigProps")
+        # Serialize ip_sec_config_ref
+        if self.ip_sec_config_ref is not None:
+            serialized = ARObject._serialize_item(self.ip_sec_config_ref, "IPSecConfigProps")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("IP-SEC-CONFIG")
+                wrapped = ET.Element("IP-SEC-CONFIG-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -91,11 +92,11 @@ class IPSecConfig(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse ip_sec_config
-        child = ARObject._find_child_element(element, "IP-SEC-CONFIG")
+        # Parse ip_sec_config_ref
+        child = ARObject._find_child_element(element, "IP-SEC-CONFIG-REF")
         if child is not None:
-            ip_sec_config_value = ARObject._deserialize_by_tag(child, "IPSecConfigProps")
-            obj.ip_sec_config = ip_sec_config_value
+            ip_sec_config_ref_value = ARRef.deserialize(child)
+            obj.ip_sec_config_ref = ip_sec_config_ref_value
 
         # Parse ip_sec_rules (list from container "IP-SEC-RULES")
         obj.ip_sec_rules = []

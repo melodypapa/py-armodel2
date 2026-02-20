@@ -35,13 +35,13 @@ class ModeGroupInAtomicSwcInstanceRef(ARObject, ABC):
         """
         return True
 
-    base: Optional[AtomicSwComponentType]
+    base_ref: Optional[ARRef]
     context_port_ref: Optional[ARRef]
     target_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ModeGroupInAtomicSwcInstanceRef."""
         super().__init__()
-        self.base: Optional[AtomicSwComponentType] = None
+        self.base_ref: Optional[ARRef] = None
         self.context_port_ref: Optional[ARRef] = None
         self.target_ref: Optional[ARRef] = None
 
@@ -55,12 +55,12 @@ class ModeGroupInAtomicSwcInstanceRef(ARObject, ABC):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize base
-        if self.base is not None:
-            serialized = ARObject._serialize_item(self.base, "AtomicSwComponentType")
+        # Serialize base_ref
+        if self.base_ref is not None:
+            serialized = ARObject._serialize_item(self.base_ref, "AtomicSwComponentType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("BASE")
+                wrapped = ET.Element("BASE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -113,11 +113,11 @@ class ModeGroupInAtomicSwcInstanceRef(ARObject, ABC):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse base
-        child = ARObject._find_child_element(element, "BASE")
+        # Parse base_ref
+        child = ARObject._find_child_element(element, "BASE-REF")
         if child is not None:
-            base_value = ARObject._deserialize_by_tag(child, "AtomicSwComponentType")
-            obj.base = base_value
+            base_ref_value = ARRef.deserialize(child)
+            obj.base_ref = base_ref_value
 
         # Parse context_port_ref
         child = ARObject._find_child_element(element, "CONTEXT-PORT-REF")

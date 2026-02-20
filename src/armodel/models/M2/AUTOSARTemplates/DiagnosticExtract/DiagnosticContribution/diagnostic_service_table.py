@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     NameToken,
 )
@@ -36,17 +37,17 @@ class DiagnosticServiceTable(DiagnosticCommonElement):
         """
         return False
 
-    diagnostics: list[DiagnosticConnection]
-    ecu_instance: Optional[EcuInstance]
+    diagnostic_refs: list[ARRef]
+    ecu_instance_ref: Optional[ARRef]
     protocol_kind: Optional[NameToken]
-    service_instances: list[Any]
+    service_instance_refs: list[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticServiceTable."""
         super().__init__()
-        self.diagnostics: list[DiagnosticConnection] = []
-        self.ecu_instance: Optional[EcuInstance] = None
+        self.diagnostic_refs: list[ARRef] = []
+        self.ecu_instance_ref: Optional[ARRef] = None
         self.protocol_kind: Optional[NameToken] = None
-        self.service_instances: list[Any] = []
+        self.service_instance_refs: list[Any] = []
 
     def serialize(self) -> ET.Element:
         """Serialize DiagnosticServiceTable to XML element.
@@ -68,22 +69,29 @@ class DiagnosticServiceTable(DiagnosticCommonElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize diagnostics (list to container "DIAGNOSTICS")
-        if self.diagnostics:
-            wrapper = ET.Element("DIAGNOSTICS")
-            for item in self.diagnostics:
+        # Serialize diagnostic_refs (list to container "DIAGNOSTIC-REFS")
+        if self.diagnostic_refs:
+            wrapper = ET.Element("DIAGNOSTIC-REFS")
+            for item in self.diagnostic_refs:
                 serialized = ARObject._serialize_item(item, "DiagnosticConnection")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("DIAGNOSTIC-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize ecu_instance
-        if self.ecu_instance is not None:
-            serialized = ARObject._serialize_item(self.ecu_instance, "EcuInstance")
+        # Serialize ecu_instance_ref
+        if self.ecu_instance_ref is not None:
+            serialized = ARObject._serialize_item(self.ecu_instance_ref, "EcuInstance")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ECU-INSTANCE")
+                wrapped = ET.Element("ECU-INSTANCE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -106,13 +114,20 @@ class DiagnosticServiceTable(DiagnosticCommonElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize service_instances (list to container "SERVICE-INSTANCES")
-        if self.service_instances:
-            wrapper = ET.Element("SERVICE-INSTANCES")
-            for item in self.service_instances:
+        # Serialize service_instance_refs (list to container "SERVICE-INSTANCE-REFS")
+        if self.service_instance_refs:
+            wrapper = ET.Element("SERVICE-INSTANCE-REFS")
+            for item in self.service_instance_refs:
                 serialized = ARObject._serialize_item(item, "Any")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("SERVICE-INSTANCE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -131,21 +146,27 @@ class DiagnosticServiceTable(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticServiceTable, cls).deserialize(element)
 
-        # Parse diagnostics (list from container "DIAGNOSTICS")
-        obj.diagnostics = []
-        container = ARObject._find_child_element(element, "DIAGNOSTICS")
+        # Parse diagnostic_refs (list from container "DIAGNOSTIC-REFS")
+        obj.diagnostic_refs = []
+        container = ARObject._find_child_element(element, "DIAGNOSTIC-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.diagnostics.append(child_value)
+                    obj.diagnostic_refs.append(child_value)
 
-        # Parse ecu_instance
-        child = ARObject._find_child_element(element, "ECU-INSTANCE")
+        # Parse ecu_instance_ref
+        child = ARObject._find_child_element(element, "ECU-INSTANCE-REF")
         if child is not None:
-            ecu_instance_value = ARObject._deserialize_by_tag(child, "EcuInstance")
-            obj.ecu_instance = ecu_instance_value
+            ecu_instance_ref_value = ARRef.deserialize(child)
+            obj.ecu_instance_ref = ecu_instance_ref_value
 
         # Parse protocol_kind
         child = ARObject._find_child_element(element, "PROTOCOL-KIND")
@@ -153,15 +174,21 @@ class DiagnosticServiceTable(DiagnosticCommonElement):
             protocol_kind_value = child.text
             obj.protocol_kind = protocol_kind_value
 
-        # Parse service_instances (list from container "SERVICE-INSTANCES")
-        obj.service_instances = []
-        container = ARObject._find_child_element(element, "SERVICE-INSTANCES")
+        # Parse service_instance_refs (list from container "SERVICE-INSTANCE-REFS")
+        obj.service_instance_refs = []
+        container = ARObject._find_child_element(element, "SERVICE-INSTANCE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.service_instances.append(child_value)
+                    obj.service_instance_refs.append(child_value)
 
         return obj
 

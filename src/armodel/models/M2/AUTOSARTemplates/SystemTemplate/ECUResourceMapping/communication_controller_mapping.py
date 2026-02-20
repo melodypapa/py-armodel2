@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_controller import (
     CommunicationController,
 )
@@ -30,13 +31,13 @@ class CommunicationControllerMapping(ARObject):
         """
         return False
 
-    communication_controller: Optional[CommunicationController]
-    hw: Optional[HwElement]
+    communication_controller_ref: Optional[ARRef]
+    hw_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize CommunicationControllerMapping."""
         super().__init__()
-        self.communication_controller: Optional[CommunicationController] = None
-        self.hw: Optional[HwElement] = None
+        self.communication_controller_ref: Optional[ARRef] = None
+        self.hw_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize CommunicationControllerMapping to XML element.
@@ -48,12 +49,12 @@ class CommunicationControllerMapping(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize communication_controller
-        if self.communication_controller is not None:
-            serialized = ARObject._serialize_item(self.communication_controller, "CommunicationController")
+        # Serialize communication_controller_ref
+        if self.communication_controller_ref is not None:
+            serialized = ARObject._serialize_item(self.communication_controller_ref, "CommunicationController")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("COMMUNICATION-CONTROLLER")
+                wrapped = ET.Element("COMMUNICATION-CONTROLLER-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -62,12 +63,12 @@ class CommunicationControllerMapping(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize hw
-        if self.hw is not None:
-            serialized = ARObject._serialize_item(self.hw, "HwElement")
+        # Serialize hw_ref
+        if self.hw_ref is not None:
+            serialized = ARObject._serialize_item(self.hw_ref, "HwElement")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("HW")
+                wrapped = ET.Element("HW-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -92,17 +93,17 @@ class CommunicationControllerMapping(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse communication_controller
-        child = ARObject._find_child_element(element, "COMMUNICATION-CONTROLLER")
+        # Parse communication_controller_ref
+        child = ARObject._find_child_element(element, "COMMUNICATION-CONTROLLER-REF")
         if child is not None:
-            communication_controller_value = ARObject._deserialize_by_tag(child, "CommunicationController")
-            obj.communication_controller = communication_controller_value
+            communication_controller_ref_value = ARRef.deserialize(child)
+            obj.communication_controller_ref = communication_controller_ref_value
 
-        # Parse hw
-        child = ARObject._find_child_element(element, "HW")
+        # Parse hw_ref
+        child = ARObject._find_child_element(element, "HW-REF")
         if child is not None:
-            hw_value = ARObject._deserialize_by_tag(child, "HwElement")
-            obj.hw = hw_value
+            hw_ref_value = ARRef.deserialize(child)
+            obj.hw_ref = hw_ref_value
 
         return obj
 

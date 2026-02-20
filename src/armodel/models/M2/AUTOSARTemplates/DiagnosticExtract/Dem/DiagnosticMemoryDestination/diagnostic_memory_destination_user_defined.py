@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticMemoryDe
     DiagnosticMemoryDestination,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -33,12 +34,12 @@ class DiagnosticMemoryDestinationUserDefined(DiagnosticMemoryDestination):
         """
         return False
 
-    auth_roles: list[DiagnosticAuthRole]
+    auth_role_refs: list[ARRef]
     memory_id: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize DiagnosticMemoryDestinationUserDefined."""
         super().__init__()
-        self.auth_roles: list[DiagnosticAuthRole] = []
+        self.auth_role_refs: list[ARRef] = []
         self.memory_id: Optional[PositiveInteger] = None
 
     def serialize(self) -> ET.Element:
@@ -61,13 +62,20 @@ class DiagnosticMemoryDestinationUserDefined(DiagnosticMemoryDestination):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize auth_roles (list to container "AUTH-ROLES")
-        if self.auth_roles:
-            wrapper = ET.Element("AUTH-ROLES")
-            for item in self.auth_roles:
+        # Serialize auth_role_refs (list to container "AUTH-ROLE-REFS")
+        if self.auth_role_refs:
+            wrapper = ET.Element("AUTH-ROLE-REFS")
+            for item in self.auth_role_refs:
                 serialized = ARObject._serialize_item(item, "DiagnosticAuthRole")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("AUTH-ROLE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -100,15 +108,21 @@ class DiagnosticMemoryDestinationUserDefined(DiagnosticMemoryDestination):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticMemoryDestinationUserDefined, cls).deserialize(element)
 
-        # Parse auth_roles (list from container "AUTH-ROLES")
-        obj.auth_roles = []
-        container = ARObject._find_child_element(element, "AUTH-ROLES")
+        # Parse auth_role_refs (list from container "AUTH-ROLE-REFS")
+        obj.auth_role_refs = []
+        container = ARObject._find_child_element(element, "AUTH-ROLE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.auth_roles.append(child_value)
+                    obj.auth_role_refs.append(child_value)
 
         # Parse memory_id
         child = ARObject._find_child_element(element, "MEMORY-ID")

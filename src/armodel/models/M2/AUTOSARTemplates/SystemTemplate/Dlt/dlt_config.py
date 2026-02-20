@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -33,14 +34,14 @@ class DltConfig(ARObject):
         """
         return False
 
-    dlt_ecu: Optional[DltEcu]
+    dlt_ecu_ref: Optional[ARRef]
     dlt_log_channels: list[DltLogChannel]
     session_id: Optional[Boolean]
     timestamp: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize DltConfig."""
         super().__init__()
-        self.dlt_ecu: Optional[DltEcu] = None
+        self.dlt_ecu_ref: Optional[ARRef] = None
         self.dlt_log_channels: list[DltLogChannel] = []
         self.session_id: Optional[Boolean] = None
         self.timestamp: Optional[Boolean] = None
@@ -55,12 +56,12 @@ class DltConfig(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize dlt_ecu
-        if self.dlt_ecu is not None:
-            serialized = ARObject._serialize_item(self.dlt_ecu, "DltEcu")
+        # Serialize dlt_ecu_ref
+        if self.dlt_ecu_ref is not None:
+            serialized = ARObject._serialize_item(self.dlt_ecu_ref, "DltEcu")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DLT-ECU")
+                wrapped = ET.Element("DLT-ECU-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -123,11 +124,11 @@ class DltConfig(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse dlt_ecu
-        child = ARObject._find_child_element(element, "DLT-ECU")
+        # Parse dlt_ecu_ref
+        child = ARObject._find_child_element(element, "DLT-ECU-REF")
         if child is not None:
-            dlt_ecu_value = ARObject._deserialize_by_tag(child, "DltEcu")
-            obj.dlt_ecu = dlt_ecu_value
+            dlt_ecu_ref_value = ARRef.deserialize(child)
+            obj.dlt_ecu_ref = dlt_ecu_ref_value
 
         # Parse dlt_log_channels (list from container "DLT-LOG-CHANNELS")
         obj.dlt_log_channels = []

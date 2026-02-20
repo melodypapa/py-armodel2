@@ -16,6 +16,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.abstrac
     AbstractEvent,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
     ModeDeclaration,
 )
@@ -43,12 +44,12 @@ class RTEEvent(AbstractEvent, ABC):
         return True
 
     disabled_mode_instance_refs: list[ModeDeclaration]
-    start_on_event: Optional[RunnableEntity]
+    start_on_event_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize RTEEvent."""
         super().__init__()
         self.disabled_mode_instance_refs: list[ModeDeclaration] = []
-        self.start_on_event: Optional[RunnableEntity] = None
+        self.start_on_event_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize RTEEvent to XML element.
@@ -80,12 +81,12 @@ class RTEEvent(AbstractEvent, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize start_on_event
-        if self.start_on_event is not None:
-            serialized = ARObject._serialize_item(self.start_on_event, "RunnableEntity")
+        # Serialize start_on_event_ref
+        if self.start_on_event_ref is not None:
+            serialized = ARObject._serialize_item(self.start_on_event_ref, "RunnableEntity")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("START-ON-EVENT")
+                wrapped = ET.Element("START-ON-EVENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -119,11 +120,11 @@ class RTEEvent(AbstractEvent, ABC):
                 if child_value is not None:
                     obj.disabled_mode_instance_refs.append(child_value)
 
-        # Parse start_on_event
-        child = ARObject._find_child_element(element, "START-ON-EVENT")
+        # Parse start_on_event_ref
+        child = ARObject._find_child_element(element, "START-ON-EVENT-REF")
         if child is not None:
-            start_on_event_value = ARObject._deserialize_by_tag(child, "RunnableEntity")
-            obj.start_on_event = start_on_event_value
+            start_on_event_ref_value = ARRef.deserialize(child)
+            obj.start_on_event_ref = start_on_event_ref_value
 
         return obj
 

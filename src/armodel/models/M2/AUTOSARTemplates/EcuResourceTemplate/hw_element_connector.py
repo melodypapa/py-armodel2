@@ -40,13 +40,13 @@ class HwElementConnector(Describable):
         """
         return False
 
-    hw_elements: list[HwElement]
+    hw_element_refs: list[ARRef]
     hw_pins: list[HwPinConnector]
     hw_pin_group_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize HwElementConnector."""
         super().__init__()
-        self.hw_elements: list[HwElement] = []
+        self.hw_element_refs: list[ARRef] = []
         self.hw_pins: list[HwPinConnector] = []
         self.hw_pin_group_refs: list[ARRef] = []
 
@@ -70,13 +70,20 @@ class HwElementConnector(Describable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize hw_elements (list to container "HW-ELEMENTS")
-        if self.hw_elements:
-            wrapper = ET.Element("HW-ELEMENTS")
-            for item in self.hw_elements:
+        # Serialize hw_element_refs (list to container "HW-ELEMENT-REFS")
+        if self.hw_element_refs:
+            wrapper = ET.Element("HW-ELEMENT-REFS")
+            for item in self.hw_element_refs:
                 serialized = ARObject._serialize_item(item, "HwElement")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("HW-ELEMENT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -122,15 +129,21 @@ class HwElementConnector(Describable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(HwElementConnector, cls).deserialize(element)
 
-        # Parse hw_elements (list from container "HW-ELEMENTS")
-        obj.hw_elements = []
-        container = ARObject._find_child_element(element, "HW-ELEMENTS")
+        # Parse hw_element_refs (list from container "HW-ELEMENT-REFS")
+        obj.hw_element_refs = []
+        container = ARObject._find_child_element(element, "HW-ELEMENT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.hw_elements.append(child_value)
+                    obj.hw_element_refs.append(child_value)
 
         # Parse hw_pins (list from container "HW-PINS")
         obj.hw_pins = []

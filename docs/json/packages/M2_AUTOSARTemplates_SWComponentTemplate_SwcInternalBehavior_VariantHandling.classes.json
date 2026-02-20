@@ -47,15 +47,15 @@
         "implementation": {
           "type": "AbstractImplementationDataType",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This association to ImplementationDataType shall be"
         },
         "postBuildValue": {
           "type": "any (PostBuildVariant)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the applicable PostBuildVariantCriterion in the context of a VariationPointProxy."
         }
       }

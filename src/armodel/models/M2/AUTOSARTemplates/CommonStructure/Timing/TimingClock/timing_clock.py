@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.global_time_domain import (
     GlobalTimeDomain,
 )
@@ -31,11 +32,11 @@ class TimingClock(Identifiable, ABC):
         """
         return True
 
-    platform_time: Optional[GlobalTimeDomain]
+    platform_time_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize TimingClock."""
         super().__init__()
-        self.platform_time: Optional[GlobalTimeDomain] = None
+        self.platform_time_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize TimingClock to XML element.
@@ -57,12 +58,12 @@ class TimingClock(Identifiable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize platform_time
-        if self.platform_time is not None:
-            serialized = ARObject._serialize_item(self.platform_time, "GlobalTimeDomain")
+        # Serialize platform_time_ref
+        if self.platform_time_ref is not None:
+            serialized = ARObject._serialize_item(self.platform_time_ref, "GlobalTimeDomain")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PLATFORM-TIME")
+                wrapped = ET.Element("PLATFORM-TIME-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -86,11 +87,11 @@ class TimingClock(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TimingClock, cls).deserialize(element)
 
-        # Parse platform_time
-        child = ARObject._find_child_element(element, "PLATFORM-TIME")
+        # Parse platform_time_ref
+        child = ARObject._find_child_element(element, "PLATFORM-TIME-REF")
         if child is not None:
-            platform_time_value = ARObject._deserialize_by_tag(child, "GlobalTimeDomain")
-            obj.platform_time = platform_time_value
+            platform_time_ref_value = ARRef.deserialize(child)
+            obj.platform_time_ref = platform_time_ref_value
 
         return obj
 

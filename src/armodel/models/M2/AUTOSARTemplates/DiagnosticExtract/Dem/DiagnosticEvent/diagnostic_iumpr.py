@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent import (
     DiagnosticIumprKindEnum,
 )
@@ -33,12 +34,12 @@ class DiagnosticIumpr(DiagnosticCommonElement):
         """
         return False
 
-    event: Optional[DiagnosticEvent]
+    event_ref: Optional[ARRef]
     ratio_kind: Optional[DiagnosticIumprKindEnum]
     def __init__(self) -> None:
         """Initialize DiagnosticIumpr."""
         super().__init__()
-        self.event: Optional[DiagnosticEvent] = None
+        self.event_ref: Optional[ARRef] = None
         self.ratio_kind: Optional[DiagnosticIumprKindEnum] = None
 
     def serialize(self) -> ET.Element:
@@ -61,12 +62,12 @@ class DiagnosticIumpr(DiagnosticCommonElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize event
-        if self.event is not None:
-            serialized = ARObject._serialize_item(self.event, "DiagnosticEvent")
+        # Serialize event_ref
+        if self.event_ref is not None:
+            serialized = ARObject._serialize_item(self.event_ref, "DiagnosticEvent")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("EVENT")
+                wrapped = ET.Element("EVENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -104,11 +105,11 @@ class DiagnosticIumpr(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticIumpr, cls).deserialize(element)
 
-        # Parse event
-        child = ARObject._find_child_element(element, "EVENT")
+        # Parse event_ref
+        child = ARObject._find_child_element(element, "EVENT-REF")
         if child is not None:
-            event_value = ARObject._deserialize_by_tag(child, "DiagnosticEvent")
-            obj.event = event_value
+            event_ref_value = ARRef.deserialize(child)
+            obj.event_ref = event_ref_value
 
         # Parse ratio_kind
         child = ARObject._find_child_element(element, "RATIO-KIND")

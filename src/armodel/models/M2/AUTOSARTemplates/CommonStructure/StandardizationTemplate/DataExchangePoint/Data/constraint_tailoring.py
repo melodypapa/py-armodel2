@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
     RestrictionWithSeverity,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.Documentation.BlockElements.RequirementsTracing.traceable_text import (
     TraceableText,
 )
@@ -30,11 +31,11 @@ class ConstraintTailoring(RestrictionWithSeverity):
         """
         return False
 
-    constraint: Optional[TraceableText]
+    constraint_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ConstraintTailoring."""
         super().__init__()
-        self.constraint: Optional[TraceableText] = None
+        self.constraint_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize ConstraintTailoring to XML element.
@@ -56,12 +57,12 @@ class ConstraintTailoring(RestrictionWithSeverity):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize constraint
-        if self.constraint is not None:
-            serialized = ARObject._serialize_item(self.constraint, "TraceableText")
+        # Serialize constraint_ref
+        if self.constraint_ref is not None:
+            serialized = ARObject._serialize_item(self.constraint_ref, "TraceableText")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONSTRAINT")
+                wrapped = ET.Element("CONSTRAINT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -85,11 +86,11 @@ class ConstraintTailoring(RestrictionWithSeverity):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ConstraintTailoring, cls).deserialize(element)
 
-        # Parse constraint
-        child = ARObject._find_child_element(element, "CONSTRAINT")
+        # Parse constraint_ref
+        child = ARObject._find_child_element(element, "CONSTRAINT-REF")
         if child is not None:
-            constraint_value = ARObject._deserialize_by_tag(child, "TraceableText")
-            obj.constraint = constraint_value
+            constraint_ref_value = ARRef.deserialize(child)
+            obj.constraint_ref = constraint_ref_value
 
         return obj
 

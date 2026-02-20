@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_event import (
     DiagnosticEvent,
 )
@@ -34,15 +35,15 @@ class DiagnosticTestResult(DiagnosticCommonElement):
         """
         return False
 
-    diagnostic_event: Optional[DiagnosticEvent]
-    monitored: Optional[Any]
+    diagnostic_event_ref: Optional[ARRef]
+    monitored_ref: Optional[Any]
     test_identifier: Optional[DiagnosticTestIdentifier]
     update_kind: Optional[DiagnosticTestResult]
     def __init__(self) -> None:
         """Initialize DiagnosticTestResult."""
         super().__init__()
-        self.diagnostic_event: Optional[DiagnosticEvent] = None
-        self.monitored: Optional[Any] = None
+        self.diagnostic_event_ref: Optional[ARRef] = None
+        self.monitored_ref: Optional[Any] = None
         self.test_identifier: Optional[DiagnosticTestIdentifier] = None
         self.update_kind: Optional[DiagnosticTestResult] = None
 
@@ -66,12 +67,12 @@ class DiagnosticTestResult(DiagnosticCommonElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize diagnostic_event
-        if self.diagnostic_event is not None:
-            serialized = ARObject._serialize_item(self.diagnostic_event, "DiagnosticEvent")
+        # Serialize diagnostic_event_ref
+        if self.diagnostic_event_ref is not None:
+            serialized = ARObject._serialize_item(self.diagnostic_event_ref, "DiagnosticEvent")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DIAGNOSTIC-EVENT")
+                wrapped = ET.Element("DIAGNOSTIC-EVENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -80,12 +81,12 @@ class DiagnosticTestResult(DiagnosticCommonElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize monitored
-        if self.monitored is not None:
-            serialized = ARObject._serialize_item(self.monitored, "Any")
+        # Serialize monitored_ref
+        if self.monitored_ref is not None:
+            serialized = ARObject._serialize_item(self.monitored_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("MONITORED")
+                wrapped = ET.Element("MONITORED-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -137,17 +138,17 @@ class DiagnosticTestResult(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticTestResult, cls).deserialize(element)
 
-        # Parse diagnostic_event
-        child = ARObject._find_child_element(element, "DIAGNOSTIC-EVENT")
+        # Parse diagnostic_event_ref
+        child = ARObject._find_child_element(element, "DIAGNOSTIC-EVENT-REF")
         if child is not None:
-            diagnostic_event_value = ARObject._deserialize_by_tag(child, "DiagnosticEvent")
-            obj.diagnostic_event = diagnostic_event_value
+            diagnostic_event_ref_value = ARRef.deserialize(child)
+            obj.diagnostic_event_ref = diagnostic_event_ref_value
 
-        # Parse monitored
-        child = ARObject._find_child_element(element, "MONITORED")
+        # Parse monitored_ref
+        child = ARObject._find_child_element(element, "MONITORED-REF")
         if child is not None:
-            monitored_value = child.text
-            obj.monitored = monitored_value
+            monitored_ref_value = ARRef.deserialize(child)
+            obj.monitored_ref = monitored_ref_value
 
         # Parse test_identifier
         child = ARObject._find_child_element(element, "TEST-IDENTIFIER")

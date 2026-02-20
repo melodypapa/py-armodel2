@@ -43,8 +43,8 @@
         "executableEntity": {
           "type": "ExecutableEntity",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The referenced ExecutableEntity for the ExecutionTime"
         },
         "executionTime": {

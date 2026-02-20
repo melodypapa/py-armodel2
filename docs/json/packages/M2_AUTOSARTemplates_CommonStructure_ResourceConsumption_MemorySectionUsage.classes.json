@@ -52,8 +52,8 @@
         "executableEntities": {
           "type": "ExecutableEntity",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the ExecutableEntitites located in this allows to locate different Executable different sections even if the associated Sw the same. applicable to code sections only."
         },
         "options": {
@@ -66,8 +66,8 @@
         "prefix": {
           "type": "SectionNamePrefix",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The prefix used to set the memory section\u2019s namespace code. The existence of a prefix element for a default prefix (such as the Bsw This allows the user to name spaces for memory sections within of one module, cluster or SWC."
         },
         "size": {
@@ -80,8 +80,8 @@
         "swAddrmethod": {
           "type": "SwAddrMethod",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This association indicates that this module specific section is part of an overall SwAddr by the upstream declarations (e.g. data element prototypes, code share a common addressing strategy. This evaluated for the ECU configuration of the build shall always be declared by the of the module or component, the memory in its code. This means in data prototypes which are allocated by the RTE, software components only declare the grouping data prototypes to SwAddrMethods, and the Description of the RTE actually this association."
         },
         "symbol": {

@@ -35,15 +35,15 @@ class OperationInAtomicSwcInstanceRef(ARObject, ABC):
         """
         return True
 
-    base: Optional[AtomicSwComponentType]
+    base_ref: Optional[ARRef]
     context_port_ref: Optional[ARRef]
-    target_operation: Optional[ClientServerOperation]
+    target_operation_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize OperationInAtomicSwcInstanceRef."""
         super().__init__()
-        self.base: Optional[AtomicSwComponentType] = None
+        self.base_ref: Optional[ARRef] = None
         self.context_port_ref: Optional[ARRef] = None
-        self.target_operation: Optional[ClientServerOperation] = None
+        self.target_operation_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize OperationInAtomicSwcInstanceRef to XML element.
@@ -55,12 +55,12 @@ class OperationInAtomicSwcInstanceRef(ARObject, ABC):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize base
-        if self.base is not None:
-            serialized = ARObject._serialize_item(self.base, "AtomicSwComponentType")
+        # Serialize base_ref
+        if self.base_ref is not None:
+            serialized = ARObject._serialize_item(self.base_ref, "AtomicSwComponentType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("BASE")
+                wrapped = ET.Element("BASE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -83,12 +83,12 @@ class OperationInAtomicSwcInstanceRef(ARObject, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize target_operation
-        if self.target_operation is not None:
-            serialized = ARObject._serialize_item(self.target_operation, "ClientServerOperation")
+        # Serialize target_operation_ref
+        if self.target_operation_ref is not None:
+            serialized = ARObject._serialize_item(self.target_operation_ref, "ClientServerOperation")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TARGET-OPERATION")
+                wrapped = ET.Element("TARGET-OPERATION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -113,11 +113,11 @@ class OperationInAtomicSwcInstanceRef(ARObject, ABC):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse base
-        child = ARObject._find_child_element(element, "BASE")
+        # Parse base_ref
+        child = ARObject._find_child_element(element, "BASE-REF")
         if child is not None:
-            base_value = ARObject._deserialize_by_tag(child, "AtomicSwComponentType")
-            obj.base = base_value
+            base_ref_value = ARRef.deserialize(child)
+            obj.base_ref = base_ref_value
 
         # Parse context_port_ref
         child = ARObject._find_child_element(element, "CONTEXT-PORT-REF")
@@ -125,11 +125,11 @@ class OperationInAtomicSwcInstanceRef(ARObject, ABC):
             context_port_ref_value = ARRef.deserialize(child)
             obj.context_port_ref = context_port_ref_value
 
-        # Parse target_operation
-        child = ARObject._find_child_element(element, "TARGET-OPERATION")
+        # Parse target_operation_ref
+        child = ARObject._find_child_element(element, "TARGET-OPERATION-REF")
         if child is not None:
-            target_operation_value = ARObject._deserialize_by_tag(child, "ClientServerOperation")
-            obj.target_operation = target_operation_value
+            target_operation_ref_value = ARRef.deserialize(child)
+            obj.target_operation_ref = target_operation_ref_value
 
         return obj
 

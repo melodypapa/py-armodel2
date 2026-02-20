@@ -82,15 +82,15 @@
         "doipChannel": {
           "type": "DoIpTpConfig",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Configuration of DoIPChannels available in an DoIp"
         },
         "doipConnections": {
           "type": "SocketConnection",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "DoIP Connections in the DoIpInterface that define the Do Pdus that are sent and received via SoAd over TCP or"
         },
         "doIpRoutings": {
@@ -138,8 +138,8 @@
         "sockets": {
           "type": "StaticSocketConnection",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "DoIP Connections in the DoIpInterface that define the Do Pdus that are sent and received via SoAd over TCP or"
         },
         "useMacAddress": {
@@ -197,8 +197,8 @@
         "doIpTargets": {
           "type": "DoIpLogicTargetAddressProps",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to DoIPTargetAddress which is activated on this DoIpRoutingActivation."
         }
       }
@@ -303,8 +303,8 @@
         "doIpTesters": {
           "type": "DoIpRoutingActivation",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to a DoIPRoutingActivation describing the routing activations of the DoIPTester."
         }
       }

@@ -30,8 +30,8 @@
         "dltEcu": {
           "type": "DltEcu",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the Ecu representation in the Log And Trace"
         },
         "dltLogChannels": {
@@ -89,8 +89,8 @@
         "applications": {
           "type": "DltContext",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to the Swc that produces the log or trace"
         },
         "defaultTrace": {
@@ -103,8 +103,8 @@
         "dltMessages": {
           "type": "DltMessage",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to DltMessages that can be transported over in the DltPdu. 2090 Document ID 63: AUTOSAR_CP_TPS_SystemTemplate R23-11"
         },
         "logChannelId": {

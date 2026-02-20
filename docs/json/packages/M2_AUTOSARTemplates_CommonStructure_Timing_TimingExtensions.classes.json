@@ -46,8 +46,8 @@
         "component": {
           "type": "SwComponentType",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This defines the scope of a VfbTiming. All corresponding and constraints shall be defined within"
         }
       }
@@ -88,8 +88,8 @@
         "behavior": {
           "type": "SwcInternalBehavior",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This defines the scope of a SwcTiming. All corresponding and constraints shall be defined within reason for the cardinality of 0..1 is to ensure"
         }
       }
@@ -130,8 +130,8 @@
         "system": {
           "type": "System",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This defines the scope of a SystemTiming. All"
         }
       }
@@ -172,8 +172,8 @@
         "behavior": {
           "type": "BswInternalBehavior",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This defines the scope of a BswModuleTiming. All descriptions and constraints shall within this scope."
         }
       }
@@ -214,8 +214,8 @@
         "implementations": {
           "type": "BswImplementation",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This defines the scope of a BswCompositionTiming. All descriptions and constraints shall within this scope."
         }
       }

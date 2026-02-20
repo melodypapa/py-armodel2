@@ -79,8 +79,8 @@
         "node": {
           "type": "DiagnosticJ1939Node",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the DiagnosticJ1939Node to which the frame is associated. DiagnosticJ1939Spn * ref This represents the collection of SPNs that make the Frame."
         }
       }
@@ -121,8 +121,8 @@
         "node": {
           "type": "DiagnosticJ1939Node",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the DiagnosticJ1939Node to which the freeze frame is associated. DiagnosticJ1939Spn * ref This represents the collection of SPNs that make the Freeze Frame."
         }
       }
@@ -163,8 +163,8 @@
         "nmNode": {
           "type": "J1939NmNode",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the reference to the \"virtual Ecu\" to which DiagnosticJ1939Node is associated."
         }
       }

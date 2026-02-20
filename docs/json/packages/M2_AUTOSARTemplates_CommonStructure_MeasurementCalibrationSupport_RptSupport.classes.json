@@ -21,7 +21,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "Refers to a set of data assigned to an McFunction in a particular role. The data are given • either by entries in a FlatMap • or by data instances that are part of MC support data. These two possibilities are exclusive within a given McFunctionDataRefSet. Which one to use depends on the process and tool environment. The set is subject to variability because the same functional model may be used with various representation of the data. Tags: vh.latestBindingTime=preCompileTime",
+      "note": "Refers to a set of data assigned to an McFunction in a particular role. The data are given \u2022 either by entries in a FlatMap \u2022 or by data instances that are part of MC support data. These two possibilities are exclusive within a given McFunctionDataRefSet. Which one to use depends on the process and tool environment. The set is subject to variability because the same functional model may be used with various representation of the data. Tags: vh.latestBindingTime=preCompileTime",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf",
@@ -40,15 +40,15 @@
         "flatMapEntries": {
           "type": "FlatInstanceDescriptor",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Refers to an entry in a FlatMap that is part of the set, for calibration parameter or measured variable. atpSplitable property has no atp.Splitkey due (PropertySetPattern)."
         },
         "mcDataInstances": {
           "type": "McDataInstance",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Refers to a data instance within MC support data that is the set, i.e. a calibration parameter or measured atpSplitable property has no atp.Splitkey due (PropertySetPattern)."
         }
       }
@@ -265,7 +265,7 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "The symbol describing this ExecutableEntity’s entry point."
+          "note": "The symbol describing this ExecutableEntity\u2019s entry point."
         }
       }
     },
@@ -301,8 +301,8 @@
         "executions": {
           "type": "RptExecutionContext",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This describes the context in which the event of the entity is executed."
         },
         "mcDatas": {
@@ -336,8 +336,8 @@
         "rptServicePoints": {
           "type": "RptServicePoint",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This describes the applicable Pre Service Points for a / BswEvent of a bypassed ExecutableEntity."
         }
       }
@@ -361,7 +361,7 @@
       ],
       "implements": [],
       "implemented_by": [],
-      "note": "Defines an environment for the execution of ExecutableEntites which is qualified by • OSTask • communication buffer usage",
+      "note": "Defines an environment for the execution of ExecutableEntites which is qualified by \u2022 OSTask \u2022 communication buffer usage",
       "sources": [
         {
           "pdf_file": "AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate.pdf",

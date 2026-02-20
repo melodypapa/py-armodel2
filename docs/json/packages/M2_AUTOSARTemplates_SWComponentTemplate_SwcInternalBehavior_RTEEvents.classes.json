@@ -149,8 +149,8 @@
         "startOnEvent": {
           "type": "RunnableEntity",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The referenced RunnableEntity starts when the"
         }
       }
@@ -252,8 +252,8 @@
         "eventSource": {
           "type": "any (AsynchronousServer)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The referenced AsynchronousServerCallResultPoint this AsynchronousServerCallReturnsEvent when server call returns."
         }
       }
@@ -297,8 +297,8 @@
         "eventSource": {
           "type": "VariableAccess",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The referenced VariableAccess raises this DataSend"
         }
       }
@@ -342,8 +342,8 @@
         "eventSource": {
           "type": "VariableAccess",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The referenced VariableAccess raises this DataWrite"
         }
       }
@@ -559,8 +559,8 @@
         "eventSource": {
           "type": "ModeSwitchPoint",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The referenced ModeSwitchPoint raises this Mode the ModeSwitchPoint has been"
         }
       }
@@ -820,8 +820,8 @@
         "trigger": {
           "type": "RTEEvent",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This is the RTEEvent this WaitPoint is waiting for."
         }
       }

@@ -45,8 +45,8 @@
         "dataIdentifierIdentifier": {
           "type": "DiagnosticDataIdentifier",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This represents the corresponding DiagnosticData"
         },
         "freezeCurrent": {
@@ -59,8 +59,8 @@
         "ioControlClass": {
           "type": "DiagnosticIOControl",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference substantiates that abstract reference in the reference represents the ability to access among all DiagnosticIOControl in the"
         },
         "resetToDefault": {
@@ -150,8 +150,8 @@
         "controlledDatas": {
           "type": "DiagnosticDataElement",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference represents the collection of Diagnostic that are controlled by this bit of the control"
         }
       }

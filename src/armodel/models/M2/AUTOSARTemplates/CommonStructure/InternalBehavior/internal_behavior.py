@@ -53,7 +53,7 @@ class InternalBehavior(Identifiable, ABC):
         return True
 
     constants: list[ParameterDataPrototype]
-    constant_values: list[ConstantSpecification]
+    constant_value_refs: list[ARRef]
     data_type_refs: list[ARRef]
     exclusive_areas: list[ExclusiveArea]
     exclusive_area_nestings: list[ExclusiveAreaNestingOrder]
@@ -62,7 +62,7 @@ class InternalBehavior(Identifiable, ABC):
         """Initialize InternalBehavior."""
         super().__init__()
         self.constants: list[ParameterDataPrototype] = []
-        self.constant_values: list[ConstantSpecification] = []
+        self.constant_value_refs: list[ARRef] = []
         self.data_type_refs: list[ARRef] = []
         self.exclusive_areas: list[ExclusiveArea] = []
         self.exclusive_area_nestings: list[ExclusiveAreaNestingOrder] = []
@@ -98,13 +98,20 @@ class InternalBehavior(Identifiable, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize constant_values (list to container "CONSTANT-VALUES")
-        if self.constant_values:
-            wrapper = ET.Element("CONSTANT-VALUES")
-            for item in self.constant_values:
+        # Serialize constant_value_refs (list to container "CONSTANT-VALUE-REFS")
+        if self.constant_value_refs:
+            wrapper = ET.Element("CONSTANT-VALUE-REFS")
+            for item in self.constant_value_refs:
                 serialized = ARObject._serialize_item(item, "ConstantSpecification")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("CONSTANT-VALUE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -187,15 +194,21 @@ class InternalBehavior(Identifiable, ABC):
                 if child_value is not None:
                     obj.constants.append(child_value)
 
-        # Parse constant_values (list from container "CONSTANT-VALUES")
-        obj.constant_values = []
-        container = ARObject._find_child_element(element, "CONSTANT-VALUES")
+        # Parse constant_value_refs (list from container "CONSTANT-VALUE-REFS")
+        obj.constant_value_refs = []
+        container = ARObject._find_child_element(element, "CONSTANT-VALUE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.constant_values.append(child_value)
+                    obj.constant_value_refs.append(child_value)
 
         # Parse data_type_refs (list from container "DATA-TYPE-REFS")
         obj.data_type_refs = []

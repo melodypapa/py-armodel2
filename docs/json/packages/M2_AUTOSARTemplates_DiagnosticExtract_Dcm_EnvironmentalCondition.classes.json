@@ -209,8 +209,8 @@
         "dataElement": {
           "type": "DiagnosticDataElement",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference represents the related diagnostic data"
         }
       }
@@ -297,8 +297,8 @@
         "modeElement": {
           "type": "any (DiagnosticEnvMode)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference represents both the ModeDeclaration and the ModeDeclaration relevant for the"
         }
       }

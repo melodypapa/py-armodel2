@@ -101,8 +101,8 @@
         "identifiable": {
           "type": "Identifiable",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This is an identifiable object which is part of the context of"
         }
       }

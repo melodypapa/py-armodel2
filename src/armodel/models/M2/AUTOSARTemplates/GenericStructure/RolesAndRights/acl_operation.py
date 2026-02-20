@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
 class AclOperation(ARElement):
@@ -28,11 +29,11 @@ class AclOperation(ARElement):
         """
         return False
 
-    implieds: list[AclOperation]
+    implied_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize AclOperation."""
         super().__init__()
-        self.implieds: list[AclOperation] = []
+        self.implied_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize AclOperation to XML element.
@@ -54,13 +55,20 @@ class AclOperation(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize implieds (list to container "IMPLIEDS")
-        if self.implieds:
-            wrapper = ET.Element("IMPLIEDS")
-            for item in self.implieds:
+        # Serialize implied_refs (list to container "IMPLIED-REFS")
+        if self.implied_refs:
+            wrapper = ET.Element("IMPLIED-REFS")
+            for item in self.implied_refs:
                 serialized = ARObject._serialize_item(item, "AclOperation")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("IMPLIED-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -79,15 +87,21 @@ class AclOperation(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AclOperation, cls).deserialize(element)
 
-        # Parse implieds (list from container "IMPLIEDS")
-        obj.implieds = []
-        container = ARObject._find_child_element(element, "IMPLIEDS")
+        # Parse implied_refs (list from container "IMPLIED-REFS")
+        obj.implied_refs = []
+        container = ARObject._find_child_element(element, "IMPLIED-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.implieds.append(child_value)
+                    obj.implied_refs.append(child_value)
 
         return obj
 

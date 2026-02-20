@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
     ModeDeclaration,
 )
@@ -31,13 +32,13 @@ class ModeTransition(Identifiable):
         """
         return False
 
-    entered_mode: Optional[ModeDeclaration]
-    exited_mode: Optional[ModeDeclaration]
+    entered_mode_ref: Optional[ARRef]
+    exited_mode_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ModeTransition."""
         super().__init__()
-        self.entered_mode: Optional[ModeDeclaration] = None
-        self.exited_mode: Optional[ModeDeclaration] = None
+        self.entered_mode_ref: Optional[ARRef] = None
+        self.exited_mode_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize ModeTransition to XML element.
@@ -59,12 +60,12 @@ class ModeTransition(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize entered_mode
-        if self.entered_mode is not None:
-            serialized = ARObject._serialize_item(self.entered_mode, "ModeDeclaration")
+        # Serialize entered_mode_ref
+        if self.entered_mode_ref is not None:
+            serialized = ARObject._serialize_item(self.entered_mode_ref, "ModeDeclaration")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ENTERED-MODE")
+                wrapped = ET.Element("ENTERED-MODE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -73,12 +74,12 @@ class ModeTransition(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize exited_mode
-        if self.exited_mode is not None:
-            serialized = ARObject._serialize_item(self.exited_mode, "ModeDeclaration")
+        # Serialize exited_mode_ref
+        if self.exited_mode_ref is not None:
+            serialized = ARObject._serialize_item(self.exited_mode_ref, "ModeDeclaration")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("EXITED-MODE")
+                wrapped = ET.Element("EXITED-MODE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -102,17 +103,17 @@ class ModeTransition(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ModeTransition, cls).deserialize(element)
 
-        # Parse entered_mode
-        child = ARObject._find_child_element(element, "ENTERED-MODE")
+        # Parse entered_mode_ref
+        child = ARObject._find_child_element(element, "ENTERED-MODE-REF")
         if child is not None:
-            entered_mode_value = ARObject._deserialize_by_tag(child, "ModeDeclaration")
-            obj.entered_mode = entered_mode_value
+            entered_mode_ref_value = ARRef.deserialize(child)
+            obj.entered_mode_ref = entered_mode_ref_value
 
-        # Parse exited_mode
-        child = ARObject._find_child_element(element, "EXITED-MODE")
+        # Parse exited_mode_ref
+        child = ARObject._find_child_element(element, "EXITED-MODE-REF")
         if child is not None:
-            exited_mode_value = ARObject._deserialize_by_tag(child, "ModeDeclaration")
-            obj.exited_mode = exited_mode_value
+            exited_mode_ref_value = ARRef.deserialize(child)
+            obj.exited_mode_ref = exited_mode_ref_value
 
         return obj
 

@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate import (
     EcucScopeEnum,
 )
@@ -50,7 +51,7 @@ class EcucDefinitionElement(Identifiable, ABC):
     ecuc_cond: Optional[Any]
     ecuc_validations: list[EcucValidationCondition]
     lower_multiplicity: Optional[PositiveInteger]
-    related_trace: Optional[Traceable]
+    related_trace_ref: Optional[ARRef]
     scope: Optional[EcucScopeEnum]
     upper_multiplicity: Optional[Boolean]
     def __init__(self) -> None:
@@ -59,7 +60,7 @@ class EcucDefinitionElement(Identifiable, ABC):
         self.ecuc_cond: Optional[Any] = None
         self.ecuc_validations: list[EcucValidationCondition] = []
         self.lower_multiplicity: Optional[PositiveInteger] = None
-        self.related_trace: Optional[Traceable] = None
+        self.related_trace_ref: Optional[ARRef] = None
         self.scope: Optional[EcucScopeEnum] = None
         self.upper_multiplicity: Optional[Boolean] = None
 
@@ -121,12 +122,12 @@ class EcucDefinitionElement(Identifiable, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize related_trace
-        if self.related_trace is not None:
-            serialized = ARObject._serialize_item(self.related_trace, "Traceable")
+        # Serialize related_trace_ref
+        if self.related_trace_ref is not None:
+            serialized = ARObject._serialize_item(self.related_trace_ref, "Traceable")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("RELATED-TRACE")
+                wrapped = ET.Element("RELATED-TRACE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -200,11 +201,11 @@ class EcucDefinitionElement(Identifiable, ABC):
             lower_multiplicity_value = child.text
             obj.lower_multiplicity = lower_multiplicity_value
 
-        # Parse related_trace
-        child = ARObject._find_child_element(element, "RELATED-TRACE")
+        # Parse related_trace_ref
+        child = ARObject._find_child_element(element, "RELATED-TRACE-REF")
         if child is not None:
-            related_trace_value = ARObject._deserialize_by_tag(child, "Traceable")
-            obj.related_trace = related_trace_value
+            related_trace_ref_value = ARRef.deserialize(child)
+            obj.related_trace_ref = related_trace_ref_value
 
         # Parse scope
         child = ARObject._find_child_element(element, "SCOPE")

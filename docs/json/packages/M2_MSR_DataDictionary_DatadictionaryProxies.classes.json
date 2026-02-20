@@ -38,8 +38,8 @@
         "mcDataInstance": {
           "type": "McDataInstance",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference is used in the McSupport file to express instance of group axis etc. It is not allowed to use of an McDataInstance. mcDataInstance shall be originated from"
         }
       }
@@ -83,8 +83,8 @@
         "mcDataInstance": {
           "type": "McDataInstance",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference is used in the McSupport file to express final instance of input values etc. It is not allowed to outside of an McDataInstance. mcDataInstance shall be originated from"
         }
       }

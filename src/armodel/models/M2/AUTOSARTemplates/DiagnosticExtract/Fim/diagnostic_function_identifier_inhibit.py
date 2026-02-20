@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Fim import (
     DiagnosticInhibitionMaskEnum,
 )
@@ -30,13 +31,13 @@ class DiagnosticFunctionIdentifierInhibit(DiagnosticCommonElement):
         """
         return False
 
-    function: Optional[Any]
+    function_ref: Optional[Any]
     inhibition_mask: Optional[DiagnosticInhibitionMaskEnum]
     inhibit_sources: list[Any]
     def __init__(self) -> None:
         """Initialize DiagnosticFunctionIdentifierInhibit."""
         super().__init__()
-        self.function: Optional[Any] = None
+        self.function_ref: Optional[Any] = None
         self.inhibition_mask: Optional[DiagnosticInhibitionMaskEnum] = None
         self.inhibit_sources: list[Any] = []
 
@@ -60,12 +61,12 @@ class DiagnosticFunctionIdentifierInhibit(DiagnosticCommonElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize function
-        if self.function is not None:
-            serialized = ARObject._serialize_item(self.function, "Any")
+        # Serialize function_ref
+        if self.function_ref is not None:
+            serialized = ARObject._serialize_item(self.function_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("FUNCTION")
+                wrapped = ET.Element("FUNCTION-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -113,11 +114,11 @@ class DiagnosticFunctionIdentifierInhibit(DiagnosticCommonElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DiagnosticFunctionIdentifierInhibit, cls).deserialize(element)
 
-        # Parse function
-        child = ARObject._find_child_element(element, "FUNCTION")
+        # Parse function_ref
+        child = ARObject._find_child_element(element, "FUNCTION-REF")
         if child is not None:
-            function_value = child.text
-            obj.function = function_value
+            function_ref_value = ARRef.deserialize(child)
+            obj.function_ref = function_ref_value
 
         # Parse inhibition_mask
         child = ARObject._find_child_element(element, "INHIBITION-MASK")

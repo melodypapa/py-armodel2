@@ -69,8 +69,8 @@
         "nestedElements": {
           "type": "HwElement",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This association is used to establish hierarchies of hw that one particular HwElement can be this association only once. I.e. multiple the same HwElement is not supported (at level). atpVariation"
         }
       }
@@ -124,15 +124,15 @@
         "hwCategories": {
           "type": "HwCategory",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "One of the associations representing one particular"
         },
         "hwType": {
           "type": "HwType",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This association is used to assign an optional HwType the common attribute values for all this HwDescriptionEntity. Note that Hw not be redefined and therefore shall not have a"
         }
       }
@@ -308,8 +308,8 @@
         "hwElements": {
           "type": "HwElement",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This association connects two hardware elements."
         },
         "hwPins": {
@@ -402,8 +402,8 @@
         "hwPins": {
           "type": "HwPin",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This association connects two hardware pins."
         }
       }

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.ids_mapping impo
     IdsMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.idsm_instance import (
     IdsmInstance,
 )
@@ -31,14 +32,14 @@ class SecurityEventContextMapping(IdsMapping, ABC):
         """
         return True
 
-    filter_chain: Optional[Any]
-    idsm_instance: Optional[IdsmInstance]
+    filter_chain_ref: Optional[Any]
+    idsm_instance_ref: Optional[ARRef]
     mapped_securities: list[Any]
     def __init__(self) -> None:
         """Initialize SecurityEventContextMapping."""
         super().__init__()
-        self.filter_chain: Optional[Any] = None
-        self.idsm_instance: Optional[IdsmInstance] = None
+        self.filter_chain_ref: Optional[Any] = None
+        self.idsm_instance_ref: Optional[ARRef] = None
         self.mapped_securities: list[Any] = []
 
     def serialize(self) -> ET.Element:
@@ -61,12 +62,12 @@ class SecurityEventContextMapping(IdsMapping, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize filter_chain
-        if self.filter_chain is not None:
-            serialized = ARObject._serialize_item(self.filter_chain, "Any")
+        # Serialize filter_chain_ref
+        if self.filter_chain_ref is not None:
+            serialized = ARObject._serialize_item(self.filter_chain_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("FILTER-CHAIN")
+                wrapped = ET.Element("FILTER-CHAIN-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -75,12 +76,12 @@ class SecurityEventContextMapping(IdsMapping, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize idsm_instance
-        if self.idsm_instance is not None:
-            serialized = ARObject._serialize_item(self.idsm_instance, "IdsmInstance")
+        # Serialize idsm_instance_ref
+        if self.idsm_instance_ref is not None:
+            serialized = ARObject._serialize_item(self.idsm_instance_ref, "IdsmInstance")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("IDSM-INSTANCE")
+                wrapped = ET.Element("IDSM-INSTANCE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -114,17 +115,17 @@ class SecurityEventContextMapping(IdsMapping, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SecurityEventContextMapping, cls).deserialize(element)
 
-        # Parse filter_chain
-        child = ARObject._find_child_element(element, "FILTER-CHAIN")
+        # Parse filter_chain_ref
+        child = ARObject._find_child_element(element, "FILTER-CHAIN-REF")
         if child is not None:
-            filter_chain_value = child.text
-            obj.filter_chain = filter_chain_value
+            filter_chain_ref_value = ARRef.deserialize(child)
+            obj.filter_chain_ref = filter_chain_ref_value
 
-        # Parse idsm_instance
-        child = ARObject._find_child_element(element, "IDSM-INSTANCE")
+        # Parse idsm_instance_ref
+        child = ARObject._find_child_element(element, "IDSM-INSTANCE-REF")
         if child is not None:
-            idsm_instance_value = ARObject._deserialize_by_tag(child, "IdsmInstance")
-            obj.idsm_instance = idsm_instance_value
+            idsm_instance_ref_value = ARRef.deserialize(child)
+            obj.idsm_instance_ref = idsm_instance_ref_value
 
         # Parse mapped_securities (list from container "MAPPED-SECURITIES")
         obj.mapped_securities = []
