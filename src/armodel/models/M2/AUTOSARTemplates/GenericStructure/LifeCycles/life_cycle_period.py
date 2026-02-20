@@ -28,13 +28,13 @@ class LifeCyclePeriod(ARObject):
         """
         return False
 
-    ar_release: Optional[RevisionLabelString]
+    ar_release_version: Optional[RevisionLabelString]
     date: Optional[DateTime]
     product_release: Optional[RevisionLabelString]
     def __init__(self) -> None:
         """Initialize LifeCyclePeriod."""
         super().__init__()
-        self.ar_release: Optional[RevisionLabelString] = None
+        self.ar_release_version: Optional[RevisionLabelString] = None
         self.date: Optional[DateTime] = None
         self.product_release: Optional[RevisionLabelString] = None
 
@@ -48,12 +48,12 @@ class LifeCyclePeriod(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize ar_release
-        if self.ar_release is not None:
-            serialized = ARObject._serialize_item(self.ar_release, "RevisionLabelString")
+        # Serialize ar_release_version
+        if self.ar_release_version is not None:
+            serialized = ARObject._serialize_item(self.ar_release_version, "RevisionLabelString")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("AR-RELEASE")
+                wrapped = ET.Element("AR-RELEASE-VERSION")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -106,11 +106,11 @@ class LifeCyclePeriod(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse ar_release
-        child = ARObject._find_child_element(element, "AR-RELEASE")
+        # Parse ar_release_version
+        child = ARObject._find_child_element(element, "AR-RELEASE-VERSION")
         if child is not None:
-            ar_release_value = child.text
-            obj.ar_release = ar_release_value
+            ar_release_version_value = child.text
+            obj.ar_release_version = ar_release_version_value
 
         # Parse date
         child = ARObject._find_child_element(element, "DATE")

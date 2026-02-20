@@ -133,9 +133,9 @@ class ARObject:
                     # Handle l_prefix pattern - wrap child element in L-<number> tag
                     l_prefix_tag = ARObject._get_l_prefix_tag(self.__class__, name)
                     if l_prefix_tag and value is not None:
-                        # Serialize the child element
-                        serialized = self._serialize_with_correct_tag(value, xml_tag)
-                        # Wrap it in the l_prefix tag
+                        # Serialize with natural tag, not xml_tag
+                        serialized = value.serialize()
+                        # Wrap it in the l_prefix tag (copies L attribute and text)
                         wrapped = self._serialize_l_prefix(serialized, l_prefix_tag)
                         current_elem.append(wrapped)
                 elif hasattr(value, 'serialize'):
@@ -190,9 +190,9 @@ class ARObject:
                         if l_prefix_tag:
                             for item in value:
                                 if item is not None:
-                                    # Serialize the child element
-                                    serialized = self._serialize_with_correct_tag(item, xml_tag)
-                                    # Wrap it in the l_prefix tag
+                                    # Serialize with natural tag, not xml_tag
+                                    serialized = item.serialize()
+                                    # Wrap it in the l_prefix tag (copies L attribute and text)
                                     wrapped = self._serialize_l_prefix(serialized, l_prefix_tag)
                                     elem.append(wrapped)
                     else:

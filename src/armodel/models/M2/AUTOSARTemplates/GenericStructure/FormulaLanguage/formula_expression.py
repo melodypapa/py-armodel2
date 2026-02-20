@@ -49,23 +49,37 @@ class FormulaExpression(ARObject, ABC):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize atp_reference_refs (list to container "ATP-REFERENCES")
+        # Serialize atp_reference_refs (list to container "ATP-REFERENCE-REFS")
         if self.atp_reference_refs:
-            wrapper = ET.Element("ATP-REFERENCES")
+            wrapper = ET.Element("ATP-REFERENCE-REFS")
             for item in self.atp_reference_refs:
                 serialized = ARObject._serialize_item(item, "Referrable")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("ATP-REFERENCE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize atp_string_refs (list to container "ATP-STRINGS")
+        # Serialize atp_string_refs (list to container "ATP-STRING-REFS")
         if self.atp_string_refs:
-            wrapper = ET.Element("ATP-STRINGS")
+            wrapper = ET.Element("ATP-STRING-REFS")
             for item in self.atp_string_refs:
                 serialized = ARObject._serialize_item(item, "Referrable")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("ATP-STRING-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -85,23 +99,35 @@ class FormulaExpression(ARObject, ABC):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse atp_reference_refs (list from container "ATP-REFERENCES")
+        # Parse atp_reference_refs (list from container "ATP-REFERENCE-REFS")
         obj.atp_reference_refs = []
-        container = ARObject._find_child_element(element, "ATP-REFERENCES")
+        container = ARObject._find_child_element(element, "ATP-REFERENCE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.atp_reference_refs.append(child_value)
 
-        # Parse atp_string_refs (list from container "ATP-STRINGS")
+        # Parse atp_string_refs (list from container "ATP-STRING-REFS")
         obj.atp_string_refs = []
-        container = ARObject._find_child_element(element, "ATP-STRINGS")
+        container = ARObject._find_child_element(element, "ATP-STRING-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.atp_string_refs.append(child_value)
 

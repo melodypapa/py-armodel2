@@ -87,13 +87,20 @@ class EcucDestinationUriPolicy(ARObject):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize reference_refs (list to container "REFERENCES")
+        # Serialize reference_refs (list to container "REFERENCE-REFS")
         if self.reference_refs:
-            wrapper = ET.Element("REFERENCES")
+            wrapper = ET.Element("REFERENCE-REFS")
             for item in self.reference_refs:
                 serialized = ARObject._serialize_item(item, "Any")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("REFERENCE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -139,13 +146,19 @@ class EcucDestinationUriPolicy(ARObject):
                 if child_value is not None:
                     obj.parameters.append(child_value)
 
-        # Parse reference_refs (list from container "REFERENCES")
+        # Parse reference_refs (list from container "REFERENCE-REFS")
         obj.reference_refs = []
-        container = ARObject._find_child_element(element, "REFERENCES")
+        container = ARObject._find_child_element(element, "REFERENCE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.reference_refs.append(child_value)
 

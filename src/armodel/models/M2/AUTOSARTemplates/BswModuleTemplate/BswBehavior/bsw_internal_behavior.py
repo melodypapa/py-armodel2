@@ -143,13 +143,20 @@ class BswInternalBehavior(InternalBehavior):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize ar_typed_per_instance_memorie_refs (list to container "AR-TYPED-PER-INSTANCE-MEMORIES")
+        # Serialize ar_typed_per_instance_memorie_refs (list to container "AR-TYPED-PER-INSTANCE-MEMORIE-REFS")
         if self.ar_typed_per_instance_memorie_refs:
-            wrapper = ET.Element("AR-TYPED-PER-INSTANCE-MEMORIES")
+            wrapper = ET.Element("AR-TYPED-PER-INSTANCE-MEMORIE-REFS")
             for item in self.ar_typed_per_instance_memorie_refs:
                 serialized = ARObject._serialize_item(item, "VariableDataPrototype")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("AR-TYPED-PER-INSTANCE-MEMORIE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -213,13 +220,20 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize included_data_type_set_refs (list to container "INCLUDED-DATA-TYPE-SETS")
+        # Serialize included_data_type_set_refs (list to container "INCLUDED-DATA-TYPE-SET-REFS")
         if self.included_data_type_set_refs:
-            wrapper = ET.Element("INCLUDED-DATA-TYPE-SETS")
+            wrapper = ET.Element("INCLUDED-DATA-TYPE-SET-REFS")
             for item in self.included_data_type_set_refs:
                 serialized = ARObject._serialize_item(item, "IncludedDataTypeSet")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("INCLUDED-DATA-TYPE-SET-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -233,13 +247,20 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize internal_refs (list to container "INTERNALS")
+        # Serialize internal_refs (list to container "INTERNAL-REFS")
         if self.internal_refs:
-            wrapper = ET.Element("INTERNALS")
+            wrapper = ET.Element("INTERNAL-REFS")
             for item in self.internal_refs:
                 serialized = ARObject._serialize_item(item, "BswInternalTriggeringPoint")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("INTERNAL-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -293,13 +314,20 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize released_trigger_refs (list to container "RELEASED-TRIGGERS")
+        # Serialize released_trigger_refs (list to container "RELEASED-TRIGGER-REFS")
         if self.released_trigger_refs:
-            wrapper = ET.Element("RELEASED-TRIGGERS")
+            wrapper = ET.Element("RELEASED-TRIGGER-REFS")
             for item in self.released_trigger_refs:
                 serialized = ARObject._serialize_item(item, "Any")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("RELEASED-TRIGGER-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -333,13 +361,20 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize trigger_direct_refs (list to container "TRIGGER-DIRECTS")
+        # Serialize trigger_direct_refs (list to container "TRIGGER-DIRECT-REFS")
         if self.trigger_direct_refs:
-            wrapper = ET.Element("TRIGGER-DIRECTS")
+            wrapper = ET.Element("TRIGGER-DIRECT-REFS")
             for item in self.trigger_direct_refs:
                 serialized = ARObject._serialize_item(item, "BswTriggerDirectImplementation")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("TRIGGER-DIRECT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -368,13 +403,19 @@ class BswInternalBehavior(InternalBehavior):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswInternalBehavior, cls).deserialize(element)
 
-        # Parse ar_typed_per_instance_memorie_refs (list from container "AR-TYPED-PER-INSTANCE-MEMORIES")
+        # Parse ar_typed_per_instance_memorie_refs (list from container "AR-TYPED-PER-INSTANCE-MEMORIE-REFS")
         obj.ar_typed_per_instance_memorie_refs = []
-        container = ARObject._find_child_element(element, "AR-TYPED-PER-INSTANCE-MEMORIES")
+        container = ARObject._find_child_element(element, "AR-TYPED-PER-INSTANCE-MEMORIE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.ar_typed_per_instance_memorie_refs.append(child_value)
 
@@ -438,13 +479,19 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.exclusive_areas.append(child_value)
 
-        # Parse included_data_type_set_refs (list from container "INCLUDED-DATA-TYPE-SETS")
+        # Parse included_data_type_set_refs (list from container "INCLUDED-DATA-TYPE-SET-REFS")
         obj.included_data_type_set_refs = []
-        container = ARObject._find_child_element(element, "INCLUDED-DATA-TYPE-SETS")
+        container = ARObject._find_child_element(element, "INCLUDED-DATA-TYPE-SET-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.included_data_type_set_refs.append(child_value)
 
@@ -458,13 +505,19 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.included_modes.append(child_value)
 
-        # Parse internal_refs (list from container "INTERNALS")
+        # Parse internal_refs (list from container "INTERNAL-REFS")
         obj.internal_refs = []
-        container = ARObject._find_child_element(element, "INTERNALS")
+        container = ARObject._find_child_element(element, "INTERNAL-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.internal_refs.append(child_value)
 
@@ -518,13 +571,19 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.reception_policies.append(child_value)
 
-        # Parse released_trigger_refs (list from container "RELEASED-TRIGGERS")
+        # Parse released_trigger_refs (list from container "RELEASED-TRIGGER-REFS")
         obj.released_trigger_refs = []
-        container = ARObject._find_child_element(element, "RELEASED-TRIGGERS")
+        container = ARObject._find_child_element(element, "RELEASED-TRIGGER-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.released_trigger_refs.append(child_value)
 
@@ -558,13 +617,19 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.services.append(child_value)
 
-        # Parse trigger_direct_refs (list from container "TRIGGER-DIRECTS")
+        # Parse trigger_direct_refs (list from container "TRIGGER-DIRECT-REFS")
         obj.trigger_direct_refs = []
-        container = ARObject._find_child_element(element, "TRIGGER-DIRECTS")
+        container = ARObject._find_child_element(element, "TRIGGER-DIRECT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.trigger_direct_refs.append(child_value)
 

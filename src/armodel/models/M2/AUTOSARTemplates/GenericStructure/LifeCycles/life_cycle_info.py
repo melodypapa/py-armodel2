@@ -39,7 +39,7 @@ class LifeCycleInfo(ARObject):
         return False
 
     lc_object_ref: ARRef
-    lc_state: Optional[LifeCycleState]
+    lc_state_ref: Optional[ARRef]
     period_begin: Optional[LifeCyclePeriod]
     period_end: Optional[LifeCyclePeriod]
     remark: Optional[DocumentationBlock]
@@ -48,7 +48,7 @@ class LifeCycleInfo(ARObject):
         """Initialize LifeCycleInfo."""
         super().__init__()
         self.lc_object_ref: ARRef = None
-        self.lc_state: Optional[LifeCycleState] = None
+        self.lc_state_ref: Optional[ARRef] = None
         self.period_begin: Optional[LifeCyclePeriod] = None
         self.period_end: Optional[LifeCyclePeriod] = None
         self.remark: Optional[DocumentationBlock] = None
@@ -78,12 +78,12 @@ class LifeCycleInfo(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize lc_state
-        if self.lc_state is not None:
-            serialized = ARObject._serialize_item(self.lc_state, "LifeCycleState")
+        # Serialize lc_state_ref
+        if self.lc_state_ref is not None:
+            serialized = ARObject._serialize_item(self.lc_state_ref, "LifeCycleState")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("LC-STATE")
+                wrapped = ET.Element("LC-STATE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -134,13 +134,20 @@ class LifeCycleInfo(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize use_instead_refs (list to container "USE-INSTEADS")
+        # Serialize use_instead_refs (list to container "USE-INSTEAD-REFS")
         if self.use_instead_refs:
-            wrapper = ET.Element("USE-INSTEADS")
+            wrapper = ET.Element("USE-INSTEAD-REFS")
             for item in self.use_instead_refs:
                 serialized = ARObject._serialize_item(item, "Referrable")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("USE-INSTEAD-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -166,11 +173,11 @@ class LifeCycleInfo(ARObject):
             lc_object_ref_value = ARRef.deserialize(child)
             obj.lc_object_ref = lc_object_ref_value
 
-        # Parse lc_state
-        child = ARObject._find_child_element(element, "LC-STATE")
+        # Parse lc_state_ref
+        child = ARObject._find_child_element(element, "LC-STATE-REF")
         if child is not None:
-            lc_state_value = ARObject._deserialize_by_tag(child, "LifeCycleState")
-            obj.lc_state = lc_state_value
+            lc_state_ref_value = ARRef.deserialize(child)
+            obj.lc_state_ref = lc_state_ref_value
 
         # Parse period_begin
         child = ARObject._find_child_element(element, "PERIOD-BEGIN")
@@ -190,13 +197,19 @@ class LifeCycleInfo(ARObject):
             remark_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
             obj.remark = remark_value
 
-        # Parse use_instead_refs (list from container "USE-INSTEADS")
+        # Parse use_instead_refs (list from container "USE-INSTEAD-REFS")
         obj.use_instead_refs = []
-        container = ARObject._find_child_element(element, "USE-INSTEADS")
+        container = ARObject._find_child_element(element, "USE-INSTEAD-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.use_instead_refs.append(child_value)
 

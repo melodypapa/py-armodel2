@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.AdaptivePlatform.PlatformModuleDeployment.Firewall.firewall_rule import (
     FirewallRule,
 )
@@ -28,14 +29,14 @@ class FirewallRuleProps(ARObject):
         return False
 
     action: Optional[Any]
-    matching_egresses: list[FirewallRule]
-    matchings: list[FirewallRule]
+    matching_egresse_refs: list[ARRef]
+    matching_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize FirewallRuleProps."""
         super().__init__()
         self.action: Optional[Any] = None
-        self.matching_egresses: list[FirewallRule] = []
-        self.matchings: list[FirewallRule] = []
+        self.matching_egresse_refs: list[ARRef] = []
+        self.matching_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize FirewallRuleProps to XML element.
@@ -61,23 +62,37 @@ class FirewallRuleProps(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize matching_egresses (list to container "MATCHING-EGRESSES")
-        if self.matching_egresses:
-            wrapper = ET.Element("MATCHING-EGRESSES")
-            for item in self.matching_egresses:
+        # Serialize matching_egresse_refs (list to container "MATCHING-EGRESSE-REFS")
+        if self.matching_egresse_refs:
+            wrapper = ET.Element("MATCHING-EGRESSE-REFS")
+            for item in self.matching_egresse_refs:
                 serialized = ARObject._serialize_item(item, "FirewallRule")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("MATCHING-EGRESSE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize matchings (list to container "MATCHINGS")
-        if self.matchings:
-            wrapper = ET.Element("MATCHINGS")
-            for item in self.matchings:
+        # Serialize matching_refs (list to container "MATCHING-REFS")
+        if self.matching_refs:
+            wrapper = ET.Element("MATCHING-REFS")
+            for item in self.matching_refs:
                 serialized = ARObject._serialize_item(item, "FirewallRule")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("MATCHING-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -103,25 +118,37 @@ class FirewallRuleProps(ARObject):
             action_value = child.text
             obj.action = action_value
 
-        # Parse matching_egresses (list from container "MATCHING-EGRESSES")
-        obj.matching_egresses = []
-        container = ARObject._find_child_element(element, "MATCHING-EGRESSES")
+        # Parse matching_egresse_refs (list from container "MATCHING-EGRESSE-REFS")
+        obj.matching_egresse_refs = []
+        container = ARObject._find_child_element(element, "MATCHING-EGRESSE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.matching_egresses.append(child_value)
+                    obj.matching_egresse_refs.append(child_value)
 
-        # Parse matchings (list from container "MATCHINGS")
-        obj.matchings = []
-        container = ARObject._find_child_element(element, "MATCHINGS")
+        # Parse matching_refs (list from container "MATCHING-REFS")
+        obj.matching_refs = []
+        container = ARObject._find_child_element(element, "MATCHING-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.matchings.append(child_value)
+                    obj.matching_refs.append(child_value)
 
         return obj
 

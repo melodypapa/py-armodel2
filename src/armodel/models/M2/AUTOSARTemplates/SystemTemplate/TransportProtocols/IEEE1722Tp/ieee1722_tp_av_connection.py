@@ -77,13 +77,20 @@ class IEEE1722TpAvConnection(IEEE1722TpConnection, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sdu_refs (list to container "SDUS")
+        # Serialize sdu_refs (list to container "SDU-REFS")
         if self.sdu_refs:
-            wrapper = ET.Element("SDUS")
+            wrapper = ET.Element("SDU-REFS")
             for item in self.sdu_refs:
                 serialized = ARObject._serialize_item(item, "PduTriggering")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("SDU-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -108,13 +115,19 @@ class IEEE1722TpAvConnection(IEEE1722TpConnection, ABC):
             max_transit_time_value = child.text
             obj.max_transit_time = max_transit_time_value
 
-        # Parse sdu_refs (list from container "SDUS")
+        # Parse sdu_refs (list from container "SDU-REFS")
         obj.sdu_refs = []
-        container = ARObject._find_child_element(element, "SDUS")
+        container = ARObject._find_child_element(element, "SDU-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.sdu_refs.append(child_value)
 

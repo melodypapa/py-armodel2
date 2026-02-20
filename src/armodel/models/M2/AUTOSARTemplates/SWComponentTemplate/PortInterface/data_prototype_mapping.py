@@ -120,13 +120,20 @@ class DataPrototypeMapping(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sub_element_refs (list to container "SUB-ELEMENTS")
+        # Serialize sub_element_refs (list to container "SUB-ELEMENT-REFS")
         if self.sub_element_refs:
-            wrapper = ET.Element("SUB-ELEMENTS")
+            wrapper = ET.Element("SUB-ELEMENT-REFS")
             for item in self.sub_element_refs:
                 serialized = ARObject._serialize_item(item, "SubElementMapping")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("SUB-ELEMENT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -184,13 +191,19 @@ class DataPrototypeMapping(ARObject):
             second_to_first_value = ARObject._deserialize_by_tag(child, "DataTransformation")
             obj.second_to_first = second_to_first_value
 
-        # Parse sub_element_refs (list from container "SUB-ELEMENTS")
+        # Parse sub_element_refs (list from container "SUB-ELEMENT-REFS")
         obj.sub_element_refs = []
-        container = ARObject._find_child_element(element, "SUB-ELEMENTS")
+        container = ARObject._find_child_element(element, "SUB-ELEMENT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.sub_element_refs.append(child_value)
 

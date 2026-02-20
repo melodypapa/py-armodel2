@@ -58,13 +58,20 @@ class TriggerInterface(PortInterface):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize trigger_refs (list to container "TRIGGERS")
+        # Serialize trigger_refs (list to container "TRIGGER-REFS")
         if self.trigger_refs:
-            wrapper = ET.Element("TRIGGERS")
+            wrapper = ET.Element("TRIGGER-REFS")
             for item in self.trigger_refs:
                 serialized = ARObject._serialize_item(item, "Trigger")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("TRIGGER-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -83,13 +90,19 @@ class TriggerInterface(PortInterface):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(TriggerInterface, cls).deserialize(element)
 
-        # Parse trigger_refs (list from container "TRIGGERS")
+        # Parse trigger_refs (list from container "TRIGGER-REFS")
         obj.trigger_refs = []
-        container = ARObject._find_child_element(element, "TRIGGERS")
+        container = ARObject._find_child_element(element, "TRIGGER-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.trigger_refs.append(child_value)
 

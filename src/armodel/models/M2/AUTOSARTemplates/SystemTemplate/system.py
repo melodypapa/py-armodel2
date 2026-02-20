@@ -115,13 +115,20 @@ class System(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize client_id_definition_set_refs (list to container "CLIENT-ID-DEFINITION-SETS")
+        # Serialize client_id_definition_set_refs (list to container "CLIENT-ID-DEFINITION-SET-REFS")
         if self.client_id_definition_set_refs:
-            wrapper = ET.Element("CLIENT-ID-DEFINITION-SETS")
+            wrapper = ET.Element("CLIENT-ID-DEFINITION-SET-REFS")
             for item in self.client_id_definition_set_refs:
                 serialized = ARObject._serialize_item(item, "ClientIdDefinitionSet")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("CLIENT-ID-DEFINITION-SET-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -183,13 +190,20 @@ class System(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize mapping_refs (list to container "MAPPINGS")
+        # Serialize mapping_refs (list to container "MAPPING-REFS")
         if self.mapping_refs:
-            wrapper = ET.Element("MAPPINGS")
+            wrapper = ET.Element("MAPPING-REFS")
             for item in self.mapping_refs:
                 serialized = ARObject._serialize_item(item, "SystemMapping")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("MAPPING-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -284,13 +298,19 @@ class System(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(System, cls).deserialize(element)
 
-        # Parse client_id_definition_set_refs (list from container "CLIENT-ID-DEFINITION-SETS")
+        # Parse client_id_definition_set_refs (list from container "CLIENT-ID-DEFINITION-SET-REFS")
         obj.client_id_definition_set_refs = []
-        container = ARObject._find_child_element(element, "CLIENT-ID-DEFINITION-SETS")
+        container = ARObject._find_child_element(element, "CLIENT-ID-DEFINITION-SET-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.client_id_definition_set_refs.append(child_value)
 
@@ -336,13 +356,19 @@ class System(ARElement):
                 if child_value is not None:
                     obj.j1939_shared_address_clusters.append(child_value)
 
-        # Parse mapping_refs (list from container "MAPPINGS")
+        # Parse mapping_refs (list from container "MAPPING-REFS")
         obj.mapping_refs = []
-        container = ARObject._find_child_element(element, "MAPPINGS")
+        container = ARObject._find_child_element(element, "MAPPING-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.mapping_refs.append(child_value)
 

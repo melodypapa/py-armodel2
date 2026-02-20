@@ -52,8 +52,8 @@
         "firewallStates": {
           "type": "ModeDeclaration",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Reference to firewall states in which the Firewall is active. one of the referenced ModeDeclarations is the current state then the firewall rule shall be considered as"
         }
       }
@@ -94,15 +94,15 @@
         "matchingEgresses": {
           "type": "FirewallRule",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This element defines an egress rule expression against"
         },
         "matchings": {
           "type": "FirewallRule",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This element defines an ingress rule expression against"
         }
       }

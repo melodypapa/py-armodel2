@@ -136,13 +136,20 @@ class ConsumedServiceInstance(AbstractServiceInstance):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize consumed_event_group_refs (list to container "CONSUMED-EVENT-GROUPS")
+        # Serialize consumed_event_group_refs (list to container "CONSUMED-EVENT-GROUP-REFS")
         if self.consumed_event_group_refs:
-            wrapper = ET.Element("CONSUMED-EVENT-GROUPS")
+            wrapper = ET.Element("CONSUMED-EVENT-GROUP-REFS")
             for item in self.consumed_event_group_refs:
                 serialized = ARObject._serialize_item(item, "ConsumedEventGroup")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("CONSUMED-EVENT-GROUP-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -327,13 +334,19 @@ class ConsumedServiceInstance(AbstractServiceInstance):
                 if child_value is not None:
                     obj.blocklisteds.append(child_value)
 
-        # Parse consumed_event_group_refs (list from container "CONSUMED-EVENT-GROUPS")
+        # Parse consumed_event_group_refs (list from container "CONSUMED-EVENT-GROUP-REFS")
         obj.consumed_event_group_refs = []
-        container = ARObject._find_child_element(element, "CONSUMED-EVENT-GROUPS")
+        container = ARObject._find_child_element(element, "CONSUMED-EVENT-GROUP-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.consumed_event_group_refs.append(child_value)
 

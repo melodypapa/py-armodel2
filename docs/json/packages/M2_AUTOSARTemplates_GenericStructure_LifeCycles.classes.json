@@ -131,11 +131,18 @@
         "defaultLcState": {
           "type": "LifeCycleState",
           "multiplicity": "1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This denotes the default life cycle state. To be used in all within the LifeCycleInfoSet if no state is stated there explicitly. I.e. the defaultLc be overwritten in LifeCycleInfo elements."
         },
-        "defaultPeriod": {
+        "defaultPeriodBegin": {
+          "type": "LifeCyclePeriod",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "Default starting point of period in which all the specified lifeCycleInfo apply. Note that the default period can be overridden for each lifeCycleInfo individually"
+        },
+        "defaultPeriodEnd": {
           "type": "LifeCyclePeriod",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -149,11 +156,11 @@
           "is_ref": false,
           "note": "This represents one particular life cycle information."
         },
-        "usedLifeCycle": {
+        "usedLifeCycleStateDefinitionGroup": {
           "type": "LifeCycleStateDefinitionGroup",
           "multiplicity": "1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This denotes the life cycle states applicable to the current life cycle info set."
         }
       }
@@ -187,7 +194,7 @@
         }
       ],
       "attributes": {
-        "arRelease": {
+        "arReleaseVersion": {
           "type": "RevisionLabelString",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -252,8 +259,8 @@
         "lcState": {
           "type": "LifeCycleState",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This denotes the particular state assigned to the object. If is given then the default life cycle state of Life assumed."
         },
         "periodBegin": {

@@ -67,43 +67,71 @@ class ConsistencyNeeds(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize dpg_does_not_refs (list to container "DPG-DOES-NOTS")
+        # Serialize dpg_does_not_refs (list to container "DPG-DOES-NOT-REFS")
         if self.dpg_does_not_refs:
-            wrapper = ET.Element("DPG-DOES-NOTS")
+            wrapper = ET.Element("DPG-DOES-NOT-REFS")
             for item in self.dpg_does_not_refs:
                 serialized = ARObject._serialize_item(item, "DataPrototypeGroup")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("DPG-DOES-NOT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize dpg_requirese_refs (list to container "DPG-REQUIRESES")
+        # Serialize dpg_requirese_refs (list to container "DPG-REQUIRESE-REFS")
         if self.dpg_requirese_refs:
-            wrapper = ET.Element("DPG-REQUIRESES")
+            wrapper = ET.Element("DPG-REQUIRESE-REFS")
             for item in self.dpg_requirese_refs:
                 serialized = ARObject._serialize_item(item, "DataPrototypeGroup")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("DPG-REQUIRESE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize reg_does_not_refs (list to container "REG-DOES-NOTS")
+        # Serialize reg_does_not_refs (list to container "REG-DOES-NOT-REFS")
         if self.reg_does_not_refs:
-            wrapper = ET.Element("REG-DOES-NOTS")
+            wrapper = ET.Element("REG-DOES-NOT-REFS")
             for item in self.reg_does_not_refs:
                 serialized = ARObject._serialize_item(item, "RunnableEntityGroup")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("REG-DOES-NOT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize reg_requirese_refs (list to container "REG-REQUIRESES")
+        # Serialize reg_requirese_refs (list to container "REG-REQUIRESE-REFS")
         if self.reg_requirese_refs:
-            wrapper = ET.Element("REG-REQUIRESES")
+            wrapper = ET.Element("REG-REQUIRESE-REFS")
             for item in self.reg_requirese_refs:
                 serialized = ARObject._serialize_item(item, "RunnableEntityGroup")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("REG-REQUIRESE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -122,43 +150,67 @@ class ConsistencyNeeds(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ConsistencyNeeds, cls).deserialize(element)
 
-        # Parse dpg_does_not_refs (list from container "DPG-DOES-NOTS")
+        # Parse dpg_does_not_refs (list from container "DPG-DOES-NOT-REFS")
         obj.dpg_does_not_refs = []
-        container = ARObject._find_child_element(element, "DPG-DOES-NOTS")
+        container = ARObject._find_child_element(element, "DPG-DOES-NOT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.dpg_does_not_refs.append(child_value)
 
-        # Parse dpg_requirese_refs (list from container "DPG-REQUIRESES")
+        # Parse dpg_requirese_refs (list from container "DPG-REQUIRESE-REFS")
         obj.dpg_requirese_refs = []
-        container = ARObject._find_child_element(element, "DPG-REQUIRESES")
+        container = ARObject._find_child_element(element, "DPG-REQUIRESE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.dpg_requirese_refs.append(child_value)
 
-        # Parse reg_does_not_refs (list from container "REG-DOES-NOTS")
+        # Parse reg_does_not_refs (list from container "REG-DOES-NOT-REFS")
         obj.reg_does_not_refs = []
-        container = ARObject._find_child_element(element, "REG-DOES-NOTS")
+        container = ARObject._find_child_element(element, "REG-DOES-NOT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.reg_does_not_refs.append(child_value)
 
-        # Parse reg_requirese_refs (list from container "REG-REQUIRESES")
+        # Parse reg_requirese_refs (list from container "REG-REQUIRESE-REFS")
         obj.reg_requirese_refs = []
-        container = ARObject._find_child_element(element, "REG-REQUIRESES")
+        container = ARObject._find_child_element(element, "REG-REQUIRESE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.reg_requirese_refs.append(child_value)
 

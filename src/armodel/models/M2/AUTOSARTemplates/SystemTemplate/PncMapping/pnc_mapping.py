@@ -105,13 +105,20 @@ class PncMapping(Describable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize dynamic_pnc_refs (list to container "DYNAMIC-PNCS")
+        # Serialize dynamic_pnc_refs (list to container "DYNAMIC-PNC-REFS")
         if self.dynamic_pnc_refs:
-            wrapper = ET.Element("DYNAMIC-PNCS")
+            wrapper = ET.Element("DYNAMIC-PNC-REFS")
             for item in self.dynamic_pnc_refs:
                 serialized = ARObject._serialize_item(item, "ISignalIPduGroup")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("DYNAMIC-PNC-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -149,13 +156,20 @@ class PncMapping(Describable):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize pnc_group_refs (list to container "PNC-GROUPS")
+        # Serialize pnc_group_refs (list to container "PNC-GROUP-REFS")
         if self.pnc_group_refs:
-            wrapper = ET.Element("PNC-GROUPS")
+            wrapper = ET.Element("PNC-GROUP-REFS")
             for item in self.pnc_group_refs:
                 serialized = ARObject._serialize_item(item, "ISignalIPduGroup")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("PNC-GROUP-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -173,13 +187,20 @@ class PncMapping(Describable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize pnc_pdur_group_refs (list to container "PNC-PDUR-GROUPS")
+        # Serialize pnc_pdur_group_refs (list to container "PNC-PDUR-GROUP-REFS")
         if self.pnc_pdur_group_refs:
-            wrapper = ET.Element("PNC-PDUR-GROUPS")
+            wrapper = ET.Element("PNC-PDUR-GROUP-REFS")
             for item in self.pnc_pdur_group_refs:
                 serialized = ARObject._serialize_item(item, "PdurIPduGroup")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("PNC-PDUR-GROUP-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -221,23 +242,37 @@ class PncMapping(Describable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize vfc_refs (list to container "VFCS")
+        # Serialize vfc_refs (list to container "VFC-REFS")
         if self.vfc_refs:
-            wrapper = ET.Element("VFCS")
+            wrapper = ET.Element("VFC-REFS")
             for item in self.vfc_refs:
                 serialized = ARObject._serialize_item(item, "PortGroup")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("VFC-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize wakeup_frame_refs (list to container "WAKEUP-FRAMES")
+        # Serialize wakeup_frame_refs (list to container "WAKEUP-FRAME-REFS")
         if self.wakeup_frame_refs:
-            wrapper = ET.Element("WAKEUP-FRAMES")
+            wrapper = ET.Element("WAKEUP-FRAME-REFS")
             for item in self.wakeup_frame_refs:
                 serialized = ARObject._serialize_item(item, "FrameTriggering")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("WAKEUP-FRAME-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -256,13 +291,19 @@ class PncMapping(Describable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PncMapping, cls).deserialize(element)
 
-        # Parse dynamic_pnc_refs (list from container "DYNAMIC-PNCS")
+        # Parse dynamic_pnc_refs (list from container "DYNAMIC-PNC-REFS")
         obj.dynamic_pnc_refs = []
-        container = ARObject._find_child_element(element, "DYNAMIC-PNCS")
+        container = ARObject._find_child_element(element, "DYNAMIC-PNC-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.dynamic_pnc_refs.append(child_value)
 
@@ -292,13 +333,19 @@ class PncMapping(Describable):
                 if child_value is not None:
                     obj.pnc_consumeds.append(child_value)
 
-        # Parse pnc_group_refs (list from container "PNC-GROUPS")
+        # Parse pnc_group_refs (list from container "PNC-GROUP-REFS")
         obj.pnc_group_refs = []
-        container = ARObject._find_child_element(element, "PNC-GROUPS")
+        container = ARObject._find_child_element(element, "PNC-GROUP-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.pnc_group_refs.append(child_value)
 
@@ -308,13 +355,19 @@ class PncMapping(Describable):
             pnc_identifier_value = child.text
             obj.pnc_identifier = pnc_identifier_value
 
-        # Parse pnc_pdur_group_refs (list from container "PNC-PDUR-GROUPS")
+        # Parse pnc_pdur_group_refs (list from container "PNC-PDUR-GROUP-REFS")
         obj.pnc_pdur_group_refs = []
-        container = ARObject._find_child_element(element, "PNC-PDUR-GROUPS")
+        container = ARObject._find_child_element(element, "PNC-PDUR-GROUP-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.pnc_pdur_group_refs.append(child_value)
 
@@ -340,23 +393,35 @@ class PncMapping(Describable):
             short_label_value = ARObject._deserialize_by_tag(child, "Identifier")
             obj.short_label = short_label_value
 
-        # Parse vfc_refs (list from container "VFCS")
+        # Parse vfc_refs (list from container "VFC-REFS")
         obj.vfc_refs = []
-        container = ARObject._find_child_element(element, "VFCS")
+        container = ARObject._find_child_element(element, "VFC-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.vfc_refs.append(child_value)
 
-        # Parse wakeup_frame_refs (list from container "WAKEUP-FRAMES")
+        # Parse wakeup_frame_refs (list from container "WAKEUP-FRAME-REFS")
         obj.wakeup_frame_refs = []
-        container = ARObject._find_child_element(element, "WAKEUP-FRAMES")
+        container = ARObject._find_child_element(element, "WAKEUP-FRAME-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.wakeup_frame_refs.append(child_value)
 

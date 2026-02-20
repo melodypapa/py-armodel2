@@ -87,23 +87,37 @@ class PhysicalChannel(Identifiable, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize frame_triggering_refs (list to container "FRAME-TRIGGERINGS")
+        # Serialize frame_triggering_refs (list to container "FRAME-TRIGGERING-REFS")
         if self.frame_triggering_refs:
-            wrapper = ET.Element("FRAME-TRIGGERINGS")
+            wrapper = ET.Element("FRAME-TRIGGERING-REFS")
             for item in self.frame_triggering_refs:
                 serialized = ARObject._serialize_item(item, "FrameTriggering")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("FRAME-TRIGGERING-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize i_signal_refs (list to container "I-SIGNALS")
+        # Serialize i_signal_refs (list to container "I-SIGNAL-REFS")
         if self.i_signal_refs:
-            wrapper = ET.Element("I-SIGNALS")
+            wrapper = ET.Element("I-SIGNAL-REFS")
             for item in self.i_signal_refs:
                 serialized = ARObject._serialize_item(item, "ISignalTriggering")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("I-SIGNAL-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -117,13 +131,20 @@ class PhysicalChannel(Identifiable, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize pdu_triggering_refs (list to container "PDU-TRIGGERINGS")
+        # Serialize pdu_triggering_refs (list to container "PDU-TRIGGERING-REFS")
         if self.pdu_triggering_refs:
-            wrapper = ET.Element("PDU-TRIGGERINGS")
+            wrapper = ET.Element("PDU-TRIGGERING-REFS")
             for item in self.pdu_triggering_refs:
                 serialized = ARObject._serialize_item(item, "PduTriggering")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("PDU-TRIGGERING-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -152,23 +173,35 @@ class PhysicalChannel(Identifiable, ABC):
                 if child_value is not None:
                     obj.comm_connectors.append(child_value)
 
-        # Parse frame_triggering_refs (list from container "FRAME-TRIGGERINGS")
+        # Parse frame_triggering_refs (list from container "FRAME-TRIGGERING-REFS")
         obj.frame_triggering_refs = []
-        container = ARObject._find_child_element(element, "FRAME-TRIGGERINGS")
+        container = ARObject._find_child_element(element, "FRAME-TRIGGERING-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.frame_triggering_refs.append(child_value)
 
-        # Parse i_signal_refs (list from container "I-SIGNALS")
+        # Parse i_signal_refs (list from container "I-SIGNAL-REFS")
         obj.i_signal_refs = []
-        container = ARObject._find_child_element(element, "I-SIGNALS")
+        container = ARObject._find_child_element(element, "I-SIGNAL-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.i_signal_refs.append(child_value)
 
@@ -182,13 +215,19 @@ class PhysicalChannel(Identifiable, ABC):
                 if child_value is not None:
                     obj.manageds.append(child_value)
 
-        # Parse pdu_triggering_refs (list from container "PDU-TRIGGERINGS")
+        # Parse pdu_triggering_refs (list from container "PDU-TRIGGERING-REFS")
         obj.pdu_triggering_refs = []
-        container = ARObject._find_child_element(element, "PDU-TRIGGERINGS")
+        container = ARObject._find_child_element(element, "PDU-TRIGGERING-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.pdu_triggering_refs.append(child_value)
 

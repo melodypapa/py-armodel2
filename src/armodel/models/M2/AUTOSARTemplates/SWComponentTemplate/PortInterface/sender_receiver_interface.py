@@ -72,13 +72,20 @@ class SenderReceiverInterface(DataInterface):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize data_element_refs (list to container "DATA-ELEMENTS")
+        # Serialize data_element_refs (list to container "DATA-ELEMENT-REFS")
         if self.data_element_refs:
-            wrapper = ET.Element("DATA-ELEMENTS")
+            wrapper = ET.Element("DATA-ELEMENT-REFS")
             for item in self.data_element_refs:
                 serialized = ARObject._serialize_item(item, "VariableDataPrototype")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("DATA-ELEMENT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -92,13 +99,20 @@ class SenderReceiverInterface(DataInterface):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize meta_data_item_set_refs (list to container "META-DATA-ITEM-SETS")
+        # Serialize meta_data_item_set_refs (list to container "META-DATA-ITEM-SET-REFS")
         if self.meta_data_item_set_refs:
-            wrapper = ET.Element("META-DATA-ITEM-SETS")
+            wrapper = ET.Element("META-DATA-ITEM-SET-REFS")
             for item in self.meta_data_item_set_refs:
                 serialized = ARObject._serialize_item(item, "MetaDataItemSet")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("META-DATA-ITEM-SET-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -117,13 +131,19 @@ class SenderReceiverInterface(DataInterface):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SenderReceiverInterface, cls).deserialize(element)
 
-        # Parse data_element_refs (list from container "DATA-ELEMENTS")
+        # Parse data_element_refs (list from container "DATA-ELEMENT-REFS")
         obj.data_element_refs = []
-        container = ARObject._find_child_element(element, "DATA-ELEMENTS")
+        container = ARObject._find_child_element(element, "DATA-ELEMENT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.data_element_refs.append(child_value)
 
@@ -137,13 +157,19 @@ class SenderReceiverInterface(DataInterface):
                 if child_value is not None:
                     obj.invalidation_policy_policies.append(child_value)
 
-        # Parse meta_data_item_set_refs (list from container "META-DATA-ITEM-SETS")
+        # Parse meta_data_item_set_refs (list from container "META-DATA-ITEM-SET-REFS")
         obj.meta_data_item_set_refs = []
-        container = ARObject._find_child_element(element, "META-DATA-ITEM-SETS")
+        container = ARObject._find_child_element(element, "META-DATA-ITEM-SET-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.meta_data_item_set_refs.append(child_value)
 

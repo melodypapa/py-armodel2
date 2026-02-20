@@ -115,13 +115,20 @@ class CompositionSwComponentType(SwComponentType):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize data_type_refs (list to container "DATA-TYPES")
+        # Serialize data_type_refs (list to container "DATA-TYPE-REFS")
         if self.data_type_refs:
-            wrapper = ET.Element("DATA-TYPES")
+            wrapper = ET.Element("DATA-TYPE-REFS")
             for item in self.data_type_refs:
                 serialized = ARObject._serialize_item(item, "DataTypeMappingSet")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("DATA-TYPE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -194,13 +201,19 @@ class CompositionSwComponentType(SwComponentType):
                 if child_value is not None:
                     obj.constant_values.append(child_value)
 
-        # Parse data_type_refs (list from container "DATA-TYPES")
+        # Parse data_type_refs (list from container "DATA-TYPE-REFS")
         obj.data_type_refs = []
-        container = ARObject._find_child_element(element, "DATA-TYPES")
+        container = ARObject._find_child_element(element, "DATA-TYPE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.data_type_refs.append(child_value)
 

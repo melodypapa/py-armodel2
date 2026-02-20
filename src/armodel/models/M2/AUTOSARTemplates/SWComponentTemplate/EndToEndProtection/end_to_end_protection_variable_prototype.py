@@ -52,13 +52,20 @@ class EndToEndProtectionVariablePrototype(ARObject):
         tag = self._get_xml_tag()
         elem = ET.Element(tag)
 
-        # Serialize receiver_refs (list to container "RECEIVERS")
+        # Serialize receiver_refs (list to container "RECEIVER-REFS")
         if self.receiver_refs:
-            wrapper = ET.Element("RECEIVERS")
+            wrapper = ET.Element("RECEIVER-REFS")
             for item in self.receiver_refs:
                 serialized = ARObject._serialize_item(item, "VariableDataPrototype")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("RECEIVER-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -106,13 +113,19 @@ class EndToEndProtectionVariablePrototype(ARObject):
         obj = cls.__new__(cls)
         obj.__init__()
 
-        # Parse receiver_refs (list from container "RECEIVERS")
+        # Parse receiver_refs (list from container "RECEIVER-REFS")
         obj.receiver_refs = []
-        container = ARObject._find_child_element(element, "RECEIVERS")
+        container = ARObject._find_child_element(element, "RECEIVER-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.receiver_refs.append(child_value)
 

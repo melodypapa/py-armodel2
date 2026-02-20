@@ -140,13 +140,20 @@ class EcuInstance(FibexElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize associated_com_refs (list to container "ASSOCIATED-COMS")
+        # Serialize associated_com_refs (list to container "ASSOCIATED-COM-REFS")
         if self.associated_com_refs:
-            wrapper = ET.Element("ASSOCIATED-COMS")
+            wrapper = ET.Element("ASSOCIATED-COM-REFS")
             for item in self.associated_com_refs:
                 serialized = ARObject._serialize_item(item, "ISignalIPduGroup")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("ASSOCIATED-COM-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -160,13 +167,20 @@ class EcuInstance(FibexElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize associated_pdur_refs (list to container "ASSOCIATED-PDURS")
+        # Serialize associated_pdur_refs (list to container "ASSOCIATED-PDUR-REFS")
         if self.associated_pdur_refs:
-            wrapper = ET.Element("ASSOCIATED-PDURS")
+            wrapper = ET.Element("ASSOCIATED-PDUR-REFS")
             for item in self.associated_pdur_refs:
                 serialized = ARObject._serialize_item(item, "PdurIPduGroup")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("ASSOCIATED-PDUR-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -459,13 +473,19 @@ class EcuInstance(FibexElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcuInstance, cls).deserialize(element)
 
-        # Parse associated_com_refs (list from container "ASSOCIATED-COMS")
+        # Parse associated_com_refs (list from container "ASSOCIATED-COM-REFS")
         obj.associated_com_refs = []
-        container = ARObject._find_child_element(element, "ASSOCIATED-COMS")
+        container = ARObject._find_child_element(element, "ASSOCIATED-COM-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.associated_com_refs.append(child_value)
 
@@ -479,13 +499,19 @@ class EcuInstance(FibexElement):
                 if child_value is not None:
                     obj.associateds.append(child_value)
 
-        # Parse associated_pdur_refs (list from container "ASSOCIATED-PDURS")
+        # Parse associated_pdur_refs (list from container "ASSOCIATED-PDUR-REFS")
         obj.associated_pdur_refs = []
-        container = ARObject._find_child_element(element, "ASSOCIATED-PDURS")
+        container = ARObject._find_child_element(element, "ASSOCIATED-PDUR-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.associated_pdur_refs.append(child_value)
 

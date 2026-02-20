@@ -96,33 +96,54 @@ class SwComponentType(ARElement, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize port_refs (list to container "PORTS")
+        # Serialize port_refs (list to container "PORT-REFS")
         if self.port_refs:
-            wrapper = ET.Element("PORTS")
+            wrapper = ET.Element("PORT-REFS")
             for item in self.port_refs:
                 serialized = ARObject._serialize_item(item, "PortPrototype")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("PORT-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize port_group_refs (list to container "PORT-GROUPS")
+        # Serialize port_group_refs (list to container "PORT-GROUP-REFS")
         if self.port_group_refs:
-            wrapper = ET.Element("PORT-GROUPS")
+            wrapper = ET.Element("PORT-GROUP-REFS")
             for item in self.port_group_refs:
                 serialized = ARObject._serialize_item(item, "PortGroup")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("PORT-GROUP-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize swc_mapping_refs (list to container "SWC-MAPPINGS")
+        # Serialize swc_mapping_refs (list to container "SWC-MAPPING-REFS")
         if self.swc_mapping_refs:
-            wrapper = ET.Element("SWC-MAPPINGS")
+            wrapper = ET.Element("SWC-MAPPING-REFS")
             for item in self.swc_mapping_refs:
                 serialized = ARObject._serialize_item(item, "Any")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("SWC-MAPPING-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -140,13 +161,20 @@ class SwComponentType(ARElement, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize unit_group_refs (list to container "UNIT-GROUPS")
+        # Serialize unit_group_refs (list to container "UNIT-GROUP-REFS")
         if self.unit_group_refs:
-            wrapper = ET.Element("UNIT-GROUPS")
+            wrapper = ET.Element("UNIT-GROUP-REFS")
             for item in self.unit_group_refs:
                 serialized = ARObject._serialize_item(item, "UnitGroup")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("UNIT-GROUP-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -175,33 +203,51 @@ class SwComponentType(ARElement, ABC):
                 if child_value is not None:
                     obj.consistency_needses.append(child_value)
 
-        # Parse port_refs (list from container "PORTS")
+        # Parse port_refs (list from container "PORT-REFS")
         obj.port_refs = []
-        container = ARObject._find_child_element(element, "PORTS")
+        container = ARObject._find_child_element(element, "PORT-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.port_refs.append(child_value)
 
-        # Parse port_group_refs (list from container "PORT-GROUPS")
+        # Parse port_group_refs (list from container "PORT-GROUP-REFS")
         obj.port_group_refs = []
-        container = ARObject._find_child_element(element, "PORT-GROUPS")
+        container = ARObject._find_child_element(element, "PORT-GROUP-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.port_group_refs.append(child_value)
 
-        # Parse swc_mapping_refs (list from container "SWC-MAPPINGS")
+        # Parse swc_mapping_refs (list from container "SWC-MAPPING-REFS")
         obj.swc_mapping_refs = []
-        container = ARObject._find_child_element(element, "SWC-MAPPINGS")
+        container = ARObject._find_child_element(element, "SWC-MAPPING-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.swc_mapping_refs.append(child_value)
 
@@ -211,13 +257,19 @@ class SwComponentType(ARElement, ABC):
             sw_component_documentation_value = ARObject._deserialize_by_tag(child, "SwComponentDocumentation")
             obj.sw_component_documentation = sw_component_documentation_value
 
-        # Parse unit_group_refs (list from container "UNIT-GROUPS")
+        # Parse unit_group_refs (list from container "UNIT-GROUP-REFS")
         obj.unit_group_refs = []
-        container = ARObject._find_child_element(element, "UNIT-GROUPS")
+        container = ARObject._find_child_element(element, "UNIT-GROUP-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.unit_group_refs.append(child_value)
 

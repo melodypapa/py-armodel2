@@ -44,15 +44,15 @@
         "networks": {
           "type": "PlatformModuleEthernetEndpointConfiguration",
           "multiplicity": "*",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This association contains the network configuration that shall be applied to an instance of an IDS entity. atp.Status=candidate"
         },
         "timeBaseResource": {
           "type": "any (TimeBaseResource)",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This reference identifies the applicable time base atpVariation"
         }
       }

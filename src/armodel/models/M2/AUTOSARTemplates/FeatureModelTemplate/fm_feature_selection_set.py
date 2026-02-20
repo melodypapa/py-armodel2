@@ -74,13 +74,20 @@ class FMFeatureSelectionSet(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize include_refs (list to container "INCLUDES")
+        # Serialize include_refs (list to container "INCLUDE-REFS")
         if self.include_refs:
-            wrapper = ET.Element("INCLUDES")
+            wrapper = ET.Element("INCLUDE-REFS")
             for item in self.include_refs:
                 serialized = ARObject._serialize_item(item, "FMFeatureSelectionSet")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("INCLUDE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -119,13 +126,19 @@ class FMFeatureSelectionSet(ARElement):
                 if child_value is not None:
                     obj.feature_models.append(child_value)
 
-        # Parse include_refs (list from container "INCLUDES")
+        # Parse include_refs (list from container "INCLUDE-REFS")
         obj.include_refs = []
-        container = ARObject._find_child_element(element, "INCLUDES")
+        container = ARObject._find_child_element(element, "INCLUDE-REFS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.include_refs.append(child_value)
 

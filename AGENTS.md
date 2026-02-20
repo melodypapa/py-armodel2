@@ -11,6 +11,7 @@ This file provides guidance to AI agents working with the py-armodel2 codebase.
 - **Code generation** - All model classes auto-generated from AUTOSAR schema mappings
 - **Multi-version support** - Handles AUTOSAR schemas 00042-00054 (all official releases) plus legacy 3.2.3
 - **Type-safe** - Strict type hints throughout with MyPy enforcement
+- **CLI tool** - Command-line interface for ARXML formatting and processing
 
 ## Development Commands
 
@@ -36,6 +37,9 @@ PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest tests/unit/core
 
 # Run integration tests
 PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest tests/integration/test_autosar_datatypes.py -v
+
+# Run binary comparison tests (round-trip serialization validation)
+PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest tests/integration/test_binary_comparison.py -v
 ```
 
 ### Linting and Formatting
@@ -204,7 +208,7 @@ The project uses a reflection-based serialization framework that eliminates boil
 
 - **Base class**: `ARObject` - provides `serialize()` and `deserialize()` methods
 - **Name converter**: `NameConverter` - handles snake_case ↔ UPPER-CASE-WITH-HYPHENS conversion
-- **Decorators**: Edge case handlers for special XML scenarios
+- **Decorators**: Edge case handlers for special XML scenarios (`@xml_attribute`, `@atp_variant`, `@l_prefix`)
 
 ### Key Components
 
@@ -219,12 +223,15 @@ class ARObject:
         # Uses vars() to discover all attributes
         # Converts names via NameConverter
         # Handles objects, lists, and primitives
+        # Supports l_prefix pattern for language-specific elements
+        # Supports atp_variant pattern for conditional variants
     
     @classmethod
     def deserialize(cls, element: ET.Element) -> Self:
         """Deserialize XML to Python object."""
         # Uses get_type_hints() for type information
         # Recursively deserializes child objects
+        # Handles l_prefix deserialization for private backing fields
 ```
 
 #### 2. NameConverter
@@ -298,25 +305,62 @@ python tools/generate_model_mappings.py
 Location: `src/armodel/serialization/decorators.py`
 
 ```python
-@xml_attribute  # Mark property as XML attribute
-@xml_tag("NAME")  # Specify custom XML tag name
+@xml_attribute  # Mark property as XML attribute instead of element
+
+@atp_variant()  # Mark class as using atpVariation pattern (nested wrappers)
+
+@l_prefix("L-1")  # Mark attribute as using language-specific L-N pattern
 ```
+
+**l_prefix Decorator:**
+The `@l_prefix` decorator marks an attribute as using the language-specific L-N pattern. This is used for MultiLanguage* classes where language-specific content is wrapped in L-<number> elements.
+
+```python
+class MultiLanguageParagraph(ARObject):
+    _l1: list[LParagraph] = []
+    
+    @property
+    @l_prefix("L-1")
+    def l1(self) -> list[LParagraph]:
+        """Get l1 with language-specific wrapper."""
+        return self._l1
+```
+
+The serialization framework automatically:
+- Wraps each LParagraph in an `<L-1>` element during serialization
+- Extracts `<L-1>` elements and populates `_l1` list during deserialization
+- Handles private backing fields (e.g., `_l1`) with corresponding public properties (e.g., `l1`)
+
+**atp_variant Decorator:**
+The `@atp_variant()` decorator marks a class as using the AUTOSAR atpVariation pattern. Classes with atpVariation wrap all their attributes in nested XML elements:
+
+```python
+@atp_variant()
+class SwDataDefProps(ARObject):
+    base_type_ref: Optional[ARRef] = None
+```
+
+Generates wrapper path: `"SW-DATA-DEF-PROPS-VARIANTS/SW-DATA-DEF-PROPS-CONDITIONAL"`
 
 ### Serialization Behavior
 
 **How serialize() works:**
-1. Get XML tag name (from `@xml_tag` or auto-generate from class name)
+1. Get XML tag name (auto-generated from class name)
 2. Iterate attributes via `vars(self)`
 3. Convert names via `NameConverter.to_xml_tag()`
 4. Check for `@xml_attribute` decorator
-5. Serialize objects, lists, or primitives
+5. Handle `@l_prefix` pattern for private backing fields (e.g., `_l1`)
+6. Handle `@atp_variant` pattern for nested wrapper elements
+7. Serialize objects, lists, or primitives
 
 **How deserialize() works:**
 1. Create instance using `cls.__new__(cls)`
 2. Get type hints via `get_type_hints()`
 3. For each attribute, find matching XML element/attribute
-4. Parse value based on type hint
-5. Recursively deserialize child objects
+4. Handle `@l_prefix` pattern by checking public properties with decorator
+5. Handle private backing fields (e.g., `_l1`) by converting to public name (e.g., `l1`)
+6. Parse value based on type hint
+7. Recursively deserialize child objects
 
 ### Type Hints and Multiplicity
 
@@ -348,11 +392,44 @@ class AUTOSAR(ARObject):
         return self._schema_version
 ```
 
-**Pattern 3: Custom Tag Name**
+**Pattern 3: l_prefix Pattern (Language-Specific Elements)**
 ```python
-@xml_tag("AUTOSAR")
-class AUTOSAR(ARObject):
-    pass
+class MultiLanguageParagraph(ARObject):
+    _l1: list[LParagraph] = []
+    
+    @property
+    @l_prefix("L-1")
+    def l1(self) -> list[LParagraph]:
+        """Get l1 with language-specific wrapper."""
+        return self._l1
+    
+    @l1.setter
+    def l1(self, value: list[LParagraph]) -> None:
+        """Set l1 with language-specific wrapper."""
+        self._l1 = value
+    
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "MultiLanguageParagraph":
+        """Custom deserialize to handle l_prefix pattern."""
+        obj = cls.__new__(cls)
+        obj.__init__()
+        
+        # Parse _l1 list from L-1 elements
+        obj._l1 = []
+        for child in element:
+            if ARObject._strip_namespace(child.tag) == "L-1":
+                l1_value = LParagraph.deserialize(child)
+                obj._l1.append(l1_value)
+        
+        return obj
+```
+
+**Pattern 4: atp_variant Pattern**
+```python
+@atp_variant()
+class SwDataDefProps(ARObject):
+    base_type_ref: Optional[ARRef] = None
+    sw_calibration_access: Optional[SwCalibrationAccessEnum] = None
 ```
 
 ## Key Files and Modules
@@ -361,7 +438,7 @@ class AUTOSAR(ARObject):
 - **SchemaVersionManager** (`src/armodel/core/version.py`) - Schema version detection
 - **NameConverter** (`src/armodel/serialization/name_converter.py`) - Name conversion utility
 - **ModelFactory** (`src/armodel/serialization/model_factory.py`) - Factory for creating AUTOSAR model instances from XML tags with polymorphic type resolution
-- **Decorators** (`src/armodel/serialization/decorators.py`) - XML serialization decorators
+- **Decorators** (`src/armodel/serialization/decorators.py`) - XML serialization decorators (`@xml_attribute`, `@atp_variant`, `@l_prefix`)
 - **ARObject** (`src/armodel/models/M2/.../ArObject/ar_object.py`) - Base class with serialize/deserialize
 
 ### Reader/Writer
@@ -370,10 +447,12 @@ class AUTOSAR(ARObject):
 
 ### Configuration
 - **ConfigurationManager** (`src/armodel/cfg/schemas/__init__.py`) - Config loading
-- **Schema configs** (`src/armodel/cfg/config.yaml`) - Version-specific settings
+- **Schema configs** (`src/armodel/cfg/schemas/config.yaml`) - Version-specific settings
+- **Model mappings** (`src/armodel/cfg/model_mappings.yaml`) - XML tag to class name mappings
 
 ### Code Generation
 - **Code Generator** (`tools/generate_models.py`) - Regenerate all model classes
+- **Mapping generator** (`tools/generate_model_mappings.py`) - Generate YAML mappings from JSON
 - **Mapping files** (`docs/json/mapping.json`, `docs/json/hierarchy.json`) - AUTOSAR schema mappings
 
 ### CLI Module
@@ -499,12 +578,20 @@ The following classes are **NOT** auto-generated and must be maintained manually
    - Contains the core serialization infrastructure
    - Uses `vars()` and `get_type_hints()` for automatic attribute discovery
    - Provides `NameConverter` integration for snake_case ↔ UPPER-CASE conversion
+   - Handles `@l_prefix` pattern for private backing fields
+   - Handles `@atp_variant` pattern for nested wrapper elements
+
+3. **MultiLanguage Classes** (e.g., `MultiLanguageParagraph`)
+   - These classes have custom `deserialize()` methods to handle the `@l_prefix` pattern
+   - The private backing field (e.g., `_l1`) is populated from L-<number> XML elements
+   - The public property (e.g., `l1`) is decorated with `@l_prefix("L-1")`
 
 **Why manual maintenance?**
 - These classes contain critical infrastructure that requires careful implementation
 - They define the serialization framework that all other classes inherit from
 - Changes to these classes affect the entire codebase
 - The code generator explicitly skips these classes to prevent accidental overwrites
+- MultiLanguage classes require custom deserialization logic for the l_prefix pattern
 
 ## Python Version Support
 
@@ -524,6 +611,7 @@ The following classes are **NOT** auto-generated and must be maintained manually
 - AUTOSAR namespace detection via XML parsing
 - The same AUTOSAR instance can be reused for multiple `load_arxml()` operations
 - Round-trip serialization tested with `AUTOSAR_Datatypes.arxml`
+- Binary comparison tests validate exact round-trip serialization for all ARXML files
 
 ### AUTOSAR XSD Schema Support
 
@@ -551,6 +639,70 @@ The library supports all official AUTOSAR XSD schema versions:
 
 XSD files are located in `demos/xsd/AUTOSAR_{version}/` directories. Each version's configuration is defined in `src/armodel/cfg/schemas/config.yaml`.
 
+### Serialization Best Practices
+
+**When to Call super().serialize() and super().deserialize():**
+
+1. **For classes with custom serialize/deserialize methods:**
+   - Always call `super().serialize()` first to handle inherited attributes
+   - Always call `super().deserialize()` first to handle inherited attributes
+   - Copy attributes and children from parent element to current element
+   - Then add class-specific serialization/deserialization
+
+2. **For classes with only inherited attributes:**
+   - Can delegate entirely to parent class: `return super().serialize()`
+   - Can delegate entirely to parent class: `return super(ClassName, cls).deserialize(element)`
+
+3. **For classes with l_prefix pattern (MultiLanguage classes):**
+   - Must implement custom `deserialize()` method
+   - Private backing field (e.g., `_l1`) is populated from L-<number> XML elements
+   - Public property (e.g., `l1`) is decorated with `@l_prefix("L-1")`
+   - Serialization is handled automatically by the reflection-based framework
+
+4. **For Item classes with direct children (no wrapper):**
+   - Append children of DocumentationBlock directly to ITEM element
+   - Do not create wrapper elements like ITEM-CONTENTS
+
+**Example: Custom serialize/deserialize pattern**
+
+```python
+class CustomClass(ParentClass):
+    custom_attr: Optional[SomeType] = None
+    
+    def serialize(self) -> ET.Element:
+        """Serialize with parent class support."""
+        tag = self._get_xml_tag()
+        elem = ET.Element(tag)
+        
+        # Handle parent class attributes
+        parent_elem = super().serialize()
+        elem.attrib.update(parent_elem.attrib)
+        for child in parent_elem:
+            elem.append(child)
+        
+        # Handle custom attributes
+        if self.custom_attr is not None:
+            serialized = self.custom_attr.serialize()
+            wrapped = ET.Element("CUSTOM-ATTR")
+            wrapped.append(serialized)
+            elem.append(wrapped)
+        
+        return elem
+    
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CustomClass":
+        """Deserialize with parent class support."""
+        # Handle parent class attributes
+        obj = super().deserialize(element)
+        
+        # Handle custom attributes
+        child = ARObject._find_child_element(element, "CUSTOM-ATTR")
+        if child is not None:
+            obj.custom_attr = SomeType.deserialize(child)
+        
+        return obj
+```
+
 ## Documentation
 
 ### Design Documents
@@ -561,6 +713,7 @@ XSD files are located in `demos/xsd/AUTOSAR_{version}/` directories. Each versio
 ### Test Documentation
 - **Integration Tests**: `docs/tests/integration/test_autosar_data_types.md`
 - **Unit Tests**: `docs/tests/unit/` (various modules)
+- **Binary Comparison Tests**: `tests/integration/test_binary_comparison.py` - Validates exact round-trip serialization
 
 ### CLI Documentation
 - **CLI Design**: `docs/plans/2026-02-18-cli-arxml-formatter-design.md`
@@ -580,7 +733,6 @@ XSD files are located in `demos/xsd/AUTOSAR_{version}/` directories. Each versio
 - `pytest-cov>=4.0` - Code coverage
 - `mypy>=1.0` - Type checking
 - `ruff>=0.1.0` - Linting and formatting
-- `lxml-stubs>=0.4.0` - Type stubs for lxml
 - `types-PyYAML>=6.0` - Type stubs for PyYAML
 
 ## Testing Strategy
@@ -595,9 +747,30 @@ XSD files are located in `demos/xsd/AUTOSAR_{version}/` directories. Each versio
 - Located in `tests/integration/`
 - Test complete workflows (read → process → write)
 - Main test: `test_autosar_datatypes.py` validates round-trip with real ARXML file
+- Binary comparison test: `test_binary_comparison.py` validates exact round-trip serialization for all ARXML files
 - CLI integration tests in `tests/integration/cli/` (end-to-end command testing)
 
 ### Test Data
 - ARXML files: `demos/arxml/`
+  - `AUTOSAR_Datatypes.arxml` - Basic datatypes for testing
+  - `AUTOSAR_MOD_AISpecification_*.arxml` - AIS specification blueprints (20+ files)
 - XSD schemas: `demos/xsd/`
 - Test fixtures: `tests/fixtures/`
+
+### Binary Comparison Tests
+
+The binary comparison tests (`test_binary_comparison.py`) validate that reading and writing ARXML files produces identical binary output:
+
+```bash
+# Run all binary comparison tests
+PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest tests/integration/test_binary_comparison.py -v
+
+# Run specific file test
+PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest tests/integration/test_binary_comparison.py::TestIndividualFiles::test_application_data_type_blueprint_binary_comparison -v
+```
+
+These tests ensure:
+- Exact round-trip serialization (binary comparison)
+- All ARXML files can be read and written without data loss
+- Proper handling of l_prefix pattern for MultiLanguage classes
+- Correct serialization of DocumentationBlock and its children

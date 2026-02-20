@@ -664,16 +664,41 @@ def _generate_deserialize_method(
                 # Check if the XML tag ends with "S" (plural form like PACKAGES, ELEMENTS)
                 # If so, it's a container element and we need to iterate its children
                 if xml_tag.endswith("S"):
-                    # Container element (e.g., AR-PACKAGES, ELEMENTS)
-                    # Find the container, then iterate its children
-                    code += f'''        # Parse {python_name} (list from container "{xml_tag}")
+                    # Container element (e.g., AR-PACKAGES, ELEMENTS, USE-INSTEAD-REFS)
+                    # For reference lists (is_ref=True), the container tag should be singular + -REFS
+                    # For non-reference lists, the container tag is the plural form (e.g., LIFE-CYCLE-INFOS)
+                    container_tag = xml_tag
+                    if is_ref:
+                        # For reference lists, the container tag is singular form + -REFS
+                        # e.g., USE-INSTEADS -> USE-INSTEAD-REFS
+                        singular = xml_tag[:-1]  # Remove trailing 'S'
+                        container_tag = f"{singular}-REFS"
+                    
+                    code += f'''        # Parse {python_name} (list from container "{container_tag}")
         obj.{python_name} = []
-        container = ARObject._find_child_element(element, "{xml_tag}")
+        container = ARObject._find_child_element(element, "{container_tag}")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
+'''
+                    
+                    # For reference lists, check if child is a reference element and use ARRef.deserialize()
+                    # For non-reference lists, deserialize each child element dynamically based on its tag
+                    if is_ref:
+                        code += f'''                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = ARObject._strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = ARObject._deserialize_by_tag(child, None)
+'''
+                    else:
+                        code += f'''                # Deserialize each child element dynamically based on its tag
                 child_value = ARObject._deserialize_by_tag(child, None)
-                if child_value is not None:
+'''
+                    
+                    code += f'''                if child_value is not None:
                     obj.{python_name}.append(child_value)
 
 '''
@@ -1633,15 +1658,49 @@ def _generate_serialize_method(
                 # Check if the XML tag ends with "S" (plural form like PACKAGES, ELEMENTS)
                 # If so, it's a container element and we need to create a wrapper
                 if xml_tag.endswith("S"):
-                    # Container element (e.g., AR-PACKAGES, ELEMENTS)
-                    code += f'''        # Serialize {python_name} (list to container "{xml_tag}")
+                    # Container element (e.g., AR-PACKAGES, ELEMENTS, USE-INSTEAD-REFS)
+                    # For reference lists (is_ref=True), the container tag should be singular + -REFS
+                    # For non-reference lists, the container tag is the plural form (e.g., LIFE-CYCLE-INFOS)
+                    container_tag = xml_tag
+                    if is_ref:
+                        # For reference lists, the container tag is singular form + -REFS
+                        # e.g., USE-INSTEADS -> USE-INSTEAD-REFS
+                        # Child tag is singular form + -REF
+                        singular = xml_tag[:-1]  # Remove trailing 'S'
+                        container_tag = f"{singular}-REFS"
+                    
+                    code += f'''        # Serialize {python_name} (list to container "{container_tag}")
         if self.{python_name}:
-            wrapper = ET.Element("{xml_tag}")
+            wrapper = ET.Element("{container_tag}")
             for item in self.{python_name}:
                 serialized = ARObject._serialize_item(item, "{effective_type}")
                 if serialized is not None:
-                    wrapper.append(serialized)
-            if len(wrapper) > 0:
+'''
+                    
+                    # For reference lists, wrap each item in a child element with -REF suffix
+                    # For non-reference lists, append the serialized item directly (it already has correct tag)
+                    if is_ref:
+                        singular = xml_tag[:-1]  # Remove trailing 'S'
+                        # Use the kind field from JSON to determine the suffix
+                        # "tref" -> -TREF, "ref" -> -REF
+                        if kind == "tref":
+                            child_tag = f"{singular}-TREF"
+                        else:
+                            child_tag = f"{singular}-REF"
+                        code += f'''                    child_elem = ET.Element("{child_tag}")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
+'''
+                    else:
+                        code += f'''                    wrapper.append(serialized)
+'''
+                    
+                    code += f'''            if len(wrapper) > 0:
                 elem.append(wrapper)
 
 '''
