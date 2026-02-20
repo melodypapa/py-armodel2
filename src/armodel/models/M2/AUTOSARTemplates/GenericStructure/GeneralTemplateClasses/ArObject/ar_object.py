@@ -206,6 +206,10 @@ class ARObject:
         # This handles properties like 'checksum' that are simple property getters
         for name, obj in self.__class__.__dict__.items():
             if isinstance(obj, property) and not hasattr(obj.fget, '_xml_element_tag'):
+                # Skip internal properties that should not be serialized
+                if name == 'is_abstract':
+                    continue
+                
                 # Skip properties that have @xml_element_tag (already handled above)
                 # Handle properties that have @xml_attribute
                 if self._is_xml_attribute(name):
