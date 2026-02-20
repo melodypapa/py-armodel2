@@ -514,10 +514,12 @@ class {class_name}(ABC):
             elif kind == "l_prefix":
                 python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity)
                 private_name = f"_{python_name}"
-                # Extract the number from attribute name (e.g., "l10" → "10")
-                # Convert to XML tag format (e.g., "L-10")
-                number = attr_name[1:]  # Remove the 'l' prefix
-                l_prefix_tag = f"L-{number}"
+                # Determine Python type for this attribute
+                python_type = get_python_type(attr_type, multiplicity, package_data, is_ref)
+                # Extract the suffix from attribute name (e.g., "l10" → "10", "lGraphic" → "Graphic")
+                # Convert to XML tag format (e.g., "L-10", "L-GRAPHIC")
+                suffix = attr_name[1:]  # Remove the 'l' prefix
+                l_prefix_tag = f"L-{suffix.upper()}"  # Convert to uppercase for AUTOSAR XML format
                 # Generate property with l_prefix decorator
                 code += f'''    @property
     @l_prefix("{l_prefix_tag}")
@@ -550,7 +552,18 @@ class {class_name}(ABC):
     elif attribute_types and any(attr_info.get("kind") == "l_prefix" for attr_info in attribute_types.values()):
         # Classes with l_prefix attributes use ARObject's reflection-based serialization
         # with l_prefix decorator handling (no custom serialize/deserialize methods needed)
-        pass
+        # ONLY if they inherit directly from ARObject. If they inherit from a non-ARObject parent,
+        # we need to generate custom methods because the parent's serialize() doesn't use reflection.
+        if parent_class and parent_class != "ARObject":
+            # Parent class doesn't use reflection, so we need custom methods
+            serialize_code = _generate_serialize_method(
+                class_name, attribute_types, parent_class, package_data
+            )
+            deserialize_code = _generate_deserialize_method(
+                class_name, attribute_types, parent_class, package_data
+            )
+            code += serialize_code + deserialize_code
+        # else: parent is ARObject, use reflection (no custom methods needed)
     else:
         # For other classes, generate optimized serialize() and deserialize() methods
         # These methods parse/serialize XML directly without reflection for better performance
@@ -704,7 +717,21 @@ def _generate_deserialize_method(
 '''
                 else:
                     # Non-container list type (multiple instances of the same element)
-                    code += f'''        # Parse {python_name} (list)
+                    # Check if this is an l_prefix attribute
+                    if kind == "l_prefix":
+                        # l_prefix attributes use the l_prefix tag (e.g., L-1, L-10)
+                        suffix = attr_name[1:]  # Remove the 'l' prefix
+                        l_prefix_tag = f"L-{suffix.upper()}"  # Convert to uppercase
+                        code += f'''        # Parse {python_name} (list with l_prefix "{l_prefix_tag}")
+        obj.{python_name} = []
+        for child in ARObject._find_all_child_elements(element, "{l_prefix_tag}"):
+            {_generate_value_extraction_code(effective_type, "child", package_data, python_name, is_ref)}
+            obj.{python_name}.append({python_name}_value)
+
+'''
+                    else:
+                        # Regular non-container list
+                        code += f'''        # Parse {python_name} (list)
         obj.{python_name} = []
         for child in ARObject._find_all_child_elements(element, "{xml_tag}"):
             {_generate_value_extraction_code(effective_type, "child", package_data, python_name, is_ref)}
@@ -1706,7 +1733,29 @@ def _generate_serialize_method(
 '''
                 else:
                     # Non-container list type (multiple instances of the same element)
-                    code += f'''        # Serialize {python_name} (list)
+                    # Check if this is an l_prefix attribute
+                    if kind == "l_prefix":
+                        # l_prefix attributes use the l_prefix tag (e.g., L-1, L-10)
+                        suffix = attr_name[1:]  # Remove the 'l' prefix
+                        l_prefix_tag = f"L-{suffix.upper()}"  # Convert to uppercase
+                        code += f'''        # Serialize {python_name} (list with l_prefix "{l_prefix_tag}")
+        for item in self.{python_name}:
+            serialized = ARObject._serialize_item(item, "{effective_type}")
+            if serialized is not None:
+                # For l_prefix lists, wrap each item in the l_prefix tag
+                wrapped = ET.Element("{l_prefix_tag}")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+'''
+                    else:
+                        # Regular non-container list
+                        code += f'''        # Serialize {python_name} (list)
         for item in self.{python_name}:
             serialized = ARObject._serialize_item(item, "{effective_type}")
             if serialized is not None:

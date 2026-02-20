@@ -418,7 +418,7 @@
         "timestamp": {
           "type": "DateTime",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "xml_attribute",
           "is_ref": false,
           "note": "Timestamp calculated by the user’s tool environment for"
         }

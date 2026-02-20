@@ -8,6 +8,7 @@ JSON Source: docs/json/packages/M2_MSR_Documentation_BlockElements_Figure.classe
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import xml_attribute
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.EngineeringObject.engineering_object import (
     EngineeringObject,
@@ -39,7 +40,7 @@ class Graphic(EngineeringObject):
     edit_height: Optional[String]
     editscale: Optional[String]
     edit_width: Optional[String]
-    filename: Optional[String]
+    _filename: Optional[String]
     fit: Optional[GraphicFitEnum]
     generator: Optional[NameToken]
     height: Optional[String]
@@ -57,7 +58,7 @@ class Graphic(EngineeringObject):
         self.edit_height: Optional[String] = None
         self.editscale: Optional[String] = None
         self.edit_width: Optional[String] = None
-        self.filename: Optional[String] = None
+        self._filename: Optional[String] = None
         self.fit: Optional[GraphicFitEnum] = None
         self.generator: Optional[NameToken] = None
         self.height: Optional[String] = None
@@ -68,6 +69,17 @@ class Graphic(EngineeringObject):
         self.notation: Optional[GraphicNotationEnum] = None
         self.scale: Optional[String] = None
         self.width: Optional[String] = None
+    @property
+    @xml_attribute
+    def filename(self) -> String:
+        """Get filename XML attribute."""
+        return self._filename
+
+    @filename.setter
+    def filename(self, value: String) -> None:
+        """Set filename XML attribute."""
+        self._filename = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize Graphic to XML element.
@@ -145,19 +157,9 @@ class Graphic(EngineeringObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize filename
+        # Serialize filename as XML attribute
         if self.filename is not None:
-            serialized = ARObject._serialize_item(self.filename, "String")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("FILENAME")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+            elem.attrib["FILENAME"] = str(self.filename)
 
         # Serialize fit
         if self.fit is not None:
@@ -338,10 +340,9 @@ class Graphic(EngineeringObject):
             edit_width_value = child.text
             obj.edit_width = edit_width_value
 
-        # Parse filename
-        child = ARObject._find_child_element(element, "FILENAME")
-        if child is not None:
-            filename_value = child.text
+        # Parse filename from XML attribute
+        if "FILENAME" in element.attrib:
+            filename_value = element.attrib["FILENAME"]
             obj.filename = filename_value
 
         # Parse fit

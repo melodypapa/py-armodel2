@@ -241,7 +241,7 @@
         "filename": {
           "type": "String",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "xml_attribute",
           "is_ref": false,
           "note": "Name of the file that should be displayed. This attribute is"
         },
@@ -492,10 +492,10 @@
           "is_ref": false,
           "note": "This specifies an entry point in an online help system to"
         },
-        "lGraphics": {
+        "lGraphic": {
           "type": "LGraphic",
           "multiplicity": "*",
-          "kind": "attribute",
+          "kind": "l_prefix",
           "is_ref": false,
           "note": "Container of the graphic (or diagram) and optional map of"
         },

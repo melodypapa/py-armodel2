@@ -91,7 +91,7 @@
         },
         "figure": {
           "type": "MlFigure",
-          "multiplicity": "0..1",
+          "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents a figure in the documentation block."
