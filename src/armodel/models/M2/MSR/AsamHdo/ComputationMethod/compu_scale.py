@@ -169,7 +169,6 @@ class CompuScale(ARObject):
             child_tag = ARObject._strip_namespace(child.tag)
             if child_tag not in element_order:
                 elem.append(child)
-
         return elem
 
     @classmethod
