@@ -98,7 +98,7 @@ class ValueGroup(ARObject):
         # Parse label
         child = ARObject._find_child_element(element, "LABEL")
         if child is not None:
-            label_value = ARObject._deserialize_by_tag(child, "MultilanguageLongName")
+            label_value = ARObject._deserialize_with_type(child, "MultilanguageLongName")
             obj.label = label_value
 
         # Parse vg_contents

@@ -51,8 +51,8 @@ This document analyzes the classes in `tools/skip_classes.yaml` and proposes dec
 | Decorator | Location | Purpose |
 |-----------|----------|---------|
 | `@xml_attribute` | `src/armodel/serialization/decorators.py:6-27` | Mark property/attribute as XML attribute |
-| `@xml_tag(tag_name)` | `src/armodel/serialization/decorators.py:30-47` | Specify custom XML tag name for class or attribute |
-| `@xml_element_tag(xml_element_name, python_class_name)` | `src/armodel/serialization/decorators.py:50-96` | Handle multi-level element paths and polymorphic types |
+| `@atp_variant()` | `src/armodel/serialization/decorators.py:30-55` | Mark class using AUTOSAR atpVariation pattern |
+| `@l_prefix(tag_name)` | `src/armodel/serialization/decorators.py:58-80` | Mark attribute using language-specific L-N pattern |
 
 ### Current Decorator Capabilities
 
@@ -61,16 +61,17 @@ This document analyzes the classes in `tools/skip_classes.yaml` and proposes dec
    - Used in: `AUTOSAR`, `ARRef`, `LanguageSpecific`
    - Example: `<AUTOSAR SCHEMA-VERSION="4.5.0">`
 
-2. **`@xml_tag()`**
-   - Specifies custom XML tag name for class
-   - Used in: `AUTOSAR`, various manually maintained classes
-   - Example: `AUTOSAR` class → `<AUTOSAR>` tag
+2. **`@atp_variant()`**
+   - Marks class using AUTOSAR atpVariation pattern
+   - Auto-generates nested wrapper elements: `<CLASS-TAG>-VARIANTS/<CLASS-TAG>-CONDITIONAL`
+   - Used in: `SwDataDefProps`, diagnostic classes, communication classes
+   - Example: `SwDataDefProps` → `<SW-DATA-DEF-PROPS><SW-DATA-DEF-PROPS-VARIANTS><SW-DATA-DEF-PROPS-CONDITIONAL>...</SW-DATA-DEF-PROPS-CONDITIONAL></SW-DATA-DEF-PROPS-VARIANTS></SW-DATA-DEF-PROPS>`
 
-3. **`@xml_element_tag()`**
-   - Handles multi-level element paths
-   - Supports polymorphic type resolution
-   - Supports explicit Python class name specification
-   - Example: `@xml_element_tag("SW-DATA-DEF-PROPS-VARIANTS/SW-DATA-DEF-PROPS-CONDITIONAL", "SwDataDefPropsConditional")`
+3. **`@l_prefix(tag_name)`**
+   - Marks attribute using language-specific L-N naming pattern
+   - Wraps content in language-specific tags (L-1, L-2, L-4, L-5, L-10)
+   - Used in: `MultiLanguage*` classes
+   - Example: `MultiLanguagePlainText.l10` → `<L-10 L="EN">English text</L-10>`
 
 ## Analysis by Category
 

@@ -95,7 +95,7 @@ class MultilanguageReferrable(Referrable, ABC):
         # Parse long_name
         child = ARObject._find_child_element(element, "LONG-NAME")
         if child is not None:
-            long_name_value = ARObject._deserialize_by_tag(child, "MultilanguageLongName")
+            long_name_value = ARObject._deserialize_with_type(child, "MultilanguageLongName")
             obj.long_name = long_name_value
 
         return obj

@@ -162,9 +162,15 @@ class ARObject:
             # Standard serialization for non-atpVariant classes
             # Get all instance attributes
             for name, value in vars(self).items():
-                # Skip private attributes
+                # Skip private attributes, except for l_prefix backing fields
+                # l_prefix attributes use private backing fields (e.g., _l10)
                 if name.startswith('_'):
-                    continue
+                    # Check if this is a backing field for a l_prefix property
+                    public_name = name[1:]  # Remove leading underscore
+                    if not ARObject._has_l_prefix(self.__class__, public_name):
+                        continue
+                    # This is a l_prefix backing field, use the public name for serialization
+                    name = public_name
 
                 # Check for custom XML element tag via @xml_element_tag decorator
                 xml_tag = self._get_element_tag(name)
@@ -302,7 +308,12 @@ class ARObject:
                 # Skip internal properties that should not be serialized
                 if name == 'is_abstract':
                     continue
-                
+
+                # Skip properties that have @l_prefix decorator
+                # These are already handled in the main vars() loop via their private backing fields
+                if ARObject._has_l_prefix(self.__class__, name):
+                    continue
+
                 # Skip properties that have @xml_element_tag (already handled above)
                 # Handle properties that have @xml_attribute
                 if self._is_xml_attribute(name):
@@ -409,15 +420,11 @@ class ARObject:
     def _get_xml_tag(self) -> str:
         """Get XML tag name for this class.
 
-        Checks for @xml_tag decorator override, otherwise auto-generates from class name.
+        Auto-generates from class name using NameConverter.
 
         Returns:
             XML tag name
         """
-        # Check for decorator override
-        if hasattr(self.__class__, '_xml_tag'):
-            return self.__class__._xml_tag
-
         # Auto-generate from class name
         return NameConverter.to_xml_tag(self.__class__.__name__)
 
@@ -448,67 +455,44 @@ class ARObject:
     def _get_element_tag(self, attr_name: str) -> str:
         """Get XML tag name for a class attribute/element.
 
-        Checks for @xml_element_tag decorator override, otherwise auto-generates
-        from Python attribute name. For multi-level paths, returns the last element.
+        Auto-generates from Python attribute name using NameConverter.
 
         Args:
             attr_name: Name of the Python attribute
 
         Returns:
-            XML tag name to use for this element (last element of multi-level path)
+            XML tag name to use for this element
         """
-        tag_or_path = self._get_element_tag_path(attr_name)
-        # If it's a multi-level path, return the last element
-        if isinstance(tag_or_path, list):
-            return tag_or_path[-1]
-        return tag_or_path
+        return NameConverter.to_xml_tag(attr_name)
 
     def _get_element_tag_path(self, attr_name: str) -> Union[str, list[str]]:
         """Get full XML tag path for a class attribute/element.
 
-        Checks for @xml_element_tag decorator override, otherwise auto-generates
-        from Python attribute name.
+        Auto-generates from Python attribute name using NameConverter.
 
         Args:
             attr_name: Name of the Python attribute
 
         Returns:
-            XML tag path as a list for multi-level paths, or a string for single-level paths
+            XML tag as a string (single-level path only)
         """
-        # Check for decorator override on the class attribute
-        attr = getattr(self.__class__, attr_name, None)
-        if attr:
-            # If it's a property, check the getter (fget) for the decorator
-            if isinstance(attr, property) and hasattr(attr.fget, '_xml_element_tag'):
-                return attr.fget._xml_element_tag
-            # Otherwise check the attribute directly
-            elif hasattr(attr, '_xml_element_tag'):
-                return attr._xml_element_tag
-
         # Auto-generate from Python name
         return NameConverter.to_xml_tag(attr_name)
 
     @staticmethod
     def _get_element_class(cls, attr_name: str) -> Optional[str]:
-        """Get explicit Python class name from @xml_element_tag decorator.
+        """Get explicit Python class name from decorator.
+
+        Note: This method is kept for compatibility but always returns None
+        since @xml_element_tag decorator has been removed.
 
         Args:
             cls: The class to check
             attr_name: Name of the attribute to check
 
         Returns:
-            Python class name if specified in decorator, None otherwise
+            None (decorator has been removed)
         """
-        # Check if it's a property
-        prop = getattr(cls, attr_name, None)
-        if prop and isinstance(prop, property) and hasattr(prop.fget, '_xml_element_class'):
-            return prop.fget._xml_element_class
-
-        # Check if the attribute itself has the marker
-        attr = getattr(cls, attr_name, None)
-        if attr and hasattr(attr, '_xml_element_class'):
-            return attr._xml_element_class
-
         return None
 
     @staticmethod
@@ -522,16 +506,6 @@ class ARObject:
         Returns:
             XML tag path as a list for multi-level paths, or a string for single-level paths
         """
-        # Check if it's a property
-        prop = getattr(cls, attr_name, None)
-        if prop and isinstance(prop, property) and hasattr(prop.fget, '_xml_element_tag'):
-            return prop.fget._xml_element_tag
-
-        # Check if the attribute itself has the marker
-        attr = getattr(cls, attr_name, None)
-        if attr and hasattr(attr, '_xml_element_tag'):
-            return attr._xml_element_tag
-
         # Auto-generate from Python name
         return NameConverter.to_xml_tag(attr_name)
 
@@ -539,23 +513,16 @@ class ARObject:
     def _has_xml_element_tag(cls, attr_name: str) -> bool:
         """Check if an attribute has @xml_element_tag decorator.
 
+        Note: This method is kept for compatibility but always returns False
+        since @xml_element_tag decorator has been removed.
+
         Args:
             cls: The class to check
             attr_name: Name of the attribute to check
 
         Returns:
-            True if attribute has @xml_element_tag decorator
+            False (decorator has been removed)
         """
-        # Check if it's a property
-        prop = getattr(cls, attr_name, None)
-        if prop and isinstance(prop, property) and hasattr(prop.fget, '_xml_element_tag'):
-            return True
-
-        # Check if the attribute itself has the marker
-        attr = getattr(cls, attr_name, None)
-        if attr and hasattr(attr, '_xml_element_tag'):
-            return True
-
         return False
 
     @staticmethod
@@ -872,54 +839,53 @@ class ARObject:
                         if ARObject._strip_namespace(elem.tag) == l_prefix_tag:
                             child = elem
                             break
-                    
+
                     if child is not None:
-                        # Deserialize the child element dynamically
-                        value = ARObject._deserialize_by_tag(child, None)
+                        # Deserialize the child element using the expected type
+                        # The l_prefix wrapper element (e.g., L-10) contains the actual content
+                        # which should be deserialized as the expected type (e.g., LPlainText)
+                        value = ARObject._deserialize_with_type(child, attr_type)
                     else:
                         value = None
                 else:
                     value = None
-            else:
-                # Check if this attribute has @xml_element_tag with multi-level path
-                element_path = ARObject._get_element_tag_path_static(cls, attr_name)
-
-                if isinstance(element_path, list) and len(element_path) > 1:
-                    # Multi-level path - navigate through hierarchy
-                    child = current_elem
-                    for tag in element_path:
-                        # Find child at current level
-                        found = False
-                        for elem in child:
-                            if ARObject._strip_namespace(elem.tag) == tag:
-                                child = elem
-                                found = True
-                                break
-                        if not found:
-                            child = None
-                            break
-                else:
-                    # Single-level path - standard lookup
-                    # Get the tag name (handle both string and list)
-                    target_tag = element_path[-1] if isinstance(element_path, list) else element_path
-                    child = current_elem.find(target_tag)
-                    if child is None:
-                        # Try to find by matching stripped tag names
+            # Also check if this is a private attribute (e.g., _l10) that corresponds to a l_prefix property (e.g., l10)
+            elif attr_name.startswith('_'):
+                public_name = attr_name[1:]  # Remove leading underscore
+                if ARObject._has_l_prefix(cls, public_name):
+                    # Handle l_prefix pattern for private attribute
+                    l_prefix_tag = ARObject._get_l_prefix_tag(cls, public_name)
+                    if l_prefix_tag:
+                        # Find the l_prefix element
+                        child = None
                         for elem in current_elem:
-                            if ARObject._strip_namespace(elem.tag) == target_tag:
+                            if ARObject._strip_namespace(elem.tag) == l_prefix_tag:
                                 child = elem
                                 break
+
+                        if child is not None:
+                            # Deserialize the child element using the expected type
+                            value = ARObject._deserialize_with_type(child, attr_type)
+                        else:
+                            value = None
+                    else:
+                        value = None
+            else:
+                # Get the XML tag name for this attribute
+                target_tag = ARObject._get_element_tag_path_static(cls, attr_name)
+
+                # Find child element
+                child = current_elem.find(target_tag)
+                if child is None:
+                    # Try to find by matching stripped tag names
+                    for elem in current_elem:
+                        if ARObject._strip_namespace(elem.tag) == target_tag:
+                            child = elem
+                            break
 
                 if child is not None:
-                    # Check if this attribute has @xml_element_tag decorator
-                    has_xml_element_tag = ARObject._has_xml_element_tag(cls, attr_name)
-                    if has_xml_element_tag:
-                        # Get explicit class name if provided
-                        explicit_class_name = ARObject._get_element_class(cls, attr_name)
-                        value = ARObject._extract_value_with_children(child, attr_type, explicit_class_name)
-                    else:
-                        # Get value based on type
-                        value = ARObject._extract_value(child, attr_type)
+                    # Get value based on type
+                    value = ARObject._extract_value(child, attr_type)
                 else:
                     value = None
 
@@ -973,6 +939,23 @@ class ARObject:
             wrapper_path = cls._get_atp_variant_wrapper_path(cls.__name__)
             for wrapper_tag in wrapper_path.split('/'):
                 expected_tags.add(wrapper_tag)
+
+        # For l_prefix attributes, add their l_prefix tags to expected tags
+        # These are language-specific wrapper elements (e.g., L-10, L-4, L-2)
+        for attr_name in type_hints.keys():
+            # Check both private (e.g., "_l10") and public (e.g., "l10") attribute names
+            # Type hints contain private attribute names, but properties are public
+            if cls._has_l_prefix(cls, attr_name):
+                l_prefix_tag = cls._get_l_prefix_tag(cls, attr_name)
+                if l_prefix_tag:
+                    expected_tags.add(l_prefix_tag)
+            # Also check the public version (remove leading underscore)
+            if attr_name.startswith('_'):
+                public_name = attr_name[1:]
+                if cls._has_l_prefix(cls, public_name):
+                    l_prefix_tag = cls._get_l_prefix_tag(cls, public_name)
+                    if l_prefix_tag:
+                        expected_tags.add(l_prefix_tag)
 
         # Check each child element
         for child in element:
@@ -1440,6 +1423,56 @@ class ARObject:
 
         # Call the deserialize method on the class
         return cls.deserialize(element)
+
+    @staticmethod
+    def _deserialize_with_type(element: ET.Element, attr_type: str) -> Any:
+        """Deserialize an XML element as a specific type.
+
+        This method is used when the XML element's tag is a wrapper (like L-10 for l_prefix)
+        and not a class name. It deserializes the element using the provided type instead of
+        inferring the type from the XML tag.
+
+        Args:
+            element: XML element to deserialize
+            attr_type: The type string to deserialize as (e.g., "LPlainText")
+
+        Returns:
+            Deserialized object, or None if the type cannot be found or deserialized
+        """
+        # Handle Optional types
+        if attr_type.startswith("Optional["):
+            import re
+            match = re.match(r"Optional\[(.+?)\]", attr_type)
+            if match:
+                inner_type = match.group(1)
+                return ARObject._deserialize_with_type(element, inner_type)
+            return None
+
+        # Handle list types
+        elif attr_type.startswith("list["):
+            import re
+            match = re.match(r"list\[(.+?)\]", attr_type)
+            if match:
+                inner_type = match.group(1)
+                result = []
+                for child in element:
+                    value = ARObject._deserialize_with_type(child, inner_type)
+                    if value is not None:
+                        result.append(value)
+                return result
+            return []
+
+        # Import the type and deserialize
+        try:
+            # Convert type string to class
+            type_class = ARObject._import_class_by_name(attr_type)
+            if type_class and hasattr(type_class, 'deserialize'):
+                return type_class.deserialize(element)
+        except Exception:
+            pass
+
+        # Fallback: try to use _deserialize_by_tag
+        return ARObject._deserialize_by_tag(element, None)
 
     @staticmethod
     def _strip_namespace(tag: str) -> str:

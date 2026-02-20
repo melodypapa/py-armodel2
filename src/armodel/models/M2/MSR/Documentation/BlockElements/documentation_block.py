@@ -309,7 +309,7 @@ class DocumentationBlock(ARObject):
         # Parse p (list)
         obj.p = []
         for child in ARObject._find_all_child_elements(element, "P"):
-            p_value = ARObject._deserialize_by_tag(child, "MultiLanguageParagraph")
+            p_value = ARObject._deserialize_with_type(child, "MultiLanguageParagraph")
             obj.p.append(p_value)
 
         # Parse list (list)
@@ -333,7 +333,7 @@ class DocumentationBlock(ARObject):
         # Parse verbatim
         child = ARObject._find_child_element(element, "VERBATIM")
         if child is not None:
-            verbatim_value = ARObject._deserialize_by_tag(child, "MultiLanguageVerbatim")
+            verbatim_value = ARObject._deserialize_with_type(child, "MultiLanguageVerbatim")
             obj.verbatim = verbatim_value
 
         return obj

@@ -155,7 +155,7 @@ class AdminData(ARObject):
         # Parse used_languages
         child = ARObject._find_child_element(element, "USED-LANGUAGES")
         if child is not None:
-            used_languages_value = ARObject._deserialize_by_tag(child, "MultiLanguagePlainText")
+            used_languages_value = ARObject._deserialize_with_type(child, "MultiLanguagePlainText")
             obj.used_languages = used_languages_value
 
         return obj

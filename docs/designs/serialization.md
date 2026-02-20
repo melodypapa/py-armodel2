@@ -52,7 +52,7 @@ py-armodel2 uses a **reflection-based serialization framework** that automatical
              ▼
 ┌─────────────────────────────────────────┐
 │      Decorators (edge cases)            │
-│  @xml_attribute  @xml_tag()             │
+│  @xml_attribute  @atp_variant()  @l_prefix() │
 └─────────────────────────────────────────┘
 ```
 
@@ -125,52 +125,66 @@ class AUTOSAR(ARObject):
 
 ---
 
-### 2. `@xml_tag(tag_name: str)`
+### 2. `@atp_variant()`
 
-**Purpose**: Specify a **custom XML tag name** for a class or attribute.
+**Purpose**: Mark a class as using the AUTOSAR **atpVariation** pattern.
 
 **When to use**:
-- When the class name doesn't match the XML tag name
-- For class names with special characters (e.g., `<`, `>` in generics)
-- When XML tag is a reserved Python keyword
+- When AUTOSAR schema defines elements with `<CLASS-TAG>-VARIANTS/<CLASS-TAG>-CONDITIONAL` wrapper structure
+- Automatically applied by code generator based on JSON mapping data
 
-**Location**: `src/armodel/serialization/decorators.py:30-47`
+**Location**: `src/armodel/serialization/decorators.py:30-55`
 
-#### Usage Examples
+#### Usage Example
 
-**Class-level decorator**:
 ```python
-from armodel.serialization.decorators import xml_tag
+from armodel.serialization.decorators import atp_variant
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
-@xml_tag("AUTOSAR")
-class AUTOSAR(ARObject):
-    pass
-
-# Without decorator: would serialize as <AR-OBJECT>
-# With decorator: serializes as <AUTOSAR>
-```
-
-**More examples**:
-```python
-@xml_tag("ADMIN-DATA")
-class AdminData(ARObject):
-    pass
-
-@xml_tag("SW-DATA-DEF-PROPS")
+@atp_variant()
 class SwDataDefProps(ARObject):
-    pass
+    base_type_ref: Optional[ARRef] = None
+    sw_calibration_access: Optional[SwCalibrationAccessEnum] = None
 
-@xml_tag("AR-PACKAGE")
-class ARPackage(ARObject):
-    pass
+# Serializes as:
+# <SW-DATA-DEF-PROPS>
+#   <SW-DATA-DEF-PROPS-VARIANTS>
+#     <SW-DATA-DEF-PROPS-CONDITIONAL>
+#       <BASE-TYPE-REF>...</BASE-TYPE-REF>
+#       <SW-CALIBRATION-ACCESS>...</SW-CALIBRATION-ACCESS>
+#     </SW-DATA-DEF-PROPS-CONDITIONAL>
+#   </SW-DATA-DEF-PROPS-VARIANTS>
+# </SW-DATA-DEF-PROPS>
 ```
 
-#### Common Use Cases
+### 3. `@l_prefix(tag_name: str)`
 
-- Root element naming (e.g., `AUTOSAR` instead of `AROBJECT`)
-- Special characters in XML tags (hyphens, numbers)
-- Python keywords (e.g., `class`, `def`, `return`)
+**Purpose**: Mark an attribute as using **language-specific L-N** naming pattern for multilanguage text.
+
+**When to use**:
+- For MultiLanguage* classes where content is wrapped in language tags (e.g., L-1, L-2, L-4, L-5, L-10)
+- Automatically applied by code generator based on JSON `kind: "l_prefix"` mapping
+
+**Location**: `src/armodel/serialization/decorators.py:58-80`
+
+#### Usage Example
+
+```python
+from armodel.serialization.decorators import l_prefix
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+
+class MultiLanguagePlainText(ARObject):
+    def __init__(self) -> None:
+        self._l10: LPlainText = None
+
+    @property
+    @l_prefix("L-10")
+    def l10(self) -> LPlainText:
+        return self._l10
+
+# Serializes as:
+# <L-10 L="EN">English text</L-10>
+```
 
 ## Name Conversion
 
@@ -232,7 +246,7 @@ def serialize(self, namespace: str = "") -> ET.Element:
 ```
 
 **Flow**:
-1. Get XML tag name (from `@xml_tag` decorator or auto-generate from class name)
+1. Get XML tag name (auto-generated from class name using NameConverter)
 2. For each attribute in `vars(self)`:
    - Skip private attributes (starting with `_`)
    - Convert name via `NameConverter.to_xml_tag()`
@@ -353,24 +367,11 @@ class ImplementationDataType(ARObject):
 # </IMPLEMENTATION-DATA-TYPE>
 ```
 
-### Pattern 3: Custom Tag Name
+### Pattern 3: XML Attribute with Nested Objects
 
 ```python
-from armodel.serialization.decorators import xml_tag
+from armodel.serialization.decorators import xml_attribute
 
-@xml_tag("ADMIN-DATA")
-class AdminData(ARObject):
-    pass
-
-# Class name is AdminData, but XML tag will be ADMIN-DATA
-```
-
-### Pattern 4: Combining Both
-
-```python
-from armodel.serialization.decorators import xml_attribute, xml_tag
-
-@xml_tag("AUTOSAR")
 class AUTOSAR(ARObject):
     def __init__(self) -> None:
         self._schema_version: str = "4.5.0"
@@ -392,6 +393,8 @@ class AUTOSAR(ARObject):
 #     </AR-PACKAGES>
 # </AUTOSAR>
 ```
+
+**Note**: XML tag names are automatically generated from class names using `NameConverter.to_xml_tag()`. For example, `AdminData` becomes `ADMIN-DATA`, `AUTOSAR` stays as `AUTOSAR`.
 
 ## Circular Import Handling
 
@@ -423,16 +426,6 @@ XML attributes that are Python keywords get an underscore suffix:
 # XML: <ELEMENT class="some-class">
 # Python:
 self.class_: Optional[str] = None
-```
-
-### Special Characters in Class Names
-
-For class names with special characters (e.g., `<`, `>`), use `@xml_tag()`:
-
-```python
-@xml_tag("SPECIAL<TYPE>")
-class SpecialType(ARObject):
-    pass
 ```
 
 ### Private Attributes
@@ -476,13 +469,12 @@ class MyClass(ARObject):
 ```python
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
-from armodel.serialization.decorators import xml_attribute, xml_tag
+from armodel.serialization.decorators import xml_attribute
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 
 if TYPE_CHECKING:
     from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_package import ARPackage
 
-@xml_tag("AR-PACKAGE")
 class ARPackage(ARObject):
     short_name: Optional[str] = None
     category: Optional[str] = None
@@ -492,6 +484,7 @@ class ARPackage(ARObject):
         self.short_name = None
         self.category = None
         self.ar_packages = []
+        # XML tag name is auto-generated as AR-PACKAGE
 ```
 
 ### When to Use Decorators
@@ -499,9 +492,8 @@ class ARPackage(ARObject):
 | Scenario | Decorator | Example |
 |----------|-----------|---------|
 | XML attribute needed | `@xml_attribute` | `<ELEMENT uuid="abc">` |
-| Class name ≠ tag name | `@xml_tag("NAME")` | `MyClass` → `<CUSTOM-NAME>` |
-| Reserved keyword | `@xml_tag("CLASS")` | `class_` → `<CLASS>` |
-| Special characters | `@xml_tag("MY<TAG>")` | `MyTag` → `<MY<TAG>>` |
+| AUTOSAR atpVariation pattern | `@atp_variant()` | SwDataDefProps with VARIANTS/CONDITIONAL wrappers |
+| Language-specific content | `@l_prefix("L-N")` | MultiLanguagePlainText with L-10 wrapper |
 
 ## Troubleshooting
 
@@ -531,9 +523,9 @@ class ARPackage(ARObject):
 **Symptom**: XML tag doesn't match expected name
 
 **Solutions**:
-1. Check if `@xml_tag()` decorator is needed
-2. Verify `NameConverter.to_xml_tag()` output
-3. Check for private prefix (underscores stripped)
+1. Verify `NameConverter.to_xml_tag()` output from class name
+2. Check for private prefix (underscores stripped)
+3. Ensure class name follows AUTOSAR naming conventions
 
 ### Issue: Deserialization Fails
 

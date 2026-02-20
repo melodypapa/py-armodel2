@@ -758,9 +758,32 @@ def _generate_value_extraction_code(
 
     # Handle class types
     else:
-        # Use ARObject._deserialize_by_tag to avoid TYPE_CHECKING issues
-        # This doesn't require the type to be imported at runtime
-        return f'''{value_var} = ARObject._deserialize_by_tag({element_var}, "{attr_type}")'''
+        # Check if the type has l_prefix attributes
+        # If so, use _deserialize_with_type instead of _deserialize_by_tag
+        # because the XML tag is a wrapper (like USED-LANGUAGES) not a class name
+        has_l_prefix = False
+        for package_path, data in package_data.items():
+            if "classes" in data:
+                for cls in data["classes"]:
+                    if cls["name"] == attr_type:
+                        # Check if any attribute has kind == "l_prefix"
+                        if "attributes" in cls:
+                            for attr_info in cls["attributes"].values():
+                                if attr_info.get("kind") == "l_prefix":
+                                    has_l_prefix = True
+                                    break
+                        break
+                if has_l_prefix:
+                    break
+
+        if has_l_prefix:
+            # Use _deserialize_with_type for types with l_prefix attributes
+            # This deserializes the element directly as the specified type
+            return f'''{value_var} = ARObject._deserialize_with_type({element_var}, "{attr_type}")'''
+        else:
+            # Use ARObject._deserialize_by_tag to avoid TYPE_CHECKING issues
+            # This doesn't require the type to be imported at runtime
+            return f'''{value_var} = ARObject._deserialize_by_tag({element_var}, "{attr_type}")'''
 
 
 def _generate_value_extraction_code_for_attribute(
@@ -897,15 +920,11 @@ def _generate_ar_object_methods() -> str:
     def _get_xml_tag(self) -> str:
         """Get XML tag name for this class.
 
-        Checks for @xml_tag decorator override, otherwise auto-generates from class name.
+        Auto-generates from class name using NameConverter.
 
         Returns:
             XML tag name
         """
-        # Check for decorator override
-        if hasattr(self.__class__, '_xml_tag'):
-            return self.__class__._xml_tag
-
         # Auto-generate from class name
         return NameConverter.to_xml_tag(self.__class__.__name__)
 

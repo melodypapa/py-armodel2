@@ -164,7 +164,7 @@ class MlFormula(Paginateable):
         # Parse generic_math
         child = ARObject._find_child_element(element, "GENERIC-MATH")
         if child is not None:
-            generic_math_value = ARObject._deserialize_by_tag(child, "MultiLanguagePlainText")
+            generic_math_value = ARObject._deserialize_with_type(child, "MultiLanguagePlainText")
             obj.generic_math = generic_math_value
 
         # Parse l_graphics (list from container "L-GRAPHICS")
@@ -180,13 +180,13 @@ class MlFormula(Paginateable):
         # Parse tex_math
         child = ARObject._find_child_element(element, "TEX-MATH")
         if child is not None:
-            tex_math_value = ARObject._deserialize_by_tag(child, "MultiLanguagePlainText")
+            tex_math_value = ARObject._deserialize_with_type(child, "MultiLanguagePlainText")
             obj.tex_math = tex_math_value
 
         # Parse verbatim
         child = ARObject._find_child_element(element, "VERBATIM")
         if child is not None:
-            verbatim_value = ARObject._deserialize_by_tag(child, "MultiLanguageVerbatim")
+            verbatim_value = ARObject._deserialize_with_type(child, "MultiLanguageVerbatim")
             obj.verbatim = verbatim_value
 
         return obj

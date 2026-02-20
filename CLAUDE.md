@@ -61,7 +61,9 @@ The project uses a reflection-based serialization framework that eliminates boil
 - `ARObject.deserialize()` - Class method that deserializes using type hints
 - `NameConverter` - Utility for snake_case ↔ UPPER-CASE-WITH-HYPHENS conversion
 - `ModelFactory` - Factory for creating model instances from XML tags (supports polymorphic deserialization)
-- `@xml_attribute`, `@xml_tag()` - Decorators for edge cases
+- `@xml_attribute` - Decorator for XML attributes
+- `@atp_variant()` - Decorator for AUTOSAR atpVariation pattern
+- `@l_prefix()` - Decorator for language-specific L-N pattern
 
 **Each class defines**:
 - Type hints on class attributes (drive deserialization)
@@ -178,9 +180,8 @@ Certain classes are manually maintained and excluded from code generation (see `
 The codebase uses decorators for XML serialization edge cases:
 
 - `@xml_attribute` - Marks property/attribute to serialize as XML attribute instead of element
-- `@xml_tag("name")` - Specifies custom XML tag name for class or attribute
-- `@xml_element_tag("ELEMENT-NAME", "ClassName")` - Custom XML element name with optional Python class for polymorphic types
 - `@atp_variant()` - Marks class using AUTOSAR atpVariation pattern (auto-generates wrapper path from class name)
+- `@l_prefix("L-N")` - Marks attribute using language-specific L-N naming pattern for multilanguage text
 
 Example:
 ```python

@@ -156,7 +156,7 @@ class SwRecordLayoutV(ARObject):
         # Parse desc
         child = ARObject._find_child_element(element, "DESC")
         if child is not None:
-            desc_value = ARObject._deserialize_by_tag(child, "MultiLanguageOverviewParagraph")
+            desc_value = ARObject._deserialize_with_type(child, "MultiLanguageOverviewParagraph")
             obj.desc = desc_value
 
         # Parse short_label

@@ -211,7 +211,7 @@ class MlFigure(Paginateable):
         # Parse verbatim
         child = ARObject._find_child_element(element, "VERBATIM")
         if child is not None:
-            verbatim_value = ARObject._deserialize_by_tag(child, "MultiLanguageVerbatim")
+            verbatim_value = ARObject._deserialize_with_type(child, "MultiLanguageVerbatim")
             obj.verbatim = verbatim_value
 
         return obj
