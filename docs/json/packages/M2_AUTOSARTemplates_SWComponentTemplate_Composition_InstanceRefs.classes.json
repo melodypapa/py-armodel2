@@ -97,8 +97,8 @@
         }
       ],
       "attributes": {
-        "abstractContext": {
-          "type": "any (SwComponent)",
+        "abstractContextComponent": {
+          "type": "SwComponentPrototype",
           "multiplicity": "0..1",
           "kind": "ref",
           "is_ref": true,

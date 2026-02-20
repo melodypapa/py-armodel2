@@ -15,6 +15,9 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.sw_conne
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.InstanceRefs.port_in_composition_type_instance_ref import (
+    PortInCompositionTypeInstanceRef,
+)
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
     PortPrototype,
 )
@@ -62,7 +65,7 @@ class DelegationSwConnector(SwConnector):
 
         # Serialize inner_port_instance_ref
         if self.inner_port_instance_ref is not None:
-            serialized = ARObject._serialize_item(self.inner_port_instance_ref, "PortPrototype")
+            serialized = ARObject._serialize_item(self.inner_port_instance_ref, "PortInCompositionTypeInstanceRef")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INNER-PORT-INSTANCE-REF-REF")

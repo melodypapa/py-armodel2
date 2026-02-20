@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_
     AbstractProvidedPortPrototype,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_interface import (
     PortInterface,
 )
@@ -34,11 +35,11 @@ class PPortPrototype(AbstractProvidedPortPrototype):
         """
         return False
 
-    provided: Optional[PortInterface]
+    provided_interface_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize PPortPrototype."""
         super().__init__()
-        self.provided: Optional[PortInterface] = None
+        self.provided_interface_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize PPortPrototype to XML element.
@@ -60,12 +61,12 @@ class PPortPrototype(AbstractProvidedPortPrototype):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize provided
-        if self.provided is not None:
-            serialized = ARObject._serialize_item(self.provided, "PortInterface")
+        # Serialize provided_interface_ref
+        if self.provided_interface_ref is not None:
+            serialized = ARObject._serialize_item(self.provided_interface_ref, "PortInterface")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PROVIDED")
+                wrapped = ET.Element("PROVIDED-INTERFACE-TREF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -89,11 +90,11 @@ class PPortPrototype(AbstractProvidedPortPrototype):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(PPortPrototype, cls).deserialize(element)
 
-        # Parse provided
-        child = ARObject._find_child_element(element, "PROVIDED")
+        # Parse provided_interface_ref
+        child = ARObject._find_child_element(element, "PROVIDED-INTERFACE-TREF")
         if child is not None:
-            provided_value = ARObject._deserialize_by_tag(child, "PortInterface")
-            obj.provided = provided_value
+            provided_interface_ref_value = ARRef.deserialize(child)
+            obj.provided_interface_ref = provided_interface_ref_value
 
         return obj
 

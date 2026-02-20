@@ -76,7 +76,7 @@
       ],
       "attributes": {
         "components": {
-          "type": "any (SwComponent)",
+          "type": "SwComponentPrototype",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
@@ -89,29 +89,29 @@
           "is_ref": false,
           "note": "SwConnectors have the principal ability to establish a"
         },
-        "constantValues": {
-          "type": "ConstantSpecification",
+        "constantValueMappings": {
+          "type": "ConstantSpecificationMappingSet",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "Reference to the ConstantSpecificationMapping to be applied for initValues of PPortComSpecs and 719 Document ID 673: AUTOSAR_CP_TPS_DiagnosticExtractTemplate Template R23-11"
         },
-        "dataTypes": {
+        "dataTypeMappings": {
           "type": "DataTypeMappingSet",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "Reference to the DataTypeMappingSet to be applied the used ApplicationDataTypes in developing subsystems it may happen are used on the surface In this case it reasonable to be able to also provide the to the ImplementationDataTypes. mapping shall be informal and not for the implementors mainly because generator is not concerned about the the mapping of ApplicationDataTypes delegated and inner PortPrototype matches mapping to ImplementationDataTypes is not"
         },
-        "instantiationRTEEvents": {
+        "instantiationRTEEventProps": {
           "type": "InstantiationRTEEventProps",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This allows to define instantiation specific properties for RTE Events, in particular for instance specific scheduling. atpVariation"
         },
-        "physical": {
-          "type": "PhysicalDimension",
+        "physicalDimensionMapping": {
+          "type": "PhysicalDimensionMappingSet",
           "multiplicity": "0..1",
           "kind": "ref",
           "is_ref": true,
@@ -203,8 +203,8 @@
         "type": {
           "type": "SwComponentType",
           "multiplicity": "0..1",
-          "kind": "attribute",
-          "is_ref": false,
+          "kind": "tref",
+          "is_ref": true,
           "note": ""
         }
       }
@@ -383,9 +383,9 @@
       ],
       "attributes": {
         "innerPortInstanceRef": {
-          "type": "PortPrototype",
+          "type": "PortInCompositionTypeInstanceRef",
           "multiplicity": "0..1",
-          "kind": "ref",
+          "kind": "iref",
           "is_ref": true,
           "note": "by: PortInCompositionType"
         },
