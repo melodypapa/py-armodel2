@@ -179,22 +179,22 @@
         "baseType": {
           "type": "SwBaseType",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Base type associated with the containing data object."
         },
         "compuMethod": {
           "type": "CompuMethod",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Computation method associated with the semantics of object."
         },
         "dataConstr": {
           "type": "DataConstr",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Data constraint for this data object."
         },
         "displayFormat": {
@@ -214,8 +214,8 @@
         "implementationDataType": {
           "type": "AbstractImplementationDataType",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "This association denotes the ImplementationDataType of whenever a data declaration is not directly a base type. Especially of an ImplementationDataType via a another ImplementationDatatype target type of a pointer (see SwPointerTarget it does not refer to a base type directly data type of an array or record element within an it does not refer to a base data type of an SwServiceArg, if it does not refer to type directly"
         },
         "invalidValue": {
@@ -235,8 +235,8 @@
         "swAddrMethod": {
           "type": "SwAddrMethod",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Addressing method related to this data object. Via an the same SwAddrMethod it can be several DataPrototypes shall be located in memory without already specifying the memory"
         },
         "swAlignment": {
@@ -263,29 +263,29 @@
         "swCalprmAxisSet": {
           "type": "SwCalprmAxisSet",
           "multiplicity": "0..1",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "This specifies the properties of the axes in case of a or map etc. This is mainly applicable to calibration"
         },
         "swComparisonVariables": {
           "type": "SwVariableRefProxy",
           "multiplicity": "*",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "Variables used for comparison in an MCD process. 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },
         "swDataDependency": {
           "type": "SwDataDependency",
           "multiplicity": "0..1",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "Describes how the value of the data object has to be from the value of another data object (by the"
         },
         "swHostVariable": {
           "type": "SwVariableRefProxy",
           "multiplicity": "0..1",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "Contains a reference to a variable which serves as a a bit variable. Only applicable to bit"
         },
         "swImplPolicyEnum": {
@@ -326,8 +326,8 @@
         "swRecordLayout": {
           "type": "SwRecordLayout",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Record layout for this data object."
         },
         "swRefreshTiming": {
@@ -361,15 +361,15 @@
         "unit": {
           "type": "Unit",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "Physical unit associated with the semantics of this data"
         },
         "valueAxisDataType": {
           "type": "ApplicationPrimitiveDataType",
           "multiplicity": "0..1",
-          "kind": "reference",
-          "is_ref": false,
+          "kind": "ref",
+          "is_ref": true,
           "note": "The referenced ApplicationPrimitiveDataType represents the primitive data type of the value axis within a (e.g. curve, map). It supersedes and BaseType."
         }
       }

@@ -154,7 +154,7 @@
         },
         "l1": {
           "type": "LParagraph",
-          "multiplicity": "1",
+          "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": ""
