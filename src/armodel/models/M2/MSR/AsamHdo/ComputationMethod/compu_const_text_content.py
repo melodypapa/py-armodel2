@@ -52,6 +52,20 @@ class CompuConstTextContent(CompuConstContent):
         tag = "VT"
         elem = ET.Element(tag)
 
+        # First, call parent's serialize to handle inherited attributes (checksum, timestamp)
+        parent_elem = super(CompuConstTextContent, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Copy text from parent element
+        if parent_elem.text:
+            elem.text = parent_elem.text
+
         # Serialize vt value as text content
         if self.vt is not None:
             elem.text = str(self.vt.value) if hasattr(self.vt, 'value') else str(self.vt)
@@ -70,8 +84,8 @@ class CompuConstTextContent(CompuConstContent):
         Returns:
             Deserialized CompuConstTextContent instance
         """
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes (checksum, timestamp)
+        obj = super(CompuConstTextContent, cls).deserialize(element)
 
         # Deserialize text content to vt attribute
         if element.text:
