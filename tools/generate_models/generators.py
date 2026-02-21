@@ -1740,10 +1740,18 @@ def _generate_serialize_method(
                 should_flatten = attr_type in flattened_iref_types
 
                 iref_wrapper_tag = f"{xml_tag}-IREF"
+                
+                # For list types (multiplicity "*"), check if list is not empty
+                # For single types (multiplicity "0..1" or "1"), check if not None
+                if multiplicity == "*":
+                    condition = f"self.{python_name} and len(self.{python_name}) > 0"
+                else:
+                    condition = f"self.{python_name} is not None"
+                
                 if should_flatten:
                     # Flattened type: flatten children directly into iref wrapper
                     code += f'''        # Serialize {python_name} (instance reference with wrapper "{iref_wrapper_tag}")
-        if self.{python_name} is not None:
+        if {condition}:
             serialized = ARObject._serialize_item(self.{python_name}, "{effective_type}")
             if serialized is not None:
                 # Wrap in IREF wrapper element
@@ -1757,7 +1765,7 @@ def _generate_serialize_method(
                 else:
                     # Non-flattened type: wrap in its own element
                     code += f'''        # Serialize {python_name} (instance reference with wrapper "{iref_wrapper_tag}")
-        if self.{python_name} is not None:
+        if {condition}:
             serialized = ARObject._serialize_item(self.{python_name}, "{effective_type}")
             if serialized is not None:
                 # Wrap in IREF wrapper element
