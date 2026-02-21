@@ -12,6 +12,7 @@ This file provides guidance to AI agents working with the py-armodel2 codebase.
 - **Multi-version support** - Handles AUTOSAR schemas 00042-00054 (all official releases) plus legacy 3.2.3
 - **Type-safe** - Strict type hints throughout with MyPy enforcement
 - **CLI tool** - Command-line interface for ARXML formatting and processing
+- **XSD-driven reader** - Performance-optimized XML parsing using lxml and XSD schemas
 
 ## Development Commands
 
@@ -57,7 +58,7 @@ mypy src/
 ### Code Generation
 ```bash
 # Regenerate all model classes (after generator or mapping changes)
-python tools/generate_models.py docs/json/mapping.json docs/json/hierarchy.json src/armodel/models/M2 --members --classes --enums --primitives
+python -m tools.generate_models --members --classes --enums --primitives
 
 # Generate YAML model mappings (after model class changes)
 python tools/generate_model_mappings.py
@@ -432,6 +433,18 @@ class SwDataDefProps(ARObject):
     sw_calibration_access: Optional[SwCalibrationAccessEnum] = None
 ```
 
+**Pattern 5: Flattened iref Pattern (AssemblySwConnector)**
+For certain instance reference types (PPortInCompositionInstanceRef, RPortInCompositionInstanceRef), the XML structure is flattened - the children are directly inside the iref wrapper instead of being wrapped in their own element:
+
+```xml
+<PROVIDER-IREF>
+  <CONTEXT-COMPONENT-REF>...</CONTEXT-COMPONENT-REF>
+  <TARGET-P-PORT-REF>...</TARGET-P-PORT-REF>
+</PROVIDER-IREF>
+```
+
+This is handled automatically by the code generator which detects these specific types and generates appropriate serialization/deserialization code.
+
 ## Key Files and Modules
 
 ### Core Infrastructure
@@ -442,8 +455,8 @@ class SwDataDefProps(ARObject):
 - **ARObject** (`src/armodel/models/M2/.../ArObject/ar_object.py`) - Base class with serialize/deserialize
 
 ### Reader/Writer
-- **ARXMLReader** (`src/armodel/reader/__init__.py`) - ARXML file loading with merge support
-- **ARXMLWriter** (`src/armodel/writer/__init__.py`) - ARXML serialization with formatting
+- **ARXMLReader** (`src/armodel/reader/reader.py`) - XSD-driven ARXML file loading with merge support and performance optimization
+- **ARXMLWriter** (`src/armodel/writer/writer.py`) - ARXML serialization with formatting support
 
 ### Configuration
 - **ConfigurationManager** (`src/armodel/cfg/schemas/__init__.py`) - Config loading
@@ -451,7 +464,7 @@ class SwDataDefProps(ARObject):
 - **Model mappings** (`src/armodel/cfg/model_mappings.yaml`) - XML tag to class name mappings
 
 ### Code Generation
-- **Code Generator** (`tools/generate_models.py`) - Regenerate all model classes
+- **Code Generator** (`tools/generate_models/`) - Modular package for regenerating model classes
 - **Mapping generator** (`tools/generate_model_mappings.py`) - Generate YAML mappings from JSON
 - **Mapping files** (`docs/json/mapping.json`, `docs/json/hierarchy.json`) - AUTOSAR schema mappings
 
@@ -774,3 +787,4 @@ These tests ensure:
 - All ARXML files can be read and written without data loss
 - Proper handling of l_prefix pattern for MultiLanguage classes
 - Correct serialization of DocumentationBlock and its children
+- Current status: 17 passed, 7 xfailed (Collection tests marked as xfail due to schema changes)
