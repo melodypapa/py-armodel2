@@ -61,6 +61,10 @@ class ParameterProvideComSpec(PPortComSpec):
         # Copy all attributes from parent element
         elem.attrib.update(parent_elem.attrib)
 
+        # Copy text from parent element
+        if parent_elem.text:
+            elem.text = parent_elem.text
+
         # Copy all children from parent element
         for child in parent_elem:
             elem.append(child)
