@@ -49,6 +49,20 @@ class TimeSyncClientConfiguration(ARObject):
         tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(TimeSyncClientConfiguration, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy text from parent element
+        if parent_elem.text:
+            elem.text = parent_elem.text
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
         # Serialize ordered_masters (list to container "ORDERED-MASTERS")
         if self.ordered_masters:
             wrapper = ET.Element("ORDERED-MASTERS")
@@ -85,9 +99,8 @@ class TimeSyncClientConfiguration(ARObject):
         Returns:
             Deserialized TimeSyncClientConfiguration object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TimeSyncClientConfiguration, cls).deserialize(element)
 
         # Parse ordered_masters (list from container "ORDERED-MASTERS")
         obj.ordered_masters = []

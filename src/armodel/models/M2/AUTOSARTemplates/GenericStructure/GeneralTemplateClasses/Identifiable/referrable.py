@@ -63,7 +63,7 @@ class Referrable(ARObject, ABC):
         tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
-        # First, call parent's serialize to handle inherited attributes (like timestamp)
+        # First, call parent's serialize to handle inherited attributes
         parent_elem = super(Referrable, self).serialize()
 
         # Copy all attributes from parent element
@@ -113,7 +113,7 @@ class Referrable(ARObject, ABC):
         Returns:
             Deserialized Referrable object
         """
-        # First, call parent's deserialize to handle inherited attributes (like timestamp)
+        # First, call parent's deserialize to handle inherited attributes
         obj = super(Referrable, cls).deserialize(element)
 
         # Parse short_name

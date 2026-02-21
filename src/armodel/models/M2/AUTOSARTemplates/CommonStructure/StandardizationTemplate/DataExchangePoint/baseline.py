@@ -55,6 +55,20 @@ class Baseline(ARObject):
         tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(Baseline, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy text from parent element
+        if parent_elem.text:
+            elem.text = parent_elem.text
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
         # Serialize custom_sdg_def_refs (list to container "CUSTOM-SDG-DEF-REFS")
         if self.custom_sdg_def_refs:
             wrapper = ET.Element("CUSTOM-SDG-DEF-REFS")
@@ -118,9 +132,8 @@ class Baseline(ARObject):
         Returns:
             Deserialized Baseline object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(Baseline, cls).deserialize(element)
 
         # Parse custom_sdg_def_refs (list from container "CUSTOM-SDG-DEF-REFS")
         obj.custom_sdg_def_refs = []

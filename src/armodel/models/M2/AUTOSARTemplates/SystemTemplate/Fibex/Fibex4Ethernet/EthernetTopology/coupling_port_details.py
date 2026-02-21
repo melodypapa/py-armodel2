@@ -70,6 +70,20 @@ class CouplingPortDetails(ARObject):
         tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(CouplingPortDetails, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy text from parent element
+        if parent_elem.text:
+            elem.text = parent_elem.text
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
         # Serialize coupling_ports (list to container "COUPLING-PORTS")
         if self.coupling_ports:
             wrapper = ET.Element("COUPLING-PORTS")
@@ -158,9 +172,8 @@ class CouplingPortDetails(ARObject):
         Returns:
             Deserialized CouplingPortDetails object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(CouplingPortDetails, cls).deserialize(element)
 
         # Parse coupling_ports (list from container "COUPLING-PORTS")
         obj.coupling_ports = []

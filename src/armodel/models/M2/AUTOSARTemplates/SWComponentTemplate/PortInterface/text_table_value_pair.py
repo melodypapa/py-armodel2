@@ -46,6 +46,20 @@ class TextTableValuePair(ARObject):
         tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(TextTableValuePair, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy text from parent element
+        if parent_elem.text:
+            elem.text = parent_elem.text
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
         # Serialize first_value
         if self.first_value is not None:
             serialized = SerializationHelper.serialize_item(self.first_value, "Numerical")
@@ -86,9 +100,8 @@ class TextTableValuePair(ARObject):
         Returns:
             Deserialized TextTableValuePair object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TextTableValuePair, cls).deserialize(element)
 
         # Parse first_value
         child = SerializationHelper.find_child_element(element, "FIRST-VALUE")

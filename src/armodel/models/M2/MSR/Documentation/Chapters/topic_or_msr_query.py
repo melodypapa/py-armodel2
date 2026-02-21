@@ -49,6 +49,20 @@ class TopicOrMsrQuery(ARObject):
         tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(TopicOrMsrQuery, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy text from parent element
+        if parent_elem.text:
+            elem.text = parent_elem.text
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
         # Serialize msr_query
         if self.msr_query is not None:
             serialized = SerializationHelper.serialize_item(self.msr_query, "MsrQueryTopic1")
@@ -89,9 +103,8 @@ class TopicOrMsrQuery(ARObject):
         Returns:
             Deserialized TopicOrMsrQuery object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(TopicOrMsrQuery, cls).deserialize(element)
 
         # Parse msr_query
         child = SerializationHelper.find_child_element(element, "MSR-QUERY")

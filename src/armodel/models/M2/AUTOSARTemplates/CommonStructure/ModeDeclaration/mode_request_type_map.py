@@ -54,6 +54,20 @@ class ModeRequestTypeMap(ARObject):
         tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(ModeRequestTypeMap, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy text from parent element
+        if parent_elem.text:
+            elem.text = parent_elem.text
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
         # Serialize implementation_ref
         if self.implementation_ref is not None:
             serialized = SerializationHelper.serialize_item(self.implementation_ref, "AbstractImplementationDataType")
@@ -94,9 +108,8 @@ class ModeRequestTypeMap(ARObject):
         Returns:
             Deserialized ModeRequestTypeMap object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ModeRequestTypeMap, cls).deserialize(element)
 
         # Parse implementation_ref
         child = SerializationHelper.find_child_element(element, "IMPLEMENTATION-REF")

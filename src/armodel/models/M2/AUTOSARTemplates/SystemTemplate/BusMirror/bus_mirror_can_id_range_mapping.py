@@ -48,6 +48,20 @@ class BusMirrorCanIdRangeMapping(ARObject):
         tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(BusMirrorCanIdRangeMapping, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy text from parent element
+        if parent_elem.text:
+            elem.text = parent_elem.text
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
         # Serialize destination_base
         if self.destination_base is not None:
             serialized = SerializationHelper.serialize_item(self.destination_base, "PositiveInteger")
@@ -102,9 +116,8 @@ class BusMirrorCanIdRangeMapping(ARObject):
         Returns:
             Deserialized BusMirrorCanIdRangeMapping object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(BusMirrorCanIdRangeMapping, cls).deserialize(element)
 
         # Parse destination_base
         child = SerializationHelper.find_child_element(element, "DESTINATION-BASE")

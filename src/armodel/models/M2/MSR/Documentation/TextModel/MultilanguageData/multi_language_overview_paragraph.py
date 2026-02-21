@@ -59,6 +59,20 @@ class MultiLanguageOverviewParagraph(ARObject):
         tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(MultiLanguageOverviewParagraph, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy text from parent element
+        if parent_elem.text:
+            elem.text = parent_elem.text
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
         # Serialize l2 (list with l_prefix "L-2")
         for item in self.l2:
             serialized = SerializationHelper.serialize_item(item, "LOverviewParagraph")
@@ -85,9 +99,8 @@ class MultiLanguageOverviewParagraph(ARObject):
         Returns:
             Deserialized MultiLanguageOverviewParagraph object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(MultiLanguageOverviewParagraph, cls).deserialize(element)
 
         # Parse l2 (list with l_prefix "L-2")
         obj.l2 = []

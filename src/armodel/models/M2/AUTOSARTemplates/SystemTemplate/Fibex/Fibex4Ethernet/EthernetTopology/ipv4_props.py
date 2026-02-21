@@ -54,6 +54,20 @@ class Ipv4Props(ARObject):
         tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(Ipv4Props, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy text from parent element
+        if parent_elem.text:
+            elem.text = parent_elem.text
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
         # Serialize arp_props
         if self.arp_props is not None:
             serialized = SerializationHelper.serialize_item(self.arp_props, "Ipv4ArpProps")
@@ -108,9 +122,8 @@ class Ipv4Props(ARObject):
         Returns:
             Deserialized Ipv4Props object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(Ipv4Props, cls).deserialize(element)
 
         # Parse arp_props
         child = SerializationHelper.find_child_element(element, "ARP-PROPS")

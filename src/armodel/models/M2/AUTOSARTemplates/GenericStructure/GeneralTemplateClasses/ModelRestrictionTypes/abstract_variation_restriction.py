@@ -51,6 +51,20 @@ class AbstractVariationRestriction(ARObject, ABC):
         tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(AbstractVariationRestriction, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy text from parent element
+        if parent_elem.text:
+            elem.text = parent_elem.text
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
         # Serialize valid_bindings (list to container "VALID-BINDINGS")
         if self.valid_bindings:
             wrapper = ET.Element("VALID-BINDINGS")
@@ -94,9 +108,8 @@ class AbstractVariationRestriction(ARObject, ABC):
         Returns:
             Deserialized AbstractVariationRestriction object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(AbstractVariationRestriction, cls).deserialize(element)
 
         # Parse valid_bindings (list from container "VALID-BINDINGS")
         obj.valid_bindings = []

@@ -56,6 +56,20 @@ class ServiceDependency(ARObject, ABC):
         tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(ServiceDependency, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy text from parent element
+        if parent_elem.text:
+            elem.text = parent_elem.text
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
         # Serialize assigned_data
         if self.assigned_data is not None:
             serialized = SerializationHelper.serialize_item(self.assigned_data, "RoleBasedDataTypeAssignment")
@@ -110,9 +124,8 @@ class ServiceDependency(ARObject, ABC):
         Returns:
             Deserialized ServiceDependency object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(ServiceDependency, cls).deserialize(element)
 
         # Parse assigned_data
         child = SerializationHelper.find_child_element(element, "ASSIGNED-DATA")

@@ -621,18 +621,18 @@ def _generate_deserialize_method(
         """
 '''
 
-    # If class has no direct attributes but has a parent class (other than ARObject),
+    # If class has no direct attributes but has a parent class,
     # delegate to parent's deserialize method to handle inherited attributes
-    if not attribute_types and parent_class and parent_class != "ARObject":
+    if not attribute_types and parent_class:
         code += f"""        # Delegate to parent class to handle inherited attributes
         return super({class_name}, cls).deserialize(element)
 
 """
         return code
 
-    # If class has a parent class (other than ARObject), call parent's deserialize first
+    # If class has a parent class, call parent's deserialize first
     # to handle inherited attributes, then parse own attributes
-    if parent_class and parent_class != "ARObject":
+    if parent_class:
         code += f"""        # First, call parent's deserialize to handle inherited attributes
         obj = super({class_name}, cls).deserialize(element)
 
@@ -1695,9 +1695,9 @@ def _generate_serialize_method(
 
 '''
 
-    # If class has a parent class (other than ARObject), call parent's serialize first
+    # If class has a parent class, call parent's serialize first
     # to handle inherited attributes, then serialize own attributes
-    if parent_class and parent_class != "ARObject":
+    if parent_class:
         code += f"""        # First, call parent's serialize to handle inherited attributes
         parent_elem = super({class_name}, self).serialize()
 
@@ -1983,8 +1983,8 @@ def _generate_serialize_method_for_atp_variant(
 
 '''
 
-    # If class has a parent class (other than ARObject), call parent's serialize first
-    if parent_class and parent_class != "ARObject":
+    # If class has a parent class, call parent's serialize first
+    if parent_class:
         code += f"""        # First, call parent's serialize to handle inherited attributes
         parent_elem = super({class_name}, self).serialize()
 
@@ -2219,30 +2219,17 @@ def _generate_deserialize_method_for_atp_variant(
         """
 '''
 
-    # If class has a parent class (other than ARObject), call parent's deserialize first
-    if parent_class and parent_class != "ARObject":
+    # If class has a parent class, call parent's deserialize first
+    if parent_class:
         code += f"""        # First, call parent's deserialize to handle inherited attributes
         obj = super({class_name}, cls).deserialize(element)
 
 """
     else:
-        # For ARObject parent or no parent, create instance and handle ARObject attributes
+        # No parent class to handle, create instance directly
         code += """        # Create instance and initialize with default values
         obj = cls.__new__(cls)
         obj.__init__()
-
-        # Handle ARObject inherited attributes (checksum and timestamp)
-        # Parse timestamp (XML attribute 'T')
-        timestamp_value = element.get("T")
-        if timestamp_value is not None:
-            obj.timestamp = timestamp_value
-
-        # Parse checksum (child element)
-        checksum_elem = SerializationHelper.find_child_element(element, "CHECKSUM")
-        if checksum_elem is not None:
-            checksum_value = checksum_elem.text
-            if checksum_value is not None:
-                obj.checksum = checksum_value
 
 """
 

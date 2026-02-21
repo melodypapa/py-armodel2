@@ -53,6 +53,20 @@ class RuleBasedValueCont(ARObject):
         tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(RuleBasedValueCont, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy text from parent element
+        if parent_elem.text:
+            elem.text = parent_elem.text
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
         # Serialize rule_based
         if self.rule_based is not None:
             serialized = SerializationHelper.serialize_item(self.rule_based, "Any")
@@ -107,9 +121,8 @@ class RuleBasedValueCont(ARObject):
         Returns:
             Deserialized RuleBasedValueCont object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(RuleBasedValueCont, cls).deserialize(element)
 
         # Parse rule_based
         child = SerializationHelper.find_child_element(element, "RULE-BASED")

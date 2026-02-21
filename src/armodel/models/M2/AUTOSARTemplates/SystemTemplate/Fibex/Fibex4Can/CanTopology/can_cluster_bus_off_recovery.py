@@ -53,6 +53,20 @@ class CanClusterBusOffRecovery(ARObject):
         tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(CanClusterBusOffRecovery, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy text from parent element
+        if parent_elem.text:
+            elem.text = parent_elem.text
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
         # Serialize bor_counter_l1_to
         if self.bor_counter_l1_to is not None:
             serialized = SerializationHelper.serialize_item(self.bor_counter_l1_to, "PositiveInteger")
@@ -135,9 +149,8 @@ class CanClusterBusOffRecovery(ARObject):
         Returns:
             Deserialized CanClusterBusOffRecovery object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(CanClusterBusOffRecovery, cls).deserialize(element)
 
         # Parse bor_counter_l1_to
         child = SerializationHelper.find_child_element(element, "BOR-COUNTER-L1-TO")
