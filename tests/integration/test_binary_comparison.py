@@ -66,10 +66,11 @@ class TestIndividualFiles:
 
         # Round-trip
         from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
+        AUTOSAR.reset()
         autosar = AUTOSAR()
-        reader.load_arxml(autosar, str(arxml_file))
+        reader.load_arxml(str(arxml_file), autosar)
         output_file = tmp_path / f"{arxml_file.stem}_output.arxml"
-        writer.save_arxml(autosar, str(output_file))
+        writer.save_arxml(str(output_file), autosar)
 
         # Read serialized
         serialized_bytes = output_file.read_bytes()

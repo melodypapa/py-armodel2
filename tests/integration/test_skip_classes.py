@@ -70,8 +70,9 @@ class TestCompuMethodClasses:
         """
         from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
 
+        AUTOSAR().clear()
         autosar = AUTOSAR()
-        reader.load_arxml(autosar, str(compu_method_file))
+        reader.load_arxml(str(compu_method_file), autosar)
 
         # Find CompuMethod objects
         compu_methods = []
@@ -102,8 +103,9 @@ class TestCompuMethodClasses:
         from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
 
         # Load original
+        AUTOSAR.reset()
         autosar_orig = AUTOSAR()
-        reader.load_arxml(autosar_orig, str(compu_method_file))
+        reader.load_arxml(str(compu_method_file), autosar_orig)
 
         # Find CompuMethod
         compu_methods = []
@@ -113,23 +115,27 @@ class TestCompuMethodClasses:
         if not compu_methods:
             pytest.skip("No CompuMethod objects found in file")
 
+        # Save count before clearing
+        original_count = len(compu_methods)
+
         # Serialize and reload
         output_file = tmp_path / "compu_method_test.arxml"
-        writer.save_arxml(autosar_orig, str(output_file))
+        writer.save_arxml(str(output_file), autosar_orig)
 
+        AUTOSAR.reset()
         autosar_reload = AUTOSAR()
-        reader.load_arxml(autosar_reload, str(output_file))
+        reader.load_arxml(str(output_file), autosar_reload)
 
         # Verify CompuMethod still exists
         reloaded_methods = []
         for pkg in autosar_reload.ar_packages:
             self._find_compu_methods(pkg, reloaded_methods)
 
-        assert len(reloaded_methods) == len(compu_methods), \
-            f"CompuMethod count mismatch: {len(reloaded_methods)} != {len(compu_methods)}"
+        assert len(reloaded_methods) == original_count, \
+            f"CompuMethod count mismatch: {len(reloaded_methods)} != {original_count}"
 
         print("\n✅ CompuMethod serialization successful")
-        print(f"   Original: {len(compu_methods)} methods")
+        print(f"   Original: {original_count} methods")
         print(f"   Reloaded: {len(reloaded_methods)} methods")
 
     def _find_compu_methods(self, pkg, methods_list):
@@ -188,7 +194,7 @@ class TestLanguageSpecificClasses:
         from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
 
         autosar = AUTOSAR()
-        reader.load_arxml(autosar, str(application_datatype_file))
+        reader.load_arxml(str(application_datatype_file), autosar)
 
         # Check file has L-2 elements
         content = application_datatype_file.read_text()
@@ -214,11 +220,11 @@ class TestLanguageSpecificClasses:
 
         # Load original
         autosar_orig = AUTOSAR()
-        reader.load_arxml(autosar_orig, str(application_datatype_file))
+        reader.load_arxml(str(application_datatype_file), autosar_orig)
 
         # Serialize
         output_file = tmp_path / "lang_test.arxml"
-        writer.save_arxml(autosar_orig, str(output_file))
+        writer.save_arxml(str(output_file), autosar_orig)
 
         # Check L-2 elements preserved
         orig_content = application_datatype_file.read_text()
@@ -270,7 +276,7 @@ class TestARPackageClass:
                 continue
 
             autosar = AUTOSAR()
-            reader.load_arxml(autosar, str(arxml_file))
+            reader.load_arxml(str(arxml_file), autosar)
 
             assert len(autosar.ar_packages) > 0, f"No packages found in {arxml_file.name}"
 
@@ -303,12 +309,12 @@ class TestARPackageClass:
 
         # Load
         autosar = AUTOSAR()
-        reader.load_arxml(autosar, str(arxml_file))
+        reader.load_arxml(str(arxml_file), autosar)
 
         # Serialize
         writer = ARXMLWriter(pretty_print=True, encoding="UTF-8")
         output_file = tmp_path / "ar_package_test.arxml"
-        writer.save_arxml(autosar, str(output_file))
+        writer.save_arxml(str(output_file), autosar)
 
         # Verify AR-PACKAGE elements in output
         content = output_file.read_text()
@@ -450,7 +456,7 @@ class TestBaseTypeClass:
             pytest.skip(f"File not found: {arxml_file}")
 
         autosar = AUTOSAR()
-        reader.load_arxml(autosar, str(arxml_file))
+        reader.load_arxml(str(arxml_file), autosar)
 
         # Find SwBaseType objects (recursively search nested packages)
         from armodel.models.M2.MSR.AsamHdo.BaseTypes.sw_base_type import SwBaseType
@@ -506,7 +512,7 @@ class TestSwDataDefPropsClass:
             pytest.skip(f"File not found: {arxml_file}")
 
         autosar = AUTOSAR()
-        reader.load_arxml(autosar, str(arxml_file))
+        reader.load_arxml(str(arxml_file), autosar)
 
         # Check file has SW-DATA-DEF-PROPS
         content = arxml_file.read_text()
@@ -588,7 +594,7 @@ class TestARObjectClass:
             pytest.skip(f"File not found: {arxml_file}")
 
         autosar = AUTOSAR()
-        reader.load_arxml(autosar, str(arxml_file))
+        reader.load_arxml(str(arxml_file), autosar)
 
         # If we got here without errors, inheritance chain worked
         assert len(autosar.ar_packages) > 0, "No packages loaded"

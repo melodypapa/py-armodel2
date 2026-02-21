@@ -26,23 +26,26 @@ class ARXMLReader:
 
     def load_arxml(
         self,
-        autosar: AUTOSAR,
         filepath: Union[str, Path],
+        autosar: Optional[AUTOSAR] = None,
         validate: bool = False
     ) -> AUTOSAR:
-        """Load ARXML file into existing AUTOSAR object.
+        """Load ARXML file into AUTOSAR object.
 
         This method reads an ARXML file and populates the provided AUTOSAR
-        object with the file's contents. The same AUTOSAR instance can be
-        reused for multiple load operations.
+        object with the file's contents. If no AUTOSAR object is provided,
+        it uses the AUTOSAR singleton instance.
+
+        The same AUTOSAR instance can be reused for multiple load operations.
+        Content from multiple files is merged into the same instance.
 
         Args:
-            autosar: AUTOSAR object to populate with file contents
             filepath: Path to ARXML file
+            autosar: AUTOSAR object to populate. If None, uses AUTOSAR singleton.
             validate: Whether to validate against XSD schema
 
         Returns:
-            The populated AUTOSAR object (same instance as passed in)
+            The populated AUTOSAR object
 
         Raises:
             FileNotFoundError: If file doesn't exist
@@ -50,11 +53,24 @@ class ARXMLReader:
             Exception: If validation fails
 
         Example:
-            >>> autosar = AUTOSAR()
             >>> reader = ARXMLReader()
-            >>> reader.load_arxml(autosar, "file1.arxml")
-            >>> reader.load_arxml(autosar, "file2.arxml")  # Appends to same object
+            >>> 
+            >>> # Use singleton (convenient)
+            >>> reader.load_arxml("file1.arxml")
+            >>> reader.load_arxml("file2.arxml")  # Appends to same singleton
+            >>> 
+            >>> # Use fresh state (clears singleton first)
+            >>> AUTOSAR().clear()
+            >>> reader.load_arxml("file3.arxml")
+            >>> 
+            >>> # Use custom instance (for isolation)
+            >>> autosar = AUTOSAR()
+            >>> reader.load_arxml("file1.arxml", autosar)
         """
+        # Use singleton if no AUTOSAR instance provided
+        if autosar is None:
+            autosar = AUTOSAR()
+
         root = self._load_file(filepath)
         self._populate_autosar(autosar, root)
 
@@ -62,6 +78,36 @@ class ARXMLReader:
             self._validate_against_schema(root, autosar)
 
         return autosar
+
+    def load_arxml_with_clear(
+        self,
+        filepath: Union[str, Path],
+        validate: bool = False
+    ) -> AUTOSAR:
+        """Load ARXML file into a cleared AUTOSAR singleton.
+
+        This is a convenience method that clears the AUTOSAR singleton
+        before loading, ensuring a fresh state for the new file.
+
+        Args:
+            filepath: Path to ARXML file
+            validate: Whether to validate against XSD schema
+
+        Returns:
+            The populated AUTOSAR singleton
+
+        Raises:
+            FileNotFoundError: If file doesn't exist
+            ET.ParseError: If XML is malformed
+            Exception: If validation fails
+
+        Example:
+            >>> reader = ARXMLReader()
+            >>> reader.load_arxml_with_clear("file1.arxml")  # Fresh state
+            >>> reader.load_arxml_with_clear("file2.arxml")  # Fresh state again
+        """
+        AUTOSAR().clear()
+        return self.load_arxml(filepath, validate=validate)
 
     def _load_file(self, filepath: Union[str, Path]) -> ET.Element:
         """Load ARXML file and return root element.
@@ -114,7 +160,13 @@ class ARXMLReader:
                 # Special handling for ar_packages (extend, not replace)
                 if not hasattr(autosar, 'ar_packages'):
                     autosar.ar_packages = []
-                autosar.ar_packages.extend(value)
+                # For singleton AUTOSAR, loaded_autosar and autosar are the same object
+                # We need to avoid extending a list with itself
+                if loaded_autosar is autosar:
+                    # Already populated by deserialize(), no need to extend
+                    pass
+                else:
+                    autosar.ar_packages.extend(value)
             elif isinstance(value, list):
                 # For list attributes, extend if exists, otherwise set
                 if not hasattr(autosar, attr_name):

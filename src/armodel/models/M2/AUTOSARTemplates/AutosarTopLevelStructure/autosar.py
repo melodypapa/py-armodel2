@@ -19,6 +19,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_AutosarTopLevelStructure.classes.json"""
 
 from __future__ import annotations
+import threading
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
@@ -44,7 +45,16 @@ class AUTOSAR(ARObject):
 
     This is the root element of any ARXML document. As the root element,
     it handles namespace attributes that should appear only once in the document.
+
+    This class implements the singleton pattern to ensure only one AUTOSAR instance
+    exists throughout the application. Use AUTOSAR.reset() to clear the singleton
+    for testing purposes.
     """
+
+    # Singleton instance variables
+    _instance: Optional["AUTOSAR"] = None
+    _initialized: bool = False
+    _lock: threading.Lock = threading.Lock()
 
     @property
     def is_abstract(self) -> bool:
@@ -60,14 +70,77 @@ class AUTOSAR(ARObject):
     file_info_comment: Optional[FileInfoComment]
     introduction: Optional[DocumentationBlock]
     schema_location: Optional[str]
+
+    def __new__(cls) -> "AUTOSAR":
+        """Create or return the singleton instance.
+
+        Uses double-checked locking for thread safety.
+
+        Returns:
+            The singleton AUTOSAR instance
+        """
+        if cls._instance is None:
+            with cls._lock:
+                if cls._instance is None:
+                    cls._instance = super().__new__(cls)
+                    cls._instance._initialized = False
+        return cls._instance
+
     def __init__(self) -> None:
-        """Initialize AUTOSAR."""
+        """Initialize AUTOSAR.
+
+        Only initializes once due to singleton pattern.
+        """
+        if self._initialized:
+            return
+
         super().__init__()
         self.admin_data: Optional[AdminData] = None
         self.ar_packages: list[ARPackage] = []
         self.file_info_comment: Optional[FileInfoComment] = None
         self.introduction: Optional[DocumentationBlock] = None
         self.schema_location: Optional[str] = None
+
+        self._initialized = True
+
+    def clear(self) -> None:
+        """Clear all state from the AUTOSAR instance.
+
+        This method resets the instance's state while keeping the singleton alive.
+        This is useful for reusing the singleton for different operations without
+        resetting the singleton instance itself.
+
+        Example:
+            autosar = AUTOSAR()
+            reader.load_arxml(autosar, "file1.arxml")
+            autosar.clear()  # Clear state for next operation
+            reader.load_arxml(autosar, "file2.arxml")
+        """
+        self.admin_data = None
+        self.ar_packages = []
+        self.file_info_comment = None
+        self.introduction = None
+        self.schema_location = None
+
+    @classmethod
+    def reset(cls) -> None:
+        """Reset the singleton instance.
+
+        This is primarily intended for testing to ensure test isolation.
+        After calling reset(), the next AUTOSAR() call will create a fresh instance.
+
+        Warning:
+            Do not use this in production code as it can lead to unexpected behavior
+            if multiple parts of the application rely on the singleton instance.
+
+        Example:
+            def setUp(self):
+                AUTOSAR.reset()  # Ensure clean state for each test
+                self.autosar = AUTOSAR()
+        """
+        with cls._lock:
+            cls._instance = None
+            cls._initialized = False
 
     def serialize(self) -> ET.Element:
         """Serialize AUTOSAR to XML element.
@@ -129,11 +202,10 @@ class AUTOSAR(ARObject):
             element: XML element to deserialize from
 
         Returns:
-            Deserialized AUTOSAR object
+            Deserialized AUTOSAR object (singleton instance)
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # Get or create singleton instance
+        obj = cls()
 
         # Extract schema location from xsi:schemaLocation attribute
         schema_loc = element.get("{http://www.w3.org/2001/XMLSchema-instance}schemaLocation")
@@ -185,11 +257,20 @@ class AUTOSARBuilder:
         """Initialize builder."""
         self._obj: AUTOSAR = AUTOSAR()
 
+    def clear(self) -> "AUTOSARBuilder":
+        """Clear the AUTOSAR instance.
+
+        Returns:
+            This builder for method chaining
+        """
+        self._obj.clear()
+        return self
+
     def build(self) -> AUTOSAR:
         """Build and return AUTOSAR object.
 
         Returns:
-            AUTOSAR instance
+            AUTOSAR instance (singleton)
         """
         # TODO: Add validation
         return self._obj

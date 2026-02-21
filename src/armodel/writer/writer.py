@@ -33,13 +33,34 @@ class ARXMLWriter:
         self._encoding = encoding
         self._version_manager = version_manager or SchemaVersionManager()
 
-    def save_arxml(self, autosar: AUTOSAR, filepath: Union[str, Path]) -> None:
+    def save_arxml(
+        self,
+        filepath: Union[str, Path],
+        autosar: Optional[AUTOSAR] = None
+    ) -> None:
         """Save AUTOSAR object to ARXML file.
 
+        If no AUTOSAR object is provided, saves the AUTOSAR singleton.
+
         Args:
-            autosar: AUTOSAR object to save
             filepath: Output file path
+            autosar: AUTOSAR object to save. If None, uses AUTOSAR singleton.
+
+        Example:
+            >>> writer = ARXMLWriter()
+            >>> 
+            >>> # Save singleton (convenient)
+            >>> writer.save_arxml("output.arxml")
+            >>> 
+            >>> # Save custom instance
+            >>> autosar = AUTOSAR()
+            >>> reader.load_arxml("input.arxml", autosar)
+            >>> writer.save_arxml("output.arxml", autosar)
         """
+        # Use singleton if no AUTOSAR instance provided
+        if autosar is None:
+            autosar = AUTOSAR()
+
         root = self._serialize_to_xml(autosar)
         self._save_to_file(root, filepath)
 
@@ -247,15 +268,21 @@ class ARXMLWriter:
             if level and (not elem.tail or not elem.tail.strip()):
                 elem.tail = indent_str
 
-    def to_string(self, autosar: AUTOSAR) -> str:
+    def to_string(self, autosar: Optional[AUTOSAR] = None) -> str:
         """Serialize AUTOSAR object to XML string.
 
+        If no AUTOSAR object is provided, serializes the AUTOSAR singleton.
+
         Args:
-            autosar: AUTOSAR object to serialize
+            autosar: AUTOSAR object to serialize. If None, uses AUTOSAR singleton.
 
         Returns:
             XML string representation
         """
+        # Use singleton if no AUTOSAR instance provided
+        if autosar is None:
+            autosar = AUTOSAR()
+
         root = self._serialize_to_xml(autosar)
         tree = ET.ElementTree(root)
 
