@@ -493,3 +493,93 @@ class TestIndividualFiles:
             writer,
             tmp_path
         )
+
+    @pytest.mark.xfail
+    def test_bswm_mode_binary_comparison(
+        self,
+        reader: ARXMLReader,
+        writer: ARXMLWriter,
+        tmp_path: Path
+    ) -> None:
+        """Test BswMMode.arxml for binary exact round-trip serialization.
+
+        Test ID: SWITS-INT-0224
+        """
+        self._test_single_file_binary_comparison(
+            "BswMMode.arxml",
+            reader,
+            writer,
+            tmp_path
+        )
+
+    @pytest.mark.xfail
+    def test_bswm_bswmd_binary_comparison(
+        self,
+        reader: ARXMLReader,
+        writer: ARXMLWriter,
+        tmp_path: Path
+    ) -> None:
+        """Test BswM_Bswmd.arxml for binary exact round-trip serialization.
+
+        Test ID: SWITS-INT-0225
+        """
+        self._test_single_file_binary_comparison(
+            "BswM_Bswmd.arxml",
+            reader,
+            writer,
+            tmp_path
+        )
+
+    @pytest.mark.xfail
+    def test_can_system_binary_comparison(
+        self,
+        reader: ARXMLReader,
+        writer: ARXMLWriter,
+        tmp_path: Path
+    ) -> None:
+        """Test CanSystem.arxml for binary exact round-trip serialization.
+
+        Test ID: SWITS-INT-0226
+        """
+        self._test_single_file_binary_comparison(
+            "CanSystem.arxml",
+            reader,
+            writer,
+            tmp_path
+        )
+
+    @pytest.mark.xfail
+    def test_software_components_binary_comparison(
+        self,
+        reader: ARXMLReader,
+        writer: ARXMLWriter,
+        tmp_path: Path
+    ) -> None:
+        """Test SoftwareComponents.arxml for binary exact round-trip serialization.
+
+        Test ID: SWITS-INT-0227
+        """
+        self._test_single_file_binary_comparison(
+            "SoftwareComponents.arxml",
+            reader,
+            writer,
+            tmp_path
+        )
+
+    @pytest.mark.xfail
+    def test_sw_record_demo_binary_comparison(
+        self,
+        reader: ARXMLReader,
+        writer: ARXMLWriter,
+        tmp_path: Path
+    ) -> None:
+        """Test SwRecordDemo.arxml for binary exact round-trip serialization.
+
+        Test ID: SWITS-INT-0228
+        """
+        self._test_single_file_binary_comparison(
+            "SwRecordDemo.arxml",
+            reader,
+            writer,
+            tmp_path
+        )

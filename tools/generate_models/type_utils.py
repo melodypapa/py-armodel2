@@ -161,6 +161,8 @@ def get_type_package_path(type_name: str, package_data: Dict[str, Dict[str, Any]
 def build_complete_dependency_graph(package_data: Dict[str, Dict[str, Any]]) -> Dict[str, Set[str]]:
     """Build a complete dependency graph for all classes.
 
+    Includes both attribute-based dependencies and inheritance-based dependencies.
+
     Args:
         package_data: Package data dictionary
 
@@ -192,6 +194,21 @@ def build_complete_dependency_graph(package_data: Dict[str, Dict[str, Any]]) -> 
 
                         # Add to dependencies
                         dependency_graph[class_name].add(attr_type)
+
+                # Collect inheritance-based dependencies (parent class)
+                if "parent" in cls and cls["parent"]:
+                    parent_type = cls["parent"]
+
+                    # Skip if parent is a primitive or enum
+                    if (
+                        not is_primitive_type(parent_type, package_data)
+                        and not is_enum_type(parent_type, package_data)
+                        and parent_type != class_name
+                    ):
+                        # Add parent as a dependency
+                        # This ensures that if a class imports its child's type,
+                        # we can detect the circular import through the inheritance chain
+                        dependency_graph[class_name].add(parent_type)
 
     return dependency_graph
 
@@ -239,3 +256,77 @@ def detect_circular_import(
             to_visit.extend(dependency_graph[node] - visited)
 
     return False
+
+
+def find_all_cycles_in_graph(
+    dependency_graph: Dict[str, Set[str]]
+) -> List[List[str]]:
+    """Find all cycles in the dependency graph using Tarjan's strongly connected components algorithm.
+
+    Args:
+        dependency_graph: Graph of class dependencies (complete graph)
+
+    Returns:
+        List of cycles, where each cycle is a list of class names forming a strongly connected component
+        Cycles are sorted deterministically by the first class name in each cycle
+    """
+    cycles: List[List[str]] = []
+
+    # Tarjan's strongly connected components algorithm
+    # Each SCC with more than 1 node represents a cycle
+    indices: Dict[str, int] = {}
+    lowlinks: Dict[str, int] = {}
+    stack: List[str] = []
+    onstack: Set[str] = set()
+    index = 0
+
+    def strongconnect(v: str) -> None:
+        nonlocal index
+        indices[v] = index
+        lowlinks[v] = index
+        index += 1
+        stack.append(v)
+        onstack.add(v)
+
+        # Consider successors of v
+        for w in dependency_graph.get(v, []):
+            if w not in indices:
+                # Successor w has not yet been visited; recurse on it
+                strongconnect(w)
+                lowlinks[v] = min(lowlinks[v], lowlinks[w])
+            elif w in onstack:
+                # Successor w is in stack and hence in the current SCC
+                lowlinks[v] = min(lowlinks[v], indices[w])
+
+        # If v is a root node, pop the stack and generate an SCC
+        if lowlinks[v] == indices[v]:
+            scc: List[str] = []
+            while True:
+                w = stack.pop()
+                onstack.remove(w)
+                scc.append(w)
+                if w == v:
+                    break
+            # SCC with more than 1 node indicates a cycle
+            if len(scc) > 1:
+                cycles.append(scc)
+
+    # Call strongconnect for all nodes in the graph in a deterministic order
+    for v in sorted(dependency_graph.keys()):
+        if v not in indices:
+            strongconnect(v)
+
+    # Sort cycles deterministically by the first class name in each cycle
+    # Then sort the classes within each cycle to ensure consistent ordering
+    for cycle in cycles:
+        # Find the "starting point" of the cycle (lexicographically smallest class)
+        # and rotate the cycle so it starts there
+        if cycle:
+            min_idx = cycle.index(min(cycle))
+            # Rotate the cycle to start from the smallest class name
+            cycle[:] = cycle[min_idx:] + cycle[:min_idx]
+    
+    # Sort cycles by their first class name
+    cycles.sort(key=lambda c: c[0] if c else "")
+
+    return cycles
