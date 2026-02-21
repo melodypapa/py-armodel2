@@ -62,7 +62,14 @@ class DataDumpEntry(LinConfigurationEntry):
             for item in self.byte_values:
                 serialized = ARObject._serialize_item(item, "Integer")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("BYTE-VALUE")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -86,8 +93,8 @@ class DataDumpEntry(LinConfigurationEntry):
         container = ARObject._find_child_element(element, "BYTE-VALUES")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Extract primitive value (Integer) as text
+                child_value = child.text
                 if child_value is not None:
                     obj.byte_values.append(child_value)
 

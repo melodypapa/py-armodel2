@@ -62,7 +62,14 @@ class IPv6ExtHeaderFilterList(Identifiable):
             for item in self.allowed_i_pv6_exts:
                 serialized = ARObject._serialize_item(item, "PositiveInteger")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("ALLOWED-I-PV6-EXT")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -86,8 +93,8 @@ class IPv6ExtHeaderFilterList(Identifiable):
         container = ARObject._find_child_element(element, "ALLOWED-I-PV6-EXTS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Extract primitive value (PositiveInteger) as text
+                child_value = child.text
                 if child_value is not None:
                     obj.allowed_i_pv6_exts.append(child_value)
 

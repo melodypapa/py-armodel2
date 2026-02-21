@@ -14,7 +14,6 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization.name_converter import NameConverter
 from armodel.serialization.model_factory import ModelFactory
-from armodel.serialization.decorators import polymorphic_flattened
 
 if TYPE_CHECKING:
     from typing import Self
@@ -175,9 +174,12 @@ class CompuScale(ARObject):
     def deserialize(cls, element: ET.Element) -> Self:
         """Deserialize XML element to CompuScale.
 
-        The @polymorphic_flattened decorator on compu_scale_contents handles
+        The _polymorphic_flattened_mapping class attribute handles
         flattened COMPU-CONST and COMPU-RATIONAL-COEFFS elements that can appear
         directly under COMPU-SCALE without their wrapper elements.
+
+        The ARObject.deserialize() method checks for this mapping and automatically
+        wraps flattened child elements with their appropriate wrapper classes.
 
         Args:
             element: XML element to deserialize from
@@ -185,8 +187,8 @@ class CompuScale(ARObject):
         Returns:
             Deserialized CompuScale instance
         """
-        # Delegate to parent class deserialize - the @polymorphic_flattened
-        # decorator in ARObject.deserialize() will handle flattened child elements
+        # Delegate to parent class deserialize - the _polymorphic_flattened_mapping
+        # in ARObject.deserialize() will handle flattened child elements
         return super().deserialize(element)
 
 

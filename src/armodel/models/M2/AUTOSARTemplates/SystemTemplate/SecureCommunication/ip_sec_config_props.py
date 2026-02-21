@@ -89,7 +89,14 @@ class IPSecConfigProps(ARElement):
             for item in self.ah_cipher_suites:
                 serialized = ARObject._serialize_item(item, "String")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("AH-CIPHER-SUITE")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -127,7 +134,14 @@ class IPSecConfigProps(ARElement):
             for item in self.esp_cipher_suites:
                 serialized = ARObject._serialize_item(item, "String")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("ESP-CIPHER-SUITE")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -263,8 +277,8 @@ class IPSecConfigProps(ARElement):
         container = ARObject._find_child_element(element, "AH-CIPHER-SUITES")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Extract primitive value (String) as text
+                child_value = child.text
                 if child_value is not None:
                     obj.ah_cipher_suites.append(child_value)
 
@@ -285,8 +299,8 @@ class IPSecConfigProps(ARElement):
         container = ARObject._find_child_element(element, "ESP-CIPHER-SUITES")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Extract primitive value (String) as text
+                child_value = child.text
                 if child_value is not None:
                     obj.esp_cipher_suites.append(child_value)
 

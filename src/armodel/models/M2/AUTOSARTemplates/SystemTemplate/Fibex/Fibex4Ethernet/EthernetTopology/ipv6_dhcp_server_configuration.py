@@ -113,7 +113,14 @@ class Ipv6DhcpServerConfiguration(Describable):
             for item in self.dns_servers:
                 serialized = ARObject._serialize_item(item, "Ip6AddressString")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("DNS-SERVER")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -169,8 +176,8 @@ class Ipv6DhcpServerConfiguration(Describable):
         container = ARObject._find_child_element(element, "DNS-SERVERS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Extract primitive value (Ip6AddressString) as text
+                child_value = child.text
                 if child_value is not None:
                     obj.dns_servers.append(child_value)
 

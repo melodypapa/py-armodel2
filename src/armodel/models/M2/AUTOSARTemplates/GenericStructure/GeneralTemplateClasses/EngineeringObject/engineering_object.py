@@ -86,7 +86,14 @@ class EngineeringObject(ARObject, ABC):
             for item in self.revision_label_strings:
                 serialized = ARObject._serialize_item(item, "RevisionLabelString")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("REVISION-LABEL-STRING")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -137,8 +144,8 @@ class EngineeringObject(ARObject, ABC):
         container = ARObject._find_child_element(element, "REVISION-LABEL-STRINGS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Extract primitive value (RevisionLabelString) as text
+                child_value = child.text
                 if child_value is not None:
                     obj.revision_label_strings.append(child_value)
 
