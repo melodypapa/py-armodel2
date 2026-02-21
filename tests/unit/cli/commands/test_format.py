@@ -49,18 +49,15 @@ class TestFormatCommand:
             result = format_command(args)
 
             assert result == EXIT_SUCCESS
-            # Verify load_arxml was called with an AUTOSAR instance and the input path
-            mock_reader.load_arxml.assert_called_once()
-            load_arxml_call_args = mock_reader.load_arxml.call_args
-            assert str(load_arxml_call_args[0][1]) == tmp_path
+            # Verify load_arxml_with_clear was called with the input path
+            mock_reader.load_arxml_with_clear.assert_called_once()
+            load_arxml_call_args = mock_reader.load_arxml_with_clear.call_args
+            assert str(load_arxml_call_args[0][0]) == tmp_path
             # Verify save_arxml was called
             mock_writer.save_arxml.assert_called_once()
             call_args = mock_writer.save_arxml.call_args
-            # Check that the first arg is an AUTOSAR instance
-            from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
-
-            assert isinstance(call_args[0][0], AUTOSAR)
-            assert str(call_args[0][1]) == output_path
+            # Check that the first arg is the output path
+            assert str(call_args[0][0]) == output_path
         finally:
             Path(tmp_path).unlink(missing_ok=True)
             Path(output_path).unlink(missing_ok=True)

@@ -13,7 +13,6 @@ from armodel.cli.common import (
     prepare_output_file,
 )
 from armodel.core import GlobalSettingsManager
-from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
 from armodel.reader import ARXMLReader
 from armodel.writer import ARXMLWriter
 
@@ -42,15 +41,15 @@ def format_command(args: Namespace) -> int:
         elif args.permissive:
             settings.strict_validation = False
 
-        # Load ARXML file
+        # Load ARXML file using singleton
         reader = ARXMLReader()
 
         if not args.quiet:
             print(f"Loading ARXML file: {input_path}")
 
         try:
-            autosar = AUTOSAR()
-            reader.load_arxml(autosar, str(input_path))
+            # Use load_arxml_with_clear for fresh state (CLI should not accumulate state)
+            reader.load_arxml_with_clear(str(input_path))
         except Exception as e:
             if args.verbose:
                 print(f"Error parsing ARXML: {e}", file=sys.stderr)
@@ -68,7 +67,8 @@ def format_command(args: Namespace) -> int:
             print(f"Writing formatted ARXML to: {output_path}")
 
         try:
-            writer.save_arxml(autosar, str(output_path))
+            # Save using singleton (no need to pass autosar)
+            writer.save_arxml(str(output_path))
         except Exception as e:
             if args.verbose:
                 print(f"Error writing file: {e}", file=sys.stderr)
