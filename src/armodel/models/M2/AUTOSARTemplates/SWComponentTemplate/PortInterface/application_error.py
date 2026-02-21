@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
 )
@@ -44,7 +45,7 @@ class ApplicationError(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -63,7 +64,7 @@ class ApplicationError(Identifiable):
 
         # Serialize error_code
         if self.error_code is not None:
-            serialized = ARObject._serialize_item(self.error_code, "Integer")
+            serialized = SerializationHelper.serialize_item(self.error_code, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ERROR-CODE")
@@ -91,7 +92,7 @@ class ApplicationError(Identifiable):
         obj = super(ApplicationError, cls).deserialize(element)
 
         # Parse error_code
-        child = ARObject._find_child_element(element, "ERROR-CODE")
+        child = SerializationHelper.find_child_element(element, "ERROR-CODE")
         if child is not None:
             error_code_value = child.text
             obj.error_code = error_code_value

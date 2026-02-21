@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     SingleLanguageReferrable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     DateTime,
     String,
@@ -54,7 +55,7 @@ class Xdoc(SingleLanguageReferrable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -73,7 +74,7 @@ class Xdoc(SingleLanguageReferrable):
 
         # Serialize date
         if self.date is not None:
-            serialized = ARObject._serialize_item(self.date, "DateTime")
+            serialized = SerializationHelper.serialize_item(self.date, "DateTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATE")
@@ -87,7 +88,7 @@ class Xdoc(SingleLanguageReferrable):
 
         # Serialize number
         if self.number is not None:
-            serialized = ARObject._serialize_item(self.number, "String")
+            serialized = SerializationHelper.serialize_item(self.number, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NUMBER")
@@ -101,7 +102,7 @@ class Xdoc(SingleLanguageReferrable):
 
         # Serialize position
         if self.position is not None:
-            serialized = ARObject._serialize_item(self.position, "String")
+            serialized = SerializationHelper.serialize_item(self.position, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("POSITION")
@@ -115,7 +116,7 @@ class Xdoc(SingleLanguageReferrable):
 
         # Serialize publisher
         if self.publisher is not None:
-            serialized = ARObject._serialize_item(self.publisher, "String")
+            serialized = SerializationHelper.serialize_item(self.publisher, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PUBLISHER")
@@ -129,7 +130,7 @@ class Xdoc(SingleLanguageReferrable):
 
         # Serialize state
         if self.state is not None:
-            serialized = ARObject._serialize_item(self.state, "String")
+            serialized = SerializationHelper.serialize_item(self.state, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("STATE")
@@ -143,7 +144,7 @@ class Xdoc(SingleLanguageReferrable):
 
         # Serialize url
         if self.url is not None:
-            serialized = ARObject._serialize_item(self.url, "Any")
+            serialized = SerializationHelper.serialize_item(self.url, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("URL")
@@ -171,37 +172,37 @@ class Xdoc(SingleLanguageReferrable):
         obj = super(Xdoc, cls).deserialize(element)
 
         # Parse date
-        child = ARObject._find_child_element(element, "DATE")
+        child = SerializationHelper.find_child_element(element, "DATE")
         if child is not None:
             date_value = child.text
             obj.date = date_value
 
         # Parse number
-        child = ARObject._find_child_element(element, "NUMBER")
+        child = SerializationHelper.find_child_element(element, "NUMBER")
         if child is not None:
             number_value = child.text
             obj.number = number_value
 
         # Parse position
-        child = ARObject._find_child_element(element, "POSITION")
+        child = SerializationHelper.find_child_element(element, "POSITION")
         if child is not None:
             position_value = child.text
             obj.position = position_value
 
         # Parse publisher
-        child = ARObject._find_child_element(element, "PUBLISHER")
+        child = SerializationHelper.find_child_element(element, "PUBLISHER")
         if child is not None:
             publisher_value = child.text
             obj.publisher = publisher_value
 
         # Parse state
-        child = ARObject._find_child_element(element, "STATE")
+        child = SerializationHelper.find_child_element(element, "STATE")
         if child is not None:
             state_value = child.text
             obj.state = state_value
 
         # Parse url
-        child = ARObject._find_child_element(element, "URL")
+        child = SerializationHelper.find_child_element(element, "URL")
         if child is not None:
             url_value = child.text
             obj.url = url_value

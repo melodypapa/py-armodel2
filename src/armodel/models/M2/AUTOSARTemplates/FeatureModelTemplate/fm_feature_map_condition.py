@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class FMFeatureMapCondition(Identifiable):
@@ -40,7 +41,7 @@ class FMFeatureMapCondition(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -59,7 +60,7 @@ class FMFeatureMapCondition(Identifiable):
 
         # Serialize fm_cond_and_attributes
         if self.fm_cond_and_attributes is not None:
-            serialized = ARObject._serialize_item(self.fm_cond_and_attributes, "Any")
+            serialized = SerializationHelper.serialize_item(self.fm_cond_and_attributes, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FM-COND-AND-ATTRIBUTES")
@@ -87,7 +88,7 @@ class FMFeatureMapCondition(Identifiable):
         obj = super(FMFeatureMapCondition, cls).deserialize(element)
 
         # Parse fm_cond_and_attributes
-        child = ARObject._find_child_element(element, "FM-COND-AND-ATTRIBUTES")
+        child = SerializationHelper.find_child_element(element, "FM-COND-AND-ATTRIBUTES")
         if child is not None:
             fm_cond_and_attributes_value = child.text
             obj.fm_cond_and_attributes = fm_cond_and_attributes_value

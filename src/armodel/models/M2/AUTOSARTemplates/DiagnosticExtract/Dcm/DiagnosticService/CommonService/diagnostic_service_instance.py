@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.diagnostic_access_permission import (
     DiagnosticAccessPermission,
@@ -50,7 +51,7 @@ class DiagnosticServiceInstance(DiagnosticCommonElement, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -69,7 +70,7 @@ class DiagnosticServiceInstance(DiagnosticCommonElement, ABC):
 
         # Serialize access_ref
         if self.access_ref is not None:
-            serialized = ARObject._serialize_item(self.access_ref, "DiagnosticAccessPermission")
+            serialized = SerializationHelper.serialize_item(self.access_ref, "DiagnosticAccessPermission")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ACCESS-REF")
@@ -83,7 +84,7 @@ class DiagnosticServiceInstance(DiagnosticCommonElement, ABC):
 
         # Serialize service_class_ref
         if self.service_class_ref is not None:
-            serialized = ARObject._serialize_item(self.service_class_ref, "DiagnosticServiceClass")
+            serialized = SerializationHelper.serialize_item(self.service_class_ref, "DiagnosticServiceClass")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SERVICE-CLASS-REF")
@@ -111,13 +112,13 @@ class DiagnosticServiceInstance(DiagnosticCommonElement, ABC):
         obj = super(DiagnosticServiceInstance, cls).deserialize(element)
 
         # Parse access_ref
-        child = ARObject._find_child_element(element, "ACCESS-REF")
+        child = SerializationHelper.find_child_element(element, "ACCESS-REF")
         if child is not None:
             access_ref_value = ARRef.deserialize(child)
             obj.access_ref = access_ref_value
 
         # Parse service_class_ref
-        child = ARObject._find_child_element(element, "SERVICE-CLASS-REF")
+        child = SerializationHelper.find_child_element(element, "SERVICE-CLASS-REF")
         if child is not None:
             service_class_ref_value = ARRef.deserialize(child)
             obj.service_class_ref = service_class_ref_value

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
     DiagnosticSwMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
@@ -45,7 +46,7 @@ class DiagnosticEnableConditionPortMapping(DiagnosticSwMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class DiagnosticEnableConditionPortMapping(DiagnosticSwMapping):
 
         # Serialize enable_condition_ref
         if self.enable_condition_ref is not None:
-            serialized = ARObject._serialize_item(self.enable_condition_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.enable_condition_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ENABLE-CONDITION-REF")
@@ -78,7 +79,7 @@ class DiagnosticEnableConditionPortMapping(DiagnosticSwMapping):
 
         # Serialize swc_flat_service_ref
         if self.swc_flat_service_ref is not None:
-            serialized = ARObject._serialize_item(self.swc_flat_service_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.swc_flat_service_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SWC-FLAT-SERVICE-REF")
@@ -92,7 +93,7 @@ class DiagnosticEnableConditionPortMapping(DiagnosticSwMapping):
 
         # Serialize swc_service
         if self.swc_service is not None:
-            serialized = ARObject._serialize_item(self.swc_service, "Any")
+            serialized = SerializationHelper.serialize_item(self.swc_service, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SWC-SERVICE")
@@ -120,19 +121,19 @@ class DiagnosticEnableConditionPortMapping(DiagnosticSwMapping):
         obj = super(DiagnosticEnableConditionPortMapping, cls).deserialize(element)
 
         # Parse enable_condition_ref
-        child = ARObject._find_child_element(element, "ENABLE-CONDITION-REF")
+        child = SerializationHelper.find_child_element(element, "ENABLE-CONDITION-REF")
         if child is not None:
             enable_condition_ref_value = ARRef.deserialize(child)
             obj.enable_condition_ref = enable_condition_ref_value
 
         # Parse swc_flat_service_ref
-        child = ARObject._find_child_element(element, "SWC-FLAT-SERVICE-REF")
+        child = SerializationHelper.find_child_element(element, "SWC-FLAT-SERVICE-REF")
         if child is not None:
             swc_flat_service_ref_value = ARRef.deserialize(child)
             obj.swc_flat_service_ref = swc_flat_service_ref_value
 
         # Parse swc_service
-        child = ARObject._find_child_element(element, "SWC-SERVICE")
+        child = SerializationHelper.find_child_element(element, "SWC-SERVICE")
         if child is not None:
             swc_service_value = child.text
             obj.swc_service = swc_service_value

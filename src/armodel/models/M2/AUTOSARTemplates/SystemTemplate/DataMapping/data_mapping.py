@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
     DocumentationBlock,
 )
@@ -42,12 +43,12 @@ class DataMapping(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize introduction
         if self.introduction is not None:
-            serialized = ARObject._serialize_item(self.introduction, "DocumentationBlock")
+            serialized = SerializationHelper.serialize_item(self.introduction, "DocumentationBlock")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INTRODUCTION")
@@ -76,9 +77,9 @@ class DataMapping(ARObject, ABC):
         obj.__init__()
 
         # Parse introduction
-        child = ARObject._find_child_element(element, "INTRODUCTION")
+        child = SerializationHelper.find_child_element(element, "INTRODUCTION")
         if child is not None:
-            introduction_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            introduction_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
             obj.introduction = introduction_value
 
         return obj

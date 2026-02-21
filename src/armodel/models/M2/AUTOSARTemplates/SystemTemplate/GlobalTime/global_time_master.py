@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime import (
     GlobalTimeIcvSupportEnum,
@@ -60,7 +61,7 @@ class GlobalTimeMaster(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -79,7 +80,7 @@ class GlobalTimeMaster(Identifiable, ABC):
 
         # Serialize communication_connector_ref
         if self.communication_connector_ref is not None:
-            serialized = ARObject._serialize_item(self.communication_connector_ref, "CommunicationConnector")
+            serialized = SerializationHelper.serialize_item(self.communication_connector_ref, "CommunicationConnector")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COMMUNICATION-CONNECTOR-REF")
@@ -93,7 +94,7 @@ class GlobalTimeMaster(Identifiable, ABC):
 
         # Serialize icv_secured
         if self.icv_secured is not None:
-            serialized = ARObject._serialize_item(self.icv_secured, "GlobalTimeIcvSupportEnum")
+            serialized = SerializationHelper.serialize_item(self.icv_secured, "GlobalTimeIcvSupportEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ICV-SECURED")
@@ -107,7 +108,7 @@ class GlobalTimeMaster(Identifiable, ABC):
 
         # Serialize immediate
         if self.immediate is not None:
-            serialized = ARObject._serialize_item(self.immediate, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.immediate, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IMMEDIATE")
@@ -121,7 +122,7 @@ class GlobalTimeMaster(Identifiable, ABC):
 
         # Serialize is_system_wide
         if self.is_system_wide is not None:
-            serialized = ARObject._serialize_item(self.is_system_wide, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.is_system_wide, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IS-SYSTEM-WIDE")
@@ -135,7 +136,7 @@ class GlobalTimeMaster(Identifiable, ABC):
 
         # Serialize sync_period
         if self.sync_period is not None:
-            serialized = ARObject._serialize_item(self.sync_period, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.sync_period, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SYNC-PERIOD")
@@ -163,31 +164,31 @@ class GlobalTimeMaster(Identifiable, ABC):
         obj = super(GlobalTimeMaster, cls).deserialize(element)
 
         # Parse communication_connector_ref
-        child = ARObject._find_child_element(element, "COMMUNICATION-CONNECTOR-REF")
+        child = SerializationHelper.find_child_element(element, "COMMUNICATION-CONNECTOR-REF")
         if child is not None:
             communication_connector_ref_value = ARRef.deserialize(child)
             obj.communication_connector_ref = communication_connector_ref_value
 
         # Parse icv_secured
-        child = ARObject._find_child_element(element, "ICV-SECURED")
+        child = SerializationHelper.find_child_element(element, "ICV-SECURED")
         if child is not None:
             icv_secured_value = GlobalTimeIcvSupportEnum.deserialize(child)
             obj.icv_secured = icv_secured_value
 
         # Parse immediate
-        child = ARObject._find_child_element(element, "IMMEDIATE")
+        child = SerializationHelper.find_child_element(element, "IMMEDIATE")
         if child is not None:
             immediate_value = child.text
             obj.immediate = immediate_value
 
         # Parse is_system_wide
-        child = ARObject._find_child_element(element, "IS-SYSTEM-WIDE")
+        child = SerializationHelper.find_child_element(element, "IS-SYSTEM-WIDE")
         if child is not None:
             is_system_wide_value = child.text
             obj.is_system_wide = is_system_wide_value
 
         # Parse sync_period
-        child = ARObject._find_child_element(element, "SYNC-PERIOD")
+        child = SerializationHelper.find_child_element(element, "SYNC-PERIOD")
         if child is not None:
             sync_period_value = child.text
             obj.sync_period = sync_period_value

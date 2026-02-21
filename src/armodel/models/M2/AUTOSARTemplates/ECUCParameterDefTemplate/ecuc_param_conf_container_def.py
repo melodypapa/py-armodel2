@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_container_
     EcucContainerDef,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_parameter_def import (
     EcucParameterDef,
@@ -48,7 +49,7 @@ class EcucParamConfContainerDef(EcucContainerDef):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -69,7 +70,7 @@ class EcucParamConfContainerDef(EcucContainerDef):
         if self.parameters:
             wrapper = ET.Element("PARAMETERS")
             for item in self.parameters:
-                serialized = ARObject._serialize_item(item, "EcucParameterDef")
+                serialized = SerializationHelper.serialize_item(item, "EcucParameterDef")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -79,7 +80,7 @@ class EcucParamConfContainerDef(EcucContainerDef):
         if self.reference_refs:
             wrapper = ET.Element("REFERENCE-REFS")
             for item in self.reference_refs:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     child_elem = ET.Element("REFERENCE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -96,7 +97,7 @@ class EcucParamConfContainerDef(EcucContainerDef):
         if self.sub_containers:
             wrapper = ET.Element("SUB-CONTAINERS")
             for item in self.sub_containers:
-                serialized = ARObject._serialize_item(item, "EcucContainerDef")
+                serialized = SerializationHelper.serialize_item(item, "EcucContainerDef")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -119,37 +120,37 @@ class EcucParamConfContainerDef(EcucContainerDef):
 
         # Parse parameters (list from container "PARAMETERS")
         obj.parameters = []
-        container = ARObject._find_child_element(element, "PARAMETERS")
+        container = SerializationHelper.find_child_element(element, "PARAMETERS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.parameters.append(child_value)
 
         # Parse reference_refs (list from container "REFERENCE-REFS")
         obj.reference_refs = []
-        container = ARObject._find_child_element(element, "REFERENCE-REFS")
+        container = SerializationHelper.find_child_element(element, "REFERENCE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.reference_refs.append(child_value)
 
         # Parse sub_containers (list from container "SUB-CONTAINERS")
         obj.sub_containers = []
-        container = ARObject._find_child_element(element, "SUB-CONTAINERS")
+        container = SerializationHelper.find_child_element(element, "SUB-CONTAINERS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.sub_containers.append(child_value)
 

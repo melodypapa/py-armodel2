@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -41,12 +42,12 @@ class BlueprintPolicy(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize attribute_name
         if self.attribute_name is not None:
-            serialized = ARObject._serialize_item(self.attribute_name, "String")
+            serialized = SerializationHelper.serialize_item(self.attribute_name, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ATTRIBUTE-NAME")
@@ -75,7 +76,7 @@ class BlueprintPolicy(ARObject, ABC):
         obj.__init__()
 
         # Parse attribute_name
-        child = ARObject._find_child_element(element, "ATTRIBUTE-NAME")
+        child = SerializationHelper.find_child_element(element, "ATTRIBUTE-NAME")
         if child is not None:
             attribute_name_value = child.text
             obj.attribute_name = attribute_name_value

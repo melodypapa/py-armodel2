@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
     Integer,
@@ -49,12 +50,12 @@ class RuleBasedValueSpecification(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize arguments
         if self.arguments is not None:
-            serialized = ARObject._serialize_item(self.arguments, "RuleArguments")
+            serialized = SerializationHelper.serialize_item(self.arguments, "RuleArguments")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ARGUMENTS")
@@ -68,7 +69,7 @@ class RuleBasedValueSpecification(ARObject):
 
         # Serialize max_size_to_fill
         if self.max_size_to_fill is not None:
-            serialized = ARObject._serialize_item(self.max_size_to_fill, "Integer")
+            serialized = SerializationHelper.serialize_item(self.max_size_to_fill, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-SIZE-TO-FILL")
@@ -82,7 +83,7 @@ class RuleBasedValueSpecification(ARObject):
 
         # Serialize rule
         if self.rule is not None:
-            serialized = ARObject._serialize_item(self.rule, "Identifier")
+            serialized = SerializationHelper.serialize_item(self.rule, "Identifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RULE")
@@ -111,21 +112,21 @@ class RuleBasedValueSpecification(ARObject):
         obj.__init__()
 
         # Parse arguments
-        child = ARObject._find_child_element(element, "ARGUMENTS")
+        child = SerializationHelper.find_child_element(element, "ARGUMENTS")
         if child is not None:
-            arguments_value = ARObject._deserialize_by_tag(child, "RuleArguments")
+            arguments_value = SerializationHelper.deserialize_by_tag(child, "RuleArguments")
             obj.arguments = arguments_value
 
         # Parse max_size_to_fill
-        child = ARObject._find_child_element(element, "MAX-SIZE-TO-FILL")
+        child = SerializationHelper.find_child_element(element, "MAX-SIZE-TO-FILL")
         if child is not None:
             max_size_to_fill_value = child.text
             obj.max_size_to_fill = max_size_to_fill_value
 
         # Parse rule
-        child = ARObject._find_child_element(element, "RULE")
+        child = SerializationHelper.find_child_element(element, "RULE")
         if child is not None:
-            rule_value = ARObject._deserialize_by_tag(child, "Identifier")
+            rule_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
             obj.rule = rule_value
 
         return obj

@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class SwComponentPrototypeAssignment(ARObject):
@@ -37,12 +38,12 @@ class SwComponentPrototypeAssignment(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize sw_component
         if self.sw_component is not None:
-            serialized = ARObject._serialize_item(self.sw_component, "Any")
+            serialized = SerializationHelper.serialize_item(self.sw_component, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-COMPONENT")
@@ -71,7 +72,7 @@ class SwComponentPrototypeAssignment(ARObject):
         obj.__init__()
 
         # Parse sw_component
-        child = ARObject._find_child_element(element, "SW-COMPONENT")
+        child = SerializationHelper.find_child_element(element, "SW-COMPONENT")
         if child is not None:
             sw_component_value = child.text
             obj.sw_component = sw_component_value

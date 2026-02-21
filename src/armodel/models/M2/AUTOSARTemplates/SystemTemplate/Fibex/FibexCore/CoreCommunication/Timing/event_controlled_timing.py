@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Describable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
 )
@@ -48,7 +49,7 @@ class EventControlledTiming(Describable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -67,7 +68,7 @@ class EventControlledTiming(Describable):
 
         # Serialize number_of
         if self.number_of is not None:
-            serialized = ARObject._serialize_item(self.number_of, "Integer")
+            serialized = SerializationHelper.serialize_item(self.number_of, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NUMBER-OF")
@@ -81,7 +82,7 @@ class EventControlledTiming(Describable):
 
         # Serialize repetition_period
         if self.repetition_period is not None:
-            serialized = ARObject._serialize_item(self.repetition_period, "TimeRangeType")
+            serialized = SerializationHelper.serialize_item(self.repetition_period, "TimeRangeType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REPETITION-PERIOD")
@@ -109,15 +110,15 @@ class EventControlledTiming(Describable):
         obj = super(EventControlledTiming, cls).deserialize(element)
 
         # Parse number_of
-        child = ARObject._find_child_element(element, "NUMBER-OF")
+        child = SerializationHelper.find_child_element(element, "NUMBER-OF")
         if child is not None:
             number_of_value = child.text
             obj.number_of = number_of_value
 
         # Parse repetition_period
-        child = ARObject._find_child_element(element, "REPETITION-PERIOD")
+        child = SerializationHelper.find_child_element(element, "REPETITION-PERIOD")
         if child is not None:
-            repetition_period_value = ARObject._deserialize_by_tag(child, "TimeRangeType")
+            repetition_period_value = SerializationHelper.deserialize_by_tag(child, "TimeRangeType")
             obj.repetition_period = repetition_period_value
 
         return obj

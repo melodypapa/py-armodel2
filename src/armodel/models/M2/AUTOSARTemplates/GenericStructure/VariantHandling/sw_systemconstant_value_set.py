@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.VariantHandling.sw_systemconst_value import (
     SwSystemconstValue,
 )
@@ -48,7 +49,7 @@ class SwSystemconstantValueSet(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -69,7 +70,7 @@ class SwSystemconstantValueSet(ARElement):
         if self.sws:
             wrapper = ET.Element("SWS")
             for item in self.sws:
-                serialized = ARObject._serialize_item(item, "SwSystemconstValue")
+                serialized = SerializationHelper.serialize_item(item, "SwSystemconstValue")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -92,11 +93,11 @@ class SwSystemconstantValueSet(ARElement):
 
         # Parse sws (list from container "SWS")
         obj.sws = []
-        container = ARObject._find_child_element(element, "SWS")
+        container = SerializationHelper.find_child_element(element, "SWS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.sws.append(child_value)
 

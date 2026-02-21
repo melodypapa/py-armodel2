@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
     TimeValue,
@@ -49,12 +50,12 @@ class ScheduleTableEntry(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize delay
         if self.delay is not None:
-            serialized = ARObject._serialize_item(self.delay, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.delay, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DELAY")
@@ -68,7 +69,7 @@ class ScheduleTableEntry(ARObject, ABC):
 
         # Serialize introduction
         if self.introduction is not None:
-            serialized = ARObject._serialize_item(self.introduction, "DocumentationBlock")
+            serialized = SerializationHelper.serialize_item(self.introduction, "DocumentationBlock")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INTRODUCTION")
@@ -82,7 +83,7 @@ class ScheduleTableEntry(ARObject, ABC):
 
         # Serialize position_in_table
         if self.position_in_table is not None:
-            serialized = ARObject._serialize_item(self.position_in_table, "Integer")
+            serialized = SerializationHelper.serialize_item(self.position_in_table, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("POSITION-IN-TABLE")
@@ -111,19 +112,19 @@ class ScheduleTableEntry(ARObject, ABC):
         obj.__init__()
 
         # Parse delay
-        child = ARObject._find_child_element(element, "DELAY")
+        child = SerializationHelper.find_child_element(element, "DELAY")
         if child is not None:
             delay_value = child.text
             obj.delay = delay_value
 
         # Parse introduction
-        child = ARObject._find_child_element(element, "INTRODUCTION")
+        child = SerializationHelper.find_child_element(element, "INTRODUCTION")
         if child is not None:
-            introduction_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            introduction_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
             obj.introduction = introduction_value
 
         # Parse position_in_table
-        child = ARObject._find_child_element(element, "POSITION-IN-TABLE")
+        child = SerializationHelper.find_child_element(element, "POSITION-IN-TABLE")
         if child is not None:
             position_in_table_value = child.text
             obj.position_in_table = position_in_table_value

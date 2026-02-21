@@ -13,6 +13,7 @@ from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginat
     Paginateable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -48,7 +49,7 @@ class Topic1(Paginateable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -67,7 +68,7 @@ class Topic1(Paginateable):
 
         # Serialize help_entry
         if self.help_entry is not None:
-            serialized = ARObject._serialize_item(self.help_entry, "String")
+            serialized = SerializationHelper.serialize_item(self.help_entry, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HELP-ENTRY")
@@ -81,7 +82,7 @@ class Topic1(Paginateable):
 
         # Serialize topic_content_or_msr
         if self.topic_content_or_msr is not None:
-            serialized = ARObject._serialize_item(self.topic_content_or_msr, "TopicContentOrMsrQuery")
+            serialized = SerializationHelper.serialize_item(self.topic_content_or_msr, "TopicContentOrMsrQuery")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TOPIC-CONTENT-OR-MSR")
@@ -109,15 +110,15 @@ class Topic1(Paginateable):
         obj = super(Topic1, cls).deserialize(element)
 
         # Parse help_entry
-        child = ARObject._find_child_element(element, "HELP-ENTRY")
+        child = SerializationHelper.find_child_element(element, "HELP-ENTRY")
         if child is not None:
             help_entry_value = child.text
             obj.help_entry = help_entry_value
 
         # Parse topic_content_or_msr
-        child = ARObject._find_child_element(element, "TOPIC-CONTENT-OR-MSR")
+        child = SerializationHelper.find_child_element(element, "TOPIC-CONTENT-OR-MSR")
         if child is not None:
-            topic_content_or_msr_value = ARObject._deserialize_by_tag(child, "TopicContentOrMsrQuery")
+            topic_content_or_msr_value = SerializationHelper.deserialize_by_tag(child, "TopicContentOrMsrQuery")
             obj.topic_content_or_msr = topic_content_or_msr_value
 
         return obj

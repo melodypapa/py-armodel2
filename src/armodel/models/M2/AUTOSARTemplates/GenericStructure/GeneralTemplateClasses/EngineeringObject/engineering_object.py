@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     NameToken,
     RevisionLabelString,
@@ -49,12 +50,12 @@ class EngineeringObject(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize category
         if self.category is not None:
-            serialized = ARObject._serialize_item(self.category, "NameToken")
+            serialized = SerializationHelper.serialize_item(self.category, "NameToken")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CATEGORY")
@@ -68,7 +69,7 @@ class EngineeringObject(ARObject, ABC):
 
         # Serialize domain
         if self.domain is not None:
-            serialized = ARObject._serialize_item(self.domain, "NameToken")
+            serialized = SerializationHelper.serialize_item(self.domain, "NameToken")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DOMAIN")
@@ -84,7 +85,7 @@ class EngineeringObject(ARObject, ABC):
         if self.revision_label_strings:
             wrapper = ET.Element("REVISION-LABEL-STRINGS")
             for item in self.revision_label_strings:
-                serialized = ARObject._serialize_item(item, "RevisionLabelString")
+                serialized = SerializationHelper.serialize_item(item, "RevisionLabelString")
                 if serialized is not None:
                     child_elem = ET.Element("REVISION-LABEL-STRING")
                     if hasattr(serialized, 'attrib'):
@@ -99,7 +100,7 @@ class EngineeringObject(ARObject, ABC):
 
         # Serialize short_label
         if self.short_label is not None:
-            serialized = ARObject._serialize_item(self.short_label, "NameToken")
+            serialized = SerializationHelper.serialize_item(self.short_label, "NameToken")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SHORT-LABEL")
@@ -128,20 +129,20 @@ class EngineeringObject(ARObject, ABC):
         obj.__init__()
 
         # Parse category
-        child = ARObject._find_child_element(element, "CATEGORY")
+        child = SerializationHelper.find_child_element(element, "CATEGORY")
         if child is not None:
             category_value = child.text
             obj.category = category_value
 
         # Parse domain
-        child = ARObject._find_child_element(element, "DOMAIN")
+        child = SerializationHelper.find_child_element(element, "DOMAIN")
         if child is not None:
             domain_value = child.text
             obj.domain = domain_value
 
         # Parse revision_label_strings (list from container "REVISION-LABEL-STRINGS")
         obj.revision_label_strings = []
-        container = ARObject._find_child_element(element, "REVISION-LABEL-STRINGS")
+        container = SerializationHelper.find_child_element(element, "REVISION-LABEL-STRINGS")
         if container is not None:
             for child in container:
                 # Extract primitive value (RevisionLabelString) as text
@@ -150,7 +151,7 @@ class EngineeringObject(ARObject, ABC):
                     obj.revision_label_strings.append(child_value)
 
         # Parse short_label
-        child = ARObject._find_child_element(element, "SHORT-LABEL")
+        child = SerializationHelper.find_child_element(element, "SHORT-LABEL")
         if child is not None:
             short_label_value = child.text
             obj.short_label = short_label_value

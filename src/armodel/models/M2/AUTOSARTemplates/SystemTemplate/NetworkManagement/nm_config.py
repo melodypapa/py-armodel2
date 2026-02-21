@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_ele
     FibexElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.nm_cluster import (
     NmCluster,
 )
@@ -53,7 +54,7 @@ class NmConfig(FibexElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -74,7 +75,7 @@ class NmConfig(FibexElement):
         if self.nm_clusters:
             wrapper = ET.Element("NM-CLUSTERS")
             for item in self.nm_clusters:
-                serialized = ARObject._serialize_item(item, "NmCluster")
+                serialized = SerializationHelper.serialize_item(item, "NmCluster")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -84,7 +85,7 @@ class NmConfig(FibexElement):
         if self.nm_cluster_couplings:
             wrapper = ET.Element("NM-CLUSTER-COUPLINGS")
             for item in self.nm_cluster_couplings:
-                serialized = ARObject._serialize_item(item, "NmClusterCoupling")
+                serialized = SerializationHelper.serialize_item(item, "NmClusterCoupling")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -94,7 +95,7 @@ class NmConfig(FibexElement):
         if self.nm_if_ecus:
             wrapper = ET.Element("NM-IF-ECUS")
             for item in self.nm_if_ecus:
-                serialized = ARObject._serialize_item(item, "NmEcu")
+                serialized = SerializationHelper.serialize_item(item, "NmEcu")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -117,31 +118,31 @@ class NmConfig(FibexElement):
 
         # Parse nm_clusters (list from container "NM-CLUSTERS")
         obj.nm_clusters = []
-        container = ARObject._find_child_element(element, "NM-CLUSTERS")
+        container = SerializationHelper.find_child_element(element, "NM-CLUSTERS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.nm_clusters.append(child_value)
 
         # Parse nm_cluster_couplings (list from container "NM-CLUSTER-COUPLINGS")
         obj.nm_cluster_couplings = []
-        container = ARObject._find_child_element(element, "NM-CLUSTER-COUPLINGS")
+        container = SerializationHelper.find_child_element(element, "NM-CLUSTER-COUPLINGS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.nm_cluster_couplings.append(child_value)
 
         # Parse nm_if_ecus (list from container "NM-IF-ECUS")
         obj.nm_if_ecus = []
-        container = ARObject._find_child_element(element, "NM-IF-ECUS")
+        container = SerializationHelper.find_child_element(element, "NM-IF-ECUS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.nm_if_ecus.append(child_value)
 

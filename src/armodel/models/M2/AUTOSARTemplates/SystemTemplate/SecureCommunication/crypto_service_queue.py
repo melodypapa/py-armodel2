@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -43,7 +44,7 @@ class CryptoServiceQueue(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class CryptoServiceQueue(ARElement):
 
         # Serialize queue_size
         if self.queue_size is not None:
-            serialized = ARObject._serialize_item(self.queue_size, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.queue_size, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("QUEUE-SIZE")
@@ -90,7 +91,7 @@ class CryptoServiceQueue(ARElement):
         obj = super(CryptoServiceQueue, cls).deserialize(element)
 
         # Parse queue_size
-        child = ARObject._find_child_element(element, "QUEUE-SIZE")
+        child = SerializationHelper.find_child_element(element, "QUEUE-SIZE")
         if child is not None:
             queue_size_value = child.text
             obj.queue_size = queue_size_value

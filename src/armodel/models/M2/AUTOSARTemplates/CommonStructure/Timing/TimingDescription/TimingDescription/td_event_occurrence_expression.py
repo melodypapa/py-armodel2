@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.autosar_operation_argument_instance import (
     AutosarOperationArgumentInstance,
 )
@@ -49,14 +50,14 @@ class TDEventOccurrenceExpression(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize arguments (list to container "ARGUMENTS")
         if self.arguments:
             wrapper = ET.Element("ARGUMENTS")
             for item in self.arguments:
-                serialized = ARObject._serialize_item(item, "AutosarOperationArgumentInstance")
+                serialized = SerializationHelper.serialize_item(item, "AutosarOperationArgumentInstance")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -64,7 +65,7 @@ class TDEventOccurrenceExpression(ARObject):
 
         # Serialize formula
         if self.formula is not None:
-            serialized = ARObject._serialize_item(self.formula, "Any")
+            serialized = SerializationHelper.serialize_item(self.formula, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FORMULA")
@@ -80,7 +81,7 @@ class TDEventOccurrenceExpression(ARObject):
         if self.modes:
             wrapper = ET.Element("MODES")
             for item in self.modes:
-                serialized = ARObject._serialize_item(item, "TimingModeInstance")
+                serialized = SerializationHelper.serialize_item(item, "TimingModeInstance")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -90,7 +91,7 @@ class TDEventOccurrenceExpression(ARObject):
         if self.variables:
             wrapper = ET.Element("VARIABLES")
             for item in self.variables:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -114,37 +115,37 @@ class TDEventOccurrenceExpression(ARObject):
 
         # Parse arguments (list from container "ARGUMENTS")
         obj.arguments = []
-        container = ARObject._find_child_element(element, "ARGUMENTS")
+        container = SerializationHelper.find_child_element(element, "ARGUMENTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.arguments.append(child_value)
 
         # Parse formula
-        child = ARObject._find_child_element(element, "FORMULA")
+        child = SerializationHelper.find_child_element(element, "FORMULA")
         if child is not None:
             formula_value = child.text
             obj.formula = formula_value
 
         # Parse modes (list from container "MODES")
         obj.modes = []
-        container = ARObject._find_child_element(element, "MODES")
+        container = SerializationHelper.find_child_element(element, "MODES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.modes.append(child_value)
 
         # Parse variables (list from container "VARIABLES")
         obj.variables = []
-        container = ARObject._find_child_element(element, "VARIABLES")
+        container = SerializationHelper.find_child_element(element, "VARIABLES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.variables.append(child_value)
 

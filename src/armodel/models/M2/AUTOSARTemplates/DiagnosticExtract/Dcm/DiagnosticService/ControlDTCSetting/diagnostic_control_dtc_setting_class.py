@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceClass,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -43,7 +44,7 @@ class DiagnosticControlDTCSettingClass(DiagnosticServiceClass):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class DiagnosticControlDTCSettingClass(DiagnosticServiceClass):
 
         # Serialize control_option
         if self.control_option is not None:
-            serialized = ARObject._serialize_item(self.control_option, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.control_option, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONTROL-OPTION")
@@ -90,7 +91,7 @@ class DiagnosticControlDTCSettingClass(DiagnosticServiceClass):
         obj = super(DiagnosticControlDTCSettingClass, cls).deserialize(element)
 
         # Parse control_option
-        child = ARObject._find_child_element(element, "CONTROL-OPTION")
+        child = SerializationHelper.find_child_element(element, "CONTROL-OPTION")
         if child is not None:
             control_option_value = child.text
             obj.control_option = control_option_value

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.stream_filter_ieee1722_tp import (
     StreamFilterIEEE1722Tp,
 )
@@ -53,7 +54,7 @@ class SwitchStreamFilterRule(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -72,7 +73,7 @@ class SwitchStreamFilterRule(Identifiable):
 
         # Serialize data_link_layer
         if self.data_link_layer is not None:
-            serialized = ARObject._serialize_item(self.data_link_layer, "StreamFilterRuleDataLinkLayer")
+            serialized = SerializationHelper.serialize_item(self.data_link_layer, "StreamFilterRuleDataLinkLayer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-LINK-LAYER")
@@ -86,7 +87,7 @@ class SwitchStreamFilterRule(Identifiable):
 
         # Serialize ieee1722_tp
         if self.ieee1722_tp is not None:
-            serialized = ARObject._serialize_item(self.ieee1722_tp, "StreamFilterIEEE1722Tp")
+            serialized = SerializationHelper.serialize_item(self.ieee1722_tp, "StreamFilterIEEE1722Tp")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IEEE1722-TP")
@@ -100,7 +101,7 @@ class SwitchStreamFilterRule(Identifiable):
 
         # Serialize ip_tp_rule
         if self.ip_tp_rule is not None:
-            serialized = ARObject._serialize_item(self.ip_tp_rule, "StreamFilterRuleIpTp")
+            serialized = SerializationHelper.serialize_item(self.ip_tp_rule, "StreamFilterRuleIpTp")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IP-TP-RULE")
@@ -128,21 +129,21 @@ class SwitchStreamFilterRule(Identifiable):
         obj = super(SwitchStreamFilterRule, cls).deserialize(element)
 
         # Parse data_link_layer
-        child = ARObject._find_child_element(element, "DATA-LINK-LAYER")
+        child = SerializationHelper.find_child_element(element, "DATA-LINK-LAYER")
         if child is not None:
-            data_link_layer_value = ARObject._deserialize_by_tag(child, "StreamFilterRuleDataLinkLayer")
+            data_link_layer_value = SerializationHelper.deserialize_by_tag(child, "StreamFilterRuleDataLinkLayer")
             obj.data_link_layer = data_link_layer_value
 
         # Parse ieee1722_tp
-        child = ARObject._find_child_element(element, "IEEE1722-TP")
+        child = SerializationHelper.find_child_element(element, "IEEE1722-TP")
         if child is not None:
-            ieee1722_tp_value = ARObject._deserialize_by_tag(child, "StreamFilterIEEE1722Tp")
+            ieee1722_tp_value = SerializationHelper.deserialize_by_tag(child, "StreamFilterIEEE1722Tp")
             obj.ieee1722_tp = ieee1722_tp_value
 
         # Parse ip_tp_rule
-        child = ARObject._find_child_element(element, "IP-TP-RULE")
+        child = SerializationHelper.find_child_element(element, "IP-TP-RULE")
         if child is not None:
-            ip_tp_rule_value = ARObject._deserialize_by_tag(child, "StreamFilterRuleIpTp")
+            ip_tp_rule_value = SerializationHelper.deserialize_by_tag(child, "StreamFilterRuleIpTp")
             obj.ip_tp_rule = ip_tp_rule_value
 
         return obj

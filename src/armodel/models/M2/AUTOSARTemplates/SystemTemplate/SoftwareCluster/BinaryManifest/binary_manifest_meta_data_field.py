@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.BinaryMan
     BinaryManifestAddressableObject,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
     VerbatimString,
@@ -46,7 +47,7 @@ class BinaryManifestMetaDataField(BinaryManifestAddressableObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class BinaryManifestMetaDataField(BinaryManifestAddressableObject):
 
         # Serialize size
         if self.size is not None:
-            serialized = ARObject._serialize_item(self.size, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.size, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SIZE")
@@ -79,7 +80,7 @@ class BinaryManifestMetaDataField(BinaryManifestAddressableObject):
 
         # Serialize value
         if self.value is not None:
-            serialized = ARObject._serialize_item(self.value, "VerbatimString")
+            serialized = SerializationHelper.serialize_item(self.value, "VerbatimString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VALUE")
@@ -107,15 +108,15 @@ class BinaryManifestMetaDataField(BinaryManifestAddressableObject):
         obj = super(BinaryManifestMetaDataField, cls).deserialize(element)
 
         # Parse size
-        child = ARObject._find_child_element(element, "SIZE")
+        child = SerializationHelper.find_child_element(element, "SIZE")
         if child is not None:
             size_value = child.text
             obj.size = size_value
 
         # Parse value
-        child = ARObject._find_child_element(element, "VALUE")
+        child = SerializationHelper.find_child_element(element, "VALUE")
         if child is not None:
-            value_value = ARObject._deserialize_by_tag(child, "VerbatimString")
+            value_value = SerializationHelper.deserialize_by_tag(child, "VerbatimString")
             obj.value = value_value
 
         return obj

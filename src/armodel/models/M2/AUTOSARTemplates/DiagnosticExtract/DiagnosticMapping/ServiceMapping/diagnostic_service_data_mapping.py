@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
     DiagnosticSwMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
     DataPrototype,
@@ -56,7 +57,7 @@ class DiagnosticServiceDataMapping(DiagnosticSwMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -75,7 +76,7 @@ class DiagnosticServiceDataMapping(DiagnosticSwMapping):
 
         # Serialize diagnostic_data_ref
         if self.diagnostic_data_ref is not None:
-            serialized = ARObject._serialize_item(self.diagnostic_data_ref, "DiagnosticDataElement")
+            serialized = SerializationHelper.serialize_item(self.diagnostic_data_ref, "DiagnosticDataElement")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DIAGNOSTIC-DATA-REF")
@@ -89,7 +90,7 @@ class DiagnosticServiceDataMapping(DiagnosticSwMapping):
 
         # Serialize diagnostic_ref
         if self.diagnostic_ref is not None:
-            serialized = ARObject._serialize_item(self.diagnostic_ref, "DiagnosticParameter")
+            serialized = SerializationHelper.serialize_item(self.diagnostic_ref, "DiagnosticParameter")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DIAGNOSTIC-REF")
@@ -103,7 +104,7 @@ class DiagnosticServiceDataMapping(DiagnosticSwMapping):
 
         # Serialize mapped_data_ref
         if self.mapped_data_ref is not None:
-            serialized = ARObject._serialize_item(self.mapped_data_ref, "DataPrototype")
+            serialized = SerializationHelper.serialize_item(self.mapped_data_ref, "DataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAPPED-DATA-REF")
@@ -117,7 +118,7 @@ class DiagnosticServiceDataMapping(DiagnosticSwMapping):
 
         # Serialize parameter
         if self.parameter is not None:
-            serialized = ARObject._serialize_item(self.parameter, "DiagnosticParameter")
+            serialized = SerializationHelper.serialize_item(self.parameter, "DiagnosticParameter")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PARAMETER")
@@ -145,27 +146,27 @@ class DiagnosticServiceDataMapping(DiagnosticSwMapping):
         obj = super(DiagnosticServiceDataMapping, cls).deserialize(element)
 
         # Parse diagnostic_data_ref
-        child = ARObject._find_child_element(element, "DIAGNOSTIC-DATA-REF")
+        child = SerializationHelper.find_child_element(element, "DIAGNOSTIC-DATA-REF")
         if child is not None:
             diagnostic_data_ref_value = ARRef.deserialize(child)
             obj.diagnostic_data_ref = diagnostic_data_ref_value
 
         # Parse diagnostic_ref
-        child = ARObject._find_child_element(element, "DIAGNOSTIC-REF")
+        child = SerializationHelper.find_child_element(element, "DIAGNOSTIC-REF")
         if child is not None:
             diagnostic_ref_value = ARRef.deserialize(child)
             obj.diagnostic_ref = diagnostic_ref_value
 
         # Parse mapped_data_ref
-        child = ARObject._find_child_element(element, "MAPPED-DATA-REF")
+        child = SerializationHelper.find_child_element(element, "MAPPED-DATA-REF")
         if child is not None:
             mapped_data_ref_value = ARRef.deserialize(child)
             obj.mapped_data_ref = mapped_data_ref_value
 
         # Parse parameter
-        child = ARObject._find_child_element(element, "PARAMETER")
+        child = SerializationHelper.find_child_element(element, "PARAMETER")
         if child is not None:
-            parameter_value = ARObject._deserialize_by_tag(child, "DiagnosticParameter")
+            parameter_value = SerializationHelper.deserialize_by_tag(child, "DiagnosticParameter")
             obj.parameter = parameter_value
 
         return obj

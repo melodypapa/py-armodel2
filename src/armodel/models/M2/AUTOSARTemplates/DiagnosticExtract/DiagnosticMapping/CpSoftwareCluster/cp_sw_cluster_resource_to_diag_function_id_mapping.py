@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
     DiagnosticMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
     CpSoftwareCluster,
@@ -46,7 +47,7 @@ class CpSwClusterResourceToDiagFunctionIdMapping(DiagnosticMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class CpSwClusterResourceToDiagFunctionIdMapping(DiagnosticMapping):
 
         # Serialize cp_software_cluster_ref
         if self.cp_software_cluster_ref is not None:
-            serialized = ARObject._serialize_item(self.cp_software_cluster_ref, "CpSoftwareCluster")
+            serialized = SerializationHelper.serialize_item(self.cp_software_cluster_ref, "CpSoftwareCluster")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CP-SOFTWARE-CLUSTER-REF")
@@ -79,7 +80,7 @@ class CpSwClusterResourceToDiagFunctionIdMapping(DiagnosticMapping):
 
         # Serialize function_ref
         if self.function_ref is not None:
-            serialized = ARObject._serialize_item(self.function_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.function_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FUNCTION-REF")
@@ -107,13 +108,13 @@ class CpSwClusterResourceToDiagFunctionIdMapping(DiagnosticMapping):
         obj = super(CpSwClusterResourceToDiagFunctionIdMapping, cls).deserialize(element)
 
         # Parse cp_software_cluster_ref
-        child = ARObject._find_child_element(element, "CP-SOFTWARE-CLUSTER-REF")
+        child = SerializationHelper.find_child_element(element, "CP-SOFTWARE-CLUSTER-REF")
         if child is not None:
             cp_software_cluster_ref_value = ARRef.deserialize(child)
             obj.cp_software_cluster_ref = cp_software_cluster_ref_value
 
         # Parse function_ref
-        child = ARObject._find_child_element(element, "FUNCTION-REF")
+        child = SerializationHelper.find_child_element(element, "FUNCTION-REF")
         if child is not None:
             function_ref_value = ARRef.deserialize(child)
             obj.function_ref = function_ref_value

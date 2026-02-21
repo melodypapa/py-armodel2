@@ -195,9 +195,11 @@ def generate_class_code(
             code += "from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject\n"
 
     # Add ARObject import for all classes that use it in the deserialize method
-    # The generated deserialize method uses ARObject._find_child_element and ARObject._find_all_child_elements
+    # The generated deserialize method uses SerializationHelper.find_child_element and SerializationHelper.find_all_child_elements
     if class_name != "ARObject":
         code += "from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject\n"
+        # Add SerializationHelper import for all classes that use it in serialize/deserialize methods
+        code += "from armodel.serialization import SerializationHelper\n"
 
     # Collect attribute types for all classes
     attribute_types = {}
@@ -545,15 +547,18 @@ class {class_name}(ABC):
         # Add serialize(), deserialize(), and helper methods
         code += _generate_ar_object_methods()
     elif type_def.get("atp_type") == "atpVariation":
-        # atpVariant classes use ARObject's reflection-based serialization
-        # with automatic wrapper element handling (VARIANTS/CONDITIONAL)
-        # Don't generate custom serialize()/deserialize() methods
-        pass
+        # atpVariant classes use custom serialize/deserialize methods
+        # that wrap attributes in VARIANTS/CONDITIONAL structure
+        serialize_code = _generate_serialize_method_for_atp_variant(
+            class_name, attribute_types, parent_class, package_data
+        )
+        deserialize_code = _generate_deserialize_method_for_atp_variant(
+            class_name, attribute_types, parent_class, package_data
+        )
+        code += serialize_code + deserialize_code
     elif attribute_types and any(attr_info.get("kind") == "l_prefix" for attr_info in attribute_types.values()):
-        # Classes with l_prefix attributes use ARObject's reflection-based serialization
-        # with l_prefix decorator handling (no custom serialize/deserialize methods needed)
-        # ONLY if they inherit directly from ARObject. If they inherit from a non-ARObject parent,
-        # we need to generate custom methods because the parent's serialize() doesn't use reflection.
+        # Classes with l_prefix attributes need custom serialize/deserialize methods
+        # because they use l_prefix decorator handling
         if parent_class and parent_class != "ARObject":
             # Parent class doesn't use reflection, so we need custom methods
             serialize_code = _generate_serialize_method(
@@ -563,10 +568,19 @@ class {class_name}(ABC):
                 class_name, attribute_types, parent_class, package_data
             )
             code += serialize_code + deserialize_code
-        # else: parent is ARObject, use reflection (no custom methods needed)
+        else:
+            # Parent is ARObject, still need to generate custom methods
+            # because ARObject.serialize() only handles checksum and timestamp
+            serialize_code = _generate_serialize_method(
+                class_name, attribute_types, parent_class, package_data
+            )
+            deserialize_code = _generate_deserialize_method(
+                class_name, attribute_types, parent_class, package_data
+            )
+            code += serialize_code + deserialize_code
     else:
         # For other classes, generate optimized serialize() and deserialize() methods
-        # These methods parse/serialize XML directly without reflection for better performance
+        # These methods parse/serialize XML directly for better performance
         serialize_code = _generate_serialize_method(
             class_name, attribute_types, parent_class, package_data
         )
@@ -690,17 +704,17 @@ def _generate_deserialize_method(
                 if should_flatten:
                     # Flattened type: deserialize wrapper element directly as the type
                     code += f'''        # Parse {python_name} (instance reference from wrapper "{iref_wrapper_tag}")
-        wrapper = ARObject._find_child_element(element, "{iref_wrapper_tag}")
+        wrapper = SerializationHelper.find_child_element(element, "{iref_wrapper_tag}")
         if wrapper is not None:
             # Deserialize wrapper element directly as the type (flattened structure)
-            {python_name}_value = ARObject._deserialize_by_tag(wrapper, "{effective_type}")
+            {python_name}_value = SerializationHelper.deserialize_by_tag(wrapper, "{effective_type}")
             obj.{python_name} = {python_name}_value
 
 '''
                 else:
                     # Non-flattened type: deserialize from child element
                     code += f'''        # Parse {python_name} (instance reference from wrapper "{iref_wrapper_tag}")
-        wrapper = ARObject._find_child_element(element, "{iref_wrapper_tag}")
+        wrapper = SerializationHelper.find_child_element(element, "{iref_wrapper_tag}")
         if wrapper is not None:
             # Get the first child element (the actual reference)
             children = list(wrapper)
@@ -727,7 +741,7 @@ def _generate_deserialize_method(
                     
                     code += f'''        # Parse {python_name} (list from container "{container_tag}")
         obj.{python_name} = []
-        container = ARObject._find_child_element(element, "{container_tag}")
+        container = SerializationHelper.find_child_element(element, "{container_tag}")
         if container is not None:
             for child in container:
 '''
@@ -737,13 +751,13 @@ def _generate_deserialize_method(
                     # For non-reference class lists, deserialize each child element dynamically based on its tag
                     if is_ref:
                         code += '''                # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
 '''
                     elif is_primitive_type(attr_type, package_data):
                         # Simple primitive type - extract text directly
@@ -758,7 +772,7 @@ def _generate_deserialize_method(
                     else:
                         # Complex object type - deserialize dynamically
                         code += '''                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
 '''
                     
                     code += f'''                if child_value is not None:
@@ -774,7 +788,7 @@ def _generate_deserialize_method(
                         l_prefix_tag = f"L-{suffix.upper()}"  # Convert to uppercase
                         code += f'''        # Parse {python_name} (list with l_prefix "{l_prefix_tag}")
         obj.{python_name} = []
-        for child in ARObject._find_all_child_elements(element, "{l_prefix_tag}"):
+        for child in SerializationHelper.find_all_child_elements(element, "{l_prefix_tag}"):
             {_generate_value_extraction_code(effective_type, "child", package_data, python_name, is_ref)}
             obj.{python_name}.append({python_name}_value)
 
@@ -783,7 +797,7 @@ def _generate_deserialize_method(
                         # Regular non-container list
                         code += f'''        # Parse {python_name} (list)
         obj.{python_name} = []
-        for child in ARObject._find_all_child_elements(element, "{xml_tag}"):
+        for child in SerializationHelper.find_all_child_elements(element, "{xml_tag}"):
             {_generate_value_extraction_code(effective_type, "child", package_data, python_name, is_ref)}
             obj.{python_name}.append({python_name}_value)
 
@@ -791,7 +805,7 @@ def _generate_deserialize_method(
             else:
                 # Single value type
                 code += f'''        # Parse {python_name}
-        child = ARObject._find_child_element(element, "{xml_tag}")
+        child = SerializationHelper.find_child_element(element, "{xml_tag}")
         if child is not None:
             {_generate_value_extraction_code(effective_type, "child", package_data, python_name, is_ref)}
             obj.{python_name} = {python_name}_value
@@ -847,7 +861,7 @@ def _generate_value_extraction_code(
 
         if has_attributes:
             # Use deserialize for primitives with attributes
-            return f'''{value_var} = ARObject._deserialize_by_tag({element_var}, "{attr_type}")'''
+            return f'''{value_var} = SerializationHelper.deserialize_by_tag({element_var}, "{attr_type}")'''
         else:
             # Simple primitive - just get text
             return f"""{value_var} = {element_var}.text"""
@@ -884,16 +898,16 @@ def _generate_value_extraction_code(
         if has_l_prefix:
             # Use _deserialize_with_type for types with l_prefix attributes
             # This deserializes the element directly as the specified type
-            return f'''{value_var} = ARObject._deserialize_with_type({element_var}, "{attr_type}")'''
+            return f'''{value_var} = SerializationHelper.deserialize_with_type({element_var}, "{attr_type}")'''
         elif kind == "iref":
             # For iref kind, don't pass class_name
             # This allows deserializing based on the actual XML tag (concrete subclass)
             # instead of forcing the abstract base class type
-            return f'''{value_var} = ARObject._deserialize_by_tag({element_var})'''
+            return f'''{value_var} = SerializationHelper.deserialize_by_tag({element_var})'''
         else:
-            # Use ARObject._deserialize_by_tag to avoid TYPE_CHECKING issues
+            # Use SerializationHelper.deserialize_by_tag to avoid TYPE_CHECKING issues
             # This doesn't require the type to be imported at runtime
-            return f'''{value_var} = ARObject._deserialize_by_tag({element_var}, "{attr_type}")'''
+            return f'''{value_var} = SerializationHelper.deserialize_by_tag({element_var}, "{attr_type}")'''
 
 
 def _generate_value_extraction_code_for_attribute(
@@ -941,7 +955,7 @@ def _generate_value_extraction_code_for_attribute(
             # Use deserialize for primitives with attributes - need to create a fake element
             return f'''fake_elem = ET.Element("FAKE")
             fake_elem.text = {attribute_value}
-            {value_var} = ARObject._deserialize_by_tag(fake_elem, "{attr_type}")'''
+            {value_var} = SerializationHelper.deserialize_by_tag(fake_elem, "{attr_type}")'''
         else:
             # Simple primitive - just use the string value directly
             return f"""{value_var} = {attribute_value}"""
@@ -980,16 +994,9 @@ def _generate_ar_object_methods() -> str:
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = self._get_xml_tag()
+# Get XML tag name for this class
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
-
-        # Add namespace if provided
-        if namespace:
-            elem.set("xmlns", namespace)
-
-        # Get all instance attributes
-        for name, value in vars(self).items():
             # Skip private attributes
             if name.startswith('_'):
                 continue
@@ -1120,7 +1127,7 @@ def _generate_ar_object_methods() -> str:
             xml_tag = NameConverter.to_xml_tag(attr_name)
 
             # Check if this should be an XML attribute
-            if ARObject._is_xml_attribute_static(cls, attr_name):
+            if SerializationHelper.is_xml_attribute_static(cls, attr_name):
                 value = element.get(xml_tag)
             else:
                 # Find child element - try both with and without namespace
@@ -1134,7 +1141,7 @@ def _generate_ar_object_methods() -> str:
 
                 if child is not None:
                     # Get value based on type
-                    value = ARObject._extract_value(child, attr_type)
+                    value = SerializationHelper.extract_value(child, attr_type)
                 else:
                     value = None
 
@@ -1255,7 +1262,7 @@ def _generate_ar_object_methods() -> str:
                 result = []
                 for child in children:
                     # Try to deserialize using the class
-                    item_class = ARObject._import_class_by_name(inner_type_str)
+                    item_class = SerializationHelper.import_class_by_name(inner_type_str)
                     if item_class and hasattr(item_class, 'deserialize'):
                         item = item_class.deserialize(child)
                         result.append(item)
@@ -1270,7 +1277,7 @@ def _generate_ar_object_methods() -> str:
             if optional_match:
                 inner_type_str = optional_match.group(1)
                 # Try to import and deserialize
-                item_class = ARObject._import_class_by_name(inner_type_str)
+                item_class = SerializationHelper.import_class_by_name(inner_type_str)
                 if item_class and hasattr(item_class, 'deserialize'):
                     return item_class.deserialize(element)
 
@@ -1278,7 +1285,7 @@ def _generate_ar_object_methods() -> str:
                 return element.text if element.text else None
 
             # For simple class names, try to import and deserialize
-            item_class = ARObject._import_class_by_name(attr_type)
+            item_class = SerializationHelper.import_class_by_name(attr_type)
             if item_class and hasattr(item_class, 'deserialize'):
                 return item_class.deserialize(element)
 
@@ -1515,7 +1522,7 @@ class ARPrimitive(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this primitive
         """
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         if namespace:
@@ -1605,7 +1612,7 @@ class AREnum(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this enum value
         """
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         if namespace:
@@ -1683,7 +1690,7 @@ def _generate_serialize_method(
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
 '''
@@ -1762,7 +1769,7 @@ def _generate_serialize_method(
                         # List type - check if not empty
                         code += f'''        # Serialize {python_name} (list of instance references with wrapper "{iref_wrapper_tag}")
         if self.{python_name}:
-            serialized = ARObject._serialize_item(self.{python_name}, "{effective_type}")
+            serialized = SerializationHelper.serialize_item(self.{python_name}, "{effective_type}")
             if serialized is not None:
                 # Wrap in IREF wrapper element
                 iref_wrapper = ET.Element("{iref_wrapper_tag}")
@@ -1776,7 +1783,7 @@ def _generate_serialize_method(
                         # Single item type
                         code += f'''        # Serialize {python_name} (instance reference with wrapper "{iref_wrapper_tag}")
         if self.{python_name} is not None:
-            serialized = ARObject._serialize_item(self.{python_name}, "{effective_type}")
+            serialized = SerializationHelper.serialize_item(self.{python_name}, "{effective_type}")
             if serialized is not None:
                 # Wrap in IREF wrapper element
                 iref_wrapper = ET.Element("{iref_wrapper_tag}")
@@ -1792,7 +1799,7 @@ def _generate_serialize_method(
                         # List type - check if not empty
                         code += f'''        # Serialize {python_name} (list of instance references with wrapper "{iref_wrapper_tag}")
         if self.{python_name}:
-            serialized = ARObject._serialize_item(self.{python_name}, "{effective_type}")
+            serialized = SerializationHelper.serialize_item(self.{python_name}, "{effective_type}")
             if serialized is not None:
                 # Wrap in IREF wrapper element
                 iref_wrapper = ET.Element("{iref_wrapper_tag}")
@@ -1805,7 +1812,7 @@ def _generate_serialize_method(
                         # Single item type
                         code += f'''        # Serialize {python_name} (instance reference with wrapper "{iref_wrapper_tag}")
         if self.{python_name} is not None:
-            serialized = ARObject._serialize_item(self.{python_name}, "{effective_type}")
+            serialized = SerializationHelper.serialize_item(self.{python_name}, "{effective_type}")
             if serialized is not None:
                 # Wrap in IREF wrapper element
                 iref_wrapper = ET.Element("{iref_wrapper_tag}")
@@ -1834,7 +1841,7 @@ def _generate_serialize_method(
         if self.{python_name}:
             wrapper = ET.Element("{container_tag}")
             for item in self.{python_name}:
-                serialized = ARObject._serialize_item(item, "{effective_type}")
+                serialized = SerializationHelper.serialize_item(item, "{effective_type}")
                 if serialized is not None:
 '''
                     
@@ -1888,7 +1895,7 @@ def _generate_serialize_method(
                         l_prefix_tag = f"L-{suffix.upper()}"  # Convert to uppercase
                         code += f'''        # Serialize {python_name} (list with l_prefix "{l_prefix_tag}")
         for item in self.{python_name}:
-            serialized = ARObject._serialize_item(item, "{effective_type}")
+            serialized = SerializationHelper.serialize_item(item, "{effective_type}")
             if serialized is not None:
                 # For l_prefix lists, wrap each item in the l_prefix tag
                 wrapped = ET.Element("{l_prefix_tag}")
@@ -1905,7 +1912,7 @@ def _generate_serialize_method(
                         # Regular non-container list
                         code += f'''        # Serialize {python_name} (list)
         for item in self.{python_name}:
-            serialized = ARObject._serialize_item(item, "{effective_type}")
+            serialized = SerializationHelper.serialize_item(item, "{effective_type}")
             if serialized is not None:
                 # For non-container lists, wrap with correct tag
                 wrapped = ET.Element("{xml_tag}")
@@ -1922,7 +1929,7 @@ def _generate_serialize_method(
                 # Single value type
                 code += f'''        # Serialize {python_name}
         if self.{python_name} is not None:
-            serialized = ARObject._serialize_item(self.{python_name}, "{effective_type}")
+            serialized = SerializationHelper.serialize_item(self.{python_name}, "{effective_type}")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("{xml_tag}")
@@ -1937,6 +1944,462 @@ def _generate_serialize_method(
 '''
 
     code += """        return elem
+
+"""
+    return code
+
+
+def _generate_serialize_method_for_atp_variant(
+    class_name: str,
+    attribute_types: Dict[str, Dict[str, Any]],
+    parent_class: Optional[str],
+    package_data: Dict[str, Dict[str, Any]],
+) -> str:
+    """Generate serialize() method for atp_variant classes.
+
+    This method generates a custom serialize() implementation that:
+    1. Calls parent's serialize to handle inherited attributes
+    2. Serializes own attributes to an inner element
+    3. Wraps the inner element in VARIANTS/CONDITIONAL structure
+
+    Args:
+        class_name: Name of the class
+        attribute_types: Dictionary of attribute information
+        parent_class: Name of parent class (if any)
+        package_data: Package data dictionary
+
+    Returns:
+        Generated serialize() method code
+    """
+    code = f'''    def serialize(self) -> ET.Element:
+        """Serialize {class_name} to XML element with atp_variant wrapper.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = SerializationHelper.get_xml_tag(self.__class__)
+        elem = ET.Element(tag)
+
+'''
+
+    # If class has a parent class (other than ARObject), call parent's serialize first
+    if parent_class and parent_class != "ARObject":
+        code += f"""        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super({class_name}, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy text from parent element
+        if parent_elem.text:
+            elem.text = parent_elem.text
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+"""
+
+    # Create inner element for attributes
+    code += """        # Create inner element to hold attributes before wrapping
+        inner_elem = ET.Element("INNER")
+
+"""
+
+    # Generate code to serialize each attribute to inner element
+    if attribute_types:
+        for attr_name, attr_info in attribute_types.items():
+            attr_type = attr_info["type"]
+            multiplicity = attr_info["multiplicity"]
+            is_ref = attr_info.get("is_ref", False)
+            kind = attr_info.get("kind", "attribute")
+
+            # Get Python identifier
+            python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity, kind)
+            # Convert attribute name to snake_case then to XML tag (UPPER-CASE-WITH-HYPHENS)
+            snake_name = to_snake_case(attr_name)
+            xml_tag = snake_name.upper().replace("_", "-")
+            # Add -TREF or -REF suffix for reference attributes with multiplicity != "*"
+            if is_ref and multiplicity != "*" and kind != "iref":
+                if kind == "tref":
+                    xml_tag = f"{xml_tag}-TREF"
+                else:
+                    xml_tag = f"{xml_tag}-REF"
+
+            # Convert "any (xxx)" types to "Any" for generation
+            effective_type = attr_type
+            if attr_type.startswith("any ("):
+                effective_type = "Any"
+
+            # Handle xml_attribute - serialize as XML attribute, not child element
+            if kind == "xml_attribute":
+                code += f'''        # Serialize {python_name} as XML attribute
+        if self.{python_name} is not None:
+            inner_elem.attrib["{xml_tag}"] = str(self.{python_name})
+
+'''
+            elif kind == "iref":
+                # Handle iref kind - instance reference with special wrapper
+                flattened_iref_types = {
+                    "PPortInCompositionInstanceRef",
+                    "RPortInCompositionInstanceRef",
+                }
+                should_flatten = attr_type in flattened_iref_types
+                iref_wrapper_tag = f"{xml_tag}-IREF"
+
+                if should_flatten:
+                    if multiplicity == "*":
+                        code += f'''        # Serialize {python_name} (list of instance references with wrapper "{iref_wrapper_tag}")
+        if self.{python_name}:
+            serialized = SerializationHelper.serialize_item(self.{python_name}, "{effective_type}")
+            if serialized is not None:
+                iref_wrapper = ET.Element("{iref_wrapper_tag}")
+                for child in serialized:
+                    iref_wrapper.append(child)
+                inner_elem.append(iref_wrapper)
+
+'''
+                    else:
+                        code += f'''        # Serialize {python_name} (instance reference with wrapper "{iref_wrapper_tag}")
+        if self.{python_name} is not None:
+            serialized = SerializationHelper.serialize_item(self.{python_name}, "{effective_type}")
+            if serialized is not None:
+                iref_wrapper = ET.Element("{iref_wrapper_tag}")
+                for child in serialized:
+                    iref_wrapper.append(child)
+                inner_elem.append(iref_wrapper)
+
+'''
+                else:
+                    if multiplicity == "*":
+                        code += f'''        # Serialize {python_name} (list of instance references with wrapper "{iref_wrapper_tag}")
+        if self.{python_name}:
+            serialized = SerializationHelper.serialize_item(self.{python_name}, "{effective_type}")
+            if serialized is not None:
+                iref_wrapper = ET.Element("{iref_wrapper_tag}")
+                iref_wrapper.append(serialized)
+                inner_elem.append(iref_wrapper)
+
+'''
+                    else:
+                        code += f'''        # Serialize {python_name} (instance reference with wrapper "{iref_wrapper_tag}")
+        if self.{python_name} is not None:
+            serialized = SerializationHelper.serialize_item(self.{python_name}, "{effective_type}")
+            if serialized is not None:
+                iref_wrapper = ET.Element("{iref_wrapper_tag}")
+                iref_wrapper.append(serialized)
+                inner_elem.append(iref_wrapper)
+
+'''
+            elif multiplicity == "*":
+                # List type
+                if xml_tag.endswith("S"):
+                    container_tag = xml_tag
+                    if is_ref:
+                        singular = xml_tag[:-1]
+                        container_tag = f"{singular}-REFS"
+
+                    code += f'''        # Serialize {python_name} (list from container "{container_tag}")
+        if self.{python_name}:
+            container = ET.Element("{container_tag}")
+            for item in self.{python_name}:
+                if is_ref:
+                    # For reference lists, serialize as reference
+                    if hasattr(item, "serialize"):
+                        container.append(item.serialize())
+                elif is_primitive_type("{attr_type}", package_data):
+                    # Simple primitive type
+                    child = ET.Element("{xml_tag[:-1]}")
+                    child.text = str(item)
+                    container.append(child)
+                elif is_enum_type("{attr_type}", package_data):
+                    # Enum type - use serialize method
+                    if hasattr(item, "serialize"):
+                        container.append(item.serialize())
+                else:
+                    # Complex object type
+                    if hasattr(item, "serialize"):
+                        container.append(item.serialize())
+            inner_elem.append(container)
+
+'''
+                else:
+                    if kind == "l_prefix":
+                        suffix = attr_name[1:]
+                        l_prefix_tag = f"L-{suffix.upper()}"
+                        code += f'''        # Serialize {python_name} (list with l_prefix "{l_prefix_tag}")
+        for item in self.{python_name}:
+            serialized = SerializationHelper.serialize_item(item, "{effective_type}")
+            if serialized is not None:
+                wrapped = ET.Element("{l_prefix_tag}")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+'''
+                    else:
+                        code += f'''        # Serialize {python_name} (list)
+        for item in self.{python_name}:
+            serialized = SerializationHelper.serialize_item(item, "{effective_type}")
+            if serialized is not None:
+                wrapped = ET.Element("{xml_tag}")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+'''
+            else:
+                # Single value type
+                code += f'''        # Serialize {python_name}
+        if self.{python_name} is not None:
+            serialized = SerializationHelper.serialize_item(self.{python_name}, "{effective_type}")
+            if serialized is not None:
+                wrapped = ET.Element("{xml_tag}")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+'''
+
+    # Wrap inner element in atp_variant structure
+    code += f"""        # Wrap inner element in atp_variant VARIANTS/CONDITIONAL structure
+        wrapped = SerializationHelper.serialize_with_atp_variant(inner_elem, "{class_name}")
+        elem.append(wrapped)
+
+        return elem
+
+"""
+    return code
+
+
+def _generate_deserialize_method_for_atp_variant(
+    class_name: str,
+    attribute_types: Dict[str, Dict[str, Any]],
+    parent_class: Optional[str],
+    package_data: Dict[str, Dict[str, Any]],
+) -> str:
+    """Generate deserialize() method for atp_variant classes.
+
+    This method generates a custom deserialize() implementation that:
+    1. Calls parent's deserialize to handle inherited attributes
+    2. Unwraps VARIANTS/CONDITIONAL structure to access attributes
+    3. Parses own attributes from the unwrapped element
+
+    Args:
+        class_name: Name of the class
+        attribute_types: Dictionary of attribute information
+        parent_class: Name of parent class (if any)
+        package_data: Package data dictionary
+
+    Returns:
+        Generated deserialize() method code
+    """
+    code = f'''    @classmethod
+    def deserialize(cls, element: ET.Element) -> "{class_name}":
+        """Deserialize XML element to {class_name} object with atp_variant unwrapping.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized {class_name} object
+        """
+'''
+
+    # If class has a parent class (other than ARObject), call parent's deserialize first
+    if parent_class and parent_class != "ARObject":
+        code += f"""        # First, call parent's deserialize to handle inherited attributes
+        obj = super({class_name}, cls).deserialize(element)
+
+"""
+    else:
+        # For ARObject parent or no parent, create instance and handle ARObject attributes
+        code += """        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Handle ARObject inherited attributes (checksum and timestamp)
+        # Parse timestamp (XML attribute 'T')
+        timestamp_value = element.get("T")
+        if timestamp_value is not None:
+            obj.timestamp = timestamp_value
+
+        # Parse checksum (child element)
+        checksum_elem = SerializationHelper.find_child_element(element, "CHECKSUM")
+        if checksum_elem is not None:
+            checksum_value = checksum_elem.text
+            if checksum_value is not None:
+                obj.checksum = checksum_value
+
+"""
+
+    # Unwrap atp_variant structure
+    code += f"""        # Unwrap atp_variant VARIANTS/CONDITIONAL structure
+        inner_elem = SerializationHelper.deserialize_from_atp_variant(element, "{class_name}")
+        if inner_elem is None:
+            # No wrapper structure found, return object with default values
+            return obj
+
+"""
+
+    # Generate code to parse each attribute from inner element
+    if attribute_types:
+        for attr_name, attr_info in attribute_types.items():
+            attr_type = attr_info["type"]
+            multiplicity = attr_info["multiplicity"]
+            is_ref = attr_info.get("is_ref", False)
+            kind = attr_info.get("kind", "attribute")
+
+            # Get Python identifier
+            python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity, kind)
+            # Convert attribute name to snake_case then to XML tag (UPPER-CASE-WITH-HYPHENS)
+            snake_name = to_snake_case(attr_name)
+            xml_tag = snake_name.upper().replace("_", "-")
+            # Add -TREF or -REF suffix for reference attributes with multiplicity != "*"
+            if is_ref and multiplicity != "*" and kind != "iref":
+                if kind == "tref":
+                    xml_tag = f"{xml_tag}-TREF"
+                else:
+                    xml_tag = f"{xml_tag}-REF"
+
+            # Convert "any (xxx)" types to "Any" for generation
+            effective_type = attr_type
+            if attr_type.startswith("any ("):
+                effective_type = "Any"
+
+            # Handle xml_attribute - parse from XML attribute
+            if kind == "xml_attribute":
+                code += f'''        # Parse {python_name} from XML attribute
+        {python_name}_value = inner_elem.get("{xml_tag}")
+        if {python_name}_value is not None:
+            {_generate_value_extraction_code(effective_type, "{python_name}_value", package_data, python_name, is_ref, kind)}
+            obj.{python_name} = {python_name}_value
+
+'''
+            elif kind == "iref":
+                # Handle iref kind - instance reference with special wrapper
+                flattened_iref_types = {
+                    "PPortInCompositionInstanceRef",
+                    "RPortInCompositionInstanceRef",
+                }
+                should_flatten = attr_type in flattened_iref_types
+                iref_wrapper_tag = f"{xml_tag}-IREF"
+
+                if should_flatten:
+                    if multiplicity == "*":
+                        code += f'''        # Parse {python_name} (list of instance references from wrapper "{iref_wrapper_tag}")
+        obj.{python_name} = []
+        wrapper = SerializationHelper.find_child_element(inner_elem, "{iref_wrapper_tag}")
+        if wrapper is not None:
+            # Deserialize wrapper element directly as the type (flattened structure)
+            {python_name}_value = SerializationHelper.deserialize_by_tag(wrapper, "{effective_type}")
+            obj.{python_name} = {python_name}_value
+
+'''
+                    else:
+                        code += f'''        # Parse {python_name} (instance reference from wrapper "{iref_wrapper_tag}")
+        wrapper = SerializationHelper.find_child_element(inner_elem, "{iref_wrapper_tag}")
+        if wrapper is not None:
+            {python_name}_value = SerializationHelper.deserialize_by_tag(wrapper, "{effective_type}")
+            obj.{python_name} = {python_name}_value
+
+'''
+                else:
+                    if multiplicity == "*":
+                        code += f'''        # Parse {python_name} (list of instance references from wrapper "{iref_wrapper_tag}")
+        obj.{python_name} = []
+        wrapper = SerializationHelper.find_child_element(inner_elem, "{iref_wrapper_tag}")
+        if wrapper is not None:
+            children = list(wrapper)
+            if children:
+                inner = children[0]
+                {_generate_value_extraction_code(effective_type, "inner", package_data, python_name, is_ref, kind)}
+                obj.{python_name} = {python_name}_value
+
+'''
+                    else:
+                        code += f'''        # Parse {python_name} (instance reference from wrapper "{iref_wrapper_tag}")
+        wrapper = SerializationHelper.find_child_element(inner_elem, "{iref_wrapper_tag}")
+        if wrapper is not None:
+            children = list(wrapper)
+            if children:
+                inner = children[0]
+                {_generate_value_extraction_code(effective_type, "inner", package_data, python_name, is_ref, kind)}
+                obj.{python_name} = {python_name}_value
+
+'''
+            elif multiplicity == "*":
+                # List type
+                if xml_tag.endswith("S"):
+                    container_tag = xml_tag
+                    if is_ref:
+                        singular = xml_tag[:-1]
+                        container_tag = f"{singular}-REFS"
+
+                    code += f'''        # Parse {python_name} (list from container "{container_tag}")
+        obj.{python_name} = []
+        container = SerializationHelper.find_child_element(inner_elem, "{container_tag}")
+        if container is not None:
+            for child in container:
+                if is_ref:
+                    child_tag = SerializationHelper.strip_namespace(child.tag)
+                    if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                        child_value = ARRef.deserialize(child)
+                    else:
+                        child_value = SerializationHelper.deserialize_by_tag(child, None)
+                elif is_primitive_type("{attr_type}", package_data):
+                    child_value = child.text
+                elif is_enum_type("{attr_type}", package_data):
+                    child_value = {attr_type}.deserialize(child)
+                else:
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.{python_name}.append(child_value)
+
+'''
+                else:
+                    if kind == "l_prefix":
+                        suffix = attr_name[1:]
+                        l_prefix_tag = f"L-{suffix.upper()}"
+                        code += f'''        # Parse {python_name} (list with l_prefix "{l_prefix_tag}")
+        obj.{python_name} = []
+        for child in SerializationHelper.find_all_child_elements(inner_elem, "{l_prefix_tag}"):
+            {_generate_value_extraction_code(effective_type, "child", package_data, python_name, is_ref)}
+            obj.{python_name}.append({python_name}_value)
+
+'''
+                    else:
+                        code += f'''        # Parse {python_name} (list)
+        obj.{python_name} = []
+        for child in SerializationHelper.find_all_child_elements(inner_elem, "{xml_tag}"):
+            {_generate_value_extraction_code(effective_type, "child", package_data, python_name, is_ref)}
+            obj.{python_name}.append({python_name}_value)
+
+'''
+            else:
+                # Single value type
+                code += f'''        # Parse {python_name}
+        child = SerializationHelper.find_child_element(inner_elem, "{xml_tag}")
+        if child is not None:
+            {_generate_value_extraction_code(effective_type, "child", package_data, python_name, is_ref)}
+            obj.{python_name} = {python_name}_value
+
+'''
+
+    code += """        return obj
 
 """
     return code

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -46,7 +47,7 @@ class DiagnosticAging(DiagnosticCommonElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class DiagnosticAging(DiagnosticCommonElement):
 
         # Serialize aging_cycle_ref
         if self.aging_cycle_ref is not None:
-            serialized = ARObject._serialize_item(self.aging_cycle_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.aging_cycle_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("AGING-CYCLE-REF")
@@ -79,7 +80,7 @@ class DiagnosticAging(DiagnosticCommonElement):
 
         # Serialize threshold
         if self.threshold is not None:
-            serialized = ARObject._serialize_item(self.threshold, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.threshold, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("THRESHOLD")
@@ -107,13 +108,13 @@ class DiagnosticAging(DiagnosticCommonElement):
         obj = super(DiagnosticAging, cls).deserialize(element)
 
         # Parse aging_cycle_ref
-        child = ARObject._find_child_element(element, "AGING-CYCLE-REF")
+        child = SerializationHelper.find_child_element(element, "AGING-CYCLE-REF")
         if child is not None:
             aging_cycle_ref_value = ARRef.deserialize(child)
             obj.aging_cycle_ref = aging_cycle_ref_value
 
         # Parse threshold
-        child = ARObject._find_child_element(element, "THRESHOLD")
+        child = SerializationHelper.find_child_element(element, "THRESHOLD")
         if child is not None:
             threshold_value = child.text
             obj.threshold = threshold_value

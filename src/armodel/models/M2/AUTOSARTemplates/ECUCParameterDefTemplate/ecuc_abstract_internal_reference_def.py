@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_abstract_r
     EcucAbstractReferenceDef,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -44,7 +45,7 @@ class EcucAbstractInternalReferenceDef(EcucAbstractReferenceDef, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -63,7 +64,7 @@ class EcucAbstractInternalReferenceDef(EcucAbstractReferenceDef, ABC):
 
         # Serialize requires
         if self.requires is not None:
-            serialized = ARObject._serialize_item(self.requires, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.requires, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REQUIRES")
@@ -91,7 +92,7 @@ class EcucAbstractInternalReferenceDef(EcucAbstractReferenceDef, ABC):
         obj = super(EcucAbstractInternalReferenceDef, cls).deserialize(element)
 
         # Parse requires
-        child = ARObject._find_child_element(element, "REQUIRES")
+        child = SerializationHelper.find_child_element(element, "REQUIRES")
         if child is not None:
             requires_value = child.text
             obj.requires = requires_value

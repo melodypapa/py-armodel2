@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.tp_con
     TpConfig,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.do_ip_logic_address import (
     DoIpLogicAddress,
 )
@@ -48,7 +49,7 @@ class DoIpTpConfig(TpConfig):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -69,7 +70,7 @@ class DoIpTpConfig(TpConfig):
         if self.do_ip_logic_address_addresses:
             wrapper = ET.Element("DO-IP-LOGIC-ADDRESS-ADDRESSES")
             for item in self.do_ip_logic_address_addresses:
-                serialized = ARObject._serialize_item(item, "DoIpLogicAddress")
+                serialized = SerializationHelper.serialize_item(item, "DoIpLogicAddress")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -79,7 +80,7 @@ class DoIpTpConfig(TpConfig):
         if self.tp_connections:
             wrapper = ET.Element("TP-CONNECTIONS")
             for item in self.tp_connections:
-                serialized = ARObject._serialize_item(item, "DoIpTpConnection")
+                serialized = SerializationHelper.serialize_item(item, "DoIpTpConnection")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -102,21 +103,21 @@ class DoIpTpConfig(TpConfig):
 
         # Parse do_ip_logic_address_addresses (list from container "DO-IP-LOGIC-ADDRESS-ADDRESSES")
         obj.do_ip_logic_address_addresses = []
-        container = ARObject._find_child_element(element, "DO-IP-LOGIC-ADDRESS-ADDRESSES")
+        container = SerializationHelper.find_child_element(element, "DO-IP-LOGIC-ADDRESS-ADDRESSES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.do_ip_logic_address_addresses.append(child_value)
 
         # Parse tp_connections (list from container "TP-CONNECTIONS")
         obj.tp_connections = []
-        container = ARObject._find_child_element(element, "TP-CONNECTIONS")
+        container = SerializationHelper.find_child_element(element, "TP-CONNECTIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.tp_connections.append(child_value)
 

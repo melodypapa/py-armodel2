@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.DataDictionary.SystemConstant.sw_systemconst import (
     SwSystemconst,
@@ -46,12 +47,12 @@ class SwSystemconstDependentFormula(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize sysc_ref
         if self.sysc_ref is not None:
-            serialized = ARObject._serialize_item(self.sysc_ref, "SwSystemconst")
+            serialized = SerializationHelper.serialize_item(self.sysc_ref, "SwSystemconst")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SYSC-REF")
@@ -65,7 +66,7 @@ class SwSystemconstDependentFormula(ARObject, ABC):
 
         # Serialize sysc_string_ref
         if self.sysc_string_ref is not None:
-            serialized = ARObject._serialize_item(self.sysc_string_ref, "SwSystemconst")
+            serialized = SerializationHelper.serialize_item(self.sysc_string_ref, "SwSystemconst")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SYSC-STRING-REF")
@@ -94,13 +95,13 @@ class SwSystemconstDependentFormula(ARObject, ABC):
         obj.__init__()
 
         # Parse sysc_ref
-        child = ARObject._find_child_element(element, "SYSC-REF")
+        child = SerializationHelper.find_child_element(element, "SYSC-REF")
         if child is not None:
             sysc_ref_value = ARRef.deserialize(child)
             obj.sysc_ref = sysc_ref_value
 
         # Parse sysc_string_ref
-        child = ARObject._find_child_element(element, "SYSC-STRING-REF")
+        child = SerializationHelper.find_child_element(element, "SYSC-STRING-REF")
         if child is not None:
             sysc_string_ref_value = ARRef.deserialize(child)
             obj.sysc_string_ref = sysc_string_ref_value

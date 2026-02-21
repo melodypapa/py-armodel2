@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.ObdService.Mode_0x02_RequestPowertrainFreeze.diagnostic_powertrain_freeze_frame import (
     DiagnosticPowertrainFreezeFrame,
@@ -46,7 +47,7 @@ class DiagnosticRequestPowertrainFreezeFrameData(DiagnosticServiceInstance):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class DiagnosticRequestPowertrainFreezeFrameData(DiagnosticServiceInstance):
 
         # Serialize freeze_frame_freeze_frame_ref
         if self.freeze_frame_freeze_frame_ref is not None:
-            serialized = ARObject._serialize_item(self.freeze_frame_freeze_frame_ref, "DiagnosticPowertrainFreezeFrame")
+            serialized = SerializationHelper.serialize_item(self.freeze_frame_freeze_frame_ref, "DiagnosticPowertrainFreezeFrame")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FREEZE-FRAME-FREEZE-FRAME-REF")
@@ -79,7 +80,7 @@ class DiagnosticRequestPowertrainFreezeFrameData(DiagnosticServiceInstance):
 
         # Serialize request_ref
         if self.request_ref is not None:
-            serialized = ARObject._serialize_item(self.request_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.request_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REQUEST-REF")
@@ -107,13 +108,13 @@ class DiagnosticRequestPowertrainFreezeFrameData(DiagnosticServiceInstance):
         obj = super(DiagnosticRequestPowertrainFreezeFrameData, cls).deserialize(element)
 
         # Parse freeze_frame_freeze_frame_ref
-        child = ARObject._find_child_element(element, "FREEZE-FRAME-FREEZE-FRAME-REF")
+        child = SerializationHelper.find_child_element(element, "FREEZE-FRAME-FREEZE-FRAME-REF")
         if child is not None:
             freeze_frame_freeze_frame_ref_value = ARRef.deserialize(child)
             obj.freeze_frame_freeze_frame_ref = freeze_frame_freeze_frame_ref_value
 
         # Parse request_ref
-        child = ARObject._find_child_element(element, "REQUEST-REF")
+        child = SerializationHelper.find_child_element(element, "REQUEST-REF")
         if child is not None:
             request_ref_value = ARRef.deserialize(child)
             obj.request_ref = request_ref_value

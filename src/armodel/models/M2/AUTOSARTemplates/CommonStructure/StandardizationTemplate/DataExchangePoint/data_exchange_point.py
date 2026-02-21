@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.baseline import (
     Baseline,
 )
@@ -55,7 +56,7 @@ class DataExchangePoint(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -74,7 +75,7 @@ class DataExchangePoint(ARElement):
 
         # Serialize data_format
         if self.data_format is not None:
-            serialized = ARObject._serialize_item(self.data_format, "DataFormatTailoring")
+            serialized = SerializationHelper.serialize_item(self.data_format, "DataFormatTailoring")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-FORMAT")
@@ -88,7 +89,7 @@ class DataExchangePoint(ARElement):
 
         # Serialize kind
         if self.kind is not None:
-            serialized = ARObject._serialize_item(self.kind, "DataExchangePoint")
+            serialized = SerializationHelper.serialize_item(self.kind, "DataExchangePoint")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("KIND")
@@ -102,7 +103,7 @@ class DataExchangePoint(ARElement):
 
         # Serialize referenced
         if self.referenced is not None:
-            serialized = ARObject._serialize_item(self.referenced, "Baseline")
+            serialized = SerializationHelper.serialize_item(self.referenced, "Baseline")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REFERENCED")
@@ -116,7 +117,7 @@ class DataExchangePoint(ARElement):
 
         # Serialize specification_scope
         if self.specification_scope is not None:
-            serialized = ARObject._serialize_item(self.specification_scope, "SpecificationScope")
+            serialized = SerializationHelper.serialize_item(self.specification_scope, "SpecificationScope")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SPECIFICATION-SCOPE")
@@ -144,27 +145,27 @@ class DataExchangePoint(ARElement):
         obj = super(DataExchangePoint, cls).deserialize(element)
 
         # Parse data_format
-        child = ARObject._find_child_element(element, "DATA-FORMAT")
+        child = SerializationHelper.find_child_element(element, "DATA-FORMAT")
         if child is not None:
-            data_format_value = ARObject._deserialize_by_tag(child, "DataFormatTailoring")
+            data_format_value = SerializationHelper.deserialize_by_tag(child, "DataFormatTailoring")
             obj.data_format = data_format_value
 
         # Parse kind
-        child = ARObject._find_child_element(element, "KIND")
+        child = SerializationHelper.find_child_element(element, "KIND")
         if child is not None:
-            kind_value = ARObject._deserialize_by_tag(child, "DataExchangePoint")
+            kind_value = SerializationHelper.deserialize_by_tag(child, "DataExchangePoint")
             obj.kind = kind_value
 
         # Parse referenced
-        child = ARObject._find_child_element(element, "REFERENCED")
+        child = SerializationHelper.find_child_element(element, "REFERENCED")
         if child is not None:
-            referenced_value = ARObject._deserialize_by_tag(child, "Baseline")
+            referenced_value = SerializationHelper.deserialize_by_tag(child, "Baseline")
             obj.referenced = referenced_value
 
         # Parse specification_scope
-        child = ARObject._find_child_element(element, "SPECIFICATION-SCOPE")
+        child = SerializationHelper.find_child_element(element, "SPECIFICATION-SCOPE")
         if child is not None:
-            specification_scope_value = ARObject._deserialize_by_tag(child, "SpecificationScope")
+            specification_scope_value = SerializationHelper.deserialize_by_tag(child, "SpecificationScope")
             obj.specification_scope = specification_scope_value
 
         return obj

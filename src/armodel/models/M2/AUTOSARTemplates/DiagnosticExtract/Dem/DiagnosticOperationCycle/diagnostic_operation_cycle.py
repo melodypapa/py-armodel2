@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class DiagnosticOperationCycle(DiagnosticCommonElement):
@@ -40,7 +41,7 @@ class DiagnosticOperationCycle(DiagnosticCommonElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -59,7 +60,7 @@ class DiagnosticOperationCycle(DiagnosticCommonElement):
 
         # Serialize type_cycle_type_enum
         if self.type_cycle_type_enum is not None:
-            serialized = ARObject._serialize_item(self.type_cycle_type_enum, "Any")
+            serialized = SerializationHelper.serialize_item(self.type_cycle_type_enum, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TYPE-CYCLE-TYPE-ENUM")
@@ -87,7 +88,7 @@ class DiagnosticOperationCycle(DiagnosticCommonElement):
         obj = super(DiagnosticOperationCycle, cls).deserialize(element)
 
         # Parse type_cycle_type_enum
-        child = ARObject._find_child_element(element, "TYPE-CYCLE-TYPE-ENUM")
+        child = SerializationHelper.find_child_element(element, "TYPE-CYCLE-TYPE-ENUM")
         if child is not None:
             type_cycle_type_enum_value = child.text
             obj.type_cycle_type_enum = type_cycle_type_enum_value

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
     TDEventSwc,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.runnable_entity import (
     RunnableEntity,
@@ -51,7 +52,7 @@ class TDEventSwcInternalBehavior(TDEventSwc):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -70,7 +71,7 @@ class TDEventSwcInternalBehavior(TDEventSwc):
 
         # Serialize runnable_ref
         if self.runnable_ref is not None:
-            serialized = ARObject._serialize_item(self.runnable_ref, "RunnableEntity")
+            serialized = SerializationHelper.serialize_item(self.runnable_ref, "RunnableEntity")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RUNNABLE-REF")
@@ -84,7 +85,7 @@ class TDEventSwcInternalBehavior(TDEventSwc):
 
         # Serialize td_event_swc_behavior_type
         if self.td_event_swc_behavior_type is not None:
-            serialized = ARObject._serialize_item(self.td_event_swc_behavior_type, "Any")
+            serialized = SerializationHelper.serialize_item(self.td_event_swc_behavior_type, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TD-EVENT-SWC-BEHAVIOR-TYPE")
@@ -98,7 +99,7 @@ class TDEventSwcInternalBehavior(TDEventSwc):
 
         # Serialize variable_access_ref
         if self.variable_access_ref is not None:
-            serialized = ARObject._serialize_item(self.variable_access_ref, "VariableAccess")
+            serialized = SerializationHelper.serialize_item(self.variable_access_ref, "VariableAccess")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VARIABLE-ACCESS-REF")
@@ -126,19 +127,19 @@ class TDEventSwcInternalBehavior(TDEventSwc):
         obj = super(TDEventSwcInternalBehavior, cls).deserialize(element)
 
         # Parse runnable_ref
-        child = ARObject._find_child_element(element, "RUNNABLE-REF")
+        child = SerializationHelper.find_child_element(element, "RUNNABLE-REF")
         if child is not None:
             runnable_ref_value = ARRef.deserialize(child)
             obj.runnable_ref = runnable_ref_value
 
         # Parse td_event_swc_behavior_type
-        child = ARObject._find_child_element(element, "TD-EVENT-SWC-BEHAVIOR-TYPE")
+        child = SerializationHelper.find_child_element(element, "TD-EVENT-SWC-BEHAVIOR-TYPE")
         if child is not None:
             td_event_swc_behavior_type_value = child.text
             obj.td_event_swc_behavior_type = td_event_swc_behavior_type_value
 
         # Parse variable_access_ref
-        child = ARObject._find_child_element(element, "VARIABLE-ACCESS-REF")
+        child = SerializationHelper.find_child_element(element, "VARIABLE-ACCESS-REF")
         if child is not None:
             variable_access_ref_value = ARRef.deserialize(child)
             obj.variable_access_ref = variable_access_ref_value

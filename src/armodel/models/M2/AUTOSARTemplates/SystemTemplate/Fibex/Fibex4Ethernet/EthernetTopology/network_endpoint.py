@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
     String,
@@ -61,7 +62,7 @@ class NetworkEndpoint(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -80,7 +81,7 @@ class NetworkEndpoint(Identifiable):
 
         # Serialize fully_qualified
         if self.fully_qualified is not None:
-            serialized = ARObject._serialize_item(self.fully_qualified, "String")
+            serialized = SerializationHelper.serialize_item(self.fully_qualified, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FULLY-QUALIFIED")
@@ -94,7 +95,7 @@ class NetworkEndpoint(Identifiable):
 
         # Serialize infrastructure_services
         if self.infrastructure_services is not None:
-            serialized = ARObject._serialize_item(self.infrastructure_services, "InfrastructureServices")
+            serialized = SerializationHelper.serialize_item(self.infrastructure_services, "InfrastructureServices")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INFRASTRUCTURE-SERVICES")
@@ -108,7 +109,7 @@ class NetworkEndpoint(Identifiable):
 
         # Serialize ip_sec_config
         if self.ip_sec_config is not None:
-            serialized = ARObject._serialize_item(self.ip_sec_config, "IPSecConfig")
+            serialized = SerializationHelper.serialize_item(self.ip_sec_config, "IPSecConfig")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IP-SEC-CONFIG")
@@ -124,7 +125,7 @@ class NetworkEndpoint(Identifiable):
         if self.network_endpoints:
             wrapper = ET.Element("NETWORK-ENDPOINTS")
             for item in self.network_endpoints:
-                serialized = ARObject._serialize_item(item, "NetworkEndpoint")
+                serialized = SerializationHelper.serialize_item(item, "NetworkEndpoint")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -132,7 +133,7 @@ class NetworkEndpoint(Identifiable):
 
         # Serialize priority
         if self.priority is not None:
-            serialized = ARObject._serialize_item(self.priority, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.priority, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PRIORITY")
@@ -160,35 +161,35 @@ class NetworkEndpoint(Identifiable):
         obj = super(NetworkEndpoint, cls).deserialize(element)
 
         # Parse fully_qualified
-        child = ARObject._find_child_element(element, "FULLY-QUALIFIED")
+        child = SerializationHelper.find_child_element(element, "FULLY-QUALIFIED")
         if child is not None:
             fully_qualified_value = child.text
             obj.fully_qualified = fully_qualified_value
 
         # Parse infrastructure_services
-        child = ARObject._find_child_element(element, "INFRASTRUCTURE-SERVICES")
+        child = SerializationHelper.find_child_element(element, "INFRASTRUCTURE-SERVICES")
         if child is not None:
-            infrastructure_services_value = ARObject._deserialize_by_tag(child, "InfrastructureServices")
+            infrastructure_services_value = SerializationHelper.deserialize_by_tag(child, "InfrastructureServices")
             obj.infrastructure_services = infrastructure_services_value
 
         # Parse ip_sec_config
-        child = ARObject._find_child_element(element, "IP-SEC-CONFIG")
+        child = SerializationHelper.find_child_element(element, "IP-SEC-CONFIG")
         if child is not None:
-            ip_sec_config_value = ARObject._deserialize_by_tag(child, "IPSecConfig")
+            ip_sec_config_value = SerializationHelper.deserialize_by_tag(child, "IPSecConfig")
             obj.ip_sec_config = ip_sec_config_value
 
         # Parse network_endpoints (list from container "NETWORK-ENDPOINTS")
         obj.network_endpoints = []
-        container = ARObject._find_child_element(element, "NETWORK-ENDPOINTS")
+        container = SerializationHelper.find_child_element(element, "NETWORK-ENDPOINTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.network_endpoints.append(child_value)
 
         # Parse priority
-        child = ARObject._find_child_element(element, "PRIORITY")
+        child = SerializationHelper.find_child_element(element, "PRIORITY")
         if child is not None:
             priority_value = child.text
             obj.priority = priority_value

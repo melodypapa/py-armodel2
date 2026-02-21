@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_feature import (
     FMFeature,
@@ -47,7 +48,7 @@ class FMFeatureModel(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -68,7 +69,7 @@ class FMFeatureModel(ARElement):
         if self.feature_refs:
             wrapper = ET.Element("FEATURE-REFS")
             for item in self.feature_refs:
-                serialized = ARObject._serialize_item(item, "FMFeature")
+                serialized = SerializationHelper.serialize_item(item, "FMFeature")
                 if serialized is not None:
                     child_elem = ET.Element("FEATURE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -83,7 +84,7 @@ class FMFeatureModel(ARElement):
 
         # Serialize root_ref
         if self.root_ref is not None:
-            serialized = ARObject._serialize_item(self.root_ref, "FMFeature")
+            serialized = SerializationHelper.serialize_item(self.root_ref, "FMFeature")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ROOT-REF")
@@ -112,22 +113,22 @@ class FMFeatureModel(ARElement):
 
         # Parse feature_refs (list from container "FEATURE-REFS")
         obj.feature_refs = []
-        container = ARObject._find_child_element(element, "FEATURE-REFS")
+        container = SerializationHelper.find_child_element(element, "FEATURE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.feature_refs.append(child_value)
 
         # Parse root_ref
-        child = ARObject._find_child_element(element, "ROOT-REF")
+        child = SerializationHelper.find_child_element(element, "ROOT-REF")
         if child is not None:
             root_ref_value = ARRef.deserialize(child)
             obj.root_ref = root_ref_value

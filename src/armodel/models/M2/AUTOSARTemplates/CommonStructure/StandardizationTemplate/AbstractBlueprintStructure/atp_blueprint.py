@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.AbstractBlueprintStructure.blueprint_policy import (
     BlueprintPolicy,
 )
@@ -46,7 +47,7 @@ class AtpBlueprint(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -67,7 +68,7 @@ class AtpBlueprint(Identifiable, ABC):
         if self.blueprint_policies:
             wrapper = ET.Element("BLUEPRINT-POLICIES")
             for item in self.blueprint_policies:
-                serialized = ARObject._serialize_item(item, "BlueprintPolicy")
+                serialized = SerializationHelper.serialize_item(item, "BlueprintPolicy")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -90,11 +91,11 @@ class AtpBlueprint(Identifiable, ABC):
 
         # Parse blueprint_policies (list from container "BLUEPRINT-POLICIES")
         obj.blueprint_policies = []
-        container = ARObject._find_child_element(element, "BLUEPRINT-POLICIES")
+        container = SerializationHelper.find_child_element(element, "BLUEPRINT-POLICIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.blueprint_policies.append(child_value)
 

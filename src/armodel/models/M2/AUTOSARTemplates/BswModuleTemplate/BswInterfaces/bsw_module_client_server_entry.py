@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Referrable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -51,7 +52,7 @@ class BswModuleClientServerEntry(Referrable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -70,7 +71,7 @@ class BswModuleClientServerEntry(Referrable):
 
         # Serialize encapsulated_ref
         if self.encapsulated_ref is not None:
-            serialized = ARObject._serialize_item(self.encapsulated_ref, "BswModuleEntry")
+            serialized = SerializationHelper.serialize_item(self.encapsulated_ref, "BswModuleEntry")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ENCAPSULATED-REF")
@@ -84,7 +85,7 @@ class BswModuleClientServerEntry(Referrable):
 
         # Serialize is_reentrant
         if self.is_reentrant is not None:
-            serialized = ARObject._serialize_item(self.is_reentrant, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.is_reentrant, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IS-REENTRANT")
@@ -98,7 +99,7 @@ class BswModuleClientServerEntry(Referrable):
 
         # Serialize is_synchronous
         if self.is_synchronous is not None:
-            serialized = ARObject._serialize_item(self.is_synchronous, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.is_synchronous, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IS-SYNCHRONOUS")
@@ -126,19 +127,19 @@ class BswModuleClientServerEntry(Referrable):
         obj = super(BswModuleClientServerEntry, cls).deserialize(element)
 
         # Parse encapsulated_ref
-        child = ARObject._find_child_element(element, "ENCAPSULATED-REF")
+        child = SerializationHelper.find_child_element(element, "ENCAPSULATED-REF")
         if child is not None:
             encapsulated_ref_value = ARRef.deserialize(child)
             obj.encapsulated_ref = encapsulated_ref_value
 
         # Parse is_reentrant
-        child = ARObject._find_child_element(element, "IS-REENTRANT")
+        child = SerializationHelper.find_child_element(element, "IS-REENTRANT")
         if child is not None:
             is_reentrant_value = child.text
             obj.is_reentrant = is_reentrant_value
 
         # Parse is_synchronous
-        child = ARObject._find_child_element(element, "IS-SYNCHRONOUS")
+        child = SerializationHelper.find_child_element(element, "IS-SYNCHRONOUS")
         if child is not None:
             is_synchronous_value = child.text
             obj.is_synchronous = is_synchronous_value

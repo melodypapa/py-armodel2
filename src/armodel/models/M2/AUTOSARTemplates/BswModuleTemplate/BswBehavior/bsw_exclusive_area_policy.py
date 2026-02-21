@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior import (
     ApiPrincipleEnum,
@@ -46,12 +47,12 @@ class BswExclusiveAreaPolicy(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize api_principle_enum
         if self.api_principle_enum is not None:
-            serialized = ARObject._serialize_item(self.api_principle_enum, "ApiPrincipleEnum")
+            serialized = SerializationHelper.serialize_item(self.api_principle_enum, "ApiPrincipleEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("API-PRINCIPLE-ENUM")
@@ -65,7 +66,7 @@ class BswExclusiveAreaPolicy(ARObject):
 
         # Serialize exclusive_area_ref
         if self.exclusive_area_ref is not None:
-            serialized = ARObject._serialize_item(self.exclusive_area_ref, "ExclusiveArea")
+            serialized = SerializationHelper.serialize_item(self.exclusive_area_ref, "ExclusiveArea")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("EXCLUSIVE-AREA-REF")
@@ -94,13 +95,13 @@ class BswExclusiveAreaPolicy(ARObject):
         obj.__init__()
 
         # Parse api_principle_enum
-        child = ARObject._find_child_element(element, "API-PRINCIPLE-ENUM")
+        child = SerializationHelper.find_child_element(element, "API-PRINCIPLE-ENUM")
         if child is not None:
             api_principle_enum_value = ApiPrincipleEnum.deserialize(child)
             obj.api_principle_enum = api_principle_enum_value
 
         # Parse exclusive_area_ref
-        child = ARObject._find_child_element(element, "EXCLUSIVE-AREA-REF")
+        child = SerializationHelper.find_child_element(element, "EXCLUSIVE-AREA-REF")
         if child is not None:
             exclusive_area_ref_value = ARRef.deserialize(child)
             obj.exclusive_area_ref = exclusive_area_ref_value

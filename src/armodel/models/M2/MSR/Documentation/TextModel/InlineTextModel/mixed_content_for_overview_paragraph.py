@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements import (
     Superscript,
@@ -84,12 +85,12 @@ class MixedContentForOverviewParagraph(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize br
         if self.br is not None:
-            serialized = ARObject._serialize_item(self.br, "Br")
+            serialized = SerializationHelper.serialize_item(self.br, "Br")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BR")
@@ -103,7 +104,7 @@ class MixedContentForOverviewParagraph(ARObject, ABC):
 
         # Serialize e
         if self.e is not None:
-            serialized = ARObject._serialize_item(self.e, "EmphasisText")
+            serialized = SerializationHelper.serialize_item(self.e, "EmphasisText")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("E")
@@ -117,7 +118,7 @@ class MixedContentForOverviewParagraph(ARObject, ABC):
 
         # Serialize ft
         if self.ft is not None:
-            serialized = ARObject._serialize_item(self.ft, "SlOverviewParagraph")
+            serialized = SerializationHelper.serialize_item(self.ft, "SlOverviewParagraph")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FT")
@@ -131,7 +132,7 @@ class MixedContentForOverviewParagraph(ARObject, ABC):
 
         # Serialize ie
         if self.ie is not None:
-            serialized = ARObject._serialize_item(self.ie, "IndexEntry")
+            serialized = SerializationHelper.serialize_item(self.ie, "IndexEntry")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IE")
@@ -145,7 +146,7 @@ class MixedContentForOverviewParagraph(ARObject, ABC):
 
         # Serialize sub
         if self.sub is not None:
-            serialized = ARObject._serialize_item(self.sub, "Superscript")
+            serialized = SerializationHelper.serialize_item(self.sub, "Superscript")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SUB")
@@ -159,7 +160,7 @@ class MixedContentForOverviewParagraph(ARObject, ABC):
 
         # Serialize sup
         if self.sup is not None:
-            serialized = ARObject._serialize_item(self.sup, "Superscript")
+            serialized = SerializationHelper.serialize_item(self.sup, "Superscript")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SUP")
@@ -173,7 +174,7 @@ class MixedContentForOverviewParagraph(ARObject, ABC):
 
         # Serialize trace_ref
         if self.trace_ref is not None:
-            serialized = ARObject._serialize_item(self.trace_ref, "Traceable")
+            serialized = SerializationHelper.serialize_item(self.trace_ref, "Traceable")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TRACE-REF")
@@ -187,7 +188,7 @@ class MixedContentForOverviewParagraph(ARObject, ABC):
 
         # Serialize tt
         if self.tt is not None:
-            serialized = ARObject._serialize_item(self.tt, "Tt")
+            serialized = SerializationHelper.serialize_item(self.tt, "Tt")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TT")
@@ -201,7 +202,7 @@ class MixedContentForOverviewParagraph(ARObject, ABC):
 
         # Serialize xref
         if self.xref is not None:
-            serialized = ARObject._serialize_item(self.xref, "Xref")
+            serialized = SerializationHelper.serialize_item(self.xref, "Xref")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("XREF")
@@ -215,7 +216,7 @@ class MixedContentForOverviewParagraph(ARObject, ABC):
 
         # Serialize xref_target
         if self.xref_target is not None:
-            serialized = ARObject._serialize_item(self.xref_target, "XrefTarget")
+            serialized = SerializationHelper.serialize_item(self.xref_target, "XrefTarget")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("XREF-TARGET")
@@ -244,63 +245,63 @@ class MixedContentForOverviewParagraph(ARObject, ABC):
         obj.__init__()
 
         # Parse br
-        child = ARObject._find_child_element(element, "BR")
+        child = SerializationHelper.find_child_element(element, "BR")
         if child is not None:
-            br_value = ARObject._deserialize_by_tag(child, "Br")
+            br_value = SerializationHelper.deserialize_by_tag(child, "Br")
             obj.br = br_value
 
         # Parse e
-        child = ARObject._find_child_element(element, "E")
+        child = SerializationHelper.find_child_element(element, "E")
         if child is not None:
-            e_value = ARObject._deserialize_by_tag(child, "EmphasisText")
+            e_value = SerializationHelper.deserialize_by_tag(child, "EmphasisText")
             obj.e = e_value
 
         # Parse ft
-        child = ARObject._find_child_element(element, "FT")
+        child = SerializationHelper.find_child_element(element, "FT")
         if child is not None:
-            ft_value = ARObject._deserialize_by_tag(child, "SlOverviewParagraph")
+            ft_value = SerializationHelper.deserialize_by_tag(child, "SlOverviewParagraph")
             obj.ft = ft_value
 
         # Parse ie
-        child = ARObject._find_child_element(element, "IE")
+        child = SerializationHelper.find_child_element(element, "IE")
         if child is not None:
-            ie_value = ARObject._deserialize_by_tag(child, "IndexEntry")
+            ie_value = SerializationHelper.deserialize_by_tag(child, "IndexEntry")
             obj.ie = ie_value
 
         # Parse sub
-        child = ARObject._find_child_element(element, "SUB")
+        child = SerializationHelper.find_child_element(element, "SUB")
         if child is not None:
             sub_value = child.text
             obj.sub = sub_value
 
         # Parse sup
-        child = ARObject._find_child_element(element, "SUP")
+        child = SerializationHelper.find_child_element(element, "SUP")
         if child is not None:
             sup_value = child.text
             obj.sup = sup_value
 
         # Parse trace_ref
-        child = ARObject._find_child_element(element, "TRACE-REF")
+        child = SerializationHelper.find_child_element(element, "TRACE-REF")
         if child is not None:
             trace_ref_value = ARRef.deserialize(child)
             obj.trace_ref = trace_ref_value
 
         # Parse tt
-        child = ARObject._find_child_element(element, "TT")
+        child = SerializationHelper.find_child_element(element, "TT")
         if child is not None:
-            tt_value = ARObject._deserialize_by_tag(child, "Tt")
+            tt_value = SerializationHelper.deserialize_by_tag(child, "Tt")
             obj.tt = tt_value
 
         # Parse xref
-        child = ARObject._find_child_element(element, "XREF")
+        child = SerializationHelper.find_child_element(element, "XREF")
         if child is not None:
-            xref_value = ARObject._deserialize_by_tag(child, "Xref")
+            xref_value = SerializationHelper.deserialize_by_tag(child, "Xref")
             obj.xref = xref_value
 
         # Parse xref_target
-        child = ARObject._find_child_element(element, "XREF-TARGET")
+        child = SerializationHelper.find_child_element(element, "XREF-TARGET")
         if child is not None:
-            xref_target_value = ARObject._deserialize_by_tag(child, "XrefTarget")
+            xref_target_value = SerializationHelper.deserialize_by_tag(child, "XrefTarget")
             obj.xref_target = xref_target_value
 
         return obj

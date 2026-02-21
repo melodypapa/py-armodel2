@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTroubleCode import (
     DiagnosticSignificanceEnum,
@@ -78,7 +79,7 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -97,7 +98,7 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
 
         # Serialize aging_ref
         if self.aging_ref is not None:
-            serialized = ARObject._serialize_item(self.aging_ref, "DiagnosticAging")
+            serialized = SerializationHelper.serialize_item(self.aging_ref, "DiagnosticAging")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("AGING-REF")
@@ -111,7 +112,7 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
 
         # Serialize diagnostic_memory_ref
         if self.diagnostic_memory_ref is not None:
-            serialized = ARObject._serialize_item(self.diagnostic_memory_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.diagnostic_memory_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DIAGNOSTIC-MEMORY-REF")
@@ -127,7 +128,7 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
         if self.extended_data_refs:
             wrapper = ET.Element("EXTENDED-DATA-REFS")
             for item in self.extended_data_refs:
-                serialized = ARObject._serialize_item(item, "DiagnosticExtendedDataRecord")
+                serialized = SerializationHelper.serialize_item(item, "DiagnosticExtendedDataRecord")
                 if serialized is not None:
                     child_elem = ET.Element("EXTENDED-DATA-REF")
                     if hasattr(serialized, 'attrib'):
@@ -144,7 +145,7 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
         if self.freeze_frame_refs:
             wrapper = ET.Element("FREEZE-FRAME-REFS")
             for item in self.freeze_frame_refs:
-                serialized = ARObject._serialize_item(item, "DiagnosticFreezeFrame")
+                serialized = SerializationHelper.serialize_item(item, "DiagnosticFreezeFrame")
                 if serialized is not None:
                     child_elem = ET.Element("FREEZE-FRAME-REF")
                     if hasattr(serialized, 'attrib'):
@@ -159,7 +160,7 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
 
         # Serialize immediate_nv
         if self.immediate_nv is not None:
-            serialized = ARObject._serialize_item(self.immediate_nv, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.immediate_nv, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IMMEDIATE-NV")
@@ -173,7 +174,7 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
 
         # Serialize legislated_ref
         if self.legislated_ref is not None:
-            serialized = ARObject._serialize_item(self.legislated_ref, "DiagnosticDataIdentifier")
+            serialized = SerializationHelper.serialize_item(self.legislated_ref, "DiagnosticDataIdentifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LEGISLATED-REF")
@@ -187,7 +188,7 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
 
         # Serialize max_number
         if self.max_number is not None:
-            serialized = ARObject._serialize_item(self.max_number, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.max_number, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-NUMBER")
@@ -201,7 +202,7 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
 
         # Serialize priority
         if self.priority is not None:
-            serialized = ARObject._serialize_item(self.priority, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.priority, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PRIORITY")
@@ -215,7 +216,7 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
 
         # Serialize significance
         if self.significance is not None:
-            serialized = ARObject._serialize_item(self.significance, "DiagnosticSignificanceEnum")
+            serialized = SerializationHelper.serialize_item(self.significance, "DiagnosticSignificanceEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SIGNIFICANCE")
@@ -229,7 +230,7 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
 
         # Serialize snapshot_ref
         if self.snapshot_ref is not None:
-            serialized = ARObject._serialize_item(self.snapshot_ref, "DiagnosticDataIdentifier")
+            serialized = SerializationHelper.serialize_item(self.snapshot_ref, "DiagnosticDataIdentifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SNAPSHOT-REF")
@@ -257,81 +258,81 @@ class DiagnosticTroubleCodeProps(DiagnosticCommonElement):
         obj = super(DiagnosticTroubleCodeProps, cls).deserialize(element)
 
         # Parse aging_ref
-        child = ARObject._find_child_element(element, "AGING-REF")
+        child = SerializationHelper.find_child_element(element, "AGING-REF")
         if child is not None:
             aging_ref_value = ARRef.deserialize(child)
             obj.aging_ref = aging_ref_value
 
         # Parse diagnostic_memory_ref
-        child = ARObject._find_child_element(element, "DIAGNOSTIC-MEMORY-REF")
+        child = SerializationHelper.find_child_element(element, "DIAGNOSTIC-MEMORY-REF")
         if child is not None:
             diagnostic_memory_ref_value = ARRef.deserialize(child)
             obj.diagnostic_memory_ref = diagnostic_memory_ref_value
 
         # Parse extended_data_refs (list from container "EXTENDED-DATA-REFS")
         obj.extended_data_refs = []
-        container = ARObject._find_child_element(element, "EXTENDED-DATA-REFS")
+        container = SerializationHelper.find_child_element(element, "EXTENDED-DATA-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.extended_data_refs.append(child_value)
 
         # Parse freeze_frame_refs (list from container "FREEZE-FRAME-REFS")
         obj.freeze_frame_refs = []
-        container = ARObject._find_child_element(element, "FREEZE-FRAME-REFS")
+        container = SerializationHelper.find_child_element(element, "FREEZE-FRAME-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.freeze_frame_refs.append(child_value)
 
         # Parse immediate_nv
-        child = ARObject._find_child_element(element, "IMMEDIATE-NV")
+        child = SerializationHelper.find_child_element(element, "IMMEDIATE-NV")
         if child is not None:
             immediate_nv_value = child.text
             obj.immediate_nv = immediate_nv_value
 
         # Parse legislated_ref
-        child = ARObject._find_child_element(element, "LEGISLATED-REF")
+        child = SerializationHelper.find_child_element(element, "LEGISLATED-REF")
         if child is not None:
             legislated_ref_value = ARRef.deserialize(child)
             obj.legislated_ref = legislated_ref_value
 
         # Parse max_number
-        child = ARObject._find_child_element(element, "MAX-NUMBER")
+        child = SerializationHelper.find_child_element(element, "MAX-NUMBER")
         if child is not None:
             max_number_value = child.text
             obj.max_number = max_number_value
 
         # Parse priority
-        child = ARObject._find_child_element(element, "PRIORITY")
+        child = SerializationHelper.find_child_element(element, "PRIORITY")
         if child is not None:
             priority_value = child.text
             obj.priority = priority_value
 
         # Parse significance
-        child = ARObject._find_child_element(element, "SIGNIFICANCE")
+        child = SerializationHelper.find_child_element(element, "SIGNIFICANCE")
         if child is not None:
             significance_value = DiagnosticSignificanceEnum.deserialize(child)
             obj.significance = significance_value
 
         # Parse snapshot_ref
-        child = ARObject._find_child_element(element, "SNAPSHOT-REF")
+        child = SerializationHelper.find_child_element(element, "SNAPSHOT-REF")
         if child is not None:
             snapshot_ref_value = ARRef.deserialize(child)
             obj.snapshot_ref = snapshot_ref_value

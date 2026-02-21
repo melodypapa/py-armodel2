@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.MeasurementAndCalibration.InterpolationRoutine.interpolation_routine import (
     InterpolationRoutine,
@@ -47,14 +48,14 @@ class InterpolationRoutineMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize interpolation_routines (list to container "INTERPOLATION-ROUTINES")
         if self.interpolation_routines:
             wrapper = ET.Element("INTERPOLATION-ROUTINES")
             for item in self.interpolation_routines:
-                serialized = ARObject._serialize_item(item, "InterpolationRoutine")
+                serialized = SerializationHelper.serialize_item(item, "InterpolationRoutine")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -62,7 +63,7 @@ class InterpolationRoutineMapping(ARObject):
 
         # Serialize sw_record_ref
         if self.sw_record_ref is not None:
-            serialized = ARObject._serialize_item(self.sw_record_ref, "SwRecordLayout")
+            serialized = SerializationHelper.serialize_item(self.sw_record_ref, "SwRecordLayout")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-RECORD-REF")
@@ -92,16 +93,16 @@ class InterpolationRoutineMapping(ARObject):
 
         # Parse interpolation_routines (list from container "INTERPOLATION-ROUTINES")
         obj.interpolation_routines = []
-        container = ARObject._find_child_element(element, "INTERPOLATION-ROUTINES")
+        container = SerializationHelper.find_child_element(element, "INTERPOLATION-ROUTINES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.interpolation_routines.append(child_value)
 
         # Parse sw_record_ref
-        child = ARObject._find_child_element(element, "SW-RECORD-REF")
+        child = SerializationHelper.find_child_element(element, "SW-RECORD-REF")
         if child is not None:
             sw_record_ref_value = ARRef.deserialize(child)
             obj.sw_record_ref = sw_record_ref_value

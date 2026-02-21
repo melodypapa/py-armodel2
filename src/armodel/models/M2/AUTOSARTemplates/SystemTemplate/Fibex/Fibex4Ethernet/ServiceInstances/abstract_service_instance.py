@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -60,7 +61,7 @@ class AbstractServiceInstance(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -81,7 +82,7 @@ class AbstractServiceInstance(Identifiable, ABC):
         if self.capabilities:
             wrapper = ET.Element("CAPABILITIES")
             for item in self.capabilities:
-                serialized = ARObject._serialize_item(item, "TagWithOptionalValue")
+                serialized = SerializationHelper.serialize_item(item, "TagWithOptionalValue")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -89,7 +90,7 @@ class AbstractServiceInstance(Identifiable, ABC):
 
         # Serialize major_version
         if self.major_version is not None:
-            serialized = ARObject._serialize_item(self.major_version, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.major_version, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAJOR-VERSION")
@@ -103,7 +104,7 @@ class AbstractServiceInstance(Identifiable, ABC):
 
         # Serialize method
         if self.method is not None:
-            serialized = ARObject._serialize_item(self.method, "PduActivationRoutingGroup")
+            serialized = SerializationHelper.serialize_item(self.method, "PduActivationRoutingGroup")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("METHOD")
@@ -119,7 +120,7 @@ class AbstractServiceInstance(Identifiable, ABC):
         if self.routing_group_refs:
             wrapper = ET.Element("ROUTING-GROUP-REFS")
             for item in self.routing_group_refs:
-                serialized = ARObject._serialize_item(item, "SoAdRoutingGroup")
+                serialized = SerializationHelper.serialize_item(item, "SoAdRoutingGroup")
                 if serialized is not None:
                     child_elem = ET.Element("ROUTING-GROUP-REF")
                     if hasattr(serialized, 'attrib'):
@@ -149,39 +150,39 @@ class AbstractServiceInstance(Identifiable, ABC):
 
         # Parse capabilities (list from container "CAPABILITIES")
         obj.capabilities = []
-        container = ARObject._find_child_element(element, "CAPABILITIES")
+        container = SerializationHelper.find_child_element(element, "CAPABILITIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.capabilities.append(child_value)
 
         # Parse major_version
-        child = ARObject._find_child_element(element, "MAJOR-VERSION")
+        child = SerializationHelper.find_child_element(element, "MAJOR-VERSION")
         if child is not None:
             major_version_value = child.text
             obj.major_version = major_version_value
 
         # Parse method
-        child = ARObject._find_child_element(element, "METHOD")
+        child = SerializationHelper.find_child_element(element, "METHOD")
         if child is not None:
-            method_value = ARObject._deserialize_by_tag(child, "PduActivationRoutingGroup")
+            method_value = SerializationHelper.deserialize_by_tag(child, "PduActivationRoutingGroup")
             obj.method = method_value
 
         # Parse routing_group_refs (list from container "ROUTING-GROUP-REFS")
         obj.routing_group_refs = []
-        container = ARObject._find_child_element(element, "ROUTING-GROUP-REFS")
+        container = SerializationHelper.find_child_element(element, "ROUTING-GROUP-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.routing_group_refs.append(child_value)
 

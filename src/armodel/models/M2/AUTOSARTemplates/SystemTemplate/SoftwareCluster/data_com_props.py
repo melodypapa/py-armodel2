@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_softwa
     CpSoftwareClusterCommunicationResourceProps,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster import (
     DataConsistencyPolicyEnum,
     SendIndicationEnum,
@@ -46,7 +47,7 @@ class DataComProps(CpSoftwareClusterCommunicationResourceProps):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class DataComProps(CpSoftwareClusterCommunicationResourceProps):
 
         # Serialize data
         if self.data is not None:
-            serialized = ARObject._serialize_item(self.data, "DataConsistencyPolicyEnum")
+            serialized = SerializationHelper.serialize_item(self.data, "DataConsistencyPolicyEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA")
@@ -79,7 +80,7 @@ class DataComProps(CpSoftwareClusterCommunicationResourceProps):
 
         # Serialize send_indication_enum
         if self.send_indication_enum is not None:
-            serialized = ARObject._serialize_item(self.send_indication_enum, "SendIndicationEnum")
+            serialized = SerializationHelper.serialize_item(self.send_indication_enum, "SendIndicationEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SEND-INDICATION-ENUM")
@@ -107,13 +108,13 @@ class DataComProps(CpSoftwareClusterCommunicationResourceProps):
         obj = super(DataComProps, cls).deserialize(element)
 
         # Parse data
-        child = ARObject._find_child_element(element, "DATA")
+        child = SerializationHelper.find_child_element(element, "DATA")
         if child is not None:
             data_value = DataConsistencyPolicyEnum.deserialize(child)
             obj.data = data_value
 
         # Parse send_indication_enum
-        child = ARObject._find_child_element(element, "SEND-INDICATION-ENUM")
+        child = SerializationHelper.find_child_element(element, "SEND-INDICATION-ENUM")
         if child is not None:
             send_indication_enum_value = SendIndicationEnum.deserialize(child)
             obj.send_indication_enum = send_indication_enum_value

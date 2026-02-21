@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_container_
     EcucContainerDef,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_param_conf_container_def import (
     EcucParamConfContainerDef,
 )
@@ -43,7 +44,7 @@ class EcucChoiceContainerDef(EcucContainerDef):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class EcucChoiceContainerDef(EcucContainerDef):
         if self.choices:
             wrapper = ET.Element("CHOICES")
             for item in self.choices:
-                serialized = ARObject._serialize_item(item, "EcucParamConfContainerDef")
+                serialized = SerializationHelper.serialize_item(item, "EcucParamConfContainerDef")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -87,11 +88,11 @@ class EcucChoiceContainerDef(EcucContainerDef):
 
         # Parse choices (list from container "CHOICES")
         obj.choices = []
-        container = ARObject._find_child_element(element, "CHOICES")
+        container = SerializationHelper.find_child_element(element, "CHOICES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.choices.append(child_value)
 

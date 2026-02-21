@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -53,12 +54,12 @@ class CanControllerFdConfiguration(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize padding_value
         if self.padding_value is not None:
-            serialized = ARObject._serialize_item(self.padding_value, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.padding_value, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PADDING-VALUE")
@@ -72,7 +73,7 @@ class CanControllerFdConfiguration(ARObject):
 
         # Serialize prop_seg
         if self.prop_seg is not None:
-            serialized = ARObject._serialize_item(self.prop_seg, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.prop_seg, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PROP-SEG")
@@ -86,7 +87,7 @@ class CanControllerFdConfiguration(ARObject):
 
         # Serialize ssp_offset
         if self.ssp_offset is not None:
-            serialized = ARObject._serialize_item(self.ssp_offset, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.ssp_offset, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SSP-OFFSET")
@@ -100,7 +101,7 @@ class CanControllerFdConfiguration(ARObject):
 
         # Serialize sync_jump_width
         if self.sync_jump_width is not None:
-            serialized = ARObject._serialize_item(self.sync_jump_width, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.sync_jump_width, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SYNC-JUMP-WIDTH")
@@ -114,7 +115,7 @@ class CanControllerFdConfiguration(ARObject):
 
         # Serialize time_seg1
         if self.time_seg1 is not None:
-            serialized = ARObject._serialize_item(self.time_seg1, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.time_seg1, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIME-SEG1")
@@ -128,7 +129,7 @@ class CanControllerFdConfiguration(ARObject):
 
         # Serialize time_seg2
         if self.time_seg2 is not None:
-            serialized = ARObject._serialize_item(self.time_seg2, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.time_seg2, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIME-SEG2")
@@ -142,7 +143,7 @@ class CanControllerFdConfiguration(ARObject):
 
         # Serialize tx_bit_rate_switch
         if self.tx_bit_rate_switch is not None:
-            serialized = ARObject._serialize_item(self.tx_bit_rate_switch, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.tx_bit_rate_switch, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TX-BIT-RATE-SWITCH")
@@ -171,43 +172,43 @@ class CanControllerFdConfiguration(ARObject):
         obj.__init__()
 
         # Parse padding_value
-        child = ARObject._find_child_element(element, "PADDING-VALUE")
+        child = SerializationHelper.find_child_element(element, "PADDING-VALUE")
         if child is not None:
             padding_value_value = child.text
             obj.padding_value = padding_value_value
 
         # Parse prop_seg
-        child = ARObject._find_child_element(element, "PROP-SEG")
+        child = SerializationHelper.find_child_element(element, "PROP-SEG")
         if child is not None:
             prop_seg_value = child.text
             obj.prop_seg = prop_seg_value
 
         # Parse ssp_offset
-        child = ARObject._find_child_element(element, "SSP-OFFSET")
+        child = SerializationHelper.find_child_element(element, "SSP-OFFSET")
         if child is not None:
             ssp_offset_value = child.text
             obj.ssp_offset = ssp_offset_value
 
         # Parse sync_jump_width
-        child = ARObject._find_child_element(element, "SYNC-JUMP-WIDTH")
+        child = SerializationHelper.find_child_element(element, "SYNC-JUMP-WIDTH")
         if child is not None:
             sync_jump_width_value = child.text
             obj.sync_jump_width = sync_jump_width_value
 
         # Parse time_seg1
-        child = ARObject._find_child_element(element, "TIME-SEG1")
+        child = SerializationHelper.find_child_element(element, "TIME-SEG1")
         if child is not None:
             time_seg1_value = child.text
             obj.time_seg1 = time_seg1_value
 
         # Parse time_seg2
-        child = ARObject._find_child_element(element, "TIME-SEG2")
+        child = SerializationHelper.find_child_element(element, "TIME-SEG2")
         if child is not None:
             time_seg2_value = child.text
             obj.time_seg2 = time_seg2_value
 
         # Parse tx_bit_rate_switch
-        child = ARObject._find_child_element(element, "TX-BIT-RATE-SWITCH")
+        child = SerializationHelper.find_child_element(element, "TX-BIT-RATE-SWITCH")
         if child is not None:
             tx_bit_rate_switch_value = child.text
             obj.tx_bit_rate_switch = tx_bit_rate_switch_value

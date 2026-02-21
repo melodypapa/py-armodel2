@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.abstract_securit
     AbstractSecurityEventFilter,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
 )
@@ -45,7 +46,7 @@ class SecurityEventAggregationFilter(AbstractSecurityEventFilter):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class SecurityEventAggregationFilter(AbstractSecurityEventFilter):
 
         # Serialize context_data
         if self.context_data is not None:
-            serialized = ARObject._serialize_item(self.context_data, "Any")
+            serialized = SerializationHelper.serialize_item(self.context_data, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONTEXT-DATA")
@@ -78,7 +79,7 @@ class SecurityEventAggregationFilter(AbstractSecurityEventFilter):
 
         # Serialize minimum
         if self.minimum is not None:
-            serialized = ARObject._serialize_item(self.minimum, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.minimum, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MINIMUM")
@@ -106,13 +107,13 @@ class SecurityEventAggregationFilter(AbstractSecurityEventFilter):
         obj = super(SecurityEventAggregationFilter, cls).deserialize(element)
 
         # Parse context_data
-        child = ARObject._find_child_element(element, "CONTEXT-DATA")
+        child = SerializationHelper.find_child_element(element, "CONTEXT-DATA")
         if child is not None:
             context_data_value = child.text
             obj.context_data = context_data_value
 
         # Parse minimum
-        child = ARObject._find_child_element(element, "MINIMUM")
+        child = SerializationHelper.find_child_element(element, "MINIMUM")
         if child is not None:
             minimum_value = child.text
             obj.minimum = minimum_value

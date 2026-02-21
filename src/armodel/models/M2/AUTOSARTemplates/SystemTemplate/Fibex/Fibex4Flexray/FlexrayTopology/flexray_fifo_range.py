@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
 )
@@ -42,12 +43,12 @@ class FlexrayFifoRange(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize range_max
         if self.range_max is not None:
-            serialized = ARObject._serialize_item(self.range_max, "Integer")
+            serialized = SerializationHelper.serialize_item(self.range_max, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RANGE-MAX")
@@ -61,7 +62,7 @@ class FlexrayFifoRange(ARObject):
 
         # Serialize range_min
         if self.range_min is not None:
-            serialized = ARObject._serialize_item(self.range_min, "Integer")
+            serialized = SerializationHelper.serialize_item(self.range_min, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RANGE-MIN")
@@ -90,13 +91,13 @@ class FlexrayFifoRange(ARObject):
         obj.__init__()
 
         # Parse range_max
-        child = ARObject._find_child_element(element, "RANGE-MAX")
+        child = SerializationHelper.find_child_element(element, "RANGE-MAX")
         if child is not None:
             range_max_value = child.text
             obj.range_max = range_max_value
 
         # Parse range_min
-        child = ARObject._find_child_element(element, "RANGE-MIN")
+        child = SerializationHelper.find_child_element(element, "RANGE-MIN")
         if child is not None:
             range_min_value = child.text
             obj.range_min = range_min_value

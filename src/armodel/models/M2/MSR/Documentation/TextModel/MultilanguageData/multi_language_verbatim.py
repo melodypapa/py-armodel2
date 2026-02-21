@@ -14,6 +14,7 @@ from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginat
     Paginateable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable import (
     FloatEnum,
     PgwideEnum,
@@ -71,7 +72,7 @@ class MultiLanguageVerbatim(Paginateable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -90,7 +91,7 @@ class MultiLanguageVerbatim(Paginateable):
 
         # Serialize allow_break
         if self.allow_break is not None:
-            serialized = ARObject._serialize_item(self.allow_break, "NameToken")
+            serialized = SerializationHelper.serialize_item(self.allow_break, "NameToken")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ALLOW-BREAK")
@@ -104,7 +105,7 @@ class MultiLanguageVerbatim(Paginateable):
 
         # Serialize float
         if self.float is not None:
-            serialized = ARObject._serialize_item(self.float, "FloatEnum")
+            serialized = SerializationHelper.serialize_item(self.float, "FloatEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FLOAT")
@@ -118,7 +119,7 @@ class MultiLanguageVerbatim(Paginateable):
 
         # Serialize help_entry
         if self.help_entry is not None:
-            serialized = ARObject._serialize_item(self.help_entry, "String")
+            serialized = SerializationHelper.serialize_item(self.help_entry, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HELP-ENTRY")
@@ -132,7 +133,7 @@ class MultiLanguageVerbatim(Paginateable):
 
         # Serialize l5 (list with l_prefix "L-5")
         for item in self.l5:
-            serialized = ARObject._serialize_item(item, "LVerbatim")
+            serialized = SerializationHelper.serialize_item(item, "LVerbatim")
             if serialized is not None:
                 # For l_prefix lists, wrap each item in the l_prefix tag
                 wrapped = ET.Element("L-5")
@@ -146,7 +147,7 @@ class MultiLanguageVerbatim(Paginateable):
 
         # Serialize pgwide
         if self.pgwide is not None:
-            serialized = ARObject._serialize_item(self.pgwide, "PgwideEnum")
+            serialized = SerializationHelper.serialize_item(self.pgwide, "PgwideEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PGWIDE")
@@ -174,31 +175,31 @@ class MultiLanguageVerbatim(Paginateable):
         obj = super(MultiLanguageVerbatim, cls).deserialize(element)
 
         # Parse allow_break
-        child = ARObject._find_child_element(element, "ALLOW-BREAK")
+        child = SerializationHelper.find_child_element(element, "ALLOW-BREAK")
         if child is not None:
             allow_break_value = child.text
             obj.allow_break = allow_break_value
 
         # Parse float
-        child = ARObject._find_child_element(element, "FLOAT")
+        child = SerializationHelper.find_child_element(element, "FLOAT")
         if child is not None:
             float_value = FloatEnum.deserialize(child)
             obj.float = float_value
 
         # Parse help_entry
-        child = ARObject._find_child_element(element, "HELP-ENTRY")
+        child = SerializationHelper.find_child_element(element, "HELP-ENTRY")
         if child is not None:
             help_entry_value = child.text
             obj.help_entry = help_entry_value
 
         # Parse l5 (list with l_prefix "L-5")
         obj.l5 = []
-        for child in ARObject._find_all_child_elements(element, "L-5"):
-            l5_value = ARObject._deserialize_by_tag(child, "LVerbatim")
+        for child in SerializationHelper.find_all_child_elements(element, "L-5"):
+            l5_value = SerializationHelper.deserialize_by_tag(child, "LVerbatim")
             obj.l5.append(l5_value)
 
         # Parse pgwide
-        child = ARObject._find_child_element(element, "PGWIDE")
+        child = SerializationHelper.find_child_element(element, "PGWIDE")
         if child is not None:
             pgwide_value = PgwideEnum.deserialize(child)
             obj.pgwide = pgwide_value

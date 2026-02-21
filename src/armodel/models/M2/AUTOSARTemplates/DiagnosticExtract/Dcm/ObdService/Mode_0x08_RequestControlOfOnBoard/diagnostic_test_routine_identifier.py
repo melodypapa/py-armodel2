@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -47,7 +48,7 @@ class DiagnosticTestRoutineIdentifier(DiagnosticCommonElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -66,7 +67,7 @@ class DiagnosticTestRoutineIdentifier(DiagnosticCommonElement):
 
         # Serialize id
         if self.id is not None:
-            serialized = ARObject._serialize_item(self.id, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.id, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ID")
@@ -80,7 +81,7 @@ class DiagnosticTestRoutineIdentifier(DiagnosticCommonElement):
 
         # Serialize request_data
         if self.request_data is not None:
-            serialized = ARObject._serialize_item(self.request_data, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.request_data, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REQUEST-DATA")
@@ -94,7 +95,7 @@ class DiagnosticTestRoutineIdentifier(DiagnosticCommonElement):
 
         # Serialize response_data
         if self.response_data is not None:
-            serialized = ARObject._serialize_item(self.response_data, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.response_data, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RESPONSE-DATA")
@@ -122,19 +123,19 @@ class DiagnosticTestRoutineIdentifier(DiagnosticCommonElement):
         obj = super(DiagnosticTestRoutineIdentifier, cls).deserialize(element)
 
         # Parse id
-        child = ARObject._find_child_element(element, "ID")
+        child = SerializationHelper.find_child_element(element, "ID")
         if child is not None:
             id_value = child.text
             obj.id = id_value
 
         # Parse request_data
-        child = ARObject._find_child_element(element, "REQUEST-DATA")
+        child = SerializationHelper.find_child_element(element, "REQUEST-DATA")
         if child is not None:
             request_data_value = child.text
             obj.request_data = request_data_value
 
         # Parse response_data
-        child = ARObject._find_child_element(element, "RESPONSE-DATA")
+        child = SerializationHelper.find_child_element(element, "RESPONSE-DATA")
         if child is not None:
             response_data_value = child.text
             obj.response_data = response_data_value

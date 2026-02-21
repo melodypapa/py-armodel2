@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.abstract_globa
     AbstractGlobalTimeDomainProps,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.ETH import (
     EthGlobalTimeMessageFormatEnum,
 )
@@ -60,7 +61,7 @@ class EthGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -79,7 +80,7 @@ class EthGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
 
         # Serialize crc_flags
         if self.crc_flags is not None:
-            serialized = ARObject._serialize_item(self.crc_flags, "EthTSynCrcFlags")
+            serialized = SerializationHelper.serialize_item(self.crc_flags, "EthTSynCrcFlags")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CRC-FLAGS")
@@ -93,7 +94,7 @@ class EthGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
 
         # Serialize destination
         if self.destination is not None:
-            serialized = ARObject._serialize_item(self.destination, "MacAddressString")
+            serialized = SerializationHelper.serialize_item(self.destination, "MacAddressString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DESTINATION")
@@ -107,7 +108,7 @@ class EthGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
 
         # Serialize fup_data_id_list
         if self.fup_data_id_list is not None:
-            serialized = ARObject._serialize_item(self.fup_data_id_list, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.fup_data_id_list, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FUP-DATA-ID-LIST")
@@ -123,7 +124,7 @@ class EthGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
         if self.manageds:
             wrapper = ET.Element("MANAGEDS")
             for item in self.manageds:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -131,7 +132,7 @@ class EthGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
 
         # Serialize message
         if self.message is not None:
-            serialized = ARObject._serialize_item(self.message, "EthGlobalTimeMessageFormatEnum")
+            serialized = SerializationHelper.serialize_item(self.message, "EthGlobalTimeMessageFormatEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MESSAGE")
@@ -145,7 +146,7 @@ class EthGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
 
         # Serialize vlan_priority
         if self.vlan_priority is not None:
-            serialized = ARObject._serialize_item(self.vlan_priority, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.vlan_priority, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VLAN-PRIORITY")
@@ -173,41 +174,41 @@ class EthGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
         obj = super(EthGlobalTimeDomainProps, cls).deserialize(element)
 
         # Parse crc_flags
-        child = ARObject._find_child_element(element, "CRC-FLAGS")
+        child = SerializationHelper.find_child_element(element, "CRC-FLAGS")
         if child is not None:
-            crc_flags_value = ARObject._deserialize_by_tag(child, "EthTSynCrcFlags")
+            crc_flags_value = SerializationHelper.deserialize_by_tag(child, "EthTSynCrcFlags")
             obj.crc_flags = crc_flags_value
 
         # Parse destination
-        child = ARObject._find_child_element(element, "DESTINATION")
+        child = SerializationHelper.find_child_element(element, "DESTINATION")
         if child is not None:
             destination_value = child.text
             obj.destination = destination_value
 
         # Parse fup_data_id_list
-        child = ARObject._find_child_element(element, "FUP-DATA-ID-LIST")
+        child = SerializationHelper.find_child_element(element, "FUP-DATA-ID-LIST")
         if child is not None:
             fup_data_id_list_value = child.text
             obj.fup_data_id_list = fup_data_id_list_value
 
         # Parse manageds (list from container "MANAGEDS")
         obj.manageds = []
-        container = ARObject._find_child_element(element, "MANAGEDS")
+        container = SerializationHelper.find_child_element(element, "MANAGEDS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.manageds.append(child_value)
 
         # Parse message
-        child = ARObject._find_child_element(element, "MESSAGE")
+        child = SerializationHelper.find_child_element(element, "MESSAGE")
         if child is not None:
             message_value = EthGlobalTimeMessageFormatEnum.deserialize(child)
             obj.message = message_value
 
         # Parse vlan_priority
-        child = ARObject._find_child_element(element, "VLAN-PRIORITY")
+        child = SerializationHelper.find_child_element(element, "VLAN-PRIORITY")
         if child is not None:
             vlan_priority_value = child.text
             obj.vlan_priority = vlan_priority_value

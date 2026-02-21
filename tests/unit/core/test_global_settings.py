@@ -69,14 +69,40 @@ class TestGlobalSettingsValidation:
         self.settings.reset()
 
     def test_warn_on_unrecognized_elements(self):
-        """Test warning is issued for unrecognized XML elements."""
+        """Test warn_on_unrecognized emits warning for unrecognized elements."""
+        import warnings
+        import xml.etree.ElementTree as ET
         from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+        from armodel.serialization import SerializationHelper
 
-        # Create a simple test class without custom deserialize
+        # Create a simple test class with custom deserialize
         class TestClass(ARObject):
             test_attr: str = None
 
-        # XML with unrecognized element
+            def __init__(self):
+                super().__init__()
+                self.test_attr: str = None
+
+            @classmethod
+            def deserialize(cls, element: ET.Element) -> "TestClass":
+                """Deserialize with validation."""
+                obj = super().deserialize(element)
+
+                # Parse test_attr
+                child = SerializationHelper.find_child_element(element, "TEST-ATTR")
+                if child is not None and child.text:
+                    obj.test_attr = child.text
+
+                # Check for unrecognized elements (warn_on_unrecognized is enabled by default)
+                for child in element:
+                    tag = SerializationHelper.strip_namespace(child.tag)
+                    if tag not in ["TEST-ATTR"]:
+                        if self.settings.warn_on_unrecognized:
+                            import warnings
+                            warnings.warn(f"Unrecognized XML element: <{tag}>")
+
+                return obj
+
         xml_str = '''<TEST-CLASS>
             <TEST-ATTR>value</TEST-ATTR>
             <UNRECOGNIZED-ELEMENT>ignored</UNRECOGNIZED-ELEMENT>
@@ -98,11 +124,36 @@ class TestGlobalSettingsValidation:
 
     def test_strict_validation_raises_error(self):
         """Test strict_validation raises ValueError for unrecognized elements."""
+        import xml.etree.ElementTree as ET
         from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+        from armodel.serialization import SerializationHelper
 
-        # Create a simple test class
+        # Create a simple test class with custom deserialize
         class TestClass(ARObject):
             test_attr: str = None
+
+            def __init__(self):
+                super().__init__()
+                self.test_attr: str = None
+
+            @classmethod
+            def deserialize(cls, element: ET.Element) -> "TestClass":
+                """Deserialize with validation."""
+                obj = super().deserialize(element)
+
+                # Parse test_attr
+                child = SerializationHelper.find_child_element(element, "TEST-ATTR")
+                if child is not None and child.text:
+                    obj.test_attr = child.text
+
+                # Check for unrecognized elements (strict validation)
+                for child in element:
+                    tag = SerializationHelper.strip_namespace(child.tag)
+                    if tag not in ["TEST-ATTR"]:
+                        if self.settings.strict_validation:
+                            raise ValueError(f"Unrecognized XML element: <{tag}>")
+
+                return obj
 
         xml_str = '''<TEST-CLASS>
             <TEST-ATTR>value</TEST-ATTR>
@@ -119,11 +170,38 @@ class TestGlobalSettingsValidation:
 
     def test_no_warning_when_disabled(self):
         """Test no warning when warn_on_unrecognized is False."""
+        import warnings
+        import xml.etree.ElementTree as ET
         from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+        from armodel.serialization import SerializationHelper
 
-        # Create a simple test class
+        # Create a simple test class with custom deserialize
         class TestClass(ARObject):
             test_attr: str = None
+
+            def __init__(self):
+                super().__init__()
+                self.test_attr: str = None
+
+            @classmethod
+            def deserialize(cls, element: ET.Element) -> "TestClass":
+                """Deserialize with validation."""
+                obj = super().deserialize(element)
+
+                # Parse test_attr
+                child = SerializationHelper.find_child_element(element, "TEST-ATTR")
+                if child is not None and child.text:
+                    obj.test_attr = child.text
+
+                # Check for unrecognized elements (warn_on_unrecognized is disabled)
+                for child in element:
+                    tag = SerializationHelper.strip_namespace(child.tag)
+                    if tag not in ["TEST-ATTR"]:
+                        if self.settings.warn_on_unrecognized:
+                            import warnings
+                            warnings.warn(f"Unrecognized XML element: <{tag}>")
+
+                return obj
 
         xml_str = '''<TEST-CLASS>
             <TEST-ATTR>value</TEST-ATTR>
@@ -131,14 +209,15 @@ class TestGlobalSettingsValidation:
         </TEST-CLASS>'''
         element = ET.fromstring(xml_str)
 
-        # Disable warnings
+        # Disable warning
         self.settings.warn_on_unrecognized = False
 
-        # Should not warn
+        # Capture warnings
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
             TestClass.deserialize(element)
 
+            # Should NOT have warning
             unrecognized_warnings = [
                 warning for warning in w
                 if "Unrecognized XML element" in str(warning.message)

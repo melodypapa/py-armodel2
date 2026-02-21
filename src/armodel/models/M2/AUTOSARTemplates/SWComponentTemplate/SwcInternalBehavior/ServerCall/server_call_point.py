@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
     AbstractAccessPoint,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
 )
@@ -51,7 +52,7 @@ class ServerCallPoint(AbstractAccessPoint, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -70,7 +71,7 @@ class ServerCallPoint(AbstractAccessPoint, ABC):
 
         # Serialize operation_instance_ref
         if self.operation_instance_ref is not None:
-            serialized = ARObject._serialize_item(self.operation_instance_ref, "ClientServerOperation")
+            serialized = SerializationHelper.serialize_item(self.operation_instance_ref, "ClientServerOperation")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("OPERATION-INSTANCE-REF")
@@ -84,7 +85,7 @@ class ServerCallPoint(AbstractAccessPoint, ABC):
 
         # Serialize timeout
         if self.timeout is not None:
-            serialized = ARObject._serialize_item(self.timeout, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.timeout, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIMEOUT")
@@ -112,13 +113,13 @@ class ServerCallPoint(AbstractAccessPoint, ABC):
         obj = super(ServerCallPoint, cls).deserialize(element)
 
         # Parse operation_instance_ref
-        child = ARObject._find_child_element(element, "OPERATION-INSTANCE-REF")
+        child = SerializationHelper.find_child_element(element, "OPERATION-INSTANCE-REF")
         if child is not None:
-            operation_instance_ref_value = ARObject._deserialize_by_tag(child, "ClientServerOperation")
+            operation_instance_ref_value = SerializationHelper.deserialize_by_tag(child, "ClientServerOperation")
             obj.operation_instance_ref = operation_instance_ref_value
 
         # Parse timeout
-        child = ARObject._find_child_element(element, "TIMEOUT")
+        child = SerializationHelper.find_child_element(element, "TIMEOUT")
         if child is not None:
             timeout_value = child.text
             obj.timeout = timeout_value

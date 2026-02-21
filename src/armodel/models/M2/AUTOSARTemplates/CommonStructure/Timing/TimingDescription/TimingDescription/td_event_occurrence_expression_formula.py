@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription.autosar_operation_argument_instance import (
     AutosarOperationArgumentInstance,
@@ -53,12 +54,12 @@ class TDEventOccurrenceExpressionFormula(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize argument_ref
         if self.argument_ref is not None:
-            serialized = ARObject._serialize_item(self.argument_ref, "AutosarOperationArgumentInstance")
+            serialized = SerializationHelper.serialize_item(self.argument_ref, "AutosarOperationArgumentInstance")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ARGUMENT-REF")
@@ -72,7 +73,7 @@ class TDEventOccurrenceExpressionFormula(ARObject):
 
         # Serialize event_ref
         if self.event_ref is not None:
-            serialized = ARObject._serialize_item(self.event_ref, "TimingDescriptionEvent")
+            serialized = SerializationHelper.serialize_item(self.event_ref, "TimingDescriptionEvent")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("EVENT-REF")
@@ -86,7 +87,7 @@ class TDEventOccurrenceExpressionFormula(ARObject):
 
         # Serialize mode_ref
         if self.mode_ref is not None:
-            serialized = ARObject._serialize_item(self.mode_ref, "TimingModeInstance")
+            serialized = SerializationHelper.serialize_item(self.mode_ref, "TimingModeInstance")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MODE-REF")
@@ -100,7 +101,7 @@ class TDEventOccurrenceExpressionFormula(ARObject):
 
         # Serialize variable_ref
         if self.variable_ref is not None:
-            serialized = ARObject._serialize_item(self.variable_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.variable_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VARIABLE-REF")
@@ -129,25 +130,25 @@ class TDEventOccurrenceExpressionFormula(ARObject):
         obj.__init__()
 
         # Parse argument_ref
-        child = ARObject._find_child_element(element, "ARGUMENT-REF")
+        child = SerializationHelper.find_child_element(element, "ARGUMENT-REF")
         if child is not None:
             argument_ref_value = ARRef.deserialize(child)
             obj.argument_ref = argument_ref_value
 
         # Parse event_ref
-        child = ARObject._find_child_element(element, "EVENT-REF")
+        child = SerializationHelper.find_child_element(element, "EVENT-REF")
         if child is not None:
             event_ref_value = ARRef.deserialize(child)
             obj.event_ref = event_ref_value
 
         # Parse mode_ref
-        child = ARObject._find_child_element(element, "MODE-REF")
+        child = SerializationHelper.find_child_element(element, "MODE-REF")
         if child is not None:
             mode_ref_value = ARRef.deserialize(child)
             obj.mode_ref = mode_ref_value
 
         # Parse variable_ref
-        child = ARObject._find_child_element(element, "VARIABLE-REF")
+        child = SerializationHelper.find_child_element(element, "VARIABLE-REF")
         if child is not None:
             variable_ref_value = ARRef.deserialize(child)
             obj.variable_ref = variable_ref_value

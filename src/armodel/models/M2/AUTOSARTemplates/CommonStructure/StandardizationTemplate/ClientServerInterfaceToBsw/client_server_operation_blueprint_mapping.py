@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_module_entry import (
     BswModuleEntry,
@@ -51,12 +52,12 @@ class ClientServerOperationBlueprintMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize blueprint
         if self.blueprint is not None:
-            serialized = ARObject._serialize_item(self.blueprint, "DocumentationBlock")
+            serialized = SerializationHelper.serialize_item(self.blueprint, "DocumentationBlock")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BLUEPRINT")
@@ -70,7 +71,7 @@ class ClientServerOperationBlueprintMapping(ARObject):
 
         # Serialize bsw_module_entry_ref
         if self.bsw_module_entry_ref is not None:
-            serialized = ARObject._serialize_item(self.bsw_module_entry_ref, "BswModuleEntry")
+            serialized = SerializationHelper.serialize_item(self.bsw_module_entry_ref, "BswModuleEntry")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BSW-MODULE-ENTRY-REF")
@@ -84,7 +85,7 @@ class ClientServerOperationBlueprintMapping(ARObject):
 
         # Serialize client_server_ref
         if self.client_server_ref is not None:
-            serialized = ARObject._serialize_item(self.client_server_ref, "ClientServerOperation")
+            serialized = SerializationHelper.serialize_item(self.client_server_ref, "ClientServerOperation")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CLIENT-SERVER-REF")
@@ -113,19 +114,19 @@ class ClientServerOperationBlueprintMapping(ARObject):
         obj.__init__()
 
         # Parse blueprint
-        child = ARObject._find_child_element(element, "BLUEPRINT")
+        child = SerializationHelper.find_child_element(element, "BLUEPRINT")
         if child is not None:
-            blueprint_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            blueprint_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
             obj.blueprint = blueprint_value
 
         # Parse bsw_module_entry_ref
-        child = ARObject._find_child_element(element, "BSW-MODULE-ENTRY-REF")
+        child = SerializationHelper.find_child_element(element, "BSW-MODULE-ENTRY-REF")
         if child is not None:
             bsw_module_entry_ref_value = ARRef.deserialize(child)
             obj.bsw_module_entry_ref = bsw_module_entry_ref_value
 
         # Parse client_server_ref
-        child = ARObject._find_child_element(element, "CLIENT-SERVER-REF")
+        child = SerializationHelper.find_child_element(element, "CLIENT-SERVER-REF")
         if child is not None:
             client_server_ref_value = ARRef.deserialize(child)
             obj.client_server_ref = client_server_ref_value

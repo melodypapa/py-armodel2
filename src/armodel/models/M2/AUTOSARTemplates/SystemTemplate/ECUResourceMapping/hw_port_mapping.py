@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_connector import (
     CommunicationConnector,
@@ -46,12 +47,12 @@ class HwPortMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize communication_connector_ref
         if self.communication_connector_ref is not None:
-            serialized = ARObject._serialize_item(self.communication_connector_ref, "CommunicationConnector")
+            serialized = SerializationHelper.serialize_item(self.communication_connector_ref, "CommunicationConnector")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COMMUNICATION-CONNECTOR-REF")
@@ -65,7 +66,7 @@ class HwPortMapping(ARObject):
 
         # Serialize hw_pin_group_ref
         if self.hw_pin_group_ref is not None:
-            serialized = ARObject._serialize_item(self.hw_pin_group_ref, "HwPinGroup")
+            serialized = SerializationHelper.serialize_item(self.hw_pin_group_ref, "HwPinGroup")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HW-PIN-GROUP-REF")
@@ -94,13 +95,13 @@ class HwPortMapping(ARObject):
         obj.__init__()
 
         # Parse communication_connector_ref
-        child = ARObject._find_child_element(element, "COMMUNICATION-CONNECTOR-REF")
+        child = SerializationHelper.find_child_element(element, "COMMUNICATION-CONNECTOR-REF")
         if child is not None:
             communication_connector_ref_value = ARRef.deserialize(child)
             obj.communication_connector_ref = communication_connector_ref_value
 
         # Parse hw_pin_group_ref
-        child = ARObject._find_child_element(element, "HW-PIN-GROUP-REF")
+        child = SerializationHelper.find_child_element(element, "HW-PIN-GROUP-REF")
         if child is not None:
             hw_pin_group_ref_value = ARRef.deserialize(child)
             obj.hw_pin_group_ref = hw_pin_group_ref_value

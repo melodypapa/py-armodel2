@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     NameToken,
@@ -56,7 +57,7 @@ class DiagnosticServiceTable(DiagnosticCommonElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -77,7 +78,7 @@ class DiagnosticServiceTable(DiagnosticCommonElement):
         if self.diagnostic_refs:
             wrapper = ET.Element("DIAGNOSTIC-REFS")
             for item in self.diagnostic_refs:
-                serialized = ARObject._serialize_item(item, "DiagnosticConnection")
+                serialized = SerializationHelper.serialize_item(item, "DiagnosticConnection")
                 if serialized is not None:
                     child_elem = ET.Element("DIAGNOSTIC-REF")
                     if hasattr(serialized, 'attrib'):
@@ -92,7 +93,7 @@ class DiagnosticServiceTable(DiagnosticCommonElement):
 
         # Serialize ecu_instance_ref
         if self.ecu_instance_ref is not None:
-            serialized = ARObject._serialize_item(self.ecu_instance_ref, "EcuInstance")
+            serialized = SerializationHelper.serialize_item(self.ecu_instance_ref, "EcuInstance")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ECU-INSTANCE-REF")
@@ -106,7 +107,7 @@ class DiagnosticServiceTable(DiagnosticCommonElement):
 
         # Serialize protocol_kind
         if self.protocol_kind is not None:
-            serialized = ARObject._serialize_item(self.protocol_kind, "NameToken")
+            serialized = SerializationHelper.serialize_item(self.protocol_kind, "NameToken")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PROTOCOL-KIND")
@@ -122,7 +123,7 @@ class DiagnosticServiceTable(DiagnosticCommonElement):
         if self.service_instance_refs:
             wrapper = ET.Element("SERVICE-INSTANCE-REFS")
             for item in self.service_instance_refs:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     child_elem = ET.Element("SERVICE-INSTANCE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -152,45 +153,45 @@ class DiagnosticServiceTable(DiagnosticCommonElement):
 
         # Parse diagnostic_refs (list from container "DIAGNOSTIC-REFS")
         obj.diagnostic_refs = []
-        container = ARObject._find_child_element(element, "DIAGNOSTIC-REFS")
+        container = SerializationHelper.find_child_element(element, "DIAGNOSTIC-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.diagnostic_refs.append(child_value)
 
         # Parse ecu_instance_ref
-        child = ARObject._find_child_element(element, "ECU-INSTANCE-REF")
+        child = SerializationHelper.find_child_element(element, "ECU-INSTANCE-REF")
         if child is not None:
             ecu_instance_ref_value = ARRef.deserialize(child)
             obj.ecu_instance_ref = ecu_instance_ref_value
 
         # Parse protocol_kind
-        child = ARObject._find_child_element(element, "PROTOCOL-KIND")
+        child = SerializationHelper.find_child_element(element, "PROTOCOL-KIND")
         if child is not None:
             protocol_kind_value = child.text
             obj.protocol_kind = protocol_kind_value
 
         # Parse service_instance_refs (list from container "SERVICE-INSTANCE-REFS")
         obj.service_instance_refs = []
-        container = ARObject._find_child_element(element, "SERVICE-INSTANCE-REFS")
+        container = SerializationHelper.find_child_element(element, "SERVICE-INSTANCE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.service_instance_refs.append(child_value)
 

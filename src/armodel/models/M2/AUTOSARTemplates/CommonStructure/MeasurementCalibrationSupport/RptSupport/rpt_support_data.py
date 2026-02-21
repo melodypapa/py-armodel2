@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.RptSupport.rpt_component import (
     RptComponent,
 )
@@ -50,14 +51,14 @@ class RptSupportData(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize executions (list to container "EXECUTIONS")
         if self.executions:
             wrapper = ET.Element("EXECUTIONS")
             for item in self.executions:
-                serialized = ARObject._serialize_item(item, "RptExecutionContext")
+                serialized = SerializationHelper.serialize_item(item, "RptExecutionContext")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -67,7 +68,7 @@ class RptSupportData(ARObject):
         if self.rpt_components:
             wrapper = ET.Element("RPT-COMPONENTS")
             for item in self.rpt_components:
-                serialized = ARObject._serialize_item(item, "RptComponent")
+                serialized = SerializationHelper.serialize_item(item, "RptComponent")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -77,7 +78,7 @@ class RptSupportData(ARObject):
         if self.rpt_service_points:
             wrapper = ET.Element("RPT-SERVICE-POINTS")
             for item in self.rpt_service_points:
-                serialized = ARObject._serialize_item(item, "RptServicePoint")
+                serialized = SerializationHelper.serialize_item(item, "RptServicePoint")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -101,31 +102,31 @@ class RptSupportData(ARObject):
 
         # Parse executions (list from container "EXECUTIONS")
         obj.executions = []
-        container = ARObject._find_child_element(element, "EXECUTIONS")
+        container = SerializationHelper.find_child_element(element, "EXECUTIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.executions.append(child_value)
 
         # Parse rpt_components (list from container "RPT-COMPONENTS")
         obj.rpt_components = []
-        container = ARObject._find_child_element(element, "RPT-COMPONENTS")
+        container = SerializationHelper.find_child_element(element, "RPT-COMPONENTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.rpt_components.append(child_value)
 
         # Parse rpt_service_points (list from container "RPT-SERVICE-POINTS")
         obj.rpt_service_points = []
-        container = ARObject._find_child_element(element, "RPT-SERVICE-POINTS")
+        container = SerializationHelper.find_child_element(element, "RPT-SERVICE-POINTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.rpt_service_points.append(child_value)
 

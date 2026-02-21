@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication import (
     MacSecRoleEnum,
@@ -61,12 +62,12 @@ class MacSecLocalKayProps(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize destination_mac
         if self.destination_mac is not None:
-            serialized = ARObject._serialize_item(self.destination_mac, "MacAddressString")
+            serialized = SerializationHelper.serialize_item(self.destination_mac, "MacAddressString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DESTINATION-MAC")
@@ -80,7 +81,7 @@ class MacSecLocalKayProps(ARObject):
 
         # Serialize global_kay_props_ref
         if self.global_kay_props_ref is not None:
-            serialized = ARObject._serialize_item(self.global_kay_props_ref, "MacSecGlobalKayProps")
+            serialized = SerializationHelper.serialize_item(self.global_kay_props_ref, "MacSecGlobalKayProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("GLOBAL-KAY-PROPS-REF")
@@ -94,7 +95,7 @@ class MacSecLocalKayProps(ARObject):
 
         # Serialize key_server
         if self.key_server is not None:
-            serialized = ARObject._serialize_item(self.key_server, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.key_server, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("KEY-SERVER")
@@ -110,7 +111,7 @@ class MacSecLocalKayProps(ARObject):
         if self.mka_participant_refs:
             wrapper = ET.Element("MKA-PARTICIPANT-REFS")
             for item in self.mka_participant_refs:
-                serialized = ARObject._serialize_item(item, "MacSecKayParticipant")
+                serialized = SerializationHelper.serialize_item(item, "MacSecKayParticipant")
                 if serialized is not None:
                     child_elem = ET.Element("MKA-PARTICIPANT-REF")
                     if hasattr(serialized, 'attrib'):
@@ -125,7 +126,7 @@ class MacSecLocalKayProps(ARObject):
 
         # Serialize role
         if self.role is not None:
-            serialized = ARObject._serialize_item(self.role, "MacSecRoleEnum")
+            serialized = SerializationHelper.serialize_item(self.role, "MacSecRoleEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ROLE")
@@ -139,7 +140,7 @@ class MacSecLocalKayProps(ARObject):
 
         # Serialize source_mac
         if self.source_mac is not None:
-            serialized = ARObject._serialize_item(self.source_mac, "MacAddressString")
+            serialized = SerializationHelper.serialize_item(self.source_mac, "MacAddressString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SOURCE-MAC")
@@ -168,47 +169,47 @@ class MacSecLocalKayProps(ARObject):
         obj.__init__()
 
         # Parse destination_mac
-        child = ARObject._find_child_element(element, "DESTINATION-MAC")
+        child = SerializationHelper.find_child_element(element, "DESTINATION-MAC")
         if child is not None:
             destination_mac_value = child.text
             obj.destination_mac = destination_mac_value
 
         # Parse global_kay_props_ref
-        child = ARObject._find_child_element(element, "GLOBAL-KAY-PROPS-REF")
+        child = SerializationHelper.find_child_element(element, "GLOBAL-KAY-PROPS-REF")
         if child is not None:
             global_kay_props_ref_value = ARRef.deserialize(child)
             obj.global_kay_props_ref = global_kay_props_ref_value
 
         # Parse key_server
-        child = ARObject._find_child_element(element, "KEY-SERVER")
+        child = SerializationHelper.find_child_element(element, "KEY-SERVER")
         if child is not None:
             key_server_value = child.text
             obj.key_server = key_server_value
 
         # Parse mka_participant_refs (list from container "MKA-PARTICIPANT-REFS")
         obj.mka_participant_refs = []
-        container = ARObject._find_child_element(element, "MKA-PARTICIPANT-REFS")
+        container = SerializationHelper.find_child_element(element, "MKA-PARTICIPANT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.mka_participant_refs.append(child_value)
 
         # Parse role
-        child = ARObject._find_child_element(element, "ROLE")
+        child = SerializationHelper.find_child_element(element, "ROLE")
         if child is not None:
             role_value = MacSecRoleEnum.deserialize(child)
             obj.role = role_value
 
         # Parse source_mac
-        child = ARObject._find_child_element(element, "SOURCE-MAC")
+        child = SerializationHelper.find_child_element(element, "SOURCE-MAC")
         if child is not None:
             source_mac_value = child.text
             obj.source_mac = source_mac_value

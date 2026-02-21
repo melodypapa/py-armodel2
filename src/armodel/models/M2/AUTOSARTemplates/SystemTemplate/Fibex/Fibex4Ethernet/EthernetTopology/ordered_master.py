@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -46,12 +47,12 @@ class OrderedMaster(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize index
         if self.index is not None:
-            serialized = ARObject._serialize_item(self.index, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.index, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INDEX")
@@ -65,7 +66,7 @@ class OrderedMaster(ARObject):
 
         # Serialize time_sync_server_configuration_ref
         if self.time_sync_server_configuration_ref is not None:
-            serialized = ARObject._serialize_item(self.time_sync_server_configuration_ref, "TimeSyncServerConfiguration")
+            serialized = SerializationHelper.serialize_item(self.time_sync_server_configuration_ref, "TimeSyncServerConfiguration")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIME-SYNC-SERVER-CONFIGURATION-REF")
@@ -94,13 +95,13 @@ class OrderedMaster(ARObject):
         obj.__init__()
 
         # Parse index
-        child = ARObject._find_child_element(element, "INDEX")
+        child = SerializationHelper.find_child_element(element, "INDEX")
         if child is not None:
             index_value = child.text
             obj.index = index_value
 
         # Parse time_sync_server_configuration_ref
-        child = ARObject._find_child_element(element, "TIME-SYNC-SERVER-CONFIGURATION-REF")
+        child = SerializationHelper.find_child_element(element, "TIME-SYNC-SERVER-CONFIGURATION-REF")
         if child is not None:
             time_sync_server_configuration_ref_value = ARRef.deserialize(child)
             obj.time_sync_server_configuration_ref = time_sync_server_configuration_ref_value

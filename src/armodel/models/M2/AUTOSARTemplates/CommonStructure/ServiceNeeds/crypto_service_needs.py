@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_nee
     ServiceNeeds,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
     String,
@@ -51,7 +52,7 @@ class CryptoServiceNeeds(ServiceNeeds):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -70,7 +71,7 @@ class CryptoServiceNeeds(ServiceNeeds):
 
         # Serialize algorithm_family
         if self.algorithm_family is not None:
-            serialized = ARObject._serialize_item(self.algorithm_family, "String")
+            serialized = SerializationHelper.serialize_item(self.algorithm_family, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ALGORITHM-FAMILY")
@@ -84,7 +85,7 @@ class CryptoServiceNeeds(ServiceNeeds):
 
         # Serialize algorithm_mode
         if self.algorithm_mode is not None:
-            serialized = ARObject._serialize_item(self.algorithm_mode, "String")
+            serialized = SerializationHelper.serialize_item(self.algorithm_mode, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ALGORITHM-MODE")
@@ -98,7 +99,7 @@ class CryptoServiceNeeds(ServiceNeeds):
 
         # Serialize crypto_key
         if self.crypto_key is not None:
-            serialized = ARObject._serialize_item(self.crypto_key, "String")
+            serialized = SerializationHelper.serialize_item(self.crypto_key, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CRYPTO-KEY")
@@ -112,7 +113,7 @@ class CryptoServiceNeeds(ServiceNeeds):
 
         # Serialize maximum_key
         if self.maximum_key is not None:
-            serialized = ARObject._serialize_item(self.maximum_key, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.maximum_key, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAXIMUM-KEY")
@@ -140,25 +141,25 @@ class CryptoServiceNeeds(ServiceNeeds):
         obj = super(CryptoServiceNeeds, cls).deserialize(element)
 
         # Parse algorithm_family
-        child = ARObject._find_child_element(element, "ALGORITHM-FAMILY")
+        child = SerializationHelper.find_child_element(element, "ALGORITHM-FAMILY")
         if child is not None:
             algorithm_family_value = child.text
             obj.algorithm_family = algorithm_family_value
 
         # Parse algorithm_mode
-        child = ARObject._find_child_element(element, "ALGORITHM-MODE")
+        child = SerializationHelper.find_child_element(element, "ALGORITHM-MODE")
         if child is not None:
             algorithm_mode_value = child.text
             obj.algorithm_mode = algorithm_mode_value
 
         # Parse crypto_key
-        child = ARObject._find_child_element(element, "CRYPTO-KEY")
+        child = SerializationHelper.find_child_element(element, "CRYPTO-KEY")
         if child is not None:
             crypto_key_value = child.text
             obj.crypto_key = crypto_key_value
 
         # Parse maximum_key
-        child = ARObject._find_child_element(element, "MAXIMUM-KEY")
+        child = SerializationHelper.find_child_element(element, "MAXIMUM-KEY")
         if child is not None:
             maximum_key_value = child.text
             obj.maximum_key = maximum_key_value

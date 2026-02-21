@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.autosar_variable_ref import (
     AutosarVariableRef,
@@ -49,12 +50,12 @@ class SwVariableRefProxy(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize autosar_variable_ref
         if self.autosar_variable_ref is not None:
-            serialized = ARObject._serialize_item(self.autosar_variable_ref, "AutosarVariableRef")
+            serialized = SerializationHelper.serialize_item(self.autosar_variable_ref, "AutosarVariableRef")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("AUTOSAR-VARIABLE-REF-REF")
@@ -68,7 +69,7 @@ class SwVariableRefProxy(ARObject):
 
         # Serialize mc_data_instance_ref
         if self.mc_data_instance_ref is not None:
-            serialized = ARObject._serialize_item(self.mc_data_instance_ref, "McDataInstance")
+            serialized = SerializationHelper.serialize_item(self.mc_data_instance_ref, "McDataInstance")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MC-DATA-INSTANCE-REF")
@@ -97,13 +98,13 @@ class SwVariableRefProxy(ARObject):
         obj.__init__()
 
         # Parse autosar_variable_ref
-        child = ARObject._find_child_element(element, "AUTOSAR-VARIABLE-REF-REF")
+        child = SerializationHelper.find_child_element(element, "AUTOSAR-VARIABLE-REF-REF")
         if child is not None:
             autosar_variable_ref_value = ARRef.deserialize(child)
             obj.autosar_variable_ref = autosar_variable_ref_value
 
         # Parse mc_data_instance_ref
-        child = ARObject._find_child_element(element, "MC-DATA-INSTANCE-REF")
+        child = SerializationHelper.find_child_element(element, "MC-DATA-INSTANCE-REF")
         if child is not None:
             mc_data_instance_ref_value = ARRef.deserialize(child)
             obj.mc_data_instance_ref = mc_data_instance_ref_value

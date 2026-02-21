@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticRoutineSubfunction,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_parameter import (
     DiagnosticParameter,
 )
@@ -45,7 +46,7 @@ class DiagnosticRequestRoutineResults(DiagnosticRoutineSubfunction):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -66,7 +67,7 @@ class DiagnosticRequestRoutineResults(DiagnosticRoutineSubfunction):
         if self.requests:
             wrapper = ET.Element("REQUESTS")
             for item in self.requests:
-                serialized = ARObject._serialize_item(item, "DiagnosticParameter")
+                serialized = SerializationHelper.serialize_item(item, "DiagnosticParameter")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -76,7 +77,7 @@ class DiagnosticRequestRoutineResults(DiagnosticRoutineSubfunction):
         if self.responses:
             wrapper = ET.Element("RESPONSES")
             for item in self.responses:
-                serialized = ARObject._serialize_item(item, "DiagnosticParameter")
+                serialized = SerializationHelper.serialize_item(item, "DiagnosticParameter")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -99,21 +100,21 @@ class DiagnosticRequestRoutineResults(DiagnosticRoutineSubfunction):
 
         # Parse requests (list from container "REQUESTS")
         obj.requests = []
-        container = ARObject._find_child_element(element, "REQUESTS")
+        container = SerializationHelper.find_child_element(element, "REQUESTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.requests.append(child_value)
 
         # Parse responses (list from container "RESPONSES")
         obj.responses = []
-        container = ARObject._find_child_element(element, "RESPONSES")
+        container = SerializationHelper.find_child_element(element, "RESPONSES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.responses.append(child_value)
 

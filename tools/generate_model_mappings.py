@@ -178,6 +178,15 @@ def generate_yaml_mappings(
     polymorphic_types = generate_polymorphic_mappings(package_files)
     print(f"  Generated {len(polymorphic_types)} polymorphic type mappings")
     
+    # Manual XML tag mappings for manually maintained classes with custom tags
+    # These classes are in skip_classes.yaml but have non-standard XML tags
+    manual_xml_tag_mappings = {
+        "VT": "CompuConstTextContent",
+    }
+    
+    # Merge manual mappings with generated ones
+    xml_tag_mappings.update(manual_xml_tag_mappings)
+    
     # Build YAML structure
     yaml_data = {
         "version": "1.0.0",

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Fim import (
     DiagnosticInhibitionMaskEnum,
@@ -48,7 +49,7 @@ class DiagnosticFunctionIdentifierInhibit(DiagnosticCommonElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -67,7 +68,7 @@ class DiagnosticFunctionIdentifierInhibit(DiagnosticCommonElement):
 
         # Serialize function_ref
         if self.function_ref is not None:
-            serialized = ARObject._serialize_item(self.function_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.function_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FUNCTION-REF")
@@ -81,7 +82,7 @@ class DiagnosticFunctionIdentifierInhibit(DiagnosticCommonElement):
 
         # Serialize inhibition_mask
         if self.inhibition_mask is not None:
-            serialized = ARObject._serialize_item(self.inhibition_mask, "DiagnosticInhibitionMaskEnum")
+            serialized = SerializationHelper.serialize_item(self.inhibition_mask, "DiagnosticInhibitionMaskEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INHIBITION-MASK")
@@ -97,7 +98,7 @@ class DiagnosticFunctionIdentifierInhibit(DiagnosticCommonElement):
         if self.inhibit_sources:
             wrapper = ET.Element("INHIBIT-SOURCES")
             for item in self.inhibit_sources:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -119,24 +120,24 @@ class DiagnosticFunctionIdentifierInhibit(DiagnosticCommonElement):
         obj = super(DiagnosticFunctionIdentifierInhibit, cls).deserialize(element)
 
         # Parse function_ref
-        child = ARObject._find_child_element(element, "FUNCTION-REF")
+        child = SerializationHelper.find_child_element(element, "FUNCTION-REF")
         if child is not None:
             function_ref_value = ARRef.deserialize(child)
             obj.function_ref = function_ref_value
 
         # Parse inhibition_mask
-        child = ARObject._find_child_element(element, "INHIBITION-MASK")
+        child = SerializationHelper.find_child_element(element, "INHIBITION-MASK")
         if child is not None:
             inhibition_mask_value = DiagnosticInhibitionMaskEnum.deserialize(child)
             obj.inhibition_mask = inhibition_mask_value
 
         # Parse inhibit_sources (list from container "INHIBIT-SOURCES")
         obj.inhibit_sources = []
-        container = ARObject._find_child_element(element, "INHIBIT-SOURCES")
+        container = SerializationHelper.find_child_element(element, "INHIBIT-SOURCES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.inhibit_sources.append(child_value)
 

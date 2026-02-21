@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.global_time_sl
     GlobalTimeSlave,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class GlobalTimeEthSlave(GlobalTimeSlave):
@@ -40,7 +41,7 @@ class GlobalTimeEthSlave(GlobalTimeSlave):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -59,7 +60,7 @@ class GlobalTimeEthSlave(GlobalTimeSlave):
 
         # Serialize crc_validated
         if self.crc_validated is not None:
-            serialized = ARObject._serialize_item(self.crc_validated, "Any")
+            serialized = SerializationHelper.serialize_item(self.crc_validated, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CRC-VALIDATED")
@@ -87,7 +88,7 @@ class GlobalTimeEthSlave(GlobalTimeSlave):
         obj = super(GlobalTimeEthSlave, cls).deserialize(element)
 
         # Parse crc_validated
-        child = ARObject._find_child_element(element, "CRC-VALIDATED")
+        child = SerializationHelper.find_child_element(element, "CRC-VALIDATED")
         if child is not None:
             crc_validated_value = child.text
             obj.crc_validated = crc_validated_value

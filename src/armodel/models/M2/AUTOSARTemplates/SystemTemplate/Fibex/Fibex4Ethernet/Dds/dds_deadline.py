@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Float,
 )
@@ -40,12 +41,12 @@ class DdsDeadline(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize deadline_period
         if self.deadline_period is not None:
-            serialized = ARObject._serialize_item(self.deadline_period, "Float")
+            serialized = SerializationHelper.serialize_item(self.deadline_period, "Float")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DEADLINE-PERIOD")
@@ -74,7 +75,7 @@ class DdsDeadline(ARObject):
         obj.__init__()
 
         # Parse deadline_period
-        child = ARObject._find_child_element(element, "DEADLINE-PERIOD")
+        child = SerializationHelper.find_child_element(element, "DEADLINE-PERIOD")
         if child is not None:
             deadline_period_value = child.text
             obj.deadline_period = deadline_period_value

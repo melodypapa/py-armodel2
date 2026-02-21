@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.EngineeringObject.autosar_engineering_object import (
     AutosarEngineeringObject,
 )
@@ -49,7 +50,7 @@ class BuildActionEntity(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -70,7 +71,7 @@ class BuildActionEntity(Identifiable, ABC):
         if self.delivery_artifacts:
             wrapper = ET.Element("DELIVERY-ARTIFACTS")
             for item in self.delivery_artifacts:
-                serialized = ARObject._serialize_item(item, "AutosarEngineeringObject")
+                serialized = SerializationHelper.serialize_item(item, "AutosarEngineeringObject")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -78,7 +79,7 @@ class BuildActionEntity(Identifiable, ABC):
 
         # Serialize invocation
         if self.invocation is not None:
-            serialized = ARObject._serialize_item(self.invocation, "BuildActionInvocator")
+            serialized = SerializationHelper.serialize_item(self.invocation, "BuildActionInvocator")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INVOCATION")
@@ -107,18 +108,18 @@ class BuildActionEntity(Identifiable, ABC):
 
         # Parse delivery_artifacts (list from container "DELIVERY-ARTIFACTS")
         obj.delivery_artifacts = []
-        container = ARObject._find_child_element(element, "DELIVERY-ARTIFACTS")
+        container = SerializationHelper.find_child_element(element, "DELIVERY-ARTIFACTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.delivery_artifacts.append(child_value)
 
         # Parse invocation
-        child = ARObject._find_child_element(element, "INVOCATION")
+        child = SerializationHelper.find_child_element(element, "INVOCATION")
         if child is not None:
-            invocation_value = ARObject._deserialize_by_tag(child, "BuildActionInvocator")
+            invocation_value = SerializationHelper.deserialize_by_tag(child, "BuildActionInvocator")
             obj.invocation = invocation_value
 
         return obj

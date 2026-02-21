@@ -13,6 +13,7 @@ from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_const_content import 
     CompuConstContent,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Numerical,
 )
@@ -43,7 +44,7 @@ class CompuConstFormulaContent(CompuConstContent):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class CompuConstFormulaContent(CompuConstContent):
 
         # Serialize vf
         if self.vf is not None:
-            serialized = ARObject._serialize_item(self.vf, "Numerical")
+            serialized = SerializationHelper.serialize_item(self.vf, "Numerical")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VF")
@@ -90,7 +91,7 @@ class CompuConstFormulaContent(CompuConstContent):
         obj = super(CompuConstFormulaContent, cls).deserialize(element)
 
         # Parse vf
-        child = ARObject._find_child_element(element, "VF")
+        child = SerializationHelper.find_child_element(element, "VF")
         if child is not None:
             vf_value = child.text
             obj.vf = vf_value

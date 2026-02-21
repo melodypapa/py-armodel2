@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     MacAddressString,
@@ -59,7 +60,7 @@ class IEEE1722TpConnection(ARElement, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -78,7 +79,7 @@ class IEEE1722TpConnection(ARElement, ABC):
 
         # Serialize destination_mac
         if self.destination_mac is not None:
-            serialized = ARObject._serialize_item(self.destination_mac, "MacAddressString")
+            serialized = SerializationHelper.serialize_item(self.destination_mac, "MacAddressString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DESTINATION-MAC")
@@ -92,7 +93,7 @@ class IEEE1722TpConnection(ARElement, ABC):
 
         # Serialize mac_address_string
         if self.mac_address_string is not None:
-            serialized = ARObject._serialize_item(self.mac_address_string, "MacAddressString")
+            serialized = SerializationHelper.serialize_item(self.mac_address_string, "MacAddressString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAC-ADDRESS-STRING")
@@ -106,7 +107,7 @@ class IEEE1722TpConnection(ARElement, ABC):
 
         # Serialize pdu_ref
         if self.pdu_ref is not None:
-            serialized = ARObject._serialize_item(self.pdu_ref, "PduTriggering")
+            serialized = SerializationHelper.serialize_item(self.pdu_ref, "PduTriggering")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PDU-REF")
@@ -120,7 +121,7 @@ class IEEE1722TpConnection(ARElement, ABC):
 
         # Serialize unique_stream_id
         if self.unique_stream_id is not None:
-            serialized = ARObject._serialize_item(self.unique_stream_id, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.unique_stream_id, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("UNIQUE-STREAM-ID")
@@ -134,7 +135,7 @@ class IEEE1722TpConnection(ARElement, ABC):
 
         # Serialize version
         if self.version is not None:
-            serialized = ARObject._serialize_item(self.version, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.version, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VERSION")
@@ -148,7 +149,7 @@ class IEEE1722TpConnection(ARElement, ABC):
 
         # Serialize vlan_priority
         if self.vlan_priority is not None:
-            serialized = ARObject._serialize_item(self.vlan_priority, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.vlan_priority, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VLAN-PRIORITY")
@@ -176,37 +177,37 @@ class IEEE1722TpConnection(ARElement, ABC):
         obj = super(IEEE1722TpConnection, cls).deserialize(element)
 
         # Parse destination_mac
-        child = ARObject._find_child_element(element, "DESTINATION-MAC")
+        child = SerializationHelper.find_child_element(element, "DESTINATION-MAC")
         if child is not None:
             destination_mac_value = child.text
             obj.destination_mac = destination_mac_value
 
         # Parse mac_address_string
-        child = ARObject._find_child_element(element, "MAC-ADDRESS-STRING")
+        child = SerializationHelper.find_child_element(element, "MAC-ADDRESS-STRING")
         if child is not None:
             mac_address_string_value = child.text
             obj.mac_address_string = mac_address_string_value
 
         # Parse pdu_ref
-        child = ARObject._find_child_element(element, "PDU-REF")
+        child = SerializationHelper.find_child_element(element, "PDU-REF")
         if child is not None:
             pdu_ref_value = ARRef.deserialize(child)
             obj.pdu_ref = pdu_ref_value
 
         # Parse unique_stream_id
-        child = ARObject._find_child_element(element, "UNIQUE-STREAM-ID")
+        child = SerializationHelper.find_child_element(element, "UNIQUE-STREAM-ID")
         if child is not None:
             unique_stream_id_value = child.text
             obj.unique_stream_id = unique_stream_id_value
 
         # Parse version
-        child = ARObject._find_child_element(element, "VERSION")
+        child = SerializationHelper.find_child_element(element, "VERSION")
         if child is not None:
             version_value = child.text
             obj.version = version_value
 
         # Parse vlan_priority
-        child = ARObject._find_child_element(element, "VLAN-PRIORITY")
+        child = SerializationHelper.find_child_element(element, "VLAN-PRIORITY")
         if child is not None:
             vlan_priority_value = child.text
             obj.vlan_priority = vlan_priority_value

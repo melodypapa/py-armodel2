@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
     MultiplexedPart,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_signal_i_pdu import (
     ISignalIPdu,
@@ -44,7 +45,7 @@ class StaticPart(MultiplexedPart):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -63,7 +64,7 @@ class StaticPart(MultiplexedPart):
 
         # Serialize i_pdu_ref
         if self.i_pdu_ref is not None:
-            serialized = ARObject._serialize_item(self.i_pdu_ref, "ISignalIPdu")
+            serialized = SerializationHelper.serialize_item(self.i_pdu_ref, "ISignalIPdu")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("I-PDU-REF")
@@ -91,7 +92,7 @@ class StaticPart(MultiplexedPart):
         obj = super(StaticPart, cls).deserialize(element)
 
         # Parse i_pdu_ref
-        child = ARObject._find_child_element(element, "I-PDU-REF")
+        child = SerializationHelper.find_child_element(element, "I-PDU-REF")
         if child is not None:
             i_pdu_ref_value = ARRef.deserialize(child)
             obj.i_pdu_ref = i_pdu_ref_value

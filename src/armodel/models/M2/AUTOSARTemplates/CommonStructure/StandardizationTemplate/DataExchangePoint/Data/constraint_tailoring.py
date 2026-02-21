@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
     RestrictionWithSeverity,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.Documentation.BlockElements.RequirementsTracing.traceable_text import (
     TraceableText,
@@ -44,7 +45,7 @@ class ConstraintTailoring(RestrictionWithSeverity):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -63,7 +64,7 @@ class ConstraintTailoring(RestrictionWithSeverity):
 
         # Serialize constraint_ref
         if self.constraint_ref is not None:
-            serialized = ARObject._serialize_item(self.constraint_ref, "TraceableText")
+            serialized = SerializationHelper.serialize_item(self.constraint_ref, "TraceableText")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONSTRAINT-REF")
@@ -91,7 +92,7 @@ class ConstraintTailoring(RestrictionWithSeverity):
         obj = super(ConstraintTailoring, cls).deserialize(element)
 
         # Parse constraint_ref
-        child = ARObject._find_child_element(element, "CONSTRAINT-REF")
+        child = SerializationHelper.find_child_element(element, "CONSTRAINT-REF")
         if child is not None:
             constraint_ref_value = ARRef.deserialize(child)
             obj.constraint_ref = constraint_ref_value

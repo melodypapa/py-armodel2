@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
     TimeValue,
@@ -45,12 +46,12 @@ class InitialSdDelayConfig(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize initial_delay_max
         if self.initial_delay_max is not None:
-            serialized = ARObject._serialize_item(self.initial_delay_max, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.initial_delay_max, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INITIAL-DELAY-MAX")
@@ -64,7 +65,7 @@ class InitialSdDelayConfig(ARObject):
 
         # Serialize initial_delay_min
         if self.initial_delay_min is not None:
-            serialized = ARObject._serialize_item(self.initial_delay_min, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.initial_delay_min, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INITIAL-DELAY-MIN")
@@ -78,7 +79,7 @@ class InitialSdDelayConfig(ARObject):
 
         # Serialize initial
         if self.initial is not None:
-            serialized = ARObject._serialize_item(self.initial, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.initial, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INITIAL")
@@ -107,19 +108,19 @@ class InitialSdDelayConfig(ARObject):
         obj.__init__()
 
         # Parse initial_delay_max
-        child = ARObject._find_child_element(element, "INITIAL-DELAY-MAX")
+        child = SerializationHelper.find_child_element(element, "INITIAL-DELAY-MAX")
         if child is not None:
             initial_delay_max_value = child.text
             obj.initial_delay_max = initial_delay_max_value
 
         # Parse initial_delay_min
-        child = ARObject._find_child_element(element, "INITIAL-DELAY-MIN")
+        child = SerializationHelper.find_child_element(element, "INITIAL-DELAY-MIN")
         if child is not None:
             initial_delay_min_value = child.text
             obj.initial_delay_min = initial_delay_min_value
 
         # Parse initial
-        child = ARObject._find_child_element(element, "INITIAL")
+        child = SerializationHelper.find_child_element(element, "INITIAL")
         if child is not None:
             initial_value = child.text
             obj.initial = initial_value

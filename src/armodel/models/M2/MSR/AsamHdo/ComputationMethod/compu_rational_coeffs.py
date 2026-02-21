@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_nominator_denominator import (
     CompuNominatorDenominator,
 )
@@ -42,12 +43,12 @@ class CompuRationalCoeffs(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize compu_numerator
         if self.compu_numerator is not None:
-            serialized = ARObject._serialize_item(self.compu_numerator, "CompuNominatorDenominator")
+            serialized = SerializationHelper.serialize_item(self.compu_numerator, "CompuNominatorDenominator")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COMPU-NUMERATOR")
@@ -61,7 +62,7 @@ class CompuRationalCoeffs(ARObject):
 
         # Serialize compu_denominator
         if self.compu_denominator is not None:
-            serialized = ARObject._serialize_item(self.compu_denominator, "CompuNominatorDenominator")
+            serialized = SerializationHelper.serialize_item(self.compu_denominator, "CompuNominatorDenominator")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COMPU-DENOMINATOR")
@@ -90,15 +91,15 @@ class CompuRationalCoeffs(ARObject):
         obj.__init__()
 
         # Parse compu_numerator
-        child = ARObject._find_child_element(element, "COMPU-NUMERATOR")
+        child = SerializationHelper.find_child_element(element, "COMPU-NUMERATOR")
         if child is not None:
-            compu_numerator_value = ARObject._deserialize_by_tag(child, "CompuNominatorDenominator")
+            compu_numerator_value = SerializationHelper.deserialize_by_tag(child, "CompuNominatorDenominator")
             obj.compu_numerator = compu_numerator_value
 
         # Parse compu_denominator
-        child = ARObject._find_child_element(element, "COMPU-DENOMINATOR")
+        child = SerializationHelper.find_child_element(element, "COMPU-DENOMINATOR")
         if child is not None:
-            compu_denominator_value = ARObject._deserialize_by_tag(child, "CompuNominatorDenominator")
+            compu_denominator_value = SerializationHelper.deserialize_by_tag(child, "CompuNominatorDenominator")
             obj.compu_denominator = compu_denominator_value
 
         return obj

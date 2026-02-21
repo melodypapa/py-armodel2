@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     DateTime,
     NameToken,
@@ -59,12 +60,12 @@ class DocRevision(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize date
         if self.date is not None:
-            serialized = ARObject._serialize_item(self.date, "DateTime")
+            serialized = SerializationHelper.serialize_item(self.date, "DateTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATE")
@@ -78,7 +79,7 @@ class DocRevision(ARObject):
 
         # Serialize issued_by
         if self.issued_by is not None:
-            serialized = ARObject._serialize_item(self.issued_by, "String")
+            serialized = SerializationHelper.serialize_item(self.issued_by, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ISSUED-BY")
@@ -94,7 +95,7 @@ class DocRevision(ARObject):
         if self.modifications:
             wrapper = ET.Element("MODIFICATIONS")
             for item in self.modifications:
-                serialized = ARObject._serialize_item(item, "Modification")
+                serialized = SerializationHelper.serialize_item(item, "Modification")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -102,7 +103,7 @@ class DocRevision(ARObject):
 
         # Serialize revision_label_string
         if self.revision_label_string is not None:
-            serialized = ARObject._serialize_item(self.revision_label_string, "RevisionLabelString")
+            serialized = SerializationHelper.serialize_item(self.revision_label_string, "RevisionLabelString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REVISION-LABEL-STRING")
@@ -116,7 +117,7 @@ class DocRevision(ARObject):
 
         # Serialize revision_label_p1
         if self.revision_label_p1 is not None:
-            serialized = ARObject._serialize_item(self.revision_label_p1, "RevisionLabelString")
+            serialized = SerializationHelper.serialize_item(self.revision_label_p1, "RevisionLabelString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REVISION-LABEL-P1")
@@ -130,7 +131,7 @@ class DocRevision(ARObject):
 
         # Serialize revision_label_p2
         if self.revision_label_p2 is not None:
-            serialized = ARObject._serialize_item(self.revision_label_p2, "RevisionLabelString")
+            serialized = SerializationHelper.serialize_item(self.revision_label_p2, "RevisionLabelString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REVISION-LABEL-P2")
@@ -144,7 +145,7 @@ class DocRevision(ARObject):
 
         # Serialize state
         if self.state is not None:
-            serialized = ARObject._serialize_item(self.state, "NameToken")
+            serialized = SerializationHelper.serialize_item(self.state, "NameToken")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("STATE")
@@ -173,47 +174,47 @@ class DocRevision(ARObject):
         obj.__init__()
 
         # Parse date
-        child = ARObject._find_child_element(element, "DATE")
+        child = SerializationHelper.find_child_element(element, "DATE")
         if child is not None:
             date_value = child.text
             obj.date = date_value
 
         # Parse issued_by
-        child = ARObject._find_child_element(element, "ISSUED-BY")
+        child = SerializationHelper.find_child_element(element, "ISSUED-BY")
         if child is not None:
             issued_by_value = child.text
             obj.issued_by = issued_by_value
 
         # Parse modifications (list from container "MODIFICATIONS")
         obj.modifications = []
-        container = ARObject._find_child_element(element, "MODIFICATIONS")
+        container = SerializationHelper.find_child_element(element, "MODIFICATIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.modifications.append(child_value)
 
         # Parse revision_label_string
-        child = ARObject._find_child_element(element, "REVISION-LABEL-STRING")
+        child = SerializationHelper.find_child_element(element, "REVISION-LABEL-STRING")
         if child is not None:
             revision_label_string_value = child.text
             obj.revision_label_string = revision_label_string_value
 
         # Parse revision_label_p1
-        child = ARObject._find_child_element(element, "REVISION-LABEL-P1")
+        child = SerializationHelper.find_child_element(element, "REVISION-LABEL-P1")
         if child is not None:
             revision_label_p1_value = child.text
             obj.revision_label_p1 = revision_label_p1_value
 
         # Parse revision_label_p2
-        child = ARObject._find_child_element(element, "REVISION-LABEL-P2")
+        child = SerializationHelper.find_child_element(element, "REVISION-LABEL-P2")
         if child is not None:
             revision_label_p2_value = child.text
             obj.revision_label_p2 = revision_label_p2_value
 
         # Parse state
-        child = ARObject._find_child_element(element, "STATE")
+        child = SerializationHelper.find_child_element(element, "STATE")
         if child is not None:
             state_value = child.text
             obj.state = state_value

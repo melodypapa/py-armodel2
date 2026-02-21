@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_dep
     ServiceDependency,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_group import (
     PortGroup,
@@ -57,7 +58,7 @@ class SwcServiceDependency(ServiceDependency):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -78,7 +79,7 @@ class SwcServiceDependency(ServiceDependency):
         if self.assigned_datas:
             wrapper = ET.Element("ASSIGNED-DATAS")
             for item in self.assigned_datas:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -88,7 +89,7 @@ class SwcServiceDependency(ServiceDependency):
         if self.assigned_ports:
             wrapper = ET.Element("ASSIGNED-PORTS")
             for item in self.assigned_ports:
-                serialized = ARObject._serialize_item(item, "RoleBasedPortAssignment")
+                serialized = SerializationHelper.serialize_item(item, "RoleBasedPortAssignment")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -96,7 +97,7 @@ class SwcServiceDependency(ServiceDependency):
 
         # Serialize represented_port_ref
         if self.represented_port_ref is not None:
-            serialized = ARObject._serialize_item(self.represented_port_ref, "PortGroup")
+            serialized = SerializationHelper.serialize_item(self.represented_port_ref, "PortGroup")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REPRESENTED-PORT-REF")
@@ -110,7 +111,7 @@ class SwcServiceDependency(ServiceDependency):
 
         # Serialize service_needs
         if self.service_needs is not None:
-            serialized = ARObject._serialize_item(self.service_needs, "ServiceNeeds")
+            serialized = SerializationHelper.serialize_item(self.service_needs, "ServiceNeeds")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SERVICE-NEEDS")
@@ -139,34 +140,34 @@ class SwcServiceDependency(ServiceDependency):
 
         # Parse assigned_datas (list from container "ASSIGNED-DATAS")
         obj.assigned_datas = []
-        container = ARObject._find_child_element(element, "ASSIGNED-DATAS")
+        container = SerializationHelper.find_child_element(element, "ASSIGNED-DATAS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.assigned_datas.append(child_value)
 
         # Parse assigned_ports (list from container "ASSIGNED-PORTS")
         obj.assigned_ports = []
-        container = ARObject._find_child_element(element, "ASSIGNED-PORTS")
+        container = SerializationHelper.find_child_element(element, "ASSIGNED-PORTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.assigned_ports.append(child_value)
 
         # Parse represented_port_ref
-        child = ARObject._find_child_element(element, "REPRESENTED-PORT-REF")
+        child = SerializationHelper.find_child_element(element, "REPRESENTED-PORT-REF")
         if child is not None:
             represented_port_ref_value = ARRef.deserialize(child)
             obj.represented_port_ref = represented_port_ref_value
 
         # Parse service_needs
-        child = ARObject._find_child_element(element, "SERVICE-NEEDS")
+        child = SerializationHelper.find_child_element(element, "SERVICE-NEEDS")
         if child is not None:
-            service_needs_value = ARObject._deserialize_by_tag(child, "ServiceNeeds")
+            service_needs_value = SerializationHelper.deserialize_by_tag(child, "ServiceNeeds")
             obj.service_needs = service_needs_value
 
         return obj

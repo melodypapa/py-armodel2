@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.Instance
     PortInCompositionTypeInstanceRef,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_provided_port_prototype import (
     AbstractProvidedPortPrototype,
@@ -49,7 +50,7 @@ class PPortInCompositionInstanceRef(PortInCompositionTypeInstanceRef):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -68,7 +69,7 @@ class PPortInCompositionInstanceRef(PortInCompositionTypeInstanceRef):
 
         # Serialize context_component_ref
         if self.context_component_ref is not None:
-            serialized = ARObject._serialize_item(self.context_component_ref, "SwComponentPrototype")
+            serialized = SerializationHelper.serialize_item(self.context_component_ref, "SwComponentPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONTEXT-COMPONENT-REF")
@@ -82,7 +83,7 @@ class PPortInCompositionInstanceRef(PortInCompositionTypeInstanceRef):
 
         # Serialize target_p_port_ref
         if self.target_p_port_ref is not None:
-            serialized = ARObject._serialize_item(self.target_p_port_ref, "AbstractProvidedPortPrototype")
+            serialized = SerializationHelper.serialize_item(self.target_p_port_ref, "AbstractProvidedPortPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TARGET-P-PORT-REF")
@@ -110,13 +111,13 @@ class PPortInCompositionInstanceRef(PortInCompositionTypeInstanceRef):
         obj = super(PPortInCompositionInstanceRef, cls).deserialize(element)
 
         # Parse context_component_ref
-        child = ARObject._find_child_element(element, "CONTEXT-COMPONENT-REF")
+        child = SerializationHelper.find_child_element(element, "CONTEXT-COMPONENT-REF")
         if child is not None:
             context_component_ref_value = ARRef.deserialize(child)
             obj.context_component_ref = context_component_ref_value
 
         # Parse target_p_port_ref
-        child = ARObject._find_child_element(element, "TARGET-P-PORT-REF")
+        child = SerializationHelper.find_child_element(element, "TARGET-P-PORT-REF")
         if child is not None:
             target_p_port_ref_value = ARRef.deserialize(child)
             obj.target_p_port_ref = target_p_port_ref_value

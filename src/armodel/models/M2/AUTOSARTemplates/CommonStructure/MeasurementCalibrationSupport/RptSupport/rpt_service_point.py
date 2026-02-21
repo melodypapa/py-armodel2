@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     CIdentifier,
     PositiveInteger,
@@ -46,7 +47,7 @@ class RptServicePoint(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class RptServicePoint(Identifiable):
 
         # Serialize service_id
         if self.service_id is not None:
-            serialized = ARObject._serialize_item(self.service_id, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.service_id, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SERVICE-ID")
@@ -79,7 +80,7 @@ class RptServicePoint(Identifiable):
 
         # Serialize symbol
         if self.symbol is not None:
-            serialized = ARObject._serialize_item(self.symbol, "CIdentifier")
+            serialized = SerializationHelper.serialize_item(self.symbol, "CIdentifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SYMBOL")
@@ -107,15 +108,15 @@ class RptServicePoint(Identifiable):
         obj = super(RptServicePoint, cls).deserialize(element)
 
         # Parse service_id
-        child = ARObject._find_child_element(element, "SERVICE-ID")
+        child = SerializationHelper.find_child_element(element, "SERVICE-ID")
         if child is not None:
             service_id_value = child.text
             obj.service_id = service_id_value
 
         # Parse symbol
-        child = ARObject._find_child_element(element, "SYMBOL")
+        child = SerializationHelper.find_child_element(element, "SYMBOL")
         if child is not None:
-            symbol_value = ARObject._deserialize_by_tag(child, "CIdentifier")
+            symbol_value = SerializationHelper.deserialize_by_tag(child, "CIdentifier")
             obj.symbol = symbol_value
 
         return obj

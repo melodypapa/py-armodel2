@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_condition_formula import (
     EcucConditionFormula,
 )
@@ -50,12 +51,12 @@ class EcucConditionSpecification(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize condition
         if self.condition is not None:
-            serialized = ARObject._serialize_item(self.condition, "EcucConditionFormula")
+            serialized = SerializationHelper.serialize_item(self.condition, "EcucConditionFormula")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONDITION")
@@ -71,7 +72,7 @@ class EcucConditionSpecification(ARObject):
         if self.ecuc_queries:
             wrapper = ET.Element("ECUC-QUERIES")
             for item in self.ecuc_queries:
-                serialized = ARObject._serialize_item(item, "EcucQuery")
+                serialized = SerializationHelper.serialize_item(item, "EcucQuery")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -79,7 +80,7 @@ class EcucConditionSpecification(ARObject):
 
         # Serialize informal_formula
         if self.informal_formula is not None:
-            serialized = ARObject._serialize_item(self.informal_formula, "MlFormula")
+            serialized = SerializationHelper.serialize_item(self.informal_formula, "MlFormula")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INFORMAL-FORMULA")
@@ -108,25 +109,25 @@ class EcucConditionSpecification(ARObject):
         obj.__init__()
 
         # Parse condition
-        child = ARObject._find_child_element(element, "CONDITION")
+        child = SerializationHelper.find_child_element(element, "CONDITION")
         if child is not None:
-            condition_value = ARObject._deserialize_by_tag(child, "EcucConditionFormula")
+            condition_value = SerializationHelper.deserialize_by_tag(child, "EcucConditionFormula")
             obj.condition = condition_value
 
         # Parse ecuc_queries (list from container "ECUC-QUERIES")
         obj.ecuc_queries = []
-        container = ARObject._find_child_element(element, "ECUC-QUERIES")
+        container = SerializationHelper.find_child_element(element, "ECUC-QUERIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.ecuc_queries.append(child_value)
 
         # Parse informal_formula
-        child = ARObject._find_child_element(element, "INFORMAL-FORMULA")
+        child = SerializationHelper.find_child_element(element, "INFORMAL-FORMULA")
         if child is not None:
-            informal_formula_value = ARObject._deserialize_by_tag(child, "MlFormula")
+            informal_formula_value = SerializationHelper.deserialize_by_tag(child, "MlFormula")
             obj.informal_formula = informal_formula_value
 
         return obj

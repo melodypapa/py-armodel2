@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.RPTScenario.rpt_container import (
     RptContainer,
@@ -57,7 +58,7 @@ class RapidPrototypingScenario(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -76,7 +77,7 @@ class RapidPrototypingScenario(ARElement):
 
         # Serialize host_system_ref
         if self.host_system_ref is not None:
-            serialized = ARObject._serialize_item(self.host_system_ref, "System")
+            serialized = SerializationHelper.serialize_item(self.host_system_ref, "System")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HOST-SYSTEM-REF")
@@ -92,7 +93,7 @@ class RapidPrototypingScenario(ARElement):
         if self.rpt_containers:
             wrapper = ET.Element("RPT-CONTAINERS")
             for item in self.rpt_containers:
-                serialized = ARObject._serialize_item(item, "RptContainer")
+                serialized = SerializationHelper.serialize_item(item, "RptContainer")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -102,7 +103,7 @@ class RapidPrototypingScenario(ARElement):
         if self.rpt_profiles:
             wrapper = ET.Element("RPT-PROFILES")
             for item in self.rpt_profiles:
-                serialized = ARObject._serialize_item(item, "RptProfile")
+                serialized = SerializationHelper.serialize_item(item, "RptProfile")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -110,7 +111,7 @@ class RapidPrototypingScenario(ARElement):
 
         # Serialize rpt_system_ref
         if self.rpt_system_ref is not None:
-            serialized = ARObject._serialize_item(self.rpt_system_ref, "System")
+            serialized = SerializationHelper.serialize_item(self.rpt_system_ref, "System")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RPT-SYSTEM-REF")
@@ -138,33 +139,33 @@ class RapidPrototypingScenario(ARElement):
         obj = super(RapidPrototypingScenario, cls).deserialize(element)
 
         # Parse host_system_ref
-        child = ARObject._find_child_element(element, "HOST-SYSTEM-REF")
+        child = SerializationHelper.find_child_element(element, "HOST-SYSTEM-REF")
         if child is not None:
             host_system_ref_value = ARRef.deserialize(child)
             obj.host_system_ref = host_system_ref_value
 
         # Parse rpt_containers (list from container "RPT-CONTAINERS")
         obj.rpt_containers = []
-        container = ARObject._find_child_element(element, "RPT-CONTAINERS")
+        container = SerializationHelper.find_child_element(element, "RPT-CONTAINERS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.rpt_containers.append(child_value)
 
         # Parse rpt_profiles (list from container "RPT-PROFILES")
         obj.rpt_profiles = []
-        container = ARObject._find_child_element(element, "RPT-PROFILES")
+        container = SerializationHelper.find_child_element(element, "RPT-PROFILES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.rpt_profiles.append(child_value)
 
         # Parse rpt_system_ref
-        child = ARObject._find_child_element(element, "RPT-SYSTEM-REF")
+        child = SerializationHelper.find_child_element(element, "RPT-SYSTEM-REF")
         if child is not None:
             rpt_system_ref_value = ARRef.deserialize(child)
             obj.rpt_system_ref = rpt_system_ref_value

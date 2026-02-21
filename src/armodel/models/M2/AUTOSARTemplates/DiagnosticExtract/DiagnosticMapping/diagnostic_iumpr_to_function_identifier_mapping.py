@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
     DiagnosticMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_iumpr import (
     DiagnosticIumpr,
@@ -46,7 +47,7 @@ class DiagnosticIumprToFunctionIdentifierMapping(DiagnosticMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class DiagnosticIumprToFunctionIdentifierMapping(DiagnosticMapping):
 
         # Serialize function_ref
         if self.function_ref is not None:
-            serialized = ARObject._serialize_item(self.function_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.function_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FUNCTION-REF")
@@ -79,7 +80,7 @@ class DiagnosticIumprToFunctionIdentifierMapping(DiagnosticMapping):
 
         # Serialize iumpr_ref
         if self.iumpr_ref is not None:
-            serialized = ARObject._serialize_item(self.iumpr_ref, "DiagnosticIumpr")
+            serialized = SerializationHelper.serialize_item(self.iumpr_ref, "DiagnosticIumpr")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IUMPR-REF")
@@ -107,13 +108,13 @@ class DiagnosticIumprToFunctionIdentifierMapping(DiagnosticMapping):
         obj = super(DiagnosticIumprToFunctionIdentifierMapping, cls).deserialize(element)
 
         # Parse function_ref
-        child = ARObject._find_child_element(element, "FUNCTION-REF")
+        child = SerializationHelper.find_child_element(element, "FUNCTION-REF")
         if child is not None:
             function_ref_value = ARRef.deserialize(child)
             obj.function_ref = function_ref_value
 
         # Parse iumpr_ref
-        child = ARObject._find_child_element(element, "IUMPR-REF")
+        child = SerializationHelper.find_child_element(element, "IUMPR-REF")
         if child is not None:
             iumpr_ref_value = ARRef.deserialize(child)
             obj.iumpr_ref = iumpr_ref_value

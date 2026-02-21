@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.EnvironmentalCondi
     DiagnosticEnvCompareCondition,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
@@ -41,7 +42,7 @@ class DiagnosticEnvModeCondition(DiagnosticEnvCompareCondition):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -60,7 +61,7 @@ class DiagnosticEnvModeCondition(DiagnosticEnvCompareCondition):
 
         # Serialize mode_element_ref
         if self.mode_element_ref is not None:
-            serialized = ARObject._serialize_item(self.mode_element_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.mode_element_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MODE-ELEMENT-REF")
@@ -88,7 +89,7 @@ class DiagnosticEnvModeCondition(DiagnosticEnvCompareCondition):
         obj = super(DiagnosticEnvModeCondition, cls).deserialize(element)
 
         # Parse mode_element_ref
-        child = ARObject._find_child_element(element, "MODE-ELEMENT-REF")
+        child = SerializationHelper.find_child_element(element, "MODE-ELEMENT-REF")
         if child is not None:
             mode_element_ref_value = ARRef.deserialize(child)
             obj.mode_element_ref = mode_element_ref_value

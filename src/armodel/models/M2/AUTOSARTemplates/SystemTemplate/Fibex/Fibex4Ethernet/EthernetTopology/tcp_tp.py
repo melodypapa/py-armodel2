@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
     TcpUdpConfig,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -60,7 +61,7 @@ class TcpTp(TcpUdpConfig):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -79,7 +80,7 @@ class TcpTp(TcpUdpConfig):
 
         # Serialize keep_alive
         if self.keep_alive is not None:
-            serialized = ARObject._serialize_item(self.keep_alive, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.keep_alive, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("KEEP-ALIVE")
@@ -93,7 +94,7 @@ class TcpTp(TcpUdpConfig):
 
         # Serialize keep_alives
         if self.keep_alives is not None:
-            serialized = ARObject._serialize_item(self.keep_alives, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.keep_alives, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("KEEP-ALIVES")
@@ -107,7 +108,7 @@ class TcpTp(TcpUdpConfig):
 
         # Serialize keep_alive_time
         if self.keep_alive_time is not None:
-            serialized = ARObject._serialize_item(self.keep_alive_time, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.keep_alive_time, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("KEEP-ALIVE-TIME")
@@ -121,7 +122,7 @@ class TcpTp(TcpUdpConfig):
 
         # Serialize nagles_algorithm
         if self.nagles_algorithm is not None:
-            serialized = ARObject._serialize_item(self.nagles_algorithm, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.nagles_algorithm, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NAGLES-ALGORITHM")
@@ -135,7 +136,7 @@ class TcpTp(TcpUdpConfig):
 
         # Serialize receive_window_min
         if self.receive_window_min is not None:
-            serialized = ARObject._serialize_item(self.receive_window_min, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.receive_window_min, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RECEIVE-WINDOW-MIN")
@@ -149,7 +150,7 @@ class TcpTp(TcpUdpConfig):
 
         # Serialize tcp
         if self.tcp is not None:
-            serialized = ARObject._serialize_item(self.tcp, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.tcp, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TCP")
@@ -163,7 +164,7 @@ class TcpTp(TcpUdpConfig):
 
         # Serialize tcp_tp_port
         if self.tcp_tp_port is not None:
-            serialized = ARObject._serialize_item(self.tcp_tp_port, "TpPort")
+            serialized = SerializationHelper.serialize_item(self.tcp_tp_port, "TpPort")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TCP-TP-PORT")
@@ -191,45 +192,45 @@ class TcpTp(TcpUdpConfig):
         obj = super(TcpTp, cls).deserialize(element)
 
         # Parse keep_alive
-        child = ARObject._find_child_element(element, "KEEP-ALIVE")
+        child = SerializationHelper.find_child_element(element, "KEEP-ALIVE")
         if child is not None:
             keep_alive_value = child.text
             obj.keep_alive = keep_alive_value
 
         # Parse keep_alives
-        child = ARObject._find_child_element(element, "KEEP-ALIVES")
+        child = SerializationHelper.find_child_element(element, "KEEP-ALIVES")
         if child is not None:
             keep_alives_value = child.text
             obj.keep_alives = keep_alives_value
 
         # Parse keep_alive_time
-        child = ARObject._find_child_element(element, "KEEP-ALIVE-TIME")
+        child = SerializationHelper.find_child_element(element, "KEEP-ALIVE-TIME")
         if child is not None:
             keep_alive_time_value = child.text
             obj.keep_alive_time = keep_alive_time_value
 
         # Parse nagles_algorithm
-        child = ARObject._find_child_element(element, "NAGLES-ALGORITHM")
+        child = SerializationHelper.find_child_element(element, "NAGLES-ALGORITHM")
         if child is not None:
             nagles_algorithm_value = child.text
             obj.nagles_algorithm = nagles_algorithm_value
 
         # Parse receive_window_min
-        child = ARObject._find_child_element(element, "RECEIVE-WINDOW-MIN")
+        child = SerializationHelper.find_child_element(element, "RECEIVE-WINDOW-MIN")
         if child is not None:
             receive_window_min_value = child.text
             obj.receive_window_min = receive_window_min_value
 
         # Parse tcp
-        child = ARObject._find_child_element(element, "TCP")
+        child = SerializationHelper.find_child_element(element, "TCP")
         if child is not None:
             tcp_value = child.text
             obj.tcp = tcp_value
 
         # Parse tcp_tp_port
-        child = ARObject._find_child_element(element, "TCP-TP-PORT")
+        child = SerializationHelper.find_child_element(element, "TCP-TP-PORT")
         if child is not None:
-            tcp_tp_port_value = ARObject._deserialize_by_tag(child, "TpPort")
+            tcp_tp_port_value = SerializationHelper.deserialize_by_tag(child, "TpPort")
             obj.tcp_tp_port = tcp_tp_port_value
 
         return obj

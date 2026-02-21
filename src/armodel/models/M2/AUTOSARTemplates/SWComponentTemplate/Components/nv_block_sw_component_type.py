@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.atomic_sw
     AtomicSwComponentType,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.NvBlockComponent.bulk_nv_data_descriptor import (
     BulkNvDataDescriptor,
 )
@@ -49,7 +50,7 @@ class NvBlockSwComponentType(AtomicSwComponentType):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -70,7 +71,7 @@ class NvBlockSwComponentType(AtomicSwComponentType):
         if self.bulk_nv_datas:
             wrapper = ET.Element("BULK-NV-DATAS")
             for item in self.bulk_nv_datas:
-                serialized = ARObject._serialize_item(item, "BulkNvDataDescriptor")
+                serialized = SerializationHelper.serialize_item(item, "BulkNvDataDescriptor")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -80,7 +81,7 @@ class NvBlockSwComponentType(AtomicSwComponentType):
         if self.nv_blocks:
             wrapper = ET.Element("NV-BLOCKS")
             for item in self.nv_blocks:
-                serialized = ARObject._serialize_item(item, "NvBlockDescriptor")
+                serialized = SerializationHelper.serialize_item(item, "NvBlockDescriptor")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -103,21 +104,21 @@ class NvBlockSwComponentType(AtomicSwComponentType):
 
         # Parse bulk_nv_datas (list from container "BULK-NV-DATAS")
         obj.bulk_nv_datas = []
-        container = ARObject._find_child_element(element, "BULK-NV-DATAS")
+        container = SerializationHelper.find_child_element(element, "BULK-NV-DATAS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.bulk_nv_datas.append(child_value)
 
         # Parse nv_blocks (list from container "NV-BLOCKS")
         obj.nv_blocks = []
-        container = ARObject._find_child_element(element, "NV-BLOCKS")
+        container = SerializationHelper.find_child_element(element, "NV-BLOCKS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.nv_blocks.append(child_value)
 

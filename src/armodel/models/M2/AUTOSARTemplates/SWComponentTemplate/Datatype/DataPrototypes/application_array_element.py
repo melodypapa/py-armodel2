@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
     ApplicationCompositeElementDataPrototype,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes import (
     ArraySizeSemanticsEnum,
@@ -63,7 +64,7 @@ class ApplicationArrayElement(ApplicationCompositeElementDataPrototype):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -82,7 +83,7 @@ class ApplicationArrayElement(ApplicationCompositeElementDataPrototype):
 
         # Serialize array_size_handling
         if self.array_size_handling is not None:
-            serialized = ARObject._serialize_item(self.array_size_handling, "ArraySizeHandlingEnum")
+            serialized = SerializationHelper.serialize_item(self.array_size_handling, "ArraySizeHandlingEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ARRAY-SIZE-HANDLING")
@@ -96,7 +97,7 @@ class ApplicationArrayElement(ApplicationCompositeElementDataPrototype):
 
         # Serialize array_size_semantics
         if self.array_size_semantics is not None:
-            serialized = ARObject._serialize_item(self.array_size_semantics, "ArraySizeSemanticsEnum")
+            serialized = SerializationHelper.serialize_item(self.array_size_semantics, "ArraySizeSemanticsEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ARRAY-SIZE-SEMANTICS")
@@ -110,7 +111,7 @@ class ApplicationArrayElement(ApplicationCompositeElementDataPrototype):
 
         # Serialize index_data_type_ref
         if self.index_data_type_ref is not None:
-            serialized = ARObject._serialize_item(self.index_data_type_ref, "ApplicationPrimitiveDataType")
+            serialized = SerializationHelper.serialize_item(self.index_data_type_ref, "ApplicationPrimitiveDataType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INDEX-DATA-TYPE-REF")
@@ -124,7 +125,7 @@ class ApplicationArrayElement(ApplicationCompositeElementDataPrototype):
 
         # Serialize max_number_of_elements
         if self.max_number_of_elements is not None:
-            serialized = ARObject._serialize_item(self.max_number_of_elements, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.max_number_of_elements, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-NUMBER-OF-ELEMENTS")
@@ -152,25 +153,25 @@ class ApplicationArrayElement(ApplicationCompositeElementDataPrototype):
         obj = super(ApplicationArrayElement, cls).deserialize(element)
 
         # Parse array_size_handling
-        child = ARObject._find_child_element(element, "ARRAY-SIZE-HANDLING")
+        child = SerializationHelper.find_child_element(element, "ARRAY-SIZE-HANDLING")
         if child is not None:
             array_size_handling_value = ArraySizeHandlingEnum.deserialize(child)
             obj.array_size_handling = array_size_handling_value
 
         # Parse array_size_semantics
-        child = ARObject._find_child_element(element, "ARRAY-SIZE-SEMANTICS")
+        child = SerializationHelper.find_child_element(element, "ARRAY-SIZE-SEMANTICS")
         if child is not None:
             array_size_semantics_value = ArraySizeSemanticsEnum.deserialize(child)
             obj.array_size_semantics = array_size_semantics_value
 
         # Parse index_data_type_ref
-        child = ARObject._find_child_element(element, "INDEX-DATA-TYPE-REF")
+        child = SerializationHelper.find_child_element(element, "INDEX-DATA-TYPE-REF")
         if child is not None:
             index_data_type_ref_value = ARRef.deserialize(child)
             obj.index_data_type_ref = index_data_type_ref_value
 
         # Parse max_number_of_elements
-        child = ARObject._find_child_element(element, "MAX-NUMBER-OF-ELEMENTS")
+        child = SerializationHelper.find_child_element(element, "MAX-NUMBER-OF-ELEMENTS")
         if child is not None:
             max_number_of_elements_value = child.text
             obj.max_number_of_elements = max_number_of_elements_value

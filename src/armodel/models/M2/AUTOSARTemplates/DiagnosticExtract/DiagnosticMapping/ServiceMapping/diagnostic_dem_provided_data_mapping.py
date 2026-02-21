@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
     DiagnosticMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     NameToken,
@@ -49,7 +50,7 @@ class DiagnosticDemProvidedDataMapping(DiagnosticMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -68,7 +69,7 @@ class DiagnosticDemProvidedDataMapping(DiagnosticMapping):
 
         # Serialize data_element_ref
         if self.data_element_ref is not None:
-            serialized = ARObject._serialize_item(self.data_element_ref, "DiagnosticDataElement")
+            serialized = SerializationHelper.serialize_item(self.data_element_ref, "DiagnosticDataElement")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-ELEMENT-REF")
@@ -82,7 +83,7 @@ class DiagnosticDemProvidedDataMapping(DiagnosticMapping):
 
         # Serialize data_provider
         if self.data_provider is not None:
-            serialized = ARObject._serialize_item(self.data_provider, "NameToken")
+            serialized = SerializationHelper.serialize_item(self.data_provider, "NameToken")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-PROVIDER")
@@ -110,13 +111,13 @@ class DiagnosticDemProvidedDataMapping(DiagnosticMapping):
         obj = super(DiagnosticDemProvidedDataMapping, cls).deserialize(element)
 
         # Parse data_element_ref
-        child = ARObject._find_child_element(element, "DATA-ELEMENT-REF")
+        child = SerializationHelper.find_child_element(element, "DATA-ELEMENT-REF")
         if child is not None:
             data_element_ref_value = ARRef.deserialize(child)
             obj.data_element_ref = data_element_ref_value
 
         # Parse data_provider
-        child = ARObject._find_child_element(element, "DATA-PROVIDER")
+        child = SerializationHelper.find_child_element(element, "DATA-PROVIDER")
         if child is not None:
             data_provider_value = child.text
             obj.data_provider = data_provider_value

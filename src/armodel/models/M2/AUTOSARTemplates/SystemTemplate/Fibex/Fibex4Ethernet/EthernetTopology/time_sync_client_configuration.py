@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology import (
     TimeSyncTechnologyEnum,
 )
@@ -45,14 +46,14 @@ class TimeSyncClientConfiguration(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize ordered_masters (list to container "ORDERED-MASTERS")
         if self.ordered_masters:
             wrapper = ET.Element("ORDERED-MASTERS")
             for item in self.ordered_masters:
-                serialized = ARObject._serialize_item(item, "OrderedMaster")
+                serialized = SerializationHelper.serialize_item(item, "OrderedMaster")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -60,7 +61,7 @@ class TimeSyncClientConfiguration(ARObject):
 
         # Serialize time_sync
         if self.time_sync is not None:
-            serialized = ARObject._serialize_item(self.time_sync, "TimeSyncTechnologyEnum")
+            serialized = SerializationHelper.serialize_item(self.time_sync, "TimeSyncTechnologyEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIME-SYNC")
@@ -90,16 +91,16 @@ class TimeSyncClientConfiguration(ARObject):
 
         # Parse ordered_masters (list from container "ORDERED-MASTERS")
         obj.ordered_masters = []
-        container = ARObject._find_child_element(element, "ORDERED-MASTERS")
+        container = SerializationHelper.find_child_element(element, "ORDERED-MASTERS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.ordered_masters.append(child_value)
 
         # Parse time_sync
-        child = ARObject._find_child_element(element, "TIME-SYNC")
+        child = SerializationHelper.find_child_element(element, "TIME-SYNC")
         if child is not None:
             time_sync_value = TimeSyncTechnologyEnum.deserialize(child)
             obj.time_sync = time_sync_value

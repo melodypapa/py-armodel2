@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
     TDEventSLLET,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
     PortPrototype,
@@ -44,7 +45,7 @@ class TDEventSLLETPort(TDEventSLLET):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -63,7 +64,7 @@ class TDEventSLLETPort(TDEventSLLET):
 
         # Serialize port_ref
         if self.port_ref is not None:
-            serialized = ARObject._serialize_item(self.port_ref, "PortPrototype")
+            serialized = SerializationHelper.serialize_item(self.port_ref, "PortPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PORT-REF")
@@ -91,7 +92,7 @@ class TDEventSLLETPort(TDEventSLLET):
         obj = super(TDEventSLLETPort, cls).deserialize(element)
 
         # Parse port_ref
-        child = ARObject._find_child_element(element, "PORT-REF")
+        child = SerializationHelper.find_child_element(element, "PORT-REF")
         if child is not None:
             port_ref_value = ARRef.deserialize(child)
             obj.port_ref = port_ref_value

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.mapping_constra
     MappingConstraint,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping import (
     MappingScopeEnum,
@@ -46,7 +47,7 @@ class ComponentClustering(MappingConstraint):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -67,7 +68,7 @@ class ComponentClustering(MappingConstraint):
         if self.clustereds:
             wrapper = ET.Element("CLUSTEREDS")
             for item in self.clustereds:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -75,7 +76,7 @@ class ComponentClustering(MappingConstraint):
 
         # Serialize mapping_scope_enum_ref
         if self.mapping_scope_enum_ref is not None:
-            serialized = ARObject._serialize_item(self.mapping_scope_enum_ref, "MappingScopeEnum")
+            serialized = SerializationHelper.serialize_item(self.mapping_scope_enum_ref, "MappingScopeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAPPING-SCOPE-ENUM-REF")
@@ -104,16 +105,16 @@ class ComponentClustering(MappingConstraint):
 
         # Parse clustereds (list from container "CLUSTEREDS")
         obj.clustereds = []
-        container = ARObject._find_child_element(element, "CLUSTEREDS")
+        container = SerializationHelper.find_child_element(element, "CLUSTEREDS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.clustereds.append(child_value)
 
         # Parse mapping_scope_enum_ref
-        child = ARObject._find_child_element(element, "MAPPING-SCOPE-ENUM-REF")
+        child = SerializationHelper.find_child_element(element, "MAPPING-SCOPE-ENUM-REF")
         if child is not None:
             mapping_scope_enum_ref_value = ARRef.deserialize(child)
             obj.mapping_scope_enum_ref = mapping_scope_enum_ref_value

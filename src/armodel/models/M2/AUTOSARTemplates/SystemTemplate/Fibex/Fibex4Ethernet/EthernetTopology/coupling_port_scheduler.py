@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
     CouplingPortStructuralElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology import (
     EthernetCouplingPortSchedulerEnum,
@@ -46,7 +47,7 @@ class CouplingPortScheduler(CouplingPortStructuralElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class CouplingPortScheduler(CouplingPortStructuralElement):
 
         # Serialize port_scheduler_scheduler_enum
         if self.port_scheduler_scheduler_enum is not None:
-            serialized = ARObject._serialize_item(self.port_scheduler_scheduler_enum, "EthernetCouplingPortSchedulerEnum")
+            serialized = SerializationHelper.serialize_item(self.port_scheduler_scheduler_enum, "EthernetCouplingPortSchedulerEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PORT-SCHEDULER-SCHEDULER-ENUM")
@@ -81,7 +82,7 @@ class CouplingPortScheduler(CouplingPortStructuralElement):
         if self.predecessor_refs:
             wrapper = ET.Element("PREDECESSOR-REFS")
             for item in self.predecessor_refs:
-                serialized = ARObject._serialize_item(item, "CouplingPortStructuralElement")
+                serialized = SerializationHelper.serialize_item(item, "CouplingPortStructuralElement")
                 if serialized is not None:
                     child_elem = ET.Element("PREDECESSOR-REF")
                     if hasattr(serialized, 'attrib'):
@@ -110,24 +111,24 @@ class CouplingPortScheduler(CouplingPortStructuralElement):
         obj = super(CouplingPortScheduler, cls).deserialize(element)
 
         # Parse port_scheduler_scheduler_enum
-        child = ARObject._find_child_element(element, "PORT-SCHEDULER-SCHEDULER-ENUM")
+        child = SerializationHelper.find_child_element(element, "PORT-SCHEDULER-SCHEDULER-ENUM")
         if child is not None:
             port_scheduler_scheduler_enum_value = EthernetCouplingPortSchedulerEnum.deserialize(child)
             obj.port_scheduler_scheduler_enum = port_scheduler_scheduler_enum_value
 
         # Parse predecessor_refs (list from container "PREDECESSOR-REFS")
         obj.predecessor_refs = []
-        container = ARObject._find_child_element(element, "PREDECESSOR-REFS")
+        container = SerializationHelper.find_child_element(element, "PREDECESSOR-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.predecessor_refs.append(child_value)
 

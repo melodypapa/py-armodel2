@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable import (
     AlignEnum,
     ValignEnum,
@@ -72,12 +73,12 @@ class Entry(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize align
         if self.align is not None:
-            serialized = ARObject._serialize_item(self.align, "AlignEnum")
+            serialized = SerializationHelper.serialize_item(self.align, "AlignEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ALIGN")
@@ -91,7 +92,7 @@ class Entry(ARObject):
 
         # Serialize bgcolor
         if self.bgcolor is not None:
-            serialized = ARObject._serialize_item(self.bgcolor, "String")
+            serialized = SerializationHelper.serialize_item(self.bgcolor, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BGCOLOR")
@@ -105,7 +106,7 @@ class Entry(ARObject):
 
         # Serialize colname
         if self.colname is not None:
-            serialized = ARObject._serialize_item(self.colname, "String")
+            serialized = SerializationHelper.serialize_item(self.colname, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COLNAME")
@@ -119,7 +120,7 @@ class Entry(ARObject):
 
         # Serialize colsep
         if self.colsep is not None:
-            serialized = ARObject._serialize_item(self.colsep, "TableSeparatorString")
+            serialized = SerializationHelper.serialize_item(self.colsep, "TableSeparatorString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COLSEP")
@@ -133,7 +134,7 @@ class Entry(ARObject):
 
         # Serialize entry_contents
         if self.entry_contents is not None:
-            serialized = ARObject._serialize_item(self.entry_contents, "DocumentationBlock")
+            serialized = SerializationHelper.serialize_item(self.entry_contents, "DocumentationBlock")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ENTRY-CONTENTS")
@@ -147,7 +148,7 @@ class Entry(ARObject):
 
         # Serialize morerows
         if self.morerows is not None:
-            serialized = ARObject._serialize_item(self.morerows, "String")
+            serialized = SerializationHelper.serialize_item(self.morerows, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MOREROWS")
@@ -161,7 +162,7 @@ class Entry(ARObject):
 
         # Serialize nameend
         if self.nameend is not None:
-            serialized = ARObject._serialize_item(self.nameend, "String")
+            serialized = SerializationHelper.serialize_item(self.nameend, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NAMEEND")
@@ -175,7 +176,7 @@ class Entry(ARObject):
 
         # Serialize namest
         if self.namest is not None:
-            serialized = ARObject._serialize_item(self.namest, "String")
+            serialized = SerializationHelper.serialize_item(self.namest, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NAMEST")
@@ -189,7 +190,7 @@ class Entry(ARObject):
 
         # Serialize rotate
         if self.rotate is not None:
-            serialized = ARObject._serialize_item(self.rotate, "String")
+            serialized = SerializationHelper.serialize_item(self.rotate, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ROTATE")
@@ -203,7 +204,7 @@ class Entry(ARObject):
 
         # Serialize rowsep
         if self.rowsep is not None:
-            serialized = ARObject._serialize_item(self.rowsep, "TableSeparatorString")
+            serialized = SerializationHelper.serialize_item(self.rowsep, "TableSeparatorString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ROWSEP")
@@ -217,7 +218,7 @@ class Entry(ARObject):
 
         # Serialize spanname
         if self.spanname is not None:
-            serialized = ARObject._serialize_item(self.spanname, "String")
+            serialized = SerializationHelper.serialize_item(self.spanname, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SPANNAME")
@@ -231,7 +232,7 @@ class Entry(ARObject):
 
         # Serialize valign
         if self.valign is not None:
-            serialized = ARObject._serialize_item(self.valign, "ValignEnum")
+            serialized = SerializationHelper.serialize_item(self.valign, "ValignEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VALIGN")
@@ -260,73 +261,73 @@ class Entry(ARObject):
         obj.__init__()
 
         # Parse align
-        child = ARObject._find_child_element(element, "ALIGN")
+        child = SerializationHelper.find_child_element(element, "ALIGN")
         if child is not None:
             align_value = AlignEnum.deserialize(child)
             obj.align = align_value
 
         # Parse bgcolor
-        child = ARObject._find_child_element(element, "BGCOLOR")
+        child = SerializationHelper.find_child_element(element, "BGCOLOR")
         if child is not None:
             bgcolor_value = child.text
             obj.bgcolor = bgcolor_value
 
         # Parse colname
-        child = ARObject._find_child_element(element, "COLNAME")
+        child = SerializationHelper.find_child_element(element, "COLNAME")
         if child is not None:
             colname_value = child.text
             obj.colname = colname_value
 
         # Parse colsep
-        child = ARObject._find_child_element(element, "COLSEP")
+        child = SerializationHelper.find_child_element(element, "COLSEP")
         if child is not None:
             colsep_value = child.text
             obj.colsep = colsep_value
 
         # Parse entry_contents
-        child = ARObject._find_child_element(element, "ENTRY-CONTENTS")
+        child = SerializationHelper.find_child_element(element, "ENTRY-CONTENTS")
         if child is not None:
-            entry_contents_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            entry_contents_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
             obj.entry_contents = entry_contents_value
 
         # Parse morerows
-        child = ARObject._find_child_element(element, "MOREROWS")
+        child = SerializationHelper.find_child_element(element, "MOREROWS")
         if child is not None:
             morerows_value = child.text
             obj.morerows = morerows_value
 
         # Parse nameend
-        child = ARObject._find_child_element(element, "NAMEEND")
+        child = SerializationHelper.find_child_element(element, "NAMEEND")
         if child is not None:
             nameend_value = child.text
             obj.nameend = nameend_value
 
         # Parse namest
-        child = ARObject._find_child_element(element, "NAMEST")
+        child = SerializationHelper.find_child_element(element, "NAMEST")
         if child is not None:
             namest_value = child.text
             obj.namest = namest_value
 
         # Parse rotate
-        child = ARObject._find_child_element(element, "ROTATE")
+        child = SerializationHelper.find_child_element(element, "ROTATE")
         if child is not None:
             rotate_value = child.text
             obj.rotate = rotate_value
 
         # Parse rowsep
-        child = ARObject._find_child_element(element, "ROWSEP")
+        child = SerializationHelper.find_child_element(element, "ROWSEP")
         if child is not None:
             rowsep_value = child.text
             obj.rowsep = rowsep_value
 
         # Parse spanname
-        child = ARObject._find_child_element(element, "SPANNAME")
+        child = SerializationHelper.find_child_element(element, "SPANNAME")
         if child is not None:
             spanname_value = child.text
             obj.spanname = spanname_value
 
         # Parse valign
-        child = ARObject._find_child_element(element, "VALIGN")
+        child = SerializationHelper.find_child_element(element, "VALIGN")
         if child is not None:
             valign_value = ValignEnum.deserialize(child)
             obj.valign = valign_value

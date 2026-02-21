@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.sub_element_ref import (
     SubElementRef,
@@ -48,12 +49,12 @@ class SubElementMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize first_element_ref
         if self.first_element_ref is not None:
-            serialized = ARObject._serialize_item(self.first_element_ref, "SubElementRef")
+            serialized = SerializationHelper.serialize_item(self.first_element_ref, "SubElementRef")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FIRST-ELEMENT-REF")
@@ -67,7 +68,7 @@ class SubElementMapping(ARObject):
 
         # Serialize second_element_ref
         if self.second_element_ref is not None:
-            serialized = ARObject._serialize_item(self.second_element_ref, "SubElementRef")
+            serialized = SerializationHelper.serialize_item(self.second_element_ref, "SubElementRef")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SECOND-ELEMENT-REF")
@@ -81,7 +82,7 @@ class SubElementMapping(ARObject):
 
         # Serialize text_table_ref
         if self.text_table_ref is not None:
-            serialized = ARObject._serialize_item(self.text_table_ref, "TextTableMapping")
+            serialized = SerializationHelper.serialize_item(self.text_table_ref, "TextTableMapping")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TEXT-TABLE-REF")
@@ -110,19 +111,19 @@ class SubElementMapping(ARObject):
         obj.__init__()
 
         # Parse first_element_ref
-        child = ARObject._find_child_element(element, "FIRST-ELEMENT-REF")
+        child = SerializationHelper.find_child_element(element, "FIRST-ELEMENT-REF")
         if child is not None:
             first_element_ref_value = ARRef.deserialize(child)
             obj.first_element_ref = first_element_ref_value
 
         # Parse second_element_ref
-        child = ARObject._find_child_element(element, "SECOND-ELEMENT-REF")
+        child = SerializationHelper.find_child_element(element, "SECOND-ELEMENT-REF")
         if child is not None:
             second_element_ref_value = ARRef.deserialize(child)
             obj.second_element_ref = second_element_ref_value
 
         # Parse text_table_ref
-        child = ARObject._find_child_element(element, "TEXT-TABLE-REF")
+        child = SerializationHelper.find_child_element(element, "TEXT-TABLE-REF")
         if child is not None:
             text_table_ref_value = ARRef.deserialize(child)
             obj.text_table_ref = text_table_ref_value

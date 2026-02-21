@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE17
     IEEE1722TpAvConnection,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -58,7 +59,7 @@ class IEEE1722TpIidcConnection(IEEE1722TpAvConnection):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -77,7 +78,7 @@ class IEEE1722TpIidcConnection(IEEE1722TpAvConnection):
 
         # Serialize iidc_channel
         if self.iidc_channel is not None:
-            serialized = ARObject._serialize_item(self.iidc_channel, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.iidc_channel, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IIDC-CHANNEL")
@@ -91,7 +92,7 @@ class IEEE1722TpIidcConnection(IEEE1722TpAvConnection):
 
         # Serialize iidc_data_block
         if self.iidc_data_block is not None:
-            serialized = ARObject._serialize_item(self.iidc_data_block, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.iidc_data_block, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IIDC-DATA-BLOCK")
@@ -105,7 +106,7 @@ class IEEE1722TpIidcConnection(IEEE1722TpAvConnection):
 
         # Serialize iidc_fraction
         if self.iidc_fraction is not None:
-            serialized = ARObject._serialize_item(self.iidc_fraction, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.iidc_fraction, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IIDC-FRACTION")
@@ -119,7 +120,7 @@ class IEEE1722TpIidcConnection(IEEE1722TpAvConnection):
 
         # Serialize iidc_source
         if self.iidc_source is not None:
-            serialized = ARObject._serialize_item(self.iidc_source, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.iidc_source, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IIDC-SOURCE")
@@ -133,7 +134,7 @@ class IEEE1722TpIidcConnection(IEEE1722TpAvConnection):
 
         # Serialize iidc_stream
         if self.iidc_stream is not None:
-            serialized = ARObject._serialize_item(self.iidc_stream, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.iidc_stream, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IIDC-STREAM")
@@ -147,7 +148,7 @@ class IEEE1722TpIidcConnection(IEEE1722TpAvConnection):
 
         # Serialize iidc_sy
         if self.iidc_sy is not None:
-            serialized = ARObject._serialize_item(self.iidc_sy, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.iidc_sy, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IIDC-SY")
@@ -161,7 +162,7 @@ class IEEE1722TpIidcConnection(IEEE1722TpAvConnection):
 
         # Serialize iidc_tag
         if self.iidc_tag is not None:
-            serialized = ARObject._serialize_item(self.iidc_tag, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.iidc_tag, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IIDC-TAG")
@@ -175,7 +176,7 @@ class IEEE1722TpIidcConnection(IEEE1722TpAvConnection):
 
         # Serialize iidc_t_code
         if self.iidc_t_code is not None:
-            serialized = ARObject._serialize_item(self.iidc_t_code, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.iidc_t_code, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IIDC-T-CODE")
@@ -203,49 +204,49 @@ class IEEE1722TpIidcConnection(IEEE1722TpAvConnection):
         obj = super(IEEE1722TpIidcConnection, cls).deserialize(element)
 
         # Parse iidc_channel
-        child = ARObject._find_child_element(element, "IIDC-CHANNEL")
+        child = SerializationHelper.find_child_element(element, "IIDC-CHANNEL")
         if child is not None:
             iidc_channel_value = child.text
             obj.iidc_channel = iidc_channel_value
 
         # Parse iidc_data_block
-        child = ARObject._find_child_element(element, "IIDC-DATA-BLOCK")
+        child = SerializationHelper.find_child_element(element, "IIDC-DATA-BLOCK")
         if child is not None:
             iidc_data_block_value = child.text
             obj.iidc_data_block = iidc_data_block_value
 
         # Parse iidc_fraction
-        child = ARObject._find_child_element(element, "IIDC-FRACTION")
+        child = SerializationHelper.find_child_element(element, "IIDC-FRACTION")
         if child is not None:
             iidc_fraction_value = child.text
             obj.iidc_fraction = iidc_fraction_value
 
         # Parse iidc_source
-        child = ARObject._find_child_element(element, "IIDC-SOURCE")
+        child = SerializationHelper.find_child_element(element, "IIDC-SOURCE")
         if child is not None:
             iidc_source_value = child.text
             obj.iidc_source = iidc_source_value
 
         # Parse iidc_stream
-        child = ARObject._find_child_element(element, "IIDC-STREAM")
+        child = SerializationHelper.find_child_element(element, "IIDC-STREAM")
         if child is not None:
             iidc_stream_value = child.text
             obj.iidc_stream = iidc_stream_value
 
         # Parse iidc_sy
-        child = ARObject._find_child_element(element, "IIDC-SY")
+        child = SerializationHelper.find_child_element(element, "IIDC-SY")
         if child is not None:
             iidc_sy_value = child.text
             obj.iidc_sy = iidc_sy_value
 
         # Parse iidc_tag
-        child = ARObject._find_child_element(element, "IIDC-TAG")
+        child = SerializationHelper.find_child_element(element, "IIDC-TAG")
         if child is not None:
             iidc_tag_value = child.text
             obj.iidc_tag = iidc_tag_value
 
         # Parse iidc_t_code
-        child = ARObject._find_child_element(element, "IIDC-T-CODE")
+        child = SerializationHelper.find_child_element(element, "IIDC-T-CODE")
         if child is not None:
             iidc_t_code_value = child.text
             obj.iidc_t_code = iidc_t_code_value

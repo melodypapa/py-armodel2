@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_element import (
     HwElement,
@@ -46,12 +47,12 @@ class MemorySectionLocation(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize provided_memory_ref
         if self.provided_memory_ref is not None:
-            serialized = ARObject._serialize_item(self.provided_memory_ref, "HwElement")
+            serialized = SerializationHelper.serialize_item(self.provided_memory_ref, "HwElement")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PROVIDED-MEMORY-REF")
@@ -65,7 +66,7 @@ class MemorySectionLocation(ARObject):
 
         # Serialize software_ref
         if self.software_ref is not None:
-            serialized = ARObject._serialize_item(self.software_ref, "MemorySection")
+            serialized = SerializationHelper.serialize_item(self.software_ref, "MemorySection")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SOFTWARE-REF")
@@ -94,13 +95,13 @@ class MemorySectionLocation(ARObject):
         obj.__init__()
 
         # Parse provided_memory_ref
-        child = ARObject._find_child_element(element, "PROVIDED-MEMORY-REF")
+        child = SerializationHelper.find_child_element(element, "PROVIDED-MEMORY-REF")
         if child is not None:
             provided_memory_ref_value = ARRef.deserialize(child)
             obj.provided_memory_ref = provided_memory_ref_value
 
         # Parse software_ref
-        child = ARObject._find_child_element(element, "SOFTWARE-REF")
+        child = SerializationHelper.find_child_element(element, "SOFTWARE-REF")
         if child is not None:
             software_ref_value = ARRef.deserialize(child)
             obj.software_ref = software_ref_value

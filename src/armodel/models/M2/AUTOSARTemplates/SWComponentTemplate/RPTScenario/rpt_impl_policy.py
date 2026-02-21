@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.RptSupport import (
     RptEnablerImplTypeEnum,
     RptPreparationEnum,
@@ -44,12 +45,12 @@ class RptImplPolicy(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize rpt_enabler_impl
         if self.rpt_enabler_impl is not None:
-            serialized = ARObject._serialize_item(self.rpt_enabler_impl, "RptEnablerImplTypeEnum")
+            serialized = SerializationHelper.serialize_item(self.rpt_enabler_impl, "RptEnablerImplTypeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RPT-ENABLER-IMPL")
@@ -63,7 +64,7 @@ class RptImplPolicy(ARObject):
 
         # Serialize rpt_preparation_enum
         if self.rpt_preparation_enum is not None:
-            serialized = ARObject._serialize_item(self.rpt_preparation_enum, "RptPreparationEnum")
+            serialized = SerializationHelper.serialize_item(self.rpt_preparation_enum, "RptPreparationEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RPT-PREPARATION-ENUM")
@@ -92,13 +93,13 @@ class RptImplPolicy(ARObject):
         obj.__init__()
 
         # Parse rpt_enabler_impl
-        child = ARObject._find_child_element(element, "RPT-ENABLER-IMPL")
+        child = SerializationHelper.find_child_element(element, "RPT-ENABLER-IMPL")
         if child is not None:
             rpt_enabler_impl_value = RptEnablerImplTypeEnum.deserialize(child)
             obj.rpt_enabler_impl = rpt_enabler_impl_value
 
         # Parse rpt_preparation_enum
-        child = ARObject._find_child_element(element, "RPT-PREPARATION-ENUM")
+        child = SerializationHelper.find_child_element(element, "RPT-PREPARATION-ENUM")
         if child is not None:
             rpt_preparation_enum_value = RptPreparationEnum.deserialize(child)
             obj.rpt_preparation_enum = rpt_preparation_enum_value

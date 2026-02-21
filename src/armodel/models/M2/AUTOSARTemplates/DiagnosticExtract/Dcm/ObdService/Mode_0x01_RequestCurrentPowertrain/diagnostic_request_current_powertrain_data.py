@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_parameter import (
     DiagnosticParameter,
@@ -46,7 +47,7 @@ class DiagnosticRequestCurrentPowertrainData(DiagnosticServiceInstance):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class DiagnosticRequestCurrentPowertrainData(DiagnosticServiceInstance):
 
         # Serialize pid_ref
         if self.pid_ref is not None:
-            serialized = ARObject._serialize_item(self.pid_ref, "DiagnosticParameter")
+            serialized = SerializationHelper.serialize_item(self.pid_ref, "DiagnosticParameter")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PID-REF")
@@ -79,7 +80,7 @@ class DiagnosticRequestCurrentPowertrainData(DiagnosticServiceInstance):
 
         # Serialize request_current_ref
         if self.request_current_ref is not None:
-            serialized = ARObject._serialize_item(self.request_current_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.request_current_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REQUEST-CURRENT-REF")
@@ -107,13 +108,13 @@ class DiagnosticRequestCurrentPowertrainData(DiagnosticServiceInstance):
         obj = super(DiagnosticRequestCurrentPowertrainData, cls).deserialize(element)
 
         # Parse pid_ref
-        child = ARObject._find_child_element(element, "PID-REF")
+        child = SerializationHelper.find_child_element(element, "PID-REF")
         if child is not None:
             pid_ref_value = ARRef.deserialize(child)
             obj.pid_ref = pid_ref_value
 
         # Parse request_current_ref
-        child = ARObject._find_child_element(element, "REQUEST-CURRENT-REF")
+        child = SerializationHelper.find_child_element(element, "REQUEST-CURRENT-REF")
         if child is not None:
             request_current_ref_value = ARRef.deserialize(child)
             obj.request_current_ref = request_current_ref_value

@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication import (
     MacSecCapabilityEnum,
     MacSecConfidentialityOffsetEnum,
@@ -53,12 +54,12 @@ class MacSecCryptoAlgoConfig(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize capability
         if self.capability is not None:
-            serialized = ARObject._serialize_item(self.capability, "MacSecCapabilityEnum")
+            serialized = SerializationHelper.serialize_item(self.capability, "MacSecCapabilityEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CAPABILITY")
@@ -72,7 +73,7 @@ class MacSecCryptoAlgoConfig(ARObject):
 
         # Serialize cipher_suite
         if self.cipher_suite is not None:
-            serialized = ARObject._serialize_item(self.cipher_suite, "MacSecCipherSuiteConfig")
+            serialized = SerializationHelper.serialize_item(self.cipher_suite, "MacSecCipherSuiteConfig")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CIPHER-SUITE")
@@ -86,7 +87,7 @@ class MacSecCryptoAlgoConfig(ARObject):
 
         # Serialize confidentiality
         if self.confidentiality is not None:
-            serialized = ARObject._serialize_item(self.confidentiality, "MacSecConfidentialityOffsetEnum")
+            serialized = SerializationHelper.serialize_item(self.confidentiality, "MacSecConfidentialityOffsetEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONFIDENTIALITY")
@@ -100,7 +101,7 @@ class MacSecCryptoAlgoConfig(ARObject):
 
         # Serialize replay_protection
         if self.replay_protection is not None:
-            serialized = ARObject._serialize_item(self.replay_protection, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.replay_protection, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REPLAY-PROTECTION")
@@ -129,25 +130,25 @@ class MacSecCryptoAlgoConfig(ARObject):
         obj.__init__()
 
         # Parse capability
-        child = ARObject._find_child_element(element, "CAPABILITY")
+        child = SerializationHelper.find_child_element(element, "CAPABILITY")
         if child is not None:
             capability_value = MacSecCapabilityEnum.deserialize(child)
             obj.capability = capability_value
 
         # Parse cipher_suite
-        child = ARObject._find_child_element(element, "CIPHER-SUITE")
+        child = SerializationHelper.find_child_element(element, "CIPHER-SUITE")
         if child is not None:
-            cipher_suite_value = ARObject._deserialize_by_tag(child, "MacSecCipherSuiteConfig")
+            cipher_suite_value = SerializationHelper.deserialize_by_tag(child, "MacSecCipherSuiteConfig")
             obj.cipher_suite = cipher_suite_value
 
         # Parse confidentiality
-        child = ARObject._find_child_element(element, "CONFIDENTIALITY")
+        child = SerializationHelper.find_child_element(element, "CONFIDENTIALITY")
         if child is not None:
             confidentiality_value = MacSecConfidentialityOffsetEnum.deserialize(child)
             obj.confidentiality = confidentiality_value
 
         # Parse replay_protection
-        child = ARObject._find_child_element(element, "REPLAY-PROTECTION")
+        child = SerializationHelper.find_child_element(element, "REPLAY-PROTECTION")
         if child is not None:
             replay_protection_value = child.text
             obj.replay_protection = replay_protection_value

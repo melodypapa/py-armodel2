@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.RteEventToOsTaskMapping import (
     OsTaskPreemptabilityEnum,
 )
@@ -51,7 +52,7 @@ class OsTaskProxy(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -70,7 +71,7 @@ class OsTaskProxy(ARElement):
 
         # Serialize period
         if self.period is not None:
-            serialized = ARObject._serialize_item(self.period, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.period, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PERIOD")
@@ -84,7 +85,7 @@ class OsTaskProxy(ARElement):
 
         # Serialize preemptability
         if self.preemptability is not None:
-            serialized = ARObject._serialize_item(self.preemptability, "OsTaskPreemptabilityEnum")
+            serialized = SerializationHelper.serialize_item(self.preemptability, "OsTaskPreemptabilityEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PREEMPTABILITY")
@@ -98,7 +99,7 @@ class OsTaskProxy(ARElement):
 
         # Serialize priority
         if self.priority is not None:
-            serialized = ARObject._serialize_item(self.priority, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.priority, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PRIORITY")
@@ -126,19 +127,19 @@ class OsTaskProxy(ARElement):
         obj = super(OsTaskProxy, cls).deserialize(element)
 
         # Parse period
-        child = ARObject._find_child_element(element, "PERIOD")
+        child = SerializationHelper.find_child_element(element, "PERIOD")
         if child is not None:
             period_value = child.text
             obj.period = period_value
 
         # Parse preemptability
-        child = ARObject._find_child_element(element, "PREEMPTABILITY")
+        child = SerializationHelper.find_child_element(element, "PREEMPTABILITY")
         if child is not None:
             preemptability_value = OsTaskPreemptabilityEnum.deserialize(child)
             obj.preemptability = preemptability_value
 
         # Parse priority
-        child = ARObject._find_child_element(element, "PRIORITY")
+        child = SerializationHelper.find_child_element(element, "PRIORITY")
         if child is not None:
             priority_value = child.text
             obj.priority = priority_value

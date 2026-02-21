@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     NameToken,
     PositiveInteger,
@@ -43,12 +44,12 @@ class EnumerationMappingEntry(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize enumerator
         if self.enumerator is not None:
-            serialized = ARObject._serialize_item(self.enumerator, "NameToken")
+            serialized = SerializationHelper.serialize_item(self.enumerator, "NameToken")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ENUMERATOR")
@@ -62,7 +63,7 @@ class EnumerationMappingEntry(ARObject):
 
         # Serialize numerical_value
         if self.numerical_value is not None:
-            serialized = ARObject._serialize_item(self.numerical_value, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.numerical_value, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NUMERICAL-VALUE")
@@ -91,13 +92,13 @@ class EnumerationMappingEntry(ARObject):
         obj.__init__()
 
         # Parse enumerator
-        child = ARObject._find_child_element(element, "ENUMERATOR")
+        child = SerializationHelper.find_child_element(element, "ENUMERATOR")
         if child is not None:
             enumerator_value = child.text
             obj.enumerator = enumerator_value
 
         # Parse numerical_value
-        child = ARObject._find_child_element(element, "NUMERICAL-VALUE")
+        child = SerializationHelper.find_child_element(element, "NUMERICAL-VALUE")
         if child is not None:
             numerical_value_value = child.text
             obj.numerical_value = numerical_value_value

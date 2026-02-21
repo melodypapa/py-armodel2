@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.mapping_constra
     MappingConstraint,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping import (
     MappingScopeEnum,
@@ -44,7 +45,7 @@ class ComponentSeparation(MappingConstraint):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -63,7 +64,7 @@ class ComponentSeparation(MappingConstraint):
 
         # Serialize mapping_scope_enum_ref
         if self.mapping_scope_enum_ref is not None:
-            serialized = ARObject._serialize_item(self.mapping_scope_enum_ref, "MappingScopeEnum")
+            serialized = SerializationHelper.serialize_item(self.mapping_scope_enum_ref, "MappingScopeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAPPING-SCOPE-ENUM-REF")
@@ -91,7 +92,7 @@ class ComponentSeparation(MappingConstraint):
         obj = super(ComponentSeparation, cls).deserialize(element)
 
         # Parse mapping_scope_enum_ref
-        child = ARObject._find_child_element(element, "MAPPING-SCOPE-ENUM-REF")
+        child = SerializationHelper.find_child_element(element, "MAPPING-SCOPE-ENUM-REF")
         if child is not None:
             mapping_scope_enum_ref_value = ARRef.deserialize(child)
             obj.mapping_scope_enum_ref = mapping_scope_enum_ref_value

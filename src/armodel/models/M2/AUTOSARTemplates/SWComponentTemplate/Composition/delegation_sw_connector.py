@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.sw_conne
     SwConnector,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.InstanceRefs.port_in_composition_type_instance_ref import (
     PortInCompositionTypeInstanceRef,
@@ -50,7 +51,7 @@ class DelegationSwConnector(SwConnector):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -69,7 +70,7 @@ class DelegationSwConnector(SwConnector):
 
         # Serialize inner_port_iref (instance reference with wrapper "INNER-PORT-IREF")
         if self.inner_port_iref is not None:
-            serialized = ARObject._serialize_item(self.inner_port_iref, "PortInCompositionTypeInstanceRef")
+            serialized = SerializationHelper.serialize_item(self.inner_port_iref, "PortInCompositionTypeInstanceRef")
             if serialized is not None:
                 # Wrap in IREF wrapper element
                 iref_wrapper = ET.Element("INNER-PORT-IREF")
@@ -79,7 +80,7 @@ class DelegationSwConnector(SwConnector):
 
         # Serialize outer_port_ref
         if self.outer_port_ref is not None:
-            serialized = ARObject._serialize_item(self.outer_port_ref, "PortPrototype")
+            serialized = SerializationHelper.serialize_item(self.outer_port_ref, "PortPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("OUTER-PORT-REF")
@@ -107,17 +108,17 @@ class DelegationSwConnector(SwConnector):
         obj = super(DelegationSwConnector, cls).deserialize(element)
 
         # Parse inner_port_iref (instance reference from wrapper "INNER-PORT-IREF")
-        wrapper = ARObject._find_child_element(element, "INNER-PORT-IREF")
+        wrapper = SerializationHelper.find_child_element(element, "INNER-PORT-IREF")
         if wrapper is not None:
             # Get the first child element (the actual reference)
             children = list(wrapper)
             if children:
                 inner_elem = children[0]
-                inner_port_iref_value = ARObject._deserialize_by_tag(inner_elem)
+                inner_port_iref_value = SerializationHelper.deserialize_by_tag(inner_elem)
                 obj.inner_port_iref = inner_port_iref_value
 
         # Parse outer_port_ref
-        child = ARObject._find_child_element(element, "OUTER-PORT-REF")
+        child = SerializationHelper.find_child_element(element, "OUTER-PORT-REF")
         if child is not None:
             outer_port_ref_value = ARRef.deserialize(child)
             obj.outer_port_ref = outer_port_ref_value

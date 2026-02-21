@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -54,7 +55,7 @@ class HwAttributeDef(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -75,7 +76,7 @@ class HwAttributeDef(Identifiable):
         if self.hw_attributes:
             wrapper = ET.Element("HW-ATTRIBUTES")
             for item in self.hw_attributes:
-                serialized = ARObject._serialize_item(item, "HwAttributeLiteralDef")
+                serialized = SerializationHelper.serialize_item(item, "HwAttributeLiteralDef")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -83,7 +84,7 @@ class HwAttributeDef(Identifiable):
 
         # Serialize is_required
         if self.is_required is not None:
-            serialized = ARObject._serialize_item(self.is_required, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.is_required, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IS-REQUIRED")
@@ -97,7 +98,7 @@ class HwAttributeDef(Identifiable):
 
         # Serialize unit_ref
         if self.unit_ref is not None:
-            serialized = ARObject._serialize_item(self.unit_ref, "Unit")
+            serialized = SerializationHelper.serialize_item(self.unit_ref, "Unit")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("UNIT-REF")
@@ -126,22 +127,22 @@ class HwAttributeDef(Identifiable):
 
         # Parse hw_attributes (list from container "HW-ATTRIBUTES")
         obj.hw_attributes = []
-        container = ARObject._find_child_element(element, "HW-ATTRIBUTES")
+        container = SerializationHelper.find_child_element(element, "HW-ATTRIBUTES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.hw_attributes.append(child_value)
 
         # Parse is_required
-        child = ARObject._find_child_element(element, "IS-REQUIRED")
+        child = SerializationHelper.find_child_element(element, "IS-REQUIRED")
         if child is not None:
             is_required_value = child.text
             obj.is_required = is_required_value
 
         # Parse unit_ref
-        child = ARObject._find_child_element(element, "UNIT-REF")
+        child = SerializationHelper.find_child_element(element, "UNIT-REF")
         if child is not None:
             unit_ref_value = ARRef.deserialize(child)
             obj.unit_ref = unit_ref_value

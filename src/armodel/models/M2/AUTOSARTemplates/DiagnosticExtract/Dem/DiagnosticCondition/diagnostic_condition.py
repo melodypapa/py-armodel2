@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -44,7 +45,7 @@ class DiagnosticCondition(DiagnosticCommonElement, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -63,7 +64,7 @@ class DiagnosticCondition(DiagnosticCommonElement, ABC):
 
         # Serialize init_value
         if self.init_value is not None:
-            serialized = ARObject._serialize_item(self.init_value, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.init_value, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INIT-VALUE")
@@ -91,7 +92,7 @@ class DiagnosticCondition(DiagnosticCommonElement, ABC):
         obj = super(DiagnosticCondition, cls).deserialize(element)
 
         # Parse init_value
-        child = ARObject._find_child_element(element, "INIT-VALUE")
+        child = SerializationHelper.find_child_element(element, "INIT-VALUE")
         if child is not None:
             init_value_value = child.text
             obj.init_value = init_value_value

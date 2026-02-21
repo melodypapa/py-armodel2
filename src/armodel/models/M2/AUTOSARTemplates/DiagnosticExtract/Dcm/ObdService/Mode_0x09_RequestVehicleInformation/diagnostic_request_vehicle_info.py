@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_info_type import (
     DiagnosticInfoType,
@@ -46,7 +47,7 @@ class DiagnosticRequestVehicleInfo(DiagnosticServiceInstance):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class DiagnosticRequestVehicleInfo(DiagnosticServiceInstance):
 
         # Serialize info_type_ref
         if self.info_type_ref is not None:
-            serialized = ARObject._serialize_item(self.info_type_ref, "DiagnosticInfoType")
+            serialized = SerializationHelper.serialize_item(self.info_type_ref, "DiagnosticInfoType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INFO-TYPE-REF")
@@ -79,7 +80,7 @@ class DiagnosticRequestVehicleInfo(DiagnosticServiceInstance):
 
         # Serialize request_vehicle_ref
         if self.request_vehicle_ref is not None:
-            serialized = ARObject._serialize_item(self.request_vehicle_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.request_vehicle_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REQUEST-VEHICLE-REF")
@@ -107,13 +108,13 @@ class DiagnosticRequestVehicleInfo(DiagnosticServiceInstance):
         obj = super(DiagnosticRequestVehicleInfo, cls).deserialize(element)
 
         # Parse info_type_ref
-        child = ARObject._find_child_element(element, "INFO-TYPE-REF")
+        child = SerializationHelper.find_child_element(element, "INFO-TYPE-REF")
         if child is not None:
             info_type_ref_value = ARRef.deserialize(child)
             obj.info_type_ref = info_type_ref_value
 
         # Parse request_vehicle_ref
-        child = ARObject._find_child_element(element, "REQUEST-VEHICLE-REF")
+        child = SerializationHelper.find_child_element(element, "REQUEST-VEHICLE-REF")
         if child is not None:
             request_vehicle_ref_value = ARRef.deserialize(child)
             obj.request_vehicle_ref = request_vehicle_ref_value

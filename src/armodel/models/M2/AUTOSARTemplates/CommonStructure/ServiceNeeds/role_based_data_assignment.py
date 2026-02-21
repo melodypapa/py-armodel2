@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
@@ -57,12 +58,12 @@ class RoleBasedDataAssignment(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize role
         if self.role is not None:
-            serialized = ARObject._serialize_item(self.role, "Identifier")
+            serialized = SerializationHelper.serialize_item(self.role, "Identifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ROLE")
@@ -76,7 +77,7 @@ class RoleBasedDataAssignment(ARObject):
 
         # Serialize used_data_ref
         if self.used_data_ref is not None:
-            serialized = ARObject._serialize_item(self.used_data_ref, "AutosarVariableRef")
+            serialized = SerializationHelper.serialize_item(self.used_data_ref, "AutosarVariableRef")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("USED-DATA-REF")
@@ -90,7 +91,7 @@ class RoleBasedDataAssignment(ARObject):
 
         # Serialize used_parameter_ref
         if self.used_parameter_ref is not None:
-            serialized = ARObject._serialize_item(self.used_parameter_ref, "AutosarParameterRef")
+            serialized = SerializationHelper.serialize_item(self.used_parameter_ref, "AutosarParameterRef")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("USED-PARAMETER-REF")
@@ -104,7 +105,7 @@ class RoleBasedDataAssignment(ARObject):
 
         # Serialize used_pim_ref
         if self.used_pim_ref is not None:
-            serialized = ARObject._serialize_item(self.used_pim_ref, "PerInstanceMemory")
+            serialized = SerializationHelper.serialize_item(self.used_pim_ref, "PerInstanceMemory")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("USED-PIM-REF")
@@ -133,25 +134,25 @@ class RoleBasedDataAssignment(ARObject):
         obj.__init__()
 
         # Parse role
-        child = ARObject._find_child_element(element, "ROLE")
+        child = SerializationHelper.find_child_element(element, "ROLE")
         if child is not None:
-            role_value = ARObject._deserialize_by_tag(child, "Identifier")
+            role_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
             obj.role = role_value
 
         # Parse used_data_ref
-        child = ARObject._find_child_element(element, "USED-DATA-REF")
+        child = SerializationHelper.find_child_element(element, "USED-DATA-REF")
         if child is not None:
             used_data_ref_value = ARRef.deserialize(child)
             obj.used_data_ref = used_data_ref_value
 
         # Parse used_parameter_ref
-        child = ARObject._find_child_element(element, "USED-PARAMETER-REF")
+        child = SerializationHelper.find_child_element(element, "USED-PARAMETER-REF")
         if child is not None:
             used_parameter_ref_value = ARRef.deserialize(child)
             obj.used_parameter_ref = used_parameter_ref_value
 
         # Parse used_pim_ref
-        child = ARObject._find_child_element(element, "USED-PIM-REF")
+        child = SerializationHelper.find_child_element(element, "USED-PIM-REF")
         if child is not None:
             used_pim_ref_value = ARRef.deserialize(child)
             obj.used_pim_ref = used_pim_ref_value

@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_language_overview_paragraph import (
     MultiLanguageOverviewParagraph,
 )
@@ -42,12 +43,12 @@ class Modification(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize change
         if self.change is not None:
-            serialized = ARObject._serialize_item(self.change, "MultiLanguageOverviewParagraph")
+            serialized = SerializationHelper.serialize_item(self.change, "MultiLanguageOverviewParagraph")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CHANGE")
@@ -61,7 +62,7 @@ class Modification(ARObject):
 
         # Serialize reason
         if self.reason is not None:
-            serialized = ARObject._serialize_item(self.reason, "MultiLanguageOverviewParagraph")
+            serialized = SerializationHelper.serialize_item(self.reason, "MultiLanguageOverviewParagraph")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REASON")
@@ -90,15 +91,15 @@ class Modification(ARObject):
         obj.__init__()
 
         # Parse change
-        child = ARObject._find_child_element(element, "CHANGE")
+        child = SerializationHelper.find_child_element(element, "CHANGE")
         if child is not None:
-            change_value = ARObject._deserialize_with_type(child, "MultiLanguageOverviewParagraph")
+            change_value = SerializationHelper.deserialize_with_type(child, "MultiLanguageOverviewParagraph")
             obj.change = change_value
 
         # Parse reason
-        child = ARObject._find_child_element(element, "REASON")
+        child = SerializationHelper.find_child_element(element, "REASON")
         if child is not None:
-            reason_value = ARObject._deserialize_with_type(child, "MultiLanguageOverviewParagraph")
+            reason_value = SerializationHelper.deserialize_with_type(child, "MultiLanguageOverviewParagraph")
             obj.reason = reason_value
 
         return obj

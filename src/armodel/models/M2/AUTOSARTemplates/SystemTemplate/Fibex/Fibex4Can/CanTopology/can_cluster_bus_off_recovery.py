@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
     TimeValue,
@@ -49,12 +50,12 @@ class CanClusterBusOffRecovery(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize bor_counter_l1_to
         if self.bor_counter_l1_to is not None:
-            serialized = ARObject._serialize_item(self.bor_counter_l1_to, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.bor_counter_l1_to, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BOR-COUNTER-L1-TO")
@@ -68,7 +69,7 @@ class CanClusterBusOffRecovery(ARObject):
 
         # Serialize bor_time_l1
         if self.bor_time_l1 is not None:
-            serialized = ARObject._serialize_item(self.bor_time_l1, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.bor_time_l1, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BOR-TIME-L1")
@@ -82,7 +83,7 @@ class CanClusterBusOffRecovery(ARObject):
 
         # Serialize bor_time_l2
         if self.bor_time_l2 is not None:
-            serialized = ARObject._serialize_item(self.bor_time_l2, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.bor_time_l2, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BOR-TIME-L2")
@@ -96,7 +97,7 @@ class CanClusterBusOffRecovery(ARObject):
 
         # Serialize bor_time_tx
         if self.bor_time_tx is not None:
-            serialized = ARObject._serialize_item(self.bor_time_tx, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.bor_time_tx, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BOR-TIME-TX")
@@ -110,7 +111,7 @@ class CanClusterBusOffRecovery(ARObject):
 
         # Serialize main_function
         if self.main_function is not None:
-            serialized = ARObject._serialize_item(self.main_function, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.main_function, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAIN-FUNCTION")
@@ -139,31 +140,31 @@ class CanClusterBusOffRecovery(ARObject):
         obj.__init__()
 
         # Parse bor_counter_l1_to
-        child = ARObject._find_child_element(element, "BOR-COUNTER-L1-TO")
+        child = SerializationHelper.find_child_element(element, "BOR-COUNTER-L1-TO")
         if child is not None:
             bor_counter_l1_to_value = child.text
             obj.bor_counter_l1_to = bor_counter_l1_to_value
 
         # Parse bor_time_l1
-        child = ARObject._find_child_element(element, "BOR-TIME-L1")
+        child = SerializationHelper.find_child_element(element, "BOR-TIME-L1")
         if child is not None:
             bor_time_l1_value = child.text
             obj.bor_time_l1 = bor_time_l1_value
 
         # Parse bor_time_l2
-        child = ARObject._find_child_element(element, "BOR-TIME-L2")
+        child = SerializationHelper.find_child_element(element, "BOR-TIME-L2")
         if child is not None:
             bor_time_l2_value = child.text
             obj.bor_time_l2 = bor_time_l2_value
 
         # Parse bor_time_tx
-        child = ARObject._find_child_element(element, "BOR-TIME-TX")
+        child = SerializationHelper.find_child_element(element, "BOR-TIME-TX")
         if child is not None:
             bor_time_tx_value = child.text
             obj.bor_time_tx = bor_time_tx_value
 
         # Parse main_function
-        child = ARObject._find_child_element(element, "MAIN-FUNCTION")
+        child = SerializationHelper.find_child_element(element, "MAIN-FUNCTION")
         if child is not None:
             main_function_value = child.text
             obj.main_function = main_function_value

@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology import (
     PncGatewayTypeEnum,
@@ -63,7 +64,7 @@ class CommunicationConnector(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -82,7 +83,7 @@ class CommunicationConnector(Identifiable, ABC):
 
         # Serialize comm_controller_ref
         if self.comm_controller_ref is not None:
-            serialized = ARObject._serialize_item(self.comm_controller_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.comm_controller_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COMM-CONTROLLER-REF")
@@ -96,7 +97,7 @@ class CommunicationConnector(Identifiable, ABC):
 
         # Serialize create_ecu
         if self.create_ecu is not None:
-            serialized = ARObject._serialize_item(self.create_ecu, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.create_ecu, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CREATE-ECU")
@@ -110,7 +111,7 @@ class CommunicationConnector(Identifiable, ABC):
 
         # Serialize dynamic_pnc_to
         if self.dynamic_pnc_to is not None:
-            serialized = ARObject._serialize_item(self.dynamic_pnc_to, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.dynamic_pnc_to, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DYNAMIC-PNC-TO")
@@ -126,7 +127,7 @@ class CommunicationConnector(Identifiable, ABC):
         if self.ecu_comm_ports:
             wrapper = ET.Element("ECU-COMM-PORTS")
             for item in self.ecu_comm_ports:
-                serialized = ARObject._serialize_item(item, "CommConnectorPort")
+                serialized = SerializationHelper.serialize_item(item, "CommConnectorPort")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -136,7 +137,7 @@ class CommunicationConnector(Identifiable, ABC):
         if self.pnc_filter_arrays:
             wrapper = ET.Element("PNC-FILTER-ARRAYS")
             for item in self.pnc_filter_arrays:
-                serialized = ARObject._serialize_item(item, "PositiveInteger")
+                serialized = SerializationHelper.serialize_item(item, "PositiveInteger")
                 if serialized is not None:
                     child_elem = ET.Element("PNC-FILTER-ARRAY")
                     if hasattr(serialized, 'attrib'):
@@ -151,7 +152,7 @@ class CommunicationConnector(Identifiable, ABC):
 
         # Serialize pnc_gateway_type_enum
         if self.pnc_gateway_type_enum is not None:
-            serialized = ARObject._serialize_item(self.pnc_gateway_type_enum, "PncGatewayTypeEnum")
+            serialized = SerializationHelper.serialize_item(self.pnc_gateway_type_enum, "PncGatewayTypeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PNC-GATEWAY-TYPE-ENUM")
@@ -179,36 +180,36 @@ class CommunicationConnector(Identifiable, ABC):
         obj = super(CommunicationConnector, cls).deserialize(element)
 
         # Parse comm_controller_ref
-        child = ARObject._find_child_element(element, "COMM-CONTROLLER-REF")
+        child = SerializationHelper.find_child_element(element, "COMM-CONTROLLER-REF")
         if child is not None:
             comm_controller_ref_value = ARRef.deserialize(child)
             obj.comm_controller_ref = comm_controller_ref_value
 
         # Parse create_ecu
-        child = ARObject._find_child_element(element, "CREATE-ECU")
+        child = SerializationHelper.find_child_element(element, "CREATE-ECU")
         if child is not None:
             create_ecu_value = child.text
             obj.create_ecu = create_ecu_value
 
         # Parse dynamic_pnc_to
-        child = ARObject._find_child_element(element, "DYNAMIC-PNC-TO")
+        child = SerializationHelper.find_child_element(element, "DYNAMIC-PNC-TO")
         if child is not None:
             dynamic_pnc_to_value = child.text
             obj.dynamic_pnc_to = dynamic_pnc_to_value
 
         # Parse ecu_comm_ports (list from container "ECU-COMM-PORTS")
         obj.ecu_comm_ports = []
-        container = ARObject._find_child_element(element, "ECU-COMM-PORTS")
+        container = SerializationHelper.find_child_element(element, "ECU-COMM-PORTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.ecu_comm_ports.append(child_value)
 
         # Parse pnc_filter_arrays (list from container "PNC-FILTER-ARRAYS")
         obj.pnc_filter_arrays = []
-        container = ARObject._find_child_element(element, "PNC-FILTER-ARRAYS")
+        container = SerializationHelper.find_child_element(element, "PNC-FILTER-ARRAYS")
         if container is not None:
             for child in container:
                 # Extract primitive value (PositiveInteger) as text
@@ -217,7 +218,7 @@ class CommunicationConnector(Identifiable, ABC):
                     obj.pnc_filter_arrays.append(child_value)
 
         # Parse pnc_gateway_type_enum
-        child = ARObject._find_child_element(element, "PNC-GATEWAY-TYPE-ENUM")
+        child = SerializationHelper.find_child_element(element, "PNC-GATEWAY-TYPE-ENUM")
         if child is not None:
             pnc_gateway_type_enum_value = PncGatewayTypeEnum.deserialize(child)
             obj.pnc_gateway_type_enum = pnc_gateway_type_enum_value

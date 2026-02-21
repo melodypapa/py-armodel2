@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.AsamHdo.Units.unit import (
     Unit,
@@ -49,12 +50,12 @@ class RuleBasedValueCont(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize rule_based
         if self.rule_based is not None:
-            serialized = ARObject._serialize_item(self.rule_based, "Any")
+            serialized = SerializationHelper.serialize_item(self.rule_based, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RULE-BASED")
@@ -68,7 +69,7 @@ class RuleBasedValueCont(ARObject):
 
         # Serialize sw_arraysize_ref
         if self.sw_arraysize_ref is not None:
-            serialized = ARObject._serialize_item(self.sw_arraysize_ref, "ValueList")
+            serialized = SerializationHelper.serialize_item(self.sw_arraysize_ref, "ValueList")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-ARRAYSIZE-REF")
@@ -82,7 +83,7 @@ class RuleBasedValueCont(ARObject):
 
         # Serialize unit_ref
         if self.unit_ref is not None:
-            serialized = ARObject._serialize_item(self.unit_ref, "Unit")
+            serialized = SerializationHelper.serialize_item(self.unit_ref, "Unit")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("UNIT-REF")
@@ -111,19 +112,19 @@ class RuleBasedValueCont(ARObject):
         obj.__init__()
 
         # Parse rule_based
-        child = ARObject._find_child_element(element, "RULE-BASED")
+        child = SerializationHelper.find_child_element(element, "RULE-BASED")
         if child is not None:
             rule_based_value = child.text
             obj.rule_based = rule_based_value
 
         # Parse sw_arraysize_ref
-        child = ARObject._find_child_element(element, "SW-ARRAYSIZE-REF")
+        child = SerializationHelper.find_child_element(element, "SW-ARRAYSIZE-REF")
         if child is not None:
             sw_arraysize_ref_value = ARRef.deserialize(child)
             obj.sw_arraysize_ref = sw_arraysize_ref_value
 
         # Parse unit_ref
-        child = ARObject._find_child_element(element, "UNIT-REF")
+        child = SerializationHelper.find_child_element(element, "UNIT-REF")
         if child is not None:
             unit_ref_value = ARRef.deserialize(child)
             obj.unit_ref = unit_ref_value

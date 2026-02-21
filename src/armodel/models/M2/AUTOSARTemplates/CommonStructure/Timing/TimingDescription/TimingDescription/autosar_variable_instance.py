@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
     DataPrototype,
@@ -44,7 +45,7 @@ class AutosarVariableInstance(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -63,7 +64,7 @@ class AutosarVariableInstance(Identifiable):
 
         # Serialize variable_instance_instance_ref
         if self.variable_instance_instance_ref is not None:
-            serialized = ARObject._serialize_item(self.variable_instance_instance_ref, "DataPrototype")
+            serialized = SerializationHelper.serialize_item(self.variable_instance_instance_ref, "DataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VARIABLE-INSTANCE-INSTANCE-REF-REF")
@@ -91,7 +92,7 @@ class AutosarVariableInstance(Identifiable):
         obj = super(AutosarVariableInstance, cls).deserialize(element)
 
         # Parse variable_instance_instance_ref
-        child = ARObject._find_child_element(element, "VARIABLE-INSTANCE-INSTANCE-REF-REF")
+        child = SerializationHelper.find_child_element(element, "VARIABLE-INSTANCE-INSTANCE-REF-REF")
         if child is not None:
             variable_instance_instance_ref_value = ARRef.deserialize(child)
             obj.variable_instance_instance_ref = variable_instance_instance_ref_value

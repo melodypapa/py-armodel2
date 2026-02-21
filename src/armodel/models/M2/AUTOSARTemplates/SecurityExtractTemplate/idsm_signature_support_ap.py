@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
@@ -46,12 +47,12 @@ class IdsmSignatureSupportAp(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize crypto_primitive
         if self.crypto_primitive is not None:
-            serialized = ARObject._serialize_item(self.crypto_primitive, "String")
+            serialized = SerializationHelper.serialize_item(self.crypto_primitive, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CRYPTO-PRIMITIVE")
@@ -65,7 +66,7 @@ class IdsmSignatureSupportAp(ARObject):
 
         # Serialize key_slot_ref
         if self.key_slot_ref is not None:
-            serialized = ARObject._serialize_item(self.key_slot_ref, "CryptoKeySlot")
+            serialized = SerializationHelper.serialize_item(self.key_slot_ref, "CryptoKeySlot")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("KEY-SLOT-REF")
@@ -94,13 +95,13 @@ class IdsmSignatureSupportAp(ARObject):
         obj.__init__()
 
         # Parse crypto_primitive
-        child = ARObject._find_child_element(element, "CRYPTO-PRIMITIVE")
+        child = SerializationHelper.find_child_element(element, "CRYPTO-PRIMITIVE")
         if child is not None:
             crypto_primitive_value = child.text
             obj.crypto_primitive = crypto_primitive_value
 
         # Parse key_slot_ref
-        child = ARObject._find_child_element(element, "KEY-SLOT-REF")
+        child = SerializationHelper.find_child_element(element, "KEY-SLOT-REF")
         if child is not None:
             key_slot_ref_value = ARRef.deserialize(child)
             obj.key_slot_ref = key_slot_ref_value

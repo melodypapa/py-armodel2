@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.ecu_instance import (
     EcuInstance,
@@ -56,7 +57,7 @@ class ECUMapping(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -77,7 +78,7 @@ class ECUMapping(Identifiable):
         if self.comm_controllers:
             wrapper = ET.Element("COMM-CONTROLLERS")
             for item in self.comm_controllers:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -85,7 +86,7 @@ class ECUMapping(Identifiable):
 
         # Serialize ecu_ref
         if self.ecu_ref is not None:
-            serialized = ARObject._serialize_item(self.ecu_ref, "HwElement")
+            serialized = SerializationHelper.serialize_item(self.ecu_ref, "HwElement")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ECU-REF")
@@ -99,7 +100,7 @@ class ECUMapping(Identifiable):
 
         # Serialize ecu_instance_ref
         if self.ecu_instance_ref is not None:
-            serialized = ARObject._serialize_item(self.ecu_instance_ref, "EcuInstance")
+            serialized = SerializationHelper.serialize_item(self.ecu_instance_ref, "EcuInstance")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ECU-INSTANCE-REF")
@@ -113,7 +114,7 @@ class ECUMapping(Identifiable):
 
         # Serialize hw_port_mapping_ref
         if self.hw_port_mapping_ref is not None:
-            serialized = ARObject._serialize_item(self.hw_port_mapping_ref, "HwPortMapping")
+            serialized = SerializationHelper.serialize_item(self.hw_port_mapping_ref, "HwPortMapping")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HW-PORT-MAPPING-REF")
@@ -142,28 +143,28 @@ class ECUMapping(Identifiable):
 
         # Parse comm_controllers (list from container "COMM-CONTROLLERS")
         obj.comm_controllers = []
-        container = ARObject._find_child_element(element, "COMM-CONTROLLERS")
+        container = SerializationHelper.find_child_element(element, "COMM-CONTROLLERS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.comm_controllers.append(child_value)
 
         # Parse ecu_ref
-        child = ARObject._find_child_element(element, "ECU-REF")
+        child = SerializationHelper.find_child_element(element, "ECU-REF")
         if child is not None:
             ecu_ref_value = ARRef.deserialize(child)
             obj.ecu_ref = ecu_ref_value
 
         # Parse ecu_instance_ref
-        child = ARObject._find_child_element(element, "ECU-INSTANCE-REF")
+        child = SerializationHelper.find_child_element(element, "ECU-INSTANCE-REF")
         if child is not None:
             ecu_instance_ref_value = ARRef.deserialize(child)
             obj.ecu_instance_ref = ecu_instance_ref_value
 
         # Parse hw_port_mapping_ref
-        child = ARObject._find_child_element(element, "HW-PORT-MAPPING-REF")
+        child = SerializationHelper.find_child_element(element, "HW-PORT-MAPPING-REF")
         if child is not None:
             hw_port_mapping_ref_value = ARRef.deserialize(child)
             obj.hw_port_mapping_ref = hw_port_mapping_ref_value

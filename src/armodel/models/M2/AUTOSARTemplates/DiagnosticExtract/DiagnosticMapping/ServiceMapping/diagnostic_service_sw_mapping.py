@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
     DiagnosticSwMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
     DataPrototype,
@@ -64,7 +65,7 @@ class DiagnosticServiceSwMapping(DiagnosticSwMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -83,7 +84,7 @@ class DiagnosticServiceSwMapping(DiagnosticSwMapping):
 
         # Serialize accessed_data_ref
         if self.accessed_data_ref is not None:
-            serialized = ARObject._serialize_item(self.accessed_data_ref, "DataPrototype")
+            serialized = SerializationHelper.serialize_item(self.accessed_data_ref, "DataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ACCESSED-DATA-REF")
@@ -97,7 +98,7 @@ class DiagnosticServiceSwMapping(DiagnosticSwMapping):
 
         # Serialize diagnostic_data_ref
         if self.diagnostic_data_ref is not None:
-            serialized = ARObject._serialize_item(self.diagnostic_data_ref, "DiagnosticDataElement")
+            serialized = SerializationHelper.serialize_item(self.diagnostic_data_ref, "DiagnosticDataElement")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DIAGNOSTIC-DATA-REF")
@@ -111,7 +112,7 @@ class DiagnosticServiceSwMapping(DiagnosticSwMapping):
 
         # Serialize diagnostic_ref
         if self.diagnostic_ref is not None:
-            serialized = ARObject._serialize_item(self.diagnostic_ref, "DiagnosticParameter")
+            serialized = SerializationHelper.serialize_item(self.diagnostic_ref, "DiagnosticParameter")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DIAGNOSTIC-REF")
@@ -125,7 +126,7 @@ class DiagnosticServiceSwMapping(DiagnosticSwMapping):
 
         # Serialize mapped_bsw_ref
         if self.mapped_bsw_ref is not None:
-            serialized = ARObject._serialize_item(self.mapped_bsw_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.mapped_bsw_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAPPED-BSW-REF")
@@ -139,7 +140,7 @@ class DiagnosticServiceSwMapping(DiagnosticSwMapping):
 
         # Serialize mapped_flat_swc_ref
         if self.mapped_flat_swc_ref is not None:
-            serialized = ARObject._serialize_item(self.mapped_flat_swc_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.mapped_flat_swc_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAPPED-FLAT-SWC-REF")
@@ -153,7 +154,7 @@ class DiagnosticServiceSwMapping(DiagnosticSwMapping):
 
         # Serialize mapped_swc
         if self.mapped_swc is not None:
-            serialized = ARObject._serialize_item(self.mapped_swc, "Any")
+            serialized = SerializationHelper.serialize_item(self.mapped_swc, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAPPED-SWC")
@@ -167,7 +168,7 @@ class DiagnosticServiceSwMapping(DiagnosticSwMapping):
 
         # Serialize parameter
         if self.parameter is not None:
-            serialized = ARObject._serialize_item(self.parameter, "DiagnosticParameter")
+            serialized = SerializationHelper.serialize_item(self.parameter, "DiagnosticParameter")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PARAMETER")
@@ -181,7 +182,7 @@ class DiagnosticServiceSwMapping(DiagnosticSwMapping):
 
         # Serialize service_instance_ref
         if self.service_instance_ref is not None:
-            serialized = ARObject._serialize_item(self.service_instance_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.service_instance_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SERVICE-INSTANCE-REF")
@@ -209,49 +210,49 @@ class DiagnosticServiceSwMapping(DiagnosticSwMapping):
         obj = super(DiagnosticServiceSwMapping, cls).deserialize(element)
 
         # Parse accessed_data_ref
-        child = ARObject._find_child_element(element, "ACCESSED-DATA-REF")
+        child = SerializationHelper.find_child_element(element, "ACCESSED-DATA-REF")
         if child is not None:
             accessed_data_ref_value = ARRef.deserialize(child)
             obj.accessed_data_ref = accessed_data_ref_value
 
         # Parse diagnostic_data_ref
-        child = ARObject._find_child_element(element, "DIAGNOSTIC-DATA-REF")
+        child = SerializationHelper.find_child_element(element, "DIAGNOSTIC-DATA-REF")
         if child is not None:
             diagnostic_data_ref_value = ARRef.deserialize(child)
             obj.diagnostic_data_ref = diagnostic_data_ref_value
 
         # Parse diagnostic_ref
-        child = ARObject._find_child_element(element, "DIAGNOSTIC-REF")
+        child = SerializationHelper.find_child_element(element, "DIAGNOSTIC-REF")
         if child is not None:
             diagnostic_ref_value = ARRef.deserialize(child)
             obj.diagnostic_ref = diagnostic_ref_value
 
         # Parse mapped_bsw_ref
-        child = ARObject._find_child_element(element, "MAPPED-BSW-REF")
+        child = SerializationHelper.find_child_element(element, "MAPPED-BSW-REF")
         if child is not None:
             mapped_bsw_ref_value = ARRef.deserialize(child)
             obj.mapped_bsw_ref = mapped_bsw_ref_value
 
         # Parse mapped_flat_swc_ref
-        child = ARObject._find_child_element(element, "MAPPED-FLAT-SWC-REF")
+        child = SerializationHelper.find_child_element(element, "MAPPED-FLAT-SWC-REF")
         if child is not None:
             mapped_flat_swc_ref_value = ARRef.deserialize(child)
             obj.mapped_flat_swc_ref = mapped_flat_swc_ref_value
 
         # Parse mapped_swc
-        child = ARObject._find_child_element(element, "MAPPED-SWC")
+        child = SerializationHelper.find_child_element(element, "MAPPED-SWC")
         if child is not None:
             mapped_swc_value = child.text
             obj.mapped_swc = mapped_swc_value
 
         # Parse parameter
-        child = ARObject._find_child_element(element, "PARAMETER")
+        child = SerializationHelper.find_child_element(element, "PARAMETER")
         if child is not None:
-            parameter_value = ARObject._deserialize_by_tag(child, "DiagnosticParameter")
+            parameter_value = SerializationHelper.deserialize_by_tag(child, "DiagnosticParameter")
             obj.parameter = parameter_value
 
         # Parse service_instance_ref
-        child = ARObject._find_child_element(element, "SERVICE-INSTANCE-REF")
+        child = SerializationHelper.find_child_element(element, "SERVICE-INSTANCE-REF")
         if child is not None:
             service_instance_ref_value = ARRef.deserialize(child)
             obj.service_instance_ref = service_instance_ref_value

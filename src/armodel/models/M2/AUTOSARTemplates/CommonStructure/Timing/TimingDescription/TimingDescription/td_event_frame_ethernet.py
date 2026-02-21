@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
     TDEventCom,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu_triggering import (
     PduTriggering,
@@ -56,7 +57,7 @@ class TDEventFrameEthernet(TDEventCom):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -75,7 +76,7 @@ class TDEventFrameEthernet(TDEventCom):
 
         # Serialize static_socket_ref
         if self.static_socket_ref is not None:
-            serialized = ARObject._serialize_item(self.static_socket_ref, "StaticSocketConnection")
+            serialized = SerializationHelper.serialize_item(self.static_socket_ref, "StaticSocketConnection")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("STATIC-SOCKET-REF")
@@ -89,7 +90,7 @@ class TDEventFrameEthernet(TDEventCom):
 
         # Serialize td_event_type
         if self.td_event_type is not None:
-            serialized = ARObject._serialize_item(self.td_event_type, "TDEventFrameEthernet")
+            serialized = SerializationHelper.serialize_item(self.td_event_type, "TDEventFrameEthernet")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TD-EVENT-TYPE")
@@ -105,7 +106,7 @@ class TDEventFrameEthernet(TDEventCom):
         if self.td_header_id_filters:
             wrapper = ET.Element("TD-HEADER-ID-FILTERS")
             for item in self.td_header_id_filters:
-                serialized = ARObject._serialize_item(item, "TDHeaderIdRange")
+                serialized = SerializationHelper.serialize_item(item, "TDHeaderIdRange")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -115,7 +116,7 @@ class TDEventFrameEthernet(TDEventCom):
         if self.td_pdu_triggering_refs:
             wrapper = ET.Element("TD-PDU-TRIGGERING-REFS")
             for item in self.td_pdu_triggering_refs:
-                serialized = ARObject._serialize_item(item, "PduTriggering")
+                serialized = SerializationHelper.serialize_item(item, "PduTriggering")
                 if serialized is not None:
                     child_elem = ET.Element("TD-PDU-TRIGGERING-REF")
                     if hasattr(serialized, 'attrib'):
@@ -144,40 +145,40 @@ class TDEventFrameEthernet(TDEventCom):
         obj = super(TDEventFrameEthernet, cls).deserialize(element)
 
         # Parse static_socket_ref
-        child = ARObject._find_child_element(element, "STATIC-SOCKET-REF")
+        child = SerializationHelper.find_child_element(element, "STATIC-SOCKET-REF")
         if child is not None:
             static_socket_ref_value = ARRef.deserialize(child)
             obj.static_socket_ref = static_socket_ref_value
 
         # Parse td_event_type
-        child = ARObject._find_child_element(element, "TD-EVENT-TYPE")
+        child = SerializationHelper.find_child_element(element, "TD-EVENT-TYPE")
         if child is not None:
-            td_event_type_value = ARObject._deserialize_by_tag(child, "TDEventFrameEthernet")
+            td_event_type_value = SerializationHelper.deserialize_by_tag(child, "TDEventFrameEthernet")
             obj.td_event_type = td_event_type_value
 
         # Parse td_header_id_filters (list from container "TD-HEADER-ID-FILTERS")
         obj.td_header_id_filters = []
-        container = ARObject._find_child_element(element, "TD-HEADER-ID-FILTERS")
+        container = SerializationHelper.find_child_element(element, "TD-HEADER-ID-FILTERS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.td_header_id_filters.append(child_value)
 
         # Parse td_pdu_triggering_refs (list from container "TD-PDU-TRIGGERING-REFS")
         obj.td_pdu_triggering_refs = []
-        container = ARObject._find_child_element(element, "TD-PDU-TRIGGERING-REFS")
+        container = SerializationHelper.find_child_element(element, "TD-PDU-TRIGGERING-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.td_pdu_triggering_refs.append(child_value)
 

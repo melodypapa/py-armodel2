@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
     Pdu,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -55,7 +56,7 @@ class NmPdu(Pdu):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -76,7 +77,7 @@ class NmPdu(Pdu):
         if self.i_signal_to_i_pdu_refs:
             wrapper = ET.Element("I-SIGNAL-TO-I-PDU-REFS")
             for item in self.i_signal_to_i_pdu_refs:
-                serialized = ARObject._serialize_item(item, "ISignalToIPduMapping")
+                serialized = SerializationHelper.serialize_item(item, "ISignalToIPduMapping")
                 if serialized is not None:
                     child_elem = ET.Element("I-SIGNAL-TO-I-PDU-REF")
                     if hasattr(serialized, 'attrib'):
@@ -91,7 +92,7 @@ class NmPdu(Pdu):
 
         # Serialize nm_data
         if self.nm_data is not None:
-            serialized = ARObject._serialize_item(self.nm_data, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.nm_data, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM-DATA")
@@ -105,7 +106,7 @@ class NmPdu(Pdu):
 
         # Serialize nm_vote_information
         if self.nm_vote_information is not None:
-            serialized = ARObject._serialize_item(self.nm_vote_information, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.nm_vote_information, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM-VOTE-INFORMATION")
@@ -119,7 +120,7 @@ class NmPdu(Pdu):
 
         # Serialize unused_bit
         if self.unused_bit is not None:
-            serialized = ARObject._serialize_item(self.unused_bit, "Integer")
+            serialized = SerializationHelper.serialize_item(self.unused_bit, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("UNUSED-BIT")
@@ -148,34 +149,34 @@ class NmPdu(Pdu):
 
         # Parse i_signal_to_i_pdu_refs (list from container "I-SIGNAL-TO-I-PDU-REFS")
         obj.i_signal_to_i_pdu_refs = []
-        container = ARObject._find_child_element(element, "I-SIGNAL-TO-I-PDU-REFS")
+        container = SerializationHelper.find_child_element(element, "I-SIGNAL-TO-I-PDU-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.i_signal_to_i_pdu_refs.append(child_value)
 
         # Parse nm_data
-        child = ARObject._find_child_element(element, "NM-DATA")
+        child = SerializationHelper.find_child_element(element, "NM-DATA")
         if child is not None:
             nm_data_value = child.text
             obj.nm_data = nm_data_value
 
         # Parse nm_vote_information
-        child = ARObject._find_child_element(element, "NM-VOTE-INFORMATION")
+        child = SerializationHelper.find_child_element(element, "NM-VOTE-INFORMATION")
         if child is not None:
             nm_vote_information_value = child.text
             obj.nm_vote_information = nm_vote_information_value
 
         # Parse unused_bit
-        child = ARObject._find_child_element(element, "UNUSED-BIT")
+        child = SerializationHelper.find_child_element(element, "UNUSED-BIT")
         if child is not None:
             unused_bit_value = child.text
             obj.unused_bit = unused_bit_value

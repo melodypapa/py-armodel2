@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_dep
     ServiceDependency,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.role_based_bsw_module_entry_assignment import (
     RoleBasedBswModuleEntryAssignment,
 )
@@ -54,7 +55,7 @@ class BswServiceDependency(ServiceDependency):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -75,7 +76,7 @@ class BswServiceDependency(ServiceDependency):
         if self.assigned_datas:
             wrapper = ET.Element("ASSIGNED-DATAS")
             for item in self.assigned_datas:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -85,7 +86,7 @@ class BswServiceDependency(ServiceDependency):
         if self.assigned_entries:
             wrapper = ET.Element("ASSIGNED-ENTRIES")
             for item in self.assigned_entries:
-                serialized = ARObject._serialize_item(item, "RoleBasedBswModuleEntryAssignment")
+                serialized = SerializationHelper.serialize_item(item, "RoleBasedBswModuleEntryAssignment")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -93,7 +94,7 @@ class BswServiceDependency(ServiceDependency):
 
         # Serialize ident
         if self.ident is not None:
-            serialized = ARObject._serialize_item(self.ident, "Any")
+            serialized = SerializationHelper.serialize_item(self.ident, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IDENT")
@@ -107,7 +108,7 @@ class BswServiceDependency(ServiceDependency):
 
         # Serialize service_needs
         if self.service_needs is not None:
-            serialized = ARObject._serialize_item(self.service_needs, "ServiceNeeds")
+            serialized = SerializationHelper.serialize_item(self.service_needs, "ServiceNeeds")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SERVICE-NEEDS")
@@ -136,34 +137,34 @@ class BswServiceDependency(ServiceDependency):
 
         # Parse assigned_datas (list from container "ASSIGNED-DATAS")
         obj.assigned_datas = []
-        container = ARObject._find_child_element(element, "ASSIGNED-DATAS")
+        container = SerializationHelper.find_child_element(element, "ASSIGNED-DATAS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.assigned_datas.append(child_value)
 
         # Parse assigned_entries (list from container "ASSIGNED-ENTRIES")
         obj.assigned_entries = []
-        container = ARObject._find_child_element(element, "ASSIGNED-ENTRIES")
+        container = SerializationHelper.find_child_element(element, "ASSIGNED-ENTRIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.assigned_entries.append(child_value)
 
         # Parse ident
-        child = ARObject._find_child_element(element, "IDENT")
+        child = SerializationHelper.find_child_element(element, "IDENT")
         if child is not None:
             ident_value = child.text
             obj.ident = ident_value
 
         # Parse service_needs
-        child = ARObject._find_child_element(element, "SERVICE-NEEDS")
+        child = SerializationHelper.find_child_element(element, "SERVICE-NEEDS")
         if child is not None:
-            service_needs_value = ARObject._deserialize_by_tag(child, "ServiceNeeds")
+            service_needs_value = SerializationHelper.deserialize_by_tag(child, "ServiceNeeds")
             obj.service_needs = service_needs_value
 
         return obj

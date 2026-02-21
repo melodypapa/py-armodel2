@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.LifeCycles.life_cycle_info import (
     LifeCycleInfo,
@@ -62,7 +63,7 @@ class LifeCycleInfoSet(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -81,7 +82,7 @@ class LifeCycleInfoSet(ARElement):
 
         # Serialize default_lc_state_ref
         if self.default_lc_state_ref is not None:
-            serialized = ARObject._serialize_item(self.default_lc_state_ref, "LifeCycleState")
+            serialized = SerializationHelper.serialize_item(self.default_lc_state_ref, "LifeCycleState")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DEFAULT-LC-STATE-REF")
@@ -95,7 +96,7 @@ class LifeCycleInfoSet(ARElement):
 
         # Serialize default_period_begin
         if self.default_period_begin is not None:
-            serialized = ARObject._serialize_item(self.default_period_begin, "LifeCyclePeriod")
+            serialized = SerializationHelper.serialize_item(self.default_period_begin, "LifeCyclePeriod")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DEFAULT-PERIOD-BEGIN")
@@ -109,7 +110,7 @@ class LifeCycleInfoSet(ARElement):
 
         # Serialize default_period_end
         if self.default_period_end is not None:
-            serialized = ARObject._serialize_item(self.default_period_end, "LifeCyclePeriod")
+            serialized = SerializationHelper.serialize_item(self.default_period_end, "LifeCyclePeriod")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DEFAULT-PERIOD-END")
@@ -125,7 +126,7 @@ class LifeCycleInfoSet(ARElement):
         if self.life_cycle_infos:
             wrapper = ET.Element("LIFE-CYCLE-INFOS")
             for item in self.life_cycle_infos:
-                serialized = ARObject._serialize_item(item, "LifeCycleInfo")
+                serialized = SerializationHelper.serialize_item(item, "LifeCycleInfo")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -133,7 +134,7 @@ class LifeCycleInfoSet(ARElement):
 
         # Serialize used_life_cycle_state_definition_group_ref
         if self.used_life_cycle_state_definition_group_ref is not None:
-            serialized = ARObject._serialize_item(self.used_life_cycle_state_definition_group_ref, "LifeCycleStateDefinitionGroup")
+            serialized = SerializationHelper.serialize_item(self.used_life_cycle_state_definition_group_ref, "LifeCycleStateDefinitionGroup")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("USED-LIFE-CYCLE-STATE-DEFINITION-GROUP-REF")
@@ -161,35 +162,35 @@ class LifeCycleInfoSet(ARElement):
         obj = super(LifeCycleInfoSet, cls).deserialize(element)
 
         # Parse default_lc_state_ref
-        child = ARObject._find_child_element(element, "DEFAULT-LC-STATE-REF")
+        child = SerializationHelper.find_child_element(element, "DEFAULT-LC-STATE-REF")
         if child is not None:
             default_lc_state_ref_value = ARRef.deserialize(child)
             obj.default_lc_state_ref = default_lc_state_ref_value
 
         # Parse default_period_begin
-        child = ARObject._find_child_element(element, "DEFAULT-PERIOD-BEGIN")
+        child = SerializationHelper.find_child_element(element, "DEFAULT-PERIOD-BEGIN")
         if child is not None:
-            default_period_begin_value = ARObject._deserialize_by_tag(child, "LifeCyclePeriod")
+            default_period_begin_value = SerializationHelper.deserialize_by_tag(child, "LifeCyclePeriod")
             obj.default_period_begin = default_period_begin_value
 
         # Parse default_period_end
-        child = ARObject._find_child_element(element, "DEFAULT-PERIOD-END")
+        child = SerializationHelper.find_child_element(element, "DEFAULT-PERIOD-END")
         if child is not None:
-            default_period_end_value = ARObject._deserialize_by_tag(child, "LifeCyclePeriod")
+            default_period_end_value = SerializationHelper.deserialize_by_tag(child, "LifeCyclePeriod")
             obj.default_period_end = default_period_end_value
 
         # Parse life_cycle_infos (list from container "LIFE-CYCLE-INFOS")
         obj.life_cycle_infos = []
-        container = ARObject._find_child_element(element, "LIFE-CYCLE-INFOS")
+        container = SerializationHelper.find_child_element(element, "LIFE-CYCLE-INFOS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.life_cycle_infos.append(child_value)
 
         # Parse used_life_cycle_state_definition_group_ref
-        child = ARObject._find_child_element(element, "USED-LIFE-CYCLE-STATE-DEFINITION-GROUP-REF")
+        child = SerializationHelper.find_child_element(element, "USED-LIFE-CYCLE-STATE-DEFINITION-GROUP-REF")
         if child is not None:
             used_life_cycle_state_definition_group_ref_value = ARRef.deserialize(child)
             obj.used_life_cycle_state_definition_group_ref = used_life_cycle_state_definition_group_ref_value

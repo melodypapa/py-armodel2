@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_parameter_
     EcucParameterDef,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
 )
@@ -49,7 +50,7 @@ class EcucEnumerationParamDef(EcucParameterDef):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -68,7 +69,7 @@ class EcucEnumerationParamDef(EcucParameterDef):
 
         # Serialize default_value
         if self.default_value is not None:
-            serialized = ARObject._serialize_item(self.default_value, "Identifier")
+            serialized = SerializationHelper.serialize_item(self.default_value, "Identifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DEFAULT-VALUE")
@@ -84,7 +85,7 @@ class EcucEnumerationParamDef(EcucParameterDef):
         if self.literals:
             wrapper = ET.Element("LITERALS")
             for item in self.literals:
-                serialized = ARObject._serialize_item(item, "EcucEnumerationLiteralDef")
+                serialized = SerializationHelper.serialize_item(item, "EcucEnumerationLiteralDef")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -106,18 +107,18 @@ class EcucEnumerationParamDef(EcucParameterDef):
         obj = super(EcucEnumerationParamDef, cls).deserialize(element)
 
         # Parse default_value
-        child = ARObject._find_child_element(element, "DEFAULT-VALUE")
+        child = SerializationHelper.find_child_element(element, "DEFAULT-VALUE")
         if child is not None:
-            default_value_value = ARObject._deserialize_by_tag(child, "Identifier")
+            default_value_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
             obj.default_value = default_value_value
 
         # Parse literals (list from container "LITERALS")
         obj.literals = []
-        container = ARObject._find_child_element(element, "LITERALS")
+        container = SerializationHelper.find_child_element(element, "LITERALS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.literals.append(child_value)
 

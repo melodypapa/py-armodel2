@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.Exec
     ExecutionTime,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
     MultidimensionalTime,
 )
@@ -45,7 +46,7 @@ class AnalyzedExecutionTime(ExecutionTime):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class AnalyzedExecutionTime(ExecutionTime):
 
         # Serialize best_case
         if self.best_case is not None:
-            serialized = ARObject._serialize_item(self.best_case, "MultidimensionalTime")
+            serialized = SerializationHelper.serialize_item(self.best_case, "MultidimensionalTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BEST-CASE")
@@ -78,7 +79,7 @@ class AnalyzedExecutionTime(ExecutionTime):
 
         # Serialize worst_case
         if self.worst_case is not None:
-            serialized = ARObject._serialize_item(self.worst_case, "MultidimensionalTime")
+            serialized = SerializationHelper.serialize_item(self.worst_case, "MultidimensionalTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("WORST-CASE")
@@ -106,15 +107,15 @@ class AnalyzedExecutionTime(ExecutionTime):
         obj = super(AnalyzedExecutionTime, cls).deserialize(element)
 
         # Parse best_case
-        child = ARObject._find_child_element(element, "BEST-CASE")
+        child = SerializationHelper.find_child_element(element, "BEST-CASE")
         if child is not None:
-            best_case_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            best_case_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
             obj.best_case = best_case_value
 
         # Parse worst_case
-        child = ARObject._find_child_element(element, "WORST-CASE")
+        child = SerializationHelper.find_child_element(element, "WORST-CASE")
         if child is not None:
-            worst_case_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            worst_case_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
             obj.worst_case = worst_case_value
 
         return obj

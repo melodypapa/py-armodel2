@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
     TransportProtocolConfiguration,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
     TimeValue,
@@ -50,7 +51,7 @@ class Ieee1722Tp(TransportProtocolConfiguration):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -69,7 +70,7 @@ class Ieee1722Tp(TransportProtocolConfiguration):
 
         # Serialize relative
         if self.relative is not None:
-            serialized = ARObject._serialize_item(self.relative, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.relative, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RELATIVE")
@@ -83,7 +84,7 @@ class Ieee1722Tp(TransportProtocolConfiguration):
 
         # Serialize stream_identifier
         if self.stream_identifier is not None:
-            serialized = ARObject._serialize_item(self.stream_identifier, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.stream_identifier, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("STREAM-IDENTIFIER")
@@ -97,7 +98,7 @@ class Ieee1722Tp(TransportProtocolConfiguration):
 
         # Serialize sub_type
         if self.sub_type is not None:
-            serialized = ARObject._serialize_item(self.sub_type, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.sub_type, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SUB-TYPE")
@@ -111,7 +112,7 @@ class Ieee1722Tp(TransportProtocolConfiguration):
 
         # Serialize version
         if self.version is not None:
-            serialized = ARObject._serialize_item(self.version, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.version, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VERSION")
@@ -139,25 +140,25 @@ class Ieee1722Tp(TransportProtocolConfiguration):
         obj = super(Ieee1722Tp, cls).deserialize(element)
 
         # Parse relative
-        child = ARObject._find_child_element(element, "RELATIVE")
+        child = SerializationHelper.find_child_element(element, "RELATIVE")
         if child is not None:
             relative_value = child.text
             obj.relative = relative_value
 
         # Parse stream_identifier
-        child = ARObject._find_child_element(element, "STREAM-IDENTIFIER")
+        child = SerializationHelper.find_child_element(element, "STREAM-IDENTIFIER")
         if child is not None:
             stream_identifier_value = child.text
             obj.stream_identifier = stream_identifier_value
 
         # Parse sub_type
-        child = ARObject._find_child_element(element, "SUB-TYPE")
+        child = SerializationHelper.find_child_element(element, "SUB-TYPE")
         if child is not None:
             sub_type_value = child.text
             obj.sub_type = sub_type_value
 
         # Parse version
-        child = ARObject._find_child_element(element, "VERSION")
+        child = SerializationHelper.find_child_element(element, "VERSION")
         if child is not None:
             version_value = child.text
             obj.version = version_value

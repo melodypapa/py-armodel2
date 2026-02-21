@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.AbstractStructure.atp_type import (
     AtpType,
@@ -45,7 +46,7 @@ class AtpPrototype(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class AtpPrototype(Identifiable, ABC):
 
         # Serialize atp_type_ref
         if self.atp_type_ref is not None:
-            serialized = ARObject._serialize_item(self.atp_type_ref, "AtpType")
+            serialized = SerializationHelper.serialize_item(self.atp_type_ref, "AtpType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ATP-TYPE-REF")
@@ -92,7 +93,7 @@ class AtpPrototype(Identifiable, ABC):
         obj = super(AtpPrototype, cls).deserialize(element)
 
         # Parse atp_type_ref
-        child = ARObject._find_child_element(element, "ATP-TYPE-REF")
+        child = SerializationHelper.find_child_element(element, "ATP-TYPE-REF")
         if child is not None:
             atp_type_ref_value = ARRef.deserialize(child)
             obj.atp_type_ref = atp_type_ref_value

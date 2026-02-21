@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_operation import (
     ClientServerOperation,
@@ -53,14 +54,14 @@ class ClientServerOperationMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize argument_refs (list to container "ARGUMENT-REFS")
         if self.argument_refs:
             wrapper = ET.Element("ARGUMENT-REFS")
             for item in self.argument_refs:
-                serialized = ARObject._serialize_item(item, "DataPrototypeMapping")
+                serialized = SerializationHelper.serialize_item(item, "DataPrototypeMapping")
                 if serialized is not None:
                     child_elem = ET.Element("ARGUMENT-REF")
                     if hasattr(serialized, 'attrib'):
@@ -75,7 +76,7 @@ class ClientServerOperationMapping(ARObject):
 
         # Serialize first_operation_ref
         if self.first_operation_ref is not None:
-            serialized = ARObject._serialize_item(self.first_operation_ref, "ClientServerOperation")
+            serialized = SerializationHelper.serialize_item(self.first_operation_ref, "ClientServerOperation")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FIRST-OPERATION-REF")
@@ -89,7 +90,7 @@ class ClientServerOperationMapping(ARObject):
 
         # Serialize first_to_second_ref
         if self.first_to_second_ref is not None:
-            serialized = ARObject._serialize_item(self.first_to_second_ref, "DataTransformation")
+            serialized = SerializationHelper.serialize_item(self.first_to_second_ref, "DataTransformation")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FIRST-TO-SECOND-REF")
@@ -103,7 +104,7 @@ class ClientServerOperationMapping(ARObject):
 
         # Serialize second_ref
         if self.second_ref is not None:
-            serialized = ARObject._serialize_item(self.second_ref, "ClientServerOperation")
+            serialized = SerializationHelper.serialize_item(self.second_ref, "ClientServerOperation")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SECOND-REF")
@@ -133,34 +134,34 @@ class ClientServerOperationMapping(ARObject):
 
         # Parse argument_refs (list from container "ARGUMENT-REFS")
         obj.argument_refs = []
-        container = ARObject._find_child_element(element, "ARGUMENT-REFS")
+        container = SerializationHelper.find_child_element(element, "ARGUMENT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.argument_refs.append(child_value)
 
         # Parse first_operation_ref
-        child = ARObject._find_child_element(element, "FIRST-OPERATION-REF")
+        child = SerializationHelper.find_child_element(element, "FIRST-OPERATION-REF")
         if child is not None:
             first_operation_ref_value = ARRef.deserialize(child)
             obj.first_operation_ref = first_operation_ref_value
 
         # Parse first_to_second_ref
-        child = ARObject._find_child_element(element, "FIRST-TO-SECOND-REF")
+        child = SerializationHelper.find_child_element(element, "FIRST-TO-SECOND-REF")
         if child is not None:
             first_to_second_ref_value = ARRef.deserialize(child)
             obj.first_to_second_ref = first_to_second_ref_value
 
         # Parse second_ref
-        child = ARObject._find_child_element(element, "SECOND-REF")
+        child = SerializationHelper.find_child_element(element, "SECOND-REF")
         if child is not None:
             second_ref_value = ARRef.deserialize(child)
             obj.second_ref = second_ref_value

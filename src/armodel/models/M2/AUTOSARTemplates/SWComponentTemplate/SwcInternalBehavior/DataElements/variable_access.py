@@ -16,6 +16,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
     AbstractAccessPoint,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements import (
     VariableAccessScopeEnum,
@@ -52,7 +53,7 @@ class VariableAccess(AbstractAccessPoint):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -71,7 +72,7 @@ class VariableAccess(AbstractAccessPoint):
 
         # Serialize accessed_variable_ref
         if self.accessed_variable_ref is not None:
-            serialized = ARObject._serialize_item(self.accessed_variable_ref, "AutosarVariableRef")
+            serialized = SerializationHelper.serialize_item(self.accessed_variable_ref, "AutosarVariableRef")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ACCESSED-VARIABLE-REF")
@@ -85,7 +86,7 @@ class VariableAccess(AbstractAccessPoint):
 
         # Serialize scope
         if self.scope is not None:
-            serialized = ARObject._serialize_item(self.scope, "VariableAccessScopeEnum")
+            serialized = SerializationHelper.serialize_item(self.scope, "VariableAccessScopeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SCOPE")
@@ -113,13 +114,13 @@ class VariableAccess(AbstractAccessPoint):
         obj = super(VariableAccess, cls).deserialize(element)
 
         # Parse accessed_variable_ref
-        child = ARObject._find_child_element(element, "ACCESSED-VARIABLE-REF")
+        child = SerializationHelper.find_child_element(element, "ACCESSED-VARIABLE-REF")
         if child is not None:
             accessed_variable_ref_value = ARRef.deserialize(child)
             obj.accessed_variable_ref = accessed_variable_ref_value
 
         # Parse scope
-        child = ARObject._find_child_element(element, "SCOPE")
+        child = SerializationHelper.find_child_element(element, "SCOPE")
         if child is not None:
             scope_value = VariableAccessScopeEnum.deserialize(child)
             obj.scope = scope_value

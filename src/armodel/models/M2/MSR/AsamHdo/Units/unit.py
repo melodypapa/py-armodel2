@@ -16,6 +16,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Float,
@@ -56,7 +57,7 @@ class Unit(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -75,7 +76,7 @@ class Unit(ARElement):
 
         # Serialize display_name
         if self.display_name is not None:
-            serialized = ARObject._serialize_item(self.display_name, "SingleLanguageUnitNames")
+            serialized = SerializationHelper.serialize_item(self.display_name, "SingleLanguageUnitNames")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DISPLAY-NAME")
@@ -89,7 +90,7 @@ class Unit(ARElement):
 
         # Serialize factor_si_to_unit
         if self.factor_si_to_unit is not None:
-            serialized = ARObject._serialize_item(self.factor_si_to_unit, "Float")
+            serialized = SerializationHelper.serialize_item(self.factor_si_to_unit, "Float")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FACTOR-SI-TO-UNIT")
@@ -103,7 +104,7 @@ class Unit(ARElement):
 
         # Serialize offset_si_to_unit
         if self.offset_si_to_unit is not None:
-            serialized = ARObject._serialize_item(self.offset_si_to_unit, "Float")
+            serialized = SerializationHelper.serialize_item(self.offset_si_to_unit, "Float")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("OFFSET-SI-TO-UNIT")
@@ -117,7 +118,7 @@ class Unit(ARElement):
 
         # Serialize physical_dimension_ref
         if self.physical_dimension_ref is not None:
-            serialized = ARObject._serialize_item(self.physical_dimension_ref, "physicalDimension")
+            serialized = SerializationHelper.serialize_item(self.physical_dimension_ref, "physicalDimension")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PHYSICAL-DIMENSION-REF")
@@ -145,25 +146,25 @@ class Unit(ARElement):
         obj = super(Unit, cls).deserialize(element)
 
         # Parse display_name
-        child = ARObject._find_child_element(element, "DISPLAY-NAME")
+        child = SerializationHelper.find_child_element(element, "DISPLAY-NAME")
         if child is not None:
-            display_name_value = ARObject._deserialize_by_tag(child, "SingleLanguageUnitNames")
+            display_name_value = SerializationHelper.deserialize_by_tag(child, "SingleLanguageUnitNames")
             obj.display_name = display_name_value
 
         # Parse factor_si_to_unit
-        child = ARObject._find_child_element(element, "FACTOR-SI-TO-UNIT")
+        child = SerializationHelper.find_child_element(element, "FACTOR-SI-TO-UNIT")
         if child is not None:
             factor_si_to_unit_value = child.text
             obj.factor_si_to_unit = factor_si_to_unit_value
 
         # Parse offset_si_to_unit
-        child = ARObject._find_child_element(element, "OFFSET-SI-TO-UNIT")
+        child = SerializationHelper.find_child_element(element, "OFFSET-SI-TO-UNIT")
         if child is not None:
             offset_si_to_unit_value = child.text
             obj.offset_si_to_unit = offset_si_to_unit_value
 
         # Parse physical_dimension_ref
-        child = ARObject._find_child_element(element, "PHYSICAL-DIMENSION-REF")
+        child = SerializationHelper.find_child_element(element, "PHYSICAL-DIMENSION-REF")
         if child is not None:
             physical_dimension_ref_value = ARRef.deserialize(child)
             obj.physical_dimension_ref = physical_dimension_ref_value

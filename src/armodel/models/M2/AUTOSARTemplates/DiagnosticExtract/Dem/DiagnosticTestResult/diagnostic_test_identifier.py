@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -42,12 +43,12 @@ class DiagnosticTestIdentifier(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize id
         if self.id is not None:
-            serialized = ARObject._serialize_item(self.id, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.id, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ID")
@@ -61,7 +62,7 @@ class DiagnosticTestIdentifier(ARObject):
 
         # Serialize uas_id
         if self.uas_id is not None:
-            serialized = ARObject._serialize_item(self.uas_id, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.uas_id, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("UAS-ID")
@@ -90,13 +91,13 @@ class DiagnosticTestIdentifier(ARObject):
         obj.__init__()
 
         # Parse id
-        child = ARObject._find_child_element(element, "ID")
+        child = SerializationHelper.find_child_element(element, "ID")
         if child is not None:
             id_value = child.text
             obj.id = id_value
 
         # Parse uas_id
-        child = ARObject._find_child_element(element, "UAS-ID")
+        child = SerializationHelper.find_child_element(element, "UAS-ID")
         if child is not None:
             uas_id_value = child.text
             obj.uas_id = uas_id_value

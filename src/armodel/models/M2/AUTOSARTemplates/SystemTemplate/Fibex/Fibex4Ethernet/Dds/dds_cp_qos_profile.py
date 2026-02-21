@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Dds.dds_deadline import (
     DdsDeadline,
 )
@@ -98,7 +99,7 @@ class DdsCpQosProfile(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -117,7 +118,7 @@ class DdsCpQosProfile(Identifiable):
 
         # Serialize deadline
         if self.deadline is not None:
-            serialized = ARObject._serialize_item(self.deadline, "DdsDeadline")
+            serialized = SerializationHelper.serialize_item(self.deadline, "DdsDeadline")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DEADLINE")
@@ -131,7 +132,7 @@ class DdsCpQosProfile(Identifiable):
 
         # Serialize destination_order
         if self.destination_order is not None:
-            serialized = ARObject._serialize_item(self.destination_order, "DdsDestinationOrder")
+            serialized = SerializationHelper.serialize_item(self.destination_order, "DdsDestinationOrder")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DESTINATION-ORDER")
@@ -145,7 +146,7 @@ class DdsCpQosProfile(Identifiable):
 
         # Serialize durability
         if self.durability is not None:
-            serialized = ARObject._serialize_item(self.durability, "DdsDurabilityService")
+            serialized = SerializationHelper.serialize_item(self.durability, "DdsDurabilityService")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DURABILITY")
@@ -159,7 +160,7 @@ class DdsCpQosProfile(Identifiable):
 
         # Serialize history
         if self.history is not None:
-            serialized = ARObject._serialize_item(self.history, "DdsHistory")
+            serialized = SerializationHelper.serialize_item(self.history, "DdsHistory")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HISTORY")
@@ -173,7 +174,7 @@ class DdsCpQosProfile(Identifiable):
 
         # Serialize latency_budget
         if self.latency_budget is not None:
-            serialized = ARObject._serialize_item(self.latency_budget, "DdsLatencyBudget")
+            serialized = SerializationHelper.serialize_item(self.latency_budget, "DdsLatencyBudget")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LATENCY-BUDGET")
@@ -187,7 +188,7 @@ class DdsCpQosProfile(Identifiable):
 
         # Serialize lifespan
         if self.lifespan is not None:
-            serialized = ARObject._serialize_item(self.lifespan, "DdsLifespan")
+            serialized = SerializationHelper.serialize_item(self.lifespan, "DdsLifespan")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LIFESPAN")
@@ -201,7 +202,7 @@ class DdsCpQosProfile(Identifiable):
 
         # Serialize liveliness
         if self.liveliness is not None:
-            serialized = ARObject._serialize_item(self.liveliness, "DdsLiveliness")
+            serialized = SerializationHelper.serialize_item(self.liveliness, "DdsLiveliness")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LIVELINESS")
@@ -215,7 +216,7 @@ class DdsCpQosProfile(Identifiable):
 
         # Serialize ownership
         if self.ownership is not None:
-            serialized = ARObject._serialize_item(self.ownership, "DdsOwnershipStrength")
+            serialized = SerializationHelper.serialize_item(self.ownership, "DdsOwnershipStrength")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("OWNERSHIP")
@@ -229,7 +230,7 @@ class DdsCpQosProfile(Identifiable):
 
         # Serialize reliability
         if self.reliability is not None:
-            serialized = ARObject._serialize_item(self.reliability, "DdsReliability")
+            serialized = SerializationHelper.serialize_item(self.reliability, "DdsReliability")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RELIABILITY")
@@ -243,7 +244,7 @@ class DdsCpQosProfile(Identifiable):
 
         # Serialize resource_limits
         if self.resource_limits is not None:
-            serialized = ARObject._serialize_item(self.resource_limits, "DdsResourceLimits")
+            serialized = SerializationHelper.serialize_item(self.resource_limits, "DdsResourceLimits")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RESOURCE-LIMITS")
@@ -257,7 +258,7 @@ class DdsCpQosProfile(Identifiable):
 
         # Serialize topic_data
         if self.topic_data is not None:
-            serialized = ARObject._serialize_item(self.topic_data, "DdsTopicData")
+            serialized = SerializationHelper.serialize_item(self.topic_data, "DdsTopicData")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TOPIC-DATA")
@@ -271,7 +272,7 @@ class DdsCpQosProfile(Identifiable):
 
         # Serialize transport_priority
         if self.transport_priority is not None:
-            serialized = ARObject._serialize_item(self.transport_priority, "DdsTransportPriority")
+            serialized = SerializationHelper.serialize_item(self.transport_priority, "DdsTransportPriority")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TRANSPORT-PRIORITY")
@@ -299,75 +300,75 @@ class DdsCpQosProfile(Identifiable):
         obj = super(DdsCpQosProfile, cls).deserialize(element)
 
         # Parse deadline
-        child = ARObject._find_child_element(element, "DEADLINE")
+        child = SerializationHelper.find_child_element(element, "DEADLINE")
         if child is not None:
-            deadline_value = ARObject._deserialize_by_tag(child, "DdsDeadline")
+            deadline_value = SerializationHelper.deserialize_by_tag(child, "DdsDeadline")
             obj.deadline = deadline_value
 
         # Parse destination_order
-        child = ARObject._find_child_element(element, "DESTINATION-ORDER")
+        child = SerializationHelper.find_child_element(element, "DESTINATION-ORDER")
         if child is not None:
-            destination_order_value = ARObject._deserialize_by_tag(child, "DdsDestinationOrder")
+            destination_order_value = SerializationHelper.deserialize_by_tag(child, "DdsDestinationOrder")
             obj.destination_order = destination_order_value
 
         # Parse durability
-        child = ARObject._find_child_element(element, "DURABILITY")
+        child = SerializationHelper.find_child_element(element, "DURABILITY")
         if child is not None:
-            durability_value = ARObject._deserialize_by_tag(child, "DdsDurabilityService")
+            durability_value = SerializationHelper.deserialize_by_tag(child, "DdsDurabilityService")
             obj.durability = durability_value
 
         # Parse history
-        child = ARObject._find_child_element(element, "HISTORY")
+        child = SerializationHelper.find_child_element(element, "HISTORY")
         if child is not None:
-            history_value = ARObject._deserialize_by_tag(child, "DdsHistory")
+            history_value = SerializationHelper.deserialize_by_tag(child, "DdsHistory")
             obj.history = history_value
 
         # Parse latency_budget
-        child = ARObject._find_child_element(element, "LATENCY-BUDGET")
+        child = SerializationHelper.find_child_element(element, "LATENCY-BUDGET")
         if child is not None:
-            latency_budget_value = ARObject._deserialize_by_tag(child, "DdsLatencyBudget")
+            latency_budget_value = SerializationHelper.deserialize_by_tag(child, "DdsLatencyBudget")
             obj.latency_budget = latency_budget_value
 
         # Parse lifespan
-        child = ARObject._find_child_element(element, "LIFESPAN")
+        child = SerializationHelper.find_child_element(element, "LIFESPAN")
         if child is not None:
-            lifespan_value = ARObject._deserialize_by_tag(child, "DdsLifespan")
+            lifespan_value = SerializationHelper.deserialize_by_tag(child, "DdsLifespan")
             obj.lifespan = lifespan_value
 
         # Parse liveliness
-        child = ARObject._find_child_element(element, "LIVELINESS")
+        child = SerializationHelper.find_child_element(element, "LIVELINESS")
         if child is not None:
-            liveliness_value = ARObject._deserialize_by_tag(child, "DdsLiveliness")
+            liveliness_value = SerializationHelper.deserialize_by_tag(child, "DdsLiveliness")
             obj.liveliness = liveliness_value
 
         # Parse ownership
-        child = ARObject._find_child_element(element, "OWNERSHIP")
+        child = SerializationHelper.find_child_element(element, "OWNERSHIP")
         if child is not None:
-            ownership_value = ARObject._deserialize_by_tag(child, "DdsOwnershipStrength")
+            ownership_value = SerializationHelper.deserialize_by_tag(child, "DdsOwnershipStrength")
             obj.ownership = ownership_value
 
         # Parse reliability
-        child = ARObject._find_child_element(element, "RELIABILITY")
+        child = SerializationHelper.find_child_element(element, "RELIABILITY")
         if child is not None:
-            reliability_value = ARObject._deserialize_by_tag(child, "DdsReliability")
+            reliability_value = SerializationHelper.deserialize_by_tag(child, "DdsReliability")
             obj.reliability = reliability_value
 
         # Parse resource_limits
-        child = ARObject._find_child_element(element, "RESOURCE-LIMITS")
+        child = SerializationHelper.find_child_element(element, "RESOURCE-LIMITS")
         if child is not None:
-            resource_limits_value = ARObject._deserialize_by_tag(child, "DdsResourceLimits")
+            resource_limits_value = SerializationHelper.deserialize_by_tag(child, "DdsResourceLimits")
             obj.resource_limits = resource_limits_value
 
         # Parse topic_data
-        child = ARObject._find_child_element(element, "TOPIC-DATA")
+        child = SerializationHelper.find_child_element(element, "TOPIC-DATA")
         if child is not None:
-            topic_data_value = ARObject._deserialize_by_tag(child, "DdsTopicData")
+            topic_data_value = SerializationHelper.deserialize_by_tag(child, "DdsTopicData")
             obj.topic_data = topic_data_value
 
         # Parse transport_priority
-        child = ARObject._find_child_element(element, "TRANSPORT-PRIORITY")
+        child = SerializationHelper.find_child_element(element, "TRANSPORT-PRIORITY")
         if child is not None:
-            transport_priority_value = ARObject._deserialize_by_tag(child, "DdsTransportPriority")
+            transport_priority_value = SerializationHelper.deserialize_by_tag(child, "DdsTransportPriority")
             obj.transport_priority = transport_priority_value
 
         return obj

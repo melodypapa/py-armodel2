@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.r_port
     RPortComSpec,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -65,7 +66,7 @@ class ReceiverComSpec(RPortComSpec, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -86,7 +87,7 @@ class ReceiverComSpec(RPortComSpec, ABC):
         if self.composite_networks:
             wrapper = ET.Element("COMPOSITE-NETWORKS")
             for item in self.composite_networks:
-                serialized = ARObject._serialize_item(item, "CompositeNetworkRepresentation")
+                serialized = SerializationHelper.serialize_item(item, "CompositeNetworkRepresentation")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -94,7 +95,7 @@ class ReceiverComSpec(RPortComSpec, ABC):
 
         # Serialize data_element_ref
         if self.data_element_ref is not None:
-            serialized = ARObject._serialize_item(self.data_element_ref, "AutosarDataPrototype")
+            serialized = SerializationHelper.serialize_item(self.data_element_ref, "AutosarDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-ELEMENT-REF")
@@ -108,7 +109,7 @@ class ReceiverComSpec(RPortComSpec, ABC):
 
         # Serialize handle_out_of_range
         if self.handle_out_of_range is not None:
-            serialized = ARObject._serialize_item(self.handle_out_of_range, "Any")
+            serialized = SerializationHelper.serialize_item(self.handle_out_of_range, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HANDLE-OUT-OF-RANGE")
@@ -122,7 +123,7 @@ class ReceiverComSpec(RPortComSpec, ABC):
 
         # Serialize max_delta
         if self.max_delta is not None:
-            serialized = ARObject._serialize_item(self.max_delta, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.max_delta, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-DELTA")
@@ -136,7 +137,7 @@ class ReceiverComSpec(RPortComSpec, ABC):
 
         # Serialize sync_counter_init
         if self.sync_counter_init is not None:
-            serialized = ARObject._serialize_item(self.sync_counter_init, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.sync_counter_init, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SYNC-COUNTER-INIT")
@@ -152,7 +153,7 @@ class ReceiverComSpec(RPortComSpec, ABC):
         if self.transformation_coms:
             wrapper = ET.Element("TRANSFORMATION-COMS")
             for item in self.transformation_coms:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -160,7 +161,7 @@ class ReceiverComSpec(RPortComSpec, ABC):
 
         # Serialize uses_end_to_end
         if self.uses_end_to_end is not None:
-            serialized = ARObject._serialize_item(self.uses_end_to_end, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.uses_end_to_end, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("USES-END-TO-END")
@@ -189,50 +190,50 @@ class ReceiverComSpec(RPortComSpec, ABC):
 
         # Parse composite_networks (list from container "COMPOSITE-NETWORKS")
         obj.composite_networks = []
-        container = ARObject._find_child_element(element, "COMPOSITE-NETWORKS")
+        container = SerializationHelper.find_child_element(element, "COMPOSITE-NETWORKS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.composite_networks.append(child_value)
 
         # Parse data_element_ref
-        child = ARObject._find_child_element(element, "DATA-ELEMENT-REF")
+        child = SerializationHelper.find_child_element(element, "DATA-ELEMENT-REF")
         if child is not None:
             data_element_ref_value = ARRef.deserialize(child)
             obj.data_element_ref = data_element_ref_value
 
         # Parse handle_out_of_range
-        child = ARObject._find_child_element(element, "HANDLE-OUT-OF-RANGE")
+        child = SerializationHelper.find_child_element(element, "HANDLE-OUT-OF-RANGE")
         if child is not None:
             handle_out_of_range_value = child.text
             obj.handle_out_of_range = handle_out_of_range_value
 
         # Parse max_delta
-        child = ARObject._find_child_element(element, "MAX-DELTA")
+        child = SerializationHelper.find_child_element(element, "MAX-DELTA")
         if child is not None:
             max_delta_value = child.text
             obj.max_delta = max_delta_value
 
         # Parse sync_counter_init
-        child = ARObject._find_child_element(element, "SYNC-COUNTER-INIT")
+        child = SerializationHelper.find_child_element(element, "SYNC-COUNTER-INIT")
         if child is not None:
             sync_counter_init_value = child.text
             obj.sync_counter_init = sync_counter_init_value
 
         # Parse transformation_coms (list from container "TRANSFORMATION-COMS")
         obj.transformation_coms = []
-        container = ARObject._find_child_element(element, "TRANSFORMATION-COMS")
+        container = SerializationHelper.find_child_element(element, "TRANSFORMATION-COMS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.transformation_coms.append(child_value)
 
         # Parse uses_end_to_end
-        child = ARObject._find_child_element(element, "USES-END-TO-END")
+        child = SerializationHelper.find_child_element(element, "USES-END-TO-END")
         if child is not None:
             uses_end_to_end_value = child.text
             obj.uses_end_to_end = uses_end_to_end_value

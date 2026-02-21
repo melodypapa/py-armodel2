@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticMemoryDestination import (
     DiagnosticMemoryEntryStorageTriggerEnum,
 )
@@ -65,7 +66,7 @@ class DiagnosticMemoryDestination(DiagnosticCommonElement, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -84,7 +85,7 @@ class DiagnosticMemoryDestination(DiagnosticCommonElement, ABC):
 
         # Serialize aging_requires
         if self.aging_requires is not None:
-            serialized = ARObject._serialize_item(self.aging_requires, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.aging_requires, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("AGING-REQUIRES")
@@ -98,7 +99,7 @@ class DiagnosticMemoryDestination(DiagnosticCommonElement, ABC):
 
         # Serialize clear_dtc
         if self.clear_dtc is not None:
-            serialized = ARObject._serialize_item(self.clear_dtc, "Any")
+            serialized = SerializationHelper.serialize_item(self.clear_dtc, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CLEAR-DTC")
@@ -112,7 +113,7 @@ class DiagnosticMemoryDestination(DiagnosticCommonElement, ABC):
 
         # Serialize dtc_status
         if self.dtc_status is not None:
-            serialized = ARObject._serialize_item(self.dtc_status, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.dtc_status, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DTC-STATUS")
@@ -126,7 +127,7 @@ class DiagnosticMemoryDestination(DiagnosticCommonElement, ABC):
 
         # Serialize event
         if self.event is not None:
-            serialized = ARObject._serialize_item(self.event, "DiagnosticEvent")
+            serialized = SerializationHelper.serialize_item(self.event, "DiagnosticEvent")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("EVENT")
@@ -140,7 +141,7 @@ class DiagnosticMemoryDestination(DiagnosticCommonElement, ABC):
 
         # Serialize max_number_of
         if self.max_number_of is not None:
-            serialized = ARObject._serialize_item(self.max_number_of, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.max_number_of, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-NUMBER-OF")
@@ -154,7 +155,7 @@ class DiagnosticMemoryDestination(DiagnosticCommonElement, ABC):
 
         # Serialize memory_entry
         if self.memory_entry is not None:
-            serialized = ARObject._serialize_item(self.memory_entry, "DiagnosticMemoryEntryStorageTriggerEnum")
+            serialized = SerializationHelper.serialize_item(self.memory_entry, "DiagnosticMemoryEntryStorageTriggerEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MEMORY-ENTRY")
@@ -168,7 +169,7 @@ class DiagnosticMemoryDestination(DiagnosticCommonElement, ABC):
 
         # Serialize status_bit
         if self.status_bit is not None:
-            serialized = ARObject._serialize_item(self.status_bit, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.status_bit, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("STATUS-BIT")
@@ -182,7 +183,7 @@ class DiagnosticMemoryDestination(DiagnosticCommonElement, ABC):
 
         # Serialize type_of_freeze
         if self.type_of_freeze is not None:
-            serialized = ARObject._serialize_item(self.type_of_freeze, "Any")
+            serialized = SerializationHelper.serialize_item(self.type_of_freeze, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TYPE-OF-FREEZE")
@@ -210,49 +211,49 @@ class DiagnosticMemoryDestination(DiagnosticCommonElement, ABC):
         obj = super(DiagnosticMemoryDestination, cls).deserialize(element)
 
         # Parse aging_requires
-        child = ARObject._find_child_element(element, "AGING-REQUIRES")
+        child = SerializationHelper.find_child_element(element, "AGING-REQUIRES")
         if child is not None:
             aging_requires_value = child.text
             obj.aging_requires = aging_requires_value
 
         # Parse clear_dtc
-        child = ARObject._find_child_element(element, "CLEAR-DTC")
+        child = SerializationHelper.find_child_element(element, "CLEAR-DTC")
         if child is not None:
             clear_dtc_value = child.text
             obj.clear_dtc = clear_dtc_value
 
         # Parse dtc_status
-        child = ARObject._find_child_element(element, "DTC-STATUS")
+        child = SerializationHelper.find_child_element(element, "DTC-STATUS")
         if child is not None:
             dtc_status_value = child.text
             obj.dtc_status = dtc_status_value
 
         # Parse event
-        child = ARObject._find_child_element(element, "EVENT")
+        child = SerializationHelper.find_child_element(element, "EVENT")
         if child is not None:
-            event_value = ARObject._deserialize_by_tag(child, "DiagnosticEvent")
+            event_value = SerializationHelper.deserialize_by_tag(child, "DiagnosticEvent")
             obj.event = event_value
 
         # Parse max_number_of
-        child = ARObject._find_child_element(element, "MAX-NUMBER-OF")
+        child = SerializationHelper.find_child_element(element, "MAX-NUMBER-OF")
         if child is not None:
             max_number_of_value = child.text
             obj.max_number_of = max_number_of_value
 
         # Parse memory_entry
-        child = ARObject._find_child_element(element, "MEMORY-ENTRY")
+        child = SerializationHelper.find_child_element(element, "MEMORY-ENTRY")
         if child is not None:
             memory_entry_value = DiagnosticMemoryEntryStorageTriggerEnum.deserialize(child)
             obj.memory_entry = memory_entry_value
 
         # Parse status_bit
-        child = ARObject._find_child_element(element, "STATUS-BIT")
+        child = SerializationHelper.find_child_element(element, "STATUS-BIT")
         if child is not None:
             status_bit_value = child.text
             obj.status_bit = status_bit_value
 
         # Parse type_of_freeze
-        child = ARObject._find_child_element(element, "TYPE-OF-FREEZE")
+        child = SerializationHelper.find_child_element(element, "TYPE-OF-FREEZE")
         if child is not None:
             type_of_freeze_value = child.text
             obj.type_of_freeze = type_of_freeze_value

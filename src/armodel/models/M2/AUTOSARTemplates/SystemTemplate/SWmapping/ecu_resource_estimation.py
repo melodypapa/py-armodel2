@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
     DocumentationBlock,
@@ -58,12 +59,12 @@ class EcuResourceEstimation(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize bsw_resource
         if self.bsw_resource is not None:
-            serialized = ARObject._serialize_item(self.bsw_resource, "ResourceConsumption")
+            serialized = SerializationHelper.serialize_item(self.bsw_resource, "ResourceConsumption")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BSW-RESOURCE")
@@ -77,7 +78,7 @@ class EcuResourceEstimation(ARObject):
 
         # Serialize ecu_instance_ref
         if self.ecu_instance_ref is not None:
-            serialized = ARObject._serialize_item(self.ecu_instance_ref, "EcuInstance")
+            serialized = SerializationHelper.serialize_item(self.ecu_instance_ref, "EcuInstance")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ECU-INSTANCE-REF")
@@ -91,7 +92,7 @@ class EcuResourceEstimation(ARObject):
 
         # Serialize introduction
         if self.introduction is not None:
-            serialized = ARObject._serialize_item(self.introduction, "DocumentationBlock")
+            serialized = SerializationHelper.serialize_item(self.introduction, "DocumentationBlock")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INTRODUCTION")
@@ -105,7 +106,7 @@ class EcuResourceEstimation(ARObject):
 
         # Serialize rte_resource
         if self.rte_resource is not None:
-            serialized = ARObject._serialize_item(self.rte_resource, "ResourceConsumption")
+            serialized = SerializationHelper.serialize_item(self.rte_resource, "ResourceConsumption")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RTE-RESOURCE")
@@ -121,7 +122,7 @@ class EcuResourceEstimation(ARObject):
         if self.sw_comp_to_ecu_refs:
             wrapper = ET.Element("SW-COMP-TO-ECU-REFS")
             for item in self.sw_comp_to_ecu_refs:
-                serialized = ARObject._serialize_item(item, "SwcToEcuMapping")
+                serialized = SerializationHelper.serialize_item(item, "SwcToEcuMapping")
                 if serialized is not None:
                     child_elem = ET.Element("SW-COMP-TO-ECU-REF")
                     if hasattr(serialized, 'attrib'):
@@ -151,42 +152,42 @@ class EcuResourceEstimation(ARObject):
         obj.__init__()
 
         # Parse bsw_resource
-        child = ARObject._find_child_element(element, "BSW-RESOURCE")
+        child = SerializationHelper.find_child_element(element, "BSW-RESOURCE")
         if child is not None:
-            bsw_resource_value = ARObject._deserialize_by_tag(child, "ResourceConsumption")
+            bsw_resource_value = SerializationHelper.deserialize_by_tag(child, "ResourceConsumption")
             obj.bsw_resource = bsw_resource_value
 
         # Parse ecu_instance_ref
-        child = ARObject._find_child_element(element, "ECU-INSTANCE-REF")
+        child = SerializationHelper.find_child_element(element, "ECU-INSTANCE-REF")
         if child is not None:
             ecu_instance_ref_value = ARRef.deserialize(child)
             obj.ecu_instance_ref = ecu_instance_ref_value
 
         # Parse introduction
-        child = ARObject._find_child_element(element, "INTRODUCTION")
+        child = SerializationHelper.find_child_element(element, "INTRODUCTION")
         if child is not None:
-            introduction_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            introduction_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
             obj.introduction = introduction_value
 
         # Parse rte_resource
-        child = ARObject._find_child_element(element, "RTE-RESOURCE")
+        child = SerializationHelper.find_child_element(element, "RTE-RESOURCE")
         if child is not None:
-            rte_resource_value = ARObject._deserialize_by_tag(child, "ResourceConsumption")
+            rte_resource_value = SerializationHelper.deserialize_by_tag(child, "ResourceConsumption")
             obj.rte_resource = rte_resource_value
 
         # Parse sw_comp_to_ecu_refs (list from container "SW-COMP-TO-ECU-REFS")
         obj.sw_comp_to_ecu_refs = []
-        container = ARObject._find_child_element(element, "SW-COMP-TO-ECU-REFS")
+        container = SerializationHelper.find_child_element(element, "SW-COMP-TO-ECU-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.sw_comp_to_ecu_refs.append(child_value)
 

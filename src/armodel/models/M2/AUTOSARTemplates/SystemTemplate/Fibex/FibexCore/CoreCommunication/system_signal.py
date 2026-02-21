@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -53,7 +54,7 @@ class SystemSignal(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -72,7 +73,7 @@ class SystemSignal(ARElement):
 
         # Serialize dynamic_length
         if self.dynamic_length is not None:
-            serialized = ARObject._serialize_item(self.dynamic_length, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.dynamic_length, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DYNAMIC-LENGTH")
@@ -86,7 +87,7 @@ class SystemSignal(ARElement):
 
         # Serialize physical_props
         if self.physical_props is not None:
-            serialized = ARObject._serialize_item(self.physical_props, "SwDataDefProps")
+            serialized = SerializationHelper.serialize_item(self.physical_props, "SwDataDefProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PHYSICAL-PROPS")
@@ -114,15 +115,15 @@ class SystemSignal(ARElement):
         obj = super(SystemSignal, cls).deserialize(element)
 
         # Parse dynamic_length
-        child = ARObject._find_child_element(element, "DYNAMIC-LENGTH")
+        child = SerializationHelper.find_child_element(element, "DYNAMIC-LENGTH")
         if child is not None:
             dynamic_length_value = child.text
             obj.dynamic_length = dynamic_length_value
 
         # Parse physical_props
-        child = ARObject._find_child_element(element, "PHYSICAL-PROPS")
+        child = SerializationHelper.find_child_element(element, "PHYSICAL-PROPS")
         if child is not None:
-            physical_props_value = ARObject._deserialize_by_tag(child, "SwDataDefProps")
+            physical_props_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
             obj.physical_props = physical_props_value
 
         return obj

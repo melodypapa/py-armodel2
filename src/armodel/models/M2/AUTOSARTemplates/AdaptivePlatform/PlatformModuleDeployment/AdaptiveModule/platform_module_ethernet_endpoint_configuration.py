@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Ip4AddressString,
@@ -52,7 +53,7 @@ class PlatformModuleEthernetEndpointConfiguration(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -71,7 +72,7 @@ class PlatformModuleEthernetEndpointConfiguration(ARElement):
 
         # Serialize communication_connector_ref
         if self.communication_connector_ref is not None:
-            serialized = ARObject._serialize_item(self.communication_connector_ref, "EthernetCommunicationConnector")
+            serialized = SerializationHelper.serialize_item(self.communication_connector_ref, "EthernetCommunicationConnector")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COMMUNICATION-CONNECTOR-REF")
@@ -85,7 +86,7 @@ class PlatformModuleEthernetEndpointConfiguration(ARElement):
 
         # Serialize ipv4_multicast_ip_address
         if self.ipv4_multicast_ip_address is not None:
-            serialized = ARObject._serialize_item(self.ipv4_multicast_ip_address, "Ip4AddressString")
+            serialized = SerializationHelper.serialize_item(self.ipv4_multicast_ip_address, "Ip4AddressString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IPV4-MULTICAST-IP-ADDRESS")
@@ -99,7 +100,7 @@ class PlatformModuleEthernetEndpointConfiguration(ARElement):
 
         # Serialize ipv6_multicast_ip_address
         if self.ipv6_multicast_ip_address is not None:
-            serialized = ARObject._serialize_item(self.ipv6_multicast_ip_address, "Ip6AddressString")
+            serialized = SerializationHelper.serialize_item(self.ipv6_multicast_ip_address, "Ip6AddressString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IPV6-MULTICAST-IP-ADDRESS")
@@ -127,19 +128,19 @@ class PlatformModuleEthernetEndpointConfiguration(ARElement):
         obj = super(PlatformModuleEthernetEndpointConfiguration, cls).deserialize(element)
 
         # Parse communication_connector_ref
-        child = ARObject._find_child_element(element, "COMMUNICATION-CONNECTOR-REF")
+        child = SerializationHelper.find_child_element(element, "COMMUNICATION-CONNECTOR-REF")
         if child is not None:
             communication_connector_ref_value = ARRef.deserialize(child)
             obj.communication_connector_ref = communication_connector_ref_value
 
         # Parse ipv4_multicast_ip_address
-        child = ARObject._find_child_element(element, "IPV4-MULTICAST-IP-ADDRESS")
+        child = SerializationHelper.find_child_element(element, "IPV4-MULTICAST-IP-ADDRESS")
         if child is not None:
             ipv4_multicast_ip_address_value = child.text
             obj.ipv4_multicast_ip_address = ipv4_multicast_ip_address_value
 
         # Parse ipv6_multicast_ip_address
-        child = ARObject._find_child_element(element, "IPV6-MULTICAST-IP-ADDRESS")
+        child = SerializationHelper.find_child_element(element, "IPV6-MULTICAST-IP-ADDRESS")
         if child is not None:
             ipv6_multicast_ip_address_value = child.text
             obj.ipv6_multicast_ip_address = ipv6_multicast_ip_address_value

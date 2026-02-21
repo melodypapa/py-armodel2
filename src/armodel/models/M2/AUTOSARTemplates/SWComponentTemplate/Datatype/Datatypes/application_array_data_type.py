@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.a
     ApplicationCompositeDataType,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -50,7 +51,7 @@ class ApplicationArrayDataType(ApplicationCompositeDataType):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -69,7 +70,7 @@ class ApplicationArrayDataType(ApplicationCompositeDataType):
 
         # Serialize dynamic_array_size_profile
         if self.dynamic_array_size_profile is not None:
-            serialized = ARObject._serialize_item(self.dynamic_array_size_profile, "String")
+            serialized = SerializationHelper.serialize_item(self.dynamic_array_size_profile, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DYNAMIC-ARRAY-SIZE-PROFILE")
@@ -83,7 +84,7 @@ class ApplicationArrayDataType(ApplicationCompositeDataType):
 
         # Serialize element
         if self.element is not None:
-            serialized = ARObject._serialize_item(self.element, "ApplicationArrayElement")
+            serialized = SerializationHelper.serialize_item(self.element, "ApplicationArrayElement")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ELEMENT")
@@ -111,15 +112,15 @@ class ApplicationArrayDataType(ApplicationCompositeDataType):
         obj = super(ApplicationArrayDataType, cls).deserialize(element)
 
         # Parse dynamic_array_size_profile
-        child = ARObject._find_child_element(element, "DYNAMIC-ARRAY-SIZE-PROFILE")
+        child = SerializationHelper.find_child_element(element, "DYNAMIC-ARRAY-SIZE-PROFILE")
         if child is not None:
             dynamic_array_size_profile_value = child.text
             obj.dynamic_array_size_profile = dynamic_array_size_profile_value
 
         # Parse element
-        child = ARObject._find_child_element(element, "ELEMENT")
+        child = SerializationHelper.find_child_element(element, "ELEMENT")
         if child is not None:
-            element_value = ARObject._deserialize_by_tag(child, "ApplicationArrayElement")
+            element_value = SerializationHelper.deserialize_by_tag(child, "ApplicationArrayElement")
             obj.element = element_value
 
         return obj

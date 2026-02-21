@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
     RTEEvent,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_operation import (
     ClientServerOperation,
 )
@@ -44,7 +45,7 @@ class OperationInvokedEvent(RTEEvent):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -63,7 +64,7 @@ class OperationInvokedEvent(RTEEvent):
 
         # Serialize operation_instance_ref
         if self.operation_instance_ref is not None:
-            serialized = ARObject._serialize_item(self.operation_instance_ref, "ClientServerOperation")
+            serialized = SerializationHelper.serialize_item(self.operation_instance_ref, "ClientServerOperation")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("OPERATION-INSTANCE-REF")
@@ -91,9 +92,9 @@ class OperationInvokedEvent(RTEEvent):
         obj = super(OperationInvokedEvent, cls).deserialize(element)
 
         # Parse operation_instance_ref
-        child = ARObject._find_child_element(element, "OPERATION-INSTANCE-REF")
+        child = SerializationHelper.find_child_element(element, "OPERATION-INSTANCE-REF")
         if child is not None:
-            operation_instance_ref_value = ARObject._deserialize_by_tag(child, "ClientServerOperation")
+            operation_instance_ref_value = SerializationHelper.deserialize_by_tag(child, "ClientServerOperation")
             obj.operation_instance_ref = operation_instance_ref_value
 
         return obj

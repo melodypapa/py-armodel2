@@ -13,6 +13,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Numerical,
 )
@@ -43,12 +44,12 @@ class ValueList(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize v
         if self.v is not None:
-            serialized = ARObject._serialize_item(self.v, "Numerical")
+            serialized = SerializationHelper.serialize_item(self.v, "Numerical")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("V")
@@ -77,7 +78,7 @@ class ValueList(ARObject):
         obj.__init__()
 
         # Parse v
-        child = ARObject._find_child_element(element, "V")
+        child = SerializationHelper.find_child_element(element, "V")
         if child is not None:
             v_value = child.text
             obj.v = v_value

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 if TYPE_CHECKING:
     from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_condition_formula import (
@@ -51,7 +52,7 @@ class EcucValidationCondition(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -72,7 +73,7 @@ class EcucValidationCondition(Identifiable):
         if self.ecuc_queries:
             wrapper = ET.Element("ECUC-QUERIES")
             for item in self.ecuc_queries:
-                serialized = ARObject._serialize_item(item, "EcucQuery")
+                serialized = SerializationHelper.serialize_item(item, "EcucQuery")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -80,7 +81,7 @@ class EcucValidationCondition(Identifiable):
 
         # Serialize validation
         if self.validation is not None:
-            serialized = ARObject._serialize_item(self.validation, "EcucConditionFormula")
+            serialized = SerializationHelper.serialize_item(self.validation, "EcucConditionFormula")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VALIDATION")
@@ -109,18 +110,18 @@ class EcucValidationCondition(Identifiable):
 
         # Parse ecuc_queries (list from container "ECUC-QUERIES")
         obj.ecuc_queries = []
-        container = ARObject._find_child_element(element, "ECUC-QUERIES")
+        container = SerializationHelper.find_child_element(element, "ECUC-QUERIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.ecuc_queries.append(child_value)
 
         # Parse validation
-        child = ARObject._find_child_element(element, "VALIDATION")
+        child = SerializationHelper.find_child_element(element, "VALIDATION")
         if child is not None:
-            validation_value = ARObject._deserialize_by_tag(child, "EcucConditionFormula")
+            validation_value = SerializationHelper.deserialize_by_tag(child, "EcucConditionFormula")
             obj.validation = validation_value
 
         return obj

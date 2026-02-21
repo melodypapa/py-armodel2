@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
     AttributeCondition,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.aggregation_tailoring import (
     AggregationTailoring,
@@ -44,7 +45,7 @@ class AggregationCondition(AttributeCondition):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -63,7 +64,7 @@ class AggregationCondition(AttributeCondition):
 
         # Serialize aggregation_ref
         if self.aggregation_ref is not None:
-            serialized = ARObject._serialize_item(self.aggregation_ref, "AggregationTailoring")
+            serialized = SerializationHelper.serialize_item(self.aggregation_ref, "AggregationTailoring")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("AGGREGATION-REF")
@@ -91,7 +92,7 @@ class AggregationCondition(AttributeCondition):
         obj = super(AggregationCondition, cls).deserialize(element)
 
         # Parse aggregation_ref
-        child = ARObject._find_child_element(element, "AGGREGATION-REF")
+        child = SerializationHelper.find_child_element(element, "AGGREGATION-REF")
         if child is not None:
             aggregation_ref_value = ARRef.deserialize(child)
             obj.aggregation_ref = aggregation_ref_value

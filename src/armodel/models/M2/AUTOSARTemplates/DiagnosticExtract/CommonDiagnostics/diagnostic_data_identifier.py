@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticAbstractDataIdentifier,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -56,7 +57,7 @@ class DiagnosticDataIdentifier(DiagnosticAbstractDataIdentifier):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -77,7 +78,7 @@ class DiagnosticDataIdentifier(DiagnosticAbstractDataIdentifier):
         if self.data_elements:
             wrapper = ET.Element("DATA-ELEMENTS")
             for item in self.data_elements:
-                serialized = ARObject._serialize_item(item, "DiagnosticParameter")
+                serialized = SerializationHelper.serialize_item(item, "DiagnosticParameter")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -85,7 +86,7 @@ class DiagnosticDataIdentifier(DiagnosticAbstractDataIdentifier):
 
         # Serialize did_size
         if self.did_size is not None:
-            serialized = ARObject._serialize_item(self.did_size, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.did_size, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DID-SIZE")
@@ -99,7 +100,7 @@ class DiagnosticDataIdentifier(DiagnosticAbstractDataIdentifier):
 
         # Serialize represents_vin
         if self.represents_vin is not None:
-            serialized = ARObject._serialize_item(self.represents_vin, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.represents_vin, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REPRESENTS-VIN")
@@ -113,7 +114,7 @@ class DiagnosticDataIdentifier(DiagnosticAbstractDataIdentifier):
 
         # Serialize support_info_byte
         if self.support_info_byte is not None:
-            serialized = ARObject._serialize_item(self.support_info_byte, "DiagnosticSupportInfoByte")
+            serialized = SerializationHelper.serialize_item(self.support_info_byte, "DiagnosticSupportInfoByte")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SUPPORT-INFO-BYTE")
@@ -142,30 +143,30 @@ class DiagnosticDataIdentifier(DiagnosticAbstractDataIdentifier):
 
         # Parse data_elements (list from container "DATA-ELEMENTS")
         obj.data_elements = []
-        container = ARObject._find_child_element(element, "DATA-ELEMENTS")
+        container = SerializationHelper.find_child_element(element, "DATA-ELEMENTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.data_elements.append(child_value)
 
         # Parse did_size
-        child = ARObject._find_child_element(element, "DID-SIZE")
+        child = SerializationHelper.find_child_element(element, "DID-SIZE")
         if child is not None:
             did_size_value = child.text
             obj.did_size = did_size_value
 
         # Parse represents_vin
-        child = ARObject._find_child_element(element, "REPRESENTS-VIN")
+        child = SerializationHelper.find_child_element(element, "REPRESENTS-VIN")
         if child is not None:
             represents_vin_value = child.text
             obj.represents_vin = represents_vin_value
 
         # Parse support_info_byte
-        child = ARObject._find_child_element(element, "SUPPORT-INFO-BYTE")
+        child = SerializationHelper.find_child_element(element, "SUPPORT-INFO-BYTE")
         if child is not None:
-            support_info_byte_value = ARObject._deserialize_by_tag(child, "DiagnosticSupportInfoByte")
+            support_info_byte_value = SerializationHelper.deserialize_by_tag(child, "DiagnosticSupportInfoByte")
             obj.support_info_byte = support_info_byte_value
 
         return obj

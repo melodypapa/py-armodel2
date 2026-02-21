@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_feature_model import (
     FMFeatureModel,
@@ -51,7 +52,7 @@ class FMFeatureSelectionSet(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -72,7 +73,7 @@ class FMFeatureSelectionSet(ARElement):
         if self.feature_model_refs:
             wrapper = ET.Element("FEATURE-MODEL-REFS")
             for item in self.feature_model_refs:
-                serialized = ARObject._serialize_item(item, "FMFeatureModel")
+                serialized = SerializationHelper.serialize_item(item, "FMFeatureModel")
                 if serialized is not None:
                     child_elem = ET.Element("FEATURE-MODEL-REF")
                     if hasattr(serialized, 'attrib'):
@@ -89,7 +90,7 @@ class FMFeatureSelectionSet(ARElement):
         if self.include_refs:
             wrapper = ET.Element("INCLUDE-REFS")
             for item in self.include_refs:
-                serialized = ARObject._serialize_item(item, "FMFeatureSelectionSet")
+                serialized = SerializationHelper.serialize_item(item, "FMFeatureSelectionSet")
                 if serialized is not None:
                     child_elem = ET.Element("INCLUDE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -106,7 +107,7 @@ class FMFeatureSelectionSet(ARElement):
         if self.selections:
             wrapper = ET.Element("SELECTIONS")
             for item in self.selections:
-                serialized = ARObject._serialize_item(item, "FMFeatureSelection")
+                serialized = SerializationHelper.serialize_item(item, "FMFeatureSelection")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -129,43 +130,43 @@ class FMFeatureSelectionSet(ARElement):
 
         # Parse feature_model_refs (list from container "FEATURE-MODEL-REFS")
         obj.feature_model_refs = []
-        container = ARObject._find_child_element(element, "FEATURE-MODEL-REFS")
+        container = SerializationHelper.find_child_element(element, "FEATURE-MODEL-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.feature_model_refs.append(child_value)
 
         # Parse include_refs (list from container "INCLUDE-REFS")
         obj.include_refs = []
-        container = ARObject._find_child_element(element, "INCLUDE-REFS")
+        container = SerializationHelper.find_child_element(element, "INCLUDE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.include_refs.append(child_value)
 
         # Parse selections (list from container "SELECTIONS")
         obj.selections = []
-        container = ARObject._find_child_element(element, "SELECTIONS")
+        container = SerializationHelper.find_child_element(element, "SELECTIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.selections.append(child_value)
 

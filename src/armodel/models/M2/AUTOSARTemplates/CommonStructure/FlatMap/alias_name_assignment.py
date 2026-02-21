@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
@@ -57,12 +58,12 @@ class AliasNameAssignment(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize flat_instance_ref
         if self.flat_instance_ref is not None:
-            serialized = ARObject._serialize_item(self.flat_instance_ref, "FlatInstanceDescriptor")
+            serialized = SerializationHelper.serialize_item(self.flat_instance_ref, "FlatInstanceDescriptor")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FLAT-INSTANCE-REF")
@@ -76,7 +77,7 @@ class AliasNameAssignment(ARObject):
 
         # Serialize identifiable_ref
         if self.identifiable_ref is not None:
-            serialized = ARObject._serialize_item(self.identifiable_ref, "Identifiable")
+            serialized = SerializationHelper.serialize_item(self.identifiable_ref, "Identifiable")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IDENTIFIABLE-REF")
@@ -90,7 +91,7 @@ class AliasNameAssignment(ARObject):
 
         # Serialize label
         if self.label is not None:
-            serialized = ARObject._serialize_item(self.label, "MultilanguageLongName")
+            serialized = SerializationHelper.serialize_item(self.label, "MultilanguageLongName")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LABEL")
@@ -104,7 +105,7 @@ class AliasNameAssignment(ARObject):
 
         # Serialize short_label
         if self.short_label is not None:
-            serialized = ARObject._serialize_item(self.short_label, "String")
+            serialized = SerializationHelper.serialize_item(self.short_label, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SHORT-LABEL")
@@ -133,25 +134,25 @@ class AliasNameAssignment(ARObject):
         obj.__init__()
 
         # Parse flat_instance_ref
-        child = ARObject._find_child_element(element, "FLAT-INSTANCE-REF")
+        child = SerializationHelper.find_child_element(element, "FLAT-INSTANCE-REF")
         if child is not None:
             flat_instance_ref_value = ARRef.deserialize(child)
             obj.flat_instance_ref = flat_instance_ref_value
 
         # Parse identifiable_ref
-        child = ARObject._find_child_element(element, "IDENTIFIABLE-REF")
+        child = SerializationHelper.find_child_element(element, "IDENTIFIABLE-REF")
         if child is not None:
             identifiable_ref_value = ARRef.deserialize(child)
             obj.identifiable_ref = identifiable_ref_value
 
         # Parse label
-        child = ARObject._find_child_element(element, "LABEL")
+        child = SerializationHelper.find_child_element(element, "LABEL")
         if child is not None:
-            label_value = ARObject._deserialize_with_type(child, "MultilanguageLongName")
+            label_value = SerializationHelper.deserialize_with_type(child, "MultilanguageLongName")
             obj.label = label_value
 
         # Parse short_label
-        child = ARObject._find_child_element(element, "SHORT-LABEL")
+        child = SerializationHelper.find_child_element(element, "SHORT-LABEL")
         if child is not None:
             short_label_value = child.text
             obj.short_label = short_label_value

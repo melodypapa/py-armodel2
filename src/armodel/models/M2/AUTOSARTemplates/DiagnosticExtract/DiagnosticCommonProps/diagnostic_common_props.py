@@ -11,6 +11,7 @@ import xml.etree.ElementTree as ET
 from armodel.serialization.decorators import atp_variant
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticCommonProps import (
     DiagnosticOccurrenceCounterProcessingEnum,
 )
@@ -66,6 +67,293 @@ class DiagnosticCommonProps(ARObject):
         self.response_on_all: Optional[Boolean] = None
         self.response_on: Optional[Boolean] = None
         self.type_of_event: Optional[DiagnosticEvent] = None
+
+    def serialize(self) -> ET.Element:
+        """Serialize DiagnosticCommonProps to XML element with atp_variant wrapper.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = SerializationHelper.get_xml_tag(self.__class__)
+        elem = ET.Element(tag)
+
+        # Create inner element to hold attributes before wrapping
+        inner_elem = ET.Element("INNER")
+
+        # Serialize authentication
+        if self.authentication is not None:
+            serialized = SerializationHelper.serialize_item(self.authentication, "TimeValue")
+            if serialized is not None:
+                wrapped = ET.Element("AUTHENTICATION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Serialize debounces (list from container "DEBOUNCES")
+        if self.debounces:
+            container = ET.Element("DEBOUNCES")
+            for item in self.debounces:
+                if is_ref:
+                    # For reference lists, serialize as reference
+                    if hasattr(item, "serialize"):
+                        container.append(item.serialize())
+                elif is_primitive_type("any (DiagnosticDebounce)", package_data):
+                    # Simple primitive type
+                    child = ET.Element("DEBOUNCE")
+                    child.text = str(item)
+                    container.append(child)
+                elif is_enum_type("any (DiagnosticDebounce)", package_data):
+                    # Enum type - use serialize method
+                    if hasattr(item, "serialize"):
+                        container.append(item.serialize())
+                else:
+                    # Complex object type
+                    if hasattr(item, "serialize"):
+                        container.append(item.serialize())
+            inner_elem.append(container)
+
+        # Serialize default
+        if self.default is not None:
+            serialized = SerializationHelper.serialize_item(self.default, "ByteOrderEnum")
+            if serialized is not None:
+                wrapped = ET.Element("DEFAULT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Serialize event
+        if self.event is not None:
+            serialized = SerializationHelper.serialize_item(self.event, "DiagnosticEvent")
+            if serialized is not None:
+                wrapped = ET.Element("EVENT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Serialize max_number_of
+        if self.max_number_of is not None:
+            serialized = SerializationHelper.serialize_item(self.max_number_of, "PositiveInteger")
+            if serialized is not None:
+                wrapped = ET.Element("MAX-NUMBER-OF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Serialize occurrence
+        if self.occurrence is not None:
+            serialized = SerializationHelper.serialize_item(self.occurrence, "DiagnosticOccurrenceCounterProcessingEnum")
+            if serialized is not None:
+                wrapped = ET.Element("OCCURRENCE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Serialize reset_confirmed
+        if self.reset_confirmed is not None:
+            serialized = SerializationHelper.serialize_item(self.reset_confirmed, "Boolean")
+            if serialized is not None:
+                wrapped = ET.Element("RESET-CONFIRMED")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Serialize reset_pending_bit
+        if self.reset_pending_bit is not None:
+            serialized = SerializationHelper.serialize_item(self.reset_pending_bit, "Boolean")
+            if serialized is not None:
+                wrapped = ET.Element("RESET-PENDING-BIT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Serialize response_on_all
+        if self.response_on_all is not None:
+            serialized = SerializationHelper.serialize_item(self.response_on_all, "Boolean")
+            if serialized is not None:
+                wrapped = ET.Element("RESPONSE-ON-ALL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Serialize response_on
+        if self.response_on is not None:
+            serialized = SerializationHelper.serialize_item(self.response_on, "Boolean")
+            if serialized is not None:
+                wrapped = ET.Element("RESPONSE-ON")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Serialize type_of_event
+        if self.type_of_event is not None:
+            serialized = SerializationHelper.serialize_item(self.type_of_event, "DiagnosticEvent")
+            if serialized is not None:
+                wrapped = ET.Element("TYPE-OF-EVENT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Wrap inner element in atp_variant VARIANTS/CONDITIONAL structure
+        wrapped = SerializationHelper.serialize_with_atp_variant(inner_elem, "DiagnosticCommonProps")
+        elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "DiagnosticCommonProps":
+        """Deserialize XML element to DiagnosticCommonProps object with atp_variant unwrapping.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized DiagnosticCommonProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Handle ARObject inherited attributes (checksum and timestamp)
+        # Parse timestamp (XML attribute 'T')
+        timestamp_value = element.get("T")
+        if timestamp_value is not None:
+            obj.timestamp = timestamp_value
+
+        # Parse checksum (child element)
+        checksum_elem = SerializationHelper.find_child_element(element, "CHECKSUM")
+        if checksum_elem is not None:
+            checksum_value = checksum_elem.text
+            if checksum_value is not None:
+                obj.checksum = checksum_value
+
+        # Unwrap atp_variant VARIANTS/CONDITIONAL structure
+        inner_elem = SerializationHelper.deserialize_from_atp_variant(element, "DiagnosticCommonProps")
+        if inner_elem is None:
+            # No wrapper structure found, return object with default values
+            return obj
+
+        # Parse authentication
+        child = SerializationHelper.find_child_element(inner_elem, "AUTHENTICATION")
+        if child is not None:
+            authentication_value = child.text
+            obj.authentication = authentication_value
+
+        # Parse debounces (list from container "DEBOUNCES")
+        obj.debounces = []
+        container = SerializationHelper.find_child_element(inner_elem, "DEBOUNCES")
+        if container is not None:
+            for child in container:
+                if is_ref:
+                    child_tag = SerializationHelper.strip_namespace(child.tag)
+                    if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                        child_value = ARRef.deserialize(child)
+                    else:
+                        child_value = SerializationHelper.deserialize_by_tag(child, None)
+                elif is_primitive_type("any (DiagnosticDebounce)", package_data):
+                    child_value = child.text
+                elif is_enum_type("any (DiagnosticDebounce)", package_data):
+                    child_value = any (DiagnosticDebounce).deserialize(child)
+                else:
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.debounces.append(child_value)
+
+        # Parse default
+        child = SerializationHelper.find_child_element(inner_elem, "DEFAULT")
+        if child is not None:
+            default_value = ByteOrderEnum.deserialize(child)
+            obj.default = default_value
+
+        # Parse event
+        child = SerializationHelper.find_child_element(inner_elem, "EVENT")
+        if child is not None:
+            event_value = SerializationHelper.deserialize_by_tag(child, "DiagnosticEvent")
+            obj.event = event_value
+
+        # Parse max_number_of
+        child = SerializationHelper.find_child_element(inner_elem, "MAX-NUMBER-OF")
+        if child is not None:
+            max_number_of_value = child.text
+            obj.max_number_of = max_number_of_value
+
+        # Parse occurrence
+        child = SerializationHelper.find_child_element(inner_elem, "OCCURRENCE")
+        if child is not None:
+            occurrence_value = DiagnosticOccurrenceCounterProcessingEnum.deserialize(child)
+            obj.occurrence = occurrence_value
+
+        # Parse reset_confirmed
+        child = SerializationHelper.find_child_element(inner_elem, "RESET-CONFIRMED")
+        if child is not None:
+            reset_confirmed_value = child.text
+            obj.reset_confirmed = reset_confirmed_value
+
+        # Parse reset_pending_bit
+        child = SerializationHelper.find_child_element(inner_elem, "RESET-PENDING-BIT")
+        if child is not None:
+            reset_pending_bit_value = child.text
+            obj.reset_pending_bit = reset_pending_bit_value
+
+        # Parse response_on_all
+        child = SerializationHelper.find_child_element(inner_elem, "RESPONSE-ON-ALL")
+        if child is not None:
+            response_on_all_value = child.text
+            obj.response_on_all = response_on_all_value
+
+        # Parse response_on
+        child = SerializationHelper.find_child_element(inner_elem, "RESPONSE-ON")
+        if child is not None:
+            response_on_value = child.text
+            obj.response_on = response_on_value
+
+        # Parse type_of_event
+        child = SerializationHelper.find_child_element(inner_elem, "TYPE-OF-EVENT")
+        if child is not None:
+            type_of_event_value = SerializationHelper.deserialize_by_tag(child, "DiagnosticEvent")
+            obj.type_of_event = type_of_event_value
+
+        return obj
 
 
 

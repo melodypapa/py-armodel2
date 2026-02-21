@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -43,7 +44,7 @@ class EcuPartition(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class EcuPartition(Identifiable):
 
         # Serialize exec_in_user
         if self.exec_in_user is not None:
-            serialized = ARObject._serialize_item(self.exec_in_user, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.exec_in_user, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("EXEC-IN-USER")
@@ -90,7 +91,7 @@ class EcuPartition(Identifiable):
         obj = super(EcuPartition, cls).deserialize(element)
 
         # Parse exec_in_user
-        child = ARObject._find_child_element(element, "EXEC-IN-USER")
+        child = SerializationHelper.find_child_element(element, "EXEC-IN-USER")
         if child is not None:
             exec_in_user_value = child.text
             obj.exec_in_user = exec_in_user_value

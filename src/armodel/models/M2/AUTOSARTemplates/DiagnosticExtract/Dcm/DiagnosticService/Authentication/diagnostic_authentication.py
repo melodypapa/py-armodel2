@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from abc import ABC, abstractmethod
 
@@ -42,7 +43,7 @@ class DiagnosticAuthentication(DiagnosticServiceInstance, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -61,7 +62,7 @@ class DiagnosticAuthentication(DiagnosticServiceInstance, ABC):
 
         # Serialize authentication_ref
         if self.authentication_ref is not None:
-            serialized = ARObject._serialize_item(self.authentication_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.authentication_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("AUTHENTICATION-REF")
@@ -89,7 +90,7 @@ class DiagnosticAuthentication(DiagnosticServiceInstance, ABC):
         obj = super(DiagnosticAuthentication, cls).deserialize(element)
 
         # Parse authentication_ref
-        child = ARObject._find_child_element(element, "AUTHENTICATION-REF")
+        child = SerializationHelper.find_child_element(element, "AUTHENTICATION-REF")
         if child is not None:
             authentication_ref_value = ARRef.deserialize(child)
             obj.authentication_ref = authentication_ref_value

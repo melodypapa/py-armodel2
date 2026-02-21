@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_interface_mapping import (
     PortInterfaceMapping,
@@ -47,7 +48,7 @@ class SwConnector(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -66,7 +67,7 @@ class SwConnector(Identifiable, ABC):
 
         # Serialize mapping_ref
         if self.mapping_ref is not None:
-            serialized = ARObject._serialize_item(self.mapping_ref, "PortInterfaceMapping")
+            serialized = SerializationHelper.serialize_item(self.mapping_ref, "PortInterfaceMapping")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAPPING-REF")
@@ -94,7 +95,7 @@ class SwConnector(Identifiable, ABC):
         obj = super(SwConnector, cls).deserialize(element)
 
         # Parse mapping_ref
-        child = ARObject._find_child_element(element, "MAPPING-REF")
+        child = SerializationHelper.find_child_element(element, "MAPPING-REF")
         if child is not None:
             mapping_ref_value = ARRef.deserialize(child)
             obj.mapping_ref = mapping_ref_value

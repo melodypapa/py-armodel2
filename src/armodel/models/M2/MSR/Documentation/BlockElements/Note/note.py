@@ -13,6 +13,7 @@ from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginat
     Paginateable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.Documentation.BlockElements.Note import (
     NoteTypeEnum,
 )
@@ -56,7 +57,7 @@ class Note(Paginateable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -75,7 +76,7 @@ class Note(Paginateable):
 
         # Serialize label
         if self.label is not None:
-            serialized = ARObject._serialize_item(self.label, "MultilanguageLongName")
+            serialized = SerializationHelper.serialize_item(self.label, "MultilanguageLongName")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LABEL")
@@ -89,7 +90,7 @@ class Note(Paginateable):
 
         # Serialize note_text
         if self.note_text is not None:
-            serialized = ARObject._serialize_item(self.note_text, "DocumentationBlock")
+            serialized = SerializationHelper.serialize_item(self.note_text, "DocumentationBlock")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NOTE-TEXT")
@@ -103,7 +104,7 @@ class Note(Paginateable):
 
         # Serialize note_type
         if self.note_type is not None:
-            serialized = ARObject._serialize_item(self.note_type, "NoteTypeEnum")
+            serialized = SerializationHelper.serialize_item(self.note_type, "NoteTypeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NOTE-TYPE")
@@ -131,19 +132,19 @@ class Note(Paginateable):
         obj = super(Note, cls).deserialize(element)
 
         # Parse label
-        child = ARObject._find_child_element(element, "LABEL")
+        child = SerializationHelper.find_child_element(element, "LABEL")
         if child is not None:
-            label_value = ARObject._deserialize_with_type(child, "MultilanguageLongName")
+            label_value = SerializationHelper.deserialize_with_type(child, "MultilanguageLongName")
             obj.label = label_value
 
         # Parse note_text
-        child = ARObject._find_child_element(element, "NOTE-TEXT")
+        child = SerializationHelper.find_child_element(element, "NOTE-TEXT")
         if child is not None:
-            note_text_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            note_text_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
             obj.note_text = note_text_value
 
         # Parse note_type
-        child = ARObject._find_child_element(element, "NOTE-TYPE")
+        child = SerializationHelper.find_child_element(element, "NOTE-TYPE")
         if child is not None:
             note_type_value = NoteTypeEnum.deserialize(child)
             obj.note_type = note_type_value

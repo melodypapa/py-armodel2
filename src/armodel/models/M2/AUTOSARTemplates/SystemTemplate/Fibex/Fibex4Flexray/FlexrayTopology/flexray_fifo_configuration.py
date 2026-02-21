@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -62,12 +63,12 @@ class FlexrayFifoConfiguration(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize admit_without
         if self.admit_without is not None:
-            serialized = ARObject._serialize_item(self.admit_without, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.admit_without, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ADMIT-WITHOUT")
@@ -81,7 +82,7 @@ class FlexrayFifoConfiguration(ARObject):
 
         # Serialize base_cycle
         if self.base_cycle is not None:
-            serialized = ARObject._serialize_item(self.base_cycle, "Integer")
+            serialized = SerializationHelper.serialize_item(self.base_cycle, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BASE-CYCLE")
@@ -95,7 +96,7 @@ class FlexrayFifoConfiguration(ARObject):
 
         # Serialize channel_ref
         if self.channel_ref is not None:
-            serialized = ARObject._serialize_item(self.channel_ref, "FlexrayPhysicalChannel")
+            serialized = SerializationHelper.serialize_item(self.channel_ref, "FlexrayPhysicalChannel")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CHANNEL-REF")
@@ -109,7 +110,7 @@ class FlexrayFifoConfiguration(ARObject):
 
         # Serialize cycle_repetition
         if self.cycle_repetition is not None:
-            serialized = ARObject._serialize_item(self.cycle_repetition, "Integer")
+            serialized = SerializationHelper.serialize_item(self.cycle_repetition, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CYCLE-REPETITION")
@@ -123,7 +124,7 @@ class FlexrayFifoConfiguration(ARObject):
 
         # Serialize fifo_depth
         if self.fifo_depth is not None:
-            serialized = ARObject._serialize_item(self.fifo_depth, "Integer")
+            serialized = SerializationHelper.serialize_item(self.fifo_depth, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FIFO-DEPTH")
@@ -139,7 +140,7 @@ class FlexrayFifoConfiguration(ARObject):
         if self.fifo_ranges:
             wrapper = ET.Element("FIFO-RANGES")
             for item in self.fifo_ranges:
-                serialized = ARObject._serialize_item(item, "FlexrayFifoRange")
+                serialized = SerializationHelper.serialize_item(item, "FlexrayFifoRange")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -147,7 +148,7 @@ class FlexrayFifoConfiguration(ARObject):
 
         # Serialize msg_id_mask
         if self.msg_id_mask is not None:
-            serialized = ARObject._serialize_item(self.msg_id_mask, "Integer")
+            serialized = SerializationHelper.serialize_item(self.msg_id_mask, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MSG-ID-MASK")
@@ -161,7 +162,7 @@ class FlexrayFifoConfiguration(ARObject):
 
         # Serialize msg_id_match
         if self.msg_id_match is not None:
-            serialized = ARObject._serialize_item(self.msg_id_match, "Integer")
+            serialized = SerializationHelper.serialize_item(self.msg_id_match, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MSG-ID-MATCH")
@@ -190,53 +191,53 @@ class FlexrayFifoConfiguration(ARObject):
         obj.__init__()
 
         # Parse admit_without
-        child = ARObject._find_child_element(element, "ADMIT-WITHOUT")
+        child = SerializationHelper.find_child_element(element, "ADMIT-WITHOUT")
         if child is not None:
             admit_without_value = child.text
             obj.admit_without = admit_without_value
 
         # Parse base_cycle
-        child = ARObject._find_child_element(element, "BASE-CYCLE")
+        child = SerializationHelper.find_child_element(element, "BASE-CYCLE")
         if child is not None:
             base_cycle_value = child.text
             obj.base_cycle = base_cycle_value
 
         # Parse channel_ref
-        child = ARObject._find_child_element(element, "CHANNEL-REF")
+        child = SerializationHelper.find_child_element(element, "CHANNEL-REF")
         if child is not None:
             channel_ref_value = ARRef.deserialize(child)
             obj.channel_ref = channel_ref_value
 
         # Parse cycle_repetition
-        child = ARObject._find_child_element(element, "CYCLE-REPETITION")
+        child = SerializationHelper.find_child_element(element, "CYCLE-REPETITION")
         if child is not None:
             cycle_repetition_value = child.text
             obj.cycle_repetition = cycle_repetition_value
 
         # Parse fifo_depth
-        child = ARObject._find_child_element(element, "FIFO-DEPTH")
+        child = SerializationHelper.find_child_element(element, "FIFO-DEPTH")
         if child is not None:
             fifo_depth_value = child.text
             obj.fifo_depth = fifo_depth_value
 
         # Parse fifo_ranges (list from container "FIFO-RANGES")
         obj.fifo_ranges = []
-        container = ARObject._find_child_element(element, "FIFO-RANGES")
+        container = SerializationHelper.find_child_element(element, "FIFO-RANGES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.fifo_ranges.append(child_value)
 
         # Parse msg_id_mask
-        child = ARObject._find_child_element(element, "MSG-ID-MASK")
+        child = SerializationHelper.find_child_element(element, "MSG-ID-MASK")
         if child is not None:
             msg_id_mask_value = child.text
             obj.msg_id_mask = msg_id_mask_value
 
         # Parse msg_id_match
-        child = ARObject._find_child_element(element, "MSG-ID-MATCH")
+        child = SerializationHelper.find_child_element(element, "MSG-ID-MATCH")
         if child is not None:
             msg_id_match_value = child.text
             obj.msg_id_match = msg_id_match_value

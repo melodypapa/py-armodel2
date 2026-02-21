@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -63,7 +64,7 @@ class NmCluster(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -82,7 +83,7 @@ class NmCluster(Identifiable, ABC):
 
         # Serialize communication_cluster_ref
         if self.communication_cluster_ref is not None:
-            serialized = ARObject._serialize_item(self.communication_cluster_ref, "CommunicationCluster")
+            serialized = SerializationHelper.serialize_item(self.communication_cluster_ref, "CommunicationCluster")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COMMUNICATION-CLUSTER-REF")
@@ -96,7 +97,7 @@ class NmCluster(Identifiable, ABC):
 
         # Serialize nm_channel
         if self.nm_channel is not None:
-            serialized = ARObject._serialize_item(self.nm_channel, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.nm_channel, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM-CHANNEL")
@@ -110,7 +111,7 @@ class NmCluster(Identifiable, ABC):
 
         # Serialize nm_node
         if self.nm_node is not None:
-            serialized = ARObject._serialize_item(self.nm_node, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.nm_node, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM-NODE")
@@ -124,7 +125,7 @@ class NmCluster(Identifiable, ABC):
 
         # Serialize nm_node_id_enabled
         if self.nm_node_id_enabled is not None:
-            serialized = ARObject._serialize_item(self.nm_node_id_enabled, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.nm_node_id_enabled, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM-NODE-ID-ENABLED")
@@ -138,7 +139,7 @@ class NmCluster(Identifiable, ABC):
 
         # Serialize nm_pnc
         if self.nm_pnc is not None:
-            serialized = ARObject._serialize_item(self.nm_pnc, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.nm_pnc, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM-PNC")
@@ -152,7 +153,7 @@ class NmCluster(Identifiable, ABC):
 
         # Serialize nm_repeat_msg_ind_enabled
         if self.nm_repeat_msg_ind_enabled is not None:
-            serialized = ARObject._serialize_item(self.nm_repeat_msg_ind_enabled, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.nm_repeat_msg_ind_enabled, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM-REPEAT-MSG-IND-ENABLED")
@@ -166,7 +167,7 @@ class NmCluster(Identifiable, ABC):
 
         # Serialize nm
         if self.nm is not None:
-            serialized = ARObject._serialize_item(self.nm, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.nm, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM")
@@ -180,7 +181,7 @@ class NmCluster(Identifiable, ABC):
 
         # Serialize pnc_cluster
         if self.pnc_cluster is not None:
-            serialized = ARObject._serialize_item(self.pnc_cluster, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.pnc_cluster, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PNC-CLUSTER")
@@ -208,49 +209,49 @@ class NmCluster(Identifiable, ABC):
         obj = super(NmCluster, cls).deserialize(element)
 
         # Parse communication_cluster_ref
-        child = ARObject._find_child_element(element, "COMMUNICATION-CLUSTER-REF")
+        child = SerializationHelper.find_child_element(element, "COMMUNICATION-CLUSTER-REF")
         if child is not None:
             communication_cluster_ref_value = ARRef.deserialize(child)
             obj.communication_cluster_ref = communication_cluster_ref_value
 
         # Parse nm_channel
-        child = ARObject._find_child_element(element, "NM-CHANNEL")
+        child = SerializationHelper.find_child_element(element, "NM-CHANNEL")
         if child is not None:
             nm_channel_value = child.text
             obj.nm_channel = nm_channel_value
 
         # Parse nm_node
-        child = ARObject._find_child_element(element, "NM-NODE")
+        child = SerializationHelper.find_child_element(element, "NM-NODE")
         if child is not None:
             nm_node_value = child.text
             obj.nm_node = nm_node_value
 
         # Parse nm_node_id_enabled
-        child = ARObject._find_child_element(element, "NM-NODE-ID-ENABLED")
+        child = SerializationHelper.find_child_element(element, "NM-NODE-ID-ENABLED")
         if child is not None:
             nm_node_id_enabled_value = child.text
             obj.nm_node_id_enabled = nm_node_id_enabled_value
 
         # Parse nm_pnc
-        child = ARObject._find_child_element(element, "NM-PNC")
+        child = SerializationHelper.find_child_element(element, "NM-PNC")
         if child is not None:
             nm_pnc_value = child.text
             obj.nm_pnc = nm_pnc_value
 
         # Parse nm_repeat_msg_ind_enabled
-        child = ARObject._find_child_element(element, "NM-REPEAT-MSG-IND-ENABLED")
+        child = SerializationHelper.find_child_element(element, "NM-REPEAT-MSG-IND-ENABLED")
         if child is not None:
             nm_repeat_msg_ind_enabled_value = child.text
             obj.nm_repeat_msg_ind_enabled = nm_repeat_msg_ind_enabled_value
 
         # Parse nm
-        child = ARObject._find_child_element(element, "NM")
+        child = SerializationHelper.find_child_element(element, "NM")
         if child is not None:
             nm_value = child.text
             obj.nm = nm_value
 
         # Parse pnc_cluster
-        child = ARObject._find_child_element(element, "PNC-CLUSTER")
+        child = SerializationHelper.find_child_element(element, "PNC-CLUSTER")
         if child is not None:
             pnc_cluster_value = child.text
             obj.pnc_cluster = pnc_cluster_value

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -43,7 +44,7 @@ class IPv6ExtHeaderFilterList(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class IPv6ExtHeaderFilterList(Identifiable):
         if self.allowed_i_pv6_exts:
             wrapper = ET.Element("ALLOWED-I-PV6-EXTS")
             for item in self.allowed_i_pv6_exts:
-                serialized = ARObject._serialize_item(item, "PositiveInteger")
+                serialized = SerializationHelper.serialize_item(item, "PositiveInteger")
                 if serialized is not None:
                     child_elem = ET.Element("ALLOWED-I-PV6-EXT")
                     if hasattr(serialized, 'attrib'):
@@ -94,7 +95,7 @@ class IPv6ExtHeaderFilterList(Identifiable):
 
         # Parse allowed_i_pv6_exts (list from container "ALLOWED-I-PV6-EXTS")
         obj.allowed_i_pv6_exts = []
-        container = ARObject._find_child_element(element, "ALLOWED-I-PV6-EXTS")
+        container = SerializationHelper.find_child_element(element, "ALLOWED-I-PV6-EXTS")
         if container is not None:
             for child in container:
                 # Extract primitive value (PositiveInteger) as text

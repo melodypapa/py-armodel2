@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Serv
     AbstractServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -79,7 +80,7 @@ class ProvidedServiceInstance(AbstractServiceInstance):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -100,7 +101,7 @@ class ProvidedServiceInstance(AbstractServiceInstance):
         if self.allowed_service_refs:
             wrapper = ET.Element("ALLOWED-SERVICE-REFS")
             for item in self.allowed_service_refs:
-                serialized = ARObject._serialize_item(item, "NetworkEndpoint")
+                serialized = SerializationHelper.serialize_item(item, "NetworkEndpoint")
                 if serialized is not None:
                     child_elem = ET.Element("ALLOWED-SERVICE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -115,7 +116,7 @@ class ProvidedServiceInstance(AbstractServiceInstance):
 
         # Serialize auto_available
         if self.auto_available is not None:
-            serialized = ARObject._serialize_item(self.auto_available, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.auto_available, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("AUTO-AVAILABLE")
@@ -131,7 +132,7 @@ class ProvidedServiceInstance(AbstractServiceInstance):
         if self.event_handlers:
             wrapper = ET.Element("EVENT-HANDLERS")
             for item in self.event_handlers:
-                serialized = ARObject._serialize_item(item, "EventHandler")
+                serialized = SerializationHelper.serialize_item(item, "EventHandler")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -139,7 +140,7 @@ class ProvidedServiceInstance(AbstractServiceInstance):
 
         # Serialize instance
         if self.instance is not None:
-            serialized = ARObject._serialize_item(self.instance, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.instance, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INSTANCE")
@@ -153,7 +154,7 @@ class ProvidedServiceInstance(AbstractServiceInstance):
 
         # Serialize load_balancing
         if self.load_balancing is not None:
-            serialized = ARObject._serialize_item(self.load_balancing, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.load_balancing, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LOAD-BALANCING")
@@ -167,7 +168,7 @@ class ProvidedServiceInstance(AbstractServiceInstance):
 
         # Serialize local_unicast
         if self.local_unicast is not None:
-            serialized = ARObject._serialize_item(self.local_unicast, "ApplicationEndpoint")
+            serialized = SerializationHelper.serialize_item(self.local_unicast, "ApplicationEndpoint")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LOCAL-UNICAST")
@@ -181,7 +182,7 @@ class ProvidedServiceInstance(AbstractServiceInstance):
 
         # Serialize minor_version
         if self.minor_version is not None:
-            serialized = ARObject._serialize_item(self.minor_version, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.minor_version, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MINOR-VERSION")
@@ -195,7 +196,7 @@ class ProvidedServiceInstance(AbstractServiceInstance):
 
         # Serialize priority
         if self.priority is not None:
-            serialized = ARObject._serialize_item(self.priority, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.priority, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PRIORITY")
@@ -211,7 +212,7 @@ class ProvidedServiceInstance(AbstractServiceInstance):
         if self.remote_multicast_refs:
             wrapper = ET.Element("REMOTE-MULTICAST-REFS")
             for item in self.remote_multicast_refs:
-                serialized = ARObject._serialize_item(item, "ApplicationEndpoint")
+                serialized = SerializationHelper.serialize_item(item, "ApplicationEndpoint")
                 if serialized is not None:
                     child_elem = ET.Element("REMOTE-MULTICAST-REF")
                     if hasattr(serialized, 'attrib'):
@@ -228,7 +229,7 @@ class ProvidedServiceInstance(AbstractServiceInstance):
         if self.remote_unicast_refs:
             wrapper = ET.Element("REMOTE-UNICAST-REFS")
             for item in self.remote_unicast_refs:
-                serialized = ARObject._serialize_item(item, "ApplicationEndpoint")
+                serialized = SerializationHelper.serialize_item(item, "ApplicationEndpoint")
                 if serialized is not None:
                     child_elem = ET.Element("REMOTE-UNICAST-REF")
                     if hasattr(serialized, 'attrib'):
@@ -243,7 +244,7 @@ class ProvidedServiceInstance(AbstractServiceInstance):
 
         # Serialize sd_server_config
         if self.sd_server_config is not None:
-            serialized = ARObject._serialize_item(self.sd_server_config, "Any")
+            serialized = SerializationHelper.serialize_item(self.sd_server_config, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SD-SERVER-CONFIG")
@@ -257,7 +258,7 @@ class ProvidedServiceInstance(AbstractServiceInstance):
 
         # Serialize sd_server_timer_ref
         if self.sd_server_timer_ref is not None:
-            serialized = ARObject._serialize_item(self.sd_server_timer_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.sd_server_timer_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SD-SERVER-TIMER-REF")
@@ -271,7 +272,7 @@ class ProvidedServiceInstance(AbstractServiceInstance):
 
         # Serialize service_identifier
         if self.service_identifier is not None:
-            serialized = ARObject._serialize_item(self.service_identifier, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.service_identifier, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SERVICE-IDENTIFIER")
@@ -300,112 +301,112 @@ class ProvidedServiceInstance(AbstractServiceInstance):
 
         # Parse allowed_service_refs (list from container "ALLOWED-SERVICE-REFS")
         obj.allowed_service_refs = []
-        container = ARObject._find_child_element(element, "ALLOWED-SERVICE-REFS")
+        container = SerializationHelper.find_child_element(element, "ALLOWED-SERVICE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.allowed_service_refs.append(child_value)
 
         # Parse auto_available
-        child = ARObject._find_child_element(element, "AUTO-AVAILABLE")
+        child = SerializationHelper.find_child_element(element, "AUTO-AVAILABLE")
         if child is not None:
             auto_available_value = child.text
             obj.auto_available = auto_available_value
 
         # Parse event_handlers (list from container "EVENT-HANDLERS")
         obj.event_handlers = []
-        container = ARObject._find_child_element(element, "EVENT-HANDLERS")
+        container = SerializationHelper.find_child_element(element, "EVENT-HANDLERS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.event_handlers.append(child_value)
 
         # Parse instance
-        child = ARObject._find_child_element(element, "INSTANCE")
+        child = SerializationHelper.find_child_element(element, "INSTANCE")
         if child is not None:
             instance_value = child.text
             obj.instance = instance_value
 
         # Parse load_balancing
-        child = ARObject._find_child_element(element, "LOAD-BALANCING")
+        child = SerializationHelper.find_child_element(element, "LOAD-BALANCING")
         if child is not None:
             load_balancing_value = child.text
             obj.load_balancing = load_balancing_value
 
         # Parse local_unicast
-        child = ARObject._find_child_element(element, "LOCAL-UNICAST")
+        child = SerializationHelper.find_child_element(element, "LOCAL-UNICAST")
         if child is not None:
-            local_unicast_value = ARObject._deserialize_by_tag(child, "ApplicationEndpoint")
+            local_unicast_value = SerializationHelper.deserialize_by_tag(child, "ApplicationEndpoint")
             obj.local_unicast = local_unicast_value
 
         # Parse minor_version
-        child = ARObject._find_child_element(element, "MINOR-VERSION")
+        child = SerializationHelper.find_child_element(element, "MINOR-VERSION")
         if child is not None:
             minor_version_value = child.text
             obj.minor_version = minor_version_value
 
         # Parse priority
-        child = ARObject._find_child_element(element, "PRIORITY")
+        child = SerializationHelper.find_child_element(element, "PRIORITY")
         if child is not None:
             priority_value = child.text
             obj.priority = priority_value
 
         # Parse remote_multicast_refs (list from container "REMOTE-MULTICAST-REFS")
         obj.remote_multicast_refs = []
-        container = ARObject._find_child_element(element, "REMOTE-MULTICAST-REFS")
+        container = SerializationHelper.find_child_element(element, "REMOTE-MULTICAST-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.remote_multicast_refs.append(child_value)
 
         # Parse remote_unicast_refs (list from container "REMOTE-UNICAST-REFS")
         obj.remote_unicast_refs = []
-        container = ARObject._find_child_element(element, "REMOTE-UNICAST-REFS")
+        container = SerializationHelper.find_child_element(element, "REMOTE-UNICAST-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.remote_unicast_refs.append(child_value)
 
         # Parse sd_server_config
-        child = ARObject._find_child_element(element, "SD-SERVER-CONFIG")
+        child = SerializationHelper.find_child_element(element, "SD-SERVER-CONFIG")
         if child is not None:
             sd_server_config_value = child.text
             obj.sd_server_config = sd_server_config_value
 
         # Parse sd_server_timer_ref
-        child = ARObject._find_child_element(element, "SD-SERVER-TIMER-REF")
+        child = SerializationHelper.find_child_element(element, "SD-SERVER-TIMER-REF")
         if child is not None:
             sd_server_timer_ref_value = ARRef.deserialize(child)
             obj.sd_server_timer_ref = sd_server_timer_ref_value
 
         # Parse service_identifier
-        child = ARObject._find_child_element(element, "SERVICE-IDENTIFIER")
+        child = SerializationHelper.find_child_element(element, "SERVICE-IDENTIFIER")
         if child is not None:
             service_identifier_value = child.text
             obj.service_identifier = service_identifier_value

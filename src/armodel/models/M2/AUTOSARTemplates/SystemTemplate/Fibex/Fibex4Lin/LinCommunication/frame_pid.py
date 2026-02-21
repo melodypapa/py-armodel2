@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
     PositiveInteger,
@@ -43,12 +44,12 @@ class FramePid(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize index
         if self.index is not None:
-            serialized = ARObject._serialize_item(self.index, "Integer")
+            serialized = SerializationHelper.serialize_item(self.index, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INDEX")
@@ -62,7 +63,7 @@ class FramePid(ARObject):
 
         # Serialize pid
         if self.pid is not None:
-            serialized = ARObject._serialize_item(self.pid, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.pid, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PID")
@@ -91,13 +92,13 @@ class FramePid(ARObject):
         obj.__init__()
 
         # Parse index
-        child = ARObject._find_child_element(element, "INDEX")
+        child = SerializationHelper.find_child_element(element, "INDEX")
         if child is not None:
             index_value = child.text
             obj.index = index_value
 
         # Parse pid
-        child = ARObject._find_child_element(element, "PID")
+        child = SerializationHelper.find_child_element(element, "PID")
         if child is not None:
             pid_value = child.text
             obj.pid = pid_value

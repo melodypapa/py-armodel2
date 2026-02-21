@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
     String,
@@ -48,7 +49,7 @@ class HwPin(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -69,7 +70,7 @@ class HwPin(Identifiable):
         if self.function_names:
             wrapper = ET.Element("FUNCTION-NAMES")
             for item in self.function_names:
-                serialized = ARObject._serialize_item(item, "String")
+                serialized = SerializationHelper.serialize_item(item, "String")
                 if serialized is not None:
                     child_elem = ET.Element("FUNCTION-NAME")
                     if hasattr(serialized, 'attrib'):
@@ -84,7 +85,7 @@ class HwPin(Identifiable):
 
         # Serialize packaging_pin
         if self.packaging_pin is not None:
-            serialized = ARObject._serialize_item(self.packaging_pin, "String")
+            serialized = SerializationHelper.serialize_item(self.packaging_pin, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PACKAGING-PIN")
@@ -98,7 +99,7 @@ class HwPin(Identifiable):
 
         # Serialize pin_number
         if self.pin_number is not None:
-            serialized = ARObject._serialize_item(self.pin_number, "Integer")
+            serialized = SerializationHelper.serialize_item(self.pin_number, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PIN-NUMBER")
@@ -127,7 +128,7 @@ class HwPin(Identifiable):
 
         # Parse function_names (list from container "FUNCTION-NAMES")
         obj.function_names = []
-        container = ARObject._find_child_element(element, "FUNCTION-NAMES")
+        container = SerializationHelper.find_child_element(element, "FUNCTION-NAMES")
         if container is not None:
             for child in container:
                 # Extract primitive value (String) as text
@@ -136,13 +137,13 @@ class HwPin(Identifiable):
                     obj.function_names.append(child_value)
 
         # Parse packaging_pin
-        child = ARObject._find_child_element(element, "PACKAGING-PIN")
+        child = SerializationHelper.find_child_element(element, "PACKAGING-PIN")
         if child is not None:
             packaging_pin_value = child.text
             obj.packaging_pin = packaging_pin_value
 
         # Parse pin_number
-        child = ARObject._find_child_element(element, "PIN-NUMBER")
+        child = SerializationHelper.find_child_element(element, "PIN-NUMBER")
         if child is not None:
             pin_number_value = child.text
             obj.pin_number = pin_number_value

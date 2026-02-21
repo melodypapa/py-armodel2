@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     NameToken,
     String,
@@ -45,12 +46,12 @@ class Tt(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize term
         if self.term is not None:
-            serialized = ARObject._serialize_item(self.term, "String")
+            serialized = SerializationHelper.serialize_item(self.term, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TERM")
@@ -64,7 +65,7 @@ class Tt(ARObject):
 
         # Serialize tex_render
         if self.tex_render is not None:
-            serialized = ARObject._serialize_item(self.tex_render, "String")
+            serialized = SerializationHelper.serialize_item(self.tex_render, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TEX-RENDER")
@@ -78,7 +79,7 @@ class Tt(ARObject):
 
         # Serialize type
         if self.type is not None:
-            serialized = ARObject._serialize_item(self.type, "NameToken")
+            serialized = SerializationHelper.serialize_item(self.type, "NameToken")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TYPE")
@@ -107,19 +108,19 @@ class Tt(ARObject):
         obj.__init__()
 
         # Parse term
-        child = ARObject._find_child_element(element, "TERM")
+        child = SerializationHelper.find_child_element(element, "TERM")
         if child is not None:
             term_value = child.text
             obj.term = term_value
 
         # Parse tex_render
-        child = ARObject._find_child_element(element, "TEX-RENDER")
+        child = SerializationHelper.find_child_element(element, "TEX-RENDER")
         if child is not None:
             tex_render_value = child.text
             obj.tex_render = tex_render_value
 
         # Parse type
-        child = ARObject._find_child_element(element, "TYPE")
+        child = SerializationHelper.find_child_element(element, "TYPE")
         if child is not None:
             type_value = child.text
             obj.type = type_value

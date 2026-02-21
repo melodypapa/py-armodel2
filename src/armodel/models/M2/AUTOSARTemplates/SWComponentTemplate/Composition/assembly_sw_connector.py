@@ -16,6 +16,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.sw_conne
     SwConnector,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.InstanceRefs.p_port_in_composition_instance_ref import (
     PPortInCompositionInstanceRef,
@@ -52,7 +53,7 @@ class AssemblySwConnector(SwConnector):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -71,7 +72,7 @@ class AssemblySwConnector(SwConnector):
 
         # Serialize provider_iref (instance reference with wrapper "PROVIDER-IREF")
         if self.provider_iref is not None:
-            serialized = ARObject._serialize_item(self.provider_iref, "PPortInCompositionInstanceRef")
+            serialized = SerializationHelper.serialize_item(self.provider_iref, "PPortInCompositionInstanceRef")
             if serialized is not None:
                 # Wrap in IREF wrapper element
                 iref_wrapper = ET.Element("PROVIDER-IREF")
@@ -82,7 +83,7 @@ class AssemblySwConnector(SwConnector):
 
         # Serialize requester_iref (instance reference with wrapper "REQUESTER-IREF")
         if self.requester_iref is not None:
-            serialized = ARObject._serialize_item(self.requester_iref, "RPortInCompositionInstanceRef")
+            serialized = SerializationHelper.serialize_item(self.requester_iref, "RPortInCompositionInstanceRef")
             if serialized is not None:
                 # Wrap in IREF wrapper element
                 iref_wrapper = ET.Element("REQUESTER-IREF")
@@ -107,17 +108,17 @@ class AssemblySwConnector(SwConnector):
         obj = super(AssemblySwConnector, cls).deserialize(element)
 
         # Parse provider_iref (instance reference from wrapper "PROVIDER-IREF")
-        wrapper = ARObject._find_child_element(element, "PROVIDER-IREF")
+        wrapper = SerializationHelper.find_child_element(element, "PROVIDER-IREF")
         if wrapper is not None:
             # Deserialize wrapper element directly as the type (flattened structure)
-            provider_iref_value = ARObject._deserialize_by_tag(wrapper, "PPortInCompositionInstanceRef")
+            provider_iref_value = SerializationHelper.deserialize_by_tag(wrapper, "PPortInCompositionInstanceRef")
             obj.provider_iref = provider_iref_value
 
         # Parse requester_iref (instance reference from wrapper "REQUESTER-IREF")
-        wrapper = ARObject._find_child_element(element, "REQUESTER-IREF")
+        wrapper = SerializationHelper.find_child_element(element, "REQUESTER-IREF")
         if wrapper is not None:
             # Deserialize wrapper element directly as the type (flattened structure)
-            requester_iref_value = ARObject._deserialize_by_tag(wrapper, "RPortInCompositionInstanceRef")
+            requester_iref_value = SerializationHelper.deserialize_by_tag(wrapper, "RPortInCompositionInstanceRef")
             obj.requester_iref = requester_iref_value
 
         return obj

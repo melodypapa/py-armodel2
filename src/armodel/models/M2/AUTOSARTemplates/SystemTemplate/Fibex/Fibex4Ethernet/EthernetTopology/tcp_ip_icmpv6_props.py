@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -40,12 +41,12 @@ class TcpIpIcmpv6Props(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize tcp_ip_icmp
         if self.tcp_ip_icmp is not None:
-            serialized = ARObject._serialize_item(self.tcp_ip_icmp, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.tcp_ip_icmp, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TCP-IP-ICMP")
@@ -74,7 +75,7 @@ class TcpIpIcmpv6Props(ARObject):
         obj.__init__()
 
         # Parse tcp_ip_icmp
-        child = ARObject._find_child_element(element, "TCP-IP-ICMP")
+        child = SerializationHelper.find_child_element(element, "TCP-IP-ICMP")
         if child is not None:
             tcp_ip_icmp_value = child.text
             obj.tcp_ip_icmp = tcp_ip_icmp_value

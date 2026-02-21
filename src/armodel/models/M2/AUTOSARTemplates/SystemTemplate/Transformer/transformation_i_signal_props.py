@@ -11,6 +11,7 @@ import xml.etree.ElementTree as ET
 from armodel.serialization.decorators import atp_variant
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer import (
     CSTransformerErrorReactionEnum,
@@ -42,6 +43,141 @@ class TransformationISignalProps(ARObject, ABC):
         self.cs_error_reaction: Optional[CSTransformerErrorReactionEnum] = None
         self.data_prototype_refs: list[ARRef] = []
         self.transformer_ref: Optional[Any] = None
+
+    def serialize(self) -> ET.Element:
+        """Serialize TransformationISignalProps to XML element with atp_variant wrapper.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = SerializationHelper.get_xml_tag(self.__class__)
+        elem = ET.Element(tag)
+
+        # Create inner element to hold attributes before wrapping
+        inner_elem = ET.Element("INNER")
+
+        # Serialize cs_error_reaction
+        if self.cs_error_reaction is not None:
+            serialized = SerializationHelper.serialize_item(self.cs_error_reaction, "CSTransformerErrorReactionEnum")
+            if serialized is not None:
+                wrapped = ET.Element("CS-ERROR-REACTION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Serialize data_prototype_refs (list from container "DATA-PROTOTYPE-REFS")
+        if self.data_prototype_refs:
+            container = ET.Element("DATA-PROTOTYPE-REFS")
+            for item in self.data_prototype_refs:
+                if is_ref:
+                    # For reference lists, serialize as reference
+                    if hasattr(item, "serialize"):
+                        container.append(item.serialize())
+                elif is_primitive_type("DataPrototype", package_data):
+                    # Simple primitive type
+                    child = ET.Element("DATA-PROTOTYPE")
+                    child.text = str(item)
+                    container.append(child)
+                elif is_enum_type("DataPrototype", package_data):
+                    # Enum type - use serialize method
+                    if hasattr(item, "serialize"):
+                        container.append(item.serialize())
+                else:
+                    # Complex object type
+                    if hasattr(item, "serialize"):
+                        container.append(item.serialize())
+            inner_elem.append(container)
+
+        # Serialize transformer_ref
+        if self.transformer_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.transformer_ref, "Any")
+            if serialized is not None:
+                wrapped = ET.Element("TRANSFORMER-REF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Wrap inner element in atp_variant VARIANTS/CONDITIONAL structure
+        wrapped = SerializationHelper.serialize_with_atp_variant(inner_elem, "TransformationISignalProps")
+        elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "TransformationISignalProps":
+        """Deserialize XML element to TransformationISignalProps object with atp_variant unwrapping.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized TransformationISignalProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Handle ARObject inherited attributes (checksum and timestamp)
+        # Parse timestamp (XML attribute 'T')
+        timestamp_value = element.get("T")
+        if timestamp_value is not None:
+            obj.timestamp = timestamp_value
+
+        # Parse checksum (child element)
+        checksum_elem = SerializationHelper.find_child_element(element, "CHECKSUM")
+        if checksum_elem is not None:
+            checksum_value = checksum_elem.text
+            if checksum_value is not None:
+                obj.checksum = checksum_value
+
+        # Unwrap atp_variant VARIANTS/CONDITIONAL structure
+        inner_elem = SerializationHelper.deserialize_from_atp_variant(element, "TransformationISignalProps")
+        if inner_elem is None:
+            # No wrapper structure found, return object with default values
+            return obj
+
+        # Parse cs_error_reaction
+        child = SerializationHelper.find_child_element(inner_elem, "CS-ERROR-REACTION")
+        if child is not None:
+            cs_error_reaction_value = CSTransformerErrorReactionEnum.deserialize(child)
+            obj.cs_error_reaction = cs_error_reaction_value
+
+        # Parse data_prototype_refs (list from container "DATA-PROTOTYPE-REFS")
+        obj.data_prototype_refs = []
+        container = SerializationHelper.find_child_element(inner_elem, "DATA-PROTOTYPE-REFS")
+        if container is not None:
+            for child in container:
+                if is_ref:
+                    child_tag = SerializationHelper.strip_namespace(child.tag)
+                    if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                        child_value = ARRef.deserialize(child)
+                    else:
+                        child_value = SerializationHelper.deserialize_by_tag(child, None)
+                elif is_primitive_type("DataPrototype", package_data):
+                    child_value = child.text
+                elif is_enum_type("DataPrototype", package_data):
+                    child_value = DataPrototype.deserialize(child)
+                else:
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.data_prototype_refs.append(child_value)
+
+        # Parse transformer_ref
+        child = SerializationHelper.find_child_element(inner_elem, "TRANSFORMER-REF")
+        if child is not None:
+            transformer_ref_value = ARRef.deserialize(child)
+            obj.transformer_ref = transformer_ref_value
+
+        return obj
 
 
 

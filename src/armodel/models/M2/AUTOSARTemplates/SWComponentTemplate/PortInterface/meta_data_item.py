@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -46,12 +47,12 @@ class MetaDataItem(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize length
         if self.length is not None:
-            serialized = ARObject._serialize_item(self.length, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.length, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LENGTH")
@@ -65,7 +66,7 @@ class MetaDataItem(ARObject):
 
         # Serialize meta_data_item
         if self.meta_data_item is not None:
-            serialized = ARObject._serialize_item(self.meta_data_item, "TextValueSpecification")
+            serialized = SerializationHelper.serialize_item(self.meta_data_item, "TextValueSpecification")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("META-DATA-ITEM")
@@ -94,15 +95,15 @@ class MetaDataItem(ARObject):
         obj.__init__()
 
         # Parse length
-        child = ARObject._find_child_element(element, "LENGTH")
+        child = SerializationHelper.find_child_element(element, "LENGTH")
         if child is not None:
             length_value = child.text
             obj.length = length_value
 
         # Parse meta_data_item
-        child = ARObject._find_child_element(element, "META-DATA-ITEM")
+        child = SerializationHelper.find_child_element(element, "META-DATA-ITEM")
         if child is not None:
-            meta_data_item_value = ARObject._deserialize_by_tag(child, "TextValueSpecification")
+            meta_data_item_value = SerializationHelper.deserialize_by_tag(child, "TextValueSpecification")
             obj.meta_data_item = meta_data_item_value
 
         return obj

@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
     AbstractAccessPoint,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 if TYPE_CHECKING:
@@ -53,7 +54,7 @@ class ParameterAccess(AbstractAccessPoint):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -72,7 +73,7 @@ class ParameterAccess(AbstractAccessPoint):
 
         # Serialize accessed_parameter_ref
         if self.accessed_parameter_ref is not None:
-            serialized = ARObject._serialize_item(self.accessed_parameter_ref, "AutosarParameterRef")
+            serialized = SerializationHelper.serialize_item(self.accessed_parameter_ref, "AutosarParameterRef")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ACCESSED-PARAMETER-REF")
@@ -86,7 +87,7 @@ class ParameterAccess(AbstractAccessPoint):
 
         # Serialize sw_data_def
         if self.sw_data_def is not None:
-            serialized = ARObject._serialize_item(self.sw_data_def, "SwDataDefProps")
+            serialized = SerializationHelper.serialize_item(self.sw_data_def, "SwDataDefProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-DATA-DEF")
@@ -114,15 +115,15 @@ class ParameterAccess(AbstractAccessPoint):
         obj = super(ParameterAccess, cls).deserialize(element)
 
         # Parse accessed_parameter_ref
-        child = ARObject._find_child_element(element, "ACCESSED-PARAMETER-REF")
+        child = SerializationHelper.find_child_element(element, "ACCESSED-PARAMETER-REF")
         if child is not None:
             accessed_parameter_ref_value = ARRef.deserialize(child)
             obj.accessed_parameter_ref = accessed_parameter_ref_value
 
         # Parse sw_data_def
-        child = ARObject._find_child_element(element, "SW-DATA-DEF")
+        child = SerializationHelper.find_child_element(element, "SW-DATA-DEF")
         if child is not None:
-            sw_data_def_value = ARObject._deserialize_by_tag(child, "SwDataDefProps")
+            sw_data_def_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
             obj.sw_data_def = sw_data_def_value
 
         return obj

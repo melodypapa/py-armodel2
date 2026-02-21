@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.DataDictionary.DatadictionaryProxies.sw_calprm_ref_proxy import (
     SwCalprmRefProxy,
@@ -46,12 +47,12 @@ class SwDataDependencyArgs(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize sw_calprm_ref_proxy_ref
         if self.sw_calprm_ref_proxy_ref is not None:
-            serialized = ARObject._serialize_item(self.sw_calprm_ref_proxy_ref, "SwCalprmRefProxy")
+            serialized = SerializationHelper.serialize_item(self.sw_calprm_ref_proxy_ref, "SwCalprmRefProxy")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-CALPRM-REF-PROXY-REF")
@@ -65,7 +66,7 @@ class SwDataDependencyArgs(ARObject):
 
         # Serialize sw_variable_ref_proxy_ref
         if self.sw_variable_ref_proxy_ref is not None:
-            serialized = ARObject._serialize_item(self.sw_variable_ref_proxy_ref, "SwVariableRefProxy")
+            serialized = SerializationHelper.serialize_item(self.sw_variable_ref_proxy_ref, "SwVariableRefProxy")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-VARIABLE-REF-PROXY-REF")
@@ -94,13 +95,13 @@ class SwDataDependencyArgs(ARObject):
         obj.__init__()
 
         # Parse sw_calprm_ref_proxy_ref
-        child = ARObject._find_child_element(element, "SW-CALPRM-REF-PROXY-REF")
+        child = SerializationHelper.find_child_element(element, "SW-CALPRM-REF-PROXY-REF")
         if child is not None:
             sw_calprm_ref_proxy_ref_value = ARRef.deserialize(child)
             obj.sw_calprm_ref_proxy_ref = sw_calprm_ref_proxy_ref_value
 
         # Parse sw_variable_ref_proxy_ref
-        child = ARObject._find_child_element(element, "SW-VARIABLE-REF-PROXY-REF")
+        child = SerializationHelper.find_child_element(element, "SW-VARIABLE-REF-PROXY-REF")
         if child is not None:
             sw_variable_ref_proxy_ref_value = ARRef.deserialize(child)
             obj.sw_variable_ref_proxy_ref = sw_variable_ref_proxy_ref_value

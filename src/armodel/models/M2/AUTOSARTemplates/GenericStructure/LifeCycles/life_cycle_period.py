@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     DateTime,
     RevisionLabelString,
@@ -45,12 +46,12 @@ class LifeCyclePeriod(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize ar_release_version
         if self.ar_release_version is not None:
-            serialized = ARObject._serialize_item(self.ar_release_version, "RevisionLabelString")
+            serialized = SerializationHelper.serialize_item(self.ar_release_version, "RevisionLabelString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("AR-RELEASE-VERSION")
@@ -64,7 +65,7 @@ class LifeCyclePeriod(ARObject):
 
         # Serialize date
         if self.date is not None:
-            serialized = ARObject._serialize_item(self.date, "DateTime")
+            serialized = SerializationHelper.serialize_item(self.date, "DateTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATE")
@@ -78,7 +79,7 @@ class LifeCyclePeriod(ARObject):
 
         # Serialize product_release
         if self.product_release is not None:
-            serialized = ARObject._serialize_item(self.product_release, "RevisionLabelString")
+            serialized = SerializationHelper.serialize_item(self.product_release, "RevisionLabelString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PRODUCT-RELEASE")
@@ -107,19 +108,19 @@ class LifeCyclePeriod(ARObject):
         obj.__init__()
 
         # Parse ar_release_version
-        child = ARObject._find_child_element(element, "AR-RELEASE-VERSION")
+        child = SerializationHelper.find_child_element(element, "AR-RELEASE-VERSION")
         if child is not None:
             ar_release_version_value = child.text
             obj.ar_release_version = ar_release_version_value
 
         # Parse date
-        child = ARObject._find_child_element(element, "DATE")
+        child = SerializationHelper.find_child_element(element, "DATE")
         if child is not None:
             date_value = child.text
             obj.date = date_value
 
         # Parse product_release
-        child = ARObject._find_child_element(element, "PRODUCT-RELEASE")
+        child = SerializationHelper.find_child_element(element, "PRODUCT-RELEASE")
         if child is not None:
             product_release_value = child.text
             obj.product_release = product_release_value

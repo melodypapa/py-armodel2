@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     GeneralAnnotation,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigger import (
     Trigger,
@@ -44,7 +45,7 @@ class TriggerPortAnnotation(GeneralAnnotation):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -63,7 +64,7 @@ class TriggerPortAnnotation(GeneralAnnotation):
 
         # Serialize trigger_ref
         if self.trigger_ref is not None:
-            serialized = ARObject._serialize_item(self.trigger_ref, "Trigger")
+            serialized = SerializationHelper.serialize_item(self.trigger_ref, "Trigger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TRIGGER-REF")
@@ -91,7 +92,7 @@ class TriggerPortAnnotation(GeneralAnnotation):
         obj = super(TriggerPortAnnotation, cls).deserialize(element)
 
         # Parse trigger_ref
-        child = ARObject._find_child_element(element, "TRIGGER-REF")
+        child = SerializationHelper.find_child_element(element, "TRIGGER-REF")
         if child is not None:
             trigger_ref_value = ARRef.deserialize(child)
             obj.trigger_ref = trigger_ref_value

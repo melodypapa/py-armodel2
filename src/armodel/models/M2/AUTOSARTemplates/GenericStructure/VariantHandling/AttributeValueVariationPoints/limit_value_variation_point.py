@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     IntervalTypeEnum,
 )
@@ -40,12 +41,12 @@ class LimitValueVariationPoint(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize interval_type_enum
         if self.interval_type_enum is not None:
-            serialized = ARObject._serialize_item(self.interval_type_enum, "IntervalTypeEnum")
+            serialized = SerializationHelper.serialize_item(self.interval_type_enum, "IntervalTypeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INTERVAL-TYPE-ENUM")
@@ -74,7 +75,7 @@ class LimitValueVariationPoint(ARObject):
         obj.__init__()
 
         # Parse interval_type_enum
-        child = ARObject._find_child_element(element, "INTERVAL-TYPE-ENUM")
+        child = SerializationHelper.find_child_element(element, "INTERVAL-TYPE-ENUM")
         if child is not None:
             interval_type_enum_value = IntervalTypeEnum.deserialize(child)
             obj.interval_type_enum = interval_type_enum_value

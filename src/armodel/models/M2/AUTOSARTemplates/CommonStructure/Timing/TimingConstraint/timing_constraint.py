@@ -13,6 +13,7 @@ from armodel.models.M2.MSR.Documentation.BlockElements.RequirementsTracing.trace
     Traceable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingCondition.timing_condition import (
     TimingCondition,
@@ -45,7 +46,7 @@ class TimingConstraint(Traceable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class TimingConstraint(Traceable, ABC):
 
         # Serialize timing_condition_ref
         if self.timing_condition_ref is not None:
-            serialized = ARObject._serialize_item(self.timing_condition_ref, "TimingCondition")
+            serialized = SerializationHelper.serialize_item(self.timing_condition_ref, "TimingCondition")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIMING-CONDITION-REF")
@@ -92,7 +93,7 @@ class TimingConstraint(Traceable, ABC):
         obj = super(TimingConstraint, cls).deserialize(element)
 
         # Parse timing_condition_ref
-        child = ARObject._find_child_element(element, "TIMING-CONDITION-REF")
+        child = SerializationHelper.find_child_element(element, "TIMING-CONDITION-REF")
         if child is not None:
             timing_condition_ref_value = ARRef.deserialize(child)
             obj.timing_condition_ref = timing_condition_ref_value

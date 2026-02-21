@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingClock.timin
     TimingClock,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
     MultidimensionalTime,
 )
@@ -45,7 +46,7 @@ class TDLETZoneClock(TimingClock):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class TDLETZoneClock(TimingClock):
 
         # Serialize accuracy_ext
         if self.accuracy_ext is not None:
-            serialized = ARObject._serialize_item(self.accuracy_ext, "MultidimensionalTime")
+            serialized = SerializationHelper.serialize_item(self.accuracy_ext, "MultidimensionalTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ACCURACY-EXT")
@@ -78,7 +79,7 @@ class TDLETZoneClock(TimingClock):
 
         # Serialize accuracy_int
         if self.accuracy_int is not None:
-            serialized = ARObject._serialize_item(self.accuracy_int, "MultidimensionalTime")
+            serialized = SerializationHelper.serialize_item(self.accuracy_int, "MultidimensionalTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ACCURACY-INT")
@@ -106,15 +107,15 @@ class TDLETZoneClock(TimingClock):
         obj = super(TDLETZoneClock, cls).deserialize(element)
 
         # Parse accuracy_ext
-        child = ARObject._find_child_element(element, "ACCURACY-EXT")
+        child = SerializationHelper.find_child_element(element, "ACCURACY-EXT")
         if child is not None:
-            accuracy_ext_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            accuracy_ext_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
             obj.accuracy_ext = accuracy_ext_value
 
         # Parse accuracy_int
-        child = ARObject._find_child_element(element, "ACCURACY-INT")
+        child = SerializationHelper.find_child_element(element, "ACCURACY-INT")
         if child is not None:
-            accuracy_int_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            accuracy_int_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
             obj.accuracy_int = accuracy_int_value
 
         return obj

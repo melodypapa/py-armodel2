@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     MultilanguageReferrable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multi_language_overview_paragraph import (
     MultiLanguageOverviewParagraph,
 )
@@ -43,7 +44,7 @@ class Caption(MultilanguageReferrable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class Caption(MultilanguageReferrable):
 
         # Serialize desc
         if self.desc is not None:
-            serialized = ARObject._serialize_item(self.desc, "MultiLanguageOverviewParagraph")
+            serialized = SerializationHelper.serialize_item(self.desc, "MultiLanguageOverviewParagraph")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DESC")
@@ -90,9 +91,9 @@ class Caption(MultilanguageReferrable):
         obj = super(Caption, cls).deserialize(element)
 
         # Parse desc
-        child = ARObject._find_child_element(element, "DESC")
+        child = SerializationHelper.find_child_element(element, "DESC")
         if child is not None:
-            desc_value = ARObject._deserialize_with_type(child, "MultiLanguageOverviewParagraph")
+            desc_value = SerializationHelper.deserialize_with_type(child, "MultiLanguageOverviewParagraph")
             obj.desc = desc_value
 
         return obj

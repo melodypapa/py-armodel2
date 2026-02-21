@@ -15,6 +15,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.VariantHandling.condition_by_formula import (
     ConditionByFormula,
 )
@@ -50,12 +51,12 @@ class VariationPoint(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize blueprint
         if self.blueprint is not None:
-            serialized = ARObject._serialize_item(self.blueprint, "DocumentationBlock")
+            serialized = SerializationHelper.serialize_item(self.blueprint, "DocumentationBlock")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BLUEPRINT")
@@ -69,7 +70,7 @@ class VariationPoint(ARObject):
 
         # Serialize sw_syscond
         if self.sw_syscond is not None:
-            serialized = ARObject._serialize_item(self.sw_syscond, "ConditionByFormula")
+            serialized = SerializationHelper.serialize_item(self.sw_syscond, "ConditionByFormula")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-SYSCOND")
@@ -98,15 +99,15 @@ class VariationPoint(ARObject):
         obj.__init__()
 
         # Parse blueprint
-        child = ARObject._find_child_element(element, "BLUEPRINT")
+        child = SerializationHelper.find_child_element(element, "BLUEPRINT")
         if child is not None:
-            blueprint_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            blueprint_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
             obj.blueprint = blueprint_value
 
         # Parse sw_syscond
-        child = ARObject._find_child_element(element, "SW-SYSCOND")
+        child = SerializationHelper.find_child_element(element, "SW-SYSCOND")
         if child is not None:
-            sw_syscond_value = ARObject._deserialize_by_tag(child, "ConditionByFormula")
+            sw_syscond_value = SerializationHelper.deserialize_by_tag(child, "ConditionByFormula")
             obj.sw_syscond = sw_syscond_value
 
         return obj

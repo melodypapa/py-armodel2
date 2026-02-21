@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     Integer,
@@ -44,12 +45,12 @@ class BufferProperties(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize header_length
         if self.header_length is not None:
-            serialized = ARObject._serialize_item(self.header_length, "Integer")
+            serialized = SerializationHelper.serialize_item(self.header_length, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HEADER-LENGTH")
@@ -63,7 +64,7 @@ class BufferProperties(ARObject):
 
         # Serialize in_place
         if self.in_place is not None:
-            serialized = ARObject._serialize_item(self.in_place, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.in_place, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IN-PLACE")
@@ -92,13 +93,13 @@ class BufferProperties(ARObject):
         obj.__init__()
 
         # Parse header_length
-        child = ARObject._find_child_element(element, "HEADER-LENGTH")
+        child = SerializationHelper.find_child_element(element, "HEADER-LENGTH")
         if child is not None:
             header_length_value = child.text
             obj.header_length = header_length_value
 
         # Parse in_place
-        child = ARObject._find_child_element(element, "IN-PLACE")
+        child = SerializationHelper.find_child_element(element, "IN-PLACE")
         if child is not None:
             in_place_value = child.text
             obj.in_place = in_place_value

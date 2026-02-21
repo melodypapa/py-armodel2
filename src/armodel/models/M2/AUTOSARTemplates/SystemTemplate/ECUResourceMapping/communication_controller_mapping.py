@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_controller import (
     CommunicationController,
@@ -46,12 +47,12 @@ class CommunicationControllerMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize communication_controller_ref
         if self.communication_controller_ref is not None:
-            serialized = ARObject._serialize_item(self.communication_controller_ref, "CommunicationController")
+            serialized = SerializationHelper.serialize_item(self.communication_controller_ref, "CommunicationController")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COMMUNICATION-CONTROLLER-REF")
@@ -65,7 +66,7 @@ class CommunicationControllerMapping(ARObject):
 
         # Serialize hw_ref
         if self.hw_ref is not None:
-            serialized = ARObject._serialize_item(self.hw_ref, "HwElement")
+            serialized = SerializationHelper.serialize_item(self.hw_ref, "HwElement")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HW-REF")
@@ -94,13 +95,13 @@ class CommunicationControllerMapping(ARObject):
         obj.__init__()
 
         # Parse communication_controller_ref
-        child = ARObject._find_child_element(element, "COMMUNICATION-CONTROLLER-REF")
+        child = SerializationHelper.find_child_element(element, "COMMUNICATION-CONTROLLER-REF")
         if child is not None:
             communication_controller_ref_value = ARRef.deserialize(child)
             obj.communication_controller_ref = communication_controller_ref_value
 
         # Parse hw_ref
-        child = ARObject._find_child_element(element, "HW-REF")
+        child = SerializationHelper.find_child_element(element, "HW-REF")
         if child is not None:
             hw_ref_value = ARRef.deserialize(child)
             obj.hw_ref = hw_ref_value

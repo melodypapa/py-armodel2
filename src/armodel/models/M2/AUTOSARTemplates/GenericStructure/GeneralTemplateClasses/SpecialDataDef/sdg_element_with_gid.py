@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     NameToken,
 )
@@ -41,12 +42,12 @@ class SdgElementWithGid(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize gid
         if self.gid is not None:
-            serialized = ARObject._serialize_item(self.gid, "NameToken")
+            serialized = SerializationHelper.serialize_item(self.gid, "NameToken")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("GID")
@@ -75,7 +76,7 @@ class SdgElementWithGid(ARObject, ABC):
         obj.__init__()
 
         # Parse gid
-        child = ARObject._find_child_element(element, "GID")
+        child = SerializationHelper.find_child_element(element, "GID")
         if child is not None:
             gid_value = child.text
             obj.gid = gid_value

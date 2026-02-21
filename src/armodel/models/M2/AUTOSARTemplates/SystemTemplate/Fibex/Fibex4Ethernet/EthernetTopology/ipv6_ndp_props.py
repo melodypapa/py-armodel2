@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -66,12 +67,12 @@ class Ipv6NdpProps(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize tcp_ip_ndp_default
         if self.tcp_ip_ndp_default is not None:
-            serialized = ARObject._serialize_item(self.tcp_ip_ndp_default, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.tcp_ip_ndp_default, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TCP-IP-NDP-DEFAULT")
@@ -85,7 +86,7 @@ class Ipv6NdpProps(ARObject):
 
         # Serialize tcp_ip_ndp_default_router_list_size
         if self.tcp_ip_ndp_default_router_list_size is not None:
-            serialized = ARObject._serialize_item(self.tcp_ip_ndp_default_router_list_size, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.tcp_ip_ndp_default_router_list_size, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TCP-IP-NDP-DEFAULT-ROUTER-LIST-SIZE")
@@ -99,7 +100,7 @@ class Ipv6NdpProps(ARObject):
 
         # Serialize tcp_ip_ndp
         if self.tcp_ip_ndp is not None:
-            serialized = ARObject._serialize_item(self.tcp_ip_ndp, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.tcp_ip_ndp, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TCP-IP-NDP")
@@ -113,7 +114,7 @@ class Ipv6NdpProps(ARObject):
 
         # Serialize tcp_ip_ndp_delay_first_probe_time_value
         if self.tcp_ip_ndp_delay_first_probe_time_value is not None:
-            serialized = ARObject._serialize_item(self.tcp_ip_ndp_delay_first_probe_time_value, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.tcp_ip_ndp_delay_first_probe_time_value, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TCP-IP-NDP-DELAY-FIRST-PROBE-TIME-VALUE")
@@ -127,7 +128,7 @@ class Ipv6NdpProps(ARObject):
 
         # Serialize tcp_ip_ndp_max_random_factor
         if self.tcp_ip_ndp_max_random_factor is not None:
-            serialized = ARObject._serialize_item(self.tcp_ip_ndp_max_random_factor, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.tcp_ip_ndp_max_random_factor, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TCP-IP-NDP-MAX-RANDOM-FACTOR")
@@ -141,7 +142,7 @@ class Ipv6NdpProps(ARObject):
 
         # Serialize tcp_ip_ndp_max_rtr
         if self.tcp_ip_ndp_max_rtr is not None:
-            serialized = ARObject._serialize_item(self.tcp_ip_ndp_max_rtr, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.tcp_ip_ndp_max_rtr, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TCP-IP-NDP-MAX-RTR")
@@ -155,7 +156,7 @@ class Ipv6NdpProps(ARObject):
 
         # Serialize tcp_ip_ndp_min_random_factor
         if self.tcp_ip_ndp_min_random_factor is not None:
-            serialized = ARObject._serialize_item(self.tcp_ip_ndp_min_random_factor, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.tcp_ip_ndp_min_random_factor, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TCP-IP-NDP-MIN-RANDOM-FACTOR")
@@ -169,7 +170,7 @@ class Ipv6NdpProps(ARObject):
 
         # Serialize tcp_ip_ndp_num
         if self.tcp_ip_ndp_num is not None:
-            serialized = ARObject._serialize_item(self.tcp_ip_ndp_num, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.tcp_ip_ndp_num, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TCP-IP-NDP-NUM")
@@ -183,7 +184,7 @@ class Ipv6NdpProps(ARObject):
 
         # Serialize tcp_ip_ndp_packet
         if self.tcp_ip_ndp_packet is not None:
-            serialized = ARObject._serialize_item(self.tcp_ip_ndp_packet, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.tcp_ip_ndp_packet, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TCP-IP-NDP-PACKET")
@@ -197,7 +198,7 @@ class Ipv6NdpProps(ARObject):
 
         # Serialize tcp_ip_ndp_prefix
         if self.tcp_ip_ndp_prefix is not None:
-            serialized = ARObject._serialize_item(self.tcp_ip_ndp_prefix, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.tcp_ip_ndp_prefix, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TCP-IP-NDP-PREFIX")
@@ -211,7 +212,7 @@ class Ipv6NdpProps(ARObject):
 
         # Serialize tcp_ip_ndp_rnd_rtr
         if self.tcp_ip_ndp_rnd_rtr is not None:
-            serialized = ARObject._serialize_item(self.tcp_ip_ndp_rnd_rtr, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.tcp_ip_ndp_rnd_rtr, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TCP-IP-NDP-RND-RTR")
@@ -225,7 +226,7 @@ class Ipv6NdpProps(ARObject):
 
         # Serialize tcp_ip_ndp_rtr
         if self.tcp_ip_ndp_rtr is not None:
-            serialized = ARObject._serialize_item(self.tcp_ip_ndp_rtr, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.tcp_ip_ndp_rtr, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TCP-IP-NDP-RTR")
@@ -239,7 +240,7 @@ class Ipv6NdpProps(ARObject):
 
         # Serialize tcp_ip_ndp_slaac
         if self.tcp_ip_ndp_slaac is not None:
-            serialized = ARObject._serialize_item(self.tcp_ip_ndp_slaac, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.tcp_ip_ndp_slaac, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TCP-IP-NDP-SLAAC")
@@ -268,79 +269,79 @@ class Ipv6NdpProps(ARObject):
         obj.__init__()
 
         # Parse tcp_ip_ndp_default
-        child = ARObject._find_child_element(element, "TCP-IP-NDP-DEFAULT")
+        child = SerializationHelper.find_child_element(element, "TCP-IP-NDP-DEFAULT")
         if child is not None:
             tcp_ip_ndp_default_value = child.text
             obj.tcp_ip_ndp_default = tcp_ip_ndp_default_value
 
         # Parse tcp_ip_ndp_default_router_list_size
-        child = ARObject._find_child_element(element, "TCP-IP-NDP-DEFAULT-ROUTER-LIST-SIZE")
+        child = SerializationHelper.find_child_element(element, "TCP-IP-NDP-DEFAULT-ROUTER-LIST-SIZE")
         if child is not None:
             tcp_ip_ndp_default_router_list_size_value = child.text
             obj.tcp_ip_ndp_default_router_list_size = tcp_ip_ndp_default_router_list_size_value
 
         # Parse tcp_ip_ndp
-        child = ARObject._find_child_element(element, "TCP-IP-NDP")
+        child = SerializationHelper.find_child_element(element, "TCP-IP-NDP")
         if child is not None:
             tcp_ip_ndp_value = child.text
             obj.tcp_ip_ndp = tcp_ip_ndp_value
 
         # Parse tcp_ip_ndp_delay_first_probe_time_value
-        child = ARObject._find_child_element(element, "TCP-IP-NDP-DELAY-FIRST-PROBE-TIME-VALUE")
+        child = SerializationHelper.find_child_element(element, "TCP-IP-NDP-DELAY-FIRST-PROBE-TIME-VALUE")
         if child is not None:
             tcp_ip_ndp_delay_first_probe_time_value_value = child.text
             obj.tcp_ip_ndp_delay_first_probe_time_value = tcp_ip_ndp_delay_first_probe_time_value_value
 
         # Parse tcp_ip_ndp_max_random_factor
-        child = ARObject._find_child_element(element, "TCP-IP-NDP-MAX-RANDOM-FACTOR")
+        child = SerializationHelper.find_child_element(element, "TCP-IP-NDP-MAX-RANDOM-FACTOR")
         if child is not None:
             tcp_ip_ndp_max_random_factor_value = child.text
             obj.tcp_ip_ndp_max_random_factor = tcp_ip_ndp_max_random_factor_value
 
         # Parse tcp_ip_ndp_max_rtr
-        child = ARObject._find_child_element(element, "TCP-IP-NDP-MAX-RTR")
+        child = SerializationHelper.find_child_element(element, "TCP-IP-NDP-MAX-RTR")
         if child is not None:
             tcp_ip_ndp_max_rtr_value = child.text
             obj.tcp_ip_ndp_max_rtr = tcp_ip_ndp_max_rtr_value
 
         # Parse tcp_ip_ndp_min_random_factor
-        child = ARObject._find_child_element(element, "TCP-IP-NDP-MIN-RANDOM-FACTOR")
+        child = SerializationHelper.find_child_element(element, "TCP-IP-NDP-MIN-RANDOM-FACTOR")
         if child is not None:
             tcp_ip_ndp_min_random_factor_value = child.text
             obj.tcp_ip_ndp_min_random_factor = tcp_ip_ndp_min_random_factor_value
 
         # Parse tcp_ip_ndp_num
-        child = ARObject._find_child_element(element, "TCP-IP-NDP-NUM")
+        child = SerializationHelper.find_child_element(element, "TCP-IP-NDP-NUM")
         if child is not None:
             tcp_ip_ndp_num_value = child.text
             obj.tcp_ip_ndp_num = tcp_ip_ndp_num_value
 
         # Parse tcp_ip_ndp_packet
-        child = ARObject._find_child_element(element, "TCP-IP-NDP-PACKET")
+        child = SerializationHelper.find_child_element(element, "TCP-IP-NDP-PACKET")
         if child is not None:
             tcp_ip_ndp_packet_value = child.text
             obj.tcp_ip_ndp_packet = tcp_ip_ndp_packet_value
 
         # Parse tcp_ip_ndp_prefix
-        child = ARObject._find_child_element(element, "TCP-IP-NDP-PREFIX")
+        child = SerializationHelper.find_child_element(element, "TCP-IP-NDP-PREFIX")
         if child is not None:
             tcp_ip_ndp_prefix_value = child.text
             obj.tcp_ip_ndp_prefix = tcp_ip_ndp_prefix_value
 
         # Parse tcp_ip_ndp_rnd_rtr
-        child = ARObject._find_child_element(element, "TCP-IP-NDP-RND-RTR")
+        child = SerializationHelper.find_child_element(element, "TCP-IP-NDP-RND-RTR")
         if child is not None:
             tcp_ip_ndp_rnd_rtr_value = child.text
             obj.tcp_ip_ndp_rnd_rtr = tcp_ip_ndp_rnd_rtr_value
 
         # Parse tcp_ip_ndp_rtr
-        child = ARObject._find_child_element(element, "TCP-IP-NDP-RTR")
+        child = SerializationHelper.find_child_element(element, "TCP-IP-NDP-RTR")
         if child is not None:
             tcp_ip_ndp_rtr_value = child.text
             obj.tcp_ip_ndp_rtr = tcp_ip_ndp_rtr_value
 
         # Parse tcp_ip_ndp_slaac
-        child = ARObject._find_child_element(element, "TCP-IP-NDP-SLAAC")
+        child = SerializationHelper.find_child_element(element, "TCP-IP-NDP-SLAAC")
         if child is not None:
             tcp_ip_ndp_slaac_value = child.text
             obj.tcp_ip_ndp_slaac = tcp_ip_ndp_slaac_value

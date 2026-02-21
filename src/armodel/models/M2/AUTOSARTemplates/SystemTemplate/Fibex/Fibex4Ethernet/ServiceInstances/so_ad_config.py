@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances.socket_address import (
     SocketAddress,
 )
@@ -45,14 +46,14 @@ class SoAdConfig(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize connections (list to container "CONNECTIONS")
         if self.connections:
             wrapper = ET.Element("CONNECTIONS")
             for item in self.connections:
-                serialized = ARObject._serialize_item(item, "SocketConnection")
+                serialized = SerializationHelper.serialize_item(item, "SocketConnection")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -62,7 +63,7 @@ class SoAdConfig(ARObject):
         if self.socket_addresses:
             wrapper = ET.Element("SOCKET-ADDRESSES")
             for item in self.socket_addresses:
-                serialized = ARObject._serialize_item(item, "SocketAddress")
+                serialized = SerializationHelper.serialize_item(item, "SocketAddress")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -86,21 +87,21 @@ class SoAdConfig(ARObject):
 
         # Parse connections (list from container "CONNECTIONS")
         obj.connections = []
-        container = ARObject._find_child_element(element, "CONNECTIONS")
+        container = SerializationHelper.find_child_element(element, "CONNECTIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.connections.append(child_value)
 
         # Parse socket_addresses (list from container "SOCKET-ADDRESSES")
         obj.socket_addresses = []
-        container = ARObject._find_child_element(element, "SOCKET-ADDRESSES")
+        container = SerializationHelper.find_child_element(element, "SOCKET-ADDRESSES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.socket_addresses.append(child_value)
 

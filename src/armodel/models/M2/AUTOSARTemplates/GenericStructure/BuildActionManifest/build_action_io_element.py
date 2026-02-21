@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
@@ -54,12 +55,12 @@ class BuildActionIoElement(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize category
         if self.category is not None:
-            serialized = ARObject._serialize_item(self.category, "NameToken")
+            serialized = SerializationHelper.serialize_item(self.category, "NameToken")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CATEGORY")
@@ -73,7 +74,7 @@ class BuildActionIoElement(ARObject):
 
         # Serialize ecuc_definition_ref
         if self.ecuc_definition_ref is not None:
-            serialized = ARObject._serialize_item(self.ecuc_definition_ref, "EcucDefinitionElement")
+            serialized = SerializationHelper.serialize_item(self.ecuc_definition_ref, "EcucDefinitionElement")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ECUC-DEFINITION-REF")
@@ -87,7 +88,7 @@ class BuildActionIoElement(ARObject):
 
         # Serialize role
         if self.role is not None:
-            serialized = ARObject._serialize_item(self.role, "Identifier")
+            serialized = SerializationHelper.serialize_item(self.role, "Identifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ROLE")
@@ -103,7 +104,7 @@ class BuildActionIoElement(ARObject):
         if self.sdgs:
             wrapper = ET.Element("SDGS")
             for item in self.sdgs:
-                serialized = ARObject._serialize_item(item, "Sdg")
+                serialized = SerializationHelper.serialize_item(item, "Sdg")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -126,30 +127,30 @@ class BuildActionIoElement(ARObject):
         obj.__init__()
 
         # Parse category
-        child = ARObject._find_child_element(element, "CATEGORY")
+        child = SerializationHelper.find_child_element(element, "CATEGORY")
         if child is not None:
             category_value = child.text
             obj.category = category_value
 
         # Parse ecuc_definition_ref
-        child = ARObject._find_child_element(element, "ECUC-DEFINITION-REF")
+        child = SerializationHelper.find_child_element(element, "ECUC-DEFINITION-REF")
         if child is not None:
             ecuc_definition_ref_value = ARRef.deserialize(child)
             obj.ecuc_definition_ref = ecuc_definition_ref_value
 
         # Parse role
-        child = ARObject._find_child_element(element, "ROLE")
+        child = SerializationHelper.find_child_element(element, "ROLE")
         if child is not None:
-            role_value = ARObject._deserialize_by_tag(child, "Identifier")
+            role_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
             obj.role = role_value
 
         # Parse sdgs (list from container "SDGS")
         obj.sdgs = []
-        container = ARObject._find_child_element(element, "SDGS")
+        container = SerializationHelper.find_child_element(element, "SDGS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.sdgs.append(child_value)
 

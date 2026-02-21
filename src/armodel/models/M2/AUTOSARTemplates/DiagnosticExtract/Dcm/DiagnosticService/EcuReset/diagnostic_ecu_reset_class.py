@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceClass,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.EcuReset import (
     DiagnosticResponseToEcuResetEnum,
 )
@@ -43,7 +44,7 @@ class DiagnosticEcuResetClass(DiagnosticServiceClass):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class DiagnosticEcuResetClass(DiagnosticServiceClass):
 
         # Serialize respond_to
         if self.respond_to is not None:
-            serialized = ARObject._serialize_item(self.respond_to, "DiagnosticResponseToEcuResetEnum")
+            serialized = SerializationHelper.serialize_item(self.respond_to, "DiagnosticResponseToEcuResetEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RESPOND-TO")
@@ -90,7 +91,7 @@ class DiagnosticEcuResetClass(DiagnosticServiceClass):
         obj = super(DiagnosticEcuResetClass, cls).deserialize(element)
 
         # Parse respond_to
-        child = ARObject._find_child_element(element, "RESPOND-TO")
+        child = SerializationHelper.find_child_element(element, "RESPOND-TO")
         if child is not None:
             respond_to_value = DiagnosticResponseToEcuResetEnum.deserialize(child)
             obj.respond_to = respond_to_value

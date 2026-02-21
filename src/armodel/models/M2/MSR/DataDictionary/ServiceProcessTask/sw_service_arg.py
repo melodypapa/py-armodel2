@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     ArgumentDirectionEnum,
@@ -61,7 +62,7 @@ class SwServiceArg(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -80,7 +81,7 @@ class SwServiceArg(Identifiable):
 
         # Serialize direction
         if self.direction is not None:
-            serialized = ARObject._serialize_item(self.direction, "ArgumentDirectionEnum")
+            serialized = SerializationHelper.serialize_item(self.direction, "ArgumentDirectionEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DIRECTION")
@@ -94,7 +95,7 @@ class SwServiceArg(Identifiable):
 
         # Serialize sw_arraysize_ref
         if self.sw_arraysize_ref is not None:
-            serialized = ARObject._serialize_item(self.sw_arraysize_ref, "ValueList")
+            serialized = SerializationHelper.serialize_item(self.sw_arraysize_ref, "ValueList")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-ARRAYSIZE-REF")
@@ -108,7 +109,7 @@ class SwServiceArg(Identifiable):
 
         # Serialize sw_data_def
         if self.sw_data_def is not None:
-            serialized = ARObject._serialize_item(self.sw_data_def, "SwDataDefProps")
+            serialized = SerializationHelper.serialize_item(self.sw_data_def, "SwDataDefProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-DATA-DEF")
@@ -136,21 +137,21 @@ class SwServiceArg(Identifiable):
         obj = super(SwServiceArg, cls).deserialize(element)
 
         # Parse direction
-        child = ARObject._find_child_element(element, "DIRECTION")
+        child = SerializationHelper.find_child_element(element, "DIRECTION")
         if child is not None:
             direction_value = ArgumentDirectionEnum.deserialize(child)
             obj.direction = direction_value
 
         # Parse sw_arraysize_ref
-        child = ARObject._find_child_element(element, "SW-ARRAYSIZE-REF")
+        child = SerializationHelper.find_child_element(element, "SW-ARRAYSIZE-REF")
         if child is not None:
             sw_arraysize_ref_value = ARRef.deserialize(child)
             obj.sw_arraysize_ref = sw_arraysize_ref_value
 
         # Parse sw_data_def
-        child = ARObject._find_child_element(element, "SW-DATA-DEF")
+        child = SerializationHelper.find_child_element(element, "SW-DATA-DEF")
         if child is not None:
-            sw_data_def_value = ARObject._deserialize_by_tag(child, "SwDataDefProps")
+            sw_data_def_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
             obj.sw_data_def = sw_data_def_value
 
         return obj

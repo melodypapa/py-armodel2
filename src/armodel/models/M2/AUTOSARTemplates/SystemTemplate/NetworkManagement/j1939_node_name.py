@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
 )
@@ -56,12 +57,12 @@ class J1939NodeName(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize arbitrary_address
         if self.arbitrary_address is not None:
-            serialized = ARObject._serialize_item(self.arbitrary_address, "Any")
+            serialized = SerializationHelper.serialize_item(self.arbitrary_address, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ARBITRARY-ADDRESS")
@@ -75,7 +76,7 @@ class J1939NodeName(ARObject):
 
         # Serialize ecu_instance
         if self.ecu_instance is not None:
-            serialized = ARObject._serialize_item(self.ecu_instance, "Integer")
+            serialized = SerializationHelper.serialize_item(self.ecu_instance, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ECU-INSTANCE")
@@ -89,7 +90,7 @@ class J1939NodeName(ARObject):
 
         # Serialize function
         if self.function is not None:
-            serialized = ARObject._serialize_item(self.function, "Integer")
+            serialized = SerializationHelper.serialize_item(self.function, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FUNCTION")
@@ -103,7 +104,7 @@ class J1939NodeName(ARObject):
 
         # Serialize function_instance
         if self.function_instance is not None:
-            serialized = ARObject._serialize_item(self.function_instance, "Integer")
+            serialized = SerializationHelper.serialize_item(self.function_instance, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FUNCTION-INSTANCE")
@@ -117,7 +118,7 @@ class J1939NodeName(ARObject):
 
         # Serialize identitiy_number
         if self.identitiy_number is not None:
-            serialized = ARObject._serialize_item(self.identitiy_number, "Integer")
+            serialized = SerializationHelper.serialize_item(self.identitiy_number, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IDENTITIY-NUMBER")
@@ -131,7 +132,7 @@ class J1939NodeName(ARObject):
 
         # Serialize industry_group
         if self.industry_group is not None:
-            serialized = ARObject._serialize_item(self.industry_group, "Integer")
+            serialized = SerializationHelper.serialize_item(self.industry_group, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INDUSTRY-GROUP")
@@ -145,7 +146,7 @@ class J1939NodeName(ARObject):
 
         # Serialize manufacturer_code
         if self.manufacturer_code is not None:
-            serialized = ARObject._serialize_item(self.manufacturer_code, "Integer")
+            serialized = SerializationHelper.serialize_item(self.manufacturer_code, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MANUFACTURER-CODE")
@@ -159,7 +160,7 @@ class J1939NodeName(ARObject):
 
         # Serialize vehicle_system
         if self.vehicle_system is not None:
-            serialized = ARObject._serialize_item(self.vehicle_system, "Integer")
+            serialized = SerializationHelper.serialize_item(self.vehicle_system, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VEHICLE-SYSTEM")
@@ -173,7 +174,7 @@ class J1939NodeName(ARObject):
 
         # Serialize vehicle_system_instance
         if self.vehicle_system_instance is not None:
-            serialized = ARObject._serialize_item(self.vehicle_system_instance, "Integer")
+            serialized = SerializationHelper.serialize_item(self.vehicle_system_instance, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VEHICLE-SYSTEM-INSTANCE")
@@ -202,55 +203,55 @@ class J1939NodeName(ARObject):
         obj.__init__()
 
         # Parse arbitrary_address
-        child = ARObject._find_child_element(element, "ARBITRARY-ADDRESS")
+        child = SerializationHelper.find_child_element(element, "ARBITRARY-ADDRESS")
         if child is not None:
             arbitrary_address_value = child.text
             obj.arbitrary_address = arbitrary_address_value
 
         # Parse ecu_instance
-        child = ARObject._find_child_element(element, "ECU-INSTANCE")
+        child = SerializationHelper.find_child_element(element, "ECU-INSTANCE")
         if child is not None:
             ecu_instance_value = child.text
             obj.ecu_instance = ecu_instance_value
 
         # Parse function
-        child = ARObject._find_child_element(element, "FUNCTION")
+        child = SerializationHelper.find_child_element(element, "FUNCTION")
         if child is not None:
             function_value = child.text
             obj.function = function_value
 
         # Parse function_instance
-        child = ARObject._find_child_element(element, "FUNCTION-INSTANCE")
+        child = SerializationHelper.find_child_element(element, "FUNCTION-INSTANCE")
         if child is not None:
             function_instance_value = child.text
             obj.function_instance = function_instance_value
 
         # Parse identitiy_number
-        child = ARObject._find_child_element(element, "IDENTITIY-NUMBER")
+        child = SerializationHelper.find_child_element(element, "IDENTITIY-NUMBER")
         if child is not None:
             identitiy_number_value = child.text
             obj.identitiy_number = identitiy_number_value
 
         # Parse industry_group
-        child = ARObject._find_child_element(element, "INDUSTRY-GROUP")
+        child = SerializationHelper.find_child_element(element, "INDUSTRY-GROUP")
         if child is not None:
             industry_group_value = child.text
             obj.industry_group = industry_group_value
 
         # Parse manufacturer_code
-        child = ARObject._find_child_element(element, "MANUFACTURER-CODE")
+        child = SerializationHelper.find_child_element(element, "MANUFACTURER-CODE")
         if child is not None:
             manufacturer_code_value = child.text
             obj.manufacturer_code = manufacturer_code_value
 
         # Parse vehicle_system
-        child = ARObject._find_child_element(element, "VEHICLE-SYSTEM")
+        child = SerializationHelper.find_child_element(element, "VEHICLE-SYSTEM")
         if child is not None:
             vehicle_system_value = child.text
             obj.vehicle_system = vehicle_system_value
 
         # Parse vehicle_system_instance
-        child = ARObject._find_child_element(element, "VEHICLE-SYSTEM-INSTANCE")
+        child = SerializationHelper.find_child_element(element, "VEHICLE-SYSTEM-INSTANCE")
         if child is not None:
             vehicle_system_instance_value = child.text
             obj.vehicle_system_instance = vehicle_system_instance_value

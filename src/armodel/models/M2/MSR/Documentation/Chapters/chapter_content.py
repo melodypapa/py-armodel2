@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.Documentation.BlockElements.GerneralParameters.prms import (
     Prms,
 )
@@ -45,12 +46,12 @@ class ChapterContent(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize prms
         if self.prms is not None:
-            serialized = ARObject._serialize_item(self.prms, "Prms")
+            serialized = SerializationHelper.serialize_item(self.prms, "Prms")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PRMS")
@@ -64,7 +65,7 @@ class ChapterContent(ARObject):
 
         # Serialize topic_content_or_msr
         if self.topic_content_or_msr is not None:
-            serialized = ARObject._serialize_item(self.topic_content_or_msr, "TopicContentOrMsrQuery")
+            serialized = SerializationHelper.serialize_item(self.topic_content_or_msr, "TopicContentOrMsrQuery")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TOPIC-CONTENT-OR-MSR")
@@ -93,15 +94,15 @@ class ChapterContent(ARObject):
         obj.__init__()
 
         # Parse prms
-        child = ARObject._find_child_element(element, "PRMS")
+        child = SerializationHelper.find_child_element(element, "PRMS")
         if child is not None:
-            prms_value = ARObject._deserialize_by_tag(child, "Prms")
+            prms_value = SerializationHelper.deserialize_by_tag(child, "Prms")
             obj.prms = prms_value
 
         # Parse topic_content_or_msr
-        child = ARObject._find_child_element(element, "TOPIC-CONTENT-OR-MSR")
+        child = SerializationHelper.find_child_element(element, "TOPIC-CONTENT-OR-MSR")
         if child is not None:
-            topic_content_or_msr_value = ARObject._deserialize_by_tag(child, "TopicContentOrMsrQuery")
+            topic_content_or_msr_value = SerializationHelper.deserialize_by_tag(child, "TopicContentOrMsrQuery")
             obj.topic_content_or_msr = topic_content_or_msr_value
 
         return obj

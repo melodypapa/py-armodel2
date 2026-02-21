@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -43,7 +44,7 @@ class TlsCryptoCipherSuiteProps(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class TlsCryptoCipherSuiteProps(Identifiable):
 
         # Serialize tcp_ip_tls_use
         if self.tcp_ip_tls_use is not None:
-            serialized = ARObject._serialize_item(self.tcp_ip_tls_use, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.tcp_ip_tls_use, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TCP-IP-TLS-USE")
@@ -90,7 +91,7 @@ class TlsCryptoCipherSuiteProps(Identifiable):
         obj = super(TlsCryptoCipherSuiteProps, cls).deserialize(element)
 
         # Parse tcp_ip_tls_use
-        child = ARObject._find_child_element(element, "TCP-IP-TLS-USE")
+        child = SerializationHelper.find_child_element(element, "TCP-IP-TLS-USE")
         if child is not None:
             tcp_ip_tls_use_value = child.text
             obj.tcp_ip_tls_use = tcp_ip_tls_use_value

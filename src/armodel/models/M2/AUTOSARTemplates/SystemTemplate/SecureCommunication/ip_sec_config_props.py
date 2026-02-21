@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication import (
     IPsecDpdActionEnum,
 )
@@ -70,7 +71,7 @@ class IPSecConfigProps(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -91,7 +92,7 @@ class IPSecConfigProps(ARElement):
         if self.ah_cipher_suites:
             wrapper = ET.Element("AH-CIPHER-SUITES")
             for item in self.ah_cipher_suites:
-                serialized = ARObject._serialize_item(item, "String")
+                serialized = SerializationHelper.serialize_item(item, "String")
                 if serialized is not None:
                     child_elem = ET.Element("AH-CIPHER-SUITE")
                     if hasattr(serialized, 'attrib'):
@@ -106,7 +107,7 @@ class IPSecConfigProps(ARElement):
 
         # Serialize dpd_action
         if self.dpd_action is not None:
-            serialized = ARObject._serialize_item(self.dpd_action, "IPsecDpdActionEnum")
+            serialized = SerializationHelper.serialize_item(self.dpd_action, "IPsecDpdActionEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DPD-ACTION")
@@ -120,7 +121,7 @@ class IPSecConfigProps(ARElement):
 
         # Serialize dpd_delay
         if self.dpd_delay is not None:
-            serialized = ARObject._serialize_item(self.dpd_delay, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.dpd_delay, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DPD-DELAY")
@@ -136,7 +137,7 @@ class IPSecConfigProps(ARElement):
         if self.esp_cipher_suites:
             wrapper = ET.Element("ESP-CIPHER-SUITES")
             for item in self.esp_cipher_suites:
-                serialized = ARObject._serialize_item(item, "String")
+                serialized = SerializationHelper.serialize_item(item, "String")
                 if serialized is not None:
                     child_elem = ET.Element("ESP-CIPHER-SUITE")
                     if hasattr(serialized, 'attrib'):
@@ -151,7 +152,7 @@ class IPSecConfigProps(ARElement):
 
         # Serialize ike_cipher_suite
         if self.ike_cipher_suite is not None:
-            serialized = ARObject._serialize_item(self.ike_cipher_suite, "String")
+            serialized = SerializationHelper.serialize_item(self.ike_cipher_suite, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IKE-CIPHER-SUITE")
@@ -165,7 +166,7 @@ class IPSecConfigProps(ARElement):
 
         # Serialize ike_over_time
         if self.ike_over_time is not None:
-            serialized = ARObject._serialize_item(self.ike_over_time, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.ike_over_time, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IKE-OVER-TIME")
@@ -179,7 +180,7 @@ class IPSecConfigProps(ARElement):
 
         # Serialize ike_rand_time
         if self.ike_rand_time is not None:
-            serialized = ARObject._serialize_item(self.ike_rand_time, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.ike_rand_time, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IKE-RAND-TIME")
@@ -193,7 +194,7 @@ class IPSecConfigProps(ARElement):
 
         # Serialize ike_reauth_time
         if self.ike_reauth_time is not None:
-            serialized = ARObject._serialize_item(self.ike_reauth_time, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.ike_reauth_time, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IKE-REAUTH-TIME")
@@ -207,7 +208,7 @@ class IPSecConfigProps(ARElement):
 
         # Serialize ike_rekey_time
         if self.ike_rekey_time is not None:
-            serialized = ARObject._serialize_item(self.ike_rekey_time, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.ike_rekey_time, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IKE-REKEY-TIME")
@@ -221,7 +222,7 @@ class IPSecConfigProps(ARElement):
 
         # Serialize sa_over_time
         if self.sa_over_time is not None:
-            serialized = ARObject._serialize_item(self.sa_over_time, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.sa_over_time, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SA-OVER-TIME")
@@ -235,7 +236,7 @@ class IPSecConfigProps(ARElement):
 
         # Serialize sa_rand_time
         if self.sa_rand_time is not None:
-            serialized = ARObject._serialize_item(self.sa_rand_time, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.sa_rand_time, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SA-RAND-TIME")
@@ -249,7 +250,7 @@ class IPSecConfigProps(ARElement):
 
         # Serialize sa_rekey_time
         if self.sa_rekey_time is not None:
-            serialized = ARObject._serialize_item(self.sa_rekey_time, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.sa_rekey_time, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SA-REKEY-TIME")
@@ -278,7 +279,7 @@ class IPSecConfigProps(ARElement):
 
         # Parse ah_cipher_suites (list from container "AH-CIPHER-SUITES")
         obj.ah_cipher_suites = []
-        container = ARObject._find_child_element(element, "AH-CIPHER-SUITES")
+        container = SerializationHelper.find_child_element(element, "AH-CIPHER-SUITES")
         if container is not None:
             for child in container:
                 # Extract primitive value (String) as text
@@ -287,20 +288,20 @@ class IPSecConfigProps(ARElement):
                     obj.ah_cipher_suites.append(child_value)
 
         # Parse dpd_action
-        child = ARObject._find_child_element(element, "DPD-ACTION")
+        child = SerializationHelper.find_child_element(element, "DPD-ACTION")
         if child is not None:
             dpd_action_value = IPsecDpdActionEnum.deserialize(child)
             obj.dpd_action = dpd_action_value
 
         # Parse dpd_delay
-        child = ARObject._find_child_element(element, "DPD-DELAY")
+        child = SerializationHelper.find_child_element(element, "DPD-DELAY")
         if child is not None:
             dpd_delay_value = child.text
             obj.dpd_delay = dpd_delay_value
 
         # Parse esp_cipher_suites (list from container "ESP-CIPHER-SUITES")
         obj.esp_cipher_suites = []
-        container = ARObject._find_child_element(element, "ESP-CIPHER-SUITES")
+        container = SerializationHelper.find_child_element(element, "ESP-CIPHER-SUITES")
         if container is not None:
             for child in container:
                 # Extract primitive value (String) as text
@@ -309,49 +310,49 @@ class IPSecConfigProps(ARElement):
                     obj.esp_cipher_suites.append(child_value)
 
         # Parse ike_cipher_suite
-        child = ARObject._find_child_element(element, "IKE-CIPHER-SUITE")
+        child = SerializationHelper.find_child_element(element, "IKE-CIPHER-SUITE")
         if child is not None:
             ike_cipher_suite_value = child.text
             obj.ike_cipher_suite = ike_cipher_suite_value
 
         # Parse ike_over_time
-        child = ARObject._find_child_element(element, "IKE-OVER-TIME")
+        child = SerializationHelper.find_child_element(element, "IKE-OVER-TIME")
         if child is not None:
             ike_over_time_value = child.text
             obj.ike_over_time = ike_over_time_value
 
         # Parse ike_rand_time
-        child = ARObject._find_child_element(element, "IKE-RAND-TIME")
+        child = SerializationHelper.find_child_element(element, "IKE-RAND-TIME")
         if child is not None:
             ike_rand_time_value = child.text
             obj.ike_rand_time = ike_rand_time_value
 
         # Parse ike_reauth_time
-        child = ARObject._find_child_element(element, "IKE-REAUTH-TIME")
+        child = SerializationHelper.find_child_element(element, "IKE-REAUTH-TIME")
         if child is not None:
             ike_reauth_time_value = child.text
             obj.ike_reauth_time = ike_reauth_time_value
 
         # Parse ike_rekey_time
-        child = ARObject._find_child_element(element, "IKE-REKEY-TIME")
+        child = SerializationHelper.find_child_element(element, "IKE-REKEY-TIME")
         if child is not None:
             ike_rekey_time_value = child.text
             obj.ike_rekey_time = ike_rekey_time_value
 
         # Parse sa_over_time
-        child = ARObject._find_child_element(element, "SA-OVER-TIME")
+        child = SerializationHelper.find_child_element(element, "SA-OVER-TIME")
         if child is not None:
             sa_over_time_value = child.text
             obj.sa_over_time = sa_over_time_value
 
         # Parse sa_rand_time
-        child = ARObject._find_child_element(element, "SA-RAND-TIME")
+        child = SerializationHelper.find_child_element(element, "SA-RAND-TIME")
         if child is not None:
             sa_rand_time_value = child.text
             obj.sa_rand_time = sa_rand_time_value
 
         # Parse sa_rekey_time
-        child = ARObject._find_child_element(element, "SA-REKEY-TIME")
+        child = SerializationHelper.find_child_element(element, "SA-REKEY-TIME")
         if child is not None:
             sa_rekey_time_value = child.text
             obj.sa_rekey_time = sa_rekey_time_value

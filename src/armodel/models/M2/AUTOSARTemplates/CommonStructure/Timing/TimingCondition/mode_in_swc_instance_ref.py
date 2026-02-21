@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
     ModeDeclaration,
@@ -58,12 +59,12 @@ class ModeInSwcInstanceRef(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize base_ref
         if self.base_ref is not None:
-            serialized = ARObject._serialize_item(self.base_ref, "SwComponentType")
+            serialized = SerializationHelper.serialize_item(self.base_ref, "SwComponentType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BASE-REF")
@@ -79,7 +80,7 @@ class ModeInSwcInstanceRef(ARObject):
         if self.context_refs:
             wrapper = ET.Element("CONTEXT-REFS")
             for item in self.context_refs:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     child_elem = ET.Element("CONTEXT-REF")
                     if hasattr(serialized, 'attrib'):
@@ -94,7 +95,7 @@ class ModeInSwcInstanceRef(ARObject):
 
         # Serialize context_mode_ref
         if self.context_mode_ref is not None:
-            serialized = ARObject._serialize_item(self.context_mode_ref, "ModeDeclarationGroup")
+            serialized = SerializationHelper.serialize_item(self.context_mode_ref, "ModeDeclarationGroup")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONTEXT-MODE-REF")
@@ -108,7 +109,7 @@ class ModeInSwcInstanceRef(ARObject):
 
         # Serialize context_port_ref
         if self.context_port_ref is not None:
-            serialized = ARObject._serialize_item(self.context_port_ref, "PortPrototype")
+            serialized = SerializationHelper.serialize_item(self.context_port_ref, "PortPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONTEXT-PORT-REF")
@@ -122,7 +123,7 @@ class ModeInSwcInstanceRef(ARObject):
 
         # Serialize target_mode_ref
         if self.target_mode_ref is not None:
-            serialized = ARObject._serialize_item(self.target_mode_ref, "ModeDeclaration")
+            serialized = SerializationHelper.serialize_item(self.target_mode_ref, "ModeDeclaration")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TARGET-MODE-REF")
@@ -151,41 +152,41 @@ class ModeInSwcInstanceRef(ARObject):
         obj.__init__()
 
         # Parse base_ref
-        child = ARObject._find_child_element(element, "BASE-REF")
+        child = SerializationHelper.find_child_element(element, "BASE-REF")
         if child is not None:
             base_ref_value = ARRef.deserialize(child)
             obj.base_ref = base_ref_value
 
         # Parse context_refs (list from container "CONTEXT-REFS")
         obj.context_refs = []
-        container = ARObject._find_child_element(element, "CONTEXT-REFS")
+        container = SerializationHelper.find_child_element(element, "CONTEXT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.context_refs.append(child_value)
 
         # Parse context_mode_ref
-        child = ARObject._find_child_element(element, "CONTEXT-MODE-REF")
+        child = SerializationHelper.find_child_element(element, "CONTEXT-MODE-REF")
         if child is not None:
             context_mode_ref_value = ARRef.deserialize(child)
             obj.context_mode_ref = context_mode_ref_value
 
         # Parse context_port_ref
-        child = ARObject._find_child_element(element, "CONTEXT-PORT-REF")
+        child = SerializationHelper.find_child_element(element, "CONTEXT-PORT-REF")
         if child is not None:
             context_port_ref_value = ARRef.deserialize(child)
             obj.context_port_ref = context_port_ref_value
 
         # Parse target_mode_ref
-        child = ARObject._find_child_element(element, "TARGET-MODE-REF")
+        child = SerializationHelper.find_child_element(element, "TARGET-MODE-REF")
         if child is not None:
             target_mode_ref_value = ARRef.deserialize(child)
             obj.target_mode_ref = target_mode_ref_value

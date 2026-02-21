@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingExtensions.
     TimingExtension,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.swc_internal_behavior import (
     SwcInternalBehavior,
@@ -44,7 +45,7 @@ class SwcTiming(TimingExtension):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -63,7 +64,7 @@ class SwcTiming(TimingExtension):
 
         # Serialize behavior_ref
         if self.behavior_ref is not None:
-            serialized = ARObject._serialize_item(self.behavior_ref, "SwcInternalBehavior")
+            serialized = SerializationHelper.serialize_item(self.behavior_ref, "SwcInternalBehavior")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BEHAVIOR-REF")
@@ -91,7 +92,7 @@ class SwcTiming(TimingExtension):
         obj = super(SwcTiming, cls).deserialize(element)
 
         # Parse behavior_ref
-        child = ARObject._find_child_element(element, "BEHAVIOR-REF")
+        child = SerializationHelper.find_child_element(element, "BEHAVIOR-REF")
         if child is not None:
             behavior_ref_value = ARRef.deserialize(child)
             obj.behavior_ref = behavior_ref_value

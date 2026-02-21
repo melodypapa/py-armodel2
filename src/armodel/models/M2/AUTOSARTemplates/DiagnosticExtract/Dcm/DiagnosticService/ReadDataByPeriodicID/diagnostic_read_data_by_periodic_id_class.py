@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceClass,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -50,7 +51,7 @@ class DiagnosticReadDataByPeriodicIDClass(DiagnosticServiceClass):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -69,7 +70,7 @@ class DiagnosticReadDataByPeriodicIDClass(DiagnosticServiceClass):
 
         # Serialize max_periodic_did
         if self.max_periodic_did is not None:
-            serialized = ARObject._serialize_item(self.max_periodic_did, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.max_periodic_did, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-PERIODIC-DID")
@@ -85,7 +86,7 @@ class DiagnosticReadDataByPeriodicIDClass(DiagnosticServiceClass):
         if self.periodic_rates:
             wrapper = ET.Element("PERIODIC-RATES")
             for item in self.periodic_rates:
-                serialized = ARObject._serialize_item(item, "DiagnosticPeriodicRate")
+                serialized = SerializationHelper.serialize_item(item, "DiagnosticPeriodicRate")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -93,7 +94,7 @@ class DiagnosticReadDataByPeriodicIDClass(DiagnosticServiceClass):
 
         # Serialize scheduler_max
         if self.scheduler_max is not None:
-            serialized = ARObject._serialize_item(self.scheduler_max, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.scheduler_max, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SCHEDULER-MAX")
@@ -121,23 +122,23 @@ class DiagnosticReadDataByPeriodicIDClass(DiagnosticServiceClass):
         obj = super(DiagnosticReadDataByPeriodicIDClass, cls).deserialize(element)
 
         # Parse max_periodic_did
-        child = ARObject._find_child_element(element, "MAX-PERIODIC-DID")
+        child = SerializationHelper.find_child_element(element, "MAX-PERIODIC-DID")
         if child is not None:
             max_periodic_did_value = child.text
             obj.max_periodic_did = max_periodic_did_value
 
         # Parse periodic_rates (list from container "PERIODIC-RATES")
         obj.periodic_rates = []
-        container = ARObject._find_child_element(element, "PERIODIC-RATES")
+        container = SerializationHelper.find_child_element(element, "PERIODIC-RATES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.periodic_rates.append(child_value)
 
         # Parse scheduler_max
-        child = ARObject._find_child_element(element, "SCHEDULER-MAX")
+        child = SerializationHelper.find_child_element(element, "SCHEDULER-MAX")
         if child is not None:
             scheduler_max_value = child.text
             obj.scheduler_max = scheduler_max_value

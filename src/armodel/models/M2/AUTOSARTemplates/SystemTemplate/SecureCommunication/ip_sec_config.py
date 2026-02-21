@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.ip_sec_config_props import (
     IPSecConfigProps,
@@ -49,12 +50,12 @@ class IPSecConfig(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize ip_sec_config_ref
         if self.ip_sec_config_ref is not None:
-            serialized = ARObject._serialize_item(self.ip_sec_config_ref, "IPSecConfigProps")
+            serialized = SerializationHelper.serialize_item(self.ip_sec_config_ref, "IPSecConfigProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IP-SEC-CONFIG-REF")
@@ -70,7 +71,7 @@ class IPSecConfig(ARObject):
         if self.ip_sec_rules:
             wrapper = ET.Element("IP-SEC-RULES")
             for item in self.ip_sec_rules:
-                serialized = ARObject._serialize_item(item, "IPSecRule")
+                serialized = SerializationHelper.serialize_item(item, "IPSecRule")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -93,18 +94,18 @@ class IPSecConfig(ARObject):
         obj.__init__()
 
         # Parse ip_sec_config_ref
-        child = ARObject._find_child_element(element, "IP-SEC-CONFIG-REF")
+        child = SerializationHelper.find_child_element(element, "IP-SEC-CONFIG-REF")
         if child is not None:
             ip_sec_config_ref_value = ARRef.deserialize(child)
             obj.ip_sec_config_ref = ip_sec_config_ref_value
 
         # Parse ip_sec_rules (list from container "IP-SEC-RULES")
         obj.ip_sec_rules = []
-        container = ARObject._find_child_element(element, "IP-SEC-RULES")
+        container = SerializationHelper.find_child_element(element, "IP-SEC-RULES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.ip_sec_rules.append(child_value)
 

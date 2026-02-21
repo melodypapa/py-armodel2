@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_nee
     ServiceNeeds,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
     VerificationStatusIndicationModeEnum,
 )
@@ -43,7 +44,7 @@ class SecureOnBoardCommunicationNeeds(ServiceNeeds):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class SecureOnBoardCommunicationNeeds(ServiceNeeds):
 
         # Serialize verification
         if self.verification is not None:
-            serialized = ARObject._serialize_item(self.verification, "VerificationStatusIndicationModeEnum")
+            serialized = SerializationHelper.serialize_item(self.verification, "VerificationStatusIndicationModeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VERIFICATION")
@@ -90,7 +91,7 @@ class SecureOnBoardCommunicationNeeds(ServiceNeeds):
         obj = super(SecureOnBoardCommunicationNeeds, cls).deserialize(element)
 
         # Parse verification
-        child = ARObject._find_child_element(element, "VERIFICATION")
+        child = SerializationHelper.find_child_element(element, "VERIFICATION")
         if child is not None:
             verification_value = VerificationStatusIndicationModeEnum.deserialize(child)
             obj.verification = verification_value

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DiagnosticConnection.tp_c
     TpConnection,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.do_ip_logic_address import (
     DoIpLogicAddress,
@@ -51,7 +52,7 @@ class DoIpTpConnection(TpConnection):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -70,7 +71,7 @@ class DoIpTpConnection(TpConnection):
 
         # Serialize do_ip_source_ref
         if self.do_ip_source_ref is not None:
-            serialized = ARObject._serialize_item(self.do_ip_source_ref, "DoIpLogicAddress")
+            serialized = SerializationHelper.serialize_item(self.do_ip_source_ref, "DoIpLogicAddress")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DO-IP-SOURCE-REF")
@@ -84,7 +85,7 @@ class DoIpTpConnection(TpConnection):
 
         # Serialize do_ip_target_ref
         if self.do_ip_target_ref is not None:
-            serialized = ARObject._serialize_item(self.do_ip_target_ref, "DoIpLogicAddress")
+            serialized = SerializationHelper.serialize_item(self.do_ip_target_ref, "DoIpLogicAddress")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DO-IP-TARGET-REF")
@@ -98,7 +99,7 @@ class DoIpTpConnection(TpConnection):
 
         # Serialize tp_sdu_ref
         if self.tp_sdu_ref is not None:
-            serialized = ARObject._serialize_item(self.tp_sdu_ref, "PduTriggering")
+            serialized = SerializationHelper.serialize_item(self.tp_sdu_ref, "PduTriggering")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TP-SDU-REF")
@@ -126,19 +127,19 @@ class DoIpTpConnection(TpConnection):
         obj = super(DoIpTpConnection, cls).deserialize(element)
 
         # Parse do_ip_source_ref
-        child = ARObject._find_child_element(element, "DO-IP-SOURCE-REF")
+        child = SerializationHelper.find_child_element(element, "DO-IP-SOURCE-REF")
         if child is not None:
             do_ip_source_ref_value = ARRef.deserialize(child)
             obj.do_ip_source_ref = do_ip_source_ref_value
 
         # Parse do_ip_target_ref
-        child = ARObject._find_child_element(element, "DO-IP-TARGET-REF")
+        child = SerializationHelper.find_child_element(element, "DO-IP-TARGET-REF")
         if child is not None:
             do_ip_target_ref_value = ARRef.deserialize(child)
             obj.do_ip_target_ref = do_ip_target_ref_value
 
         # Parse tp_sdu_ref
-        child = ARObject._find_child_element(element, "TP-SDU-REF")
+        child = SerializationHelper.find_child_element(element, "TP-SDU-REF")
         if child is not None:
             tp_sdu_ref_value = ARRef.deserialize(child)
             obj.tp_sdu_ref = tp_sdu_ref_value

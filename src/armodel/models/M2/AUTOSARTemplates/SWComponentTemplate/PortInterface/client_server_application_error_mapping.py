@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.application_error import (
     ApplicationError,
@@ -43,12 +44,12 @@ class ClientServerApplicationErrorMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize first_application_ref
         if self.first_application_ref is not None:
-            serialized = ARObject._serialize_item(self.first_application_ref, "ApplicationError")
+            serialized = SerializationHelper.serialize_item(self.first_application_ref, "ApplicationError")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FIRST-APPLICATION-REF")
@@ -62,7 +63,7 @@ class ClientServerApplicationErrorMapping(ARObject):
 
         # Serialize second_ref
         if self.second_ref is not None:
-            serialized = ARObject._serialize_item(self.second_ref, "ApplicationError")
+            serialized = SerializationHelper.serialize_item(self.second_ref, "ApplicationError")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SECOND-REF")
@@ -91,13 +92,13 @@ class ClientServerApplicationErrorMapping(ARObject):
         obj.__init__()
 
         # Parse first_application_ref
-        child = ARObject._find_child_element(element, "FIRST-APPLICATION-REF")
+        child = SerializationHelper.find_child_element(element, "FIRST-APPLICATION-REF")
         if child is not None:
             first_application_ref_value = ARRef.deserialize(child)
             obj.first_application_ref = first_application_ref_value
 
         # Parse second_ref
-        child = ARObject._find_child_element(element, "SECOND-REF")
+        child = SerializationHelper.find_child_element(element, "SECOND-REF")
         if child is not None:
             second_ref_value = ARRef.deserialize(child)
             obj.second_ref = second_ref_value

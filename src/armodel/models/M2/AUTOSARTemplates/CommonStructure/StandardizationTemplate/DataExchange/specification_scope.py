@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchange.specification_document_scope import (
     SpecificationDocumentScope,
 )
@@ -40,14 +41,14 @@ class SpecificationScope(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize specification_documents (list to container "SPECIFICATION-DOCUMENTS")
         if self.specification_documents:
             wrapper = ET.Element("SPECIFICATION-DOCUMENTS")
             for item in self.specification_documents:
-                serialized = ARObject._serialize_item(item, "SpecificationDocumentScope")
+                serialized = SerializationHelper.serialize_item(item, "SpecificationDocumentScope")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -71,11 +72,11 @@ class SpecificationScope(ARObject):
 
         # Parse specification_documents (list from container "SPECIFICATION-DOCUMENTS")
         obj.specification_documents = []
-        container = ARObject._find_child_element(element, "SPECIFICATION-DOCUMENTS")
+        container = SerializationHelper.find_child_element(element, "SPECIFICATION-DOCUMENTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.specification_documents.append(child_value)
 

@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
     Pdu,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -44,7 +45,7 @@ class UserDefinedPdu(Pdu):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -63,7 +64,7 @@ class UserDefinedPdu(Pdu):
 
         # Serialize cdd_type
         if self.cdd_type is not None:
-            serialized = ARObject._serialize_item(self.cdd_type, "String")
+            serialized = SerializationHelper.serialize_item(self.cdd_type, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CDD-TYPE")
@@ -91,7 +92,7 @@ class UserDefinedPdu(Pdu):
         obj = super(UserDefinedPdu, cls).deserialize(element)
 
         # Parse cdd_type
-        child = ARObject._find_child_element(element, "CDD-TYPE")
+        child = SerializationHelper.find_child_element(element, "CDD-TYPE")
         if child is not None:
             cdd_type_value = child.text
             obj.cdd_type = cdd_type_value

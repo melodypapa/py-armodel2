@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     SdgAttribute,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.SpecialDataDef.sdg_class import (
     SdgClass,
@@ -44,7 +45,7 @@ class SdgReference(SdgAttribute):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -63,7 +64,7 @@ class SdgReference(SdgAttribute):
 
         # Serialize dest_sdg_ref
         if self.dest_sdg_ref is not None:
-            serialized = ARObject._serialize_item(self.dest_sdg_ref, "SdgClass")
+            serialized = SerializationHelper.serialize_item(self.dest_sdg_ref, "SdgClass")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DEST-SDG-REF")
@@ -91,7 +92,7 @@ class SdgReference(SdgAttribute):
         obj = super(SdgReference, cls).deserialize(element)
 
         # Parse dest_sdg_ref
-        child = ARObject._find_child_element(element, "DEST-SDG-REF")
+        child = SerializationHelper.find_child_element(element, "DEST-SDG-REF")
         if child is not None:
             dest_sdg_ref_value = ARRef.deserialize(child)
             obj.dest_sdg_ref = dest_sdg_ref_value

@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.AccessCount import (
     RteApiReturnValueProvisionEnum,
 )
@@ -45,7 +46,7 @@ class AbstractAccessPoint(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class AbstractAccessPoint(Identifiable, ABC):
 
         # Serialize return_value
         if self.return_value is not None:
-            serialized = ARObject._serialize_item(self.return_value, "RteApiReturnValueProvisionEnum")
+            serialized = SerializationHelper.serialize_item(self.return_value, "RteApiReturnValueProvisionEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RETURN-VALUE")
@@ -92,7 +93,7 @@ class AbstractAccessPoint(Identifiable, ABC):
         obj = super(AbstractAccessPoint, cls).deserialize(element)
 
         # Parse return_value
-        child = ARObject._find_child_element(element, "RETURN-VALUE")
+        child = SerializationHelper.find_child_element(element, "RETURN-VALUE")
         if child is not None:
             return_value_value = RteApiReturnValueProvisionEnum.deserialize(child)
             obj.return_value = return_value_value

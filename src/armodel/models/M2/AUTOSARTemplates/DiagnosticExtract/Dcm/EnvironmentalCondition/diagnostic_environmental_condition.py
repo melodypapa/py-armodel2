@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class DiagnosticEnvironmentalCondition(DiagnosticCommonElement):
@@ -42,7 +43,7 @@ class DiagnosticEnvironmentalCondition(DiagnosticCommonElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -61,7 +62,7 @@ class DiagnosticEnvironmentalCondition(DiagnosticCommonElement):
 
         # Serialize formula
         if self.formula is not None:
-            serialized = ARObject._serialize_item(self.formula, "Any")
+            serialized = SerializationHelper.serialize_item(self.formula, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FORMULA")
@@ -77,7 +78,7 @@ class DiagnosticEnvironmentalCondition(DiagnosticCommonElement):
         if self.mode_elements:
             wrapper = ET.Element("MODE-ELEMENTS")
             for item in self.mode_elements:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -99,18 +100,18 @@ class DiagnosticEnvironmentalCondition(DiagnosticCommonElement):
         obj = super(DiagnosticEnvironmentalCondition, cls).deserialize(element)
 
         # Parse formula
-        child = ARObject._find_child_element(element, "FORMULA")
+        child = SerializationHelper.find_child_element(element, "FORMULA")
         if child is not None:
             formula_value = child.text
             obj.formula = formula_value
 
         # Parse mode_elements (list from container "MODE-ELEMENTS")
         obj.mode_elements = []
-        container = ARObject._find_child_element(element, "MODE-ELEMENTS")
+        container = SerializationHelper.find_child_element(element, "MODE-ELEMENTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.mode_elements.append(child_value)
 

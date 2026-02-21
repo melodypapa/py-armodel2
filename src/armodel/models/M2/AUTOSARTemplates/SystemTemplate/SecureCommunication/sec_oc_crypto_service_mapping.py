@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.crypt
     CryptoServiceMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.crypto_service_key import (
     CryptoServiceKey,
@@ -54,7 +55,7 @@ class SecOcCryptoServiceMapping(CryptoServiceMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -73,7 +74,7 @@ class SecOcCryptoServiceMapping(CryptoServiceMapping):
 
         # Serialize authentication_ref
         if self.authentication_ref is not None:
-            serialized = ARObject._serialize_item(self.authentication_ref, "CryptoServicePrimitive")
+            serialized = SerializationHelper.serialize_item(self.authentication_ref, "CryptoServicePrimitive")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("AUTHENTICATION-REF")
@@ -87,7 +88,7 @@ class SecOcCryptoServiceMapping(CryptoServiceMapping):
 
         # Serialize crypto_service_key_ref
         if self.crypto_service_key_ref is not None:
-            serialized = ARObject._serialize_item(self.crypto_service_key_ref, "CryptoServiceKey")
+            serialized = SerializationHelper.serialize_item(self.crypto_service_key_ref, "CryptoServiceKey")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CRYPTO-SERVICE-KEY-REF")
@@ -101,7 +102,7 @@ class SecOcCryptoServiceMapping(CryptoServiceMapping):
 
         # Serialize crypto_service_queue_ref
         if self.crypto_service_queue_ref is not None:
-            serialized = ARObject._serialize_item(self.crypto_service_queue_ref, "CryptoServiceQueue")
+            serialized = SerializationHelper.serialize_item(self.crypto_service_queue_ref, "CryptoServiceQueue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CRYPTO-SERVICE-QUEUE-REF")
@@ -129,19 +130,19 @@ class SecOcCryptoServiceMapping(CryptoServiceMapping):
         obj = super(SecOcCryptoServiceMapping, cls).deserialize(element)
 
         # Parse authentication_ref
-        child = ARObject._find_child_element(element, "AUTHENTICATION-REF")
+        child = SerializationHelper.find_child_element(element, "AUTHENTICATION-REF")
         if child is not None:
             authentication_ref_value = ARRef.deserialize(child)
             obj.authentication_ref = authentication_ref_value
 
         # Parse crypto_service_key_ref
-        child = ARObject._find_child_element(element, "CRYPTO-SERVICE-KEY-REF")
+        child = SerializationHelper.find_child_element(element, "CRYPTO-SERVICE-KEY-REF")
         if child is not None:
             crypto_service_key_ref_value = ARRef.deserialize(child)
             obj.crypto_service_key_ref = crypto_service_key_ref_value
 
         # Parse crypto_service_queue_ref
-        child = ARObject._find_child_element(element, "CRYPTO-SERVICE-QUEUE-REF")
+        child = SerializationHelper.find_child_element(element, "CRYPTO-SERVICE-QUEUE-REF")
         if child is not None:
             crypto_service_queue_ref_value = ARRef.deserialize(child)
             obj.crypto_service_queue_ref = crypto_service_queue_ref_value

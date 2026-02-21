@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
@@ -41,7 +42,7 @@ class DiagnosticCustomServiceInstance(DiagnosticServiceInstance):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -60,7 +61,7 @@ class DiagnosticCustomServiceInstance(DiagnosticServiceInstance):
 
         # Serialize custom_service_ref
         if self.custom_service_ref is not None:
-            serialized = ARObject._serialize_item(self.custom_service_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.custom_service_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CUSTOM-SERVICE-REF")
@@ -88,7 +89,7 @@ class DiagnosticCustomServiceInstance(DiagnosticServiceInstance):
         obj = super(DiagnosticCustomServiceInstance, cls).deserialize(element)
 
         # Parse custom_service_ref
-        child = ARObject._find_child_element(element, "CUSTOM-SERVICE-REF")
+        child = SerializationHelper.find_child_element(element, "CUSTOM-SERVICE-REF")
         if child is not None:
             custom_service_ref_value = ARRef.deserialize(child)
             obj.custom_service_ref = custom_service_ref_value

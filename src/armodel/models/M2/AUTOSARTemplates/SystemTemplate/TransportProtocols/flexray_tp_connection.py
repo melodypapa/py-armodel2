@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DiagnosticConnection.tp_c
     TpConnection,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -72,7 +73,7 @@ class FlexrayTpConnection(TpConnection):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -91,7 +92,7 @@ class FlexrayTpConnection(TpConnection):
 
         # Serialize bandwidth
         if self.bandwidth is not None:
-            serialized = ARObject._serialize_item(self.bandwidth, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.bandwidth, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BANDWIDTH")
@@ -105,7 +106,7 @@ class FlexrayTpConnection(TpConnection):
 
         # Serialize direct_tp_sdu_ref
         if self.direct_tp_sdu_ref is not None:
-            serialized = ARObject._serialize_item(self.direct_tp_sdu_ref, "IPdu")
+            serialized = SerializationHelper.serialize_item(self.direct_tp_sdu_ref, "IPdu")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DIRECT-TP-SDU-REF")
@@ -119,7 +120,7 @@ class FlexrayTpConnection(TpConnection):
 
         # Serialize multicast_ref
         if self.multicast_ref is not None:
-            serialized = ARObject._serialize_item(self.multicast_ref, "TpAddress")
+            serialized = SerializationHelper.serialize_item(self.multicast_ref, "TpAddress")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MULTICAST-REF")
@@ -135,7 +136,7 @@ class FlexrayTpConnection(TpConnection):
         if self.receiver_refs:
             wrapper = ET.Element("RECEIVER-REFS")
             for item in self.receiver_refs:
-                serialized = ARObject._serialize_item(item, "FlexrayTpNode")
+                serialized = SerializationHelper.serialize_item(item, "FlexrayTpNode")
                 if serialized is not None:
                     child_elem = ET.Element("RECEIVER-REF")
                     if hasattr(serialized, 'attrib'):
@@ -150,7 +151,7 @@ class FlexrayTpConnection(TpConnection):
 
         # Serialize reversed_tp_sdu_ref
         if self.reversed_tp_sdu_ref is not None:
-            serialized = ARObject._serialize_item(self.reversed_tp_sdu_ref, "IPdu")
+            serialized = SerializationHelper.serialize_item(self.reversed_tp_sdu_ref, "IPdu")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REVERSED-TP-SDU-REF")
@@ -164,7 +165,7 @@ class FlexrayTpConnection(TpConnection):
 
         # Serialize rx_pdu_pool_ref
         if self.rx_pdu_pool_ref is not None:
-            serialized = ARObject._serialize_item(self.rx_pdu_pool_ref, "FlexrayTpPduPool")
+            serialized = SerializationHelper.serialize_item(self.rx_pdu_pool_ref, "FlexrayTpPduPool")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RX-PDU-POOL-REF")
@@ -178,7 +179,7 @@ class FlexrayTpConnection(TpConnection):
 
         # Serialize tp_connection_ref
         if self.tp_connection_ref is not None:
-            serialized = ARObject._serialize_item(self.tp_connection_ref, "FlexrayTpConnection")
+            serialized = SerializationHelper.serialize_item(self.tp_connection_ref, "FlexrayTpConnection")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TP-CONNECTION-REF")
@@ -192,7 +193,7 @@ class FlexrayTpConnection(TpConnection):
 
         # Serialize transmitter_ref
         if self.transmitter_ref is not None:
-            serialized = ARObject._serialize_item(self.transmitter_ref, "FlexrayTpNode")
+            serialized = SerializationHelper.serialize_item(self.transmitter_ref, "FlexrayTpNode")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TRANSMITTER-REF")
@@ -206,7 +207,7 @@ class FlexrayTpConnection(TpConnection):
 
         # Serialize tx_pdu_pool_ref
         if self.tx_pdu_pool_ref is not None:
-            serialized = ARObject._serialize_item(self.tx_pdu_pool_ref, "FlexrayTpPduPool")
+            serialized = SerializationHelper.serialize_item(self.tx_pdu_pool_ref, "FlexrayTpPduPool")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TX-PDU-POOL-REF")
@@ -234,65 +235,65 @@ class FlexrayTpConnection(TpConnection):
         obj = super(FlexrayTpConnection, cls).deserialize(element)
 
         # Parse bandwidth
-        child = ARObject._find_child_element(element, "BANDWIDTH")
+        child = SerializationHelper.find_child_element(element, "BANDWIDTH")
         if child is not None:
             bandwidth_value = child.text
             obj.bandwidth = bandwidth_value
 
         # Parse direct_tp_sdu_ref
-        child = ARObject._find_child_element(element, "DIRECT-TP-SDU-REF")
+        child = SerializationHelper.find_child_element(element, "DIRECT-TP-SDU-REF")
         if child is not None:
             direct_tp_sdu_ref_value = ARRef.deserialize(child)
             obj.direct_tp_sdu_ref = direct_tp_sdu_ref_value
 
         # Parse multicast_ref
-        child = ARObject._find_child_element(element, "MULTICAST-REF")
+        child = SerializationHelper.find_child_element(element, "MULTICAST-REF")
         if child is not None:
             multicast_ref_value = ARRef.deserialize(child)
             obj.multicast_ref = multicast_ref_value
 
         # Parse receiver_refs (list from container "RECEIVER-REFS")
         obj.receiver_refs = []
-        container = ARObject._find_child_element(element, "RECEIVER-REFS")
+        container = SerializationHelper.find_child_element(element, "RECEIVER-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.receiver_refs.append(child_value)
 
         # Parse reversed_tp_sdu_ref
-        child = ARObject._find_child_element(element, "REVERSED-TP-SDU-REF")
+        child = SerializationHelper.find_child_element(element, "REVERSED-TP-SDU-REF")
         if child is not None:
             reversed_tp_sdu_ref_value = ARRef.deserialize(child)
             obj.reversed_tp_sdu_ref = reversed_tp_sdu_ref_value
 
         # Parse rx_pdu_pool_ref
-        child = ARObject._find_child_element(element, "RX-PDU-POOL-REF")
+        child = SerializationHelper.find_child_element(element, "RX-PDU-POOL-REF")
         if child is not None:
             rx_pdu_pool_ref_value = ARRef.deserialize(child)
             obj.rx_pdu_pool_ref = rx_pdu_pool_ref_value
 
         # Parse tp_connection_ref
-        child = ARObject._find_child_element(element, "TP-CONNECTION-REF")
+        child = SerializationHelper.find_child_element(element, "TP-CONNECTION-REF")
         if child is not None:
             tp_connection_ref_value = ARRef.deserialize(child)
             obj.tp_connection_ref = tp_connection_ref_value
 
         # Parse transmitter_ref
-        child = ARObject._find_child_element(element, "TRANSMITTER-REF")
+        child = SerializationHelper.find_child_element(element, "TRANSMITTER-REF")
         if child is not None:
             transmitter_ref_value = ARRef.deserialize(child)
             obj.transmitter_ref = transmitter_ref_value
 
         # Parse tx_pdu_pool_ref
-        child = ARObject._find_child_element(element, "TX-PDU-POOL-REF")
+        child = SerializationHelper.find_child_element(element, "TX-PDU-POOL-REF")
         if child is not None:
             tx_pdu_pool_ref_value = ARRef.deserialize(child)
             obj.tx_pdu_pool_ref = tx_pdu_pool_ref_value

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceClass,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -43,7 +44,7 @@ class DiagnosticReadDataByIdentifierClass(DiagnosticServiceClass):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class DiagnosticReadDataByIdentifierClass(DiagnosticServiceClass):
 
         # Serialize max_did_to_read
         if self.max_did_to_read is not None:
-            serialized = ARObject._serialize_item(self.max_did_to_read, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.max_did_to_read, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-DID-TO-READ")
@@ -90,7 +91,7 @@ class DiagnosticReadDataByIdentifierClass(DiagnosticServiceClass):
         obj = super(DiagnosticReadDataByIdentifierClass, cls).deserialize(element)
 
         # Parse max_did_to_read
-        child = ARObject._find_child_element(element, "MAX-DID-TO-READ")
+        child = SerializationHelper.find_child_element(element, "MAX-DID-TO-READ")
         if child is not None:
             max_did_to_read_value = child.text
             obj.max_did_to_read = max_did_to_read_value

@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -47,12 +48,12 @@ class MsrQueryProps(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize comment
         if self.comment is not None:
-            serialized = ARObject._serialize_item(self.comment, "String")
+            serialized = SerializationHelper.serialize_item(self.comment, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COMMENT")
@@ -68,7 +69,7 @@ class MsrQueryProps(ARObject):
         if self.msr_query_args:
             wrapper = ET.Element("MSR-QUERY-ARGS")
             for item in self.msr_query_args:
-                serialized = ARObject._serialize_item(item, "MsrQueryArg")
+                serialized = SerializationHelper.serialize_item(item, "MsrQueryArg")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -76,7 +77,7 @@ class MsrQueryProps(ARObject):
 
         # Serialize msr_query_name
         if self.msr_query_name is not None:
-            serialized = ARObject._serialize_item(self.msr_query_name, "String")
+            serialized = SerializationHelper.serialize_item(self.msr_query_name, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MSR-QUERY-NAME")
@@ -105,23 +106,23 @@ class MsrQueryProps(ARObject):
         obj.__init__()
 
         # Parse comment
-        child = ARObject._find_child_element(element, "COMMENT")
+        child = SerializationHelper.find_child_element(element, "COMMENT")
         if child is not None:
             comment_value = child.text
             obj.comment = comment_value
 
         # Parse msr_query_args (list from container "MSR-QUERY-ARGS")
         obj.msr_query_args = []
-        container = ARObject._find_child_element(element, "MSR-QUERY-ARGS")
+        container = SerializationHelper.find_child_element(element, "MSR-QUERY-ARGS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.msr_query_args.append(child_value)
 
         # Parse msr_query_name
-        child = ARObject._find_child_element(element, "MSR-QUERY-NAME")
+        child = SerializationHelper.find_child_element(element, "MSR-QUERY-NAME")
         if child is not None:
             msr_query_name_value = child.text
             obj.msr_query_name = msr_query_name_value

@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class DdsDestinationOrder(ARObject):
@@ -37,12 +38,12 @@ class DdsDestinationOrder(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize destination
         if self.destination is not None:
-            serialized = ARObject._serialize_item(self.destination, "DdsDestinationOrder")
+            serialized = SerializationHelper.serialize_item(self.destination, "DdsDestinationOrder")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DESTINATION")
@@ -71,9 +72,9 @@ class DdsDestinationOrder(ARObject):
         obj.__init__()
 
         # Parse destination
-        child = ARObject._find_child_element(element, "DESTINATION")
+        child = SerializationHelper.find_child_element(element, "DESTINATION")
         if child is not None:
-            destination_value = ARObject._deserialize_by_tag(child, "DdsDestinationOrder")
+            destination_value = SerializationHelper.deserialize_by_tag(child, "DdsDestinationOrder")
             obj.destination = destination_value
 
         return obj

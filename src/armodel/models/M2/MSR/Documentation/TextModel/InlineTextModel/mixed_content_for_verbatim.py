@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements.br import (
     Br,
 )
@@ -56,12 +57,12 @@ class MixedContentForVerbatim(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize br
         if self.br is not None:
-            serialized = ARObject._serialize_item(self.br, "Br")
+            serialized = SerializationHelper.serialize_item(self.br, "Br")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BR")
@@ -75,7 +76,7 @@ class MixedContentForVerbatim(ARObject, ABC):
 
         # Serialize e
         if self.e is not None:
-            serialized = ARObject._serialize_item(self.e, "EmphasisText")
+            serialized = SerializationHelper.serialize_item(self.e, "EmphasisText")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("E")
@@ -89,7 +90,7 @@ class MixedContentForVerbatim(ARObject, ABC):
 
         # Serialize tt
         if self.tt is not None:
-            serialized = ARObject._serialize_item(self.tt, "Tt")
+            serialized = SerializationHelper.serialize_item(self.tt, "Tt")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TT")
@@ -103,7 +104,7 @@ class MixedContentForVerbatim(ARObject, ABC):
 
         # Serialize xref
         if self.xref is not None:
-            serialized = ARObject._serialize_item(self.xref, "Xref")
+            serialized = SerializationHelper.serialize_item(self.xref, "Xref")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("XREF")
@@ -132,27 +133,27 @@ class MixedContentForVerbatim(ARObject, ABC):
         obj.__init__()
 
         # Parse br
-        child = ARObject._find_child_element(element, "BR")
+        child = SerializationHelper.find_child_element(element, "BR")
         if child is not None:
-            br_value = ARObject._deserialize_by_tag(child, "Br")
+            br_value = SerializationHelper.deserialize_by_tag(child, "Br")
             obj.br = br_value
 
         # Parse e
-        child = ARObject._find_child_element(element, "E")
+        child = SerializationHelper.find_child_element(element, "E")
         if child is not None:
-            e_value = ARObject._deserialize_by_tag(child, "EmphasisText")
+            e_value = SerializationHelper.deserialize_by_tag(child, "EmphasisText")
             obj.e = e_value
 
         # Parse tt
-        child = ARObject._find_child_element(element, "TT")
+        child = SerializationHelper.find_child_element(element, "TT")
         if child is not None:
-            tt_value = ARObject._deserialize_by_tag(child, "Tt")
+            tt_value = SerializationHelper.deserialize_by_tag(child, "Tt")
             obj.tt = tt_value
 
         # Parse xref
-        child = ARObject._find_child_element(element, "XREF")
+        child = SerializationHelper.find_child_element(element, "XREF")
         if child is not None:
-            xref_value = ARObject._deserialize_by_tag(child, "Xref")
+            xref_value = SerializationHelper.deserialize_by_tag(child, "Xref")
             obj.xref = xref_value
 
         return obj

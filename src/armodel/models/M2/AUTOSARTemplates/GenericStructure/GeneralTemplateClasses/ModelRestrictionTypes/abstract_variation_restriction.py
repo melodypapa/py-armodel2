@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ModelRestrictionTypes import (
     FullBindingTimeEnum,
 )
@@ -47,14 +48,14 @@ class AbstractVariationRestriction(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize valid_bindings (list to container "VALID-BINDINGS")
         if self.valid_bindings:
             wrapper = ET.Element("VALID-BINDINGS")
             for item in self.valid_bindings:
-                serialized = ARObject._serialize_item(item, "FullBindingTimeEnum")
+                serialized = SerializationHelper.serialize_item(item, "FullBindingTimeEnum")
                 if serialized is not None:
                     child_elem = ET.Element("VALID-BINDING")
                     if hasattr(serialized, 'attrib'):
@@ -69,7 +70,7 @@ class AbstractVariationRestriction(ARObject, ABC):
 
         # Serialize variation
         if self.variation is not None:
-            serialized = ARObject._serialize_item(self.variation, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.variation, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VARIATION")
@@ -99,7 +100,7 @@ class AbstractVariationRestriction(ARObject, ABC):
 
         # Parse valid_bindings (list from container "VALID-BINDINGS")
         obj.valid_bindings = []
-        container = ARObject._find_child_element(element, "VALID-BINDINGS")
+        container = SerializationHelper.find_child_element(element, "VALID-BINDINGS")
         if container is not None:
             for child in container:
                 # Extract enum value (FullBindingTimeEnum)
@@ -108,7 +109,7 @@ class AbstractVariationRestriction(ARObject, ABC):
                     obj.valid_bindings.append(child_value)
 
         # Parse variation
-        child = ARObject._find_child_element(element, "VARIATION")
+        child = SerializationHelper.find_child_element(element, "VARIATION")
         if child is not None:
             variation_value = child.text
             obj.variation = variation_value

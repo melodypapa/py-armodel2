@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
 )
@@ -45,12 +46,12 @@ class TransmissionComSpecProps(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize data_update
         if self.data_update is not None:
-            serialized = ARObject._serialize_item(self.data_update, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.data_update, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-UPDATE")
@@ -64,7 +65,7 @@ class TransmissionComSpecProps(ARObject):
 
         # Serialize minimum_send
         if self.minimum_send is not None:
-            serialized = ARObject._serialize_item(self.minimum_send, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.minimum_send, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MINIMUM-SEND")
@@ -78,7 +79,7 @@ class TransmissionComSpecProps(ARObject):
 
         # Serialize transmission
         if self.transmission is not None:
-            serialized = ARObject._serialize_item(self.transmission, "Any")
+            serialized = SerializationHelper.serialize_item(self.transmission, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TRANSMISSION")
@@ -107,19 +108,19 @@ class TransmissionComSpecProps(ARObject):
         obj.__init__()
 
         # Parse data_update
-        child = ARObject._find_child_element(element, "DATA-UPDATE")
+        child = SerializationHelper.find_child_element(element, "DATA-UPDATE")
         if child is not None:
             data_update_value = child.text
             obj.data_update = data_update_value
 
         # Parse minimum_send
-        child = ARObject._find_child_element(element, "MINIMUM-SEND")
+        child = SerializationHelper.find_child_element(element, "MINIMUM-SEND")
         if child is not None:
             minimum_send_value = child.text
             obj.minimum_send = minimum_send_value
 
         # Parse transmission
-        child = ARObject._find_child_element(element, "TRANSMISSION")
+        child = SerializationHelper.find_child_element(element, "TRANSMISSION")
         if child is not None:
             transmission_value = child.text
             obj.transmission = transmission_value

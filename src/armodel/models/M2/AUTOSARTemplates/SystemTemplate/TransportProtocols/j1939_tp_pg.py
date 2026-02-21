@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -54,12 +55,12 @@ class J1939TpPg(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize direct_pdu_ref
         if self.direct_pdu_ref is not None:
-            serialized = ARObject._serialize_item(self.direct_pdu_ref, "NPdu")
+            serialized = SerializationHelper.serialize_item(self.direct_pdu_ref, "NPdu")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DIRECT-PDU-REF")
@@ -73,7 +74,7 @@ class J1939TpPg(ARObject):
 
         # Serialize pgn
         if self.pgn is not None:
-            serialized = ARObject._serialize_item(self.pgn, "Integer")
+            serialized = SerializationHelper.serialize_item(self.pgn, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PGN")
@@ -87,7 +88,7 @@ class J1939TpPg(ARObject):
 
         # Serialize requestable
         if self.requestable is not None:
-            serialized = ARObject._serialize_item(self.requestable, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.requestable, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REQUESTABLE")
@@ -103,7 +104,7 @@ class J1939TpPg(ARObject):
         if self.sdu_refs:
             wrapper = ET.Element("SDU-REFS")
             for item in self.sdu_refs:
-                serialized = ARObject._serialize_item(item, "IPdu")
+                serialized = SerializationHelper.serialize_item(item, "IPdu")
                 if serialized is not None:
                     child_elem = ET.Element("SDU-REF")
                     if hasattr(serialized, 'attrib'):
@@ -133,36 +134,36 @@ class J1939TpPg(ARObject):
         obj.__init__()
 
         # Parse direct_pdu_ref
-        child = ARObject._find_child_element(element, "DIRECT-PDU-REF")
+        child = SerializationHelper.find_child_element(element, "DIRECT-PDU-REF")
         if child is not None:
             direct_pdu_ref_value = ARRef.deserialize(child)
             obj.direct_pdu_ref = direct_pdu_ref_value
 
         # Parse pgn
-        child = ARObject._find_child_element(element, "PGN")
+        child = SerializationHelper.find_child_element(element, "PGN")
         if child is not None:
             pgn_value = child.text
             obj.pgn = pgn_value
 
         # Parse requestable
-        child = ARObject._find_child_element(element, "REQUESTABLE")
+        child = SerializationHelper.find_child_element(element, "REQUESTABLE")
         if child is not None:
             requestable_value = child.text
             obj.requestable = requestable_value
 
         # Parse sdu_refs (list from container "SDU-REFS")
         obj.sdu_refs = []
-        container = ARObject._find_child_element(element, "SDU-REFS")
+        container = SerializationHelper.find_child_element(element, "SDU-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.sdu_refs.append(child_value)
 

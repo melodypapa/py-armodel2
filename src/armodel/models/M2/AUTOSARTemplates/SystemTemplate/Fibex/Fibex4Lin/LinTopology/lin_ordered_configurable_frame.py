@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
@@ -46,12 +47,12 @@ class LinOrderedConfigurableFrame(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize frame_ref
         if self.frame_ref is not None:
-            serialized = ARObject._serialize_item(self.frame_ref, "LinFrame")
+            serialized = SerializationHelper.serialize_item(self.frame_ref, "LinFrame")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FRAME-REF")
@@ -65,7 +66,7 @@ class LinOrderedConfigurableFrame(ARObject):
 
         # Serialize index
         if self.index is not None:
-            serialized = ARObject._serialize_item(self.index, "Integer")
+            serialized = SerializationHelper.serialize_item(self.index, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INDEX")
@@ -94,13 +95,13 @@ class LinOrderedConfigurableFrame(ARObject):
         obj.__init__()
 
         # Parse frame_ref
-        child = ARObject._find_child_element(element, "FRAME-REF")
+        child = SerializationHelper.find_child_element(element, "FRAME-REF")
         if child is not None:
             frame_ref_value = ARRef.deserialize(child)
             obj.frame_ref = frame_ref_value
 
         # Parse index
-        child = ARObject._find_child_element(element, "INDEX")
+        child = SerializationHelper.find_child_element(element, "INDEX")
         if child is not None:
             index_value = child.text
             obj.index = index_value

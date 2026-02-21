@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.i_signal_triggering import (
     ISignalTriggering,
@@ -41,12 +42,12 @@ class LinErrorResponse(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize response_error_ref
         if self.response_error_ref is not None:
-            serialized = ARObject._serialize_item(self.response_error_ref, "ISignalTriggering")
+            serialized = SerializationHelper.serialize_item(self.response_error_ref, "ISignalTriggering")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RESPONSE-ERROR-REF")
@@ -75,7 +76,7 @@ class LinErrorResponse(ARObject):
         obj.__init__()
 
         # Parse response_error_ref
-        child = ARObject._find_child_element(element, "RESPONSE-ERROR-REF")
+        child = SerializationHelper.find_child_element(element, "RESPONSE-ERROR-REF")
         if child is not None:
             response_error_ref_value = ARRef.deserialize(child)
             obj.response_error_ref = response_error_ref_value

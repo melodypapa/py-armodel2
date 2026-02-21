@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -44,12 +45,12 @@ class BusMirrorCanIdRangeMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize destination_base
         if self.destination_base is not None:
-            serialized = ARObject._serialize_item(self.destination_base, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.destination_base, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DESTINATION-BASE")
@@ -63,7 +64,7 @@ class BusMirrorCanIdRangeMapping(ARObject):
 
         # Serialize source_can_id_code
         if self.source_can_id_code is not None:
-            serialized = ARObject._serialize_item(self.source_can_id_code, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.source_can_id_code, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SOURCE-CAN-ID-CODE")
@@ -77,7 +78,7 @@ class BusMirrorCanIdRangeMapping(ARObject):
 
         # Serialize source_can_id
         if self.source_can_id is not None:
-            serialized = ARObject._serialize_item(self.source_can_id, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.source_can_id, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SOURCE-CAN-ID")
@@ -106,19 +107,19 @@ class BusMirrorCanIdRangeMapping(ARObject):
         obj.__init__()
 
         # Parse destination_base
-        child = ARObject._find_child_element(element, "DESTINATION-BASE")
+        child = SerializationHelper.find_child_element(element, "DESTINATION-BASE")
         if child is not None:
             destination_base_value = child.text
             obj.destination_base = destination_base_value
 
         # Parse source_can_id_code
-        child = ARObject._find_child_element(element, "SOURCE-CAN-ID-CODE")
+        child = SerializationHelper.find_child_element(element, "SOURCE-CAN-ID-CODE")
         if child is not None:
             source_can_id_code_value = child.text
             obj.source_can_id_code = source_can_id_code_value
 
         # Parse source_can_id
-        child = ARObject._find_child_element(element, "SOURCE-CAN-ID")
+        child = SerializationHelper.find_child_element(element, "SOURCE-CAN-ID")
         if child is not None:
             source_can_id_value = child.text
             obj.source_can_id = source_can_id_value

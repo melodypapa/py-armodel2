@@ -13,6 +13,7 @@ from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginat
     Paginateable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.Documentation.BlockElements.ListElements.indent_sample import (
     IndentSample,
 )
@@ -51,7 +52,7 @@ class LabeledList(Paginateable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -70,7 +71,7 @@ class LabeledList(Paginateable):
 
         # Serialize indent_sample
         if self.indent_sample is not None:
-            serialized = ARObject._serialize_item(self.indent_sample, "IndentSample")
+            serialized = SerializationHelper.serialize_item(self.indent_sample, "IndentSample")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INDENT-SAMPLE")
@@ -84,7 +85,7 @@ class LabeledList(Paginateable):
 
         # Serialize labeled_item_label
         if self.labeled_item_label is not None:
-            serialized = ARObject._serialize_item(self.labeled_item_label, "LabeledItem")
+            serialized = SerializationHelper.serialize_item(self.labeled_item_label, "LabeledItem")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LABELED-ITEM-LABEL")
@@ -112,15 +113,15 @@ class LabeledList(Paginateable):
         obj = super(LabeledList, cls).deserialize(element)
 
         # Parse indent_sample
-        child = ARObject._find_child_element(element, "INDENT-SAMPLE")
+        child = SerializationHelper.find_child_element(element, "INDENT-SAMPLE")
         if child is not None:
-            indent_sample_value = ARObject._deserialize_by_tag(child, "IndentSample")
+            indent_sample_value = SerializationHelper.deserialize_by_tag(child, "IndentSample")
             obj.indent_sample = indent_sample_value
 
         # Parse labeled_item_label
-        child = ARObject._find_child_element(element, "LABELED-ITEM-LABEL")
+        child = SerializationHelper.find_child_element(element, "LABELED-ITEM-LABEL")
         if child is not None:
-            labeled_item_label_value = ARObject._deserialize_by_tag(child, "LabeledItem")
+            labeled_item_label_value = SerializationHelper.deserialize_by_tag(child, "LabeledItem")
             obj.labeled_item_label = labeled_item_label_value
 
         return obj

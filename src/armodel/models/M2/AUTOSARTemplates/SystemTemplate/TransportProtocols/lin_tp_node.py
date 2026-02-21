@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -59,7 +60,7 @@ class LinTpNode(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -78,7 +79,7 @@ class LinTpNode(Identifiable):
 
         # Serialize connector_ref
         if self.connector_ref is not None:
-            serialized = ARObject._serialize_item(self.connector_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.connector_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONNECTOR-REF")
@@ -92,7 +93,7 @@ class LinTpNode(Identifiable):
 
         # Serialize drop_not
         if self.drop_not is not None:
-            serialized = ARObject._serialize_item(self.drop_not, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.drop_not, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DROP-NOT")
@@ -106,7 +107,7 @@ class LinTpNode(Identifiable):
 
         # Serialize max_number_of
         if self.max_number_of is not None:
-            serialized = ARObject._serialize_item(self.max_number_of, "Integer")
+            serialized = SerializationHelper.serialize_item(self.max_number_of, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-NUMBER-OF")
@@ -120,7 +121,7 @@ class LinTpNode(Identifiable):
 
         # Serialize p2_max
         if self.p2_max is not None:
-            serialized = ARObject._serialize_item(self.p2_max, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.p2_max, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("P2-MAX")
@@ -134,7 +135,7 @@ class LinTpNode(Identifiable):
 
         # Serialize p2_timing
         if self.p2_timing is not None:
-            serialized = ARObject._serialize_item(self.p2_timing, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.p2_timing, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("P2-TIMING")
@@ -148,7 +149,7 @@ class LinTpNode(Identifiable):
 
         # Serialize tp_address_ref
         if self.tp_address_ref is not None:
-            serialized = ARObject._serialize_item(self.tp_address_ref, "TpAddress")
+            serialized = SerializationHelper.serialize_item(self.tp_address_ref, "TpAddress")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TP-ADDRESS-REF")
@@ -176,37 +177,37 @@ class LinTpNode(Identifiable):
         obj = super(LinTpNode, cls).deserialize(element)
 
         # Parse connector_ref
-        child = ARObject._find_child_element(element, "CONNECTOR-REF")
+        child = SerializationHelper.find_child_element(element, "CONNECTOR-REF")
         if child is not None:
             connector_ref_value = ARRef.deserialize(child)
             obj.connector_ref = connector_ref_value
 
         # Parse drop_not
-        child = ARObject._find_child_element(element, "DROP-NOT")
+        child = SerializationHelper.find_child_element(element, "DROP-NOT")
         if child is not None:
             drop_not_value = child.text
             obj.drop_not = drop_not_value
 
         # Parse max_number_of
-        child = ARObject._find_child_element(element, "MAX-NUMBER-OF")
+        child = SerializationHelper.find_child_element(element, "MAX-NUMBER-OF")
         if child is not None:
             max_number_of_value = child.text
             obj.max_number_of = max_number_of_value
 
         # Parse p2_max
-        child = ARObject._find_child_element(element, "P2-MAX")
+        child = SerializationHelper.find_child_element(element, "P2-MAX")
         if child is not None:
             p2_max_value = child.text
             obj.p2_max = p2_max_value
 
         # Parse p2_timing
-        child = ARObject._find_child_element(element, "P2-TIMING")
+        child = SerializationHelper.find_child_element(element, "P2-TIMING")
         if child is not None:
             p2_timing_value = child.text
             obj.p2_timing = p2_timing_value
 
         # Parse tp_address_ref
-        child = ARObject._find_child_element(element, "TP-ADDRESS-REF")
+        child = SerializationHelper.find_child_element(element, "TP-ADDRESS-REF")
         if child is not None:
             tp_address_ref_value = ARRef.deserialize(child)
             obj.tp_address_ref = tp_address_ref_value

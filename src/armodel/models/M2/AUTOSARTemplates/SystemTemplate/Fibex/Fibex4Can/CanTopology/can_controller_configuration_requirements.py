@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Can.CanTopolo
     AbstractCanCommunicationControllerAttributes,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Float,
 )
@@ -53,7 +54,7 @@ class CanControllerConfigurationRequirements(AbstractCanCommunicationControllerA
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -72,7 +73,7 @@ class CanControllerConfigurationRequirements(AbstractCanCommunicationControllerA
 
         # Serialize max_number_of_time_quanta_per
         if self.max_number_of_time_quanta_per is not None:
-            serialized = ARObject._serialize_item(self.max_number_of_time_quanta_per, "Any")
+            serialized = SerializationHelper.serialize_item(self.max_number_of_time_quanta_per, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-NUMBER-OF-TIME-QUANTA-PER")
@@ -86,7 +87,7 @@ class CanControllerConfigurationRequirements(AbstractCanCommunicationControllerA
 
         # Serialize max_sample
         if self.max_sample is not None:
-            serialized = ARObject._serialize_item(self.max_sample, "Float")
+            serialized = SerializationHelper.serialize_item(self.max_sample, "Float")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-SAMPLE")
@@ -100,7 +101,7 @@ class CanControllerConfigurationRequirements(AbstractCanCommunicationControllerA
 
         # Serialize max_sync_jump
         if self.max_sync_jump is not None:
-            serialized = ARObject._serialize_item(self.max_sync_jump, "Float")
+            serialized = SerializationHelper.serialize_item(self.max_sync_jump, "Float")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-SYNC-JUMP")
@@ -114,7 +115,7 @@ class CanControllerConfigurationRequirements(AbstractCanCommunicationControllerA
 
         # Serialize min_number_of_time_quanta_per
         if self.min_number_of_time_quanta_per is not None:
-            serialized = ARObject._serialize_item(self.min_number_of_time_quanta_per, "Any")
+            serialized = SerializationHelper.serialize_item(self.min_number_of_time_quanta_per, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MIN-NUMBER-OF-TIME-QUANTA-PER")
@@ -128,7 +129,7 @@ class CanControllerConfigurationRequirements(AbstractCanCommunicationControllerA
 
         # Serialize min_sample_point
         if self.min_sample_point is not None:
-            serialized = ARObject._serialize_item(self.min_sample_point, "Float")
+            serialized = SerializationHelper.serialize_item(self.min_sample_point, "Float")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MIN-SAMPLE-POINT")
@@ -142,7 +143,7 @@ class CanControllerConfigurationRequirements(AbstractCanCommunicationControllerA
 
         # Serialize min_sync_jump
         if self.min_sync_jump is not None:
-            serialized = ARObject._serialize_item(self.min_sync_jump, "Float")
+            serialized = SerializationHelper.serialize_item(self.min_sync_jump, "Float")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MIN-SYNC-JUMP")
@@ -170,37 +171,37 @@ class CanControllerConfigurationRequirements(AbstractCanCommunicationControllerA
         obj = super(CanControllerConfigurationRequirements, cls).deserialize(element)
 
         # Parse max_number_of_time_quanta_per
-        child = ARObject._find_child_element(element, "MAX-NUMBER-OF-TIME-QUANTA-PER")
+        child = SerializationHelper.find_child_element(element, "MAX-NUMBER-OF-TIME-QUANTA-PER")
         if child is not None:
             max_number_of_time_quanta_per_value = child.text
             obj.max_number_of_time_quanta_per = max_number_of_time_quanta_per_value
 
         # Parse max_sample
-        child = ARObject._find_child_element(element, "MAX-SAMPLE")
+        child = SerializationHelper.find_child_element(element, "MAX-SAMPLE")
         if child is not None:
             max_sample_value = child.text
             obj.max_sample = max_sample_value
 
         # Parse max_sync_jump
-        child = ARObject._find_child_element(element, "MAX-SYNC-JUMP")
+        child = SerializationHelper.find_child_element(element, "MAX-SYNC-JUMP")
         if child is not None:
             max_sync_jump_value = child.text
             obj.max_sync_jump = max_sync_jump_value
 
         # Parse min_number_of_time_quanta_per
-        child = ARObject._find_child_element(element, "MIN-NUMBER-OF-TIME-QUANTA-PER")
+        child = SerializationHelper.find_child_element(element, "MIN-NUMBER-OF-TIME-QUANTA-PER")
         if child is not None:
             min_number_of_time_quanta_per_value = child.text
             obj.min_number_of_time_quanta_per = min_number_of_time_quanta_per_value
 
         # Parse min_sample_point
-        child = ARObject._find_child_element(element, "MIN-SAMPLE-POINT")
+        child = SerializationHelper.find_child_element(element, "MIN-SAMPLE-POINT")
         if child is not None:
             min_sample_point_value = child.text
             obj.min_sample_point = min_sample_point_value
 
         # Parse min_sync_jump
-        child = ARObject._find_child_element(element, "MIN-SYNC-JUMP")
+        child = SerializationHelper.find_child_element(element, "MIN-SYNC-JUMP")
         if child is not None:
             min_sync_jump_value = child.text
             obj.min_sync_jump = min_sync_jump_value

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
     BlueprintPolicy,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -45,7 +46,7 @@ class BlueprintPolicyList(BlueprintPolicy):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class BlueprintPolicyList(BlueprintPolicy):
 
         # Serialize max_number_of
         if self.max_number_of is not None:
-            serialized = ARObject._serialize_item(self.max_number_of, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.max_number_of, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-NUMBER-OF")
@@ -78,7 +79,7 @@ class BlueprintPolicyList(BlueprintPolicy):
 
         # Serialize min_number_of
         if self.min_number_of is not None:
-            serialized = ARObject._serialize_item(self.min_number_of, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.min_number_of, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MIN-NUMBER-OF")
@@ -106,13 +107,13 @@ class BlueprintPolicyList(BlueprintPolicy):
         obj = super(BlueprintPolicyList, cls).deserialize(element)
 
         # Parse max_number_of
-        child = ARObject._find_child_element(element, "MAX-NUMBER-OF")
+        child = SerializationHelper.find_child_element(element, "MAX-NUMBER-OF")
         if child is not None:
             max_number_of_value = child.text
             obj.max_number_of = max_number_of_value
 
         # Parse min_number_of
-        child = ARObject._find_child_element(element, "MIN-NUMBER-OF")
+        child = SerializationHelper.find_child_element(element, "MIN-NUMBER-OF")
         if child is not None:
             min_number_of_value = child.text
             obj.min_number_of = min_number_of_value

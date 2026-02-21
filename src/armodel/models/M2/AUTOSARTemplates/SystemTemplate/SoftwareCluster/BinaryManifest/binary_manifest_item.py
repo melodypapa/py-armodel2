@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.BinaryMan
     BinaryManifestAddressableObject,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -49,7 +50,7 @@ class BinaryManifestItem(BinaryManifestAddressableObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -70,7 +71,7 @@ class BinaryManifestItem(BinaryManifestAddressableObject):
         if self.auxiliary_fields:
             wrapper = ET.Element("AUXILIARY-FIELDS")
             for item in self.auxiliary_fields:
-                serialized = ARObject._serialize_item(item, "BinaryManifestItem")
+                serialized = SerializationHelper.serialize_item(item, "BinaryManifestItem")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -78,7 +79,7 @@ class BinaryManifestItem(BinaryManifestAddressableObject):
 
         # Serialize default_value
         if self.default_value is not None:
-            serialized = ARObject._serialize_item(self.default_value, "BinaryManifestItem")
+            serialized = SerializationHelper.serialize_item(self.default_value, "BinaryManifestItem")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DEFAULT-VALUE")
@@ -92,7 +93,7 @@ class BinaryManifestItem(BinaryManifestAddressableObject):
 
         # Serialize is_unused
         if self.is_unused is not None:
-            serialized = ARObject._serialize_item(self.is_unused, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.is_unused, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IS-UNUSED")
@@ -106,7 +107,7 @@ class BinaryManifestItem(BinaryManifestAddressableObject):
 
         # Serialize value
         if self.value is not None:
-            serialized = ARObject._serialize_item(self.value, "BinaryManifestItem")
+            serialized = SerializationHelper.serialize_item(self.value, "BinaryManifestItem")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VALUE")
@@ -135,30 +136,30 @@ class BinaryManifestItem(BinaryManifestAddressableObject):
 
         # Parse auxiliary_fields (list from container "AUXILIARY-FIELDS")
         obj.auxiliary_fields = []
-        container = ARObject._find_child_element(element, "AUXILIARY-FIELDS")
+        container = SerializationHelper.find_child_element(element, "AUXILIARY-FIELDS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.auxiliary_fields.append(child_value)
 
         # Parse default_value
-        child = ARObject._find_child_element(element, "DEFAULT-VALUE")
+        child = SerializationHelper.find_child_element(element, "DEFAULT-VALUE")
         if child is not None:
-            default_value_value = ARObject._deserialize_by_tag(child, "BinaryManifestItem")
+            default_value_value = SerializationHelper.deserialize_by_tag(child, "BinaryManifestItem")
             obj.default_value = default_value_value
 
         # Parse is_unused
-        child = ARObject._find_child_element(element, "IS-UNUSED")
+        child = SerializationHelper.find_child_element(element, "IS-UNUSED")
         if child is not None:
             is_unused_value = child.text
             obj.is_unused = is_unused_value
 
         # Parse value
-        child = ARObject._find_child_element(element, "VALUE")
+        child = SerializationHelper.find_child_element(element, "VALUE")
         if child is not None:
-            value_value = ARObject._deserialize_by_tag(child, "BinaryManifestItem")
+            value_value = SerializationHelper.deserialize_by_tag(child, "BinaryManifestItem")
             obj.value = value_value
 
         return obj

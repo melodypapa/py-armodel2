@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.EnvironmentalCondi
     DiagnosticEnvModeElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
     ModeDeclaration,
 )
@@ -43,7 +44,7 @@ class DiagnosticEnvSwcModeElement(DiagnosticEnvModeElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class DiagnosticEnvSwcModeElement(DiagnosticEnvModeElement):
 
         # Serialize mode
         if self.mode is not None:
-            serialized = ARObject._serialize_item(self.mode, "ModeDeclaration")
+            serialized = SerializationHelper.serialize_item(self.mode, "ModeDeclaration")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MODE")
@@ -90,9 +91,9 @@ class DiagnosticEnvSwcModeElement(DiagnosticEnvModeElement):
         obj = super(DiagnosticEnvSwcModeElement, cls).deserialize(element)
 
         # Parse mode
-        child = ARObject._find_child_element(element, "MODE")
+        child = SerializationHelper.find_child_element(element, "MODE")
         if child is not None:
-            mode_value = ARObject._deserialize_by_tag(child, "ModeDeclaration")
+            mode_value = SerializationHelper.deserialize_by_tag(child, "ModeDeclaration")
             obj.mode = mode_value
 
         return obj

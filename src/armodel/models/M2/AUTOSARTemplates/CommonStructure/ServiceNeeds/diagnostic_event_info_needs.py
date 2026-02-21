@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_
     DiagnosticCapabilityElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -46,7 +47,7 @@ class DiagnosticEventInfoNeeds(DiagnosticCapabilityElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class DiagnosticEventInfoNeeds(DiagnosticCapabilityElement):
 
         # Serialize obd_dtc_number
         if self.obd_dtc_number is not None:
-            serialized = ARObject._serialize_item(self.obd_dtc_number, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.obd_dtc_number, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("OBD-DTC-NUMBER")
@@ -79,7 +80,7 @@ class DiagnosticEventInfoNeeds(DiagnosticCapabilityElement):
 
         # Serialize uds_dtc_number
         if self.uds_dtc_number is not None:
-            serialized = ARObject._serialize_item(self.uds_dtc_number, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.uds_dtc_number, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("UDS-DTC-NUMBER")
@@ -107,13 +108,13 @@ class DiagnosticEventInfoNeeds(DiagnosticCapabilityElement):
         obj = super(DiagnosticEventInfoNeeds, cls).deserialize(element)
 
         # Parse obd_dtc_number
-        child = ARObject._find_child_element(element, "OBD-DTC-NUMBER")
+        child = SerializationHelper.find_child_element(element, "OBD-DTC-NUMBER")
         if child is not None:
             obd_dtc_number_value = child.text
             obj.obd_dtc_number = obd_dtc_number_value
 
         # Parse uds_dtc_number
-        child = ARObject._find_child_element(element, "UDS-DTC-NUMBER")
+        child = SerializationHelper.find_child_element(element, "UDS-DTC-NUMBER")
         if child is not None:
             uds_dtc_number_value = child.text
             obj.uds_dtc_number = uds_dtc_number_value

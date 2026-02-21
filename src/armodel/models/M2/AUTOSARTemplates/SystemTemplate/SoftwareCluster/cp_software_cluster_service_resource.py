@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_softwa
     CpSoftwareClusterResource,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_container_value import (
     EcucContainerValue,
@@ -44,7 +45,7 @@ class CpSoftwareClusterServiceResource(CpSoftwareClusterResource):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class CpSoftwareClusterServiceResource(CpSoftwareClusterResource):
         if self.resource_needse_refs:
             wrapper = ET.Element("RESOURCE-NEEDSE-REFS")
             for item in self.resource_needse_refs:
-                serialized = ARObject._serialize_item(item, "EcucContainerValue")
+                serialized = SerializationHelper.serialize_item(item, "EcucContainerValue")
                 if serialized is not None:
                     child_elem = ET.Element("RESOURCE-NEEDSE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -95,17 +96,17 @@ class CpSoftwareClusterServiceResource(CpSoftwareClusterResource):
 
         # Parse resource_needse_refs (list from container "RESOURCE-NEEDSE-REFS")
         obj.resource_needse_refs = []
-        container = ARObject._find_child_element(element, "RESOURCE-NEEDSE-REFS")
+        container = SerializationHelper.find_child_element(element, "RESOURCE-NEEDSE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.resource_needse_refs.append(child_value)
 

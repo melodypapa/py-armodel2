@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -59,7 +60,7 @@ class GlobalTimeSlave(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -78,7 +79,7 @@ class GlobalTimeSlave(Identifiable, ABC):
 
         # Serialize communication_connector_ref
         if self.communication_connector_ref is not None:
-            serialized = ARObject._serialize_item(self.communication_connector_ref, "CommunicationConnector")
+            serialized = SerializationHelper.serialize_item(self.communication_connector_ref, "CommunicationConnector")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COMMUNICATION-CONNECTOR-REF")
@@ -92,7 +93,7 @@ class GlobalTimeSlave(Identifiable, ABC):
 
         # Serialize follow_up_timeout_value
         if self.follow_up_timeout_value is not None:
-            serialized = ARObject._serialize_item(self.follow_up_timeout_value, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.follow_up_timeout_value, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FOLLOW-UP-TIMEOUT-VALUE")
@@ -106,7 +107,7 @@ class GlobalTimeSlave(Identifiable, ABC):
 
         # Serialize icv_verification
         if self.icv_verification is not None:
-            serialized = ARObject._serialize_item(self.icv_verification, "Any")
+            serialized = SerializationHelper.serialize_item(self.icv_verification, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ICV-VERIFICATION")
@@ -120,7 +121,7 @@ class GlobalTimeSlave(Identifiable, ABC):
 
         # Serialize time_leap_future
         if self.time_leap_future is not None:
-            serialized = ARObject._serialize_item(self.time_leap_future, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.time_leap_future, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIME-LEAP-FUTURE")
@@ -134,7 +135,7 @@ class GlobalTimeSlave(Identifiable, ABC):
 
         # Serialize time_leap
         if self.time_leap is not None:
-            serialized = ARObject._serialize_item(self.time_leap, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.time_leap, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIME-LEAP")
@@ -148,7 +149,7 @@ class GlobalTimeSlave(Identifiable, ABC):
 
         # Serialize time_leap_past
         if self.time_leap_past is not None:
-            serialized = ARObject._serialize_item(self.time_leap_past, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.time_leap_past, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIME-LEAP-PAST")
@@ -176,37 +177,37 @@ class GlobalTimeSlave(Identifiable, ABC):
         obj = super(GlobalTimeSlave, cls).deserialize(element)
 
         # Parse communication_connector_ref
-        child = ARObject._find_child_element(element, "COMMUNICATION-CONNECTOR-REF")
+        child = SerializationHelper.find_child_element(element, "COMMUNICATION-CONNECTOR-REF")
         if child is not None:
             communication_connector_ref_value = ARRef.deserialize(child)
             obj.communication_connector_ref = communication_connector_ref_value
 
         # Parse follow_up_timeout_value
-        child = ARObject._find_child_element(element, "FOLLOW-UP-TIMEOUT-VALUE")
+        child = SerializationHelper.find_child_element(element, "FOLLOW-UP-TIMEOUT-VALUE")
         if child is not None:
             follow_up_timeout_value_value = child.text
             obj.follow_up_timeout_value = follow_up_timeout_value_value
 
         # Parse icv_verification
-        child = ARObject._find_child_element(element, "ICV-VERIFICATION")
+        child = SerializationHelper.find_child_element(element, "ICV-VERIFICATION")
         if child is not None:
             icv_verification_value = child.text
             obj.icv_verification = icv_verification_value
 
         # Parse time_leap_future
-        child = ARObject._find_child_element(element, "TIME-LEAP-FUTURE")
+        child = SerializationHelper.find_child_element(element, "TIME-LEAP-FUTURE")
         if child is not None:
             time_leap_future_value = child.text
             obj.time_leap_future = time_leap_future_value
 
         # Parse time_leap
-        child = ARObject._find_child_element(element, "TIME-LEAP")
+        child = SerializationHelper.find_child_element(element, "TIME-LEAP")
         if child is not None:
             time_leap_value = child.text
             obj.time_leap = time_leap_value
 
         # Parse time_leap_past
-        child = ARObject._find_child_element(element, "TIME-LEAP-PAST")
+        child = SerializationHelper.find_child_element(element, "TIME-LEAP-PAST")
         if child is not None:
             time_leap_past_value = child.text
             obj.time_leap_past = time_leap_past_value

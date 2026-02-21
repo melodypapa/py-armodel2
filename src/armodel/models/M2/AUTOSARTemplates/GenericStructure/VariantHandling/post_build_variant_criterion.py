@@ -16,6 +16,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_method import (
     CompuMethod,
@@ -47,7 +48,7 @@ class PostBuildVariantCriterion(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -66,7 +67,7 @@ class PostBuildVariantCriterion(ARElement):
 
         # Serialize compu_method_ref
         if self.compu_method_ref is not None:
-            serialized = ARObject._serialize_item(self.compu_method_ref, "CompuMethod")
+            serialized = SerializationHelper.serialize_item(self.compu_method_ref, "CompuMethod")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COMPU-METHOD-REF")
@@ -94,7 +95,7 @@ class PostBuildVariantCriterion(ARElement):
         obj = super(PostBuildVariantCriterion, cls).deserialize(element)
 
         # Parse compu_method_ref
-        child = ARObject._find_child_element(element, "COMPU-METHOD-REF")
+        child = SerializationHelper.find_child_element(element, "COMPU-METHOD-REF")
         if child is not None:
             compu_method_ref_value = ARRef.deserialize(child)
             obj.compu_method_ref = compu_method_ref_value

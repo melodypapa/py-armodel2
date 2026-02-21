@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
     CpSoftwareCluster,
 )
@@ -55,7 +56,7 @@ class CpSoftwareClusterMappingSet(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -76,7 +77,7 @@ class CpSoftwareClusterMappingSet(ARElement):
         if self.port_element_tos:
             wrapper = ET.Element("PORT-ELEMENT-TOS")
             for item in self.port_element_tos:
-                serialized = ARObject._serialize_item(item, "PortElementToCommunicationResourceMapping")
+                serialized = SerializationHelper.serialize_item(item, "PortElementToCommunicationResourceMapping")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -86,7 +87,7 @@ class CpSoftwareClusterMappingSet(ARElement):
         if self.resource_tos:
             wrapper = ET.Element("RESOURCE-TOS")
             for item in self.resource_tos:
-                serialized = ARObject._serialize_item(item, "CpSoftwareCluster")
+                serialized = SerializationHelper.serialize_item(item, "CpSoftwareCluster")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -96,7 +97,7 @@ class CpSoftwareClusterMappingSet(ARElement):
         if self.software_clusters:
             wrapper = ET.Element("SOFTWARE-CLUSTERS")
             for item in self.software_clusters:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -106,7 +107,7 @@ class CpSoftwareClusterMappingSet(ARElement):
         if self.swc_tos:
             wrapper = ET.Element("SWC-TOS")
             for item in self.swc_tos:
-                serialized = ARObject._serialize_item(item, "SwcToApplicationPartitionMapping")
+                serialized = SerializationHelper.serialize_item(item, "SwcToApplicationPartitionMapping")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -129,41 +130,41 @@ class CpSoftwareClusterMappingSet(ARElement):
 
         # Parse port_element_tos (list from container "PORT-ELEMENT-TOS")
         obj.port_element_tos = []
-        container = ARObject._find_child_element(element, "PORT-ELEMENT-TOS")
+        container = SerializationHelper.find_child_element(element, "PORT-ELEMENT-TOS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.port_element_tos.append(child_value)
 
         # Parse resource_tos (list from container "RESOURCE-TOS")
         obj.resource_tos = []
-        container = ARObject._find_child_element(element, "RESOURCE-TOS")
+        container = SerializationHelper.find_child_element(element, "RESOURCE-TOS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.resource_tos.append(child_value)
 
         # Parse software_clusters (list from container "SOFTWARE-CLUSTERS")
         obj.software_clusters = []
-        container = ARObject._find_child_element(element, "SOFTWARE-CLUSTERS")
+        container = SerializationHelper.find_child_element(element, "SOFTWARE-CLUSTERS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.software_clusters.append(child_value)
 
         # Parse swc_tos (list from container "SWC-TOS")
         obj.swc_tos = []
-        container = ARObject._find_child_element(element, "SWC-TOS")
+        container = SerializationHelper.find_child_element(element, "SWC-TOS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.swc_tos.append(child_value)
 

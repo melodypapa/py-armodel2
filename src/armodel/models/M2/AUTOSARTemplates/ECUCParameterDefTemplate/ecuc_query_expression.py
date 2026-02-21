@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 if TYPE_CHECKING:
@@ -44,12 +45,12 @@ class EcucQueryExpression(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize config_element_ref
         if self.config_element_ref is not None:
-            serialized = ARObject._serialize_item(self.config_element_ref, "EcucDefinitionElement")
+            serialized = SerializationHelper.serialize_item(self.config_element_ref, "EcucDefinitionElement")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONFIG-ELEMENT-REF")
@@ -78,7 +79,7 @@ class EcucQueryExpression(ARObject):
         obj.__init__()
 
         # Parse config_element_ref
-        child = ARObject._find_child_element(element, "CONFIG-ELEMENT-REF")
+        child = SerializationHelper.find_child_element(element, "CONFIG-ELEMENT-REF")
         if child is not None:
             config_element_ref_value = ARRef.deserialize(child)
             obj.config_element_ref = config_element_ref_value

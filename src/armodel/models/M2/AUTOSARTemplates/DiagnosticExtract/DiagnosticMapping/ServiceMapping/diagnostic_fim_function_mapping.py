@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
     DiagnosticSwMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
@@ -47,7 +48,7 @@ class DiagnosticFimFunctionMapping(DiagnosticSwMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -66,7 +67,7 @@ class DiagnosticFimFunctionMapping(DiagnosticSwMapping):
 
         # Serialize mapped_bsw_ref
         if self.mapped_bsw_ref is not None:
-            serialized = ARObject._serialize_item(self.mapped_bsw_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.mapped_bsw_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAPPED-BSW-REF")
@@ -80,7 +81,7 @@ class DiagnosticFimFunctionMapping(DiagnosticSwMapping):
 
         # Serialize mapped_flat_swc_ref
         if self.mapped_flat_swc_ref is not None:
-            serialized = ARObject._serialize_item(self.mapped_flat_swc_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.mapped_flat_swc_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAPPED-FLAT-SWC-REF")
@@ -94,7 +95,7 @@ class DiagnosticFimFunctionMapping(DiagnosticSwMapping):
 
         # Serialize mapped_ref
         if self.mapped_ref is not None:
-            serialized = ARObject._serialize_item(self.mapped_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.mapped_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAPPED-REF")
@@ -108,7 +109,7 @@ class DiagnosticFimFunctionMapping(DiagnosticSwMapping):
 
         # Serialize mapped_swc
         if self.mapped_swc is not None:
-            serialized = ARObject._serialize_item(self.mapped_swc, "Any")
+            serialized = SerializationHelper.serialize_item(self.mapped_swc, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAPPED-SWC")
@@ -136,25 +137,25 @@ class DiagnosticFimFunctionMapping(DiagnosticSwMapping):
         obj = super(DiagnosticFimFunctionMapping, cls).deserialize(element)
 
         # Parse mapped_bsw_ref
-        child = ARObject._find_child_element(element, "MAPPED-BSW-REF")
+        child = SerializationHelper.find_child_element(element, "MAPPED-BSW-REF")
         if child is not None:
             mapped_bsw_ref_value = ARRef.deserialize(child)
             obj.mapped_bsw_ref = mapped_bsw_ref_value
 
         # Parse mapped_flat_swc_ref
-        child = ARObject._find_child_element(element, "MAPPED-FLAT-SWC-REF")
+        child = SerializationHelper.find_child_element(element, "MAPPED-FLAT-SWC-REF")
         if child is not None:
             mapped_flat_swc_ref_value = ARRef.deserialize(child)
             obj.mapped_flat_swc_ref = mapped_flat_swc_ref_value
 
         # Parse mapped_ref
-        child = ARObject._find_child_element(element, "MAPPED-REF")
+        child = SerializationHelper.find_child_element(element, "MAPPED-REF")
         if child is not None:
             mapped_ref_value = ARRef.deserialize(child)
             obj.mapped_ref = mapped_ref_value
 
         # Parse mapped_swc
-        child = ARObject._find_child_element(element, "MAPPED-SWC")
+        child = SerializationHelper.find_child_element(element, "MAPPED-SWC")
         if child is not None:
             mapped_swc_value = child.text
             obj.mapped_swc = mapped_swc_value

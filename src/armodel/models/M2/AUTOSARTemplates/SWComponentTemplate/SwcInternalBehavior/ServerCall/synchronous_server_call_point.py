@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
     ServerCallPoint,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.exclusive_area_nesting_order import (
     ExclusiveAreaNestingOrder,
@@ -45,7 +46,7 @@ class SynchronousServerCallPoint(ServerCallPoint):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class SynchronousServerCallPoint(ServerCallPoint):
 
         # Serialize called_from_ref
         if self.called_from_ref is not None:
-            serialized = ARObject._serialize_item(self.called_from_ref, "ExclusiveAreaNestingOrder")
+            serialized = SerializationHelper.serialize_item(self.called_from_ref, "ExclusiveAreaNestingOrder")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CALLED-FROM-REF")
@@ -92,7 +93,7 @@ class SynchronousServerCallPoint(ServerCallPoint):
         obj = super(SynchronousServerCallPoint, cls).deserialize(element)
 
         # Parse called_from_ref
-        child = ARObject._find_child_element(element, "CALLED-FROM-REF")
+        child = SerializationHelper.find_child_element(element, "CALLED-FROM-REF")
         if child is not None:
             called_from_ref_value = ARRef.deserialize(child)
             obj.called_from_ref = called_from_ref_value

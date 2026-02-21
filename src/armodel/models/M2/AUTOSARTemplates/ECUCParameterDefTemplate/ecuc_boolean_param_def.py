@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_parameter_
     EcucParameterDef,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -44,7 +45,7 @@ class EcucBooleanParamDef(EcucParameterDef):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -63,7 +64,7 @@ class EcucBooleanParamDef(EcucParameterDef):
 
         # Serialize default_value
         if self.default_value is not None:
-            serialized = ARObject._serialize_item(self.default_value, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.default_value, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DEFAULT-VALUE")
@@ -91,7 +92,7 @@ class EcucBooleanParamDef(EcucParameterDef):
         obj = super(EcucBooleanParamDef, cls).deserialize(element)
 
         # Parse default_value
-        child = ARObject._find_child_element(element, "DEFAULT-VALUE")
+        child = SerializationHelper.find_child_element(element, "DEFAULT-VALUE")
         if child is not None:
             default_value_value = child.text
             obj.default_value = default_value_value

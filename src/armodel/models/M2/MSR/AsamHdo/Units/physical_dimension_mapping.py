@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.AsamHdo.Units.physical_dimension import (
     PhysicalDimension,
@@ -43,12 +44,12 @@ class PhysicalDimensionMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize first_physical_ref
         if self.first_physical_ref is not None:
-            serialized = ARObject._serialize_item(self.first_physical_ref, "PhysicalDimension")
+            serialized = SerializationHelper.serialize_item(self.first_physical_ref, "PhysicalDimension")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FIRST-PHYSICAL-REF")
@@ -62,7 +63,7 @@ class PhysicalDimensionMapping(ARObject):
 
         # Serialize second_physical_ref
         if self.second_physical_ref is not None:
-            serialized = ARObject._serialize_item(self.second_physical_ref, "PhysicalDimension")
+            serialized = SerializationHelper.serialize_item(self.second_physical_ref, "PhysicalDimension")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SECOND-PHYSICAL-REF")
@@ -91,13 +92,13 @@ class PhysicalDimensionMapping(ARObject):
         obj.__init__()
 
         # Parse first_physical_ref
-        child = ARObject._find_child_element(element, "FIRST-PHYSICAL-REF")
+        child = SerializationHelper.find_child_element(element, "FIRST-PHYSICAL-REF")
         if child is not None:
             first_physical_ref_value = ARRef.deserialize(child)
             obj.first_physical_ref = first_physical_ref_value
 
         # Parse second_physical_ref
-        child = ARObject._find_child_element(element, "SECOND-PHYSICAL-REF")
+        child = SerializationHelper.find_child_element(element, "SECOND-PHYSICAL-REF")
         if child is not None:
             second_physical_ref_value = ARRef.deserialize(child)
             obj.second_physical_ref = second_physical_ref_value

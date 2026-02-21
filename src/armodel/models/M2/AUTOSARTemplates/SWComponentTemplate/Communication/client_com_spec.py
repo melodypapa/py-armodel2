@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.r_port
     RPortComSpec,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
@@ -51,7 +52,7 @@ class ClientComSpec(RPortComSpec):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -70,7 +71,7 @@ class ClientComSpec(RPortComSpec):
 
         # Serialize end_to_end_call
         if self.end_to_end_call is not None:
-            serialized = ARObject._serialize_item(self.end_to_end_call, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.end_to_end_call, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("END-TO-END-CALL")
@@ -84,7 +85,7 @@ class ClientComSpec(RPortComSpec):
 
         # Serialize operation_ref
         if self.operation_ref is not None:
-            serialized = ARObject._serialize_item(self.operation_ref, "ClientServerOperation")
+            serialized = SerializationHelper.serialize_item(self.operation_ref, "ClientServerOperation")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("OPERATION-REF")
@@ -100,7 +101,7 @@ class ClientComSpec(RPortComSpec):
         if self.transformation_coms:
             wrapper = ET.Element("TRANSFORMATION-COMS")
             for item in self.transformation_coms:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -122,24 +123,24 @@ class ClientComSpec(RPortComSpec):
         obj = super(ClientComSpec, cls).deserialize(element)
 
         # Parse end_to_end_call
-        child = ARObject._find_child_element(element, "END-TO-END-CALL")
+        child = SerializationHelper.find_child_element(element, "END-TO-END-CALL")
         if child is not None:
             end_to_end_call_value = child.text
             obj.end_to_end_call = end_to_end_call_value
 
         # Parse operation_ref
-        child = ARObject._find_child_element(element, "OPERATION-REF")
+        child = SerializationHelper.find_child_element(element, "OPERATION-REF")
         if child is not None:
             operation_ref_value = ARRef.deserialize(child)
             obj.operation_ref = operation_ref_value
 
         # Parse transformation_coms (list from container "TRANSFORMATION-COMS")
         obj.transformation_coms = []
-        container = ARObject._find_child_element(element, "TRANSFORMATION-COMS")
+        container = SerializationHelper.find_child_element(element, "TRANSFORMATION-COMS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.transformation_coms.append(child_value)
 

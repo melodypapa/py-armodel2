@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Describable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_pin_connector import (
     HwPinConnector,
@@ -49,7 +50,7 @@ class HwPinGroupConnector(Describable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -70,7 +71,7 @@ class HwPinGroupConnector(Describable):
         if self.hw_pins:
             wrapper = ET.Element("HW-PINS")
             for item in self.hw_pins:
-                serialized = ARObject._serialize_item(item, "HwPinConnector")
+                serialized = SerializationHelper.serialize_item(item, "HwPinConnector")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -80,7 +81,7 @@ class HwPinGroupConnector(Describable):
         if self.hw_pin_group_refs:
             wrapper = ET.Element("HW-PIN-GROUP-REFS")
             for item in self.hw_pin_group_refs:
-                serialized = ARObject._serialize_item(item, "HwPinGroup")
+                serialized = SerializationHelper.serialize_item(item, "HwPinGroup")
                 if serialized is not None:
                     child_elem = ET.Element("HW-PIN-GROUP-REF")
                     if hasattr(serialized, 'attrib'):
@@ -110,27 +111,27 @@ class HwPinGroupConnector(Describable):
 
         # Parse hw_pins (list from container "HW-PINS")
         obj.hw_pins = []
-        container = ARObject._find_child_element(element, "HW-PINS")
+        container = SerializationHelper.find_child_element(element, "HW-PINS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.hw_pins.append(child_value)
 
         # Parse hw_pin_group_refs (list from container "HW-PIN-GROUP-REFS")
         obj.hw_pin_group_refs = []
-        container = ARObject._find_child_element(element, "HW-PIN-GROUP-REFS")
+        container = SerializationHelper.find_child_element(element, "HW-PIN-GROUP-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.hw_pin_group_refs.append(child_value)
 

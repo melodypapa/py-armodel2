@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.InstanceR
     ModeGroupInAtomicSwcInstanceRef,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_provided_port_prototype import (
     AbstractProvidedPortPrototype,
@@ -49,7 +50,7 @@ class PModeGroupInAtomicSwcInstanceRef(ModeGroupInAtomicSwcInstanceRef):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -68,7 +69,7 @@ class PModeGroupInAtomicSwcInstanceRef(ModeGroupInAtomicSwcInstanceRef):
 
         # Serialize context_p_port_prototype_ref
         if self.context_p_port_prototype_ref is not None:
-            serialized = ARObject._serialize_item(self.context_p_port_prototype_ref, "AbstractProvidedPortPrototype")
+            serialized = SerializationHelper.serialize_item(self.context_p_port_prototype_ref, "AbstractProvidedPortPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONTEXT-P-PORT-PROTOTYPE-REF")
@@ -82,7 +83,7 @@ class PModeGroupInAtomicSwcInstanceRef(ModeGroupInAtomicSwcInstanceRef):
 
         # Serialize target_mode_ref
         if self.target_mode_ref is not None:
-            serialized = ARObject._serialize_item(self.target_mode_ref, "ModeDeclarationGroup")
+            serialized = SerializationHelper.serialize_item(self.target_mode_ref, "ModeDeclarationGroup")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TARGET-MODE-REF")
@@ -110,13 +111,13 @@ class PModeGroupInAtomicSwcInstanceRef(ModeGroupInAtomicSwcInstanceRef):
         obj = super(PModeGroupInAtomicSwcInstanceRef, cls).deserialize(element)
 
         # Parse context_p_port_prototype_ref
-        child = ARObject._find_child_element(element, "CONTEXT-P-PORT-PROTOTYPE-REF")
+        child = SerializationHelper.find_child_element(element, "CONTEXT-P-PORT-PROTOTYPE-REF")
         if child is not None:
             context_p_port_prototype_ref_value = ARRef.deserialize(child)
             obj.context_p_port_prototype_ref = context_p_port_prototype_ref_value
 
         # Parse target_mode_ref
-        child = ARObject._find_child_element(element, "TARGET-MODE-REF")
+        child = SerializationHelper.find_child_element(element, "TARGET-MODE-REF")
         if child is not None:
             target_mode_ref_value = ARRef.deserialize(child)
             obj.target_mode_ref = target_mode_ref_value

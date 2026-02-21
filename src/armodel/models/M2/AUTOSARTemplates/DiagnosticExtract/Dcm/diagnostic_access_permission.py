@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.diagnostic_auth_role import (
     DiagnosticAuthRole,
@@ -56,7 +57,7 @@ class DiagnosticAccessPermission(DiagnosticCommonElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -75,7 +76,7 @@ class DiagnosticAccessPermission(DiagnosticCommonElement):
 
         # Serialize authentication
         if self.authentication is not None:
-            serialized = ARObject._serialize_item(self.authentication, "DiagnosticAuthRole")
+            serialized = SerializationHelper.serialize_item(self.authentication, "DiagnosticAuthRole")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("AUTHENTICATION")
@@ -91,7 +92,7 @@ class DiagnosticAccessPermission(DiagnosticCommonElement):
         if self.diagnostic_session_refs:
             wrapper = ET.Element("DIAGNOSTIC-SESSION-REFS")
             for item in self.diagnostic_session_refs:
-                serialized = ARObject._serialize_item(item, "DiagnosticSession")
+                serialized = SerializationHelper.serialize_item(item, "DiagnosticSession")
                 if serialized is not None:
                     child_elem = ET.Element("DIAGNOSTIC-SESSION-REF")
                     if hasattr(serialized, 'attrib'):
@@ -106,7 +107,7 @@ class DiagnosticAccessPermission(DiagnosticCommonElement):
 
         # Serialize environmental_ref
         if self.environmental_ref is not None:
-            serialized = ARObject._serialize_item(self.environmental_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.environmental_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ENVIRONMENTAL-REF")
@@ -122,7 +123,7 @@ class DiagnosticAccessPermission(DiagnosticCommonElement):
         if self.security_level_refs:
             wrapper = ET.Element("SECURITY-LEVEL-REFS")
             for item in self.security_level_refs:
-                serialized = ARObject._serialize_item(item, "DiagnosticSecurityLevel")
+                serialized = SerializationHelper.serialize_item(item, "DiagnosticSecurityLevel")
                 if serialized is not None:
                     child_elem = ET.Element("SECURITY-LEVEL-REF")
                     if hasattr(serialized, 'attrib'):
@@ -151,46 +152,46 @@ class DiagnosticAccessPermission(DiagnosticCommonElement):
         obj = super(DiagnosticAccessPermission, cls).deserialize(element)
 
         # Parse authentication
-        child = ARObject._find_child_element(element, "AUTHENTICATION")
+        child = SerializationHelper.find_child_element(element, "AUTHENTICATION")
         if child is not None:
-            authentication_value = ARObject._deserialize_by_tag(child, "DiagnosticAuthRole")
+            authentication_value = SerializationHelper.deserialize_by_tag(child, "DiagnosticAuthRole")
             obj.authentication = authentication_value
 
         # Parse diagnostic_session_refs (list from container "DIAGNOSTIC-SESSION-REFS")
         obj.diagnostic_session_refs = []
-        container = ARObject._find_child_element(element, "DIAGNOSTIC-SESSION-REFS")
+        container = SerializationHelper.find_child_element(element, "DIAGNOSTIC-SESSION-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.diagnostic_session_refs.append(child_value)
 
         # Parse environmental_ref
-        child = ARObject._find_child_element(element, "ENVIRONMENTAL-REF")
+        child = SerializationHelper.find_child_element(element, "ENVIRONMENTAL-REF")
         if child is not None:
             environmental_ref_value = ARRef.deserialize(child)
             obj.environmental_ref = environmental_ref_value
 
         # Parse security_level_refs (list from container "SECURITY-LEVEL-REFS")
         obj.security_level_refs = []
-        container = ARObject._find_child_element(element, "SECURITY-LEVEL-REFS")
+        container = SerializationHelper.find_child_element(element, "SECURITY-LEVEL-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.security_level_refs.append(child_value)
 

@@ -13,6 +13,7 @@ from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.documen
     DocumentViewSelectable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView import (
     ChapterEnumBreak,
     KeepWithPreviousEnum,
@@ -47,7 +48,7 @@ class Paginateable(DocumentViewSelectable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -66,7 +67,7 @@ class Paginateable(DocumentViewSelectable, ABC):
 
         # Serialize break_
         if self.break_ is not None:
-            serialized = ARObject._serialize_item(self.break_, "ChapterEnumBreak")
+            serialized = SerializationHelper.serialize_item(self.break_, "ChapterEnumBreak")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BREAK")
@@ -80,7 +81,7 @@ class Paginateable(DocumentViewSelectable, ABC):
 
         # Serialize keep_with
         if self.keep_with is not None:
-            serialized = ARObject._serialize_item(self.keep_with, "KeepWithPreviousEnum")
+            serialized = SerializationHelper.serialize_item(self.keep_with, "KeepWithPreviousEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("KEEP-WITH")
@@ -108,13 +109,13 @@ class Paginateable(DocumentViewSelectable, ABC):
         obj = super(Paginateable, cls).deserialize(element)
 
         # Parse break_
-        child = ARObject._find_child_element(element, "BREAK")
+        child = SerializationHelper.find_child_element(element, "BREAK")
         if child is not None:
             break__value = ChapterEnumBreak.deserialize(child)
             obj.break_ = break__value
 
         # Parse keep_with
-        child = ARObject._find_child_element(element, "KEEP-WITH")
+        child = SerializationHelper.find_child_element(element, "KEEP-WITH")
         if child is not None:
             keep_with_value = KeepWithPreviousEnum.deserialize(child)
             obj.keep_with = keep_with_value

@@ -13,6 +13,7 @@ from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginat
     Paginateable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable import (
     FloatEnum,
     FrameEnum,
@@ -70,7 +71,7 @@ class Table(Paginateable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -89,7 +90,7 @@ class Table(Paginateable):
 
         # Serialize colsep
         if self.colsep is not None:
-            serialized = ARObject._serialize_item(self.colsep, "TableSeparatorString")
+            serialized = SerializationHelper.serialize_item(self.colsep, "TableSeparatorString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COLSEP")
@@ -103,7 +104,7 @@ class Table(Paginateable):
 
         # Serialize float
         if self.float is not None:
-            serialized = ARObject._serialize_item(self.float, "FloatEnum")
+            serialized = SerializationHelper.serialize_item(self.float, "FloatEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FLOAT")
@@ -117,7 +118,7 @@ class Table(Paginateable):
 
         # Serialize frame
         if self.frame is not None:
-            serialized = ARObject._serialize_item(self.frame, "FrameEnum")
+            serialized = SerializationHelper.serialize_item(self.frame, "FrameEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FRAME")
@@ -131,7 +132,7 @@ class Table(Paginateable):
 
         # Serialize help_entry
         if self.help_entry is not None:
-            serialized = ARObject._serialize_item(self.help_entry, "String")
+            serialized = SerializationHelper.serialize_item(self.help_entry, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HELP-ENTRY")
@@ -145,7 +146,7 @@ class Table(Paginateable):
 
         # Serialize orient
         if self.orient is not None:
-            serialized = ARObject._serialize_item(self.orient, "Any")
+            serialized = SerializationHelper.serialize_item(self.orient, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ORIENT")
@@ -159,7 +160,7 @@ class Table(Paginateable):
 
         # Serialize pgwide
         if self.pgwide is not None:
-            serialized = ARObject._serialize_item(self.pgwide, "NameToken")
+            serialized = SerializationHelper.serialize_item(self.pgwide, "NameToken")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PGWIDE")
@@ -173,7 +174,7 @@ class Table(Paginateable):
 
         # Serialize rowsep
         if self.rowsep is not None:
-            serialized = ARObject._serialize_item(self.rowsep, "TableSeparatorString")
+            serialized = SerializationHelper.serialize_item(self.rowsep, "TableSeparatorString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ROWSEP")
@@ -187,7 +188,7 @@ class Table(Paginateable):
 
         # Serialize table_caption
         if self.table_caption is not None:
-            serialized = ARObject._serialize_item(self.table_caption, "Caption")
+            serialized = SerializationHelper.serialize_item(self.table_caption, "Caption")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TABLE-CAPTION")
@@ -201,7 +202,7 @@ class Table(Paginateable):
 
         # Serialize tabstyle
         if self.tabstyle is not None:
-            serialized = ARObject._serialize_item(self.tabstyle, "NameToken")
+            serialized = SerializationHelper.serialize_item(self.tabstyle, "NameToken")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TABSTYLE")
@@ -229,55 +230,55 @@ class Table(Paginateable):
         obj = super(Table, cls).deserialize(element)
 
         # Parse colsep
-        child = ARObject._find_child_element(element, "COLSEP")
+        child = SerializationHelper.find_child_element(element, "COLSEP")
         if child is not None:
             colsep_value = child.text
             obj.colsep = colsep_value
 
         # Parse float
-        child = ARObject._find_child_element(element, "FLOAT")
+        child = SerializationHelper.find_child_element(element, "FLOAT")
         if child is not None:
             float_value = FloatEnum.deserialize(child)
             obj.float = float_value
 
         # Parse frame
-        child = ARObject._find_child_element(element, "FRAME")
+        child = SerializationHelper.find_child_element(element, "FRAME")
         if child is not None:
             frame_value = FrameEnum.deserialize(child)
             obj.frame = frame_value
 
         # Parse help_entry
-        child = ARObject._find_child_element(element, "HELP-ENTRY")
+        child = SerializationHelper.find_child_element(element, "HELP-ENTRY")
         if child is not None:
             help_entry_value = child.text
             obj.help_entry = help_entry_value
 
         # Parse orient
-        child = ARObject._find_child_element(element, "ORIENT")
+        child = SerializationHelper.find_child_element(element, "ORIENT")
         if child is not None:
             orient_value = child.text
             obj.orient = orient_value
 
         # Parse pgwide
-        child = ARObject._find_child_element(element, "PGWIDE")
+        child = SerializationHelper.find_child_element(element, "PGWIDE")
         if child is not None:
             pgwide_value = child.text
             obj.pgwide = pgwide_value
 
         # Parse rowsep
-        child = ARObject._find_child_element(element, "ROWSEP")
+        child = SerializationHelper.find_child_element(element, "ROWSEP")
         if child is not None:
             rowsep_value = child.text
             obj.rowsep = rowsep_value
 
         # Parse table_caption
-        child = ARObject._find_child_element(element, "TABLE-CAPTION")
+        child = SerializationHelper.find_child_element(element, "TABLE-CAPTION")
         if child is not None:
-            table_caption_value = ARObject._deserialize_by_tag(child, "Caption")
+            table_caption_value = SerializationHelper.deserialize_by_tag(child, "Caption")
             obj.table_caption = table_caption_value
 
         # Parse tabstyle
-        child = ARObject._find_child_element(element, "TABSTYLE")
+        child = SerializationHelper.find_child_element(element, "TABSTYLE")
         if child is not None:
             tabstyle_value = child.text
             obj.tabstyle = tabstyle_value

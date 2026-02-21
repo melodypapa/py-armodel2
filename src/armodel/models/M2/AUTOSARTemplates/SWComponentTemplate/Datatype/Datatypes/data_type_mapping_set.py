@@ -16,6 +16,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.data_type_map import (
     DataTypeMap,
 )
@@ -51,7 +52,7 @@ class DataTypeMappingSet(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -72,7 +73,7 @@ class DataTypeMappingSet(ARElement):
         if self.data_type_maps:
             wrapper = ET.Element("DATA-TYPE-MAPS")
             for item in self.data_type_maps:
-                serialized = ARObject._serialize_item(item, "DataTypeMap")
+                serialized = SerializationHelper.serialize_item(item, "DataTypeMap")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -82,7 +83,7 @@ class DataTypeMappingSet(ARElement):
         if self.mode_request_type_maps:
             wrapper = ET.Element("MODE-REQUEST-TYPE-MAPS")
             for item in self.mode_request_type_maps:
-                serialized = ARObject._serialize_item(item, "ModeRequestTypeMap")
+                serialized = SerializationHelper.serialize_item(item, "ModeRequestTypeMap")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -105,21 +106,21 @@ class DataTypeMappingSet(ARElement):
 
         # Parse data_type_maps (list from container "DATA-TYPE-MAPS")
         obj.data_type_maps = []
-        container = ARObject._find_child_element(element, "DATA-TYPE-MAPS")
+        container = SerializationHelper.find_child_element(element, "DATA-TYPE-MAPS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.data_type_maps.append(child_value)
 
         # Parse mode_request_type_maps (list from container "MODE-REQUEST-TYPE-MAPS")
         obj.mode_request_type_maps = []
-        container = ARObject._find_child_element(element, "MODE-REQUEST-TYPE-MAPS")
+        container = SerializationHelper.find_child_element(element, "MODE-REQUEST-TYPE-MAPS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.mode_request_type_maps.append(child_value)
 

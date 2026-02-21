@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.stream_filter_ipv6_address import (
     StreamFilterIpv6Address,
 )
@@ -49,12 +50,12 @@ class StreamFilterRuleIpTp(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize destination
         if self.destination is not None:
-            serialized = ARObject._serialize_item(self.destination, "StreamFilterIpv6Address")
+            serialized = SerializationHelper.serialize_item(self.destination, "StreamFilterIpv6Address")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DESTINATION")
@@ -70,7 +71,7 @@ class StreamFilterRuleIpTp(ARObject):
         if self.destination_ports:
             wrapper = ET.Element("DESTINATION-PORTS")
             for item in self.destination_ports:
-                serialized = ARObject._serialize_item(item, "StreamFilterPortRange")
+                serialized = SerializationHelper.serialize_item(item, "StreamFilterPortRange")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -78,7 +79,7 @@ class StreamFilterRuleIpTp(ARObject):
 
         # Serialize source
         if self.source is not None:
-            serialized = ARObject._serialize_item(self.source, "StreamFilterIpv6Address")
+            serialized = SerializationHelper.serialize_item(self.source, "StreamFilterIpv6Address")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SOURCE")
@@ -94,7 +95,7 @@ class StreamFilterRuleIpTp(ARObject):
         if self.source_ports:
             wrapper = ET.Element("SOURCE-PORTS")
             for item in self.source_ports:
-                serialized = ARObject._serialize_item(item, "StreamFilterPortRange")
+                serialized = SerializationHelper.serialize_item(item, "StreamFilterPortRange")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -117,34 +118,34 @@ class StreamFilterRuleIpTp(ARObject):
         obj.__init__()
 
         # Parse destination
-        child = ARObject._find_child_element(element, "DESTINATION")
+        child = SerializationHelper.find_child_element(element, "DESTINATION")
         if child is not None:
-            destination_value = ARObject._deserialize_by_tag(child, "StreamFilterIpv6Address")
+            destination_value = SerializationHelper.deserialize_by_tag(child, "StreamFilterIpv6Address")
             obj.destination = destination_value
 
         # Parse destination_ports (list from container "DESTINATION-PORTS")
         obj.destination_ports = []
-        container = ARObject._find_child_element(element, "DESTINATION-PORTS")
+        container = SerializationHelper.find_child_element(element, "DESTINATION-PORTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.destination_ports.append(child_value)
 
         # Parse source
-        child = ARObject._find_child_element(element, "SOURCE")
+        child = SerializationHelper.find_child_element(element, "SOURCE")
         if child is not None:
-            source_value = ARObject._deserialize_by_tag(child, "StreamFilterIpv6Address")
+            source_value = SerializationHelper.deserialize_by_tag(child, "StreamFilterIpv6Address")
             obj.source = source_value
 
         # Parse source_ports (list from container "SOURCE-PORTS")
         obj.source_ports = []
-        container = ARObject._find_child_element(element, "SOURCE-PORTS")
+        container = SerializationHelper.find_child_element(element, "SOURCE-PORTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.source_ports.append(child_value)
 

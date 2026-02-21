@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.tcp_props import (
     TcpProps,
 )
@@ -48,7 +49,7 @@ class EthTcpIpProps(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -67,7 +68,7 @@ class EthTcpIpProps(ARElement):
 
         # Serialize tcp_props
         if self.tcp_props is not None:
-            serialized = ARObject._serialize_item(self.tcp_props, "TcpProps")
+            serialized = SerializationHelper.serialize_item(self.tcp_props, "TcpProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TCP-PROPS")
@@ -81,7 +82,7 @@ class EthTcpIpProps(ARElement):
 
         # Serialize udp_props
         if self.udp_props is not None:
-            serialized = ARObject._serialize_item(self.udp_props, "UdpProps")
+            serialized = SerializationHelper.serialize_item(self.udp_props, "UdpProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("UDP-PROPS")
@@ -109,15 +110,15 @@ class EthTcpIpProps(ARElement):
         obj = super(EthTcpIpProps, cls).deserialize(element)
 
         # Parse tcp_props
-        child = ARObject._find_child_element(element, "TCP-PROPS")
+        child = SerializationHelper.find_child_element(element, "TCP-PROPS")
         if child is not None:
-            tcp_props_value = ARObject._deserialize_by_tag(child, "TcpProps")
+            tcp_props_value = SerializationHelper.deserialize_by_tag(child, "TcpProps")
             obj.tcp_props = tcp_props_value
 
         # Parse udp_props
-        child = ARObject._find_child_element(element, "UDP-PROPS")
+        child = SerializationHelper.find_child_element(element, "UDP-PROPS")
         if child is not None:
-            udp_props_value = ARObject._deserialize_by_tag(child, "UdpProps")
+            udp_props_value = SerializationHelper.deserialize_by_tag(child, "UdpProps")
             obj.udp_props = udp_props_value
 
         return obj

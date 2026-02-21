@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_const_content import (
     CompuConstContent,
 )
@@ -81,7 +82,7 @@ class CompuConst(ARObject):
 
         # Find child elements that are CompuConstContent subclasses
         for child in element:
-            child_tag = ARObject._strip_namespace(child.tag)
+            child_tag = SerializationHelper.strip_namespace(child.tag)
             concrete_class = factory.get_class(child_tag)
 
             if concrete_class:
@@ -90,7 +91,7 @@ class CompuConst(ARObject):
 
                 # Check if it's a CompuConstContent subclass (for compu_const_content_type)
                 if isinstance(concrete_class, type) and issubclass(concrete_class, CompuConstContent):
-                    obj.compu_const_content_type = ARObject._unwrap_primitive(concrete_class.deserialize(child))
+                    obj.compu_const_content_type = SerializationHelper.unwrap_primitive(concrete_class.deserialize(child))
                     break  # Only one content type expected
 
         return obj

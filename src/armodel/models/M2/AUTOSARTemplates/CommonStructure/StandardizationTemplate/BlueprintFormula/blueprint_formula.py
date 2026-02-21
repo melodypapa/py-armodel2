@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_definition_element import (
     EcucDefinitionElement,
@@ -46,12 +47,12 @@ class BlueprintFormula(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize ecuc_ref
         if self.ecuc_ref is not None:
-            serialized = ARObject._serialize_item(self.ecuc_ref, "EcucDefinitionElement")
+            serialized = SerializationHelper.serialize_item(self.ecuc_ref, "EcucDefinitionElement")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ECUC-REF")
@@ -65,7 +66,7 @@ class BlueprintFormula(ARObject):
 
         # Serialize verbatim
         if self.verbatim is not None:
-            serialized = ARObject._serialize_item(self.verbatim, "MultiLanguageVerbatim")
+            serialized = SerializationHelper.serialize_item(self.verbatim, "MultiLanguageVerbatim")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VERBATIM")
@@ -94,15 +95,15 @@ class BlueprintFormula(ARObject):
         obj.__init__()
 
         # Parse ecuc_ref
-        child = ARObject._find_child_element(element, "ECUC-REF")
+        child = SerializationHelper.find_child_element(element, "ECUC-REF")
         if child is not None:
             ecuc_ref_value = ARRef.deserialize(child)
             obj.ecuc_ref = ecuc_ref_value
 
         # Parse verbatim
-        child = ARObject._find_child_element(element, "VERBATIM")
+        child = SerializationHelper.find_child_element(element, "VERBATIM")
         if child is not None:
-            verbatim_value = ARObject._deserialize_with_type(child, "MultiLanguageVerbatim")
+            verbatim_value = SerializationHelper.deserialize_with_type(child, "MultiLanguageVerbatim")
             obj.verbatim = verbatim_value
 
         return obj

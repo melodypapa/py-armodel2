@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.nm_clus
     NmCluster,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     Integer,
@@ -57,7 +58,7 @@ class FlexrayNmCluster(NmCluster):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -76,7 +77,7 @@ class FlexrayNmCluster(NmCluster):
 
         # Serialize nm_car_wake_up
         if self.nm_car_wake_up is not None:
-            serialized = ARObject._serialize_item(self.nm_car_wake_up, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.nm_car_wake_up, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM-CAR-WAKE-UP")
@@ -90,7 +91,7 @@ class FlexrayNmCluster(NmCluster):
 
         # Serialize nm_data_cycle
         if self.nm_data_cycle is not None:
-            serialized = ARObject._serialize_item(self.nm_data_cycle, "Integer")
+            serialized = SerializationHelper.serialize_item(self.nm_data_cycle, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM-DATA-CYCLE")
@@ -104,7 +105,7 @@ class FlexrayNmCluster(NmCluster):
 
         # Serialize nm_main
         if self.nm_main is not None:
-            serialized = ARObject._serialize_item(self.nm_main, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.nm_main, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM-MAIN")
@@ -118,7 +119,7 @@ class FlexrayNmCluster(NmCluster):
 
         # Serialize nm_remote
         if self.nm_remote is not None:
-            serialized = ARObject._serialize_item(self.nm_remote, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.nm_remote, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM-REMOTE")
@@ -132,7 +133,7 @@ class FlexrayNmCluster(NmCluster):
 
         # Serialize nm_repeat
         if self.nm_repeat is not None:
-            serialized = ARObject._serialize_item(self.nm_repeat, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.nm_repeat, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM-REPEAT")
@@ -146,7 +147,7 @@ class FlexrayNmCluster(NmCluster):
 
         # Serialize nm_repetition
         if self.nm_repetition is not None:
-            serialized = ARObject._serialize_item(self.nm_repetition, "Integer")
+            serialized = SerializationHelper.serialize_item(self.nm_repetition, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM-REPETITION")
@@ -160,7 +161,7 @@ class FlexrayNmCluster(NmCluster):
 
         # Serialize nm_voting_cycle
         if self.nm_voting_cycle is not None:
-            serialized = ARObject._serialize_item(self.nm_voting_cycle, "Integer")
+            serialized = SerializationHelper.serialize_item(self.nm_voting_cycle, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM-VOTING-CYCLE")
@@ -188,43 +189,43 @@ class FlexrayNmCluster(NmCluster):
         obj = super(FlexrayNmCluster, cls).deserialize(element)
 
         # Parse nm_car_wake_up
-        child = ARObject._find_child_element(element, "NM-CAR-WAKE-UP")
+        child = SerializationHelper.find_child_element(element, "NM-CAR-WAKE-UP")
         if child is not None:
             nm_car_wake_up_value = child.text
             obj.nm_car_wake_up = nm_car_wake_up_value
 
         # Parse nm_data_cycle
-        child = ARObject._find_child_element(element, "NM-DATA-CYCLE")
+        child = SerializationHelper.find_child_element(element, "NM-DATA-CYCLE")
         if child is not None:
             nm_data_cycle_value = child.text
             obj.nm_data_cycle = nm_data_cycle_value
 
         # Parse nm_main
-        child = ARObject._find_child_element(element, "NM-MAIN")
+        child = SerializationHelper.find_child_element(element, "NM-MAIN")
         if child is not None:
             nm_main_value = child.text
             obj.nm_main = nm_main_value
 
         # Parse nm_remote
-        child = ARObject._find_child_element(element, "NM-REMOTE")
+        child = SerializationHelper.find_child_element(element, "NM-REMOTE")
         if child is not None:
             nm_remote_value = child.text
             obj.nm_remote = nm_remote_value
 
         # Parse nm_repeat
-        child = ARObject._find_child_element(element, "NM-REPEAT")
+        child = SerializationHelper.find_child_element(element, "NM-REPEAT")
         if child is not None:
             nm_repeat_value = child.text
             obj.nm_repeat = nm_repeat_value
 
         # Parse nm_repetition
-        child = ARObject._find_child_element(element, "NM-REPETITION")
+        child = SerializationHelper.find_child_element(element, "NM-REPETITION")
         if child is not None:
             nm_repetition_value = child.text
             obj.nm_repetition = nm_repetition_value
 
         # Parse nm_voting_cycle
-        child = ARObject._find_child_element(element, "NM-VOTING-CYCLE")
+        child = SerializationHelper.find_child_element(element, "NM-VOTING-CYCLE")
         if child is not None:
             nm_voting_cycle_value = child.text
             obj.nm_voting_cycle = nm_voting_cycle_value

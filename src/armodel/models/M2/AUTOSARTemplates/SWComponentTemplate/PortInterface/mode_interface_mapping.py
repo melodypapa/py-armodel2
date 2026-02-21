@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_i
     PortInterfaceMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
     ModeDeclarationGroup,
@@ -44,7 +45,7 @@ class ModeInterfaceMapping(PortInterfaceMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -63,7 +64,7 @@ class ModeInterfaceMapping(PortInterfaceMapping):
 
         # Serialize mode_mapping_ref
         if self.mode_mapping_ref is not None:
-            serialized = ARObject._serialize_item(self.mode_mapping_ref, "ModeDeclarationGroup")
+            serialized = SerializationHelper.serialize_item(self.mode_mapping_ref, "ModeDeclarationGroup")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MODE-MAPPING-REF")
@@ -91,7 +92,7 @@ class ModeInterfaceMapping(PortInterfaceMapping):
         obj = super(ModeInterfaceMapping, cls).deserialize(element)
 
         # Parse mode_mapping_ref
-        child = ARObject._find_child_element(element, "MODE-MAPPING-REF")
+        child = SerializationHelper.find_child_element(element, "MODE-MAPPING-REF")
         if child is not None:
             mode_mapping_ref_value = ARRef.deserialize(child)
             obj.mode_mapping_ref = mode_mapping_ref_value

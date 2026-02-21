@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -48,12 +49,12 @@ class BswModeReceiverPolicy(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize enhanced_mode
         if self.enhanced_mode is not None:
-            serialized = ARObject._serialize_item(self.enhanced_mode, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.enhanced_mode, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ENHANCED-MODE")
@@ -67,7 +68,7 @@ class BswModeReceiverPolicy(ARObject):
 
         # Serialize required_mode_ref
         if self.required_mode_ref is not None:
-            serialized = ARObject._serialize_item(self.required_mode_ref, "ModeDeclarationGroup")
+            serialized = SerializationHelper.serialize_item(self.required_mode_ref, "ModeDeclarationGroup")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REQUIRED-MODE-REF")
@@ -81,7 +82,7 @@ class BswModeReceiverPolicy(ARObject):
 
         # Serialize supports
         if self.supports is not None:
-            serialized = ARObject._serialize_item(self.supports, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.supports, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SUPPORTS")
@@ -110,19 +111,19 @@ class BswModeReceiverPolicy(ARObject):
         obj.__init__()
 
         # Parse enhanced_mode
-        child = ARObject._find_child_element(element, "ENHANCED-MODE")
+        child = SerializationHelper.find_child_element(element, "ENHANCED-MODE")
         if child is not None:
             enhanced_mode_value = child.text
             obj.enhanced_mode = enhanced_mode_value
 
         # Parse required_mode_ref
-        child = ARObject._find_child_element(element, "REQUIRED-MODE-REF")
+        child = SerializationHelper.find_child_element(element, "REQUIRED-MODE-REF")
         if child is not None:
             required_mode_ref_value = ARRef.deserialize(child)
             obj.required_mode_ref = required_mode_ref_value
 
         # Parse supports
-        child = ARObject._find_child_element(element, "SUPPORTS")
+        child = SerializationHelper.find_child_element(element, "SUPPORTS")
         if child is not None:
             supports_value = child.text
             obj.supports = supports_value

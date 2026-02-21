@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.RptSupport import (
     RptExecutionControlEnum,
 )
@@ -53,12 +54,12 @@ class RptExecutableEntityProperties(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize max_rpt_event_id
         if self.max_rpt_event_id is not None:
-            serialized = ARObject._serialize_item(self.max_rpt_event_id, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.max_rpt_event_id, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-RPT-EVENT-ID")
@@ -72,7 +73,7 @@ class RptExecutableEntityProperties(ARObject):
 
         # Serialize min_rpt_event_id
         if self.min_rpt_event_id is not None:
-            serialized = ARObject._serialize_item(self.min_rpt_event_id, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.min_rpt_event_id, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MIN-RPT-EVENT-ID")
@@ -86,7 +87,7 @@ class RptExecutableEntityProperties(ARObject):
 
         # Serialize rpt_execution_control
         if self.rpt_execution_control is not None:
-            serialized = ARObject._serialize_item(self.rpt_execution_control, "RptExecutionControlEnum")
+            serialized = SerializationHelper.serialize_item(self.rpt_execution_control, "RptExecutionControlEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RPT-EXECUTION-CONTROL")
@@ -100,7 +101,7 @@ class RptExecutableEntityProperties(ARObject):
 
         # Serialize rpt_service_point_enum
         if self.rpt_service_point_enum is not None:
-            serialized = ARObject._serialize_item(self.rpt_service_point_enum, "RptServicePointEnum")
+            serialized = SerializationHelper.serialize_item(self.rpt_service_point_enum, "RptServicePointEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RPT-SERVICE-POINT-ENUM")
@@ -129,25 +130,25 @@ class RptExecutableEntityProperties(ARObject):
         obj.__init__()
 
         # Parse max_rpt_event_id
-        child = ARObject._find_child_element(element, "MAX-RPT-EVENT-ID")
+        child = SerializationHelper.find_child_element(element, "MAX-RPT-EVENT-ID")
         if child is not None:
             max_rpt_event_id_value = child.text
             obj.max_rpt_event_id = max_rpt_event_id_value
 
         # Parse min_rpt_event_id
-        child = ARObject._find_child_element(element, "MIN-RPT-EVENT-ID")
+        child = SerializationHelper.find_child_element(element, "MIN-RPT-EVENT-ID")
         if child is not None:
             min_rpt_event_id_value = child.text
             obj.min_rpt_event_id = min_rpt_event_id_value
 
         # Parse rpt_execution_control
-        child = ARObject._find_child_element(element, "RPT-EXECUTION-CONTROL")
+        child = SerializationHelper.find_child_element(element, "RPT-EXECUTION-CONTROL")
         if child is not None:
             rpt_execution_control_value = RptExecutionControlEnum.deserialize(child)
             obj.rpt_execution_control = rpt_execution_control_value
 
         # Parse rpt_service_point_enum
-        child = ARObject._find_child_element(element, "RPT-SERVICE-POINT-ENUM")
+        child = SerializationHelper.find_child_element(element, "RPT-SERVICE-POINT-ENUM")
         if child is not None:
             rpt_service_point_enum_value = RptServicePointEnum.deserialize(child)
             obj.rpt_service_point_enum = rpt_service_point_enum_value

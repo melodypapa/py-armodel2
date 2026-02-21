@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
     RTEEvent,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
@@ -41,7 +42,7 @@ class AsynchronousServerCallReturnsEvent(RTEEvent):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -60,7 +61,7 @@ class AsynchronousServerCallReturnsEvent(RTEEvent):
 
         # Serialize event_source_ref
         if self.event_source_ref is not None:
-            serialized = ARObject._serialize_item(self.event_source_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.event_source_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("EVENT-SOURCE-REF")
@@ -88,7 +89,7 @@ class AsynchronousServerCallReturnsEvent(RTEEvent):
         obj = super(AsynchronousServerCallReturnsEvent, cls).deserialize(element)
 
         # Parse event_source_ref
-        child = ARObject._find_child_element(element, "EVENT-SOURCE-REF")
+        child = SerializationHelper.find_child_element(element, "EVENT-SOURCE-REF")
         if child is not None:
             event_source_ref_value = ARRef.deserialize(child)
             obj.event_source_ref = event_source_ref_value

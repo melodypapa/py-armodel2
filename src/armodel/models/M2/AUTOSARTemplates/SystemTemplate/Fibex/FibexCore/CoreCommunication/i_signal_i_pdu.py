@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
     IPdu,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
@@ -55,7 +56,7 @@ class ISignalIPdu(IPdu):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -74,7 +75,7 @@ class ISignalIPdu(IPdu):
 
         # Serialize i_pdu_timing
         if self.i_pdu_timing is not None:
-            serialized = ARObject._serialize_item(self.i_pdu_timing, "IPduTiming")
+            serialized = SerializationHelper.serialize_item(self.i_pdu_timing, "IPduTiming")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("I-PDU-TIMING")
@@ -90,7 +91,7 @@ class ISignalIPdu(IPdu):
         if self.i_signal_to_pdu_refs:
             wrapper = ET.Element("I-SIGNAL-TO-PDU-REFS")
             for item in self.i_signal_to_pdu_refs:
-                serialized = ARObject._serialize_item(item, "ISignalToIPduMapping")
+                serialized = SerializationHelper.serialize_item(item, "ISignalToIPduMapping")
                 if serialized is not None:
                     child_elem = ET.Element("I-SIGNAL-TO-PDU-REF")
                     if hasattr(serialized, 'attrib'):
@@ -105,7 +106,7 @@ class ISignalIPdu(IPdu):
 
         # Serialize unused_bit
         if self.unused_bit is not None:
-            serialized = ARObject._serialize_item(self.unused_bit, "Integer")
+            serialized = SerializationHelper.serialize_item(self.unused_bit, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("UNUSED-BIT")
@@ -133,29 +134,29 @@ class ISignalIPdu(IPdu):
         obj = super(ISignalIPdu, cls).deserialize(element)
 
         # Parse i_pdu_timing
-        child = ARObject._find_child_element(element, "I-PDU-TIMING")
+        child = SerializationHelper.find_child_element(element, "I-PDU-TIMING")
         if child is not None:
-            i_pdu_timing_value = ARObject._deserialize_by_tag(child, "IPduTiming")
+            i_pdu_timing_value = SerializationHelper.deserialize_by_tag(child, "IPduTiming")
             obj.i_pdu_timing = i_pdu_timing_value
 
         # Parse i_signal_to_pdu_refs (list from container "I-SIGNAL-TO-PDU-REFS")
         obj.i_signal_to_pdu_refs = []
-        container = ARObject._find_child_element(element, "I-SIGNAL-TO-PDU-REFS")
+        container = SerializationHelper.find_child_element(element, "I-SIGNAL-TO-PDU-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.i_signal_to_pdu_refs.append(child_value)
 
         # Parse unused_bit
-        child = ARObject._find_child_element(element, "UNUSED-BIT")
+        child = SerializationHelper.find_child_element(element, "UNUSED-BIT")
         if child is not None:
             unused_bit_value = child.text
             obj.unused_bit = unused_bit_value

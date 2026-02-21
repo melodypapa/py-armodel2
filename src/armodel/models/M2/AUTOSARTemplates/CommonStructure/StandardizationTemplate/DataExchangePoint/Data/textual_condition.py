@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
     AbstractCondition,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -43,7 +44,7 @@ class TextualCondition(AbstractCondition):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class TextualCondition(AbstractCondition):
 
         # Serialize text
         if self.text is not None:
-            serialized = ARObject._serialize_item(self.text, "String")
+            serialized = SerializationHelper.serialize_item(self.text, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TEXT")
@@ -90,7 +91,7 @@ class TextualCondition(AbstractCondition):
         obj = super(TextualCondition, cls).deserialize(element)
 
         # Parse text
-        child = ARObject._find_child_element(element, "TEXT")
+        child = SerializationHelper.find_child_element(element, "TEXT")
         if child is not None:
             text_value = child.text
             obj.text = text_value

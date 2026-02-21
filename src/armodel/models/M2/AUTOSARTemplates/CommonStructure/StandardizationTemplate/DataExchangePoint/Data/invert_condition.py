@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
     AbstractCondition,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class InvertCondition(AbstractCondition):
@@ -40,7 +41,7 @@ class InvertCondition(AbstractCondition):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -59,7 +60,7 @@ class InvertCondition(AbstractCondition):
 
         # Serialize condition
         if self.condition is not None:
-            serialized = ARObject._serialize_item(self.condition, "AbstractCondition")
+            serialized = SerializationHelper.serialize_item(self.condition, "AbstractCondition")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONDITION")
@@ -87,9 +88,9 @@ class InvertCondition(AbstractCondition):
         obj = super(InvertCondition, cls).deserialize(element)
 
         # Parse condition
-        child = ARObject._find_child_element(element, "CONDITION")
+        child = SerializationHelper.find_child_element(element, "CONDITION")
         if child is not None:
-            condition_value = ARObject._deserialize_by_tag(child, "AbstractCondition")
+            condition_value = SerializationHelper.deserialize_by_tag(child, "AbstractCondition")
             obj.condition = condition_value
 
         return obj

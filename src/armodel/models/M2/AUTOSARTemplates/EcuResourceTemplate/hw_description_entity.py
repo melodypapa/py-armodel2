@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Referrable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.HwElementCategory.hw_attribute_value import (
     HwAttributeValue,
@@ -56,7 +57,7 @@ class HwDescriptionEntity(Referrable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -77,7 +78,7 @@ class HwDescriptionEntity(Referrable, ABC):
         if self.hw_attributes:
             wrapper = ET.Element("HW-ATTRIBUTES")
             for item in self.hw_attributes:
-                serialized = ARObject._serialize_item(item, "HwAttributeValue")
+                serialized = SerializationHelper.serialize_item(item, "HwAttributeValue")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -87,7 +88,7 @@ class HwDescriptionEntity(Referrable, ABC):
         if self.hw_categorie_refs:
             wrapper = ET.Element("HW-CATEGORIE-REFS")
             for item in self.hw_categorie_refs:
-                serialized = ARObject._serialize_item(item, "HwCategory")
+                serialized = SerializationHelper.serialize_item(item, "HwCategory")
                 if serialized is not None:
                     child_elem = ET.Element("HW-CATEGORIE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -102,7 +103,7 @@ class HwDescriptionEntity(Referrable, ABC):
 
         # Serialize hw_type_ref
         if self.hw_type_ref is not None:
-            serialized = ARObject._serialize_item(self.hw_type_ref, "HwType")
+            serialized = SerializationHelper.serialize_item(self.hw_type_ref, "HwType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HW-TYPE-REF")
@@ -131,32 +132,32 @@ class HwDescriptionEntity(Referrable, ABC):
 
         # Parse hw_attributes (list from container "HW-ATTRIBUTES")
         obj.hw_attributes = []
-        container = ARObject._find_child_element(element, "HW-ATTRIBUTES")
+        container = SerializationHelper.find_child_element(element, "HW-ATTRIBUTES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.hw_attributes.append(child_value)
 
         # Parse hw_categorie_refs (list from container "HW-CATEGORIE-REFS")
         obj.hw_categorie_refs = []
-        container = ARObject._find_child_element(element, "HW-CATEGORIE-REFS")
+        container = SerializationHelper.find_child_element(element, "HW-CATEGORIE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.hw_categorie_refs.append(child_value)
 
         # Parse hw_type_ref
-        child = ARObject._find_child_element(element, "HW-TYPE-REF")
+        child = SerializationHelper.find_child_element(element, "HW-TYPE-REF")
         if child is not None:
             hw_type_ref_value = ARRef.deserialize(child)
             obj.hw_type_ref = hw_type_ref_value

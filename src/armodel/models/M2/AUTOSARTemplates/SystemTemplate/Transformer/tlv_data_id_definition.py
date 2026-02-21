@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -56,12 +57,12 @@ class TlvDataIdDefinition(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize id
         if self.id is not None:
-            serialized = ARObject._serialize_item(self.id, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.id, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ID")
@@ -75,7 +76,7 @@ class TlvDataIdDefinition(ARObject):
 
         # Serialize tlv_argument_ref
         if self.tlv_argument_ref is not None:
-            serialized = ARObject._serialize_item(self.tlv_argument_ref, "ArgumentDataPrototype")
+            serialized = SerializationHelper.serialize_item(self.tlv_argument_ref, "ArgumentDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TLV-ARGUMENT-REF")
@@ -89,7 +90,7 @@ class TlvDataIdDefinition(ARObject):
 
         # Serialize tlv_ref
         if self.tlv_ref is not None:
-            serialized = ARObject._serialize_item(self.tlv_ref, "AbstractImplementationDataType")
+            serialized = SerializationHelper.serialize_item(self.tlv_ref, "AbstractImplementationDataType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TLV-REF")
@@ -103,7 +104,7 @@ class TlvDataIdDefinition(ARObject):
 
         # Serialize tlv_record_ref
         if self.tlv_record_ref is not None:
-            serialized = ARObject._serialize_item(self.tlv_record_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.tlv_record_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TLV-RECORD-REF")
@@ -132,25 +133,25 @@ class TlvDataIdDefinition(ARObject):
         obj.__init__()
 
         # Parse id
-        child = ARObject._find_child_element(element, "ID")
+        child = SerializationHelper.find_child_element(element, "ID")
         if child is not None:
             id_value = child.text
             obj.id = id_value
 
         # Parse tlv_argument_ref
-        child = ARObject._find_child_element(element, "TLV-ARGUMENT-REF")
+        child = SerializationHelper.find_child_element(element, "TLV-ARGUMENT-REF")
         if child is not None:
             tlv_argument_ref_value = ARRef.deserialize(child)
             obj.tlv_argument_ref = tlv_argument_ref_value
 
         # Parse tlv_ref
-        child = ARObject._find_child_element(element, "TLV-REF")
+        child = SerializationHelper.find_child_element(element, "TLV-REF")
         if child is not None:
             tlv_ref_value = ARRef.deserialize(child)
             obj.tlv_ref = tlv_ref_value
 
         # Parse tlv_record_ref
-        child = ARObject._find_child_element(element, "TLV-RECORD-REF")
+        child = SerializationHelper.find_child_element(element, "TLV-RECORD-REF")
         if child is not None:
             tlv_record_ref_value = ARRef.deserialize(child)
             obj.tlv_record_ref = tlv_record_ref_value

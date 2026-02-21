@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.Timing.mode_driven_transmission_mode_condition import (
     ModeDrivenTransmissionModeCondition,
 )
@@ -42,14 +43,14 @@ class TransmissionModeDeclaration(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize mode_drivens (list to container "MODE-DRIVENS")
         if self.mode_drivens:
             wrapper = ET.Element("MODE-DRIVENS")
             for item in self.mode_drivens:
-                serialized = ARObject._serialize_item(item, "ModeDrivenTransmissionModeCondition")
+                serialized = SerializationHelper.serialize_item(item, "ModeDrivenTransmissionModeCondition")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -57,7 +58,7 @@ class TransmissionModeDeclaration(ARObject):
 
         # Serialize transmission
         if self.transmission is not None:
-            serialized = ARObject._serialize_item(self.transmission, "Any")
+            serialized = SerializationHelper.serialize_item(self.transmission, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TRANSMISSION")
@@ -87,16 +88,16 @@ class TransmissionModeDeclaration(ARObject):
 
         # Parse mode_drivens (list from container "MODE-DRIVENS")
         obj.mode_drivens = []
-        container = ARObject._find_child_element(element, "MODE-DRIVENS")
+        container = SerializationHelper.find_child_element(element, "MODE-DRIVENS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.mode_drivens.append(child_value)
 
         # Parse transmission
-        child = ARObject._find_child_element(element, "TRANSMISSION")
+        child = SerializationHelper.find_child_element(element, "TRANSMISSION")
         if child is not None:
             transmission_value = child.text
             obj.transmission = transmission_value

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
     FrameTriggering,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication import (
     LinChecksumType,
 )
@@ -48,7 +49,7 @@ class LinFrameTriggering(FrameTriggering):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -67,7 +68,7 @@ class LinFrameTriggering(FrameTriggering):
 
         # Serialize identifier
         if self.identifier is not None:
-            serialized = ARObject._serialize_item(self.identifier, "Integer")
+            serialized = SerializationHelper.serialize_item(self.identifier, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IDENTIFIER")
@@ -81,7 +82,7 @@ class LinFrameTriggering(FrameTriggering):
 
         # Serialize lin_checksum
         if self.lin_checksum is not None:
-            serialized = ARObject._serialize_item(self.lin_checksum, "LinChecksumType")
+            serialized = SerializationHelper.serialize_item(self.lin_checksum, "LinChecksumType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LIN-CHECKSUM")
@@ -109,13 +110,13 @@ class LinFrameTriggering(FrameTriggering):
         obj = super(LinFrameTriggering, cls).deserialize(element)
 
         # Parse identifier
-        child = ARObject._find_child_element(element, "IDENTIFIER")
+        child = SerializationHelper.find_child_element(element, "IDENTIFIER")
         if child is not None:
             identifier_value = child.text
             obj.identifier = identifier_value
 
         # Parse lin_checksum
-        child = ARObject._find_child_element(element, "LIN-CHECKSUM")
+        child = SerializationHelper.find_child_element(element, "LIN-CHECKSUM")
         if child is not None:
             lin_checksum_value = LinChecksumType.deserialize(child)
             obj.lin_checksum = lin_checksum_value

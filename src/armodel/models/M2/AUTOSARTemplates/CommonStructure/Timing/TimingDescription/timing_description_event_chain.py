@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
     TimingDescription,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -53,7 +54,7 @@ class TimingDescriptionEventChain(TimingDescription):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -72,7 +73,7 @@ class TimingDescriptionEventChain(TimingDescription):
 
         # Serialize is_pipelining
         if self.is_pipelining is not None:
-            serialized = ARObject._serialize_item(self.is_pipelining, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.is_pipelining, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IS-PIPELINING")
@@ -86,7 +87,7 @@ class TimingDescriptionEventChain(TimingDescription):
 
         # Serialize response_ref
         if self.response_ref is not None:
-            serialized = ARObject._serialize_item(self.response_ref, "TimingDescriptionEvent")
+            serialized = SerializationHelper.serialize_item(self.response_ref, "TimingDescriptionEvent")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RESPONSE-REF")
@@ -102,7 +103,7 @@ class TimingDescriptionEventChain(TimingDescription):
         if self.segment_refs:
             wrapper = ET.Element("SEGMENT-REFS")
             for item in self.segment_refs:
-                serialized = ARObject._serialize_item(item, "TimingDescriptionEvent")
+                serialized = SerializationHelper.serialize_item(item, "TimingDescriptionEvent")
                 if serialized is not None:
                     child_elem = ET.Element("SEGMENT-REF")
                     if hasattr(serialized, 'attrib'):
@@ -117,7 +118,7 @@ class TimingDescriptionEventChain(TimingDescription):
 
         # Serialize stimulus_ref
         if self.stimulus_ref is not None:
-            serialized = ARObject._serialize_item(self.stimulus_ref, "TimingDescriptionEvent")
+            serialized = SerializationHelper.serialize_item(self.stimulus_ref, "TimingDescriptionEvent")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("STIMULUS-REF")
@@ -145,35 +146,35 @@ class TimingDescriptionEventChain(TimingDescription):
         obj = super(TimingDescriptionEventChain, cls).deserialize(element)
 
         # Parse is_pipelining
-        child = ARObject._find_child_element(element, "IS-PIPELINING")
+        child = SerializationHelper.find_child_element(element, "IS-PIPELINING")
         if child is not None:
             is_pipelining_value = child.text
             obj.is_pipelining = is_pipelining_value
 
         # Parse response_ref
-        child = ARObject._find_child_element(element, "RESPONSE-REF")
+        child = SerializationHelper.find_child_element(element, "RESPONSE-REF")
         if child is not None:
             response_ref_value = ARRef.deserialize(child)
             obj.response_ref = response_ref_value
 
         # Parse segment_refs (list from container "SEGMENT-REFS")
         obj.segment_refs = []
-        container = ARObject._find_child_element(element, "SEGMENT-REFS")
+        container = SerializationHelper.find_child_element(element, "SEGMENT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.segment_refs.append(child_value)
 
         # Parse stimulus_ref
-        child = ARObject._find_child_element(element, "STIMULUS-REF")
+        child = SerializationHelper.find_child_element(element, "STIMULUS-REF")
         if child is not None:
             stimulus_ref_value = ARRef.deserialize(child)
             obj.stimulus_ref = stimulus_ref_value

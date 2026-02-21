@@ -16,6 +16,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.abstrac
     AbstractEvent,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
     ModeDeclaration,
@@ -58,7 +59,7 @@ class RTEEvent(AbstractEvent, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -79,7 +80,7 @@ class RTEEvent(AbstractEvent, ABC):
         if self.disabled_mode_instance_refs:
             wrapper = ET.Element("DISABLED-MODE-INSTANCE-REFS")
             for item in self.disabled_mode_instance_refs:
-                serialized = ARObject._serialize_item(item, "ModeDeclaration")
+                serialized = SerializationHelper.serialize_item(item, "ModeDeclaration")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -87,7 +88,7 @@ class RTEEvent(AbstractEvent, ABC):
 
         # Serialize start_on_event_ref
         if self.start_on_event_ref is not None:
-            serialized = ARObject._serialize_item(self.start_on_event_ref, "RunnableEntity")
+            serialized = SerializationHelper.serialize_item(self.start_on_event_ref, "RunnableEntity")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("START-ON-EVENT-REF")
@@ -116,16 +117,16 @@ class RTEEvent(AbstractEvent, ABC):
 
         # Parse disabled_mode_instance_refs (list from container "DISABLED-MODE-INSTANCE-REFS")
         obj.disabled_mode_instance_refs = []
-        container = ARObject._find_child_element(element, "DISABLED-MODE-INSTANCE-REFS")
+        container = SerializationHelper.find_child_element(element, "DISABLED-MODE-INSTANCE-REFS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.disabled_mode_instance_refs.append(child_value)
 
         # Parse start_on_event_ref
-        child = ARObject._find_child_element(element, "START-ON-EVENT-REF")
+        child = SerializationHelper.find_child_element(element, "START-ON-EVENT-REF")
         if child is not None:
             start_on_event_ref_value = ARRef.deserialize(child)
             obj.start_on_event_ref = start_on_event_ref_value

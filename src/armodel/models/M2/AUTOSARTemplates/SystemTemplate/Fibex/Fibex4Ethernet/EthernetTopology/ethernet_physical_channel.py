@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
     PhysicalChannel,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.network_endpoint import (
     NetworkEndpoint,
 )
@@ -54,7 +55,7 @@ class EthernetPhysicalChannel(PhysicalChannel):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -75,7 +76,7 @@ class EthernetPhysicalChannel(PhysicalChannel):
         if self.network_endpoints:
             wrapper = ET.Element("NETWORK-ENDPOINTS")
             for item in self.network_endpoints:
-                serialized = ARObject._serialize_item(item, "NetworkEndpoint")
+                serialized = SerializationHelper.serialize_item(item, "NetworkEndpoint")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -83,7 +84,7 @@ class EthernetPhysicalChannel(PhysicalChannel):
 
         # Serialize so_ad_config
         if self.so_ad_config is not None:
-            serialized = ARObject._serialize_item(self.so_ad_config, "SoAdConfig")
+            serialized = SerializationHelper.serialize_item(self.so_ad_config, "SoAdConfig")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SO-AD-CONFIG")
@@ -97,7 +98,7 @@ class EthernetPhysicalChannel(PhysicalChannel):
 
         # Serialize vlan
         if self.vlan is not None:
-            serialized = ARObject._serialize_item(self.vlan, "VlanConfig")
+            serialized = SerializationHelper.serialize_item(self.vlan, "VlanConfig")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VLAN")
@@ -126,24 +127,24 @@ class EthernetPhysicalChannel(PhysicalChannel):
 
         # Parse network_endpoints (list from container "NETWORK-ENDPOINTS")
         obj.network_endpoints = []
-        container = ARObject._find_child_element(element, "NETWORK-ENDPOINTS")
+        container = SerializationHelper.find_child_element(element, "NETWORK-ENDPOINTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.network_endpoints.append(child_value)
 
         # Parse so_ad_config
-        child = ARObject._find_child_element(element, "SO-AD-CONFIG")
+        child = SerializationHelper.find_child_element(element, "SO-AD-CONFIG")
         if child is not None:
-            so_ad_config_value = ARObject._deserialize_by_tag(child, "SoAdConfig")
+            so_ad_config_value = SerializationHelper.deserialize_by_tag(child, "SoAdConfig")
             obj.so_ad_config = so_ad_config_value
 
         # Parse vlan
-        child = ARObject._find_child_element(element, "VLAN")
+        child = SerializationHelper.find_child_element(element, "VLAN")
         if child is not None:
-            vlan_value = ARObject._deserialize_by_tag(child, "VlanConfig")
+            vlan_value = SerializationHelper.deserialize_by_tag(child, "VlanConfig")
             obj.vlan = vlan_value
 
         return obj

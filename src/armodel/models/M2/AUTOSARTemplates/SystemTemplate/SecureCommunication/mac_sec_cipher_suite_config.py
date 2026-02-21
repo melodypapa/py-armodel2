@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -40,12 +41,12 @@ class MacSecCipherSuiteConfig(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize cipher_suite
         if self.cipher_suite is not None:
-            serialized = ARObject._serialize_item(self.cipher_suite, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.cipher_suite, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CIPHER-SUITE")
@@ -74,7 +75,7 @@ class MacSecCipherSuiteConfig(ARObject):
         obj.__init__()
 
         # Parse cipher_suite
-        child = ARObject._find_child_element(element, "CIPHER-SUITE")
+        child = SerializationHelper.find_child_element(element, "CIPHER-SUITE")
         if child is not None:
             cipher_suite_value = child.text
             obj.cipher_suite = cipher_suite_value

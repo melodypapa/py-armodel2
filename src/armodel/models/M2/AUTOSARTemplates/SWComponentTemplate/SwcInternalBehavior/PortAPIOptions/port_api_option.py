@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -66,12 +67,12 @@ class PortAPIOption(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize enable_take
         if self.enable_take is not None:
-            serialized = ARObject._serialize_item(self.enable_take, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.enable_take, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ENABLE-TAKE")
@@ -85,7 +86,7 @@ class PortAPIOption(ARObject):
 
         # Serialize error_handling
         if self.error_handling is not None:
-            serialized = ARObject._serialize_item(self.error_handling, "DataTransformation")
+            serialized = SerializationHelper.serialize_item(self.error_handling, "DataTransformation")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ERROR-HANDLING")
@@ -99,7 +100,7 @@ class PortAPIOption(ARObject):
 
         # Serialize indirect_api
         if self.indirect_api is not None:
-            serialized = ARObject._serialize_item(self.indirect_api, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.indirect_api, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INDIRECT-API")
@@ -113,7 +114,7 @@ class PortAPIOption(ARObject):
 
         # Serialize port_ref
         if self.port_ref is not None:
-            serialized = ARObject._serialize_item(self.port_ref, "PortPrototype")
+            serialized = SerializationHelper.serialize_item(self.port_ref, "PortPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PORT-REF")
@@ -129,7 +130,7 @@ class PortAPIOption(ARObject):
         if self.port_arg_values:
             wrapper = ET.Element("PORT-ARG-VALUES")
             for item in self.port_arg_values:
-                serialized = ARObject._serialize_item(item, "PortDefinedArgumentValue")
+                serialized = SerializationHelper.serialize_item(item, "PortDefinedArgumentValue")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -139,7 +140,7 @@ class PortAPIOption(ARObject):
         if self.supporteds:
             wrapper = ET.Element("SUPPORTEDS")
             for item in self.supporteds:
-                serialized = ARObject._serialize_item(item, "SwcSupportedFeature")
+                serialized = SerializationHelper.serialize_item(item, "SwcSupportedFeature")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -147,7 +148,7 @@ class PortAPIOption(ARObject):
 
         # Serialize transformer
         if self.transformer is not None:
-            serialized = ARObject._serialize_item(self.transformer, "DataTransformation")
+            serialized = SerializationHelper.serialize_item(self.transformer, "DataTransformation")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TRANSFORMER")
@@ -176,53 +177,53 @@ class PortAPIOption(ARObject):
         obj.__init__()
 
         # Parse enable_take
-        child = ARObject._find_child_element(element, "ENABLE-TAKE")
+        child = SerializationHelper.find_child_element(element, "ENABLE-TAKE")
         if child is not None:
             enable_take_value = child.text
             obj.enable_take = enable_take_value
 
         # Parse error_handling
-        child = ARObject._find_child_element(element, "ERROR-HANDLING")
+        child = SerializationHelper.find_child_element(element, "ERROR-HANDLING")
         if child is not None:
-            error_handling_value = ARObject._deserialize_by_tag(child, "DataTransformation")
+            error_handling_value = SerializationHelper.deserialize_by_tag(child, "DataTransformation")
             obj.error_handling = error_handling_value
 
         # Parse indirect_api
-        child = ARObject._find_child_element(element, "INDIRECT-API")
+        child = SerializationHelper.find_child_element(element, "INDIRECT-API")
         if child is not None:
             indirect_api_value = child.text
             obj.indirect_api = indirect_api_value
 
         # Parse port_ref
-        child = ARObject._find_child_element(element, "PORT-REF")
+        child = SerializationHelper.find_child_element(element, "PORT-REF")
         if child is not None:
             port_ref_value = ARRef.deserialize(child)
             obj.port_ref = port_ref_value
 
         # Parse port_arg_values (list from container "PORT-ARG-VALUES")
         obj.port_arg_values = []
-        container = ARObject._find_child_element(element, "PORT-ARG-VALUES")
+        container = SerializationHelper.find_child_element(element, "PORT-ARG-VALUES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.port_arg_values.append(child_value)
 
         # Parse supporteds (list from container "SUPPORTEDS")
         obj.supporteds = []
-        container = ARObject._find_child_element(element, "SUPPORTEDS")
+        container = SerializationHelper.find_child_element(element, "SUPPORTEDS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.supporteds.append(child_value)
 
         # Parse transformer
-        child = ARObject._find_child_element(element, "TRANSFORMER")
+        child = SerializationHelper.find_child_element(element, "TRANSFORMER")
         if child is not None:
-            transformer_value = ARObject._deserialize_by_tag(child, "DataTransformation")
+            transformer_value = SerializationHelper.deserialize_by_tag(child, "DataTransformation")
             obj.transformer = transformer_value
 
         return obj

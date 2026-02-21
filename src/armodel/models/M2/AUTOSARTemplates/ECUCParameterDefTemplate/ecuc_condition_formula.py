@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 if TYPE_CHECKING:
@@ -44,12 +45,12 @@ class EcucConditionFormula(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize ecuc_query_ref
         if self.ecuc_query_ref is not None:
-            serialized = ARObject._serialize_item(self.ecuc_query_ref, "EcucQuery")
+            serialized = SerializationHelper.serialize_item(self.ecuc_query_ref, "EcucQuery")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ECUC-QUERY-REF")
@@ -78,7 +79,7 @@ class EcucConditionFormula(ARObject):
         obj.__init__()
 
         # Parse ecuc_query_ref
-        child = ARObject._find_child_element(element, "ECUC-QUERY-REF")
+        child = SerializationHelper.find_child_element(element, "ECUC-QUERY-REF")
         if child is not None:
             ecuc_query_ref_value = ARRef.deserialize(child)
             obj.ecuc_query_ref = ecuc_query_ref_value

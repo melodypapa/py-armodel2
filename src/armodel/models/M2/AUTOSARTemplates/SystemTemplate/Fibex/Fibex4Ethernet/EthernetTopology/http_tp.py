@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
     TransportProtocolConfiguration,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
     UriString,
@@ -55,7 +56,7 @@ class HttpTp(TransportProtocolConfiguration):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -74,7 +75,7 @@ class HttpTp(TransportProtocolConfiguration):
 
         # Serialize content_type
         if self.content_type is not None:
-            serialized = ARObject._serialize_item(self.content_type, "String")
+            serialized = SerializationHelper.serialize_item(self.content_type, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONTENT-TYPE")
@@ -88,7 +89,7 @@ class HttpTp(TransportProtocolConfiguration):
 
         # Serialize protocol_version
         if self.protocol_version is not None:
-            serialized = ARObject._serialize_item(self.protocol_version, "String")
+            serialized = SerializationHelper.serialize_item(self.protocol_version, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PROTOCOL-VERSION")
@@ -102,7 +103,7 @@ class HttpTp(TransportProtocolConfiguration):
 
         # Serialize request_method_enum
         if self.request_method_enum is not None:
-            serialized = ARObject._serialize_item(self.request_method_enum, "Any")
+            serialized = SerializationHelper.serialize_item(self.request_method_enum, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REQUEST-METHOD-ENUM")
@@ -116,7 +117,7 @@ class HttpTp(TransportProtocolConfiguration):
 
         # Serialize tcp_tp_config
         if self.tcp_tp_config is not None:
-            serialized = ARObject._serialize_item(self.tcp_tp_config, "TcpTp")
+            serialized = SerializationHelper.serialize_item(self.tcp_tp_config, "TcpTp")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TCP-TP-CONFIG")
@@ -130,7 +131,7 @@ class HttpTp(TransportProtocolConfiguration):
 
         # Serialize uri
         if self.uri is not None:
-            serialized = ARObject._serialize_item(self.uri, "UriString")
+            serialized = SerializationHelper.serialize_item(self.uri, "UriString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("URI")
@@ -158,31 +159,31 @@ class HttpTp(TransportProtocolConfiguration):
         obj = super(HttpTp, cls).deserialize(element)
 
         # Parse content_type
-        child = ARObject._find_child_element(element, "CONTENT-TYPE")
+        child = SerializationHelper.find_child_element(element, "CONTENT-TYPE")
         if child is not None:
             content_type_value = child.text
             obj.content_type = content_type_value
 
         # Parse protocol_version
-        child = ARObject._find_child_element(element, "PROTOCOL-VERSION")
+        child = SerializationHelper.find_child_element(element, "PROTOCOL-VERSION")
         if child is not None:
             protocol_version_value = child.text
             obj.protocol_version = protocol_version_value
 
         # Parse request_method_enum
-        child = ARObject._find_child_element(element, "REQUEST-METHOD-ENUM")
+        child = SerializationHelper.find_child_element(element, "REQUEST-METHOD-ENUM")
         if child is not None:
             request_method_enum_value = child.text
             obj.request_method_enum = request_method_enum_value
 
         # Parse tcp_tp_config
-        child = ARObject._find_child_element(element, "TCP-TP-CONFIG")
+        child = SerializationHelper.find_child_element(element, "TCP-TP-CONFIG")
         if child is not None:
-            tcp_tp_config_value = ARObject._deserialize_by_tag(child, "TcpTp")
+            tcp_tp_config_value = SerializationHelper.deserialize_by_tag(child, "TcpTp")
             obj.tcp_tp_config = tcp_tp_config_value
 
         # Parse uri
-        child = ARObject._find_child_element(element, "URI")
+        child = SerializationHelper.find_child_element(element, "URI")
         if child is not None:
             uri_value = child.text
             obj.uri = uri_value

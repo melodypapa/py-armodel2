@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes import (
     ArraySizeSemanticsEnum,
 )
@@ -59,7 +60,7 @@ class DiagnosticDataElement(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -78,7 +79,7 @@ class DiagnosticDataElement(Identifiable):
 
         # Serialize array_size
         if self.array_size is not None:
-            serialized = ARObject._serialize_item(self.array_size, "ArraySizeSemanticsEnum")
+            serialized = SerializationHelper.serialize_item(self.array_size, "ArraySizeSemanticsEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ARRAY-SIZE")
@@ -92,7 +93,7 @@ class DiagnosticDataElement(Identifiable):
 
         # Serialize max_number_of
         if self.max_number_of is not None:
-            serialized = ARObject._serialize_item(self.max_number_of, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.max_number_of, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-NUMBER-OF")
@@ -106,7 +107,7 @@ class DiagnosticDataElement(Identifiable):
 
         # Serialize scaling_info_size
         if self.scaling_info_size is not None:
-            serialized = ARObject._serialize_item(self.scaling_info_size, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.scaling_info_size, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SCALING-INFO-SIZE")
@@ -120,7 +121,7 @@ class DiagnosticDataElement(Identifiable):
 
         # Serialize sw_data_def
         if self.sw_data_def is not None:
-            serialized = ARObject._serialize_item(self.sw_data_def, "SwDataDefProps")
+            serialized = SerializationHelper.serialize_item(self.sw_data_def, "SwDataDefProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-DATA-DEF")
@@ -148,27 +149,27 @@ class DiagnosticDataElement(Identifiable):
         obj = super(DiagnosticDataElement, cls).deserialize(element)
 
         # Parse array_size
-        child = ARObject._find_child_element(element, "ARRAY-SIZE")
+        child = SerializationHelper.find_child_element(element, "ARRAY-SIZE")
         if child is not None:
             array_size_value = ArraySizeSemanticsEnum.deserialize(child)
             obj.array_size = array_size_value
 
         # Parse max_number_of
-        child = ARObject._find_child_element(element, "MAX-NUMBER-OF")
+        child = SerializationHelper.find_child_element(element, "MAX-NUMBER-OF")
         if child is not None:
             max_number_of_value = child.text
             obj.max_number_of = max_number_of_value
 
         # Parse scaling_info_size
-        child = ARObject._find_child_element(element, "SCALING-INFO-SIZE")
+        child = SerializationHelper.find_child_element(element, "SCALING-INFO-SIZE")
         if child is not None:
             scaling_info_size_value = child.text
             obj.scaling_info_size = scaling_info_size_value
 
         # Parse sw_data_def
-        child = ARObject._find_child_element(element, "SW-DATA-DEF")
+        child = SerializationHelper.find_child_element(element, "SW-DATA-DEF")
         if child is not None:
-            sw_data_def_value = ARObject._deserialize_by_tag(child, "SwDataDefProps")
+            sw_data_def_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
             obj.sw_data_def = sw_data_def_value
 
         return obj

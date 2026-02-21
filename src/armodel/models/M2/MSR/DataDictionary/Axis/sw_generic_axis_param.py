@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
@@ -38,12 +39,12 @@ class SwGenericAxisParam(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize sw_generic_axis_param_ref
         if self.sw_generic_axis_param_ref is not None:
-            serialized = ARObject._serialize_item(self.sw_generic_axis_param_ref, "SwGenericAxisParam")
+            serialized = SerializationHelper.serialize_item(self.sw_generic_axis_param_ref, "SwGenericAxisParam")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-GENERIC-AXIS-PARAM-REF")
@@ -72,7 +73,7 @@ class SwGenericAxisParam(ARObject):
         obj.__init__()
 
         # Parse sw_generic_axis_param_ref
-        child = ARObject._find_child_element(element, "SW-GENERIC-AXIS-PARAM-REF")
+        child = SerializationHelper.find_child_element(element, "SW-GENERIC-AXIS-PARAM-REF")
         if child is not None:
             sw_generic_axis_param_ref_value = ARRef.deserialize(child)
             obj.sw_generic_axis_param_ref = sw_generic_axis_param_ref_value

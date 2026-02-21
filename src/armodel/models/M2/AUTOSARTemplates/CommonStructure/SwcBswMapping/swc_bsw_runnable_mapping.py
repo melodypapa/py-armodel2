@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_module_entity import (
     BswModuleEntity,
@@ -46,12 +47,12 @@ class SwcBswRunnableMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize bsw_entity_ref
         if self.bsw_entity_ref is not None:
-            serialized = ARObject._serialize_item(self.bsw_entity_ref, "BswModuleEntity")
+            serialized = SerializationHelper.serialize_item(self.bsw_entity_ref, "BswModuleEntity")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BSW-ENTITY-REF")
@@ -65,7 +66,7 @@ class SwcBswRunnableMapping(ARObject):
 
         # Serialize swc_runnable_ref
         if self.swc_runnable_ref is not None:
-            serialized = ARObject._serialize_item(self.swc_runnable_ref, "RunnableEntity")
+            serialized = SerializationHelper.serialize_item(self.swc_runnable_ref, "RunnableEntity")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SWC-RUNNABLE-REF")
@@ -94,13 +95,13 @@ class SwcBswRunnableMapping(ARObject):
         obj.__init__()
 
         # Parse bsw_entity_ref
-        child = ARObject._find_child_element(element, "BSW-ENTITY-REF")
+        child = SerializationHelper.find_child_element(element, "BSW-ENTITY-REF")
         if child is not None:
             bsw_entity_ref_value = ARRef.deserialize(child)
             obj.bsw_entity_ref = bsw_entity_ref_value
 
         # Parse swc_runnable_ref
-        child = ARObject._find_child_element(element, "SWC-RUNNABLE-REF")
+        child = SerializationHelper.find_child_element(element, "SWC-RUNNABLE-REF")
         if child is not None:
             swc_runnable_ref_value = ARRef.deserialize(child)
             obj.swc_runnable_ref = swc_runnable_ref_value

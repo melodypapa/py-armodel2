@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.Documentation.TextModel.SingleLanguageData.single_language_unit_names import (
     SingleLanguageUnitNames,
@@ -56,12 +57,12 @@ class SwValueCont(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize sw_arraysize_ref
         if self.sw_arraysize_ref is not None:
-            serialized = ARObject._serialize_item(self.sw_arraysize_ref, "ValueList")
+            serialized = SerializationHelper.serialize_item(self.sw_arraysize_ref, "ValueList")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-ARRAYSIZE-REF")
@@ -75,7 +76,7 @@ class SwValueCont(ARObject):
 
         # Serialize sw_values_phys
         if self.sw_values_phys is not None:
-            serialized = ARObject._serialize_item(self.sw_values_phys, "SwValues")
+            serialized = SerializationHelper.serialize_item(self.sw_values_phys, "SwValues")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-VALUES-PHYS")
@@ -89,7 +90,7 @@ class SwValueCont(ARObject):
 
         # Serialize unit_ref
         if self.unit_ref is not None:
-            serialized = ARObject._serialize_item(self.unit_ref, "Unit")
+            serialized = SerializationHelper.serialize_item(self.unit_ref, "Unit")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("UNIT-REF")
@@ -103,7 +104,7 @@ class SwValueCont(ARObject):
 
         # Serialize unit_display
         if self.unit_display is not None:
-            serialized = ARObject._serialize_item(self.unit_display, "SingleLanguageUnitNames")
+            serialized = SerializationHelper.serialize_item(self.unit_display, "SingleLanguageUnitNames")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("UNIT-DISPLAY")
@@ -132,27 +133,27 @@ class SwValueCont(ARObject):
         obj.__init__()
 
         # Parse sw_arraysize_ref
-        child = ARObject._find_child_element(element, "SW-ARRAYSIZE-REF")
+        child = SerializationHelper.find_child_element(element, "SW-ARRAYSIZE-REF")
         if child is not None:
             sw_arraysize_ref_value = ARRef.deserialize(child)
             obj.sw_arraysize_ref = sw_arraysize_ref_value
 
         # Parse sw_values_phys
-        child = ARObject._find_child_element(element, "SW-VALUES-PHYS")
+        child = SerializationHelper.find_child_element(element, "SW-VALUES-PHYS")
         if child is not None:
-            sw_values_phys_value = ARObject._deserialize_by_tag(child, "SwValues")
+            sw_values_phys_value = SerializationHelper.deserialize_by_tag(child, "SwValues")
             obj.sw_values_phys = sw_values_phys_value
 
         # Parse unit_ref
-        child = ARObject._find_child_element(element, "UNIT-REF")
+        child = SerializationHelper.find_child_element(element, "UNIT-REF")
         if child is not None:
             unit_ref_value = ARRef.deserialize(child)
             obj.unit_ref = unit_ref_value
 
         # Parse unit_display
-        child = ARObject._find_child_element(element, "UNIT-DISPLAY")
+        child = SerializationHelper.find_child_element(element, "UNIT-DISPLAY")
         if child is not None:
-            unit_display_value = ARObject._deserialize_by_tag(child, "SingleLanguageUnitNames")
+            unit_display_value = SerializationHelper.deserialize_by_tag(child, "SingleLanguageUnitNames")
             obj.unit_display = unit_display_value
 
         return obj

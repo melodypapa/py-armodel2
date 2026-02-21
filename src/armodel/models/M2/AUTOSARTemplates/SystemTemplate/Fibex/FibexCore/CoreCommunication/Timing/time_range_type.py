@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
 )
@@ -42,12 +43,12 @@ class TimeRangeType(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize tolerance_tolerance
         if self.tolerance_tolerance is not None:
-            serialized = ARObject._serialize_item(self.tolerance_tolerance, "TimeRangeType")
+            serialized = SerializationHelper.serialize_item(self.tolerance_tolerance, "TimeRangeType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TOLERANCE-TOLERANCE")
@@ -61,7 +62,7 @@ class TimeRangeType(ARObject):
 
         # Serialize value
         if self.value is not None:
-            serialized = ARObject._serialize_item(self.value, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.value, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VALUE")
@@ -90,13 +91,13 @@ class TimeRangeType(ARObject):
         obj.__init__()
 
         # Parse tolerance_tolerance
-        child = ARObject._find_child_element(element, "TOLERANCE-TOLERANCE")
+        child = SerializationHelper.find_child_element(element, "TOLERANCE-TOLERANCE")
         if child is not None:
-            tolerance_tolerance_value = ARObject._deserialize_by_tag(child, "TimeRangeType")
+            tolerance_tolerance_value = SerializationHelper.deserialize_by_tag(child, "TimeRangeType")
             obj.tolerance_tolerance = tolerance_tolerance_value
 
         # Parse value
-        child = ARObject._find_child_element(element, "VALUE")
+        child = SerializationHelper.find_child_element(element, "VALUE")
         if child is not None:
             value_value = child.text
             obj.value = value_value

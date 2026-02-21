@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -45,7 +46,7 @@ class MacSecGlobalKayProps(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class MacSecGlobalKayProps(ARElement):
 
         # Serialize bypass_ether
         if self.bypass_ether is not None:
-            serialized = ARObject._serialize_item(self.bypass_ether, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.bypass_ether, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BYPASS-ETHER")
@@ -78,7 +79,7 @@ class MacSecGlobalKayProps(ARElement):
 
         # Serialize bypass_vlan
         if self.bypass_vlan is not None:
-            serialized = ARObject._serialize_item(self.bypass_vlan, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.bypass_vlan, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BYPASS-VLAN")
@@ -106,13 +107,13 @@ class MacSecGlobalKayProps(ARElement):
         obj = super(MacSecGlobalKayProps, cls).deserialize(element)
 
         # Parse bypass_ether
-        child = ARObject._find_child_element(element, "BYPASS-ETHER")
+        child = SerializationHelper.find_child_element(element, "BYPASS-ETHER")
         if child is not None:
             bypass_ether_value = child.text
             obj.bypass_ether = bypass_ether_value
 
         # Parse bypass_vlan
-        child = ARObject._find_child_element(element, "BYPASS-VLAN")
+        child = SerializationHelper.find_child_element(element, "BYPASS-VLAN")
         if child is not None:
             bypass_vlan_value = child.text
             obj.bypass_vlan = bypass_vlan_value

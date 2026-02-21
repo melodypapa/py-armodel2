@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
@@ -41,7 +42,7 @@ class DiagnosticRequestFileTransfer(DiagnosticServiceInstance):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -60,7 +61,7 @@ class DiagnosticRequestFileTransfer(DiagnosticServiceInstance):
 
         # Serialize request_file_ref
         if self.request_file_ref is not None:
-            serialized = ARObject._serialize_item(self.request_file_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.request_file_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REQUEST-FILE-REF")
@@ -88,7 +89,7 @@ class DiagnosticRequestFileTransfer(DiagnosticServiceInstance):
         obj = super(DiagnosticRequestFileTransfer, cls).deserialize(element)
 
         # Parse request_file_ref
-        child = ARObject._find_child_element(element, "REQUEST-FILE-REF")
+        child = SerializationHelper.find_child_element(element, "REQUEST-FILE-REF")
         if child is not None:
             request_file_ref_value = ARRef.deserialize(child)
             obj.request_file_ref = request_file_ref_value

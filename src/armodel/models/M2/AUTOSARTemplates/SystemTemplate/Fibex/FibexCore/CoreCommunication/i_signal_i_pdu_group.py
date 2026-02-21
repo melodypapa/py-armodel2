@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_ele
     FibexElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
@@ -57,7 +58,7 @@ class ISignalIPduGroup(FibexElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -76,7 +77,7 @@ class ISignalIPduGroup(FibexElement):
 
         # Serialize communication
         if self.communication is not None:
-            serialized = ARObject._serialize_item(self.communication, "String")
+            serialized = SerializationHelper.serialize_item(self.communication, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COMMUNICATION")
@@ -92,7 +93,7 @@ class ISignalIPduGroup(FibexElement):
         if self.contained_refs:
             wrapper = ET.Element("CONTAINED-REFS")
             for item in self.contained_refs:
-                serialized = ARObject._serialize_item(item, "ISignalIPduGroup")
+                serialized = SerializationHelper.serialize_item(item, "ISignalIPduGroup")
                 if serialized is not None:
                     child_elem = ET.Element("CONTAINED-REF")
                     if hasattr(serialized, 'attrib'):
@@ -109,7 +110,7 @@ class ISignalIPduGroup(FibexElement):
         if self.i_signal_i_pdu_refs:
             wrapper = ET.Element("I-SIGNAL-I-PDU-REFS")
             for item in self.i_signal_i_pdu_refs:
-                serialized = ARObject._serialize_item(item, "ISignalIPdu")
+                serialized = SerializationHelper.serialize_item(item, "ISignalIPdu")
                 if serialized is not None:
                     child_elem = ET.Element("I-SIGNAL-I-PDU-REF")
                     if hasattr(serialized, 'attrib'):
@@ -126,7 +127,7 @@ class ISignalIPduGroup(FibexElement):
         if self.nm_pdu_refs:
             wrapper = ET.Element("NM-PDU-REFS")
             for item in self.nm_pdu_refs:
-                serialized = ARObject._serialize_item(item, "NmPdu")
+                serialized = SerializationHelper.serialize_item(item, "NmPdu")
                 if serialized is not None:
                     child_elem = ET.Element("NM-PDU-REF")
                     if hasattr(serialized, 'attrib'):
@@ -155,56 +156,56 @@ class ISignalIPduGroup(FibexElement):
         obj = super(ISignalIPduGroup, cls).deserialize(element)
 
         # Parse communication
-        child = ARObject._find_child_element(element, "COMMUNICATION")
+        child = SerializationHelper.find_child_element(element, "COMMUNICATION")
         if child is not None:
             communication_value = child.text
             obj.communication = communication_value
 
         # Parse contained_refs (list from container "CONTAINED-REFS")
         obj.contained_refs = []
-        container = ARObject._find_child_element(element, "CONTAINED-REFS")
+        container = SerializationHelper.find_child_element(element, "CONTAINED-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.contained_refs.append(child_value)
 
         # Parse i_signal_i_pdu_refs (list from container "I-SIGNAL-I-PDU-REFS")
         obj.i_signal_i_pdu_refs = []
-        container = ARObject._find_child_element(element, "I-SIGNAL-I-PDU-REFS")
+        container = SerializationHelper.find_child_element(element, "I-SIGNAL-I-PDU-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.i_signal_i_pdu_refs.append(child_value)
 
         # Parse nm_pdu_refs (list from container "NM-PDU-REFS")
         obj.nm_pdu_refs = []
-        container = ARObject._find_child_element(element, "NM-PDU-REFS")
+        container = SerializationHelper.find_child_element(element, "NM-PDU-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.nm_pdu_refs.append(child_value)
 

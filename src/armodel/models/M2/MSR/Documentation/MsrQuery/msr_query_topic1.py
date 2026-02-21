@@ -13,6 +13,7 @@ from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginat
     Paginateable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.Documentation.MsrQuery.msr_query_props import (
     MsrQueryProps,
 )
@@ -48,7 +49,7 @@ class MsrQueryTopic1(Paginateable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -67,7 +68,7 @@ class MsrQueryTopic1(Paginateable):
 
         # Serialize msr_query_props
         if self.msr_query_props is not None:
-            serialized = ARObject._serialize_item(self.msr_query_props, "MsrQueryProps")
+            serialized = SerializationHelper.serialize_item(self.msr_query_props, "MsrQueryProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MSR-QUERY-PROPS")
@@ -81,7 +82,7 @@ class MsrQueryTopic1(Paginateable):
 
         # Serialize msr_query_result_topic1
         if self.msr_query_result_topic1 is not None:
-            serialized = ARObject._serialize_item(self.msr_query_result_topic1, "MsrQueryResultTopic1")
+            serialized = SerializationHelper.serialize_item(self.msr_query_result_topic1, "MsrQueryResultTopic1")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MSR-QUERY-RESULT-TOPIC1")
@@ -109,15 +110,15 @@ class MsrQueryTopic1(Paginateable):
         obj = super(MsrQueryTopic1, cls).deserialize(element)
 
         # Parse msr_query_props
-        child = ARObject._find_child_element(element, "MSR-QUERY-PROPS")
+        child = SerializationHelper.find_child_element(element, "MSR-QUERY-PROPS")
         if child is not None:
-            msr_query_props_value = ARObject._deserialize_by_tag(child, "MsrQueryProps")
+            msr_query_props_value = SerializationHelper.deserialize_by_tag(child, "MsrQueryProps")
             obj.msr_query_props = msr_query_props_value
 
         # Parse msr_query_result_topic1
-        child = ARObject._find_child_element(element, "MSR-QUERY-RESULT-TOPIC1")
+        child = SerializationHelper.find_child_element(element, "MSR-QUERY-RESULT-TOPIC1")
         if child is not None:
-            msr_query_result_topic1_value = ARObject._deserialize_by_tag(child, "MsrQueryResultTopic1")
+            msr_query_result_topic1_value = SerializationHelper.deserialize_by_tag(child, "MsrQueryResultTopic1")
             obj.msr_query_result_topic1 = msr_query_result_topic1_value
 
         return obj

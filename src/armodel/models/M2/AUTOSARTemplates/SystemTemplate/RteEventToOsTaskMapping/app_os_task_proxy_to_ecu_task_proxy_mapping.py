@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
@@ -51,7 +52,7 @@ class AppOsTaskProxyToEcuTaskProxyMapping(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -70,7 +71,7 @@ class AppOsTaskProxyToEcuTaskProxyMapping(Identifiable):
 
         # Serialize app_task_proxy_ref
         if self.app_task_proxy_ref is not None:
-            serialized = ARObject._serialize_item(self.app_task_proxy_ref, "OsTaskProxy")
+            serialized = SerializationHelper.serialize_item(self.app_task_proxy_ref, "OsTaskProxy")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("APP-TASK-PROXY-REF")
@@ -84,7 +85,7 @@ class AppOsTaskProxyToEcuTaskProxyMapping(Identifiable):
 
         # Serialize ecu_task_proxy_ref
         if self.ecu_task_proxy_ref is not None:
-            serialized = ARObject._serialize_item(self.ecu_task_proxy_ref, "OsTaskProxy")
+            serialized = SerializationHelper.serialize_item(self.ecu_task_proxy_ref, "OsTaskProxy")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ECU-TASK-PROXY-REF")
@@ -98,7 +99,7 @@ class AppOsTaskProxyToEcuTaskProxyMapping(Identifiable):
 
         # Serialize offset
         if self.offset is not None:
-            serialized = ARObject._serialize_item(self.offset, "Integer")
+            serialized = SerializationHelper.serialize_item(self.offset, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("OFFSET")
@@ -126,19 +127,19 @@ class AppOsTaskProxyToEcuTaskProxyMapping(Identifiable):
         obj = super(AppOsTaskProxyToEcuTaskProxyMapping, cls).deserialize(element)
 
         # Parse app_task_proxy_ref
-        child = ARObject._find_child_element(element, "APP-TASK-PROXY-REF")
+        child = SerializationHelper.find_child_element(element, "APP-TASK-PROXY-REF")
         if child is not None:
             app_task_proxy_ref_value = ARRef.deserialize(child)
             obj.app_task_proxy_ref = app_task_proxy_ref_value
 
         # Parse ecu_task_proxy_ref
-        child = ARObject._find_child_element(element, "ECU-TASK-PROXY-REF")
+        child = SerializationHelper.find_child_element(element, "ECU-TASK-PROXY-REF")
         if child is not None:
             ecu_task_proxy_ref_value = ARRef.deserialize(child)
             obj.ecu_task_proxy_ref = ecu_task_proxy_ref_value
 
         # Parse offset
-        child = ARObject._find_child_element(element, "OFFSET")
+        child = SerializationHelper.find_child_element(element, "OFFSET")
         if child is not None:
             offset_value = child.text
             obj.offset = offset_value

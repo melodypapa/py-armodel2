@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -46,12 +47,12 @@ class DiagnosticControlEnableMaskBit(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize bit_number
         if self.bit_number is not None:
-            serialized = ARObject._serialize_item(self.bit_number, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.bit_number, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BIT-NUMBER")
@@ -67,7 +68,7 @@ class DiagnosticControlEnableMaskBit(ARObject):
         if self.controlled_data_refs:
             wrapper = ET.Element("CONTROLLED-DATA-REFS")
             for item in self.controlled_data_refs:
-                serialized = ARObject._serialize_item(item, "DiagnosticDataElement")
+                serialized = SerializationHelper.serialize_item(item, "DiagnosticDataElement")
                 if serialized is not None:
                     child_elem = ET.Element("CONTROLLED-DATA-REF")
                     if hasattr(serialized, 'attrib'):
@@ -97,24 +98,24 @@ class DiagnosticControlEnableMaskBit(ARObject):
         obj.__init__()
 
         # Parse bit_number
-        child = ARObject._find_child_element(element, "BIT-NUMBER")
+        child = SerializationHelper.find_child_element(element, "BIT-NUMBER")
         if child is not None:
             bit_number_value = child.text
             obj.bit_number = bit_number_value
 
         # Parse controlled_data_refs (list from container "CONTROLLED-DATA-REFS")
         obj.controlled_data_refs = []
-        container = ARObject._find_child_element(element, "CONTROLLED-DATA-REFS")
+        container = SerializationHelper.find_child_element(element, "CONTROLLED-DATA-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.controlled_data_refs.append(child_value)
 

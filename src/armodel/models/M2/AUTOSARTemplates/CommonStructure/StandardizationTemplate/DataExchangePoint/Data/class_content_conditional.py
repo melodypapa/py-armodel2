@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.abstract_condition import (
     AbstractCondition,
 )
@@ -58,7 +59,7 @@ class ClassContentConditional(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -79,7 +80,7 @@ class ClassContentConditional(Identifiable):
         if self.attributes:
             wrapper = ET.Element("ATTRIBUTES")
             for item in self.attributes:
-                serialized = ARObject._serialize_item(item, "AttributeTailoring")
+                serialized = SerializationHelper.serialize_item(item, "AttributeTailoring")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -87,7 +88,7 @@ class ClassContentConditional(Identifiable):
 
         # Serialize condition
         if self.condition is not None:
-            serialized = ARObject._serialize_item(self.condition, "AbstractCondition")
+            serialized = SerializationHelper.serialize_item(self.condition, "AbstractCondition")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONDITION")
@@ -103,7 +104,7 @@ class ClassContentConditional(Identifiable):
         if self.constraints:
             wrapper = ET.Element("CONSTRAINTS")
             for item in self.constraints:
-                serialized = ARObject._serialize_item(item, "ConstraintTailoring")
+                serialized = SerializationHelper.serialize_item(item, "ConstraintTailoring")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -113,7 +114,7 @@ class ClassContentConditional(Identifiable):
         if self.sdg_tailorings:
             wrapper = ET.Element("SDG-TAILORINGS")
             for item in self.sdg_tailorings:
-                serialized = ARObject._serialize_item(item, "SdgTailoring")
+                serialized = SerializationHelper.serialize_item(item, "SdgTailoring")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -136,37 +137,37 @@ class ClassContentConditional(Identifiable):
 
         # Parse attributes (list from container "ATTRIBUTES")
         obj.attributes = []
-        container = ARObject._find_child_element(element, "ATTRIBUTES")
+        container = SerializationHelper.find_child_element(element, "ATTRIBUTES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.attributes.append(child_value)
 
         # Parse condition
-        child = ARObject._find_child_element(element, "CONDITION")
+        child = SerializationHelper.find_child_element(element, "CONDITION")
         if child is not None:
-            condition_value = ARObject._deserialize_by_tag(child, "AbstractCondition")
+            condition_value = SerializationHelper.deserialize_by_tag(child, "AbstractCondition")
             obj.condition = condition_value
 
         # Parse constraints (list from container "CONSTRAINTS")
         obj.constraints = []
-        container = ARObject._find_child_element(element, "CONSTRAINTS")
+        container = SerializationHelper.find_child_element(element, "CONSTRAINTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.constraints.append(child_value)
 
         # Parse sdg_tailorings (list from container "SDG-TAILORINGS")
         obj.sdg_tailorings = []
-        container = ARObject._find_child_element(element, "SDG-TAILORINGS")
+        container = SerializationHelper.find_child_element(element, "SDG-TAILORINGS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.sdg_tailorings.append(child_value)
 

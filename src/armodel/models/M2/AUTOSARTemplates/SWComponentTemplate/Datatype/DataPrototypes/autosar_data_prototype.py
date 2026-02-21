@@ -16,6 +16,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
     DataPrototype,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.autosar_data_type import (
     AutosarDataType,
@@ -48,7 +49,7 @@ class AutosarDataPrototype(DataPrototype, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -67,7 +68,7 @@ class AutosarDataPrototype(DataPrototype, ABC):
 
         # Serialize type_ref
         if self.type_ref is not None:
-            serialized = ARObject._serialize_item(self.type_ref, "AutosarDataType")
+            serialized = SerializationHelper.serialize_item(self.type_ref, "AutosarDataType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TYPE-TREF")
@@ -95,7 +96,7 @@ class AutosarDataPrototype(DataPrototype, ABC):
         obj = super(AutosarDataPrototype, cls).deserialize(element)
 
         # Parse type_ref
-        child = ARObject._find_child_element(element, "TYPE-TREF")
+        child = SerializationHelper.find_child_element(element, "TYPE-TREF")
         if child is not None:
             type_ref_value = ARRef.deserialize(child)
             obj.type_ref = type_ref_value

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.EnvironmentalCondi
     DiagnosticEnvConditionFormulaPart,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.EnvironmentalCondition import (
     DiagnosticLogicalOperatorEnum,
 )
@@ -48,7 +49,7 @@ class DiagnosticEnvConditionFormula(DiagnosticEnvConditionFormulaPart):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -67,7 +68,7 @@ class DiagnosticEnvConditionFormula(DiagnosticEnvConditionFormulaPart):
 
         # Serialize nrc_value
         if self.nrc_value is not None:
-            serialized = ARObject._serialize_item(self.nrc_value, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.nrc_value, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NRC-VALUE")
@@ -81,7 +82,7 @@ class DiagnosticEnvConditionFormula(DiagnosticEnvConditionFormulaPart):
 
         # Serialize op
         if self.op is not None:
-            serialized = ARObject._serialize_item(self.op, "DiagnosticLogicalOperatorEnum")
+            serialized = SerializationHelper.serialize_item(self.op, "DiagnosticLogicalOperatorEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("OP")
@@ -109,13 +110,13 @@ class DiagnosticEnvConditionFormula(DiagnosticEnvConditionFormulaPart):
         obj = super(DiagnosticEnvConditionFormula, cls).deserialize(element)
 
         # Parse nrc_value
-        child = ARObject._find_child_element(element, "NRC-VALUE")
+        child = SerializationHelper.find_child_element(element, "NRC-VALUE")
         if child is not None:
             nrc_value_value = child.text
             obj.nrc_value = nrc_value_value
 
         # Parse op
-        child = ARObject._find_child_element(element, "OP")
+        child = SerializationHelper.find_child_element(element, "OP")
         if child is not None:
             op_value = DiagnosticLogicalOperatorEnum.deserialize(child)
             obj.op = op_value

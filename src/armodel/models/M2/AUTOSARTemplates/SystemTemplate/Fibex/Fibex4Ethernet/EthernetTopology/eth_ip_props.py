@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.ipv4_props import (
     Ipv4Props,
 )
@@ -48,7 +49,7 @@ class EthIpProps(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -67,7 +68,7 @@ class EthIpProps(ARElement):
 
         # Serialize ipv4_props
         if self.ipv4_props is not None:
-            serialized = ARObject._serialize_item(self.ipv4_props, "Ipv4Props")
+            serialized = SerializationHelper.serialize_item(self.ipv4_props, "Ipv4Props")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IPV4-PROPS")
@@ -81,7 +82,7 @@ class EthIpProps(ARElement):
 
         # Serialize ipv6_props
         if self.ipv6_props is not None:
-            serialized = ARObject._serialize_item(self.ipv6_props, "Ipv6Props")
+            serialized = SerializationHelper.serialize_item(self.ipv6_props, "Ipv6Props")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IPV6-PROPS")
@@ -109,15 +110,15 @@ class EthIpProps(ARElement):
         obj = super(EthIpProps, cls).deserialize(element)
 
         # Parse ipv4_props
-        child = ARObject._find_child_element(element, "IPV4-PROPS")
+        child = SerializationHelper.find_child_element(element, "IPV4-PROPS")
         if child is not None:
-            ipv4_props_value = ARObject._deserialize_by_tag(child, "Ipv4Props")
+            ipv4_props_value = SerializationHelper.deserialize_by_tag(child, "Ipv4Props")
             obj.ipv4_props = ipv4_props_value
 
         # Parse ipv6_props
-        child = ARObject._find_child_element(element, "IPV6-PROPS")
+        child = SerializationHelper.find_child_element(element, "IPV6-PROPS")
         if child is not None:
-            ipv6_props_value = ARObject._deserialize_by_tag(child, "Ipv6Props")
+            ipv6_props_value = SerializationHelper.deserialize_by_tag(child, "Ipv6Props")
             obj.ipv6_props = ipv6_props_value
 
         return obj

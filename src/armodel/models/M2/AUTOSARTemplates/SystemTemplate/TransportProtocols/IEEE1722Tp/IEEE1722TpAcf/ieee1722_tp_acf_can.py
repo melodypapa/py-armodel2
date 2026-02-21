@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE17
     IEEE1722TpAcfBus,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class IEEE1722TpAcfCan(IEEE1722TpAcfBus):
@@ -40,7 +41,7 @@ class IEEE1722TpAcfCan(IEEE1722TpAcfBus):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -59,7 +60,7 @@ class IEEE1722TpAcfCan(IEEE1722TpAcfBus):
 
         # Serialize message_type_message_type_enum
         if self.message_type_message_type_enum is not None:
-            serialized = ARObject._serialize_item(self.message_type_message_type_enum, "IEEE1722TpAcfCan")
+            serialized = SerializationHelper.serialize_item(self.message_type_message_type_enum, "IEEE1722TpAcfCan")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MESSAGE-TYPE-MESSAGE-TYPE-ENUM")
@@ -87,9 +88,9 @@ class IEEE1722TpAcfCan(IEEE1722TpAcfBus):
         obj = super(IEEE1722TpAcfCan, cls).deserialize(element)
 
         # Parse message_type_message_type_enum
-        child = ARObject._find_child_element(element, "MESSAGE-TYPE-MESSAGE-TYPE-ENUM")
+        child = SerializationHelper.find_child_element(element, "MESSAGE-TYPE-MESSAGE-TYPE-ENUM")
         if child is not None:
-            message_type_message_type_enum_value = ARObject._deserialize_by_tag(child, "IEEE1722TpAcfCan")
+            message_type_message_type_enum_value = SerializationHelper.deserialize_by_tag(child, "IEEE1722TpAcfCan")
             obj.message_type_message_type_enum = message_type_message_type_enum_value
 
         return obj

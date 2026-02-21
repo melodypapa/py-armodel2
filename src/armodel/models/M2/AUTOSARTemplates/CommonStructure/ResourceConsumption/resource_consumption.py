@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.AccessCount.access_count_set import (
     AccessCountSet,
@@ -71,7 +72,7 @@ class ResourceConsumption(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -92,7 +93,7 @@ class ResourceConsumption(Identifiable):
         if self.access_count_set_refs:
             wrapper = ET.Element("ACCESS-COUNT-SET-REFS")
             for item in self.access_count_set_refs:
-                serialized = ARObject._serialize_item(item, "AccessCountSet")
+                serialized = SerializationHelper.serialize_item(item, "AccessCountSet")
                 if serialized is not None:
                     child_elem = ET.Element("ACCESS-COUNT-SET-REF")
                     if hasattr(serialized, 'attrib'):
@@ -109,7 +110,7 @@ class ResourceConsumption(Identifiable):
         if self.execution_times:
             wrapper = ET.Element("EXECUTION-TIMES")
             for item in self.execution_times:
-                serialized = ARObject._serialize_item(item, "ExecutionTime")
+                serialized = SerializationHelper.serialize_item(item, "ExecutionTime")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -119,7 +120,7 @@ class ResourceConsumption(Identifiable):
         if self.heap_usages:
             wrapper = ET.Element("HEAP-USAGES")
             for item in self.heap_usages:
-                serialized = ARObject._serialize_item(item, "HeapUsage")
+                serialized = SerializationHelper.serialize_item(item, "HeapUsage")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -129,7 +130,7 @@ class ResourceConsumption(Identifiable):
         if self.memory_sections:
             wrapper = ET.Element("MEMORY-SECTIONS")
             for item in self.memory_sections:
-                serialized = ARObject._serialize_item(item, "MemorySection")
+                serialized = SerializationHelper.serialize_item(item, "MemorySection")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -139,7 +140,7 @@ class ResourceConsumption(Identifiable):
         if self.section_name_prefixes:
             wrapper = ET.Element("SECTION-NAME-PREFIXES")
             for item in self.section_name_prefixes:
-                serialized = ARObject._serialize_item(item, "SectionNamePrefix")
+                serialized = SerializationHelper.serialize_item(item, "SectionNamePrefix")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -149,7 +150,7 @@ class ResourceConsumption(Identifiable):
         if self.stack_usages:
             wrapper = ET.Element("STACK-USAGES")
             for item in self.stack_usages:
-                serialized = ARObject._serialize_item(item, "StackUsage")
+                serialized = SerializationHelper.serialize_item(item, "StackUsage")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -172,67 +173,67 @@ class ResourceConsumption(Identifiable):
 
         # Parse access_count_set_refs (list from container "ACCESS-COUNT-SET-REFS")
         obj.access_count_set_refs = []
-        container = ARObject._find_child_element(element, "ACCESS-COUNT-SET-REFS")
+        container = SerializationHelper.find_child_element(element, "ACCESS-COUNT-SET-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.access_count_set_refs.append(child_value)
 
         # Parse execution_times (list from container "EXECUTION-TIMES")
         obj.execution_times = []
-        container = ARObject._find_child_element(element, "EXECUTION-TIMES")
+        container = SerializationHelper.find_child_element(element, "EXECUTION-TIMES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.execution_times.append(child_value)
 
         # Parse heap_usages (list from container "HEAP-USAGES")
         obj.heap_usages = []
-        container = ARObject._find_child_element(element, "HEAP-USAGES")
+        container = SerializationHelper.find_child_element(element, "HEAP-USAGES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.heap_usages.append(child_value)
 
         # Parse memory_sections (list from container "MEMORY-SECTIONS")
         obj.memory_sections = []
-        container = ARObject._find_child_element(element, "MEMORY-SECTIONS")
+        container = SerializationHelper.find_child_element(element, "MEMORY-SECTIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.memory_sections.append(child_value)
 
         # Parse section_name_prefixes (list from container "SECTION-NAME-PREFIXES")
         obj.section_name_prefixes = []
-        container = ARObject._find_child_element(element, "SECTION-NAME-PREFIXES")
+        container = SerializationHelper.find_child_element(element, "SECTION-NAME-PREFIXES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.section_name_prefixes.append(child_value)
 
         # Parse stack_usages (list from container "STACK-USAGES")
         obj.stack_usages = []
-        container = ARObject._find_child_element(element, "STACK-USAGES")
+        container = SerializationHelper.find_child_element(element, "STACK-USAGES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.stack_usages.append(child_value)
 

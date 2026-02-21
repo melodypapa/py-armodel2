@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -54,7 +55,7 @@ class SignalServiceTranslationElementProps(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -73,7 +74,7 @@ class SignalServiceTranslationElementProps(Identifiable):
 
         # Serialize element_ref
         if self.element_ref is not None:
-            serialized = ARObject._serialize_item(self.element_ref, "DataPrototype")
+            serialized = SerializationHelper.serialize_item(self.element_ref, "DataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ELEMENT-REF")
@@ -87,7 +88,7 @@ class SignalServiceTranslationElementProps(Identifiable):
 
         # Serialize filter
         if self.filter is not None:
-            serialized = ARObject._serialize_item(self.filter, "DataFilter")
+            serialized = SerializationHelper.serialize_item(self.filter, "DataFilter")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FILTER")
@@ -101,7 +102,7 @@ class SignalServiceTranslationElementProps(Identifiable):
 
         # Serialize transmission
         if self.transmission is not None:
-            serialized = ARObject._serialize_item(self.transmission, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.transmission, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TRANSMISSION")
@@ -129,19 +130,19 @@ class SignalServiceTranslationElementProps(Identifiable):
         obj = super(SignalServiceTranslationElementProps, cls).deserialize(element)
 
         # Parse element_ref
-        child = ARObject._find_child_element(element, "ELEMENT-REF")
+        child = SerializationHelper.find_child_element(element, "ELEMENT-REF")
         if child is not None:
             element_ref_value = ARRef.deserialize(child)
             obj.element_ref = element_ref_value
 
         # Parse filter
-        child = ARObject._find_child_element(element, "FILTER")
+        child = SerializationHelper.find_child_element(element, "FILTER")
         if child is not None:
-            filter_value = ARObject._deserialize_by_tag(child, "DataFilter")
+            filter_value = SerializationHelper.deserialize_by_tag(child, "DataFilter")
             obj.filter = filter_value
 
         # Parse transmission
-        child = ARObject._find_child_element(element, "TRANSMISSION")
+        child = SerializationHelper.find_child_element(element, "TRANSMISSION")
         if child is not None:
             transmission_value = child.text
             obj.transmission = transmission_value

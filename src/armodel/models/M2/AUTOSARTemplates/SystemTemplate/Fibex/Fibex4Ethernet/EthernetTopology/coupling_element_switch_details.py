@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
     CouplingElementAbstractDetails,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.switch_asynchronous_traffic_shaper_group_entry import (
     SwitchAsynchronousTrafficShaperGroupEntry,
 )
@@ -60,7 +61,7 @@ class CouplingElementSwitchDetails(CouplingElementAbstractDetails):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -81,7 +82,7 @@ class CouplingElementSwitchDetails(CouplingElementAbstractDetails):
         if self.flow_meterings:
             wrapper = ET.Element("FLOW-METERINGS")
             for item in self.flow_meterings:
-                serialized = ARObject._serialize_item(item, "SwitchFlowMeteringEntry")
+                serialized = SerializationHelper.serialize_item(item, "SwitchFlowMeteringEntry")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -91,7 +92,7 @@ class CouplingElementSwitchDetails(CouplingElementAbstractDetails):
         if self.stream_filters:
             wrapper = ET.Element("STREAM-FILTERS")
             for item in self.stream_filters:
-                serialized = ARObject._serialize_item(item, "SwitchStreamFilterEntry")
+                serialized = SerializationHelper.serialize_item(item, "SwitchStreamFilterEntry")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -101,7 +102,7 @@ class CouplingElementSwitchDetails(CouplingElementAbstractDetails):
         if self.stream_gates:
             wrapper = ET.Element("STREAM-GATES")
             for item in self.stream_gates:
-                serialized = ARObject._serialize_item(item, "SwitchStreamGateEntry")
+                serialized = SerializationHelper.serialize_item(item, "SwitchStreamGateEntry")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -111,7 +112,7 @@ class CouplingElementSwitchDetails(CouplingElementAbstractDetails):
         if self.switch_streams:
             wrapper = ET.Element("SWITCH-STREAMS")
             for item in self.switch_streams:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -121,7 +122,7 @@ class CouplingElementSwitchDetails(CouplingElementAbstractDetails):
         if self.traffic_shapers:
             wrapper = ET.Element("TRAFFIC-SHAPERS")
             for item in self.traffic_shapers:
-                serialized = ARObject._serialize_item(item, "SwitchAsynchronousTrafficShaperGroupEntry")
+                serialized = SerializationHelper.serialize_item(item, "SwitchAsynchronousTrafficShaperGroupEntry")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -144,51 +145,51 @@ class CouplingElementSwitchDetails(CouplingElementAbstractDetails):
 
         # Parse flow_meterings (list from container "FLOW-METERINGS")
         obj.flow_meterings = []
-        container = ARObject._find_child_element(element, "FLOW-METERINGS")
+        container = SerializationHelper.find_child_element(element, "FLOW-METERINGS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.flow_meterings.append(child_value)
 
         # Parse stream_filters (list from container "STREAM-FILTERS")
         obj.stream_filters = []
-        container = ARObject._find_child_element(element, "STREAM-FILTERS")
+        container = SerializationHelper.find_child_element(element, "STREAM-FILTERS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.stream_filters.append(child_value)
 
         # Parse stream_gates (list from container "STREAM-GATES")
         obj.stream_gates = []
-        container = ARObject._find_child_element(element, "STREAM-GATES")
+        container = SerializationHelper.find_child_element(element, "STREAM-GATES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.stream_gates.append(child_value)
 
         # Parse switch_streams (list from container "SWITCH-STREAMS")
         obj.switch_streams = []
-        container = ARObject._find_child_element(element, "SWITCH-STREAMS")
+        container = SerializationHelper.find_child_element(element, "SWITCH-STREAMS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.switch_streams.append(child_value)
 
         # Parse traffic_shapers (list from container "TRAFFIC-SHAPERS")
         obj.traffic_shapers = []
-        container = ARObject._find_child_element(element, "TRAFFIC-SHAPERS")
+        container = SerializationHelper.find_child_element(element, "TRAFFIC-SHAPERS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.traffic_shapers.append(child_value)
 

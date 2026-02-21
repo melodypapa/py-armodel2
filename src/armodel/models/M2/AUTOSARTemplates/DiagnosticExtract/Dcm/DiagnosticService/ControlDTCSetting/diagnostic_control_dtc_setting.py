@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
@@ -41,7 +42,7 @@ class DiagnosticControlDTCSetting(DiagnosticServiceInstance):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -60,7 +61,7 @@ class DiagnosticControlDTCSetting(DiagnosticServiceInstance):
 
         # Serialize dtc_setting_class_ref
         if self.dtc_setting_class_ref is not None:
-            serialized = ARObject._serialize_item(self.dtc_setting_class_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.dtc_setting_class_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DTC-SETTING-CLASS-REF")
@@ -88,7 +89,7 @@ class DiagnosticControlDTCSetting(DiagnosticServiceInstance):
         obj = super(DiagnosticControlDTCSetting, cls).deserialize(element)
 
         # Parse dtc_setting_class_ref
-        child = ARObject._find_child_element(element, "DTC-SETTING-CLASS-REF")
+        child = SerializationHelper.find_child_element(element, "DTC-SETTING-CLASS-REF")
         if child is not None:
             dtc_setting_class_ref_value = ARRef.deserialize(child)
             obj.dtc_setting_class_ref = dtc_setting_class_ref_value

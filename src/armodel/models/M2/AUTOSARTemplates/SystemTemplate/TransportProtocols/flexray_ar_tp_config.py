@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.tp_con
     TpConfig,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.flexray_ar_tp_channel import (
     FlexrayArTpChannel,
 )
@@ -53,7 +54,7 @@ class FlexrayArTpConfig(TpConfig):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -74,7 +75,7 @@ class FlexrayArTpConfig(TpConfig):
         if self.tp_addresses:
             wrapper = ET.Element("TP-ADDRESSES")
             for item in self.tp_addresses:
-                serialized = ARObject._serialize_item(item, "TpAddress")
+                serialized = SerializationHelper.serialize_item(item, "TpAddress")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -84,7 +85,7 @@ class FlexrayArTpConfig(TpConfig):
         if self.tp_channels:
             wrapper = ET.Element("TP-CHANNELS")
             for item in self.tp_channels:
-                serialized = ARObject._serialize_item(item, "FlexrayArTpChannel")
+                serialized = SerializationHelper.serialize_item(item, "FlexrayArTpChannel")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -94,7 +95,7 @@ class FlexrayArTpConfig(TpConfig):
         if self.tp_nodes:
             wrapper = ET.Element("TP-NODES")
             for item in self.tp_nodes:
-                serialized = ARObject._serialize_item(item, "FlexrayArTpNode")
+                serialized = SerializationHelper.serialize_item(item, "FlexrayArTpNode")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -117,31 +118,31 @@ class FlexrayArTpConfig(TpConfig):
 
         # Parse tp_addresses (list from container "TP-ADDRESSES")
         obj.tp_addresses = []
-        container = ARObject._find_child_element(element, "TP-ADDRESSES")
+        container = SerializationHelper.find_child_element(element, "TP-ADDRESSES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.tp_addresses.append(child_value)
 
         # Parse tp_channels (list from container "TP-CHANNELS")
         obj.tp_channels = []
-        container = ARObject._find_child_element(element, "TP-CHANNELS")
+        container = SerializationHelper.find_child_element(element, "TP-CHANNELS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.tp_channels.append(child_value)
 
         # Parse tp_nodes (list from container "TP-NODES")
         obj.tp_nodes = []
-        container = ARObject._find_child_element(element, "TP-NODES")
+        container = SerializationHelper.find_child_element(element, "TP-NODES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.tp_nodes.append(child_value)
 

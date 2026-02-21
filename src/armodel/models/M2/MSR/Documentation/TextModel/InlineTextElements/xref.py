@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.Documentation.TextModel.InlineAttributeEnums import (
     ResolutionPolicyEnum,
@@ -75,12 +76,12 @@ class Xref(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize label1
         if self.label1 is not None:
-            serialized = ARObject._serialize_item(self.label1, "SingleLanguageLongName")
+            serialized = SerializationHelper.serialize_item(self.label1, "SingleLanguageLongName")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LABEL1")
@@ -94,7 +95,7 @@ class Xref(ARObject):
 
         # Serialize referrable_ref
         if self.referrable_ref is not None:
-            serialized = ARObject._serialize_item(self.referrable_ref, "Referrable")
+            serialized = SerializationHelper.serialize_item(self.referrable_ref, "Referrable")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REFERRABLE-REF")
@@ -108,7 +109,7 @@ class Xref(ARObject):
 
         # Serialize resolution_policy_enum
         if self.resolution_policy_enum is not None:
-            serialized = ARObject._serialize_item(self.resolution_policy_enum, "ResolutionPolicyEnum")
+            serialized = SerializationHelper.serialize_item(self.resolution_policy_enum, "ResolutionPolicyEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RESOLUTION-POLICY-ENUM")
@@ -122,7 +123,7 @@ class Xref(ARObject):
 
         # Serialize show_content_enum
         if self.show_content_enum is not None:
-            serialized = ARObject._serialize_item(self.show_content_enum, "ShowContentEnum")
+            serialized = SerializationHelper.serialize_item(self.show_content_enum, "ShowContentEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SHOW-CONTENT-ENUM")
@@ -136,7 +137,7 @@ class Xref(ARObject):
 
         # Serialize show_resource_alias
         if self.show_resource_alias is not None:
-            serialized = ARObject._serialize_item(self.show_resource_alias, "ShowResourceAliasNameEnum")
+            serialized = SerializationHelper.serialize_item(self.show_resource_alias, "ShowResourceAliasNameEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SHOW-RESOURCE-ALIAS")
@@ -150,7 +151,7 @@ class Xref(ARObject):
 
         # Serialize show_resource
         if self.show_resource is not None:
-            serialized = ARObject._serialize_item(self.show_resource, "ShowResourceTypeEnum")
+            serialized = SerializationHelper.serialize_item(self.show_resource, "ShowResourceTypeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SHOW-RESOURCE")
@@ -164,7 +165,7 @@ class Xref(ARObject):
 
         # Serialize show_resource_long
         if self.show_resource_long is not None:
-            serialized = ARObject._serialize_item(self.show_resource_long, "ShowResourceLongNameEnum")
+            serialized = SerializationHelper.serialize_item(self.show_resource_long, "ShowResourceLongNameEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SHOW-RESOURCE-LONG")
@@ -178,7 +179,7 @@ class Xref(ARObject):
 
         # Serialize show_resource_number
         if self.show_resource_number is not None:
-            serialized = ARObject._serialize_item(self.show_resource_number, "ShowResourceNumberEnum")
+            serialized = SerializationHelper.serialize_item(self.show_resource_number, "ShowResourceNumberEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SHOW-RESOURCE-NUMBER")
@@ -192,7 +193,7 @@ class Xref(ARObject):
 
         # Serialize show_resource_page
         if self.show_resource_page is not None:
-            serialized = ARObject._serialize_item(self.show_resource_page, "ShowResourcePageEnum")
+            serialized = SerializationHelper.serialize_item(self.show_resource_page, "ShowResourcePageEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SHOW-RESOURCE-PAGE")
@@ -206,7 +207,7 @@ class Xref(ARObject):
 
         # Serialize show_resource_short
         if self.show_resource_short is not None:
-            serialized = ARObject._serialize_item(self.show_resource_short, "ShowResourceShortNameEnum")
+            serialized = SerializationHelper.serialize_item(self.show_resource_short, "ShowResourceShortNameEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SHOW-RESOURCE-SHORT")
@@ -220,7 +221,7 @@ class Xref(ARObject):
 
         # Serialize show_see
         if self.show_see is not None:
-            serialized = ARObject._serialize_item(self.show_see, "ShowSeeEnum")
+            serialized = SerializationHelper.serialize_item(self.show_see, "ShowSeeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SHOW-SEE")
@@ -249,67 +250,67 @@ class Xref(ARObject):
         obj.__init__()
 
         # Parse label1
-        child = ARObject._find_child_element(element, "LABEL1")
+        child = SerializationHelper.find_child_element(element, "LABEL1")
         if child is not None:
-            label1_value = ARObject._deserialize_by_tag(child, "SingleLanguageLongName")
+            label1_value = SerializationHelper.deserialize_by_tag(child, "SingleLanguageLongName")
             obj.label1 = label1_value
 
         # Parse referrable_ref
-        child = ARObject._find_child_element(element, "REFERRABLE-REF")
+        child = SerializationHelper.find_child_element(element, "REFERRABLE-REF")
         if child is not None:
             referrable_ref_value = ARRef.deserialize(child)
             obj.referrable_ref = referrable_ref_value
 
         # Parse resolution_policy_enum
-        child = ARObject._find_child_element(element, "RESOLUTION-POLICY-ENUM")
+        child = SerializationHelper.find_child_element(element, "RESOLUTION-POLICY-ENUM")
         if child is not None:
             resolution_policy_enum_value = ResolutionPolicyEnum.deserialize(child)
             obj.resolution_policy_enum = resolution_policy_enum_value
 
         # Parse show_content_enum
-        child = ARObject._find_child_element(element, "SHOW-CONTENT-ENUM")
+        child = SerializationHelper.find_child_element(element, "SHOW-CONTENT-ENUM")
         if child is not None:
             show_content_enum_value = ShowContentEnum.deserialize(child)
             obj.show_content_enum = show_content_enum_value
 
         # Parse show_resource_alias
-        child = ARObject._find_child_element(element, "SHOW-RESOURCE-ALIAS")
+        child = SerializationHelper.find_child_element(element, "SHOW-RESOURCE-ALIAS")
         if child is not None:
             show_resource_alias_value = ShowResourceAliasNameEnum.deserialize(child)
             obj.show_resource_alias = show_resource_alias_value
 
         # Parse show_resource
-        child = ARObject._find_child_element(element, "SHOW-RESOURCE")
+        child = SerializationHelper.find_child_element(element, "SHOW-RESOURCE")
         if child is not None:
             show_resource_value = ShowResourceTypeEnum.deserialize(child)
             obj.show_resource = show_resource_value
 
         # Parse show_resource_long
-        child = ARObject._find_child_element(element, "SHOW-RESOURCE-LONG")
+        child = SerializationHelper.find_child_element(element, "SHOW-RESOURCE-LONG")
         if child is not None:
             show_resource_long_value = ShowResourceLongNameEnum.deserialize(child)
             obj.show_resource_long = show_resource_long_value
 
         # Parse show_resource_number
-        child = ARObject._find_child_element(element, "SHOW-RESOURCE-NUMBER")
+        child = SerializationHelper.find_child_element(element, "SHOW-RESOURCE-NUMBER")
         if child is not None:
             show_resource_number_value = ShowResourceNumberEnum.deserialize(child)
             obj.show_resource_number = show_resource_number_value
 
         # Parse show_resource_page
-        child = ARObject._find_child_element(element, "SHOW-RESOURCE-PAGE")
+        child = SerializationHelper.find_child_element(element, "SHOW-RESOURCE-PAGE")
         if child is not None:
             show_resource_page_value = ShowResourcePageEnum.deserialize(child)
             obj.show_resource_page = show_resource_page_value
 
         # Parse show_resource_short
-        child = ARObject._find_child_element(element, "SHOW-RESOURCE-SHORT")
+        child = SerializationHelper.find_child_element(element, "SHOW-RESOURCE-SHORT")
         if child is not None:
             show_resource_short_value = ShowResourceShortNameEnum.deserialize(child)
             obj.show_resource_short = show_resource_short_value
 
         # Parse show_see
-        child = ARObject._find_child_element(element, "SHOW-SEE")
+        child = SerializationHelper.find_child_element(element, "SHOW-SEE")
         if child is not None:
             show_see_value = ShowSeeEnum.deserialize(child)
             obj.show_see = show_see_value

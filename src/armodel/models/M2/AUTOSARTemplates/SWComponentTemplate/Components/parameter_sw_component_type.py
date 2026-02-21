@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.sw_compon
     SwComponentType,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.constant_specification import (
     ConstantSpecification,
@@ -55,7 +56,7 @@ class ParameterSwComponentType(SwComponentType):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -76,7 +77,7 @@ class ParameterSwComponentType(SwComponentType):
         if self.constant_refs:
             wrapper = ET.Element("CONSTANT-REFS")
             for item in self.constant_refs:
-                serialized = ARObject._serialize_item(item, "ConstantSpecification")
+                serialized = SerializationHelper.serialize_item(item, "ConstantSpecification")
                 if serialized is not None:
                     child_elem = ET.Element("CONSTANT-REF")
                     if hasattr(serialized, 'attrib'):
@@ -93,7 +94,7 @@ class ParameterSwComponentType(SwComponentType):
         if self.data_type_refs:
             wrapper = ET.Element("DATA-TYPE-REFS")
             for item in self.data_type_refs:
-                serialized = ARObject._serialize_item(item, "DataTypeMappingSet")
+                serialized = SerializationHelper.serialize_item(item, "DataTypeMappingSet")
                 if serialized is not None:
                     child_elem = ET.Element("DATA-TYPE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -110,7 +111,7 @@ class ParameterSwComponentType(SwComponentType):
         if self.instantiation_data_defs:
             wrapper = ET.Element("INSTANTIATION-DATA-DEFS")
             for item in self.instantiation_data_defs:
-                serialized = ARObject._serialize_item(item, "InstantiationDataDefProps")
+                serialized = SerializationHelper.serialize_item(item, "InstantiationDataDefProps")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -133,43 +134,43 @@ class ParameterSwComponentType(SwComponentType):
 
         # Parse constant_refs (list from container "CONSTANT-REFS")
         obj.constant_refs = []
-        container = ARObject._find_child_element(element, "CONSTANT-REFS")
+        container = SerializationHelper.find_child_element(element, "CONSTANT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.constant_refs.append(child_value)
 
         # Parse data_type_refs (list from container "DATA-TYPE-REFS")
         obj.data_type_refs = []
-        container = ARObject._find_child_element(element, "DATA-TYPE-REFS")
+        container = SerializationHelper.find_child_element(element, "DATA-TYPE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.data_type_refs.append(child_value)
 
         # Parse instantiation_data_defs (list from container "INSTANTIATION-DATA-DEFS")
         obj.instantiation_data_defs = []
-        container = ARObject._find_child_element(element, "INSTANTIATION-DATA-DEFS")
+        container = SerializationHelper.find_child_element(element, "INSTANTIATION-DATA-DEFS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.instantiation_data_defs.append(child_value)
 

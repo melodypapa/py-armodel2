@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -44,12 +45,12 @@ class HardwareConfiguration(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize additional
         if self.additional is not None:
-            serialized = ARObject._serialize_item(self.additional, "String")
+            serialized = SerializationHelper.serialize_item(self.additional, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ADDITIONAL")
@@ -63,7 +64,7 @@ class HardwareConfiguration(ARObject):
 
         # Serialize processor_mode
         if self.processor_mode is not None:
-            serialized = ARObject._serialize_item(self.processor_mode, "String")
+            serialized = SerializationHelper.serialize_item(self.processor_mode, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PROCESSOR-MODE")
@@ -77,7 +78,7 @@ class HardwareConfiguration(ARObject):
 
         # Serialize processor_speed
         if self.processor_speed is not None:
-            serialized = ARObject._serialize_item(self.processor_speed, "String")
+            serialized = SerializationHelper.serialize_item(self.processor_speed, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PROCESSOR-SPEED")
@@ -106,19 +107,19 @@ class HardwareConfiguration(ARObject):
         obj.__init__()
 
         # Parse additional
-        child = ARObject._find_child_element(element, "ADDITIONAL")
+        child = SerializationHelper.find_child_element(element, "ADDITIONAL")
         if child is not None:
             additional_value = child.text
             obj.additional = additional_value
 
         # Parse processor_mode
-        child = ARObject._find_child_element(element, "PROCESSOR-MODE")
+        child = SerializationHelper.find_child_element(element, "PROCESSOR-MODE")
         if child is not None:
             processor_mode_value = child.text
             obj.processor_mode = processor_mode_value
 
         # Parse processor_speed
-        child = ARObject._find_child_element(element, "PROCESSOR-SPEED")
+        child = SerializationHelper.find_child_element(element, "PROCESSOR-SPEED")
         if child is not None:
             processor_speed_value = child.text
             obj.processor_speed = processor_speed_value

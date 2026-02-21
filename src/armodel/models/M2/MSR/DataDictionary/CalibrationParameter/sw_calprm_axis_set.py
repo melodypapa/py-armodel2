@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.DataDictionary.CalibrationParameter.sw_calprm_axis import (
     SwCalprmAxis,
 )
@@ -40,14 +41,14 @@ class SwCalprmAxisSet(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize sw_calprm_axises (list to container "SW-CALPRM-AXISES")
         if self.sw_calprm_axises:
             wrapper = ET.Element("SW-CALPRM-AXISES")
             for item in self.sw_calprm_axises:
-                serialized = ARObject._serialize_item(item, "SwCalprmAxis")
+                serialized = SerializationHelper.serialize_item(item, "SwCalprmAxis")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -71,11 +72,11 @@ class SwCalprmAxisSet(ARObject):
 
         # Parse sw_calprm_axises (list from container "SW-CALPRM-AXISES")
         obj.sw_calprm_axises = []
-        container = ARObject._find_child_element(element, "SW-CALPRM-AXISES")
+        container = SerializationHelper.find_child_element(element, "SW-CALPRM-AXISES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.sw_calprm_axises.append(child_value)
 

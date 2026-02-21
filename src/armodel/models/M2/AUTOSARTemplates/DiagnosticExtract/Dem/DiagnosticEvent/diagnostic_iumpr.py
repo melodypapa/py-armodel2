@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent import (
     DiagnosticIumprKindEnum,
@@ -49,7 +50,7 @@ class DiagnosticIumpr(DiagnosticCommonElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -68,7 +69,7 @@ class DiagnosticIumpr(DiagnosticCommonElement):
 
         # Serialize event_ref
         if self.event_ref is not None:
-            serialized = ARObject._serialize_item(self.event_ref, "DiagnosticEvent")
+            serialized = SerializationHelper.serialize_item(self.event_ref, "DiagnosticEvent")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("EVENT-REF")
@@ -82,7 +83,7 @@ class DiagnosticIumpr(DiagnosticCommonElement):
 
         # Serialize ratio_kind
         if self.ratio_kind is not None:
-            serialized = ARObject._serialize_item(self.ratio_kind, "DiagnosticIumprKindEnum")
+            serialized = SerializationHelper.serialize_item(self.ratio_kind, "DiagnosticIumprKindEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RATIO-KIND")
@@ -110,13 +111,13 @@ class DiagnosticIumpr(DiagnosticCommonElement):
         obj = super(DiagnosticIumpr, cls).deserialize(element)
 
         # Parse event_ref
-        child = ARObject._find_child_element(element, "EVENT-REF")
+        child = SerializationHelper.find_child_element(element, "EVENT-REF")
         if child is not None:
             event_ref_value = ARRef.deserialize(child)
             obj.event_ref = event_ref_value
 
         # Parse ratio_kind
-        child = ARObject._find_child_element(element, "RATIO-KIND")
+        child = SerializationHelper.find_child_element(element, "RATIO-KIND")
         if child is not None:
             ratio_kind_value = DiagnosticIumprKindEnum.deserialize(child)
             obj.ratio_kind = ratio_kind_value

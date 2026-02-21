@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -82,7 +83,7 @@ class DoIpInterface(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -101,7 +102,7 @@ class DoIpInterface(Identifiable):
 
         # Serialize alive_check
         if self.alive_check is not None:
-            serialized = ARObject._serialize_item(self.alive_check, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.alive_check, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ALIVE-CHECK")
@@ -115,7 +116,7 @@ class DoIpInterface(Identifiable):
 
         # Serialize doip_channel_ref
         if self.doip_channel_ref is not None:
-            serialized = ARObject._serialize_item(self.doip_channel_ref, "DoIpTpConfig")
+            serialized = SerializationHelper.serialize_item(self.doip_channel_ref, "DoIpTpConfig")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DOIP-CHANNEL-REF")
@@ -131,7 +132,7 @@ class DoIpInterface(Identifiable):
         if self.doip_connection_refs:
             wrapper = ET.Element("DOIP-CONNECTION-REFS")
             for item in self.doip_connection_refs:
-                serialized = ARObject._serialize_item(item, "SocketConnection")
+                serialized = SerializationHelper.serialize_item(item, "SocketConnection")
                 if serialized is not None:
                     child_elem = ET.Element("DOIP-CONNECTION-REF")
                     if hasattr(serialized, 'attrib'):
@@ -148,7 +149,7 @@ class DoIpInterface(Identifiable):
         if self.do_ip_routings:
             wrapper = ET.Element("DO-IP-ROUTINGS")
             for item in self.do_ip_routings:
-                serialized = ARObject._serialize_item(item, "DoIpRoutingActivation")
+                serialized = SerializationHelper.serialize_item(item, "DoIpRoutingActivation")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -156,7 +157,7 @@ class DoIpInterface(Identifiable):
 
         # Serialize general_inactivity
         if self.general_inactivity is not None:
-            serialized = ARObject._serialize_item(self.general_inactivity, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.general_inactivity, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("GENERAL-INACTIVITY")
@@ -170,7 +171,7 @@ class DoIpInterface(Identifiable):
 
         # Serialize initial_inactivity
         if self.initial_inactivity is not None:
-            serialized = ARObject._serialize_item(self.initial_inactivity, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.initial_inactivity, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INITIAL-INACTIVITY")
@@ -184,7 +185,7 @@ class DoIpInterface(Identifiable):
 
         # Serialize initial_vehicle
         if self.initial_vehicle is not None:
-            serialized = ARObject._serialize_item(self.initial_vehicle, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.initial_vehicle, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INITIAL-VEHICLE")
@@ -198,7 +199,7 @@ class DoIpInterface(Identifiable):
 
         # Serialize is_activation_line
         if self.is_activation_line is not None:
-            serialized = ARObject._serialize_item(self.is_activation_line, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.is_activation_line, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IS-ACTIVATION-LINE")
@@ -212,7 +213,7 @@ class DoIpInterface(Identifiable):
 
         # Serialize max_tester
         if self.max_tester is not None:
-            serialized = ARObject._serialize_item(self.max_tester, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.max_tester, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-TESTER")
@@ -228,7 +229,7 @@ class DoIpInterface(Identifiable):
         if self.socket_refs:
             wrapper = ET.Element("SOCKET-REFS")
             for item in self.socket_refs:
-                serialized = ARObject._serialize_item(item, "StaticSocketConnection")
+                serialized = SerializationHelper.serialize_item(item, "StaticSocketConnection")
                 if serialized is not None:
                     child_elem = ET.Element("SOCKET-REF")
                     if hasattr(serialized, 'attrib'):
@@ -243,7 +244,7 @@ class DoIpInterface(Identifiable):
 
         # Serialize use_mac_address
         if self.use_mac_address is not None:
-            serialized = ARObject._serialize_item(self.use_mac_address, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.use_mac_address, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("USE-MAC-ADDRESS")
@@ -257,7 +258,7 @@ class DoIpInterface(Identifiable):
 
         # Serialize use_vehicle
         if self.use_vehicle is not None:
-            serialized = ARObject._serialize_item(self.use_vehicle, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.use_vehicle, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("USE-VEHICLE")
@@ -271,7 +272,7 @@ class DoIpInterface(Identifiable):
 
         # Serialize vehicle
         if self.vehicle is not None:
-            serialized = ARObject._serialize_item(self.vehicle, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.vehicle, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VEHICLE")
@@ -299,103 +300,103 @@ class DoIpInterface(Identifiable):
         obj = super(DoIpInterface, cls).deserialize(element)
 
         # Parse alive_check
-        child = ARObject._find_child_element(element, "ALIVE-CHECK")
+        child = SerializationHelper.find_child_element(element, "ALIVE-CHECK")
         if child is not None:
             alive_check_value = child.text
             obj.alive_check = alive_check_value
 
         # Parse doip_channel_ref
-        child = ARObject._find_child_element(element, "DOIP-CHANNEL-REF")
+        child = SerializationHelper.find_child_element(element, "DOIP-CHANNEL-REF")
         if child is not None:
             doip_channel_ref_value = ARRef.deserialize(child)
             obj.doip_channel_ref = doip_channel_ref_value
 
         # Parse doip_connection_refs (list from container "DOIP-CONNECTION-REFS")
         obj.doip_connection_refs = []
-        container = ARObject._find_child_element(element, "DOIP-CONNECTION-REFS")
+        container = SerializationHelper.find_child_element(element, "DOIP-CONNECTION-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.doip_connection_refs.append(child_value)
 
         # Parse do_ip_routings (list from container "DO-IP-ROUTINGS")
         obj.do_ip_routings = []
-        container = ARObject._find_child_element(element, "DO-IP-ROUTINGS")
+        container = SerializationHelper.find_child_element(element, "DO-IP-ROUTINGS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.do_ip_routings.append(child_value)
 
         # Parse general_inactivity
-        child = ARObject._find_child_element(element, "GENERAL-INACTIVITY")
+        child = SerializationHelper.find_child_element(element, "GENERAL-INACTIVITY")
         if child is not None:
             general_inactivity_value = child.text
             obj.general_inactivity = general_inactivity_value
 
         # Parse initial_inactivity
-        child = ARObject._find_child_element(element, "INITIAL-INACTIVITY")
+        child = SerializationHelper.find_child_element(element, "INITIAL-INACTIVITY")
         if child is not None:
             initial_inactivity_value = child.text
             obj.initial_inactivity = initial_inactivity_value
 
         # Parse initial_vehicle
-        child = ARObject._find_child_element(element, "INITIAL-VEHICLE")
+        child = SerializationHelper.find_child_element(element, "INITIAL-VEHICLE")
         if child is not None:
             initial_vehicle_value = child.text
             obj.initial_vehicle = initial_vehicle_value
 
         # Parse is_activation_line
-        child = ARObject._find_child_element(element, "IS-ACTIVATION-LINE")
+        child = SerializationHelper.find_child_element(element, "IS-ACTIVATION-LINE")
         if child is not None:
             is_activation_line_value = child.text
             obj.is_activation_line = is_activation_line_value
 
         # Parse max_tester
-        child = ARObject._find_child_element(element, "MAX-TESTER")
+        child = SerializationHelper.find_child_element(element, "MAX-TESTER")
         if child is not None:
             max_tester_value = child.text
             obj.max_tester = max_tester_value
 
         # Parse socket_refs (list from container "SOCKET-REFS")
         obj.socket_refs = []
-        container = ARObject._find_child_element(element, "SOCKET-REFS")
+        container = SerializationHelper.find_child_element(element, "SOCKET-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.socket_refs.append(child_value)
 
         # Parse use_mac_address
-        child = ARObject._find_child_element(element, "USE-MAC-ADDRESS")
+        child = SerializationHelper.find_child_element(element, "USE-MAC-ADDRESS")
         if child is not None:
             use_mac_address_value = child.text
             obj.use_mac_address = use_mac_address_value
 
         # Parse use_vehicle
-        child = ARObject._find_child_element(element, "USE-VEHICLE")
+        child = SerializationHelper.find_child_element(element, "USE-VEHICLE")
         if child is not None:
             use_vehicle_value = child.text
             obj.use_vehicle = use_vehicle_value
 
         # Parse vehicle
-        child = ARObject._find_child_element(element, "VEHICLE")
+        child = SerializationHelper.find_child_element(element, "VEHICLE")
         if child is not None:
             vehicle_value = child.text
             obj.vehicle = vehicle_value

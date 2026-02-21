@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.security_event_c
     SecurityEventContextMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -43,7 +44,7 @@ class SecurityEventContextMappingBswModule(SecurityEventContextMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class SecurityEventContextMappingBswModule(SecurityEventContextMapping):
 
         # Serialize affected_bsw
         if self.affected_bsw is not None:
-            serialized = ARObject._serialize_item(self.affected_bsw, "String")
+            serialized = SerializationHelper.serialize_item(self.affected_bsw, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("AFFECTED-BSW")
@@ -90,7 +91,7 @@ class SecurityEventContextMappingBswModule(SecurityEventContextMapping):
         obj = super(SecurityEventContextMappingBswModule, cls).deserialize(element)
 
         # Parse affected_bsw
-        child = ARObject._find_child_element(element, "AFFECTED-BSW")
+        child = SerializationHelper.find_child_element(element, "AFFECTED-BSW")
         if child is not None:
             affected_bsw_value = child.text
             obj.affected_bsw = affected_bsw_value

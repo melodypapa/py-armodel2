@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.application_data_type import (
     ApplicationDataType,
@@ -50,12 +51,12 @@ class DataTypeMap(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize application_data_type_ref
         if self.application_data_type_ref is not None:
-            serialized = ARObject._serialize_item(self.application_data_type_ref, "ApplicationDataType")
+            serialized = SerializationHelper.serialize_item(self.application_data_type_ref, "ApplicationDataType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("APPLICATION-DATA-TYPE-REF")
@@ -69,7 +70,7 @@ class DataTypeMap(ARObject):
 
         # Serialize implementation_ref
         if self.implementation_ref is not None:
-            serialized = ARObject._serialize_item(self.implementation_ref, "AbstractImplementationDataType")
+            serialized = SerializationHelper.serialize_item(self.implementation_ref, "AbstractImplementationDataType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IMPLEMENTATION-REF")
@@ -98,13 +99,13 @@ class DataTypeMap(ARObject):
         obj.__init__()
 
         # Parse application_data_type_ref
-        child = ARObject._find_child_element(element, "APPLICATION-DATA-TYPE-REF")
+        child = SerializationHelper.find_child_element(element, "APPLICATION-DATA-TYPE-REF")
         if child is not None:
             application_data_type_ref_value = ARRef.deserialize(child)
             obj.application_data_type_ref = application_data_type_ref_value
 
         # Parse implementation_ref
-        child = ARObject._find_child_element(element, "IMPLEMENTATION-REF")
+        child = SerializationHelper.find_child_element(element, "IMPLEMENTATION-REF")
         if child is not None:
             implementation_ref_value = ARRef.deserialize(child)
             obj.implementation_ref = implementation_ref_value

@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.dhcpv6_props import (
     Dhcpv6Props,
 )
@@ -50,12 +51,12 @@ class Ipv6Props(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize dhcp_props
         if self.dhcp_props is not None:
-            serialized = ARObject._serialize_item(self.dhcp_props, "Dhcpv6Props")
+            serialized = SerializationHelper.serialize_item(self.dhcp_props, "Dhcpv6Props")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DHCP-PROPS")
@@ -69,7 +70,7 @@ class Ipv6Props(ARObject):
 
         # Serialize fragmentation
         if self.fragmentation is not None:
-            serialized = ARObject._serialize_item(self.fragmentation, "Ipv6FragmentationProps")
+            serialized = SerializationHelper.serialize_item(self.fragmentation, "Ipv6FragmentationProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FRAGMENTATION")
@@ -83,7 +84,7 @@ class Ipv6Props(ARObject):
 
         # Serialize ndp_props
         if self.ndp_props is not None:
-            serialized = ARObject._serialize_item(self.ndp_props, "Ipv6NdpProps")
+            serialized = SerializationHelper.serialize_item(self.ndp_props, "Ipv6NdpProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NDP-PROPS")
@@ -112,21 +113,21 @@ class Ipv6Props(ARObject):
         obj.__init__()
 
         # Parse dhcp_props
-        child = ARObject._find_child_element(element, "DHCP-PROPS")
+        child = SerializationHelper.find_child_element(element, "DHCP-PROPS")
         if child is not None:
-            dhcp_props_value = ARObject._deserialize_by_tag(child, "Dhcpv6Props")
+            dhcp_props_value = SerializationHelper.deserialize_by_tag(child, "Dhcpv6Props")
             obj.dhcp_props = dhcp_props_value
 
         # Parse fragmentation
-        child = ARObject._find_child_element(element, "FRAGMENTATION")
+        child = SerializationHelper.find_child_element(element, "FRAGMENTATION")
         if child is not None:
-            fragmentation_value = ARObject._deserialize_by_tag(child, "Ipv6FragmentationProps")
+            fragmentation_value = SerializationHelper.deserialize_by_tag(child, "Ipv6FragmentationProps")
             obj.fragmentation = fragmentation_value
 
         # Parse ndp_props
-        child = ARObject._find_child_element(element, "NDP-PROPS")
+        child = SerializationHelper.find_child_element(element, "NDP-PROPS")
         if child is not None:
-            ndp_props_value = ARObject._deserialize_by_tag(child, "Ipv6NdpProps")
+            ndp_props_value = SerializationHelper.deserialize_by_tag(child, "Ipv6NdpProps")
             obj.ndp_props = ndp_props_value
 
         return obj

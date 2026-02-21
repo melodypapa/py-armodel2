@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.RptSupport import (
     RptEnablerImplTypeEnum,
 )
@@ -53,7 +54,7 @@ class RptProfile(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -72,7 +73,7 @@ class RptProfile(Identifiable):
 
         # Serialize max_service
         if self.max_service is not None:
-            serialized = ARObject._serialize_item(self.max_service, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.max_service, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-SERVICE")
@@ -86,7 +87,7 @@ class RptProfile(Identifiable):
 
         # Serialize min_service_point
         if self.min_service_point is not None:
-            serialized = ARObject._serialize_item(self.min_service_point, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.min_service_point, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MIN-SERVICE-POINT")
@@ -100,7 +101,7 @@ class RptProfile(Identifiable):
 
         # Serialize service_point
         if self.service_point is not None:
-            serialized = ARObject._serialize_item(self.service_point, "CIdentifier")
+            serialized = SerializationHelper.serialize_item(self.service_point, "CIdentifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SERVICE-POINT")
@@ -114,7 +115,7 @@ class RptProfile(Identifiable):
 
         # Serialize stim_enabler
         if self.stim_enabler is not None:
-            serialized = ARObject._serialize_item(self.stim_enabler, "RptEnablerImplTypeEnum")
+            serialized = SerializationHelper.serialize_item(self.stim_enabler, "RptEnablerImplTypeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("STIM-ENABLER")
@@ -142,25 +143,25 @@ class RptProfile(Identifiable):
         obj = super(RptProfile, cls).deserialize(element)
 
         # Parse max_service
-        child = ARObject._find_child_element(element, "MAX-SERVICE")
+        child = SerializationHelper.find_child_element(element, "MAX-SERVICE")
         if child is not None:
             max_service_value = child.text
             obj.max_service = max_service_value
 
         # Parse min_service_point
-        child = ARObject._find_child_element(element, "MIN-SERVICE-POINT")
+        child = SerializationHelper.find_child_element(element, "MIN-SERVICE-POINT")
         if child is not None:
             min_service_point_value = child.text
             obj.min_service_point = min_service_point_value
 
         # Parse service_point
-        child = ARObject._find_child_element(element, "SERVICE-POINT")
+        child = SerializationHelper.find_child_element(element, "SERVICE-POINT")
         if child is not None:
-            service_point_value = ARObject._deserialize_by_tag(child, "CIdentifier")
+            service_point_value = SerializationHelper.deserialize_by_tag(child, "CIdentifier")
             obj.service_point = service_point_value
 
         # Parse stim_enabler
-        child = ARObject._find_child_element(element, "STIM-ENABLER")
+        child = SerializationHelper.find_child_element(element, "STIM-ENABLER")
         if child is not None:
             stim_enabler_value = RptEnablerImplTypeEnum.deserialize(child)
             obj.stim_enabler = stim_enabler_value

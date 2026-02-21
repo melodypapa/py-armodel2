@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
 )
@@ -48,7 +49,7 @@ class DoIpLogicAddress(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -67,7 +68,7 @@ class DoIpLogicAddress(Identifiable):
 
         # Serialize address
         if self.address is not None:
-            serialized = ARObject._serialize_item(self.address, "Integer")
+            serialized = SerializationHelper.serialize_item(self.address, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ADDRESS")
@@ -81,7 +82,7 @@ class DoIpLogicAddress(Identifiable):
 
         # Serialize do_ip_logic
         if self.do_ip_logic is not None:
-            serialized = ARObject._serialize_item(self.do_ip_logic, "AbstractDoIpLogicAddressProps")
+            serialized = SerializationHelper.serialize_item(self.do_ip_logic, "AbstractDoIpLogicAddressProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DO-IP-LOGIC")
@@ -109,15 +110,15 @@ class DoIpLogicAddress(Identifiable):
         obj = super(DoIpLogicAddress, cls).deserialize(element)
 
         # Parse address
-        child = ARObject._find_child_element(element, "ADDRESS")
+        child = SerializationHelper.find_child_element(element, "ADDRESS")
         if child is not None:
             address_value = child.text
             obj.address = address_value
 
         # Parse do_ip_logic
-        child = ARObject._find_child_element(element, "DO-IP-LOGIC")
+        child = SerializationHelper.find_child_element(element, "DO-IP-LOGIC")
         if child is not None:
-            do_ip_logic_value = ARObject._deserialize_by_tag(child, "AbstractDoIpLogicAddressProps")
+            do_ip_logic_value = SerializationHelper.deserialize_by_tag(child, "AbstractDoIpLogicAddressProps")
             obj.do_ip_logic = do_ip_logic_value
 
         return obj

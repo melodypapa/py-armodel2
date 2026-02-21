@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_container_value import (
     EcucContainerValue,
@@ -43,12 +44,12 @@ class RtePluginProps(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize associated_ref
         if self.associated_ref is not None:
-            serialized = ARObject._serialize_item(self.associated_ref, "EcucContainerValue")
+            serialized = SerializationHelper.serialize_item(self.associated_ref, "EcucContainerValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ASSOCIATED-REF")
@@ -62,7 +63,7 @@ class RtePluginProps(ARObject):
 
         # Serialize associated_rte_ref
         if self.associated_rte_ref is not None:
-            serialized = ARObject._serialize_item(self.associated_rte_ref, "EcucContainerValue")
+            serialized = SerializationHelper.serialize_item(self.associated_rte_ref, "EcucContainerValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ASSOCIATED-RTE-REF")
@@ -91,13 +92,13 @@ class RtePluginProps(ARObject):
         obj.__init__()
 
         # Parse associated_ref
-        child = ARObject._find_child_element(element, "ASSOCIATED-REF")
+        child = SerializationHelper.find_child_element(element, "ASSOCIATED-REF")
         if child is not None:
             associated_ref_value = ARRef.deserialize(child)
             obj.associated_ref = associated_ref_value
 
         # Parse associated_rte_ref
-        child = ARObject._find_child_element(element, "ASSOCIATED-RTE-REF")
+        child = SerializationHelper.find_child_element(element, "ASSOCIATED-RTE-REF")
         if child is not None:
             associated_rte_ref_value = ARRef.deserialize(child)
             obj.associated_rte_ref = associated_rte_ref_value

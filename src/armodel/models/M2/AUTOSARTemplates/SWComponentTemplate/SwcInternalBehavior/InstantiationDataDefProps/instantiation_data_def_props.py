@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.autosar_parameter_ref import (
     AutosarParameterRef,
@@ -54,12 +55,12 @@ class InstantiationDataDefProps(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize parameter_ref
         if self.parameter_ref is not None:
-            serialized = ARObject._serialize_item(self.parameter_ref, "AutosarParameterRef")
+            serialized = SerializationHelper.serialize_item(self.parameter_ref, "AutosarParameterRef")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PARAMETER-REF")
@@ -73,7 +74,7 @@ class InstantiationDataDefProps(ARObject):
 
         # Serialize sw_data_def
         if self.sw_data_def is not None:
-            serialized = ARObject._serialize_item(self.sw_data_def, "SwDataDefProps")
+            serialized = SerializationHelper.serialize_item(self.sw_data_def, "SwDataDefProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-DATA-DEF")
@@ -87,7 +88,7 @@ class InstantiationDataDefProps(ARObject):
 
         # Serialize variable_instance_ref
         if self.variable_instance_ref is not None:
-            serialized = ARObject._serialize_item(self.variable_instance_ref, "AutosarVariableRef")
+            serialized = SerializationHelper.serialize_item(self.variable_instance_ref, "AutosarVariableRef")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VARIABLE-INSTANCE-REF")
@@ -116,19 +117,19 @@ class InstantiationDataDefProps(ARObject):
         obj.__init__()
 
         # Parse parameter_ref
-        child = ARObject._find_child_element(element, "PARAMETER-REF")
+        child = SerializationHelper.find_child_element(element, "PARAMETER-REF")
         if child is not None:
             parameter_ref_value = ARRef.deserialize(child)
             obj.parameter_ref = parameter_ref_value
 
         # Parse sw_data_def
-        child = ARObject._find_child_element(element, "SW-DATA-DEF")
+        child = SerializationHelper.find_child_element(element, "SW-DATA-DEF")
         if child is not None:
-            sw_data_def_value = ARObject._deserialize_by_tag(child, "SwDataDefProps")
+            sw_data_def_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
             obj.sw_data_def = sw_data_def_value
 
         # Parse variable_instance_ref
-        child = ARObject._find_child_element(element, "VARIABLE-INSTANCE-REF")
+        child = SerializationHelper.find_child_element(element, "VARIABLE-INSTANCE-REF")
         if child is not None:
             variable_instance_ref_value = ARRef.deserialize(child)
             obj.variable_instance_ref = variable_instance_ref_value

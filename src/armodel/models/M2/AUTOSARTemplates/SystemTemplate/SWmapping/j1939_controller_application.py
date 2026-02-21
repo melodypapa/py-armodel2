@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -49,7 +50,7 @@ class J1939ControllerApplication(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -68,7 +69,7 @@ class J1939ControllerApplication(ARElement):
 
         # Serialize function_id
         if self.function_id is not None:
-            serialized = ARObject._serialize_item(self.function_id, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.function_id, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FUNCTION-ID")
@@ -82,7 +83,7 @@ class J1939ControllerApplication(ARElement):
 
         # Serialize sw_component_prototype_ref
         if self.sw_component_prototype_ref is not None:
-            serialized = ARObject._serialize_item(self.sw_component_prototype_ref, "SwComponentPrototype")
+            serialized = SerializationHelper.serialize_item(self.sw_component_prototype_ref, "SwComponentPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-COMPONENT-PROTOTYPE-REF")
@@ -110,13 +111,13 @@ class J1939ControllerApplication(ARElement):
         obj = super(J1939ControllerApplication, cls).deserialize(element)
 
         # Parse function_id
-        child = ARObject._find_child_element(element, "FUNCTION-ID")
+        child = SerializationHelper.find_child_element(element, "FUNCTION-ID")
         if child is not None:
             function_id_value = child.text
             obj.function_id = function_id_value
 
         # Parse sw_component_prototype_ref
-        child = ARObject._find_child_element(element, "SW-COMPONENT-PROTOTYPE-REF")
+        child = SerializationHelper.find_child_element(element, "SW-COMPONENT-PROTOTYPE-REF")
         if child is not None:
             sw_component_prototype_ref_value = ARRef.deserialize(child)
             obj.sw_component_prototype_ref = sw_component_prototype_ref_value

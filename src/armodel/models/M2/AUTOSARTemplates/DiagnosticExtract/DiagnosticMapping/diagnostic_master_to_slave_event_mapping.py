@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
     DiagnosticMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_event import (
     DiagnosticEvent,
@@ -46,7 +47,7 @@ class DiagnosticMasterToSlaveEventMapping(DiagnosticMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class DiagnosticMasterToSlaveEventMapping(DiagnosticMapping):
 
         # Serialize master_event_ref
         if self.master_event_ref is not None:
-            serialized = ARObject._serialize_item(self.master_event_ref, "DiagnosticEvent")
+            serialized = SerializationHelper.serialize_item(self.master_event_ref, "DiagnosticEvent")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MASTER-EVENT-REF")
@@ -79,7 +80,7 @@ class DiagnosticMasterToSlaveEventMapping(DiagnosticMapping):
 
         # Serialize slave_event_ref
         if self.slave_event_ref is not None:
-            serialized = ARObject._serialize_item(self.slave_event_ref, "DiagnosticEvent")
+            serialized = SerializationHelper.serialize_item(self.slave_event_ref, "DiagnosticEvent")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SLAVE-EVENT-REF")
@@ -107,13 +108,13 @@ class DiagnosticMasterToSlaveEventMapping(DiagnosticMapping):
         obj = super(DiagnosticMasterToSlaveEventMapping, cls).deserialize(element)
 
         # Parse master_event_ref
-        child = ARObject._find_child_element(element, "MASTER-EVENT-REF")
+        child = SerializationHelper.find_child_element(element, "MASTER-EVENT-REF")
         if child is not None:
             master_event_ref_value = ARRef.deserialize(child)
             obj.master_event_ref = master_event_ref_value
 
         # Parse slave_event_ref
-        child = ARObject._find_child_element(element, "SLAVE-EVENT-REF")
+        child = SerializationHelper.find_child_element(element, "SLAVE-EVENT-REF")
         if child is not None:
             slave_event_ref_value = ARRef.deserialize(child)
             obj.slave_event_ref = slave_event_ref_value

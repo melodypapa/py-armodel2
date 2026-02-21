@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
     String,
@@ -43,12 +44,12 @@ class ShortNameFragment(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize fragment
         if self.fragment is not None:
-            serialized = ARObject._serialize_item(self.fragment, "Identifier")
+            serialized = SerializationHelper.serialize_item(self.fragment, "Identifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FRAGMENT")
@@ -62,7 +63,7 @@ class ShortNameFragment(ARObject):
 
         # Serialize role
         if self.role is not None:
-            serialized = ARObject._serialize_item(self.role, "String")
+            serialized = SerializationHelper.serialize_item(self.role, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ROLE")
@@ -91,13 +92,13 @@ class ShortNameFragment(ARObject):
         obj.__init__()
 
         # Parse fragment
-        child = ARObject._find_child_element(element, "FRAGMENT")
+        child = SerializationHelper.find_child_element(element, "FRAGMENT")
         if child is not None:
-            fragment_value = ARObject._deserialize_by_tag(child, "Identifier")
+            fragment_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
             obj.fragment = fragment_value
 
         # Parse role
-        child = ARObject._find_child_element(element, "ROLE")
+        child = SerializationHelper.find_child_element(element, "ROLE")
         if child is not None:
             role_value = child.text
             obj.role = role_value

@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_nee
     ServiceNeeds,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -59,7 +60,7 @@ class SupervisedEntityNeeds(ServiceNeeds):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -78,7 +79,7 @@ class SupervisedEntityNeeds(ServiceNeeds):
 
         # Serialize activate_at_start
         if self.activate_at_start is not None:
-            serialized = ARObject._serialize_item(self.activate_at_start, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.activate_at_start, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ACTIVATE-AT-START")
@@ -94,7 +95,7 @@ class SupervisedEntityNeeds(ServiceNeeds):
         if self.checkpointse_refs:
             wrapper = ET.Element("CHECKPOINTSE-REFS")
             for item in self.checkpointse_refs:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     child_elem = ET.Element("CHECKPOINTSE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -109,7 +110,7 @@ class SupervisedEntityNeeds(ServiceNeeds):
 
         # Serialize enable
         if self.enable is not None:
-            serialized = ARObject._serialize_item(self.enable, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.enable, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ENABLE")
@@ -123,7 +124,7 @@ class SupervisedEntityNeeds(ServiceNeeds):
 
         # Serialize expected_alive
         if self.expected_alive is not None:
-            serialized = ARObject._serialize_item(self.expected_alive, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.expected_alive, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("EXPECTED-ALIVE")
@@ -137,7 +138,7 @@ class SupervisedEntityNeeds(ServiceNeeds):
 
         # Serialize max_alive_cycle
         if self.max_alive_cycle is not None:
-            serialized = ARObject._serialize_item(self.max_alive_cycle, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.max_alive_cycle, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-ALIVE-CYCLE")
@@ -151,7 +152,7 @@ class SupervisedEntityNeeds(ServiceNeeds):
 
         # Serialize min_alive_cycle
         if self.min_alive_cycle is not None:
-            serialized = ARObject._serialize_item(self.min_alive_cycle, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.min_alive_cycle, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MIN-ALIVE-CYCLE")
@@ -165,7 +166,7 @@ class SupervisedEntityNeeds(ServiceNeeds):
 
         # Serialize tolerated_failed
         if self.tolerated_failed is not None:
-            serialized = ARObject._serialize_item(self.tolerated_failed, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.tolerated_failed, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TOLERATED-FAILED")
@@ -193,53 +194,53 @@ class SupervisedEntityNeeds(ServiceNeeds):
         obj = super(SupervisedEntityNeeds, cls).deserialize(element)
 
         # Parse activate_at_start
-        child = ARObject._find_child_element(element, "ACTIVATE-AT-START")
+        child = SerializationHelper.find_child_element(element, "ACTIVATE-AT-START")
         if child is not None:
             activate_at_start_value = child.text
             obj.activate_at_start = activate_at_start_value
 
         # Parse checkpointse_refs (list from container "CHECKPOINTSE-REFS")
         obj.checkpointse_refs = []
-        container = ARObject._find_child_element(element, "CHECKPOINTSE-REFS")
+        container = SerializationHelper.find_child_element(element, "CHECKPOINTSE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.checkpointse_refs.append(child_value)
 
         # Parse enable
-        child = ARObject._find_child_element(element, "ENABLE")
+        child = SerializationHelper.find_child_element(element, "ENABLE")
         if child is not None:
             enable_value = child.text
             obj.enable = enable_value
 
         # Parse expected_alive
-        child = ARObject._find_child_element(element, "EXPECTED-ALIVE")
+        child = SerializationHelper.find_child_element(element, "EXPECTED-ALIVE")
         if child is not None:
             expected_alive_value = child.text
             obj.expected_alive = expected_alive_value
 
         # Parse max_alive_cycle
-        child = ARObject._find_child_element(element, "MAX-ALIVE-CYCLE")
+        child = SerializationHelper.find_child_element(element, "MAX-ALIVE-CYCLE")
         if child is not None:
             max_alive_cycle_value = child.text
             obj.max_alive_cycle = max_alive_cycle_value
 
         # Parse min_alive_cycle
-        child = ARObject._find_child_element(element, "MIN-ALIVE-CYCLE")
+        child = SerializationHelper.find_child_element(element, "MIN-ALIVE-CYCLE")
         if child is not None:
             min_alive_cycle_value = child.text
             obj.min_alive_cycle = min_alive_cycle_value
 
         # Parse tolerated_failed
-        child = ARObject._find_child_element(element, "TOLERATED-FAILED")
+        child = SerializationHelper.find_child_element(element, "TOLERATED-FAILED")
         if child is not None:
             tolerated_failed_value = child.text
             obj.tolerated_failed = tolerated_failed_value

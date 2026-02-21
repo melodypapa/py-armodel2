@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
     String,
@@ -46,7 +47,7 @@ class DiagnosticAuthTransmitCertificateEvaluation(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class DiagnosticAuthTransmitCertificateEvaluation(Identifiable):
 
         # Serialize evaluation_id
         if self.evaluation_id is not None:
-            serialized = ARObject._serialize_item(self.evaluation_id, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.evaluation_id, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("EVALUATION-ID")
@@ -79,7 +80,7 @@ class DiagnosticAuthTransmitCertificateEvaluation(Identifiable):
 
         # Serialize function
         if self.function is not None:
-            serialized = ARObject._serialize_item(self.function, "String")
+            serialized = SerializationHelper.serialize_item(self.function, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FUNCTION")
@@ -107,13 +108,13 @@ class DiagnosticAuthTransmitCertificateEvaluation(Identifiable):
         obj = super(DiagnosticAuthTransmitCertificateEvaluation, cls).deserialize(element)
 
         # Parse evaluation_id
-        child = ARObject._find_child_element(element, "EVALUATION-ID")
+        child = SerializationHelper.find_child_element(element, "EVALUATION-ID")
         if child is not None:
             evaluation_id_value = child.text
             obj.evaluation_id = evaluation_id_value
 
         # Parse function
-        child = ARObject._find_child_element(element, "FUNCTION")
+        child = SerializationHelper.find_child_element(element, "FUNCTION")
         if child is not None:
             function_value = child.text
             obj.function = function_value

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.global_time_ma
     GlobalTimeMaster,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime import (
     GlobalTimeCrcSupportEnum,
 )
@@ -43,7 +44,7 @@ class GlobalTimeFrMaster(GlobalTimeMaster):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class GlobalTimeFrMaster(GlobalTimeMaster):
 
         # Serialize crc_secured
         if self.crc_secured is not None:
-            serialized = ARObject._serialize_item(self.crc_secured, "GlobalTimeCrcSupportEnum")
+            serialized = SerializationHelper.serialize_item(self.crc_secured, "GlobalTimeCrcSupportEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CRC-SECURED")
@@ -90,7 +91,7 @@ class GlobalTimeFrMaster(GlobalTimeMaster):
         obj = super(GlobalTimeFrMaster, cls).deserialize(element)
 
         # Parse crc_secured
-        child = ARObject._find_child_element(element, "CRC-SECURED")
+        child = SerializationHelper.find_child_element(element, "CRC-SECURED")
         if child is not None:
             crc_secured_value = GlobalTimeCrcSupportEnum.deserialize(child)
             obj.crc_secured = crc_secured_value

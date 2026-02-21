@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
     RTEEvent,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
 )
@@ -46,7 +47,7 @@ class TimingEvent(RTEEvent):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class TimingEvent(RTEEvent):
 
         # Serialize offset
         if self.offset is not None:
-            serialized = ARObject._serialize_item(self.offset, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.offset, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("OFFSET")
@@ -79,7 +80,7 @@ class TimingEvent(RTEEvent):
 
         # Serialize period
         if self.period is not None:
-            serialized = ARObject._serialize_item(self.period, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.period, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PERIOD")
@@ -107,13 +108,13 @@ class TimingEvent(RTEEvent):
         obj = super(TimingEvent, cls).deserialize(element)
 
         # Parse offset
-        child = ARObject._find_child_element(element, "OFFSET")
+        child = SerializationHelper.find_child_element(element, "OFFSET")
         if child is not None:
             offset_value = child.text
             obj.offset = offset_value
 
         # Parse period
-        child = ARObject._find_child_element(element, "PERIOD")
+        child = SerializationHelper.find_child_element(element, "PERIOD")
         if child is not None:
             period_value = child.text
             obj.period = period_value

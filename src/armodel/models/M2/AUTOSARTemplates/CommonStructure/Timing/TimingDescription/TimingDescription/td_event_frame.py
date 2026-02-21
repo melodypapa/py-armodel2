@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
     TDEventCom,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription import (
     TDEventFrameTypeEnum,
@@ -54,7 +55,7 @@ class TDEventFrame(TDEventCom):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -73,7 +74,7 @@ class TDEventFrame(TDEventCom):
 
         # Serialize frame_ref
         if self.frame_ref is not None:
-            serialized = ARObject._serialize_item(self.frame_ref, "Frame")
+            serialized = SerializationHelper.serialize_item(self.frame_ref, "Frame")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FRAME-REF")
@@ -87,7 +88,7 @@ class TDEventFrame(TDEventCom):
 
         # Serialize physical_channel_ref
         if self.physical_channel_ref is not None:
-            serialized = ARObject._serialize_item(self.physical_channel_ref, "PhysicalChannel")
+            serialized = SerializationHelper.serialize_item(self.physical_channel_ref, "PhysicalChannel")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PHYSICAL-CHANNEL-REF")
@@ -101,7 +102,7 @@ class TDEventFrame(TDEventCom):
 
         # Serialize td_event_type_enum
         if self.td_event_type_enum is not None:
-            serialized = ARObject._serialize_item(self.td_event_type_enum, "TDEventFrameTypeEnum")
+            serialized = SerializationHelper.serialize_item(self.td_event_type_enum, "TDEventFrameTypeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TD-EVENT-TYPE-ENUM")
@@ -129,19 +130,19 @@ class TDEventFrame(TDEventCom):
         obj = super(TDEventFrame, cls).deserialize(element)
 
         # Parse frame_ref
-        child = ARObject._find_child_element(element, "FRAME-REF")
+        child = SerializationHelper.find_child_element(element, "FRAME-REF")
         if child is not None:
             frame_ref_value = ARRef.deserialize(child)
             obj.frame_ref = frame_ref_value
 
         # Parse physical_channel_ref
-        child = ARObject._find_child_element(element, "PHYSICAL-CHANNEL-REF")
+        child = SerializationHelper.find_child_element(element, "PHYSICAL-CHANNEL-REF")
         if child is not None:
             physical_channel_ref_value = ARRef.deserialize(child)
             obj.physical_channel_ref = physical_channel_ref_value
 
         # Parse td_event_type_enum
-        child = ARObject._find_child_element(element, "TD-EVENT-TYPE-ENUM")
+        child = SerializationHelper.find_child_element(element, "TD-EVENT-TYPE-ENUM")
         if child is not None:
             td_event_type_enum_value = TDEventFrameTypeEnum.deserialize(child)
             obj.td_event_type_enum = td_event_type_enum_value

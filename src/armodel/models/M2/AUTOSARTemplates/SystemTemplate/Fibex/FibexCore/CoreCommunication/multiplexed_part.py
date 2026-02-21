@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.segment_position import (
     SegmentPosition,
 )
@@ -41,14 +42,14 @@ class MultiplexedPart(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize segment_positions (list to container "SEGMENT-POSITIONS")
         if self.segment_positions:
             wrapper = ET.Element("SEGMENT-POSITIONS")
             for item in self.segment_positions:
-                serialized = ARObject._serialize_item(item, "SegmentPosition")
+                serialized = SerializationHelper.serialize_item(item, "SegmentPosition")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -72,11 +73,11 @@ class MultiplexedPart(ARObject, ABC):
 
         # Parse segment_positions (list from container "SEGMENT-POSITIONS")
         obj.segment_positions = []
-        container = ARObject._find_child_element(element, "SEGMENT-POSITIONS")
+        container = SerializationHelper.find_child_element(element, "SEGMENT-POSITIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.segment_positions.append(child_value)
 

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.InstanceR
     OperationInAtomicSwcInstanceRef,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_provided_port_prototype import (
     AbstractProvidedPortPrototype,
@@ -49,7 +50,7 @@ class POperationInAtomicSwcInstanceRef(OperationInAtomicSwcInstanceRef):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -68,7 +69,7 @@ class POperationInAtomicSwcInstanceRef(OperationInAtomicSwcInstanceRef):
 
         # Serialize context_p_port_prototype_ref
         if self.context_p_port_prototype_ref is not None:
-            serialized = ARObject._serialize_item(self.context_p_port_prototype_ref, "AbstractProvidedPortPrototype")
+            serialized = SerializationHelper.serialize_item(self.context_p_port_prototype_ref, "AbstractProvidedPortPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONTEXT-P-PORT-PROTOTYPE-REF")
@@ -82,7 +83,7 @@ class POperationInAtomicSwcInstanceRef(OperationInAtomicSwcInstanceRef):
 
         # Serialize target_provided_operation_ref
         if self.target_provided_operation_ref is not None:
-            serialized = ARObject._serialize_item(self.target_provided_operation_ref, "ClientServerOperation")
+            serialized = SerializationHelper.serialize_item(self.target_provided_operation_ref, "ClientServerOperation")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TARGET-PROVIDED-OPERATION-REF")
@@ -110,13 +111,13 @@ class POperationInAtomicSwcInstanceRef(OperationInAtomicSwcInstanceRef):
         obj = super(POperationInAtomicSwcInstanceRef, cls).deserialize(element)
 
         # Parse context_p_port_prototype_ref
-        child = ARObject._find_child_element(element, "CONTEXT-P-PORT-PROTOTYPE-REF")
+        child = SerializationHelper.find_child_element(element, "CONTEXT-P-PORT-PROTOTYPE-REF")
         if child is not None:
             context_p_port_prototype_ref_value = ARRef.deserialize(child)
             obj.context_p_port_prototype_ref = context_p_port_prototype_ref_value
 
         # Parse target_provided_operation_ref
-        child = ARObject._find_child_element(element, "TARGET-PROVIDED-OPERATION-REF")
+        child = SerializationHelper.find_child_element(element, "TARGET-PROVIDED-OPERATION-REF")
         if child is not None:
             target_provided_operation_ref_value = ARRef.deserialize(child)
             obj.target_provided_operation_ref = target_provided_operation_ref_value

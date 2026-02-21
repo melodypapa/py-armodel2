@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
@@ -58,7 +59,7 @@ class CanTpNode(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -77,7 +78,7 @@ class CanTpNode(Identifiable):
 
         # Serialize connector_ref
         if self.connector_ref is not None:
-            serialized = ARObject._serialize_item(self.connector_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.connector_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONNECTOR-REF")
@@ -91,7 +92,7 @@ class CanTpNode(Identifiable):
 
         # Serialize max_fc_wait
         if self.max_fc_wait is not None:
-            serialized = ARObject._serialize_item(self.max_fc_wait, "Integer")
+            serialized = SerializationHelper.serialize_item(self.max_fc_wait, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-FC-WAIT")
@@ -105,7 +106,7 @@ class CanTpNode(Identifiable):
 
         # Serialize st_min
         if self.st_min is not None:
-            serialized = ARObject._serialize_item(self.st_min, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.st_min, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ST-MIN")
@@ -119,7 +120,7 @@ class CanTpNode(Identifiable):
 
         # Serialize timeout_ar
         if self.timeout_ar is not None:
-            serialized = ARObject._serialize_item(self.timeout_ar, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.timeout_ar, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIMEOUT-AR")
@@ -133,7 +134,7 @@ class CanTpNode(Identifiable):
 
         # Serialize timeout_as
         if self.timeout_as is not None:
-            serialized = ARObject._serialize_item(self.timeout_as, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.timeout_as, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIMEOUT-AS")
@@ -147,7 +148,7 @@ class CanTpNode(Identifiable):
 
         # Serialize tp_address_ref
         if self.tp_address_ref is not None:
-            serialized = ARObject._serialize_item(self.tp_address_ref, "CanTpAddress")
+            serialized = SerializationHelper.serialize_item(self.tp_address_ref, "CanTpAddress")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TP-ADDRESS-REF")
@@ -175,37 +176,37 @@ class CanTpNode(Identifiable):
         obj = super(CanTpNode, cls).deserialize(element)
 
         # Parse connector_ref
-        child = ARObject._find_child_element(element, "CONNECTOR-REF")
+        child = SerializationHelper.find_child_element(element, "CONNECTOR-REF")
         if child is not None:
             connector_ref_value = ARRef.deserialize(child)
             obj.connector_ref = connector_ref_value
 
         # Parse max_fc_wait
-        child = ARObject._find_child_element(element, "MAX-FC-WAIT")
+        child = SerializationHelper.find_child_element(element, "MAX-FC-WAIT")
         if child is not None:
             max_fc_wait_value = child.text
             obj.max_fc_wait = max_fc_wait_value
 
         # Parse st_min
-        child = ARObject._find_child_element(element, "ST-MIN")
+        child = SerializationHelper.find_child_element(element, "ST-MIN")
         if child is not None:
             st_min_value = child.text
             obj.st_min = st_min_value
 
         # Parse timeout_ar
-        child = ARObject._find_child_element(element, "TIMEOUT-AR")
+        child = SerializationHelper.find_child_element(element, "TIMEOUT-AR")
         if child is not None:
             timeout_ar_value = child.text
             obj.timeout_ar = timeout_ar_value
 
         # Parse timeout_as
-        child = ARObject._find_child_element(element, "TIMEOUT-AS")
+        child = SerializationHelper.find_child_element(element, "TIMEOUT-AS")
         if child is not None:
             timeout_as_value = child.text
             obj.timeout_as = timeout_as_value
 
         # Parse tp_address_ref
-        child = ARObject._find_child_element(element, "TP-ADDRESS-REF")
+        child = SerializationHelper.find_child_element(element, "TP-ADDRESS-REF")
         if child is not None:
             tp_address_ref_value = ARRef.deserialize(child)
             obj.tp_address_ref = tp_address_ref_value

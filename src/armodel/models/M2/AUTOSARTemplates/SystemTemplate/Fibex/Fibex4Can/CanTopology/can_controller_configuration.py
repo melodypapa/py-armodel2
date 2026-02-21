@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Can.CanTopolo
     AbstractCanCommunicationControllerAttributes,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
 )
@@ -49,7 +50,7 @@ class CanControllerConfiguration(AbstractCanCommunicationControllerAttributes):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -68,7 +69,7 @@ class CanControllerConfiguration(AbstractCanCommunicationControllerAttributes):
 
         # Serialize prop_seg
         if self.prop_seg is not None:
-            serialized = ARObject._serialize_item(self.prop_seg, "Integer")
+            serialized = SerializationHelper.serialize_item(self.prop_seg, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PROP-SEG")
@@ -82,7 +83,7 @@ class CanControllerConfiguration(AbstractCanCommunicationControllerAttributes):
 
         # Serialize sync_jump_width
         if self.sync_jump_width is not None:
-            serialized = ARObject._serialize_item(self.sync_jump_width, "Integer")
+            serialized = SerializationHelper.serialize_item(self.sync_jump_width, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SYNC-JUMP-WIDTH")
@@ -96,7 +97,7 @@ class CanControllerConfiguration(AbstractCanCommunicationControllerAttributes):
 
         # Serialize time_seg1
         if self.time_seg1 is not None:
-            serialized = ARObject._serialize_item(self.time_seg1, "Integer")
+            serialized = SerializationHelper.serialize_item(self.time_seg1, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIME-SEG1")
@@ -110,7 +111,7 @@ class CanControllerConfiguration(AbstractCanCommunicationControllerAttributes):
 
         # Serialize time_seg2
         if self.time_seg2 is not None:
-            serialized = ARObject._serialize_item(self.time_seg2, "Integer")
+            serialized = SerializationHelper.serialize_item(self.time_seg2, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIME-SEG2")
@@ -138,25 +139,25 @@ class CanControllerConfiguration(AbstractCanCommunicationControllerAttributes):
         obj = super(CanControllerConfiguration, cls).deserialize(element)
 
         # Parse prop_seg
-        child = ARObject._find_child_element(element, "PROP-SEG")
+        child = SerializationHelper.find_child_element(element, "PROP-SEG")
         if child is not None:
             prop_seg_value = child.text
             obj.prop_seg = prop_seg_value
 
         # Parse sync_jump_width
-        child = ARObject._find_child_element(element, "SYNC-JUMP-WIDTH")
+        child = SerializationHelper.find_child_element(element, "SYNC-JUMP-WIDTH")
         if child is not None:
             sync_jump_width_value = child.text
             obj.sync_jump_width = sync_jump_width_value
 
         # Parse time_seg1
-        child = ARObject._find_child_element(element, "TIME-SEG1")
+        child = SerializationHelper.find_child_element(element, "TIME-SEG1")
         if child is not None:
             time_seg1_value = child.text
             obj.time_seg1 = time_seg1_value
 
         # Parse time_seg2
-        child = ARObject._find_child_element(element, "TIME-SEG2")
+        child = SerializationHelper.find_child_element(element, "TIME-SEG2")
         if child is not None:
             time_seg2_value = child.text
             obj.time_seg2 = time_seg2_value

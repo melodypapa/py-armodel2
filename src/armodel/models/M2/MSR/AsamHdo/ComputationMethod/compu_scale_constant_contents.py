@@ -13,6 +13,7 @@ from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_scale_contents import
     CompuScaleContents,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_const import (
     CompuConst,
 )
@@ -43,7 +44,7 @@ class CompuScaleConstantContents(CompuScaleContents):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class CompuScaleConstantContents(CompuScaleContents):
 
         # Serialize compu_const
         if self.compu_const is not None:
-            serialized = ARObject._serialize_item(self.compu_const, "CompuConst")
+            serialized = SerializationHelper.serialize_item(self.compu_const, "CompuConst")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COMPU-CONST")
@@ -90,9 +91,9 @@ class CompuScaleConstantContents(CompuScaleContents):
         obj = super(CompuScaleConstantContents, cls).deserialize(element)
 
         # Parse compu_const
-        child = ARObject._find_child_element(element, "COMPU-CONST")
+        child = SerializationHelper.find_child_element(element, "COMPU-CONST")
         if child is not None:
-            compu_const_value = ARObject._deserialize_by_tag(child, "CompuConst")
+            compu_const_value = SerializationHelper.deserialize_by_tag(child, "CompuConst")
             obj.compu_const = compu_const_value
 
         return obj

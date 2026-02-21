@@ -13,6 +13,7 @@ from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_scale_contents import
     CompuScaleContents,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_rational_coeffs import (
     CompuRationalCoeffs,
 )
@@ -43,7 +44,7 @@ class CompuScaleRationalFormula(CompuScaleContents):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class CompuScaleRationalFormula(CompuScaleContents):
 
         # Serialize compu_rational_coeffs
         if self.compu_rational_coeffs is not None:
-            serialized = ARObject._serialize_item(self.compu_rational_coeffs, "CompuRationalCoeffs")
+            serialized = SerializationHelper.serialize_item(self.compu_rational_coeffs, "CompuRationalCoeffs")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COMPU-RATIONAL-COEFFS")
@@ -90,9 +91,9 @@ class CompuScaleRationalFormula(CompuScaleContents):
         obj = super(CompuScaleRationalFormula, cls).deserialize(element)
 
         # Parse compu_rational_coeffs
-        child = ARObject._find_child_element(element, "COMPU-RATIONAL-COEFFS")
+        child = SerializationHelper.find_child_element(element, "COMPU-RATIONAL-COEFFS")
         if child is not None:
-            compu_rational_coeffs_value = ARObject._deserialize_by_tag(child, "CompuRationalCoeffs")
+            compu_rational_coeffs_value = SerializationHelper.deserialize_by_tag(child, "CompuRationalCoeffs")
             obj.compu_rational_coeffs = compu_rational_coeffs_value
 
         return obj

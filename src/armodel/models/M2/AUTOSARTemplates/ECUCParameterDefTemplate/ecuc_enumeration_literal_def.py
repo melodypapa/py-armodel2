@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -45,7 +46,7 @@ class EcucEnumerationLiteralDef(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class EcucEnumerationLiteralDef(Identifiable):
 
         # Serialize ecuc_cond
         if self.ecuc_cond is not None:
-            serialized = ARObject._serialize_item(self.ecuc_cond, "Any")
+            serialized = SerializationHelper.serialize_item(self.ecuc_cond, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ECUC-COND")
@@ -78,7 +79,7 @@ class EcucEnumerationLiteralDef(Identifiable):
 
         # Serialize origin
         if self.origin is not None:
-            serialized = ARObject._serialize_item(self.origin, "String")
+            serialized = SerializationHelper.serialize_item(self.origin, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ORIGIN")
@@ -106,13 +107,13 @@ class EcucEnumerationLiteralDef(Identifiable):
         obj = super(EcucEnumerationLiteralDef, cls).deserialize(element)
 
         # Parse ecuc_cond
-        child = ARObject._find_child_element(element, "ECUC-COND")
+        child = SerializationHelper.find_child_element(element, "ECUC-COND")
         if child is not None:
             ecuc_cond_value = child.text
             obj.ecuc_cond = ecuc_cond_value
 
         # Parse origin
-        child = ARObject._find_child_element(element, "ORIGIN")
+        child = SerializationHelper.find_child_element(element, "ORIGIN")
         if child is not None:
             origin_value = child.text
             obj.origin = origin_value

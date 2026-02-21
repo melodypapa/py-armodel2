@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.nm_clus
     NmClusterCoupling,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -51,7 +52,7 @@ class CanNmClusterCoupling(NmClusterCoupling):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -72,7 +73,7 @@ class CanNmClusterCoupling(NmClusterCoupling):
         if self.coupled_cluster_refs:
             wrapper = ET.Element("COUPLED-CLUSTER-REFS")
             for item in self.coupled_cluster_refs:
-                serialized = ARObject._serialize_item(item, "CanNmCluster")
+                serialized = SerializationHelper.serialize_item(item, "CanNmCluster")
                 if serialized is not None:
                     child_elem = ET.Element("COUPLED-CLUSTER-REF")
                     if hasattr(serialized, 'attrib'):
@@ -87,7 +88,7 @@ class CanNmClusterCoupling(NmClusterCoupling):
 
         # Serialize nm_busload_reduction
         if self.nm_busload_reduction is not None:
-            serialized = ARObject._serialize_item(self.nm_busload_reduction, "Any")
+            serialized = SerializationHelper.serialize_item(self.nm_busload_reduction, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM-BUSLOAD-REDUCTION")
@@ -101,7 +102,7 @@ class CanNmClusterCoupling(NmClusterCoupling):
 
         # Serialize nm_immediate
         if self.nm_immediate is not None:
-            serialized = ARObject._serialize_item(self.nm_immediate, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.nm_immediate, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM-IMMEDIATE")
@@ -130,28 +131,28 @@ class CanNmClusterCoupling(NmClusterCoupling):
 
         # Parse coupled_cluster_refs (list from container "COUPLED-CLUSTER-REFS")
         obj.coupled_cluster_refs = []
-        container = ARObject._find_child_element(element, "COUPLED-CLUSTER-REFS")
+        container = SerializationHelper.find_child_element(element, "COUPLED-CLUSTER-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.coupled_cluster_refs.append(child_value)
 
         # Parse nm_busload_reduction
-        child = ARObject._find_child_element(element, "NM-BUSLOAD-REDUCTION")
+        child = SerializationHelper.find_child_element(element, "NM-BUSLOAD-REDUCTION")
         if child is not None:
             nm_busload_reduction_value = child.text
             obj.nm_busload_reduction = nm_busload_reduction_value
 
         # Parse nm_immediate
-        child = ARObject._find_child_element(element, "NM-IMMEDIATE")
+        child = SerializationHelper.find_child_element(element, "NM-IMMEDIATE")
         if child is not None:
             nm_immediate_value = child.text
             obj.nm_immediate = nm_immediate_value

@@ -13,6 +13,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     NameToken,
 )
@@ -56,12 +57,12 @@ class Sdg(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize gid
         if self.gid is not None:
-            serialized = ARObject._serialize_item(self.gid, "NameToken")
+            serialized = SerializationHelper.serialize_item(self.gid, "NameToken")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("GID")
@@ -75,7 +76,7 @@ class Sdg(ARObject):
 
         # Serialize sdg_caption
         if self.sdg_caption is not None:
-            serialized = ARObject._serialize_item(self.sdg_caption, "SdgCaption")
+            serialized = SerializationHelper.serialize_item(self.sdg_caption, "SdgCaption")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SDG-CAPTION")
@@ -89,7 +90,7 @@ class Sdg(ARObject):
 
         # Serialize sdg_contents
         if self.sdg_contents is not None:
-            serialized = ARObject._serialize_item(self.sdg_contents, "SdgContents")
+            serialized = SerializationHelper.serialize_item(self.sdg_contents, "SdgContents")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SDG-CONTENTS")
@@ -118,21 +119,21 @@ class Sdg(ARObject):
         obj.__init__()
 
         # Parse gid
-        child = ARObject._find_child_element(element, "GID")
+        child = SerializationHelper.find_child_element(element, "GID")
         if child is not None:
             gid_value = child.text
             obj.gid = gid_value
 
         # Parse sdg_caption
-        child = ARObject._find_child_element(element, "SDG-CAPTION")
+        child = SerializationHelper.find_child_element(element, "SDG-CAPTION")
         if child is not None:
-            sdg_caption_value = ARObject._deserialize_by_tag(child, "SdgCaption")
+            sdg_caption_value = SerializationHelper.deserialize_by_tag(child, "SdgCaption")
             obj.sdg_caption = sdg_caption_value
 
         # Parse sdg_contents
-        child = ARObject._find_child_element(element, "SDG-CONTENTS")
+        child = SerializationHelper.find_child_element(element, "SDG-CONTENTS")
         if child is not None:
-            sdg_contents_value = ARObject._deserialize_by_tag(child, "SdgContents")
+            sdg_contents_value = SerializationHelper.deserialize_by_tag(child, "SdgContents")
             obj.sdg_contents = sdg_contents_value
 
         return obj

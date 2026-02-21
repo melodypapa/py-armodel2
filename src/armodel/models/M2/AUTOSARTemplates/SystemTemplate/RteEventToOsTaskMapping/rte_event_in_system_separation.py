@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.RTEEvents.rte_event import (
     RTEEvent,
 )
@@ -43,7 +44,7 @@ class RteEventInSystemSeparation(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class RteEventInSystemSeparation(Identifiable):
         if self.rte_event_instance_refs:
             wrapper = ET.Element("RTE-EVENT-INSTANCE-REFS")
             for item in self.rte_event_instance_refs:
-                serialized = ARObject._serialize_item(item, "RTEEvent")
+                serialized = SerializationHelper.serialize_item(item, "RTEEvent")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -87,11 +88,11 @@ class RteEventInSystemSeparation(Identifiable):
 
         # Parse rte_event_instance_refs (list from container "RTE-EVENT-INSTANCE-REFS")
         obj.rte_event_instance_refs = []
-        container = ARObject._find_child_element(element, "RTE-EVENT-INSTANCE-REFS")
+        container = SerializationHelper.find_child_element(element, "RTE-EVENT-INSTANCE-REFS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.rte_event_instance_refs.append(child_value)
 

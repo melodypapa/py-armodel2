@@ -19,6 +19,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     ByteOrderEnum,
@@ -102,7 +103,7 @@ class System(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -123,7 +124,7 @@ class System(ARElement):
         if self.client_id_definition_set_refs:
             wrapper = ET.Element("CLIENT-ID-DEFINITION-SET-REFS")
             for item in self.client_id_definition_set_refs:
-                serialized = ARObject._serialize_item(item, "ClientIdDefinitionSet")
+                serialized = SerializationHelper.serialize_item(item, "ClientIdDefinitionSet")
                 if serialized is not None:
                     child_elem = ET.Element("CLIENT-ID-DEFINITION-SET-REF")
                     if hasattr(serialized, 'attrib'):
@@ -138,7 +139,7 @@ class System(ARElement):
 
         # Serialize container_i_pdu_header_byte_order
         if self.container_i_pdu_header_byte_order is not None:
-            serialized = ARObject._serialize_item(self.container_i_pdu_header_byte_order, "ByteOrderEnum")
+            serialized = SerializationHelper.serialize_item(self.container_i_pdu_header_byte_order, "ByteOrderEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONTAINER-I-PDU-HEADER-BYTE-ORDER")
@@ -152,7 +153,7 @@ class System(ARElement):
 
         # Serialize ecu_extract_version
         if self.ecu_extract_version is not None:
-            serialized = ARObject._serialize_item(self.ecu_extract_version, "RevisionLabelString")
+            serialized = SerializationHelper.serialize_item(self.ecu_extract_version, "RevisionLabelString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ECU-EXTRACT-VERSION")
@@ -168,7 +169,7 @@ class System(ARElement):
         if self.fibex_element_refs:
             wrapper = ET.Element("FIBEX-ELEMENT-REFS")
             for item in self.fibex_element_refs:
-                serialized = ARObject._serialize_item(item, "FibexElement")
+                serialized = SerializationHelper.serialize_item(item, "FibexElement")
                 if serialized is not None:
                     child_elem = ET.Element("FIBEX-ELEMENT-REF")
                     if hasattr(serialized, 'attrib'):
@@ -185,7 +186,7 @@ class System(ARElement):
         if self.interpolation_routine_mapping_set_refs:
             wrapper = ET.Element("INTERPOLATION-ROUTINE-MAPPING-SET-REFS")
             for item in self.interpolation_routine_mapping_set_refs:
-                serialized = ARObject._serialize_item(item, "InterpolationRoutineMappingSet")
+                serialized = SerializationHelper.serialize_item(item, "InterpolationRoutineMappingSet")
                 if serialized is not None:
                     child_elem = ET.Element("INTERPOLATION-ROUTINE-MAPPING-SET-REF")
                     if hasattr(serialized, 'attrib'):
@@ -202,7 +203,7 @@ class System(ARElement):
         if self.j1939_shared_address_clusters:
             wrapper = ET.Element("J1939-SHARED-ADDRESS-CLUSTERS")
             for item in self.j1939_shared_address_clusters:
-                serialized = ARObject._serialize_item(item, "J1939SharedAddressCluster")
+                serialized = SerializationHelper.serialize_item(item, "J1939SharedAddressCluster")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -212,7 +213,7 @@ class System(ARElement):
         if self.mapping_refs:
             wrapper = ET.Element("MAPPING-REFS")
             for item in self.mapping_refs:
-                serialized = ARObject._serialize_item(item, "SystemMapping")
+                serialized = SerializationHelper.serialize_item(item, "SystemMapping")
                 if serialized is not None:
                     child_elem = ET.Element("MAPPING-REF")
                     if hasattr(serialized, 'attrib'):
@@ -227,7 +228,7 @@ class System(ARElement):
 
         # Serialize pnc_vector_length
         if self.pnc_vector_length is not None:
-            serialized = ARObject._serialize_item(self.pnc_vector_length, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.pnc_vector_length, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PNC-VECTOR-LENGTH")
@@ -241,7 +242,7 @@ class System(ARElement):
 
         # Serialize pnc_vector_offset
         if self.pnc_vector_offset is not None:
-            serialized = ARObject._serialize_item(self.pnc_vector_offset, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.pnc_vector_offset, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PNC-VECTOR-OFFSET")
@@ -255,7 +256,7 @@ class System(ARElement):
 
         # Serialize root_software_composition
         if self.root_software_composition is not None:
-            serialized = ARObject._serialize_item(self.root_software_composition, "RootSwCompositionPrototype")
+            serialized = SerializationHelper.serialize_item(self.root_software_composition, "RootSwCompositionPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ROOT-SOFTWARE-COMPOSITION")
@@ -271,7 +272,7 @@ class System(ARElement):
         if self.sw_cluster_refs:
             wrapper = ET.Element("SW-CLUSTER-REFS")
             for item in self.sw_cluster_refs:
-                serialized = ARObject._serialize_item(item, "CpSoftwareCluster")
+                serialized = SerializationHelper.serialize_item(item, "CpSoftwareCluster")
                 if serialized is not None:
                     child_elem = ET.Element("SW-CLUSTER-REF")
                     if hasattr(serialized, 'attrib'):
@@ -288,7 +289,7 @@ class System(ARElement):
         if self.system_documentations:
             wrapper = ET.Element("SYSTEM-DOCUMENTATIONS")
             for item in self.system_documentations:
-                serialized = ARObject._serialize_item(item, "Chapter")
+                serialized = SerializationHelper.serialize_item(item, "Chapter")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -296,7 +297,7 @@ class System(ARElement):
 
         # Serialize system_version
         if self.system_version is not None:
-            serialized = ARObject._serialize_item(self.system_version, "RevisionLabelString")
+            serialized = SerializationHelper.serialize_item(self.system_version, "RevisionLabelString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SYSTEM-VERSION")
@@ -325,136 +326,136 @@ class System(ARElement):
 
         # Parse client_id_definition_set_refs (list from container "CLIENT-ID-DEFINITION-SET-REFS")
         obj.client_id_definition_set_refs = []
-        container = ARObject._find_child_element(element, "CLIENT-ID-DEFINITION-SET-REFS")
+        container = SerializationHelper.find_child_element(element, "CLIENT-ID-DEFINITION-SET-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.client_id_definition_set_refs.append(child_value)
 
         # Parse container_i_pdu_header_byte_order
-        child = ARObject._find_child_element(element, "CONTAINER-I-PDU-HEADER-BYTE-ORDER")
+        child = SerializationHelper.find_child_element(element, "CONTAINER-I-PDU-HEADER-BYTE-ORDER")
         if child is not None:
             container_i_pdu_header_byte_order_value = ByteOrderEnum.deserialize(child)
             obj.container_i_pdu_header_byte_order = container_i_pdu_header_byte_order_value
 
         # Parse ecu_extract_version
-        child = ARObject._find_child_element(element, "ECU-EXTRACT-VERSION")
+        child = SerializationHelper.find_child_element(element, "ECU-EXTRACT-VERSION")
         if child is not None:
             ecu_extract_version_value = child.text
             obj.ecu_extract_version = ecu_extract_version_value
 
         # Parse fibex_element_refs (list from container "FIBEX-ELEMENT-REFS")
         obj.fibex_element_refs = []
-        container = ARObject._find_child_element(element, "FIBEX-ELEMENT-REFS")
+        container = SerializationHelper.find_child_element(element, "FIBEX-ELEMENT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.fibex_element_refs.append(child_value)
 
         # Parse interpolation_routine_mapping_set_refs (list from container "INTERPOLATION-ROUTINE-MAPPING-SET-REFS")
         obj.interpolation_routine_mapping_set_refs = []
-        container = ARObject._find_child_element(element, "INTERPOLATION-ROUTINE-MAPPING-SET-REFS")
+        container = SerializationHelper.find_child_element(element, "INTERPOLATION-ROUTINE-MAPPING-SET-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.interpolation_routine_mapping_set_refs.append(child_value)
 
         # Parse j1939_shared_address_clusters (list from container "J1939-SHARED-ADDRESS-CLUSTERS")
         obj.j1939_shared_address_clusters = []
-        container = ARObject._find_child_element(element, "J1939-SHARED-ADDRESS-CLUSTERS")
+        container = SerializationHelper.find_child_element(element, "J1939-SHARED-ADDRESS-CLUSTERS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.j1939_shared_address_clusters.append(child_value)
 
         # Parse mapping_refs (list from container "MAPPING-REFS")
         obj.mapping_refs = []
-        container = ARObject._find_child_element(element, "MAPPING-REFS")
+        container = SerializationHelper.find_child_element(element, "MAPPING-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.mapping_refs.append(child_value)
 
         # Parse pnc_vector_length
-        child = ARObject._find_child_element(element, "PNC-VECTOR-LENGTH")
+        child = SerializationHelper.find_child_element(element, "PNC-VECTOR-LENGTH")
         if child is not None:
             pnc_vector_length_value = child.text
             obj.pnc_vector_length = pnc_vector_length_value
 
         # Parse pnc_vector_offset
-        child = ARObject._find_child_element(element, "PNC-VECTOR-OFFSET")
+        child = SerializationHelper.find_child_element(element, "PNC-VECTOR-OFFSET")
         if child is not None:
             pnc_vector_offset_value = child.text
             obj.pnc_vector_offset = pnc_vector_offset_value
 
         # Parse root_software_composition
-        child = ARObject._find_child_element(element, "ROOT-SOFTWARE-COMPOSITION")
+        child = SerializationHelper.find_child_element(element, "ROOT-SOFTWARE-COMPOSITION")
         if child is not None:
-            root_software_composition_value = ARObject._deserialize_by_tag(child, "RootSwCompositionPrototype")
+            root_software_composition_value = SerializationHelper.deserialize_by_tag(child, "RootSwCompositionPrototype")
             obj.root_software_composition = root_software_composition_value
 
         # Parse sw_cluster_refs (list from container "SW-CLUSTER-REFS")
         obj.sw_cluster_refs = []
-        container = ARObject._find_child_element(element, "SW-CLUSTER-REFS")
+        container = SerializationHelper.find_child_element(element, "SW-CLUSTER-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.sw_cluster_refs.append(child_value)
 
         # Parse system_documentations (list from container "SYSTEM-DOCUMENTATIONS")
         obj.system_documentations = []
-        container = ARObject._find_child_element(element, "SYSTEM-DOCUMENTATIONS")
+        container = SerializationHelper.find_child_element(element, "SYSTEM-DOCUMENTATIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.system_documentations.append(child_value)
 
         # Parse system_version
-        child = ARObject._find_child_element(element, "SYSTEM-VERSION")
+        child = SerializationHelper.find_child_element(element, "SYSTEM-VERSION")
         if child is not None:
             system_version_value = child.text
             obj.system_version = system_version_value

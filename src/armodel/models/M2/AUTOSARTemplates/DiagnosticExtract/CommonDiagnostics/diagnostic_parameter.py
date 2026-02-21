@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticAbstractParameter,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class DiagnosticParameter(DiagnosticAbstractParameter):
@@ -42,7 +43,7 @@ class DiagnosticParameter(DiagnosticAbstractParameter):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -61,7 +62,7 @@ class DiagnosticParameter(DiagnosticAbstractParameter):
 
         # Serialize ident
         if self.ident is not None:
-            serialized = ARObject._serialize_item(self.ident, "DiagnosticParameter")
+            serialized = SerializationHelper.serialize_item(self.ident, "DiagnosticParameter")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IDENT")
@@ -75,7 +76,7 @@ class DiagnosticParameter(DiagnosticAbstractParameter):
 
         # Serialize support_info
         if self.support_info is not None:
-            serialized = ARObject._serialize_item(self.support_info, "DiagnosticParameter")
+            serialized = SerializationHelper.serialize_item(self.support_info, "DiagnosticParameter")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SUPPORT-INFO")
@@ -103,15 +104,15 @@ class DiagnosticParameter(DiagnosticAbstractParameter):
         obj = super(DiagnosticParameter, cls).deserialize(element)
 
         # Parse ident
-        child = ARObject._find_child_element(element, "IDENT")
+        child = SerializationHelper.find_child_element(element, "IDENT")
         if child is not None:
-            ident_value = ARObject._deserialize_by_tag(child, "DiagnosticParameter")
+            ident_value = SerializationHelper.deserialize_by_tag(child, "DiagnosticParameter")
             obj.ident = ident_value
 
         # Parse support_info
-        child = ARObject._find_child_element(element, "SUPPORT-INFO")
+        child = SerializationHelper.find_child_element(element, "SUPPORT-INFO")
         if child is not None:
-            support_info_value = ARObject._deserialize_by_tag(child, "DiagnosticParameter")
+            support_info_value = SerializationHelper.deserialize_by_tag(child, "DiagnosticParameter")
             obj.support_info = support_info_value
 
         return obj

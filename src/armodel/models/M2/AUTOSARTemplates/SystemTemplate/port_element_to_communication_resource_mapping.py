@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_operation import (
     ClientServerOperation,
@@ -69,7 +70,7 @@ class PortElementToCommunicationResourceMapping(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -88,7 +89,7 @@ class PortElementToCommunicationResourceMapping(Identifiable):
 
         # Serialize client_server_instance_ref
         if self.client_server_instance_ref is not None:
-            serialized = ARObject._serialize_item(self.client_server_instance_ref, "ClientServerOperation")
+            serialized = SerializationHelper.serialize_item(self.client_server_instance_ref, "ClientServerOperation")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CLIENT-SERVER-INSTANCE-REF")
@@ -102,7 +103,7 @@ class PortElementToCommunicationResourceMapping(Identifiable):
 
         # Serialize communication_ref
         if self.communication_ref is not None:
-            serialized = ARObject._serialize_item(self.communication_ref, "CpSoftwareCluster")
+            serialized = SerializationHelper.serialize_item(self.communication_ref, "CpSoftwareCluster")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COMMUNICATION-REF")
@@ -116,7 +117,7 @@ class PortElementToCommunicationResourceMapping(Identifiable):
 
         # Serialize mode_ref
         if self.mode_ref is not None:
-            serialized = ARObject._serialize_item(self.mode_ref, "ModeDeclarationGroup")
+            serialized = SerializationHelper.serialize_item(self.mode_ref, "ModeDeclarationGroup")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MODE-REF")
@@ -130,7 +131,7 @@ class PortElementToCommunicationResourceMapping(Identifiable):
 
         # Serialize parameter_data_in_system_instance_ref
         if self.parameter_data_in_system_instance_ref is not None:
-            serialized = ARObject._serialize_item(self.parameter_data_in_system_instance_ref, "ParameterDataPrototype")
+            serialized = SerializationHelper.serialize_item(self.parameter_data_in_system_instance_ref, "ParameterDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PARAMETER-DATA-IN-SYSTEM-INSTANCE-REF-REF")
@@ -144,7 +145,7 @@ class PortElementToCommunicationResourceMapping(Identifiable):
 
         # Serialize trigger_ref
         if self.trigger_ref is not None:
-            serialized = ARObject._serialize_item(self.trigger_ref, "Trigger")
+            serialized = SerializationHelper.serialize_item(self.trigger_ref, "Trigger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TRIGGER-REF")
@@ -158,7 +159,7 @@ class PortElementToCommunicationResourceMapping(Identifiable):
 
         # Serialize variable_data_system_instance_ref
         if self.variable_data_system_instance_ref is not None:
-            serialized = ARObject._serialize_item(self.variable_data_system_instance_ref, "VariableDataPrototype")
+            serialized = SerializationHelper.serialize_item(self.variable_data_system_instance_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VARIABLE-DATA-SYSTEM-INSTANCE-REF-REF")
@@ -186,37 +187,37 @@ class PortElementToCommunicationResourceMapping(Identifiable):
         obj = super(PortElementToCommunicationResourceMapping, cls).deserialize(element)
 
         # Parse client_server_instance_ref
-        child = ARObject._find_child_element(element, "CLIENT-SERVER-INSTANCE-REF")
+        child = SerializationHelper.find_child_element(element, "CLIENT-SERVER-INSTANCE-REF")
         if child is not None:
-            client_server_instance_ref_value = ARObject._deserialize_by_tag(child, "ClientServerOperation")
+            client_server_instance_ref_value = SerializationHelper.deserialize_by_tag(child, "ClientServerOperation")
             obj.client_server_instance_ref = client_server_instance_ref_value
 
         # Parse communication_ref
-        child = ARObject._find_child_element(element, "COMMUNICATION-REF")
+        child = SerializationHelper.find_child_element(element, "COMMUNICATION-REF")
         if child is not None:
             communication_ref_value = ARRef.deserialize(child)
             obj.communication_ref = communication_ref_value
 
         # Parse mode_ref
-        child = ARObject._find_child_element(element, "MODE-REF")
+        child = SerializationHelper.find_child_element(element, "MODE-REF")
         if child is not None:
             mode_ref_value = ARRef.deserialize(child)
             obj.mode_ref = mode_ref_value
 
         # Parse parameter_data_in_system_instance_ref
-        child = ARObject._find_child_element(element, "PARAMETER-DATA-IN-SYSTEM-INSTANCE-REF-REF")
+        child = SerializationHelper.find_child_element(element, "PARAMETER-DATA-IN-SYSTEM-INSTANCE-REF-REF")
         if child is not None:
             parameter_data_in_system_instance_ref_value = ARRef.deserialize(child)
             obj.parameter_data_in_system_instance_ref = parameter_data_in_system_instance_ref_value
 
         # Parse trigger_ref
-        child = ARObject._find_child_element(element, "TRIGGER-REF")
+        child = SerializationHelper.find_child_element(element, "TRIGGER-REF")
         if child is not None:
             trigger_ref_value = ARRef.deserialize(child)
             obj.trigger_ref = trigger_ref_value
 
         # Parse variable_data_system_instance_ref
-        child = ARObject._find_child_element(element, "VARIABLE-DATA-SYSTEM-INSTANCE-REF-REF")
+        child = SerializationHelper.find_child_element(element, "VARIABLE-DATA-SYSTEM-INSTANCE-REF-REF")
         if child is not None:
             variable_data_system_instance_ref_value = ARRef.deserialize(child)
             obj.variable_data_system_instance_ref = variable_data_system_instance_ref_value

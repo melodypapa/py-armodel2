@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class EcucDestinationUriDef(Identifiable):
@@ -40,7 +41,7 @@ class EcucDestinationUriDef(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -59,7 +60,7 @@ class EcucDestinationUriDef(Identifiable):
 
         # Serialize destination_uri
         if self.destination_uri is not None:
-            serialized = ARObject._serialize_item(self.destination_uri, "Any")
+            serialized = SerializationHelper.serialize_item(self.destination_uri, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DESTINATION-URI")
@@ -87,7 +88,7 @@ class EcucDestinationUriDef(Identifiable):
         obj = super(EcucDestinationUriDef, cls).deserialize(element)
 
         # Parse destination_uri
-        child = ARObject._find_child_element(element, "DESTINATION-URI")
+        child = SerializationHelper.find_child_element(element, "DESTINATION-URI")
         if child is not None:
             destination_uri_value = child.text
             obj.destination_uri = destination_uri_value

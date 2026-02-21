@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DiagnosticConnection.tp_c
     TpConnection,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -76,7 +77,7 @@ class J1939TpConnection(TpConnection):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -95,7 +96,7 @@ class J1939TpConnection(TpConnection):
 
         # Serialize broadcast
         if self.broadcast is not None:
-            serialized = ARObject._serialize_item(self.broadcast, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.broadcast, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BROADCAST")
@@ -109,7 +110,7 @@ class J1939TpConnection(TpConnection):
 
         # Serialize buffer_ratio
         if self.buffer_ratio is not None:
-            serialized = ARObject._serialize_item(self.buffer_ratio, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.buffer_ratio, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BUFFER-RATIO")
@@ -123,7 +124,7 @@ class J1939TpConnection(TpConnection):
 
         # Serialize cancellation
         if self.cancellation is not None:
-            serialized = ARObject._serialize_item(self.cancellation, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.cancellation, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CANCELLATION")
@@ -137,7 +138,7 @@ class J1939TpConnection(TpConnection):
 
         # Serialize data_pdu_ref
         if self.data_pdu_ref is not None:
-            serialized = ARObject._serialize_item(self.data_pdu_ref, "NPdu")
+            serialized = SerializationHelper.serialize_item(self.data_pdu_ref, "NPdu")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-PDU-REF")
@@ -151,7 +152,7 @@ class J1939TpConnection(TpConnection):
 
         # Serialize dynamic_bs
         if self.dynamic_bs is not None:
-            serialized = ARObject._serialize_item(self.dynamic_bs, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.dynamic_bs, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DYNAMIC-BS")
@@ -165,7 +166,7 @@ class J1939TpConnection(TpConnection):
 
         # Serialize flow_control_pdu
         if self.flow_control_pdu is not None:
-            serialized = ARObject._serialize_item(self.flow_control_pdu, "NPdu")
+            serialized = SerializationHelper.serialize_item(self.flow_control_pdu, "NPdu")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FLOW-CONTROL-PDU")
@@ -179,7 +180,7 @@ class J1939TpConnection(TpConnection):
 
         # Serialize max_bs
         if self.max_bs is not None:
-            serialized = ARObject._serialize_item(self.max_bs, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.max_bs, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-BS")
@@ -193,7 +194,7 @@ class J1939TpConnection(TpConnection):
 
         # Serialize max_exp_bs
         if self.max_exp_bs is not None:
-            serialized = ARObject._serialize_item(self.max_exp_bs, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.max_exp_bs, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-EXP-BS")
@@ -209,7 +210,7 @@ class J1939TpConnection(TpConnection):
         if self.receiver_refs:
             wrapper = ET.Element("RECEIVER-REFS")
             for item in self.receiver_refs:
-                serialized = ARObject._serialize_item(item, "J1939TpNode")
+                serialized = SerializationHelper.serialize_item(item, "J1939TpNode")
                 if serialized is not None:
                     child_elem = ET.Element("RECEIVER-REF")
                     if hasattr(serialized, 'attrib'):
@@ -224,7 +225,7 @@ class J1939TpConnection(TpConnection):
 
         # Serialize retry
         if self.retry is not None:
-            serialized = ARObject._serialize_item(self.retry, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.retry, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RETRY")
@@ -240,7 +241,7 @@ class J1939TpConnection(TpConnection):
         if self.tp_pgs:
             wrapper = ET.Element("TP-PGS")
             for item in self.tp_pgs:
-                serialized = ARObject._serialize_item(item, "J1939TpPg")
+                serialized = SerializationHelper.serialize_item(item, "J1939TpPg")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -248,7 +249,7 @@ class J1939TpConnection(TpConnection):
 
         # Serialize transmitter_ref
         if self.transmitter_ref is not None:
-            serialized = ARObject._serialize_item(self.transmitter_ref, "J1939TpNode")
+            serialized = SerializationHelper.serialize_item(self.transmitter_ref, "J1939TpNode")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TRANSMITTER-REF")
@@ -276,87 +277,87 @@ class J1939TpConnection(TpConnection):
         obj = super(J1939TpConnection, cls).deserialize(element)
 
         # Parse broadcast
-        child = ARObject._find_child_element(element, "BROADCAST")
+        child = SerializationHelper.find_child_element(element, "BROADCAST")
         if child is not None:
             broadcast_value = child.text
             obj.broadcast = broadcast_value
 
         # Parse buffer_ratio
-        child = ARObject._find_child_element(element, "BUFFER-RATIO")
+        child = SerializationHelper.find_child_element(element, "BUFFER-RATIO")
         if child is not None:
             buffer_ratio_value = child.text
             obj.buffer_ratio = buffer_ratio_value
 
         # Parse cancellation
-        child = ARObject._find_child_element(element, "CANCELLATION")
+        child = SerializationHelper.find_child_element(element, "CANCELLATION")
         if child is not None:
             cancellation_value = child.text
             obj.cancellation = cancellation_value
 
         # Parse data_pdu_ref
-        child = ARObject._find_child_element(element, "DATA-PDU-REF")
+        child = SerializationHelper.find_child_element(element, "DATA-PDU-REF")
         if child is not None:
             data_pdu_ref_value = ARRef.deserialize(child)
             obj.data_pdu_ref = data_pdu_ref_value
 
         # Parse dynamic_bs
-        child = ARObject._find_child_element(element, "DYNAMIC-BS")
+        child = SerializationHelper.find_child_element(element, "DYNAMIC-BS")
         if child is not None:
             dynamic_bs_value = child.text
             obj.dynamic_bs = dynamic_bs_value
 
         # Parse flow_control_pdu
-        child = ARObject._find_child_element(element, "FLOW-CONTROL-PDU")
+        child = SerializationHelper.find_child_element(element, "FLOW-CONTROL-PDU")
         if child is not None:
-            flow_control_pdu_value = ARObject._deserialize_by_tag(child, "NPdu")
+            flow_control_pdu_value = SerializationHelper.deserialize_by_tag(child, "NPdu")
             obj.flow_control_pdu = flow_control_pdu_value
 
         # Parse max_bs
-        child = ARObject._find_child_element(element, "MAX-BS")
+        child = SerializationHelper.find_child_element(element, "MAX-BS")
         if child is not None:
             max_bs_value = child.text
             obj.max_bs = max_bs_value
 
         # Parse max_exp_bs
-        child = ARObject._find_child_element(element, "MAX-EXP-BS")
+        child = SerializationHelper.find_child_element(element, "MAX-EXP-BS")
         if child is not None:
             max_exp_bs_value = child.text
             obj.max_exp_bs = max_exp_bs_value
 
         # Parse receiver_refs (list from container "RECEIVER-REFS")
         obj.receiver_refs = []
-        container = ARObject._find_child_element(element, "RECEIVER-REFS")
+        container = SerializationHelper.find_child_element(element, "RECEIVER-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.receiver_refs.append(child_value)
 
         # Parse retry
-        child = ARObject._find_child_element(element, "RETRY")
+        child = SerializationHelper.find_child_element(element, "RETRY")
         if child is not None:
             retry_value = child.text
             obj.retry = retry_value
 
         # Parse tp_pgs (list from container "TP-PGS")
         obj.tp_pgs = []
-        container = ARObject._find_child_element(element, "TP-PGS")
+        container = SerializationHelper.find_child_element(element, "TP-PGS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.tp_pgs.append(child_value)
 
         # Parse transmitter_ref
-        child = ARObject._find_child_element(element, "TRANSMITTER-REF")
+        child = SerializationHelper.find_child_element(element, "TRANSMITTER-REF")
         if child is not None:
             transmitter_ref_value = ARRef.deserialize(child)
             obj.transmitter_ref = transmitter_ref_value

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
     DiagnosticMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_event import (
     DiagnosticEvent,
@@ -46,7 +47,7 @@ class DiagnosticEventToSecurityEventMapping(DiagnosticMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class DiagnosticEventToSecurityEventMapping(DiagnosticMapping):
 
         # Serialize diagnostic_event_ref
         if self.diagnostic_event_ref is not None:
-            serialized = ARObject._serialize_item(self.diagnostic_event_ref, "DiagnosticEvent")
+            serialized = SerializationHelper.serialize_item(self.diagnostic_event_ref, "DiagnosticEvent")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DIAGNOSTIC-EVENT-REF")
@@ -79,7 +80,7 @@ class DiagnosticEventToSecurityEventMapping(DiagnosticMapping):
 
         # Serialize security_event_context_ref
         if self.security_event_context_ref is not None:
-            serialized = ARObject._serialize_item(self.security_event_context_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.security_event_context_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SECURITY-EVENT-CONTEXT-REF")
@@ -107,13 +108,13 @@ class DiagnosticEventToSecurityEventMapping(DiagnosticMapping):
         obj = super(DiagnosticEventToSecurityEventMapping, cls).deserialize(element)
 
         # Parse diagnostic_event_ref
-        child = ARObject._find_child_element(element, "DIAGNOSTIC-EVENT-REF")
+        child = SerializationHelper.find_child_element(element, "DIAGNOSTIC-EVENT-REF")
         if child is not None:
             diagnostic_event_ref_value = ARRef.deserialize(child)
             obj.diagnostic_event_ref = diagnostic_event_ref_value
 
         # Parse security_event_context_ref
-        child = ARObject._find_child_element(element, "SECURITY-EVENT-CONTEXT-REF")
+        child = SerializationHelper.find_child_element(element, "SECURITY-EVENT-CONTEXT-REF")
         if child is not None:
             security_event_context_ref_value = ARRef.deserialize(child)
             obj.security_event_context_ref = security_event_context_ref_value

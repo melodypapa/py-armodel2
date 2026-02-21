@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -59,7 +60,7 @@ class SecurityEventContextProps(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -78,7 +79,7 @@ class SecurityEventContextProps(Identifiable):
 
         # Serialize context_data
         if self.context_data is not None:
-            serialized = ARObject._serialize_item(self.context_data, "Any")
+            serialized = SerializationHelper.serialize_item(self.context_data, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONTEXT-DATA")
@@ -92,7 +93,7 @@ class SecurityEventContextProps(Identifiable):
 
         # Serialize default
         if self.default is not None:
-            serialized = ARObject._serialize_item(self.default, "Any")
+            serialized = SerializationHelper.serialize_item(self.default, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DEFAULT")
@@ -106,7 +107,7 @@ class SecurityEventContextProps(Identifiable):
 
         # Serialize persistent
         if self.persistent is not None:
-            serialized = ARObject._serialize_item(self.persistent, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.persistent, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PERSISTENT")
@@ -120,7 +121,7 @@ class SecurityEventContextProps(Identifiable):
 
         # Serialize security_event_ref
         if self.security_event_ref is not None:
-            serialized = ARObject._serialize_item(self.security_event_ref, "SecurityEventDefinition")
+            serialized = SerializationHelper.serialize_item(self.security_event_ref, "SecurityEventDefinition")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SECURITY-EVENT-REF")
@@ -134,7 +135,7 @@ class SecurityEventContextProps(Identifiable):
 
         # Serialize sensor_instance
         if self.sensor_instance is not None:
-            serialized = ARObject._serialize_item(self.sensor_instance, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.sensor_instance, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SENSOR-INSTANCE")
@@ -148,7 +149,7 @@ class SecurityEventContextProps(Identifiable):
 
         # Serialize severity
         if self.severity is not None:
-            serialized = ARObject._serialize_item(self.severity, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.severity, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SEVERITY")
@@ -176,37 +177,37 @@ class SecurityEventContextProps(Identifiable):
         obj = super(SecurityEventContextProps, cls).deserialize(element)
 
         # Parse context_data
-        child = ARObject._find_child_element(element, "CONTEXT-DATA")
+        child = SerializationHelper.find_child_element(element, "CONTEXT-DATA")
         if child is not None:
             context_data_value = child.text
             obj.context_data = context_data_value
 
         # Parse default
-        child = ARObject._find_child_element(element, "DEFAULT")
+        child = SerializationHelper.find_child_element(element, "DEFAULT")
         if child is not None:
             default_value = child.text
             obj.default = default_value
 
         # Parse persistent
-        child = ARObject._find_child_element(element, "PERSISTENT")
+        child = SerializationHelper.find_child_element(element, "PERSISTENT")
         if child is not None:
             persistent_value = child.text
             obj.persistent = persistent_value
 
         # Parse security_event_ref
-        child = ARObject._find_child_element(element, "SECURITY-EVENT-REF")
+        child = SerializationHelper.find_child_element(element, "SECURITY-EVENT-REF")
         if child is not None:
             security_event_ref_value = ARRef.deserialize(child)
             obj.security_event_ref = security_event_ref_value
 
         # Parse sensor_instance
-        child = ARObject._find_child_element(element, "SENSOR-INSTANCE")
+        child = SerializationHelper.find_child_element(element, "SENSOR-INSTANCE")
         if child is not None:
             sensor_instance_value = child.text
             obj.sensor_instance = sensor_instance_value
 
         # Parse severity
-        child = ARObject._find_child_element(element, "SEVERITY")
+        child = SerializationHelper.find_child_element(element, "SEVERITY")
         if child is not None:
             severity_value = child.text
             obj.severity = severity_value

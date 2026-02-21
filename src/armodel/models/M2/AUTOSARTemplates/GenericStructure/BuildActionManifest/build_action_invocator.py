@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     VerbatimString,
 )
@@ -40,12 +41,12 @@ class BuildActionInvocator(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize command
         if self.command is not None:
-            serialized = ARObject._serialize_item(self.command, "VerbatimString")
+            serialized = SerializationHelper.serialize_item(self.command, "VerbatimString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COMMAND")
@@ -74,9 +75,9 @@ class BuildActionInvocator(ARObject):
         obj.__init__()
 
         # Parse command
-        child = ARObject._find_child_element(element, "COMMAND")
+        child = SerializationHelper.find_child_element(element, "COMMAND")
         if child is not None:
-            command_value = ARObject._deserialize_by_tag(child, "VerbatimString")
+            command_value = SerializationHelper.deserialize_by_tag(child, "VerbatimString")
             obj.command = command_value
 
         return obj

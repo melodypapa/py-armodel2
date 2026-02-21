@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.constant_specification import (
     ConstantSpecification,
@@ -43,12 +44,12 @@ class ConstantSpecificationMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize appl_constant_ref
         if self.appl_constant_ref is not None:
-            serialized = ARObject._serialize_item(self.appl_constant_ref, "ConstantSpecification")
+            serialized = SerializationHelper.serialize_item(self.appl_constant_ref, "ConstantSpecification")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("APPL-CONSTANT-REF")
@@ -62,7 +63,7 @@ class ConstantSpecificationMapping(ARObject):
 
         # Serialize impl_constant_ref
         if self.impl_constant_ref is not None:
-            serialized = ARObject._serialize_item(self.impl_constant_ref, "ConstantSpecification")
+            serialized = SerializationHelper.serialize_item(self.impl_constant_ref, "ConstantSpecification")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IMPL-CONSTANT-REF")
@@ -91,13 +92,13 @@ class ConstantSpecificationMapping(ARObject):
         obj.__init__()
 
         # Parse appl_constant_ref
-        child = ARObject._find_child_element(element, "APPL-CONSTANT-REF")
+        child = SerializationHelper.find_child_element(element, "APPL-CONSTANT-REF")
         if child is not None:
             appl_constant_ref_value = ARRef.deserialize(child)
             obj.appl_constant_ref = appl_constant_ref_value
 
         # Parse impl_constant_ref
-        child = ARObject._find_child_element(element, "IMPL-CONSTANT-REF")
+        child = SerializationHelper.find_child_element(element, "IMPL-CONSTANT-REF")
         if child is not None:
             impl_constant_ref_value = ARRef.deserialize(child)
             obj.impl_constant_ref = impl_constant_ref_value

@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     ByteOrderEnum,
 )
@@ -47,12 +48,12 @@ class SegmentPosition(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize segment_byte
         if self.segment_byte is not None:
-            serialized = ARObject._serialize_item(self.segment_byte, "ByteOrderEnum")
+            serialized = SerializationHelper.serialize_item(self.segment_byte, "ByteOrderEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SEGMENT-BYTE")
@@ -66,7 +67,7 @@ class SegmentPosition(ARObject):
 
         # Serialize segment_length
         if self.segment_length is not None:
-            serialized = ARObject._serialize_item(self.segment_length, "Integer")
+            serialized = SerializationHelper.serialize_item(self.segment_length, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SEGMENT-LENGTH")
@@ -80,7 +81,7 @@ class SegmentPosition(ARObject):
 
         # Serialize segment
         if self.segment is not None:
-            serialized = ARObject._serialize_item(self.segment, "Integer")
+            serialized = SerializationHelper.serialize_item(self.segment, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SEGMENT")
@@ -109,19 +110,19 @@ class SegmentPosition(ARObject):
         obj.__init__()
 
         # Parse segment_byte
-        child = ARObject._find_child_element(element, "SEGMENT-BYTE")
+        child = SerializationHelper.find_child_element(element, "SEGMENT-BYTE")
         if child is not None:
             segment_byte_value = ByteOrderEnum.deserialize(child)
             obj.segment_byte = segment_byte_value
 
         # Parse segment_length
-        child = ARObject._find_child_element(element, "SEGMENT-LENGTH")
+        child = SerializationHelper.find_child_element(element, "SEGMENT-LENGTH")
         if child is not None:
             segment_length_value = child.text
             obj.segment_length = segment_length_value
 
         # Parse segment
-        child = ARObject._find_child_element(element, "SEGMENT")
+        child = SerializationHelper.find_child_element(element, "SEGMENT")
         if child is not None:
             segment_value = child.text
             obj.segment = segment_value

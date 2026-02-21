@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_definition
     EcucDefinitionElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -62,7 +63,7 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -83,7 +84,7 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
         if self.destination_uri_refs:
             wrapper = ET.Element("DESTINATION-URI-REFS")
             for item in self.destination_uri_refs:
-                serialized = ARObject._serialize_item(item, "EcucDestinationUriDef")
+                serialized = SerializationHelper.serialize_item(item, "EcucDestinationUriDef")
                 if serialized is not None:
                     child_elem = ET.Element("DESTINATION-URI-REF")
                     if hasattr(serialized, 'attrib'):
@@ -100,7 +101,7 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
         if self.multiplicities:
             wrapper = ET.Element("MULTIPLICITIES")
             for item in self.multiplicities:
-                serialized = ARObject._serialize_item(item, "EcucMultiplicityConfigurationClass")
+                serialized = SerializationHelper.serialize_item(item, "EcucMultiplicityConfigurationClass")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -108,7 +109,7 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
 
         # Serialize origin
         if self.origin is not None:
-            serialized = ARObject._serialize_item(self.origin, "String")
+            serialized = SerializationHelper.serialize_item(self.origin, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ORIGIN")
@@ -122,7 +123,7 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
 
         # Serialize post_build_variant
         if self.post_build_variant is not None:
-            serialized = ARObject._serialize_item(self.post_build_variant, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.post_build_variant, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("POST-BUILD-VARIANT")
@@ -136,7 +137,7 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
 
         # Serialize requires_index
         if self.requires_index is not None:
-            serialized = ARObject._serialize_item(self.requires_index, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.requires_index, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REQUIRES-INDEX")
@@ -165,44 +166,44 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
 
         # Parse destination_uri_refs (list from container "DESTINATION-URI-REFS")
         obj.destination_uri_refs = []
-        container = ARObject._find_child_element(element, "DESTINATION-URI-REFS")
+        container = SerializationHelper.find_child_element(element, "DESTINATION-URI-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.destination_uri_refs.append(child_value)
 
         # Parse multiplicities (list from container "MULTIPLICITIES")
         obj.multiplicities = []
-        container = ARObject._find_child_element(element, "MULTIPLICITIES")
+        container = SerializationHelper.find_child_element(element, "MULTIPLICITIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.multiplicities.append(child_value)
 
         # Parse origin
-        child = ARObject._find_child_element(element, "ORIGIN")
+        child = SerializationHelper.find_child_element(element, "ORIGIN")
         if child is not None:
             origin_value = child.text
             obj.origin = origin_value
 
         # Parse post_build_variant
-        child = ARObject._find_child_element(element, "POST-BUILD-VARIANT")
+        child = SerializationHelper.find_child_element(element, "POST-BUILD-VARIANT")
         if child is not None:
             post_build_variant_value = child.text
             obj.post_build_variant = post_build_variant_value
 
         # Parse requires_index
-        child = ARObject._find_child_element(element, "REQUIRES-INDEX")
+        child = SerializationHelper.find_child_element(element, "REQUIRES-INDEX")
         if child is not None:
             requires_index_value = child.text
             obj.requires_index = requires_index_value

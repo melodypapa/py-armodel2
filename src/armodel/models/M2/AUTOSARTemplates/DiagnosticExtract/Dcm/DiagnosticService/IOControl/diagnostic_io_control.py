@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -57,7 +58,7 @@ class DiagnosticIOControl(DiagnosticServiceInstance):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -78,7 +79,7 @@ class DiagnosticIOControl(DiagnosticServiceInstance):
         if self.control_enables:
             wrapper = ET.Element("CONTROL-ENABLES")
             for item in self.control_enables:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -86,7 +87,7 @@ class DiagnosticIOControl(DiagnosticServiceInstance):
 
         # Serialize data_identifier_identifier_ref
         if self.data_identifier_identifier_ref is not None:
-            serialized = ARObject._serialize_item(self.data_identifier_identifier_ref, "DiagnosticDataIdentifier")
+            serialized = SerializationHelper.serialize_item(self.data_identifier_identifier_ref, "DiagnosticDataIdentifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-IDENTIFIER-IDENTIFIER-REF")
@@ -100,7 +101,7 @@ class DiagnosticIOControl(DiagnosticServiceInstance):
 
         # Serialize freeze_current
         if self.freeze_current is not None:
-            serialized = ARObject._serialize_item(self.freeze_current, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.freeze_current, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FREEZE-CURRENT")
@@ -114,7 +115,7 @@ class DiagnosticIOControl(DiagnosticServiceInstance):
 
         # Serialize io_control_class_ref
         if self.io_control_class_ref is not None:
-            serialized = ARObject._serialize_item(self.io_control_class_ref, "DiagnosticIOControl")
+            serialized = SerializationHelper.serialize_item(self.io_control_class_ref, "DiagnosticIOControl")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IO-CONTROL-CLASS-REF")
@@ -128,7 +129,7 @@ class DiagnosticIOControl(DiagnosticServiceInstance):
 
         # Serialize reset_to_default
         if self.reset_to_default is not None:
-            serialized = ARObject._serialize_item(self.reset_to_default, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.reset_to_default, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RESET-TO-DEFAULT")
@@ -142,7 +143,7 @@ class DiagnosticIOControl(DiagnosticServiceInstance):
 
         # Serialize short_term
         if self.short_term is not None:
-            serialized = ARObject._serialize_item(self.short_term, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.short_term, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SHORT-TERM")
@@ -171,40 +172,40 @@ class DiagnosticIOControl(DiagnosticServiceInstance):
 
         # Parse control_enables (list from container "CONTROL-ENABLES")
         obj.control_enables = []
-        container = ARObject._find_child_element(element, "CONTROL-ENABLES")
+        container = SerializationHelper.find_child_element(element, "CONTROL-ENABLES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.control_enables.append(child_value)
 
         # Parse data_identifier_identifier_ref
-        child = ARObject._find_child_element(element, "DATA-IDENTIFIER-IDENTIFIER-REF")
+        child = SerializationHelper.find_child_element(element, "DATA-IDENTIFIER-IDENTIFIER-REF")
         if child is not None:
             data_identifier_identifier_ref_value = ARRef.deserialize(child)
             obj.data_identifier_identifier_ref = data_identifier_identifier_ref_value
 
         # Parse freeze_current
-        child = ARObject._find_child_element(element, "FREEZE-CURRENT")
+        child = SerializationHelper.find_child_element(element, "FREEZE-CURRENT")
         if child is not None:
             freeze_current_value = child.text
             obj.freeze_current = freeze_current_value
 
         # Parse io_control_class_ref
-        child = ARObject._find_child_element(element, "IO-CONTROL-CLASS-REF")
+        child = SerializationHelper.find_child_element(element, "IO-CONTROL-CLASS-REF")
         if child is not None:
             io_control_class_ref_value = ARRef.deserialize(child)
             obj.io_control_class_ref = io_control_class_ref_value
 
         # Parse reset_to_default
-        child = ARObject._find_child_element(element, "RESET-TO-DEFAULT")
+        child = SerializationHelper.find_child_element(element, "RESET-TO-DEFAULT")
         if child is not None:
             reset_to_default_value = child.text
             obj.reset_to_default = reset_to_default_value
 
         # Parse short_term
-        child = ARObject._find_child_element(element, "SHORT-TERM")
+        child = SerializationHelper.find_child_element(element, "SHORT-TERM")
         if child is not None:
             short_term_value = child.text
             obj.short_term = short_term_value

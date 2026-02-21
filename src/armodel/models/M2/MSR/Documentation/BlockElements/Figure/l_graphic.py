@@ -13,6 +13,7 @@ from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel.language_sp
     LanguageSpecific,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.Documentation.BlockElements.Figure.graphic import (
     Graphic,
 )
@@ -48,7 +49,7 @@ class LGraphic(LanguageSpecific):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -67,7 +68,7 @@ class LGraphic(LanguageSpecific):
 
         # Serialize graphic
         if self.graphic is not None:
-            serialized = ARObject._serialize_item(self.graphic, "Graphic")
+            serialized = SerializationHelper.serialize_item(self.graphic, "Graphic")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("GRAPHIC")
@@ -81,7 +82,7 @@ class LGraphic(LanguageSpecific):
 
         # Serialize map
         if self.map is not None:
-            serialized = ARObject._serialize_item(self.map, "Map")
+            serialized = SerializationHelper.serialize_item(self.map, "Map")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAP")
@@ -109,15 +110,15 @@ class LGraphic(LanguageSpecific):
         obj = super(LGraphic, cls).deserialize(element)
 
         # Parse graphic
-        child = ARObject._find_child_element(element, "GRAPHIC")
+        child = SerializationHelper.find_child_element(element, "GRAPHIC")
         if child is not None:
-            graphic_value = ARObject._deserialize_by_tag(child, "Graphic")
+            graphic_value = SerializationHelper.deserialize_by_tag(child, "Graphic")
             obj.graphic = graphic_value
 
         # Parse map
-        child = ARObject._find_child_element(element, "MAP")
+        child = SerializationHelper.find_child_element(element, "MAP")
         if child is not None:
-            map_value = ARObject._deserialize_by_tag(child, "Map")
+            map_value = SerializationHelper.deserialize_by_tag(child, "Map")
             obj.map = map_value
 
         return obj

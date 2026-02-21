@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
@@ -52,12 +53,12 @@ class EndToEndProtectionISignalIPdu(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize data_offset
         if self.data_offset is not None:
-            serialized = ARObject._serialize_item(self.data_offset, "Integer")
+            serialized = SerializationHelper.serialize_item(self.data_offset, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-OFFSET")
@@ -71,7 +72,7 @@ class EndToEndProtectionISignalIPdu(ARObject):
 
         # Serialize i_signal_group_ref
         if self.i_signal_group_ref is not None:
-            serialized = ARObject._serialize_item(self.i_signal_group_ref, "ISignalGroup")
+            serialized = SerializationHelper.serialize_item(self.i_signal_group_ref, "ISignalGroup")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("I-SIGNAL-GROUP-REF")
@@ -85,7 +86,7 @@ class EndToEndProtectionISignalIPdu(ARObject):
 
         # Serialize i_signal_i_pdu_ref
         if self.i_signal_i_pdu_ref is not None:
-            serialized = ARObject._serialize_item(self.i_signal_i_pdu_ref, "ISignalIPdu")
+            serialized = SerializationHelper.serialize_item(self.i_signal_i_pdu_ref, "ISignalIPdu")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("I-SIGNAL-I-PDU-REF")
@@ -114,19 +115,19 @@ class EndToEndProtectionISignalIPdu(ARObject):
         obj.__init__()
 
         # Parse data_offset
-        child = ARObject._find_child_element(element, "DATA-OFFSET")
+        child = SerializationHelper.find_child_element(element, "DATA-OFFSET")
         if child is not None:
             data_offset_value = child.text
             obj.data_offset = data_offset_value
 
         # Parse i_signal_group_ref
-        child = ARObject._find_child_element(element, "I-SIGNAL-GROUP-REF")
+        child = SerializationHelper.find_child_element(element, "I-SIGNAL-GROUP-REF")
         if child is not None:
             i_signal_group_ref_value = ARRef.deserialize(child)
             obj.i_signal_group_ref = i_signal_group_ref_value
 
         # Parse i_signal_i_pdu_ref
-        child = ARObject._find_child_element(element, "I-SIGNAL-I-PDU-REF")
+        child = SerializationHelper.find_child_element(element, "I-SIGNAL-I-PDU-REF")
         if child is not None:
             i_signal_i_pdu_ref_value = ARRef.deserialize(child)
             obj.i_signal_i_pdu_ref = i_signal_i_pdu_ref_value

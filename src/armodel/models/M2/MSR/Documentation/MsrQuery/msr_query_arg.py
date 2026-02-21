@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     NameToken,
     String,
@@ -43,12 +44,12 @@ class MsrQueryArg(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize arg
         if self.arg is not None:
-            serialized = ARObject._serialize_item(self.arg, "String")
+            serialized = SerializationHelper.serialize_item(self.arg, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ARG")
@@ -62,7 +63,7 @@ class MsrQueryArg(ARObject):
 
         # Serialize si
         if self.si is not None:
-            serialized = ARObject._serialize_item(self.si, "NameToken")
+            serialized = SerializationHelper.serialize_item(self.si, "NameToken")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SI")
@@ -91,13 +92,13 @@ class MsrQueryArg(ARObject):
         obj.__init__()
 
         # Parse arg
-        child = ARObject._find_child_element(element, "ARG")
+        child = SerializationHelper.find_child_element(element, "ARG")
         if child is not None:
             arg_value = child.text
             obj.arg = arg_value
 
         # Parse si
-        child = ARObject._find_child_element(element, "SI")
+        child = SerializationHelper.find_child_element(element, "SI")
         if child is not None:
             si_value = child.text
             obj.si = si_value

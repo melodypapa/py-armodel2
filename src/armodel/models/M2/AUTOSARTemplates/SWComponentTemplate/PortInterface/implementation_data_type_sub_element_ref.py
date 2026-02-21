@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.sub_el
     SubElementRef,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.ar_parameter_in_implementation_data_instance_ref import (
     ArParameterInImplementationDataInstanceRef,
 )
@@ -45,7 +46,7 @@ class ImplementationDataTypeSubElementRef(SubElementRef):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class ImplementationDataTypeSubElementRef(SubElementRef):
 
         # Serialize implementation
         if self.implementation is not None:
-            serialized = ARObject._serialize_item(self.implementation, "Any")
+            serialized = SerializationHelper.serialize_item(self.implementation, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IMPLEMENTATION")
@@ -78,7 +79,7 @@ class ImplementationDataTypeSubElementRef(SubElementRef):
 
         # Serialize parameter
         if self.parameter is not None:
-            serialized = ARObject._serialize_item(self.parameter, "ArParameterInImplementationDataInstanceRef")
+            serialized = SerializationHelper.serialize_item(self.parameter, "ArParameterInImplementationDataInstanceRef")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PARAMETER")
@@ -106,15 +107,15 @@ class ImplementationDataTypeSubElementRef(SubElementRef):
         obj = super(ImplementationDataTypeSubElementRef, cls).deserialize(element)
 
         # Parse implementation
-        child = ARObject._find_child_element(element, "IMPLEMENTATION")
+        child = SerializationHelper.find_child_element(element, "IMPLEMENTATION")
         if child is not None:
             implementation_value = child.text
             obj.implementation = implementation_value
 
         # Parse parameter
-        child = ARObject._find_child_element(element, "PARAMETER")
+        child = SerializationHelper.find_child_element(element, "PARAMETER")
         if child is not None:
-            parameter_value = ARObject._deserialize_by_tag(child, "ArParameterInImplementationDataInstanceRef")
+            parameter_value = SerializationHelper.deserialize_by_tag(child, "ArParameterInImplementationDataInstanceRef")
             obj.parameter = parameter_value
 
         return obj

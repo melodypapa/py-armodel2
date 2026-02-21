@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate import (
     EcucScopeEnum,
@@ -71,7 +72,7 @@ class EcucDefinitionElement(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -90,7 +91,7 @@ class EcucDefinitionElement(Identifiable, ABC):
 
         # Serialize ecuc_cond
         if self.ecuc_cond is not None:
-            serialized = ARObject._serialize_item(self.ecuc_cond, "Any")
+            serialized = SerializationHelper.serialize_item(self.ecuc_cond, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ECUC-COND")
@@ -106,7 +107,7 @@ class EcucDefinitionElement(Identifiable, ABC):
         if self.ecuc_validations:
             wrapper = ET.Element("ECUC-VALIDATIONS")
             for item in self.ecuc_validations:
-                serialized = ARObject._serialize_item(item, "EcucValidationCondition")
+                serialized = SerializationHelper.serialize_item(item, "EcucValidationCondition")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -114,7 +115,7 @@ class EcucDefinitionElement(Identifiable, ABC):
 
         # Serialize lower_multiplicity
         if self.lower_multiplicity is not None:
-            serialized = ARObject._serialize_item(self.lower_multiplicity, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.lower_multiplicity, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LOWER-MULTIPLICITY")
@@ -128,7 +129,7 @@ class EcucDefinitionElement(Identifiable, ABC):
 
         # Serialize related_trace_ref
         if self.related_trace_ref is not None:
-            serialized = ARObject._serialize_item(self.related_trace_ref, "Traceable")
+            serialized = SerializationHelper.serialize_item(self.related_trace_ref, "Traceable")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RELATED-TRACE-REF")
@@ -142,7 +143,7 @@ class EcucDefinitionElement(Identifiable, ABC):
 
         # Serialize scope
         if self.scope is not None:
-            serialized = ARObject._serialize_item(self.scope, "EcucScopeEnum")
+            serialized = SerializationHelper.serialize_item(self.scope, "EcucScopeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SCOPE")
@@ -156,7 +157,7 @@ class EcucDefinitionElement(Identifiable, ABC):
 
         # Serialize upper_multiplicity
         if self.upper_multiplicity is not None:
-            serialized = ARObject._serialize_item(self.upper_multiplicity, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.upper_multiplicity, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("UPPER-MULTIPLICITY")
@@ -184,41 +185,41 @@ class EcucDefinitionElement(Identifiable, ABC):
         obj = super(EcucDefinitionElement, cls).deserialize(element)
 
         # Parse ecuc_cond
-        child = ARObject._find_child_element(element, "ECUC-COND")
+        child = SerializationHelper.find_child_element(element, "ECUC-COND")
         if child is not None:
             ecuc_cond_value = child.text
             obj.ecuc_cond = ecuc_cond_value
 
         # Parse ecuc_validations (list from container "ECUC-VALIDATIONS")
         obj.ecuc_validations = []
-        container = ARObject._find_child_element(element, "ECUC-VALIDATIONS")
+        container = SerializationHelper.find_child_element(element, "ECUC-VALIDATIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.ecuc_validations.append(child_value)
 
         # Parse lower_multiplicity
-        child = ARObject._find_child_element(element, "LOWER-MULTIPLICITY")
+        child = SerializationHelper.find_child_element(element, "LOWER-MULTIPLICITY")
         if child is not None:
             lower_multiplicity_value = child.text
             obj.lower_multiplicity = lower_multiplicity_value
 
         # Parse related_trace_ref
-        child = ARObject._find_child_element(element, "RELATED-TRACE-REF")
+        child = SerializationHelper.find_child_element(element, "RELATED-TRACE-REF")
         if child is not None:
             related_trace_ref_value = ARRef.deserialize(child)
             obj.related_trace_ref = related_trace_ref_value
 
         # Parse scope
-        child = ARObject._find_child_element(element, "SCOPE")
+        child = SerializationHelper.find_child_element(element, "SCOPE")
         if child is not None:
             scope_value = EcucScopeEnum.deserialize(child)
             obj.scope = scope_value
 
         # Parse upper_multiplicity
-        child = ARObject._find_child_element(element, "UPPER-MULTIPLICITY")
+        child = SerializationHelper.find_child_element(element, "UPPER-MULTIPLICITY")
         if child is not None:
             upper_multiplicity_value = child.text
             obj.upper_multiplicity = upper_multiplicity_value

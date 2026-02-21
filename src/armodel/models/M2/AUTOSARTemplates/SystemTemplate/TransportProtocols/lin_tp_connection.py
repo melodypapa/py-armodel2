@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DiagnosticConnection.tp_c
     TpConnection,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
@@ -72,7 +73,7 @@ class LinTpConnection(TpConnection):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -91,7 +92,7 @@ class LinTpConnection(TpConnection):
 
         # Serialize data_pdu_ref
         if self.data_pdu_ref is not None:
-            serialized = ARObject._serialize_item(self.data_pdu_ref, "NPdu")
+            serialized = SerializationHelper.serialize_item(self.data_pdu_ref, "NPdu")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-PDU-REF")
@@ -105,7 +106,7 @@ class LinTpConnection(TpConnection):
 
         # Serialize flow_control_ref
         if self.flow_control_ref is not None:
-            serialized = ARObject._serialize_item(self.flow_control_ref, "NPdu")
+            serialized = SerializationHelper.serialize_item(self.flow_control_ref, "NPdu")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FLOW-CONTROL-REF")
@@ -119,7 +120,7 @@ class LinTpConnection(TpConnection):
 
         # Serialize lin_tp_n_sdu_ref
         if self.lin_tp_n_sdu_ref is not None:
-            serialized = ARObject._serialize_item(self.lin_tp_n_sdu_ref, "IPdu")
+            serialized = SerializationHelper.serialize_item(self.lin_tp_n_sdu_ref, "IPdu")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LIN-TP-N-SDU-REF")
@@ -133,7 +134,7 @@ class LinTpConnection(TpConnection):
 
         # Serialize multicast_ref
         if self.multicast_ref is not None:
-            serialized = ARObject._serialize_item(self.multicast_ref, "TpAddress")
+            serialized = SerializationHelper.serialize_item(self.multicast_ref, "TpAddress")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MULTICAST-REF")
@@ -149,7 +150,7 @@ class LinTpConnection(TpConnection):
         if self.receiver_refs:
             wrapper = ET.Element("RECEIVER-REFS")
             for item in self.receiver_refs:
-                serialized = ARObject._serialize_item(item, "LinTpNode")
+                serialized = SerializationHelper.serialize_item(item, "LinTpNode")
                 if serialized is not None:
                     child_elem = ET.Element("RECEIVER-REF")
                     if hasattr(serialized, 'attrib'):
@@ -164,7 +165,7 @@ class LinTpConnection(TpConnection):
 
         # Serialize timeout_as
         if self.timeout_as is not None:
-            serialized = ARObject._serialize_item(self.timeout_as, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.timeout_as, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIMEOUT-AS")
@@ -178,7 +179,7 @@ class LinTpConnection(TpConnection):
 
         # Serialize timeout_cr
         if self.timeout_cr is not None:
-            serialized = ARObject._serialize_item(self.timeout_cr, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.timeout_cr, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIMEOUT-CR")
@@ -192,7 +193,7 @@ class LinTpConnection(TpConnection):
 
         # Serialize timeout_cs
         if self.timeout_cs is not None:
-            serialized = ARObject._serialize_item(self.timeout_cs, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.timeout_cs, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIMEOUT-CS")
@@ -206,7 +207,7 @@ class LinTpConnection(TpConnection):
 
         # Serialize transmitter_ref
         if self.transmitter_ref is not None:
-            serialized = ARObject._serialize_item(self.transmitter_ref, "LinTpNode")
+            serialized = SerializationHelper.serialize_item(self.transmitter_ref, "LinTpNode")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TRANSMITTER-REF")
@@ -234,65 +235,65 @@ class LinTpConnection(TpConnection):
         obj = super(LinTpConnection, cls).deserialize(element)
 
         # Parse data_pdu_ref
-        child = ARObject._find_child_element(element, "DATA-PDU-REF")
+        child = SerializationHelper.find_child_element(element, "DATA-PDU-REF")
         if child is not None:
             data_pdu_ref_value = ARRef.deserialize(child)
             obj.data_pdu_ref = data_pdu_ref_value
 
         # Parse flow_control_ref
-        child = ARObject._find_child_element(element, "FLOW-CONTROL-REF")
+        child = SerializationHelper.find_child_element(element, "FLOW-CONTROL-REF")
         if child is not None:
             flow_control_ref_value = ARRef.deserialize(child)
             obj.flow_control_ref = flow_control_ref_value
 
         # Parse lin_tp_n_sdu_ref
-        child = ARObject._find_child_element(element, "LIN-TP-N-SDU-REF")
+        child = SerializationHelper.find_child_element(element, "LIN-TP-N-SDU-REF")
         if child is not None:
             lin_tp_n_sdu_ref_value = ARRef.deserialize(child)
             obj.lin_tp_n_sdu_ref = lin_tp_n_sdu_ref_value
 
         # Parse multicast_ref
-        child = ARObject._find_child_element(element, "MULTICAST-REF")
+        child = SerializationHelper.find_child_element(element, "MULTICAST-REF")
         if child is not None:
             multicast_ref_value = ARRef.deserialize(child)
             obj.multicast_ref = multicast_ref_value
 
         # Parse receiver_refs (list from container "RECEIVER-REFS")
         obj.receiver_refs = []
-        container = ARObject._find_child_element(element, "RECEIVER-REFS")
+        container = SerializationHelper.find_child_element(element, "RECEIVER-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.receiver_refs.append(child_value)
 
         # Parse timeout_as
-        child = ARObject._find_child_element(element, "TIMEOUT-AS")
+        child = SerializationHelper.find_child_element(element, "TIMEOUT-AS")
         if child is not None:
             timeout_as_value = child.text
             obj.timeout_as = timeout_as_value
 
         # Parse timeout_cr
-        child = ARObject._find_child_element(element, "TIMEOUT-CR")
+        child = SerializationHelper.find_child_element(element, "TIMEOUT-CR")
         if child is not None:
             timeout_cr_value = child.text
             obj.timeout_cr = timeout_cr_value
 
         # Parse timeout_cs
-        child = ARObject._find_child_element(element, "TIMEOUT-CS")
+        child = SerializationHelper.find_child_element(element, "TIMEOUT-CS")
         if child is not None:
             timeout_cs_value = child.text
             obj.timeout_cs = timeout_cs_value
 
         # Parse transmitter_ref
-        child = ARObject._find_child_element(element, "TRANSMITTER-REF")
+        child = SerializationHelper.find_child_element(element, "TRANSMITTER-REF")
         if child is not None:
             transmitter_ref_value = ARRef.deserialize(child)
             obj.transmitter_ref = transmitter_ref_value

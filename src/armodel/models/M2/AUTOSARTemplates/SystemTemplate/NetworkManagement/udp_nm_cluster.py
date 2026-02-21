@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.nm_clus
     NmCluster,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
@@ -64,7 +65,7 @@ class UdpNmCluster(NmCluster):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -83,7 +84,7 @@ class UdpNmCluster(NmCluster):
 
         # Serialize nm_cbv_position
         if self.nm_cbv_position is not None:
-            serialized = ARObject._serialize_item(self.nm_cbv_position, "Integer")
+            serialized = SerializationHelper.serialize_item(self.nm_cbv_position, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM-CBV-POSITION")
@@ -97,7 +98,7 @@ class UdpNmCluster(NmCluster):
 
         # Serialize nm_immediate
         if self.nm_immediate is not None:
-            serialized = ARObject._serialize_item(self.nm_immediate, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.nm_immediate, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM-IMMEDIATE")
@@ -111,7 +112,7 @@ class UdpNmCluster(NmCluster):
 
         # Serialize nm_message
         if self.nm_message is not None:
-            serialized = ARObject._serialize_item(self.nm_message, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.nm_message, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM-MESSAGE")
@@ -125,7 +126,7 @@ class UdpNmCluster(NmCluster):
 
         # Serialize nm_msg_cycle
         if self.nm_msg_cycle is not None:
-            serialized = ARObject._serialize_item(self.nm_msg_cycle, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.nm_msg_cycle, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM-MSG-CYCLE")
@@ -139,7 +140,7 @@ class UdpNmCluster(NmCluster):
 
         # Serialize nm_network
         if self.nm_network is not None:
-            serialized = ARObject._serialize_item(self.nm_network, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.nm_network, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM-NETWORK")
@@ -153,7 +154,7 @@ class UdpNmCluster(NmCluster):
 
         # Serialize nm_nid_position
         if self.nm_nid_position is not None:
-            serialized = ARObject._serialize_item(self.nm_nid_position, "Integer")
+            serialized = SerializationHelper.serialize_item(self.nm_nid_position, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM-NID-POSITION")
@@ -167,7 +168,7 @@ class UdpNmCluster(NmCluster):
 
         # Serialize nm_remote
         if self.nm_remote is not None:
-            serialized = ARObject._serialize_item(self.nm_remote, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.nm_remote, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM-REMOTE")
@@ -181,7 +182,7 @@ class UdpNmCluster(NmCluster):
 
         # Serialize nm_repeat
         if self.nm_repeat is not None:
-            serialized = ARObject._serialize_item(self.nm_repeat, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.nm_repeat, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM-REPEAT")
@@ -195,7 +196,7 @@ class UdpNmCluster(NmCluster):
 
         # Serialize nm_wait_bus
         if self.nm_wait_bus is not None:
-            serialized = ARObject._serialize_item(self.nm_wait_bus, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.nm_wait_bus, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM-WAIT-BUS")
@@ -209,7 +210,7 @@ class UdpNmCluster(NmCluster):
 
         # Serialize vlan_ref
         if self.vlan_ref is not None:
-            serialized = ARObject._serialize_item(self.vlan_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.vlan_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VLAN-REF")
@@ -237,61 +238,61 @@ class UdpNmCluster(NmCluster):
         obj = super(UdpNmCluster, cls).deserialize(element)
 
         # Parse nm_cbv_position
-        child = ARObject._find_child_element(element, "NM-CBV-POSITION")
+        child = SerializationHelper.find_child_element(element, "NM-CBV-POSITION")
         if child is not None:
             nm_cbv_position_value = child.text
             obj.nm_cbv_position = nm_cbv_position_value
 
         # Parse nm_immediate
-        child = ARObject._find_child_element(element, "NM-IMMEDIATE")
+        child = SerializationHelper.find_child_element(element, "NM-IMMEDIATE")
         if child is not None:
             nm_immediate_value = child.text
             obj.nm_immediate = nm_immediate_value
 
         # Parse nm_message
-        child = ARObject._find_child_element(element, "NM-MESSAGE")
+        child = SerializationHelper.find_child_element(element, "NM-MESSAGE")
         if child is not None:
             nm_message_value = child.text
             obj.nm_message = nm_message_value
 
         # Parse nm_msg_cycle
-        child = ARObject._find_child_element(element, "NM-MSG-CYCLE")
+        child = SerializationHelper.find_child_element(element, "NM-MSG-CYCLE")
         if child is not None:
             nm_msg_cycle_value = child.text
             obj.nm_msg_cycle = nm_msg_cycle_value
 
         # Parse nm_network
-        child = ARObject._find_child_element(element, "NM-NETWORK")
+        child = SerializationHelper.find_child_element(element, "NM-NETWORK")
         if child is not None:
             nm_network_value = child.text
             obj.nm_network = nm_network_value
 
         # Parse nm_nid_position
-        child = ARObject._find_child_element(element, "NM-NID-POSITION")
+        child = SerializationHelper.find_child_element(element, "NM-NID-POSITION")
         if child is not None:
             nm_nid_position_value = child.text
             obj.nm_nid_position = nm_nid_position_value
 
         # Parse nm_remote
-        child = ARObject._find_child_element(element, "NM-REMOTE")
+        child = SerializationHelper.find_child_element(element, "NM-REMOTE")
         if child is not None:
             nm_remote_value = child.text
             obj.nm_remote = nm_remote_value
 
         # Parse nm_repeat
-        child = ARObject._find_child_element(element, "NM-REPEAT")
+        child = SerializationHelper.find_child_element(element, "NM-REPEAT")
         if child is not None:
             nm_repeat_value = child.text
             obj.nm_repeat = nm_repeat_value
 
         # Parse nm_wait_bus
-        child = ARObject._find_child_element(element, "NM-WAIT-BUS")
+        child = SerializationHelper.find_child_element(element, "NM-WAIT-BUS")
         if child is not None:
             nm_wait_bus_value = child.text
             obj.nm_wait_bus = nm_wait_bus_value
 
         # Parse vlan_ref
-        child = ARObject._find_child_element(element, "VLAN-REF")
+        child = SerializationHelper.find_child_element(element, "VLAN-REF")
         if child is not None:
             vlan_ref_value = ARRef.deserialize(child)
             obj.vlan_ref = vlan_ref_value

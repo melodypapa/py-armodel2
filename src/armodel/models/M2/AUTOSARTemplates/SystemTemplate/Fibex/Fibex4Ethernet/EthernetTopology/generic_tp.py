@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
     TransportProtocolConfiguration,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -45,7 +46,7 @@ class GenericTp(TransportProtocolConfiguration):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class GenericTp(TransportProtocolConfiguration):
 
         # Serialize tp_address
         if self.tp_address is not None:
-            serialized = ARObject._serialize_item(self.tp_address, "String")
+            serialized = SerializationHelper.serialize_item(self.tp_address, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TP-ADDRESS")
@@ -78,7 +79,7 @@ class GenericTp(TransportProtocolConfiguration):
 
         # Serialize tp_technology
         if self.tp_technology is not None:
-            serialized = ARObject._serialize_item(self.tp_technology, "String")
+            serialized = SerializationHelper.serialize_item(self.tp_technology, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TP-TECHNOLOGY")
@@ -106,13 +107,13 @@ class GenericTp(TransportProtocolConfiguration):
         obj = super(GenericTp, cls).deserialize(element)
 
         # Parse tp_address
-        child = ARObject._find_child_element(element, "TP-ADDRESS")
+        child = SerializationHelper.find_child_element(element, "TP-ADDRESS")
         if child is not None:
             tp_address_value = child.text
             obj.tp_address = tp_address_value
 
         # Parse tp_technology
-        child = ARObject._find_child_element(element, "TP-TECHNOLOGY")
+        child = SerializationHelper.find_child_element(element, "TP-TECHNOLOGY")
         if child is not None:
             tp_technology_value = child.text
             obj.tp_technology = tp_technology_value

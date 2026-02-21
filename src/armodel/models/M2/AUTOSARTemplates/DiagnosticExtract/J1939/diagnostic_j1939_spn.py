@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -43,7 +44,7 @@ class DiagnosticJ1939Spn(DiagnosticCommonElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class DiagnosticJ1939Spn(DiagnosticCommonElement):
 
         # Serialize spn
         if self.spn is not None:
-            serialized = ARObject._serialize_item(self.spn, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.spn, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SPN")
@@ -90,7 +91,7 @@ class DiagnosticJ1939Spn(DiagnosticCommonElement):
         obj = super(DiagnosticJ1939Spn, cls).deserialize(element)
 
         # Parse spn
-        child = ARObject._find_child_element(element, "SPN")
+        child = SerializationHelper.find_child_element(element, "SPN")
         if child is not None:
             spn_value = child.text
             obj.spn = spn_value

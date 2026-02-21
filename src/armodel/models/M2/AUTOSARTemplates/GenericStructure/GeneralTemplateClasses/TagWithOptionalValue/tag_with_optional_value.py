@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
     String,
@@ -46,12 +47,12 @@ class TagWithOptionalValue(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize key
         if self.key is not None:
-            serialized = ARObject._serialize_item(self.key, "String")
+            serialized = SerializationHelper.serialize_item(self.key, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("KEY")
@@ -65,7 +66,7 @@ class TagWithOptionalValue(ARObject):
 
         # Serialize sequence_offset
         if self.sequence_offset is not None:
-            serialized = ARObject._serialize_item(self.sequence_offset, "Integer")
+            serialized = SerializationHelper.serialize_item(self.sequence_offset, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SEQUENCE-OFFSET")
@@ -79,7 +80,7 @@ class TagWithOptionalValue(ARObject):
 
         # Serialize value
         if self.value is not None:
-            serialized = ARObject._serialize_item(self.value, "String")
+            serialized = SerializationHelper.serialize_item(self.value, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VALUE")
@@ -108,19 +109,19 @@ class TagWithOptionalValue(ARObject):
         obj.__init__()
 
         # Parse key
-        child = ARObject._find_child_element(element, "KEY")
+        child = SerializationHelper.find_child_element(element, "KEY")
         if child is not None:
             key_value = child.text
             obj.key = key_value
 
         # Parse sequence_offset
-        child = ARObject._find_child_element(element, "SEQUENCE-OFFSET")
+        child = SerializationHelper.find_child_element(element, "SEQUENCE-OFFSET")
         if child is not None:
             sequence_offset_value = child.text
             obj.sequence_offset = sequence_offset_value
 
         # Parse value
-        child = ARObject._find_child_element(element, "VALUE")
+        child = SerializationHelper.find_child_element(element, "VALUE")
         if child is not None:
             value_value = child.text
             obj.value = value_value

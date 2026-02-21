@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.EnvironmentalCondi
     DiagnosticEnvCompareCondition,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_data_element import (
     DiagnosticDataElement,
@@ -52,7 +53,7 @@ class DiagnosticEnvDataCondition(DiagnosticEnvCompareCondition):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -71,7 +72,7 @@ class DiagnosticEnvDataCondition(DiagnosticEnvCompareCondition):
 
         # Serialize compare_value
         if self.compare_value is not None:
-            serialized = ARObject._serialize_item(self.compare_value, "ValueSpecification")
+            serialized = SerializationHelper.serialize_item(self.compare_value, "ValueSpecification")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COMPARE-VALUE")
@@ -85,7 +86,7 @@ class DiagnosticEnvDataCondition(DiagnosticEnvCompareCondition):
 
         # Serialize data_element_ref
         if self.data_element_ref is not None:
-            serialized = ARObject._serialize_item(self.data_element_ref, "DiagnosticDataElement")
+            serialized = SerializationHelper.serialize_item(self.data_element_ref, "DiagnosticDataElement")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-ELEMENT-REF")
@@ -113,13 +114,13 @@ class DiagnosticEnvDataCondition(DiagnosticEnvCompareCondition):
         obj = super(DiagnosticEnvDataCondition, cls).deserialize(element)
 
         # Parse compare_value
-        child = ARObject._find_child_element(element, "COMPARE-VALUE")
+        child = SerializationHelper.find_child_element(element, "COMPARE-VALUE")
         if child is not None:
-            compare_value_value = ARObject._deserialize_by_tag(child, "ValueSpecification")
+            compare_value_value = SerializationHelper.deserialize_by_tag(child, "ValueSpecification")
             obj.compare_value = compare_value_value
 
         # Parse data_element_ref
-        child = ARObject._find_child_element(element, "DATA-ELEMENT-REF")
+        child = SerializationHelper.find_child_element(element, "DATA-ELEMENT-REF")
         if child is not None:
             data_element_ref_value = ARRef.deserialize(child)
             obj.data_element_ref = data_element_ref_value

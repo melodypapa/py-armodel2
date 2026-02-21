@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     NameToken,
     String,
@@ -70,12 +71,12 @@ class Map(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize area
         if self.area is not None:
-            serialized = ARObject._serialize_item(self.area, "Area")
+            serialized = SerializationHelper.serialize_item(self.area, "Area")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("AREA")
@@ -89,7 +90,7 @@ class Map(ARObject):
 
         # Serialize class_
         if self.class_ is not None:
-            serialized = ARObject._serialize_item(self.class_, "String")
+            serialized = SerializationHelper.serialize_item(self.class_, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CLASS")
@@ -103,7 +104,7 @@ class Map(ARObject):
 
         # Serialize name
         if self.name is not None:
-            serialized = ARObject._serialize_item(self.name, "NameToken")
+            serialized = SerializationHelper.serialize_item(self.name, "NameToken")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NAME")
@@ -117,7 +118,7 @@ class Map(ARObject):
 
         # Serialize onclick
         if self.onclick is not None:
-            serialized = ARObject._serialize_item(self.onclick, "String")
+            serialized = SerializationHelper.serialize_item(self.onclick, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ONCLICK")
@@ -131,7 +132,7 @@ class Map(ARObject):
 
         # Serialize ondblclick
         if self.ondblclick is not None:
-            serialized = ARObject._serialize_item(self.ondblclick, "String")
+            serialized = SerializationHelper.serialize_item(self.ondblclick, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ONDBLCLICK")
@@ -145,7 +146,7 @@ class Map(ARObject):
 
         # Serialize onkeydown
         if self.onkeydown is not None:
-            serialized = ARObject._serialize_item(self.onkeydown, "String")
+            serialized = SerializationHelper.serialize_item(self.onkeydown, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ONKEYDOWN")
@@ -159,7 +160,7 @@ class Map(ARObject):
 
         # Serialize onkeypress
         if self.onkeypress is not None:
-            serialized = ARObject._serialize_item(self.onkeypress, "String")
+            serialized = SerializationHelper.serialize_item(self.onkeypress, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ONKEYPRESS")
@@ -173,7 +174,7 @@ class Map(ARObject):
 
         # Serialize onkeyup
         if self.onkeyup is not None:
-            serialized = ARObject._serialize_item(self.onkeyup, "String")
+            serialized = SerializationHelper.serialize_item(self.onkeyup, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ONKEYUP")
@@ -187,7 +188,7 @@ class Map(ARObject):
 
         # Serialize onmousedown
         if self.onmousedown is not None:
-            serialized = ARObject._serialize_item(self.onmousedown, "String")
+            serialized = SerializationHelper.serialize_item(self.onmousedown, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ONMOUSEDOWN")
@@ -201,7 +202,7 @@ class Map(ARObject):
 
         # Serialize onmousemove
         if self.onmousemove is not None:
-            serialized = ARObject._serialize_item(self.onmousemove, "String")
+            serialized = SerializationHelper.serialize_item(self.onmousemove, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ONMOUSEMOVE")
@@ -215,7 +216,7 @@ class Map(ARObject):
 
         # Serialize onmouseout
         if self.onmouseout is not None:
-            serialized = ARObject._serialize_item(self.onmouseout, "String")
+            serialized = SerializationHelper.serialize_item(self.onmouseout, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ONMOUSEOUT")
@@ -229,7 +230,7 @@ class Map(ARObject):
 
         # Serialize onmouseover
         if self.onmouseover is not None:
-            serialized = ARObject._serialize_item(self.onmouseover, "String")
+            serialized = SerializationHelper.serialize_item(self.onmouseover, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ONMOUSEOVER")
@@ -243,7 +244,7 @@ class Map(ARObject):
 
         # Serialize onmouseup
         if self.onmouseup is not None:
-            serialized = ARObject._serialize_item(self.onmouseup, "String")
+            serialized = SerializationHelper.serialize_item(self.onmouseup, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ONMOUSEUP")
@@ -257,7 +258,7 @@ class Map(ARObject):
 
         # Serialize title
         if self.title is not None:
-            serialized = ARObject._serialize_item(self.title, "String")
+            serialized = SerializationHelper.serialize_item(self.title, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TITLE")
@@ -286,85 +287,85 @@ class Map(ARObject):
         obj.__init__()
 
         # Parse area
-        child = ARObject._find_child_element(element, "AREA")
+        child = SerializationHelper.find_child_element(element, "AREA")
         if child is not None:
-            area_value = ARObject._deserialize_by_tag(child, "Area")
+            area_value = SerializationHelper.deserialize_by_tag(child, "Area")
             obj.area = area_value
 
         # Parse class_
-        child = ARObject._find_child_element(element, "CLASS")
+        child = SerializationHelper.find_child_element(element, "CLASS")
         if child is not None:
             class__value = child.text
             obj.class_ = class__value
 
         # Parse name
-        child = ARObject._find_child_element(element, "NAME")
+        child = SerializationHelper.find_child_element(element, "NAME")
         if child is not None:
             name_value = child.text
             obj.name = name_value
 
         # Parse onclick
-        child = ARObject._find_child_element(element, "ONCLICK")
+        child = SerializationHelper.find_child_element(element, "ONCLICK")
         if child is not None:
             onclick_value = child.text
             obj.onclick = onclick_value
 
         # Parse ondblclick
-        child = ARObject._find_child_element(element, "ONDBLCLICK")
+        child = SerializationHelper.find_child_element(element, "ONDBLCLICK")
         if child is not None:
             ondblclick_value = child.text
             obj.ondblclick = ondblclick_value
 
         # Parse onkeydown
-        child = ARObject._find_child_element(element, "ONKEYDOWN")
+        child = SerializationHelper.find_child_element(element, "ONKEYDOWN")
         if child is not None:
             onkeydown_value = child.text
             obj.onkeydown = onkeydown_value
 
         # Parse onkeypress
-        child = ARObject._find_child_element(element, "ONKEYPRESS")
+        child = SerializationHelper.find_child_element(element, "ONKEYPRESS")
         if child is not None:
             onkeypress_value = child.text
             obj.onkeypress = onkeypress_value
 
         # Parse onkeyup
-        child = ARObject._find_child_element(element, "ONKEYUP")
+        child = SerializationHelper.find_child_element(element, "ONKEYUP")
         if child is not None:
             onkeyup_value = child.text
             obj.onkeyup = onkeyup_value
 
         # Parse onmousedown
-        child = ARObject._find_child_element(element, "ONMOUSEDOWN")
+        child = SerializationHelper.find_child_element(element, "ONMOUSEDOWN")
         if child is not None:
             onmousedown_value = child.text
             obj.onmousedown = onmousedown_value
 
         # Parse onmousemove
-        child = ARObject._find_child_element(element, "ONMOUSEMOVE")
+        child = SerializationHelper.find_child_element(element, "ONMOUSEMOVE")
         if child is not None:
             onmousemove_value = child.text
             obj.onmousemove = onmousemove_value
 
         # Parse onmouseout
-        child = ARObject._find_child_element(element, "ONMOUSEOUT")
+        child = SerializationHelper.find_child_element(element, "ONMOUSEOUT")
         if child is not None:
             onmouseout_value = child.text
             obj.onmouseout = onmouseout_value
 
         # Parse onmouseover
-        child = ARObject._find_child_element(element, "ONMOUSEOVER")
+        child = SerializationHelper.find_child_element(element, "ONMOUSEOVER")
         if child is not None:
             onmouseover_value = child.text
             obj.onmouseover = onmouseover_value
 
         # Parse onmouseup
-        child = ARObject._find_child_element(element, "ONMOUSEUP")
+        child = SerializationHelper.find_child_element(element, "ONMOUSEUP")
         if child is not None:
             onmouseup_value = child.text
             obj.onmouseup = onmouseup_value
 
         # Parse title
-        child = ARObject._find_child_element(element, "TITLE")
+        child = SerializationHelper.find_child_element(element, "TITLE")
         if child is not None:
             title_value = child.text
             obj.title = title_value

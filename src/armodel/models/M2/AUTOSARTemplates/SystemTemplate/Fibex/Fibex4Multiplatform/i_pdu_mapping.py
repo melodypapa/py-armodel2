@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -58,12 +59,12 @@ class IPduMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize introduction
         if self.introduction is not None:
-            serialized = ARObject._serialize_item(self.introduction, "DocumentationBlock")
+            serialized = SerializationHelper.serialize_item(self.introduction, "DocumentationBlock")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INTRODUCTION")
@@ -77,7 +78,7 @@ class IPduMapping(ARObject):
 
         # Serialize pdu_max_length
         if self.pdu_max_length is not None:
-            serialized = ARObject._serialize_item(self.pdu_max_length, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.pdu_max_length, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PDU-MAX-LENGTH")
@@ -91,7 +92,7 @@ class IPduMapping(ARObject):
 
         # Serialize pdur_tp_chunk
         if self.pdur_tp_chunk is not None:
-            serialized = ARObject._serialize_item(self.pdur_tp_chunk, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.pdur_tp_chunk, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PDUR-TP-CHUNK")
@@ -105,7 +106,7 @@ class IPduMapping(ARObject):
 
         # Serialize source_i_pdu_ref
         if self.source_i_pdu_ref is not None:
-            serialized = ARObject._serialize_item(self.source_i_pdu_ref, "PduTriggering")
+            serialized = SerializationHelper.serialize_item(self.source_i_pdu_ref, "PduTriggering")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SOURCE-I-PDU-REF")
@@ -119,7 +120,7 @@ class IPduMapping(ARObject):
 
         # Serialize target_i_pdu_ref
         if self.target_i_pdu_ref is not None:
-            serialized = ARObject._serialize_item(self.target_i_pdu_ref, "TargetIPduRef")
+            serialized = SerializationHelper.serialize_item(self.target_i_pdu_ref, "TargetIPduRef")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TARGET-I-PDU-REF")
@@ -148,31 +149,31 @@ class IPduMapping(ARObject):
         obj.__init__()
 
         # Parse introduction
-        child = ARObject._find_child_element(element, "INTRODUCTION")
+        child = SerializationHelper.find_child_element(element, "INTRODUCTION")
         if child is not None:
-            introduction_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            introduction_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
             obj.introduction = introduction_value
 
         # Parse pdu_max_length
-        child = ARObject._find_child_element(element, "PDU-MAX-LENGTH")
+        child = SerializationHelper.find_child_element(element, "PDU-MAX-LENGTH")
         if child is not None:
             pdu_max_length_value = child.text
             obj.pdu_max_length = pdu_max_length_value
 
         # Parse pdur_tp_chunk
-        child = ARObject._find_child_element(element, "PDUR-TP-CHUNK")
+        child = SerializationHelper.find_child_element(element, "PDUR-TP-CHUNK")
         if child is not None:
             pdur_tp_chunk_value = child.text
             obj.pdur_tp_chunk = pdur_tp_chunk_value
 
         # Parse source_i_pdu_ref
-        child = ARObject._find_child_element(element, "SOURCE-I-PDU-REF")
+        child = SerializationHelper.find_child_element(element, "SOURCE-I-PDU-REF")
         if child is not None:
             source_i_pdu_ref_value = ARRef.deserialize(child)
             obj.source_i_pdu_ref = source_i_pdu_ref_value
 
         # Parse target_i_pdu_ref
-        child = ARObject._find_child_element(element, "TARGET-I-PDU-REF")
+        child = SerializationHelper.find_child_element(element, "TARGET-I-PDU-REF")
         if child is not None:
             target_i_pdu_ref_value = ARRef.deserialize(child)
             obj.target_i_pdu_ref = target_i_pdu_ref_value

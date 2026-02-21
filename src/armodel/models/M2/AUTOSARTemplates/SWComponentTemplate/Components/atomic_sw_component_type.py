@@ -19,6 +19,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.sw_compon
     SwComponentType,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.swc_internal_behavior import (
     SwcInternalBehavior,
 )
@@ -55,7 +56,7 @@ class AtomicSwComponentType(SwComponentType, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -74,7 +75,7 @@ class AtomicSwComponentType(SwComponentType, ABC):
 
         # Serialize internal_behavior
         if self.internal_behavior is not None:
-            serialized = ARObject._serialize_item(self.internal_behavior, "SwcInternalBehavior")
+            serialized = SerializationHelper.serialize_item(self.internal_behavior, "SwcInternalBehavior")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INTERNAL-BEHAVIOR")
@@ -88,7 +89,7 @@ class AtomicSwComponentType(SwComponentType, ABC):
 
         # Serialize symbol_props
         if self.symbol_props is not None:
-            serialized = ARObject._serialize_item(self.symbol_props, "SymbolProps")
+            serialized = SerializationHelper.serialize_item(self.symbol_props, "SymbolProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SYMBOL-PROPS")
@@ -116,15 +117,15 @@ class AtomicSwComponentType(SwComponentType, ABC):
         obj = super(AtomicSwComponentType, cls).deserialize(element)
 
         # Parse internal_behavior
-        child = ARObject._find_child_element(element, "INTERNAL-BEHAVIOR")
+        child = SerializationHelper.find_child_element(element, "INTERNAL-BEHAVIOR")
         if child is not None:
-            internal_behavior_value = ARObject._deserialize_by_tag(child, "SwcInternalBehavior")
+            internal_behavior_value = SerializationHelper.deserialize_by_tag(child, "SwcInternalBehavior")
             obj.internal_behavior = internal_behavior_value
 
         # Parse symbol_props
-        child = ARObject._find_child_element(element, "SYMBOL-PROPS")
+        child = SerializationHelper.find_child_element(element, "SYMBOL-PROPS")
         if child is not None:
-            symbol_props_value = ARObject._deserialize_by_tag(child, "SymbolProps")
+            symbol_props_value = SerializationHelper.deserialize_by_tag(child, "SymbolProps")
             obj.symbol_props = symbol_props_value
 
         return obj

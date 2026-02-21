@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
     SpecElementReference,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchange.document_element_scope import (
     DocumentElementScope,
@@ -49,7 +50,7 @@ class SpecificationDocumentScope(SpecElementReference):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -68,7 +69,7 @@ class SpecificationDocumentScope(SpecElementReference):
 
         # Serialize custom_documentation_ref
         if self.custom_documentation_ref is not None:
-            serialized = ARObject._serialize_item(self.custom_documentation_ref, "Documentation")
+            serialized = SerializationHelper.serialize_item(self.custom_documentation_ref, "Documentation")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CUSTOM-DOCUMENTATION-REF")
@@ -84,7 +85,7 @@ class SpecificationDocumentScope(SpecElementReference):
         if self.documents:
             wrapper = ET.Element("DOCUMENTS")
             for item in self.documents:
-                serialized = ARObject._serialize_item(item, "DocumentElementScope")
+                serialized = SerializationHelper.serialize_item(item, "DocumentElementScope")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -106,18 +107,18 @@ class SpecificationDocumentScope(SpecElementReference):
         obj = super(SpecificationDocumentScope, cls).deserialize(element)
 
         # Parse custom_documentation_ref
-        child = ARObject._find_child_element(element, "CUSTOM-DOCUMENTATION-REF")
+        child = SerializationHelper.find_child_element(element, "CUSTOM-DOCUMENTATION-REF")
         if child is not None:
             custom_documentation_ref_value = ARRef.deserialize(child)
             obj.custom_documentation_ref = custom_documentation_ref_value
 
         # Parse documents (list from container "DOCUMENTS")
         obj.documents = []
-        container = ARObject._find_child_element(element, "DOCUMENTS")
+        container = SerializationHelper.find_child_element(element, "DOCUMENTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.documents.append(child_value)
 

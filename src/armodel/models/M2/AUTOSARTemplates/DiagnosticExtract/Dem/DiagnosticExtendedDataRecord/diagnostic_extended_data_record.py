@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticFreezeFrame import (
     DiagnosticRecordTriggerEnum,
 )
@@ -59,7 +60,7 @@ class DiagnosticExtendedDataRecord(DiagnosticCommonElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -78,7 +79,7 @@ class DiagnosticExtendedDataRecord(DiagnosticCommonElement):
 
         # Serialize custom_trigger
         if self.custom_trigger is not None:
-            serialized = ARObject._serialize_item(self.custom_trigger, "String")
+            serialized = SerializationHelper.serialize_item(self.custom_trigger, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CUSTOM-TRIGGER")
@@ -94,7 +95,7 @@ class DiagnosticExtendedDataRecord(DiagnosticCommonElement):
         if self.record_elements:
             wrapper = ET.Element("RECORD-ELEMENTS")
             for item in self.record_elements:
-                serialized = ARObject._serialize_item(item, "DiagnosticParameter")
+                serialized = SerializationHelper.serialize_item(item, "DiagnosticParameter")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -102,7 +103,7 @@ class DiagnosticExtendedDataRecord(DiagnosticCommonElement):
 
         # Serialize record_number
         if self.record_number is not None:
-            serialized = ARObject._serialize_item(self.record_number, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.record_number, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RECORD-NUMBER")
@@ -116,7 +117,7 @@ class DiagnosticExtendedDataRecord(DiagnosticCommonElement):
 
         # Serialize trigger
         if self.trigger is not None:
-            serialized = ARObject._serialize_item(self.trigger, "DiagnosticRecordTriggerEnum")
+            serialized = SerializationHelper.serialize_item(self.trigger, "DiagnosticRecordTriggerEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TRIGGER")
@@ -130,7 +131,7 @@ class DiagnosticExtendedDataRecord(DiagnosticCommonElement):
 
         # Serialize update
         if self.update is not None:
-            serialized = ARObject._serialize_item(self.update, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.update, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("UPDATE")
@@ -158,35 +159,35 @@ class DiagnosticExtendedDataRecord(DiagnosticCommonElement):
         obj = super(DiagnosticExtendedDataRecord, cls).deserialize(element)
 
         # Parse custom_trigger
-        child = ARObject._find_child_element(element, "CUSTOM-TRIGGER")
+        child = SerializationHelper.find_child_element(element, "CUSTOM-TRIGGER")
         if child is not None:
             custom_trigger_value = child.text
             obj.custom_trigger = custom_trigger_value
 
         # Parse record_elements (list from container "RECORD-ELEMENTS")
         obj.record_elements = []
-        container = ARObject._find_child_element(element, "RECORD-ELEMENTS")
+        container = SerializationHelper.find_child_element(element, "RECORD-ELEMENTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.record_elements.append(child_value)
 
         # Parse record_number
-        child = ARObject._find_child_element(element, "RECORD-NUMBER")
+        child = SerializationHelper.find_child_element(element, "RECORD-NUMBER")
         if child is not None:
             record_number_value = child.text
             obj.record_number = record_number_value
 
         # Parse trigger
-        child = ARObject._find_child_element(element, "TRIGGER")
+        child = SerializationHelper.find_child_element(element, "TRIGGER")
         if child is not None:
             trigger_value = DiagnosticRecordTriggerEnum.deserialize(child)
             obj.trigger = trigger_value
 
         # Parse update
-        child = ARObject._find_child_element(element, "UPDATE")
+        child = SerializationHelper.find_child_element(element, "UPDATE")
         if child is not None:
             update_value = child.text
             obj.update = update_value

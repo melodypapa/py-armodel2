@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
     TDEventSwc,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
@@ -41,7 +42,7 @@ class TDEventSwcInternalBehaviorReference(TDEventSwc):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -60,7 +61,7 @@ class TDEventSwcInternalBehaviorReference(TDEventSwc):
 
         # Serialize referenced_td_event_swc_ref
         if self.referenced_td_event_swc_ref is not None:
-            serialized = ARObject._serialize_item(self.referenced_td_event_swc_ref, "TDEventSwc")
+            serialized = SerializationHelper.serialize_item(self.referenced_td_event_swc_ref, "TDEventSwc")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REFERENCED-TD-EVENT-SWC-REF")
@@ -88,7 +89,7 @@ class TDEventSwcInternalBehaviorReference(TDEventSwc):
         obj = super(TDEventSwcInternalBehaviorReference, cls).deserialize(element)
 
         # Parse referenced_td_event_swc_ref
-        child = ARObject._find_child_element(element, "REFERENCED-TD-EVENT-SWC-REF")
+        child = SerializationHelper.find_child_element(element, "REFERENCED-TD-EVENT-SWC-REF")
         if child is not None:
             referenced_td_event_swc_ref_value = ARRef.deserialize(child)
             obj.referenced_td_event_swc_ref = referenced_td_event_swc_ref_value

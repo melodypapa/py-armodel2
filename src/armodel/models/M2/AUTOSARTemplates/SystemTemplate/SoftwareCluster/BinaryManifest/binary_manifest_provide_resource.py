@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.BinaryMan
     BinaryManifestResource,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -46,7 +47,7 @@ class BinaryManifestProvideResource(BinaryManifestResource):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class BinaryManifestProvideResource(BinaryManifestResource):
 
         # Serialize number_of
         if self.number_of is not None:
-            serialized = ARObject._serialize_item(self.number_of, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.number_of, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NUMBER-OF")
@@ -79,7 +80,7 @@ class BinaryManifestProvideResource(BinaryManifestResource):
 
         # Serialize supports
         if self.supports is not None:
-            serialized = ARObject._serialize_item(self.supports, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.supports, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SUPPORTS")
@@ -107,13 +108,13 @@ class BinaryManifestProvideResource(BinaryManifestResource):
         obj = super(BinaryManifestProvideResource, cls).deserialize(element)
 
         # Parse number_of
-        child = ARObject._find_child_element(element, "NUMBER-OF")
+        child = SerializationHelper.find_child_element(element, "NUMBER-OF")
         if child is not None:
             number_of_value = child.text
             obj.number_of = number_of_value
 
         # Parse supports
-        child = ARObject._find_child_element(element, "SUPPORTS")
+        child = SerializationHelper.find_child_element(element, "SUPPORTS")
         if child is not None:
             supports_value = child.text
             obj.supports = supports_value

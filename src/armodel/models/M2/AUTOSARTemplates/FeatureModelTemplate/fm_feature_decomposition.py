@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     CategoryString,
@@ -51,12 +52,12 @@ class FMFeatureDecomposition(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize category
         if self.category is not None:
-            serialized = ARObject._serialize_item(self.category, "CategoryString")
+            serialized = SerializationHelper.serialize_item(self.category, "CategoryString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CATEGORY")
@@ -72,7 +73,7 @@ class FMFeatureDecomposition(ARObject):
         if self.feature_refs:
             wrapper = ET.Element("FEATURE-REFS")
             for item in self.feature_refs:
-                serialized = ARObject._serialize_item(item, "FMFeature")
+                serialized = SerializationHelper.serialize_item(item, "FMFeature")
                 if serialized is not None:
                     child_elem = ET.Element("FEATURE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -87,7 +88,7 @@ class FMFeatureDecomposition(ARObject):
 
         # Serialize max
         if self.max is not None:
-            serialized = ARObject._serialize_item(self.max, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.max, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX")
@@ -101,7 +102,7 @@ class FMFeatureDecomposition(ARObject):
 
         # Serialize min
         if self.min is not None:
-            serialized = ARObject._serialize_item(self.min, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.min, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MIN")
@@ -130,35 +131,35 @@ class FMFeatureDecomposition(ARObject):
         obj.__init__()
 
         # Parse category
-        child = ARObject._find_child_element(element, "CATEGORY")
+        child = SerializationHelper.find_child_element(element, "CATEGORY")
         if child is not None:
             category_value = child.text
             obj.category = category_value
 
         # Parse feature_refs (list from container "FEATURE-REFS")
         obj.feature_refs = []
-        container = ARObject._find_child_element(element, "FEATURE-REFS")
+        container = SerializationHelper.find_child_element(element, "FEATURE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.feature_refs.append(child_value)
 
         # Parse max
-        child = ARObject._find_child_element(element, "MAX")
+        child = SerializationHelper.find_child_element(element, "MAX")
         if child is not None:
             max_value = child.text
             obj.max = max_value
 
         # Parse min
-        child = ARObject._find_child_element(element, "MIN")
+        child = SerializationHelper.find_child_element(element, "MIN")
         if child is not None:
             min_value = child.text
             obj.min = min_value

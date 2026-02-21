@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     MonotonyEnum,
@@ -64,12 +65,12 @@ class PhysConstrs(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize lower_limit
         if self.lower_limit is not None:
-            serialized = ARObject._serialize_item(self.lower_limit, "Limit")
+            serialized = SerializationHelper.serialize_item(self.lower_limit, "Limit")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LOWER-LIMIT")
@@ -83,7 +84,7 @@ class PhysConstrs(ARObject):
 
         # Serialize max_diff
         if self.max_diff is not None:
-            serialized = ARObject._serialize_item(self.max_diff, "Numerical")
+            serialized = SerializationHelper.serialize_item(self.max_diff, "Numerical")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-DIFF")
@@ -97,7 +98,7 @@ class PhysConstrs(ARObject):
 
         # Serialize max_gradient
         if self.max_gradient is not None:
-            serialized = ARObject._serialize_item(self.max_gradient, "Numerical")
+            serialized = SerializationHelper.serialize_item(self.max_gradient, "Numerical")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-GRADIENT")
@@ -111,7 +112,7 @@ class PhysConstrs(ARObject):
 
         # Serialize monotony
         if self.monotony is not None:
-            serialized = ARObject._serialize_item(self.monotony, "MonotonyEnum")
+            serialized = SerializationHelper.serialize_item(self.monotony, "MonotonyEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MONOTONY")
@@ -127,7 +128,7 @@ class PhysConstrs(ARObject):
         if self.scale_constrs:
             wrapper = ET.Element("SCALE-CONSTRS")
             for item in self.scale_constrs:
-                serialized = ARObject._serialize_item(item, "ScaleConstr")
+                serialized = SerializationHelper.serialize_item(item, "ScaleConstr")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -135,7 +136,7 @@ class PhysConstrs(ARObject):
 
         # Serialize upper_limit
         if self.upper_limit is not None:
-            serialized = ARObject._serialize_item(self.upper_limit, "Limit")
+            serialized = SerializationHelper.serialize_item(self.upper_limit, "Limit")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("UPPER-LIMIT")
@@ -149,7 +150,7 @@ class PhysConstrs(ARObject):
 
         # Serialize unit_ref
         if self.unit_ref is not None:
-            serialized = ARObject._serialize_item(self.unit_ref, "Unit")
+            serialized = SerializationHelper.serialize_item(self.unit_ref, "Unit")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("UNIT-REF")
@@ -178,47 +179,47 @@ class PhysConstrs(ARObject):
         obj.__init__()
 
         # Parse lower_limit
-        child = ARObject._find_child_element(element, "LOWER-LIMIT")
+        child = SerializationHelper.find_child_element(element, "LOWER-LIMIT")
         if child is not None:
-            lower_limit_value = ARObject._deserialize_by_tag(child, "Limit")
+            lower_limit_value = SerializationHelper.deserialize_by_tag(child, "Limit")
             obj.lower_limit = lower_limit_value
 
         # Parse max_diff
-        child = ARObject._find_child_element(element, "MAX-DIFF")
+        child = SerializationHelper.find_child_element(element, "MAX-DIFF")
         if child is not None:
             max_diff_value = child.text
             obj.max_diff = max_diff_value
 
         # Parse max_gradient
-        child = ARObject._find_child_element(element, "MAX-GRADIENT")
+        child = SerializationHelper.find_child_element(element, "MAX-GRADIENT")
         if child is not None:
             max_gradient_value = child.text
             obj.max_gradient = max_gradient_value
 
         # Parse monotony
-        child = ARObject._find_child_element(element, "MONOTONY")
+        child = SerializationHelper.find_child_element(element, "MONOTONY")
         if child is not None:
             monotony_value = MonotonyEnum.deserialize(child)
             obj.monotony = monotony_value
 
         # Parse scale_constrs (list from container "SCALE-CONSTRS")
         obj.scale_constrs = []
-        container = ARObject._find_child_element(element, "SCALE-CONSTRS")
+        container = SerializationHelper.find_child_element(element, "SCALE-CONSTRS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.scale_constrs.append(child_value)
 
         # Parse upper_limit
-        child = ARObject._find_child_element(element, "UPPER-LIMIT")
+        child = SerializationHelper.find_child_element(element, "UPPER-LIMIT")
         if child is not None:
-            upper_limit_value = ARObject._deserialize_by_tag(child, "Limit")
+            upper_limit_value = SerializationHelper.deserialize_by_tag(child, "Limit")
             obj.upper_limit = upper_limit_value
 
         # Parse unit_ref
-        child = ARObject._find_child_element(element, "UNIT-REF")
+        child = SerializationHelper.find_child_element(element, "UNIT-REF")
         if child is not None:
             unit_ref_value = ARRef.deserialize(child)
             obj.unit_ref = unit_ref_value

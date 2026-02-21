@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -50,7 +51,7 @@ class SomeipSdClientServiceInstanceConfig(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -69,7 +70,7 @@ class SomeipSdClientServiceInstanceConfig(ARElement):
 
         # Serialize initial_find_behavior
         if self.initial_find_behavior is not None:
-            serialized = ARObject._serialize_item(self.initial_find_behavior, "InitialSdDelayConfig")
+            serialized = SerializationHelper.serialize_item(self.initial_find_behavior, "InitialSdDelayConfig")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INITIAL-FIND-BEHAVIOR")
@@ -83,7 +84,7 @@ class SomeipSdClientServiceInstanceConfig(ARElement):
 
         # Serialize priority
         if self.priority is not None:
-            serialized = ARObject._serialize_item(self.priority, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.priority, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PRIORITY")
@@ -97,7 +98,7 @@ class SomeipSdClientServiceInstanceConfig(ARElement):
 
         # Serialize service_find
         if self.service_find is not None:
-            serialized = ARObject._serialize_item(self.service_find, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.service_find, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SERVICE-FIND")
@@ -125,19 +126,19 @@ class SomeipSdClientServiceInstanceConfig(ARElement):
         obj = super(SomeipSdClientServiceInstanceConfig, cls).deserialize(element)
 
         # Parse initial_find_behavior
-        child = ARObject._find_child_element(element, "INITIAL-FIND-BEHAVIOR")
+        child = SerializationHelper.find_child_element(element, "INITIAL-FIND-BEHAVIOR")
         if child is not None:
-            initial_find_behavior_value = ARObject._deserialize_by_tag(child, "InitialSdDelayConfig")
+            initial_find_behavior_value = SerializationHelper.deserialize_by_tag(child, "InitialSdDelayConfig")
             obj.initial_find_behavior = initial_find_behavior_value
 
         # Parse priority
-        child = ARObject._find_child_element(element, "PRIORITY")
+        child = SerializationHelper.find_child_element(element, "PRIORITY")
         if child is not None:
             priority_value = child.text
             obj.priority = priority_value
 
         # Parse service_find
-        child = ARObject._find_child_element(element, "SERVICE-FIND")
+        child = SerializationHelper.find_child_element(element, "SERVICE-FIND")
         if child is not None:
             service_find_value = child.text
             obj.service_find = service_find_value

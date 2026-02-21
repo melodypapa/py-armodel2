@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     SingleLanguageReferrable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -47,7 +48,7 @@ class Xfile(SingleLanguageReferrable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -66,7 +67,7 @@ class Xfile(SingleLanguageReferrable):
 
         # Serialize tool
         if self.tool is not None:
-            serialized = ARObject._serialize_item(self.tool, "String")
+            serialized = SerializationHelper.serialize_item(self.tool, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TOOL")
@@ -80,7 +81,7 @@ class Xfile(SingleLanguageReferrable):
 
         # Serialize tool_version
         if self.tool_version is not None:
-            serialized = ARObject._serialize_item(self.tool_version, "String")
+            serialized = SerializationHelper.serialize_item(self.tool_version, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TOOL-VERSION")
@@ -94,7 +95,7 @@ class Xfile(SingleLanguageReferrable):
 
         # Serialize url
         if self.url is not None:
-            serialized = ARObject._serialize_item(self.url, "Any")
+            serialized = SerializationHelper.serialize_item(self.url, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("URL")
@@ -122,19 +123,19 @@ class Xfile(SingleLanguageReferrable):
         obj = super(Xfile, cls).deserialize(element)
 
         # Parse tool
-        child = ARObject._find_child_element(element, "TOOL")
+        child = SerializationHelper.find_child_element(element, "TOOL")
         if child is not None:
             tool_value = child.text
             obj.tool = tool_value
 
         # Parse tool_version
-        child = ARObject._find_child_element(element, "TOOL-VERSION")
+        child = SerializationHelper.find_child_element(element, "TOOL-VERSION")
         if child is not None:
             tool_version_value = child.text
             obj.tool_version = tool_version_value
 
         # Parse url
-        child = ARObject._find_child_element(element, "URL")
+        child = SerializationHelper.find_child_element(element, "URL")
         if child is not None:
             url_value = child.text
             obj.url = url_value

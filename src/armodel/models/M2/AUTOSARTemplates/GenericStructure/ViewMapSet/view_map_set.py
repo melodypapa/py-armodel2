@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.ViewMapSet.view_map import (
     ViewMap,
 )
@@ -44,7 +45,7 @@ class ViewMapSet(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class ViewMapSet(ARElement):
         if self.view_maps:
             wrapper = ET.Element("VIEW-MAPS")
             for item in self.view_maps:
-                serialized = ARObject._serialize_item(item, "ViewMap")
+                serialized = SerializationHelper.serialize_item(item, "ViewMap")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -88,11 +89,11 @@ class ViewMapSet(ARElement):
 
         # Parse view_maps (list from container "VIEW-MAPS")
         obj.view_maps = []
-        container = ARObject._find_child_element(element, "VIEW-MAPS")
+        container = SerializationHelper.find_child_element(element, "VIEW-MAPS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.view_maps.append(child_value)
 

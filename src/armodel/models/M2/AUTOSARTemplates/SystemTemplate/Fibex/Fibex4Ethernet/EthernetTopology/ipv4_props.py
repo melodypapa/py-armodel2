@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.ipv4_arp_props import (
     Ipv4ArpProps,
 )
@@ -50,12 +51,12 @@ class Ipv4Props(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize arp_props
         if self.arp_props is not None:
-            serialized = ARObject._serialize_item(self.arp_props, "Ipv4ArpProps")
+            serialized = SerializationHelper.serialize_item(self.arp_props, "Ipv4ArpProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ARP-PROPS")
@@ -69,7 +70,7 @@ class Ipv4Props(ARObject):
 
         # Serialize auto_ip_props
         if self.auto_ip_props is not None:
-            serialized = ARObject._serialize_item(self.auto_ip_props, "Ipv4AutoIpProps")
+            serialized = SerializationHelper.serialize_item(self.auto_ip_props, "Ipv4AutoIpProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("AUTO-IP-PROPS")
@@ -83,7 +84,7 @@ class Ipv4Props(ARObject):
 
         # Serialize fragmentation
         if self.fragmentation is not None:
-            serialized = ARObject._serialize_item(self.fragmentation, "Ipv4FragmentationProps")
+            serialized = SerializationHelper.serialize_item(self.fragmentation, "Ipv4FragmentationProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FRAGMENTATION")
@@ -112,21 +113,21 @@ class Ipv4Props(ARObject):
         obj.__init__()
 
         # Parse arp_props
-        child = ARObject._find_child_element(element, "ARP-PROPS")
+        child = SerializationHelper.find_child_element(element, "ARP-PROPS")
         if child is not None:
-            arp_props_value = ARObject._deserialize_by_tag(child, "Ipv4ArpProps")
+            arp_props_value = SerializationHelper.deserialize_by_tag(child, "Ipv4ArpProps")
             obj.arp_props = arp_props_value
 
         # Parse auto_ip_props
-        child = ARObject._find_child_element(element, "AUTO-IP-PROPS")
+        child = SerializationHelper.find_child_element(element, "AUTO-IP-PROPS")
         if child is not None:
-            auto_ip_props_value = ARObject._deserialize_by_tag(child, "Ipv4AutoIpProps")
+            auto_ip_props_value = SerializationHelper.deserialize_by_tag(child, "Ipv4AutoIpProps")
             obj.auto_ip_props = auto_ip_props_value
 
         # Parse fragmentation
-        child = ARObject._find_child_element(element, "FRAGMENTATION")
+        child = SerializationHelper.find_child_element(element, "FRAGMENTATION")
         if child is not None:
-            fragmentation_value = ARObject._deserialize_by_tag(child, "Ipv4FragmentationProps")
+            fragmentation_value = SerializationHelper.deserialize_by_tag(child, "Ipv4FragmentationProps")
             obj.fragmentation = fragmentation_value
 
         return obj

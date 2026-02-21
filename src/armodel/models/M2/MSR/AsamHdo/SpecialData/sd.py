@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     NameToken,
     VerbatimStringPlain,
@@ -45,12 +46,12 @@ class Sd(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize gid
         if self.gid is not None:
-            serialized = ARObject._serialize_item(self.gid, "NameToken")
+            serialized = SerializationHelper.serialize_item(self.gid, "NameToken")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("GID")
@@ -64,7 +65,7 @@ class Sd(ARObject):
 
         # Serialize value
         if self.value is not None:
-            serialized = ARObject._serialize_item(self.value, "VerbatimStringPlain")
+            serialized = SerializationHelper.serialize_item(self.value, "VerbatimStringPlain")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VALUE")
@@ -78,7 +79,7 @@ class Sd(ARObject):
 
         # Serialize xml_space
         if self.xml_space is not None:
-            serialized = ARObject._serialize_item(self.xml_space, "Any")
+            serialized = SerializationHelper.serialize_item(self.xml_space, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("XML-SPACE")
@@ -107,19 +108,19 @@ class Sd(ARObject):
         obj.__init__()
 
         # Parse gid
-        child = ARObject._find_child_element(element, "GID")
+        child = SerializationHelper.find_child_element(element, "GID")
         if child is not None:
             gid_value = child.text
             obj.gid = gid_value
 
         # Parse value
-        child = ARObject._find_child_element(element, "VALUE")
+        child = SerializationHelper.find_child_element(element, "VALUE")
         if child is not None:
             value_value = child.text
             obj.value = value_value
 
         # Parse xml_space
-        child = ARObject._find_child_element(element, "XML-SPACE")
+        child = SerializationHelper.find_child_element(element, "XML-SPACE")
         if child is not None:
             xml_space_value = child.text
             obj.xml_space = xml_space_value

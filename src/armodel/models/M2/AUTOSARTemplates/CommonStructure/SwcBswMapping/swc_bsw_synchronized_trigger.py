@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigger import (
     Trigger,
@@ -43,12 +44,12 @@ class SwcBswSynchronizedTrigger(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize bsw_trigger_ref
         if self.bsw_trigger_ref is not None:
-            serialized = ARObject._serialize_item(self.bsw_trigger_ref, "Trigger")
+            serialized = SerializationHelper.serialize_item(self.bsw_trigger_ref, "Trigger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BSW-TRIGGER-REF")
@@ -62,7 +63,7 @@ class SwcBswSynchronizedTrigger(ARObject):
 
         # Serialize swc_trigger_ref
         if self.swc_trigger_ref is not None:
-            serialized = ARObject._serialize_item(self.swc_trigger_ref, "Trigger")
+            serialized = SerializationHelper.serialize_item(self.swc_trigger_ref, "Trigger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SWC-TRIGGER-REF")
@@ -91,13 +92,13 @@ class SwcBswSynchronizedTrigger(ARObject):
         obj.__init__()
 
         # Parse bsw_trigger_ref
-        child = ARObject._find_child_element(element, "BSW-TRIGGER-REF")
+        child = SerializationHelper.find_child_element(element, "BSW-TRIGGER-REF")
         if child is not None:
             bsw_trigger_ref_value = ARRef.deserialize(child)
             obj.bsw_trigger_ref = bsw_trigger_ref_value
 
         # Parse swc_trigger_ref
-        child = ARObject._find_child_element(element, "SWC-TRIGGER-REF")
+        child = SerializationHelper.find_child_element(element, "SWC-TRIGGER-REF")
         if child is not None:
             swc_trigger_ref_value = ARRef.deserialize(child)
             obj.swc_trigger_ref = swc_trigger_ref_value

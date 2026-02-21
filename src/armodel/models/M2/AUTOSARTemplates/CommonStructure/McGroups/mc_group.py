@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.mc_function import (
     McFunction,
@@ -54,7 +55,7 @@ class McGroup(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -75,7 +76,7 @@ class McGroup(ARElement):
         if self.mc_function_refs:
             wrapper = ET.Element("MC-FUNCTION-REFS")
             for item in self.mc_function_refs:
-                serialized = ARObject._serialize_item(item, "McFunction")
+                serialized = SerializationHelper.serialize_item(item, "McFunction")
                 if serialized is not None:
                     child_elem = ET.Element("MC-FUNCTION-REF")
                     if hasattr(serialized, 'attrib'):
@@ -90,7 +91,7 @@ class McGroup(ARElement):
 
         # Serialize ref_calprm_set_ref
         if self.ref_calprm_set_ref is not None:
-            serialized = ARObject._serialize_item(self.ref_calprm_set_ref, "McGroupDataRefSet")
+            serialized = SerializationHelper.serialize_item(self.ref_calprm_set_ref, "McGroupDataRefSet")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REF-CALPRM-SET-REF")
@@ -104,7 +105,7 @@ class McGroup(ARElement):
 
         # Serialize ref_ref
         if self.ref_ref is not None:
-            serialized = ARObject._serialize_item(self.ref_ref, "McGroupDataRefSet")
+            serialized = SerializationHelper.serialize_item(self.ref_ref, "McGroupDataRefSet")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REF-REF")
@@ -120,7 +121,7 @@ class McGroup(ARElement):
         if self.sub_group_refs:
             wrapper = ET.Element("SUB-GROUP-REFS")
             for item in self.sub_group_refs:
-                serialized = ARObject._serialize_item(item, "McGroup")
+                serialized = SerializationHelper.serialize_item(item, "McGroup")
                 if serialized is not None:
                     child_elem = ET.Element("SUB-GROUP-REF")
                     if hasattr(serialized, 'attrib'):
@@ -150,45 +151,45 @@ class McGroup(ARElement):
 
         # Parse mc_function_refs (list from container "MC-FUNCTION-REFS")
         obj.mc_function_refs = []
-        container = ARObject._find_child_element(element, "MC-FUNCTION-REFS")
+        container = SerializationHelper.find_child_element(element, "MC-FUNCTION-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.mc_function_refs.append(child_value)
 
         # Parse ref_calprm_set_ref
-        child = ARObject._find_child_element(element, "REF-CALPRM-SET-REF")
+        child = SerializationHelper.find_child_element(element, "REF-CALPRM-SET-REF")
         if child is not None:
             ref_calprm_set_ref_value = ARRef.deserialize(child)
             obj.ref_calprm_set_ref = ref_calprm_set_ref_value
 
         # Parse ref_ref
-        child = ARObject._find_child_element(element, "REF-REF")
+        child = SerializationHelper.find_child_element(element, "REF-REF")
         if child is not None:
             ref_ref_value = ARRef.deserialize(child)
             obj.ref_ref = ref_ref_value
 
         # Parse sub_group_refs (list from container "SUB-GROUP-REFS")
         obj.sub_group_refs = []
-        container = ARObject._find_child_element(element, "SUB-GROUP-REFS")
+        container = SerializationHelper.find_child_element(element, "SUB-GROUP-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.sub_group_refs.append(child_value)
 

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.p_port
     PPortComSpec,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
     VariableDataPrototype,
@@ -54,7 +55,7 @@ class NvProvideComSpec(PPortComSpec):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -73,7 +74,7 @@ class NvProvideComSpec(PPortComSpec):
 
         # Serialize ram_block_init
         if self.ram_block_init is not None:
-            serialized = ARObject._serialize_item(self.ram_block_init, "ValueSpecification")
+            serialized = SerializationHelper.serialize_item(self.ram_block_init, "ValueSpecification")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RAM-BLOCK-INIT")
@@ -87,7 +88,7 @@ class NvProvideComSpec(PPortComSpec):
 
         # Serialize rom_block_init
         if self.rom_block_init is not None:
-            serialized = ARObject._serialize_item(self.rom_block_init, "ValueSpecification")
+            serialized = SerializationHelper.serialize_item(self.rom_block_init, "ValueSpecification")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ROM-BLOCK-INIT")
@@ -101,7 +102,7 @@ class NvProvideComSpec(PPortComSpec):
 
         # Serialize variable_ref
         if self.variable_ref is not None:
-            serialized = ARObject._serialize_item(self.variable_ref, "VariableDataPrototype")
+            serialized = SerializationHelper.serialize_item(self.variable_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VARIABLE-REF")
@@ -129,19 +130,19 @@ class NvProvideComSpec(PPortComSpec):
         obj = super(NvProvideComSpec, cls).deserialize(element)
 
         # Parse ram_block_init
-        child = ARObject._find_child_element(element, "RAM-BLOCK-INIT")
+        child = SerializationHelper.find_child_element(element, "RAM-BLOCK-INIT")
         if child is not None:
-            ram_block_init_value = ARObject._deserialize_by_tag(child, "ValueSpecification")
+            ram_block_init_value = SerializationHelper.deserialize_by_tag(child, "ValueSpecification")
             obj.ram_block_init = ram_block_init_value
 
         # Parse rom_block_init
-        child = ARObject._find_child_element(element, "ROM-BLOCK-INIT")
+        child = SerializationHelper.find_child_element(element, "ROM-BLOCK-INIT")
         if child is not None:
-            rom_block_init_value = ARObject._deserialize_by_tag(child, "ValueSpecification")
+            rom_block_init_value = SerializationHelper.deserialize_by_tag(child, "ValueSpecification")
             obj.rom_block_init = rom_block_init_value
 
         # Parse variable_ref
-        child = ARObject._find_child_element(element, "VARIABLE-REF")
+        child = SerializationHelper.find_child_element(element, "VARIABLE-REF")
         if child is not None:
             variable_ref_value = ARRef.deserialize(child)
             obj.variable_ref = variable_ref_value

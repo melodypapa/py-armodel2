@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.Stac
     StackUsage,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -43,7 +44,7 @@ class WorstCaseStackUsage(StackUsage):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class WorstCaseStackUsage(StackUsage):
 
         # Serialize memory_consumption
         if self.memory_consumption is not None:
-            serialized = ARObject._serialize_item(self.memory_consumption, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.memory_consumption, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MEMORY-CONSUMPTION")
@@ -90,7 +91,7 @@ class WorstCaseStackUsage(StackUsage):
         obj = super(WorstCaseStackUsage, cls).deserialize(element)
 
         # Parse memory_consumption
-        child = ARObject._find_child_element(element, "MEMORY-CONSUMPTION")
+        child = SerializationHelper.find_child_element(element, "MEMORY-CONSUMPTION")
         if child is not None:
             memory_consumption_value = child.text
             obj.memory_consumption = memory_consumption_value

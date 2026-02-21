@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.VariantHandling.condition_by_formula import (
     ConditionByFormula,
@@ -55,7 +56,7 @@ class VariationPointProxy(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -74,7 +75,7 @@ class VariationPointProxy(Identifiable):
 
         # Serialize condition_access
         if self.condition_access is not None:
-            serialized = ARObject._serialize_item(self.condition_access, "ConditionByFormula")
+            serialized = SerializationHelper.serialize_item(self.condition_access, "ConditionByFormula")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONDITION-ACCESS")
@@ -88,7 +89,7 @@ class VariationPointProxy(Identifiable):
 
         # Serialize implementation_ref
         if self.implementation_ref is not None:
-            serialized = ARObject._serialize_item(self.implementation_ref, "AbstractImplementationDataType")
+            serialized = SerializationHelper.serialize_item(self.implementation_ref, "AbstractImplementationDataType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IMPLEMENTATION-REF")
@@ -102,7 +103,7 @@ class VariationPointProxy(Identifiable):
 
         # Serialize post_build_value_ref
         if self.post_build_value_ref is not None:
-            serialized = ARObject._serialize_item(self.post_build_value_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.post_build_value_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("POST-BUILD-VALUE-REF")
@@ -130,19 +131,19 @@ class VariationPointProxy(Identifiable):
         obj = super(VariationPointProxy, cls).deserialize(element)
 
         # Parse condition_access
-        child = ARObject._find_child_element(element, "CONDITION-ACCESS")
+        child = SerializationHelper.find_child_element(element, "CONDITION-ACCESS")
         if child is not None:
-            condition_access_value = ARObject._deserialize_by_tag(child, "ConditionByFormula")
+            condition_access_value = SerializationHelper.deserialize_by_tag(child, "ConditionByFormula")
             obj.condition_access = condition_access_value
 
         # Parse implementation_ref
-        child = ARObject._find_child_element(element, "IMPLEMENTATION-REF")
+        child = SerializationHelper.find_child_element(element, "IMPLEMENTATION-REF")
         if child is not None:
             implementation_ref_value = ARRef.deserialize(child)
             obj.implementation_ref = implementation_ref_value
 
         # Parse post_build_value_ref
-        child = ARObject._find_child_element(element, "POST-BUILD-VALUE-REF")
+        child = SerializationHelper.find_child_element(element, "POST-BUILD-VALUE-REF")
         if child is not None:
             post_build_value_ref_value = ARRef.deserialize(child)
             obj.post_build_value_ref = post_build_value_ref_value

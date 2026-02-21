@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
     TimingDescriptionEvent,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from abc import ABC, abstractmethod
 
 
@@ -41,7 +42,7 @@ class TDEventSwc(TimingDescriptionEvent, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -60,7 +61,7 @@ class TDEventSwc(TimingDescriptionEvent, ABC):
 
         # Serialize component
         if self.component is not None:
-            serialized = ARObject._serialize_item(self.component, "Any")
+            serialized = SerializationHelper.serialize_item(self.component, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COMPONENT")
@@ -88,7 +89,7 @@ class TDEventSwc(TimingDescriptionEvent, ABC):
         obj = super(TDEventSwc, cls).deserialize(element)
 
         # Parse component
-        child = ARObject._find_child_element(element, "COMPONENT")
+        child = SerializationHelper.find_child_element(element, "COMPONENT")
         if child is not None:
             component_value = child.text
             obj.component = component_value

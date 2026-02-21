@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols import (
     FrArTpAckType,
 )
@@ -69,7 +70,7 @@ class FlexrayTpConnectionControl(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -88,7 +89,7 @@ class FlexrayTpConnectionControl(Identifiable):
 
         # Serialize ack_type
         if self.ack_type is not None:
-            serialized = ARObject._serialize_item(self.ack_type, "FrArTpAckType")
+            serialized = SerializationHelper.serialize_item(self.ack_type, "FrArTpAckType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ACK-TYPE")
@@ -102,7 +103,7 @@ class FlexrayTpConnectionControl(Identifiable):
 
         # Serialize max_fc_wait
         if self.max_fc_wait is not None:
-            serialized = ARObject._serialize_item(self.max_fc_wait, "Integer")
+            serialized = SerializationHelper.serialize_item(self.max_fc_wait, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-FC-WAIT")
@@ -116,7 +117,7 @@ class FlexrayTpConnectionControl(Identifiable):
 
         # Serialize max_number_of
         if self.max_number_of is not None:
-            serialized = ARObject._serialize_item(self.max_number_of, "Integer")
+            serialized = SerializationHelper.serialize_item(self.max_number_of, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-NUMBER-OF")
@@ -130,7 +131,7 @@ class FlexrayTpConnectionControl(Identifiable):
 
         # Serialize max_retries
         if self.max_retries is not None:
-            serialized = ARObject._serialize_item(self.max_retries, "Integer")
+            serialized = SerializationHelper.serialize_item(self.max_retries, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-RETRIES")
@@ -144,7 +145,7 @@ class FlexrayTpConnectionControl(Identifiable):
 
         # Serialize separation_cycle
         if self.separation_cycle is not None:
-            serialized = ARObject._serialize_item(self.separation_cycle, "Integer")
+            serialized = SerializationHelper.serialize_item(self.separation_cycle, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SEPARATION-CYCLE")
@@ -158,7 +159,7 @@ class FlexrayTpConnectionControl(Identifiable):
 
         # Serialize time_br
         if self.time_br is not None:
-            serialized = ARObject._serialize_item(self.time_br, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.time_br, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIME-BR")
@@ -172,7 +173,7 @@ class FlexrayTpConnectionControl(Identifiable):
 
         # Serialize time_buffer
         if self.time_buffer is not None:
-            serialized = ARObject._serialize_item(self.time_buffer, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.time_buffer, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIME-BUFFER")
@@ -186,7 +187,7 @@ class FlexrayTpConnectionControl(Identifiable):
 
         # Serialize time_cs
         if self.time_cs is not None:
-            serialized = ARObject._serialize_item(self.time_cs, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.time_cs, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIME-CS")
@@ -200,7 +201,7 @@ class FlexrayTpConnectionControl(Identifiable):
 
         # Serialize timeout_ar
         if self.timeout_ar is not None:
-            serialized = ARObject._serialize_item(self.timeout_ar, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.timeout_ar, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIMEOUT-AR")
@@ -214,7 +215,7 @@ class FlexrayTpConnectionControl(Identifiable):
 
         # Serialize timeout_as
         if self.timeout_as is not None:
-            serialized = ARObject._serialize_item(self.timeout_as, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.timeout_as, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIMEOUT-AS")
@@ -228,7 +229,7 @@ class FlexrayTpConnectionControl(Identifiable):
 
         # Serialize timeout_bs
         if self.timeout_bs is not None:
-            serialized = ARObject._serialize_item(self.timeout_bs, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.timeout_bs, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIMEOUT-BS")
@@ -242,7 +243,7 @@ class FlexrayTpConnectionControl(Identifiable):
 
         # Serialize timeout_cr
         if self.timeout_cr is not None:
-            serialized = ARObject._serialize_item(self.timeout_cr, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.timeout_cr, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIMEOUT-CR")
@@ -270,73 +271,73 @@ class FlexrayTpConnectionControl(Identifiable):
         obj = super(FlexrayTpConnectionControl, cls).deserialize(element)
 
         # Parse ack_type
-        child = ARObject._find_child_element(element, "ACK-TYPE")
+        child = SerializationHelper.find_child_element(element, "ACK-TYPE")
         if child is not None:
             ack_type_value = FrArTpAckType.deserialize(child)
             obj.ack_type = ack_type_value
 
         # Parse max_fc_wait
-        child = ARObject._find_child_element(element, "MAX-FC-WAIT")
+        child = SerializationHelper.find_child_element(element, "MAX-FC-WAIT")
         if child is not None:
             max_fc_wait_value = child.text
             obj.max_fc_wait = max_fc_wait_value
 
         # Parse max_number_of
-        child = ARObject._find_child_element(element, "MAX-NUMBER-OF")
+        child = SerializationHelper.find_child_element(element, "MAX-NUMBER-OF")
         if child is not None:
             max_number_of_value = child.text
             obj.max_number_of = max_number_of_value
 
         # Parse max_retries
-        child = ARObject._find_child_element(element, "MAX-RETRIES")
+        child = SerializationHelper.find_child_element(element, "MAX-RETRIES")
         if child is not None:
             max_retries_value = child.text
             obj.max_retries = max_retries_value
 
         # Parse separation_cycle
-        child = ARObject._find_child_element(element, "SEPARATION-CYCLE")
+        child = SerializationHelper.find_child_element(element, "SEPARATION-CYCLE")
         if child is not None:
             separation_cycle_value = child.text
             obj.separation_cycle = separation_cycle_value
 
         # Parse time_br
-        child = ARObject._find_child_element(element, "TIME-BR")
+        child = SerializationHelper.find_child_element(element, "TIME-BR")
         if child is not None:
             time_br_value = child.text
             obj.time_br = time_br_value
 
         # Parse time_buffer
-        child = ARObject._find_child_element(element, "TIME-BUFFER")
+        child = SerializationHelper.find_child_element(element, "TIME-BUFFER")
         if child is not None:
             time_buffer_value = child.text
             obj.time_buffer = time_buffer_value
 
         # Parse time_cs
-        child = ARObject._find_child_element(element, "TIME-CS")
+        child = SerializationHelper.find_child_element(element, "TIME-CS")
         if child is not None:
             time_cs_value = child.text
             obj.time_cs = time_cs_value
 
         # Parse timeout_ar
-        child = ARObject._find_child_element(element, "TIMEOUT-AR")
+        child = SerializationHelper.find_child_element(element, "TIMEOUT-AR")
         if child is not None:
             timeout_ar_value = child.text
             obj.timeout_ar = timeout_ar_value
 
         # Parse timeout_as
-        child = ARObject._find_child_element(element, "TIMEOUT-AS")
+        child = SerializationHelper.find_child_element(element, "TIMEOUT-AS")
         if child is not None:
             timeout_as_value = child.text
             obj.timeout_as = timeout_as_value
 
         # Parse timeout_bs
-        child = ARObject._find_child_element(element, "TIMEOUT-BS")
+        child = SerializationHelper.find_child_element(element, "TIMEOUT-BS")
         if child is not None:
             timeout_bs_value = child.text
             obj.timeout_bs = timeout_bs_value
 
         # Parse timeout_cr
-        child = ARObject._find_child_element(element, "TIMEOUT-CR")
+        child = SerializationHelper.find_child_element(element, "TIMEOUT-CR")
         if child is not None:
             timeout_cr_value = child.text
             obj.timeout_cr = timeout_cr_value

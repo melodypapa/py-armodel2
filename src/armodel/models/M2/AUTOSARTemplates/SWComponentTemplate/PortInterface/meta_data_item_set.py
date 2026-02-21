@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.meta_data_item import (
     MetaDataItem,
@@ -47,14 +48,14 @@ class MetaDataItemSet(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize data_element_refs (list to container "DATA-ELEMENT-REFS")
         if self.data_element_refs:
             wrapper = ET.Element("DATA-ELEMENT-REFS")
             for item in self.data_element_refs:
-                serialized = ARObject._serialize_item(item, "VariableDataPrototype")
+                serialized = SerializationHelper.serialize_item(item, "VariableDataPrototype")
                 if serialized is not None:
                     child_elem = ET.Element("DATA-ELEMENT-REF")
                     if hasattr(serialized, 'attrib'):
@@ -71,7 +72,7 @@ class MetaDataItemSet(ARObject):
         if self.meta_data_items:
             wrapper = ET.Element("META-DATA-ITEMS")
             for item in self.meta_data_items:
-                serialized = ARObject._serialize_item(item, "MetaDataItem")
+                serialized = SerializationHelper.serialize_item(item, "MetaDataItem")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -95,27 +96,27 @@ class MetaDataItemSet(ARObject):
 
         # Parse data_element_refs (list from container "DATA-ELEMENT-REFS")
         obj.data_element_refs = []
-        container = ARObject._find_child_element(element, "DATA-ELEMENT-REFS")
+        container = SerializationHelper.find_child_element(element, "DATA-ELEMENT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.data_element_refs.append(child_value)
 
         # Parse meta_data_items (list from container "META-DATA-ITEMS")
         obj.meta_data_items = []
-        container = ARObject._find_child_element(element, "META-DATA-ITEMS")
+        container = SerializationHelper.find_child_element(element, "META-DATA-ITEMS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.meta_data_items.append(child_value)
 

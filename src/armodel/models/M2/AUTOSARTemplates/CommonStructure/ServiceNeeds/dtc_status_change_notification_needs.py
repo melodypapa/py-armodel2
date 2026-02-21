@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_
     DiagnosticCapabilityElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class DtcStatusChangeNotificationNeeds(DiagnosticCapabilityElement):
@@ -40,7 +41,7 @@ class DtcStatusChangeNotificationNeeds(DiagnosticCapabilityElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -59,7 +60,7 @@ class DtcStatusChangeNotificationNeeds(DiagnosticCapabilityElement):
 
         # Serialize notification_time
         if self.notification_time is not None:
-            serialized = ARObject._serialize_item(self.notification_time, "Any")
+            serialized = SerializationHelper.serialize_item(self.notification_time, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NOTIFICATION-TIME")
@@ -87,7 +88,7 @@ class DtcStatusChangeNotificationNeeds(DiagnosticCapabilityElement):
         obj = super(DtcStatusChangeNotificationNeeds, cls).deserialize(element)
 
         # Parse notification_time
-        child = ARObject._find_child_element(element, "NOTIFICATION-TIME")
+        child = SerializationHelper.find_child_element(element, "NOTIFICATION-TIME")
         if child is not None:
             notification_time_value = child.text
             obj.notification_time = notification_time_value

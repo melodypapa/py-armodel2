@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.nm_clus
     NmCluster,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -45,7 +46,7 @@ class J1939NmCluster(NmCluster):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class J1939NmCluster(NmCluster):
 
         # Serialize address_claim
         if self.address_claim is not None:
-            serialized = ARObject._serialize_item(self.address_claim, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.address_claim, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ADDRESS-CLAIM")
@@ -78,7 +79,7 @@ class J1939NmCluster(NmCluster):
 
         # Serialize uses_dynamic
         if self.uses_dynamic is not None:
-            serialized = ARObject._serialize_item(self.uses_dynamic, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.uses_dynamic, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("USES-DYNAMIC")
@@ -106,13 +107,13 @@ class J1939NmCluster(NmCluster):
         obj = super(J1939NmCluster, cls).deserialize(element)
 
         # Parse address_claim
-        child = ARObject._find_child_element(element, "ADDRESS-CLAIM")
+        child = SerializationHelper.find_child_element(element, "ADDRESS-CLAIM")
         if child is not None:
             address_claim_value = child.text
             obj.address_claim = address_claim_value
 
         # Parse uses_dynamic
-        child = ARObject._find_child_element(element, "USES-DYNAMIC")
+        child = SerializationHelper.find_child_element(element, "USES-DYNAMIC")
         if child is not None:
             uses_dynamic_value = child.text
             obj.uses_dynamic = uses_dynamic_value

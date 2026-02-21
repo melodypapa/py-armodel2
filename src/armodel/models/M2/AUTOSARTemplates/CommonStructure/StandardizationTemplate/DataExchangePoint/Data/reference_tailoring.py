@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
     AttributeTailoring,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.class_tailoring import (
     ClassTailoring,
@@ -49,7 +50,7 @@ class ReferenceTailoring(AttributeTailoring):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -70,7 +71,7 @@ class ReferenceTailoring(AttributeTailoring):
         if self.type_tailorings:
             wrapper = ET.Element("TYPE-TAILORINGS")
             for item in self.type_tailorings:
-                serialized = ARObject._serialize_item(item, "ClassTailoring")
+                serialized = SerializationHelper.serialize_item(item, "ClassTailoring")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -78,7 +79,7 @@ class ReferenceTailoring(AttributeTailoring):
 
         # Serialize unresolved_restriction_ref
         if self.unresolved_restriction_ref is not None:
-            serialized = ARObject._serialize_item(self.unresolved_restriction_ref, "UnresolvedReferenceRestrictionWithSeverity")
+            serialized = SerializationHelper.serialize_item(self.unresolved_restriction_ref, "UnresolvedReferenceRestrictionWithSeverity")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("UNRESOLVED-RESTRICTION-REF")
@@ -107,16 +108,16 @@ class ReferenceTailoring(AttributeTailoring):
 
         # Parse type_tailorings (list from container "TYPE-TAILORINGS")
         obj.type_tailorings = []
-        container = ARObject._find_child_element(element, "TYPE-TAILORINGS")
+        container = SerializationHelper.find_child_element(element, "TYPE-TAILORINGS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.type_tailorings.append(child_value)
 
         # Parse unresolved_restriction_ref
-        child = ARObject._find_child_element(element, "UNRESOLVED-RESTRICTION-REF")
+        child = SerializationHelper.find_child_element(element, "UNRESOLVED-RESTRICTION-REF")
         if child is not None:
             unresolved_restriction_ref_value = ARRef.deserialize(child)
             obj.unresolved_restriction_ref = unresolved_restriction_ref_value

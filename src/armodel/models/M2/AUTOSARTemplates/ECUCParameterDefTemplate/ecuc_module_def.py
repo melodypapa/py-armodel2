@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_definition
     EcucDefinitionElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -58,7 +59,7 @@ class EcucModuleDef(EcucDefinitionElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -77,7 +78,7 @@ class EcucModuleDef(EcucDefinitionElement):
 
         # Serialize api_service_prefix
         if self.api_service_prefix is not None:
-            serialized = ARObject._serialize_item(self.api_service_prefix, "CIdentifier")
+            serialized = SerializationHelper.serialize_item(self.api_service_prefix, "CIdentifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("API-SERVICE-PREFIX")
@@ -93,7 +94,7 @@ class EcucModuleDef(EcucDefinitionElement):
         if self.containers:
             wrapper = ET.Element("CONTAINERS")
             for item in self.containers:
-                serialized = ARObject._serialize_item(item, "EcucContainerDef")
+                serialized = SerializationHelper.serialize_item(item, "EcucContainerDef")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -101,7 +102,7 @@ class EcucModuleDef(EcucDefinitionElement):
 
         # Serialize post_build_variant
         if self.post_build_variant is not None:
-            serialized = ARObject._serialize_item(self.post_build_variant, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.post_build_variant, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("POST-BUILD-VARIANT")
@@ -115,7 +116,7 @@ class EcucModuleDef(EcucDefinitionElement):
 
         # Serialize refined_module_ref
         if self.refined_module_ref is not None:
-            serialized = ARObject._serialize_item(self.refined_module_ref, "EcucModuleDef")
+            serialized = SerializationHelper.serialize_item(self.refined_module_ref, "EcucModuleDef")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REFINED-MODULE-REF")
@@ -131,7 +132,7 @@ class EcucModuleDef(EcucDefinitionElement):
         if self.supporteds:
             wrapper = ET.Element("SUPPORTEDS")
             for item in self.supporteds:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -153,40 +154,40 @@ class EcucModuleDef(EcucDefinitionElement):
         obj = super(EcucModuleDef, cls).deserialize(element)
 
         # Parse api_service_prefix
-        child = ARObject._find_child_element(element, "API-SERVICE-PREFIX")
+        child = SerializationHelper.find_child_element(element, "API-SERVICE-PREFIX")
         if child is not None:
-            api_service_prefix_value = ARObject._deserialize_by_tag(child, "CIdentifier")
+            api_service_prefix_value = SerializationHelper.deserialize_by_tag(child, "CIdentifier")
             obj.api_service_prefix = api_service_prefix_value
 
         # Parse containers (list from container "CONTAINERS")
         obj.containers = []
-        container = ARObject._find_child_element(element, "CONTAINERS")
+        container = SerializationHelper.find_child_element(element, "CONTAINERS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.containers.append(child_value)
 
         # Parse post_build_variant
-        child = ARObject._find_child_element(element, "POST-BUILD-VARIANT")
+        child = SerializationHelper.find_child_element(element, "POST-BUILD-VARIANT")
         if child is not None:
             post_build_variant_value = child.text
             obj.post_build_variant = post_build_variant_value
 
         # Parse refined_module_ref
-        child = ARObject._find_child_element(element, "REFINED-MODULE-REF")
+        child = SerializationHelper.find_child_element(element, "REFINED-MODULE-REF")
         if child is not None:
             refined_module_ref_value = ARRef.deserialize(child)
             obj.refined_module_ref = refined_module_ref_value
 
         # Parse supporteds (list from container "SUPPORTEDS")
         obj.supporteds = []
-        container = ARObject._find_child_element(element, "SUPPORTEDS")
+        container = SerializationHelper.find_child_element(element, "SUPPORTEDS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.supporteds.append(child_value)
 

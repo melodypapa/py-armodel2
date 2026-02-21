@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.AdaptivePlatform.PlatformModuleDeployment.Firewall.firewall_rule_props import (
     FirewallRuleProps,
@@ -51,7 +52,7 @@ class StateDependentFirewall(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -70,7 +71,7 @@ class StateDependentFirewall(ARElement):
 
         # Serialize default_action
         if self.default_action is not None:
-            serialized = ARObject._serialize_item(self.default_action, "Any")
+            serialized = SerializationHelper.serialize_item(self.default_action, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DEFAULT-ACTION")
@@ -86,7 +87,7 @@ class StateDependentFirewall(ARElement):
         if self.firewall_rule_propses:
             wrapper = ET.Element("FIREWALL-RULE-PROPSES")
             for item in self.firewall_rule_propses:
-                serialized = ARObject._serialize_item(item, "FirewallRuleProps")
+                serialized = SerializationHelper.serialize_item(item, "FirewallRuleProps")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -96,7 +97,7 @@ class StateDependentFirewall(ARElement):
         if self.firewall_state_refs:
             wrapper = ET.Element("FIREWALL-STATE-REFS")
             for item in self.firewall_state_refs:
-                serialized = ARObject._serialize_item(item, "ModeDeclaration")
+                serialized = SerializationHelper.serialize_item(item, "ModeDeclaration")
                 if serialized is not None:
                     child_elem = ET.Element("FIREWALL-STATE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -125,34 +126,34 @@ class StateDependentFirewall(ARElement):
         obj = super(StateDependentFirewall, cls).deserialize(element)
 
         # Parse default_action
-        child = ARObject._find_child_element(element, "DEFAULT-ACTION")
+        child = SerializationHelper.find_child_element(element, "DEFAULT-ACTION")
         if child is not None:
             default_action_value = child.text
             obj.default_action = default_action_value
 
         # Parse firewall_rule_propses (list from container "FIREWALL-RULE-PROPSES")
         obj.firewall_rule_propses = []
-        container = ARObject._find_child_element(element, "FIREWALL-RULE-PROPSES")
+        container = SerializationHelper.find_child_element(element, "FIREWALL-RULE-PROPSES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.firewall_rule_propses.append(child_value)
 
         # Parse firewall_state_refs (list from container "FIREWALL-STATE-REFS")
         obj.firewall_state_refs = []
-        container = ARObject._find_child_element(element, "FIREWALL-STATE-REFS")
+        container = SerializationHelper.find_child_element(element, "FIREWALL-STATE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.firewall_state_refs.append(child_value)
 

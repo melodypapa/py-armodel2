@@ -21,6 +21,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.sw_component_type import (
     SwComponentType,
@@ -52,7 +53,7 @@ class SwComponentPrototype(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -71,7 +72,7 @@ class SwComponentPrototype(Identifiable):
 
         # Serialize type_ref
         if self.type_ref is not None:
-            serialized = ARObject._serialize_item(self.type_ref, "SwComponentType")
+            serialized = SerializationHelper.serialize_item(self.type_ref, "SwComponentType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TYPE-TREF")
@@ -99,7 +100,7 @@ class SwComponentPrototype(Identifiable):
         obj = super(SwComponentPrototype, cls).deserialize(element)
 
         # Parse type_ref
-        child = ARObject._find_child_element(element, "TYPE-TREF")
+        child = SerializationHelper.find_child_element(element, "TYPE-TREF")
         if child is not None:
             type_ref_value = ARRef.deserialize(child)
             obj.type_ref = type_ref_value

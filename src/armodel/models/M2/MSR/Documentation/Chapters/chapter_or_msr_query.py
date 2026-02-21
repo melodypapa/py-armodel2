@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 if TYPE_CHECKING:
     from armodel.models.M2.MSR.Documentation.Chapters.chapter import (
@@ -48,12 +49,12 @@ class ChapterOrMsrQuery(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize chapter
         if self.chapter is not None:
-            serialized = ARObject._serialize_item(self.chapter, "Chapter")
+            serialized = SerializationHelper.serialize_item(self.chapter, "Chapter")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CHAPTER")
@@ -67,7 +68,7 @@ class ChapterOrMsrQuery(ARObject):
 
         # Serialize msr_query_chapter
         if self.msr_query_chapter is not None:
-            serialized = ARObject._serialize_item(self.msr_query_chapter, "MsrQueryChapter")
+            serialized = SerializationHelper.serialize_item(self.msr_query_chapter, "MsrQueryChapter")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MSR-QUERY-CHAPTER")
@@ -96,15 +97,15 @@ class ChapterOrMsrQuery(ARObject):
         obj.__init__()
 
         # Parse chapter
-        child = ARObject._find_child_element(element, "CHAPTER")
+        child = SerializationHelper.find_child_element(element, "CHAPTER")
         if child is not None:
-            chapter_value = ARObject._deserialize_by_tag(child, "Chapter")
+            chapter_value = SerializationHelper.deserialize_by_tag(child, "Chapter")
             obj.chapter = chapter_value
 
         # Parse msr_query_chapter
-        child = ARObject._find_child_element(element, "MSR-QUERY-CHAPTER")
+        child = SerializationHelper.find_child_element(element, "MSR-QUERY-CHAPTER")
         if child is not None:
-            msr_query_chapter_value = ARObject._deserialize_by_tag(child, "MsrQueryChapter")
+            msr_query_chapter_value = SerializationHelper.deserialize_by_tag(child, "MsrQueryChapter")
             obj.msr_query_chapter = msr_query_chapter_value
 
         return obj

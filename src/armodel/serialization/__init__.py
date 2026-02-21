@@ -42,8 +42,10 @@ For edge cases, decorators are available:
 
 from armodel.serialization.decorators import xml_attribute
 from armodel.serialization.name_converter import NameConverter
+from armodel.serialization.serialization_helper import SerializationHelper
 
 __all__ = [
     "NameConverter",
     "xml_attribute",
+    "SerializationHelper",
 ]

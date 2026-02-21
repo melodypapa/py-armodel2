@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.nm_node
     NmNode,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     TimeValue,
@@ -50,7 +51,7 @@ class CanNmNode(NmNode):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -69,7 +70,7 @@ class CanNmNode(NmNode):
 
         # Serialize all_nm_messages
         if self.all_nm_messages is not None:
-            serialized = ARObject._serialize_item(self.all_nm_messages, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.all_nm_messages, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ALL-NM-MESSAGES")
@@ -83,7 +84,7 @@ class CanNmNode(NmNode):
 
         # Serialize nm_car_wake_up
         if self.nm_car_wake_up is not None:
-            serialized = ARObject._serialize_item(self.nm_car_wake_up, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.nm_car_wake_up, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM-CAR-WAKE-UP")
@@ -97,7 +98,7 @@ class CanNmNode(NmNode):
 
         # Serialize nm_msg_cycle
         if self.nm_msg_cycle is not None:
-            serialized = ARObject._serialize_item(self.nm_msg_cycle, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.nm_msg_cycle, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM-MSG-CYCLE")
@@ -111,7 +112,7 @@ class CanNmNode(NmNode):
 
         # Serialize nm_msg
         if self.nm_msg is not None:
-            serialized = ARObject._serialize_item(self.nm_msg, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.nm_msg, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM-MSG")
@@ -139,25 +140,25 @@ class CanNmNode(NmNode):
         obj = super(CanNmNode, cls).deserialize(element)
 
         # Parse all_nm_messages
-        child = ARObject._find_child_element(element, "ALL-NM-MESSAGES")
+        child = SerializationHelper.find_child_element(element, "ALL-NM-MESSAGES")
         if child is not None:
             all_nm_messages_value = child.text
             obj.all_nm_messages = all_nm_messages_value
 
         # Parse nm_car_wake_up
-        child = ARObject._find_child_element(element, "NM-CAR-WAKE-UP")
+        child = SerializationHelper.find_child_element(element, "NM-CAR-WAKE-UP")
         if child is not None:
             nm_car_wake_up_value = child.text
             obj.nm_car_wake_up = nm_car_wake_up_value
 
         # Parse nm_msg_cycle
-        child = ARObject._find_child_element(element, "NM-MSG-CYCLE")
+        child = SerializationHelper.find_child_element(element, "NM-MSG-CYCLE")
         if child is not None:
             nm_msg_cycle_value = child.text
             obj.nm_msg_cycle = nm_msg_cycle_value
 
         # Parse nm_msg
-        child = ARObject._find_child_element(element, "NM-MSG")
+        child = SerializationHelper.find_child_element(element, "NM-MSG")
         if child is not None:
             nm_msg_value = child.text
             obj.nm_msg = nm_msg_value

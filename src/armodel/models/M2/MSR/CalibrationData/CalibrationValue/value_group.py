@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multilanguage_long_name import (
     MultilanguageLongName,
 )
@@ -48,12 +49,12 @@ class ValueGroup(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize label
         if self.label is not None:
-            serialized = ARObject._serialize_item(self.label, "MultilanguageLongName")
+            serialized = SerializationHelper.serialize_item(self.label, "MultilanguageLongName")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LABEL")
@@ -67,7 +68,7 @@ class ValueGroup(ARObject):
 
         # Serialize vg_contents
         if self.vg_contents is not None:
-            serialized = ARObject._serialize_item(self.vg_contents, "SwValues")
+            serialized = SerializationHelper.serialize_item(self.vg_contents, "SwValues")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VG-CONTENTS")
@@ -96,15 +97,15 @@ class ValueGroup(ARObject):
         obj.__init__()
 
         # Parse label
-        child = ARObject._find_child_element(element, "LABEL")
+        child = SerializationHelper.find_child_element(element, "LABEL")
         if child is not None:
-            label_value = ARObject._deserialize_with_type(child, "MultilanguageLongName")
+            label_value = SerializationHelper.deserialize_with_type(child, "MultilanguageLongName")
             obj.label = label_value
 
         # Parse vg_contents
-        child = ARObject._find_child_element(element, "VG-CONTENTS")
+        child = SerializationHelper.find_child_element(element, "VG-CONTENTS")
         if child is not None:
-            vg_contents_value = ARObject._deserialize_by_tag(child, "SwValues")
+            vg_contents_value = SerializationHelper.deserialize_by_tag(child, "SwValues")
             obj.vg_contents = vg_contents_value
 
         return obj

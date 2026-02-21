@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_
     DiagnosticCapabilityElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
     DiagnosticRoutineTypeEnum,
 )
@@ -45,7 +46,7 @@ class DiagnosticRoutineNeeds(DiagnosticCapabilityElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class DiagnosticRoutineNeeds(DiagnosticCapabilityElement):
 
         # Serialize diag_routine
         if self.diag_routine is not None:
-            serialized = ARObject._serialize_item(self.diag_routine, "DiagnosticRoutineTypeEnum")
+            serialized = SerializationHelper.serialize_item(self.diag_routine, "DiagnosticRoutineTypeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DIAG-ROUTINE")
@@ -92,7 +93,7 @@ class DiagnosticRoutineNeeds(DiagnosticCapabilityElement):
         obj = super(DiagnosticRoutineNeeds, cls).deserialize(element)
 
         # Parse diag_routine
-        child = ARObject._find_child_element(element, "DIAG-ROUTINE")
+        child = SerializationHelper.find_child_element(element, "DIAG-ROUTINE")
         if child is not None:
             diag_routine_value = DiagnosticRoutineTypeEnum.deserialize(child)
             obj.diag_routine = diag_routine_value

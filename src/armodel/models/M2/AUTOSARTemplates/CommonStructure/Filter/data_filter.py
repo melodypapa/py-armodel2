@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Filter import (
     DataFilterTypeEnum,
 )
@@ -57,12 +58,12 @@ class DataFilter(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize data_filter_type_enum
         if self.data_filter_type_enum is not None:
-            serialized = ARObject._serialize_item(self.data_filter_type_enum, "DataFilterTypeEnum")
+            serialized = SerializationHelper.serialize_item(self.data_filter_type_enum, "DataFilterTypeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-FILTER-TYPE-ENUM")
@@ -76,7 +77,7 @@ class DataFilter(ARObject):
 
         # Serialize mask
         if self.mask is not None:
-            serialized = ARObject._serialize_item(self.mask, "UnlimitedInteger")
+            serialized = SerializationHelper.serialize_item(self.mask, "UnlimitedInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MASK")
@@ -90,7 +91,7 @@ class DataFilter(ARObject):
 
         # Serialize max
         if self.max is not None:
-            serialized = ARObject._serialize_item(self.max, "UnlimitedInteger")
+            serialized = SerializationHelper.serialize_item(self.max, "UnlimitedInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX")
@@ -104,7 +105,7 @@ class DataFilter(ARObject):
 
         # Serialize min
         if self.min is not None:
-            serialized = ARObject._serialize_item(self.min, "UnlimitedInteger")
+            serialized = SerializationHelper.serialize_item(self.min, "UnlimitedInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MIN")
@@ -118,7 +119,7 @@ class DataFilter(ARObject):
 
         # Serialize offset
         if self.offset is not None:
-            serialized = ARObject._serialize_item(self.offset, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.offset, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("OFFSET")
@@ -132,7 +133,7 @@ class DataFilter(ARObject):
 
         # Serialize period
         if self.period is not None:
-            serialized = ARObject._serialize_item(self.period, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.period, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PERIOD")
@@ -146,7 +147,7 @@ class DataFilter(ARObject):
 
         # Serialize x
         if self.x is not None:
-            serialized = ARObject._serialize_item(self.x, "UnlimitedInteger")
+            serialized = SerializationHelper.serialize_item(self.x, "UnlimitedInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("X")
@@ -175,43 +176,43 @@ class DataFilter(ARObject):
         obj.__init__()
 
         # Parse data_filter_type_enum
-        child = ARObject._find_child_element(element, "DATA-FILTER-TYPE-ENUM")
+        child = SerializationHelper.find_child_element(element, "DATA-FILTER-TYPE-ENUM")
         if child is not None:
             data_filter_type_enum_value = DataFilterTypeEnum.deserialize(child)
             obj.data_filter_type_enum = data_filter_type_enum_value
 
         # Parse mask
-        child = ARObject._find_child_element(element, "MASK")
+        child = SerializationHelper.find_child_element(element, "MASK")
         if child is not None:
             mask_value = child.text
             obj.mask = mask_value
 
         # Parse max
-        child = ARObject._find_child_element(element, "MAX")
+        child = SerializationHelper.find_child_element(element, "MAX")
         if child is not None:
             max_value = child.text
             obj.max = max_value
 
         # Parse min
-        child = ARObject._find_child_element(element, "MIN")
+        child = SerializationHelper.find_child_element(element, "MIN")
         if child is not None:
             min_value = child.text
             obj.min = min_value
 
         # Parse offset
-        child = ARObject._find_child_element(element, "OFFSET")
+        child = SerializationHelper.find_child_element(element, "OFFSET")
         if child is not None:
             offset_value = child.text
             obj.offset = offset_value
 
         # Parse period
-        child = ARObject._find_child_element(element, "PERIOD")
+        child = SerializationHelper.find_child_element(element, "PERIOD")
         if child is not None:
             period_value = child.text
             obj.period = period_value
 
         # Parse x
-        child = ARObject._find_child_element(element, "X")
+        child = SerializationHelper.find_child_element(element, "X")
         if child is not None:
             x_value = child.text
             obj.x = x_value

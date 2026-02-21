@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_const import (
     CompuConst,
 )
@@ -46,9 +47,33 @@ class Compu(ARObject):
         Returns:
             xml.etree.ElementTree.Element representing this Compu
         """
-        # Delegate to parent's serialize - it handles all attributes correctly
-        # including compu_content and compu_default
-        return super(Compu, self).serialize()
+        # Get XML tag name for this class
+        tag = SerializationHelper.get_xml_tag(self.__class__)
+        elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes (checksum, timestamp)
+        parent_elem = super(Compu, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize compu_content
+        if self.compu_content is not None:
+            serialized = SerializationHelper.serialize_item(self.compu_content, "CompuContent")
+            if serialized is not None:
+                elem.append(serialized)
+
+        # Serialize compu_default
+        if self.compu_default is not None:
+            serialized = SerializationHelper.serialize_item(self.compu_default, "CompuConst")
+            if serialized is not None:
+                elem.append(serialized)
+
+        return elem
 
     @classmethod
     def deserialize(cls, element: ET.Element) -> Self:
@@ -74,7 +99,7 @@ class Compu(ARObject):
 
         # Find child elements that are CompuContent or CompuConst subclasses
         for child in element:
-            child_tag = ARObject._strip_namespace(child.tag)
+            child_tag = SerializationHelper.strip_namespace(child.tag)
             concrete_class = factory.get_class(child_tag)
 
             if concrete_class:
@@ -84,10 +109,10 @@ class Compu(ARObject):
 
                 # Check if it's a CompuContent subclass (for compu_content)
                 if isinstance(concrete_class, type) and issubclass(concrete_class, CompuContent):
-                    obj.compu_content = ARObject._unwrap_primitive(concrete_class.deserialize(child))
+                    obj.compu_content = SerializationHelper.unwrap_primitive(concrete_class.deserialize(child))
                 # Check if it's a CompuConst (for compu_default)
                 elif isinstance(concrete_class, type) and issubclass(concrete_class, CompuConst):
-                    obj.compu_default = ARObject._unwrap_primitive(concrete_class.deserialize(child))
+                    obj.compu_default = SerializationHelper.unwrap_primitive(concrete_class.deserialize(child))
 
         return obj
 

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_schedu
     BswScheduleEvent,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration import (
     ModeActivationKind,
 )
@@ -43,7 +44,7 @@ class BswModeSwitchEvent(BswScheduleEvent):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class BswModeSwitchEvent(BswScheduleEvent):
 
         # Serialize activation
         if self.activation is not None:
-            serialized = ARObject._serialize_item(self.activation, "ModeActivationKind")
+            serialized = SerializationHelper.serialize_item(self.activation, "ModeActivationKind")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ACTIVATION")
@@ -90,7 +91,7 @@ class BswModeSwitchEvent(BswScheduleEvent):
         obj = super(BswModeSwitchEvent, cls).deserialize(element)
 
         # Parse activation
-        child = ARObject._find_child_element(element, "ACTIVATION")
+        child = SerializationHelper.find_child_element(element, "ACTIVATION")
         if child is not None:
             activation_value = ModeActivationKind.deserialize(child)
             obj.activation = activation_value

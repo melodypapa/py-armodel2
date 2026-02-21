@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 if TYPE_CHECKING:
     from armodel.models.M2.MSR.DataDictionary.DataDefProperties.sw_data_def_props import (
@@ -53,7 +54,7 @@ class AutosarDataType(ARElement, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -72,7 +73,7 @@ class AutosarDataType(ARElement, ABC):
 
         # Serialize sw_data_def_props
         if self.sw_data_def_props is not None:
-            serialized = ARObject._serialize_item(self.sw_data_def_props, "SwDataDefProps")
+            serialized = SerializationHelper.serialize_item(self.sw_data_def_props, "SwDataDefProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-DATA-DEF-PROPS")
@@ -100,9 +101,9 @@ class AutosarDataType(ARElement, ABC):
         obj = super(AutosarDataType, cls).deserialize(element)
 
         # Parse sw_data_def_props
-        child = ARObject._find_child_element(element, "SW-DATA-DEF-PROPS")
+        child = SerializationHelper.find_child_element(element, "SW-DATA-DEF-PROPS")
         if child is not None:
-            sw_data_def_props_value = ARObject._deserialize_by_tag(child, "SwDataDefProps")
+            sw_data_def_props_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
             obj.sw_data_def_props = sw_data_def_props_value
 
         return obj

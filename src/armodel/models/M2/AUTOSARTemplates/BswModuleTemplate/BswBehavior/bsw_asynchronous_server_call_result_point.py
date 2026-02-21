@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_module
     BswModuleCallPoint,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
@@ -41,7 +42,7 @@ class BswAsynchronousServerCallResultPoint(BswModuleCallPoint):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -60,7 +61,7 @@ class BswAsynchronousServerCallResultPoint(BswModuleCallPoint):
 
         # Serialize asynchronous_ref
         if self.asynchronous_ref is not None:
-            serialized = ARObject._serialize_item(self.asynchronous_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.asynchronous_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ASYNCHRONOUS-REF")
@@ -88,7 +89,7 @@ class BswAsynchronousServerCallResultPoint(BswModuleCallPoint):
         obj = super(BswAsynchronousServerCallResultPoint, cls).deserialize(element)
 
         # Parse asynchronous_ref
-        child = ARObject._find_child_element(element, "ASYNCHRONOUS-REF")
+        child = SerializationHelper.find_child_element(element, "ASYNCHRONOUS-REF")
         if child is not None:
             asynchronous_ref_value = ARRef.deserialize(child)
             obj.asynchronous_ref = asynchronous_ref_value

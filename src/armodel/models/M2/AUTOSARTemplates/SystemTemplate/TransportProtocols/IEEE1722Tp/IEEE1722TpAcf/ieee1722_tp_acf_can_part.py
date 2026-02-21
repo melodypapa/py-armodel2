@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE17
     IEEE1722TpAcfBusPart,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Can.CanCommunication import (
     CanAddressingModeType,
@@ -62,7 +63,7 @@ class IEEE1722TpAcfCanPart(IEEE1722TpAcfBusPart):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -81,7 +82,7 @@ class IEEE1722TpAcfCanPart(IEEE1722TpAcfBusPart):
 
         # Serialize can_addressing
         if self.can_addressing is not None:
-            serialized = ARObject._serialize_item(self.can_addressing, "CanAddressingModeType")
+            serialized = SerializationHelper.serialize_item(self.can_addressing, "CanAddressingModeType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CAN-ADDRESSING")
@@ -95,7 +96,7 @@ class IEEE1722TpAcfCanPart(IEEE1722TpAcfBusPart):
 
         # Serialize can_bit_rate_switch
         if self.can_bit_rate_switch is not None:
-            serialized = ARObject._serialize_item(self.can_bit_rate_switch, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.can_bit_rate_switch, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CAN-BIT-RATE-SWITCH")
@@ -109,7 +110,7 @@ class IEEE1722TpAcfCanPart(IEEE1722TpAcfBusPart):
 
         # Serialize can_frame_tx_behavior
         if self.can_frame_tx_behavior is not None:
-            serialized = ARObject._serialize_item(self.can_frame_tx_behavior, "CanFrameTxBehaviorEnum")
+            serialized = SerializationHelper.serialize_item(self.can_frame_tx_behavior, "CanFrameTxBehaviorEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CAN-FRAME-TX-BEHAVIOR")
@@ -123,7 +124,7 @@ class IEEE1722TpAcfCanPart(IEEE1722TpAcfBusPart):
 
         # Serialize can_identifier
         if self.can_identifier is not None:
-            serialized = ARObject._serialize_item(self.can_identifier, "RxIdentifierRange")
+            serialized = SerializationHelper.serialize_item(self.can_identifier, "RxIdentifierRange")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CAN-IDENTIFIER")
@@ -137,7 +138,7 @@ class IEEE1722TpAcfCanPart(IEEE1722TpAcfBusPart):
 
         # Serialize sdu_ref
         if self.sdu_ref is not None:
-            serialized = ARObject._serialize_item(self.sdu_ref, "PduTriggering")
+            serialized = SerializationHelper.serialize_item(self.sdu_ref, "PduTriggering")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SDU-REF")
@@ -165,31 +166,31 @@ class IEEE1722TpAcfCanPart(IEEE1722TpAcfBusPart):
         obj = super(IEEE1722TpAcfCanPart, cls).deserialize(element)
 
         # Parse can_addressing
-        child = ARObject._find_child_element(element, "CAN-ADDRESSING")
+        child = SerializationHelper.find_child_element(element, "CAN-ADDRESSING")
         if child is not None:
             can_addressing_value = CanAddressingModeType.deserialize(child)
             obj.can_addressing = can_addressing_value
 
         # Parse can_bit_rate_switch
-        child = ARObject._find_child_element(element, "CAN-BIT-RATE-SWITCH")
+        child = SerializationHelper.find_child_element(element, "CAN-BIT-RATE-SWITCH")
         if child is not None:
             can_bit_rate_switch_value = child.text
             obj.can_bit_rate_switch = can_bit_rate_switch_value
 
         # Parse can_frame_tx_behavior
-        child = ARObject._find_child_element(element, "CAN-FRAME-TX-BEHAVIOR")
+        child = SerializationHelper.find_child_element(element, "CAN-FRAME-TX-BEHAVIOR")
         if child is not None:
             can_frame_tx_behavior_value = CanFrameTxBehaviorEnum.deserialize(child)
             obj.can_frame_tx_behavior = can_frame_tx_behavior_value
 
         # Parse can_identifier
-        child = ARObject._find_child_element(element, "CAN-IDENTIFIER")
+        child = SerializationHelper.find_child_element(element, "CAN-IDENTIFIER")
         if child is not None:
-            can_identifier_value = ARObject._deserialize_by_tag(child, "RxIdentifierRange")
+            can_identifier_value = SerializationHelper.deserialize_by_tag(child, "RxIdentifierRange")
             obj.can_identifier = can_identifier_value
 
         # Parse sdu_ref
-        child = ARObject._find_child_element(element, "SDU-REF")
+        child = SerializationHelper.find_child_element(element, "SDU-REF")
         if child is not None:
             sdu_ref_value = ARRef.deserialize(child)
             obj.sdu_ref = sdu_ref_value

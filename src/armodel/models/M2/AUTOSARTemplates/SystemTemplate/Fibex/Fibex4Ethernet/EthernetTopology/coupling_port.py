@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology import (
     CouplingPortRoleEnum,
@@ -91,7 +92,7 @@ class CouplingPort(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -110,7 +111,7 @@ class CouplingPort(Identifiable):
 
         # Serialize connection
         if self.connection is not None:
-            serialized = ARObject._serialize_item(self.connection, "EthernetConnectionNegotiationEnum")
+            serialized = SerializationHelper.serialize_item(self.connection, "EthernetConnectionNegotiationEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONNECTION")
@@ -124,7 +125,7 @@ class CouplingPort(Identifiable):
 
         # Serialize coupling_port_details
         if self.coupling_port_details is not None:
-            serialized = ARObject._serialize_item(self.coupling_port_details, "CouplingPortDetails")
+            serialized = SerializationHelper.serialize_item(self.coupling_port_details, "CouplingPortDetails")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COUPLING-PORT-DETAILS")
@@ -138,7 +139,7 @@ class CouplingPort(Identifiable):
 
         # Serialize coupling_port_role_enum
         if self.coupling_port_role_enum is not None:
-            serialized = ARObject._serialize_item(self.coupling_port_role_enum, "CouplingPortRoleEnum")
+            serialized = SerializationHelper.serialize_item(self.coupling_port_role_enum, "CouplingPortRoleEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COUPLING-PORT-ROLE-ENUM")
@@ -152,7 +153,7 @@ class CouplingPort(Identifiable):
 
         # Serialize default_vlan_ref
         if self.default_vlan_ref is not None:
-            serialized = ARObject._serialize_item(self.default_vlan_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.default_vlan_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DEFAULT-VLAN-REF")
@@ -166,7 +167,7 @@ class CouplingPort(Identifiable):
 
         # Serialize mac_layer_type_enum
         if self.mac_layer_type_enum is not None:
-            serialized = ARObject._serialize_item(self.mac_layer_type_enum, "EthernetMacLayerTypeEnum")
+            serialized = SerializationHelper.serialize_item(self.mac_layer_type_enum, "EthernetMacLayerTypeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAC-LAYER-TYPE-ENUM")
@@ -182,7 +183,7 @@ class CouplingPort(Identifiable):
         if self.mac_multicast_group_refs:
             wrapper = ET.Element("MAC-MULTICAST-GROUP-REFS")
             for item in self.mac_multicast_group_refs:
-                serialized = ARObject._serialize_item(item, "MacMulticastGroup")
+                serialized = SerializationHelper.serialize_item(item, "MacMulticastGroup")
                 if serialized is not None:
                     child_elem = ET.Element("MAC-MULTICAST-GROUP-REF")
                     if hasattr(serialized, 'attrib'):
@@ -199,7 +200,7 @@ class CouplingPort(Identifiable):
         if self.mac_sec_propses:
             wrapper = ET.Element("MAC-SEC-PROPSES")
             for item in self.mac_sec_propses:
-                serialized = ARObject._serialize_item(item, "MacSecProps")
+                serialized = SerializationHelper.serialize_item(item, "MacSecProps")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -207,7 +208,7 @@ class CouplingPort(Identifiable):
 
         # Serialize physical_layer
         if self.physical_layer is not None:
-            serialized = ARObject._serialize_item(self.physical_layer, "EthernetPhysicalLayerTypeEnum")
+            serialized = SerializationHelper.serialize_item(self.physical_layer, "EthernetPhysicalLayerTypeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PHYSICAL-LAYER")
@@ -221,7 +222,7 @@ class CouplingPort(Identifiable):
 
         # Serialize plca_props
         if self.plca_props is not None:
-            serialized = ARObject._serialize_item(self.plca_props, "PlcaProps")
+            serialized = SerializationHelper.serialize_item(self.plca_props, "PlcaProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PLCA-PROPS")
@@ -237,7 +238,7 @@ class CouplingPort(Identifiable):
         if self.pnc_mapping_ident_refs:
             wrapper = ET.Element("PNC-MAPPING-IDENT-REFS")
             for item in self.pnc_mapping_ident_refs:
-                serialized = ARObject._serialize_item(item, "PncMappingIdent")
+                serialized = SerializationHelper.serialize_item(item, "PncMappingIdent")
                 if serialized is not None:
                     child_elem = ET.Element("PNC-MAPPING-IDENT-REF")
                     if hasattr(serialized, 'attrib'):
@@ -252,7 +253,7 @@ class CouplingPort(Identifiable):
 
         # Serialize receive_activity
         if self.receive_activity is not None:
-            serialized = ARObject._serialize_item(self.receive_activity, "Any")
+            serialized = SerializationHelper.serialize_item(self.receive_activity, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RECEIVE-ACTIVITY")
@@ -268,7 +269,7 @@ class CouplingPort(Identifiable):
         if self.vlans:
             wrapper = ET.Element("VLANS")
             for item in self.vlans:
-                serialized = ARObject._serialize_item(item, "VlanMembership")
+                serialized = SerializationHelper.serialize_item(item, "VlanMembership")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -276,7 +277,7 @@ class CouplingPort(Identifiable):
 
         # Serialize vlan_modifier_ref
         if self.vlan_modifier_ref is not None:
-            serialized = ARObject._serialize_item(self.vlan_modifier_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.vlan_modifier_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VLAN-MODIFIER-REF")
@@ -290,7 +291,7 @@ class CouplingPort(Identifiable):
 
         # Serialize wakeup_sleep_ref
         if self.wakeup_sleep_ref is not None:
-            serialized = ARObject._serialize_item(self.wakeup_sleep_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.wakeup_sleep_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("WAKEUP-SLEEP-REF")
@@ -318,113 +319,113 @@ class CouplingPort(Identifiable):
         obj = super(CouplingPort, cls).deserialize(element)
 
         # Parse connection
-        child = ARObject._find_child_element(element, "CONNECTION")
+        child = SerializationHelper.find_child_element(element, "CONNECTION")
         if child is not None:
             connection_value = EthernetConnectionNegotiationEnum.deserialize(child)
             obj.connection = connection_value
 
         # Parse coupling_port_details
-        child = ARObject._find_child_element(element, "COUPLING-PORT-DETAILS")
+        child = SerializationHelper.find_child_element(element, "COUPLING-PORT-DETAILS")
         if child is not None:
-            coupling_port_details_value = ARObject._deserialize_by_tag(child, "CouplingPortDetails")
+            coupling_port_details_value = SerializationHelper.deserialize_by_tag(child, "CouplingPortDetails")
             obj.coupling_port_details = coupling_port_details_value
 
         # Parse coupling_port_role_enum
-        child = ARObject._find_child_element(element, "COUPLING-PORT-ROLE-ENUM")
+        child = SerializationHelper.find_child_element(element, "COUPLING-PORT-ROLE-ENUM")
         if child is not None:
             coupling_port_role_enum_value = CouplingPortRoleEnum.deserialize(child)
             obj.coupling_port_role_enum = coupling_port_role_enum_value
 
         # Parse default_vlan_ref
-        child = ARObject._find_child_element(element, "DEFAULT-VLAN-REF")
+        child = SerializationHelper.find_child_element(element, "DEFAULT-VLAN-REF")
         if child is not None:
             default_vlan_ref_value = ARRef.deserialize(child)
             obj.default_vlan_ref = default_vlan_ref_value
 
         # Parse mac_layer_type_enum
-        child = ARObject._find_child_element(element, "MAC-LAYER-TYPE-ENUM")
+        child = SerializationHelper.find_child_element(element, "MAC-LAYER-TYPE-ENUM")
         if child is not None:
             mac_layer_type_enum_value = EthernetMacLayerTypeEnum.deserialize(child)
             obj.mac_layer_type_enum = mac_layer_type_enum_value
 
         # Parse mac_multicast_group_refs (list from container "MAC-MULTICAST-GROUP-REFS")
         obj.mac_multicast_group_refs = []
-        container = ARObject._find_child_element(element, "MAC-MULTICAST-GROUP-REFS")
+        container = SerializationHelper.find_child_element(element, "MAC-MULTICAST-GROUP-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.mac_multicast_group_refs.append(child_value)
 
         # Parse mac_sec_propses (list from container "MAC-SEC-PROPSES")
         obj.mac_sec_propses = []
-        container = ARObject._find_child_element(element, "MAC-SEC-PROPSES")
+        container = SerializationHelper.find_child_element(element, "MAC-SEC-PROPSES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.mac_sec_propses.append(child_value)
 
         # Parse physical_layer
-        child = ARObject._find_child_element(element, "PHYSICAL-LAYER")
+        child = SerializationHelper.find_child_element(element, "PHYSICAL-LAYER")
         if child is not None:
             physical_layer_value = EthernetPhysicalLayerTypeEnum.deserialize(child)
             obj.physical_layer = physical_layer_value
 
         # Parse plca_props
-        child = ARObject._find_child_element(element, "PLCA-PROPS")
+        child = SerializationHelper.find_child_element(element, "PLCA-PROPS")
         if child is not None:
-            plca_props_value = ARObject._deserialize_by_tag(child, "PlcaProps")
+            plca_props_value = SerializationHelper.deserialize_by_tag(child, "PlcaProps")
             obj.plca_props = plca_props_value
 
         # Parse pnc_mapping_ident_refs (list from container "PNC-MAPPING-IDENT-REFS")
         obj.pnc_mapping_ident_refs = []
-        container = ARObject._find_child_element(element, "PNC-MAPPING-IDENT-REFS")
+        container = SerializationHelper.find_child_element(element, "PNC-MAPPING-IDENT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.pnc_mapping_ident_refs.append(child_value)
 
         # Parse receive_activity
-        child = ARObject._find_child_element(element, "RECEIVE-ACTIVITY")
+        child = SerializationHelper.find_child_element(element, "RECEIVE-ACTIVITY")
         if child is not None:
             receive_activity_value = child.text
             obj.receive_activity = receive_activity_value
 
         # Parse vlans (list from container "VLANS")
         obj.vlans = []
-        container = ARObject._find_child_element(element, "VLANS")
+        container = SerializationHelper.find_child_element(element, "VLANS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.vlans.append(child_value)
 
         # Parse vlan_modifier_ref
-        child = ARObject._find_child_element(element, "VLAN-MODIFIER-REF")
+        child = SerializationHelper.find_child_element(element, "VLAN-MODIFIER-REF")
         if child is not None:
             vlan_modifier_ref_value = ARRef.deserialize(child)
             obj.vlan_modifier_ref = vlan_modifier_ref_value
 
         # Parse wakeup_sleep_ref
-        child = ARObject._find_child_element(element, "WAKEUP-SLEEP-REF")
+        child = SerializationHelper.find_child_element(element, "WAKEUP-SLEEP-REF")
         if child is not None:
             wakeup_sleep_ref_value = ARRef.deserialize(child)
             obj.wakeup_sleep_ref = wakeup_sleep_ref_value

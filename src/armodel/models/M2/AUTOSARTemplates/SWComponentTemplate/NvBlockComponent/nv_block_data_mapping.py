@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -52,12 +53,12 @@ class NvBlockDataMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize bitfield_text_table
         if self.bitfield_text_table is not None:
-            serialized = ARObject._serialize_item(self.bitfield_text_table, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.bitfield_text_table, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BITFIELD-TEXT-TABLE")
@@ -71,7 +72,7 @@ class NvBlockDataMapping(ARObject):
 
         # Serialize nv_ram_block_ref
         if self.nv_ram_block_ref is not None:
-            serialized = ARObject._serialize_item(self.nv_ram_block_ref, "AutosarVariableRef")
+            serialized = SerializationHelper.serialize_item(self.nv_ram_block_ref, "AutosarVariableRef")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NV-RAM-BLOCK-REF")
@@ -85,7 +86,7 @@ class NvBlockDataMapping(ARObject):
 
         # Serialize read_nv_data_ref
         if self.read_nv_data_ref is not None:
-            serialized = ARObject._serialize_item(self.read_nv_data_ref, "AutosarVariableRef")
+            serialized = SerializationHelper.serialize_item(self.read_nv_data_ref, "AutosarVariableRef")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("READ-NV-DATA-REF")
@@ -99,7 +100,7 @@ class NvBlockDataMapping(ARObject):
 
         # Serialize written_nv_data_ref
         if self.written_nv_data_ref is not None:
-            serialized = ARObject._serialize_item(self.written_nv_data_ref, "AutosarVariableRef")
+            serialized = SerializationHelper.serialize_item(self.written_nv_data_ref, "AutosarVariableRef")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("WRITTEN-NV-DATA-REF")
@@ -113,7 +114,7 @@ class NvBlockDataMapping(ARObject):
 
         # Serialize written_read_nv_ref
         if self.written_read_nv_ref is not None:
-            serialized = ARObject._serialize_item(self.written_read_nv_ref, "AutosarVariableRef")
+            serialized = SerializationHelper.serialize_item(self.written_read_nv_ref, "AutosarVariableRef")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("WRITTEN-READ-NV-REF")
@@ -142,31 +143,31 @@ class NvBlockDataMapping(ARObject):
         obj.__init__()
 
         # Parse bitfield_text_table
-        child = ARObject._find_child_element(element, "BITFIELD-TEXT-TABLE")
+        child = SerializationHelper.find_child_element(element, "BITFIELD-TEXT-TABLE")
         if child is not None:
             bitfield_text_table_value = child.text
             obj.bitfield_text_table = bitfield_text_table_value
 
         # Parse nv_ram_block_ref
-        child = ARObject._find_child_element(element, "NV-RAM-BLOCK-REF")
+        child = SerializationHelper.find_child_element(element, "NV-RAM-BLOCK-REF")
         if child is not None:
             nv_ram_block_ref_value = ARRef.deserialize(child)
             obj.nv_ram_block_ref = nv_ram_block_ref_value
 
         # Parse read_nv_data_ref
-        child = ARObject._find_child_element(element, "READ-NV-DATA-REF")
+        child = SerializationHelper.find_child_element(element, "READ-NV-DATA-REF")
         if child is not None:
             read_nv_data_ref_value = ARRef.deserialize(child)
             obj.read_nv_data_ref = read_nv_data_ref_value
 
         # Parse written_nv_data_ref
-        child = ARObject._find_child_element(element, "WRITTEN-NV-DATA-REF")
+        child = SerializationHelper.find_child_element(element, "WRITTEN-NV-DATA-REF")
         if child is not None:
             written_nv_data_ref_value = ARRef.deserialize(child)
             obj.written_nv_data_ref = written_nv_data_ref_value
 
         # Parse written_read_nv_ref
-        child = ARObject._find_child_element(element, "WRITTEN-READ-NV-REF")
+        child = SerializationHelper.find_child_element(element, "WRITTEN-READ-NV-REF")
         if child is not None:
             written_read_nv_ref_value = ARRef.deserialize(child)
             obj.written_read_nv_ref = written_read_nv_ref_value

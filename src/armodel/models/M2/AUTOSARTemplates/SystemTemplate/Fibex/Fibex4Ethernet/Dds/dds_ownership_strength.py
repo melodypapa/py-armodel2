@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -40,12 +41,12 @@ class DdsOwnershipStrength(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize ownership
         if self.ownership is not None:
-            serialized = ARObject._serialize_item(self.ownership, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.ownership, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("OWNERSHIP")
@@ -74,7 +75,7 @@ class DdsOwnershipStrength(ARObject):
         obj.__init__()
 
         # Parse ownership
-        child = ARObject._find_child_element(element, "OWNERSHIP")
+        child = SerializationHelper.find_child_element(element, "OWNERSHIP")
         if child is not None:
             ownership_value = child.text
             obj.ownership = ownership_value

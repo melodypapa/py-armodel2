@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.transf
     TransformationComSpecProps,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -69,7 +70,7 @@ class EndToEndTransformationComSpecProps(TransformationComSpecProps):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -88,7 +89,7 @@ class EndToEndTransformationComSpecProps(TransformationComSpecProps):
 
         # Serialize clear_from_valid
         if self.clear_from_valid is not None:
-            serialized = ARObject._serialize_item(self.clear_from_valid, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.clear_from_valid, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CLEAR-FROM-VALID")
@@ -102,7 +103,7 @@ class EndToEndTransformationComSpecProps(TransformationComSpecProps):
 
         # Serialize disable_end_to
         if self.disable_end_to is not None:
-            serialized = ARObject._serialize_item(self.disable_end_to, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.disable_end_to, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DISABLE-END-TO")
@@ -116,7 +117,7 @@ class EndToEndTransformationComSpecProps(TransformationComSpecProps):
 
         # Serialize e2e_profile_ref
         if self.e2e_profile_ref is not None:
-            serialized = ARObject._serialize_item(self.e2e_profile_ref, "E2EProfileCompatibilityProps")
+            serialized = SerializationHelper.serialize_item(self.e2e_profile_ref, "E2EProfileCompatibilityProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("E2E-PROFILE-REF")
@@ -130,7 +131,7 @@ class EndToEndTransformationComSpecProps(TransformationComSpecProps):
 
         # Serialize max_delta
         if self.max_delta is not None:
-            serialized = ARObject._serialize_item(self.max_delta, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.max_delta, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-DELTA")
@@ -144,7 +145,7 @@ class EndToEndTransformationComSpecProps(TransformationComSpecProps):
 
         # Serialize max_error_state
         if self.max_error_state is not None:
-            serialized = ARObject._serialize_item(self.max_error_state, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.max_error_state, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-ERROR-STATE")
@@ -158,7 +159,7 @@ class EndToEndTransformationComSpecProps(TransformationComSpecProps):
 
         # Serialize max_no_new_or
         if self.max_no_new_or is not None:
-            serialized = ARObject._serialize_item(self.max_no_new_or, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.max_no_new_or, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-NO-NEW-OR")
@@ -172,7 +173,7 @@ class EndToEndTransformationComSpecProps(TransformationComSpecProps):
 
         # Serialize min_ok_state_init
         if self.min_ok_state_init is not None:
-            serialized = ARObject._serialize_item(self.min_ok_state_init, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.min_ok_state_init, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MIN-OK-STATE-INIT")
@@ -186,7 +187,7 @@ class EndToEndTransformationComSpecProps(TransformationComSpecProps):
 
         # Serialize min_ok_state
         if self.min_ok_state is not None:
-            serialized = ARObject._serialize_item(self.min_ok_state, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.min_ok_state, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MIN-OK-STATE")
@@ -200,7 +201,7 @@ class EndToEndTransformationComSpecProps(TransformationComSpecProps):
 
         # Serialize sync_counter_init
         if self.sync_counter_init is not None:
-            serialized = ARObject._serialize_item(self.sync_counter_init, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.sync_counter_init, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SYNC-COUNTER-INIT")
@@ -214,7 +215,7 @@ class EndToEndTransformationComSpecProps(TransformationComSpecProps):
 
         # Serialize window_size_init
         if self.window_size_init is not None:
-            serialized = ARObject._serialize_item(self.window_size_init, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.window_size_init, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("WINDOW-SIZE-INIT")
@@ -228,7 +229,7 @@ class EndToEndTransformationComSpecProps(TransformationComSpecProps):
 
         # Serialize window_size
         if self.window_size is not None:
-            serialized = ARObject._serialize_item(self.window_size, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.window_size, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("WINDOW-SIZE")
@@ -256,67 +257,67 @@ class EndToEndTransformationComSpecProps(TransformationComSpecProps):
         obj = super(EndToEndTransformationComSpecProps, cls).deserialize(element)
 
         # Parse clear_from_valid
-        child = ARObject._find_child_element(element, "CLEAR-FROM-VALID")
+        child = SerializationHelper.find_child_element(element, "CLEAR-FROM-VALID")
         if child is not None:
             clear_from_valid_value = child.text
             obj.clear_from_valid = clear_from_valid_value
 
         # Parse disable_end_to
-        child = ARObject._find_child_element(element, "DISABLE-END-TO")
+        child = SerializationHelper.find_child_element(element, "DISABLE-END-TO")
         if child is not None:
             disable_end_to_value = child.text
             obj.disable_end_to = disable_end_to_value
 
         # Parse e2e_profile_ref
-        child = ARObject._find_child_element(element, "E2E-PROFILE-REF")
+        child = SerializationHelper.find_child_element(element, "E2E-PROFILE-REF")
         if child is not None:
             e2e_profile_ref_value = ARRef.deserialize(child)
             obj.e2e_profile_ref = e2e_profile_ref_value
 
         # Parse max_delta
-        child = ARObject._find_child_element(element, "MAX-DELTA")
+        child = SerializationHelper.find_child_element(element, "MAX-DELTA")
         if child is not None:
             max_delta_value = child.text
             obj.max_delta = max_delta_value
 
         # Parse max_error_state
-        child = ARObject._find_child_element(element, "MAX-ERROR-STATE")
+        child = SerializationHelper.find_child_element(element, "MAX-ERROR-STATE")
         if child is not None:
             max_error_state_value = child.text
             obj.max_error_state = max_error_state_value
 
         # Parse max_no_new_or
-        child = ARObject._find_child_element(element, "MAX-NO-NEW-OR")
+        child = SerializationHelper.find_child_element(element, "MAX-NO-NEW-OR")
         if child is not None:
             max_no_new_or_value = child.text
             obj.max_no_new_or = max_no_new_or_value
 
         # Parse min_ok_state_init
-        child = ARObject._find_child_element(element, "MIN-OK-STATE-INIT")
+        child = SerializationHelper.find_child_element(element, "MIN-OK-STATE-INIT")
         if child is not None:
             min_ok_state_init_value = child.text
             obj.min_ok_state_init = min_ok_state_init_value
 
         # Parse min_ok_state
-        child = ARObject._find_child_element(element, "MIN-OK-STATE")
+        child = SerializationHelper.find_child_element(element, "MIN-OK-STATE")
         if child is not None:
             min_ok_state_value = child.text
             obj.min_ok_state = min_ok_state_value
 
         # Parse sync_counter_init
-        child = ARObject._find_child_element(element, "SYNC-COUNTER-INIT")
+        child = SerializationHelper.find_child_element(element, "SYNC-COUNTER-INIT")
         if child is not None:
             sync_counter_init_value = child.text
             obj.sync_counter_init = sync_counter_init_value
 
         # Parse window_size_init
-        child = ARObject._find_child_element(element, "WINDOW-SIZE-INIT")
+        child = SerializationHelper.find_child_element(element, "WINDOW-SIZE-INIT")
         if child is not None:
             window_size_init_value = child.text
             obj.window_size_init = window_size_init_value
 
         # Parse window_size
-        child = ARObject._find_child_element(element, "WINDOW-SIZE")
+        child = SerializationHelper.find_child_element(element, "WINDOW-SIZE")
         if child is not None:
             window_size_value = child.text
             obj.window_size = window_size_value

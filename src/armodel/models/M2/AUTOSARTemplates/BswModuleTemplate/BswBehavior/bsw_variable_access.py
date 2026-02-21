@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Referrable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_distinguished_partition import (
     BswDistinguishedPartition,
@@ -49,7 +50,7 @@ class BswVariableAccess(Referrable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -68,7 +69,7 @@ class BswVariableAccess(Referrable):
 
         # Serialize accessed_variable_ref
         if self.accessed_variable_ref is not None:
-            serialized = ARObject._serialize_item(self.accessed_variable_ref, "VariableDataPrototype")
+            serialized = SerializationHelper.serialize_item(self.accessed_variable_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ACCESSED-VARIABLE-REF")
@@ -84,7 +85,7 @@ class BswVariableAccess(Referrable):
         if self.context_refs:
             wrapper = ET.Element("CONTEXT-REFS")
             for item in self.context_refs:
-                serialized = ARObject._serialize_item(item, "BswDistinguishedPartition")
+                serialized = SerializationHelper.serialize_item(item, "BswDistinguishedPartition")
                 if serialized is not None:
                     child_elem = ET.Element("CONTEXT-REF")
                     if hasattr(serialized, 'attrib'):
@@ -113,24 +114,24 @@ class BswVariableAccess(Referrable):
         obj = super(BswVariableAccess, cls).deserialize(element)
 
         # Parse accessed_variable_ref
-        child = ARObject._find_child_element(element, "ACCESSED-VARIABLE-REF")
+        child = SerializationHelper.find_child_element(element, "ACCESSED-VARIABLE-REF")
         if child is not None:
             accessed_variable_ref_value = ARRef.deserialize(child)
             obj.accessed_variable_ref = accessed_variable_ref_value
 
         # Parse context_refs (list from container "CONTEXT-REFS")
         obj.context_refs = []
-        container = ARObject._find_child_element(element, "CONTEXT-REFS")
+        container = SerializationHelper.find_child_element(element, "CONTEXT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.context_refs.append(child_value)
 

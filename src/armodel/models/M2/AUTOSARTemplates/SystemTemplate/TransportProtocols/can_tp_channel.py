@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -43,7 +44,7 @@ class CanTpChannel(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class CanTpChannel(Identifiable):
 
         # Serialize channel_id
         if self.channel_id is not None:
-            serialized = ARObject._serialize_item(self.channel_id, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.channel_id, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CHANNEL-ID")
@@ -90,7 +91,7 @@ class CanTpChannel(Identifiable):
         obj = super(CanTpChannel, cls).deserialize(element)
 
         # Parse channel_id
-        child = ARObject._find_child_element(element, "CHANNEL-ID")
+        child = SerializationHelper.find_child_element(element, "CHANNEL-ID")
         if child is not None:
             channel_id_value = child.text
             obj.channel_id = channel_id_value

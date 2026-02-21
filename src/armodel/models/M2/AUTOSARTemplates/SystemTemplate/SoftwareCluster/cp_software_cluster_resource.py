@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -53,7 +54,7 @@ class CpSoftwareClusterResource(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -74,7 +75,7 @@ class CpSoftwareClusterResource(Identifiable, ABC):
         if self.dependents:
             wrapper = ET.Element("DEPENDENTS")
             for item in self.dependents:
-                serialized = ARObject._serialize_item(item, "RoleBasedResourceDependency")
+                serialized = SerializationHelper.serialize_item(item, "RoleBasedResourceDependency")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -82,7 +83,7 @@ class CpSoftwareClusterResource(Identifiable, ABC):
 
         # Serialize global_resource
         if self.global_resource is not None:
-            serialized = ARObject._serialize_item(self.global_resource, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.global_resource, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("GLOBAL-RESOURCE")
@@ -96,7 +97,7 @@ class CpSoftwareClusterResource(Identifiable, ABC):
 
         # Serialize is_mandatory
         if self.is_mandatory is not None:
-            serialized = ARObject._serialize_item(self.is_mandatory, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.is_mandatory, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IS-MANDATORY")
@@ -125,22 +126,22 @@ class CpSoftwareClusterResource(Identifiable, ABC):
 
         # Parse dependents (list from container "DEPENDENTS")
         obj.dependents = []
-        container = ARObject._find_child_element(element, "DEPENDENTS")
+        container = SerializationHelper.find_child_element(element, "DEPENDENTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.dependents.append(child_value)
 
         # Parse global_resource
-        child = ARObject._find_child_element(element, "GLOBAL-RESOURCE")
+        child = SerializationHelper.find_child_element(element, "GLOBAL-RESOURCE")
         if child is not None:
             global_resource_value = child.text
             obj.global_resource = global_resource_value
 
         # Parse is_mandatory
-        child = ARObject._find_child_element(element, "IS-MANDATORY")
+        child = SerializationHelper.find_child_element(element, "IS-MANDATORY")
         if child is not None:
             is_mandatory_value = child.text
             obj.is_mandatory = is_mandatory_value

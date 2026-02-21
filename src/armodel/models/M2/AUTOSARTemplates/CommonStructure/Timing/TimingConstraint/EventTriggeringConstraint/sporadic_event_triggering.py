@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.
     EventTriggeringConstraint,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
     MultidimensionalTime,
 )
@@ -49,7 +50,7 @@ class SporadicEventTriggering(EventTriggeringConstraint):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -68,7 +69,7 @@ class SporadicEventTriggering(EventTriggeringConstraint):
 
         # Serialize jitter
         if self.jitter is not None:
-            serialized = ARObject._serialize_item(self.jitter, "MultidimensionalTime")
+            serialized = SerializationHelper.serialize_item(self.jitter, "MultidimensionalTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("JITTER")
@@ -82,7 +83,7 @@ class SporadicEventTriggering(EventTriggeringConstraint):
 
         # Serialize maximum_inter
         if self.maximum_inter is not None:
-            serialized = ARObject._serialize_item(self.maximum_inter, "MultidimensionalTime")
+            serialized = SerializationHelper.serialize_item(self.maximum_inter, "MultidimensionalTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAXIMUM-INTER")
@@ -96,7 +97,7 @@ class SporadicEventTriggering(EventTriggeringConstraint):
 
         # Serialize minimum_inter
         if self.minimum_inter is not None:
-            serialized = ARObject._serialize_item(self.minimum_inter, "MultidimensionalTime")
+            serialized = SerializationHelper.serialize_item(self.minimum_inter, "MultidimensionalTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MINIMUM-INTER")
@@ -110,7 +111,7 @@ class SporadicEventTriggering(EventTriggeringConstraint):
 
         # Serialize period
         if self.period is not None:
-            serialized = ARObject._serialize_item(self.period, "MultidimensionalTime")
+            serialized = SerializationHelper.serialize_item(self.period, "MultidimensionalTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PERIOD")
@@ -138,27 +139,27 @@ class SporadicEventTriggering(EventTriggeringConstraint):
         obj = super(SporadicEventTriggering, cls).deserialize(element)
 
         # Parse jitter
-        child = ARObject._find_child_element(element, "JITTER")
+        child = SerializationHelper.find_child_element(element, "JITTER")
         if child is not None:
-            jitter_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            jitter_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
             obj.jitter = jitter_value
 
         # Parse maximum_inter
-        child = ARObject._find_child_element(element, "MAXIMUM-INTER")
+        child = SerializationHelper.find_child_element(element, "MAXIMUM-INTER")
         if child is not None:
-            maximum_inter_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            maximum_inter_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
             obj.maximum_inter = maximum_inter_value
 
         # Parse minimum_inter
-        child = ARObject._find_child_element(element, "MINIMUM-INTER")
+        child = SerializationHelper.find_child_element(element, "MINIMUM-INTER")
         if child is not None:
-            minimum_inter_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            minimum_inter_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
             obj.minimum_inter = minimum_inter_value
 
         # Parse period
-        child = ARObject._find_child_element(element, "PERIOD")
+        child = SerializationHelper.find_child_element(element, "PERIOD")
         if child is not None:
-            period_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            period_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
             obj.period = period_value
 
         return obj

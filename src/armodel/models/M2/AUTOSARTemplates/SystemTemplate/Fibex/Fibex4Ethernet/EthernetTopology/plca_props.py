@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -42,12 +43,12 @@ class PlcaProps(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize plca_local_node
         if self.plca_local_node is not None:
-            serialized = ARObject._serialize_item(self.plca_local_node, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.plca_local_node, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PLCA-LOCAL-NODE")
@@ -61,7 +62,7 @@ class PlcaProps(ARObject):
 
         # Serialize plca_max_burst
         if self.plca_max_burst is not None:
-            serialized = ARObject._serialize_item(self.plca_max_burst, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.plca_max_burst, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PLCA-MAX-BURST")
@@ -90,13 +91,13 @@ class PlcaProps(ARObject):
         obj.__init__()
 
         # Parse plca_local_node
-        child = ARObject._find_child_element(element, "PLCA-LOCAL-NODE")
+        child = SerializationHelper.find_child_element(element, "PLCA-LOCAL-NODE")
         if child is not None:
             plca_local_node_value = child.text
             obj.plca_local_node = plca_local_node_value
 
         # Parse plca_max_burst
-        child = ARObject._find_child_element(element, "PLCA-MAX-BURST")
+        child = SerializationHelper.find_child_element(element, "PLCA-MAX-BURST")
         if child is not None:
             plca_max_burst_value = child.text
             obj.plca_max_burst = plca_max_burst_value

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Numerical,
 )
@@ -48,7 +49,7 @@ class ClientIdDefinition(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -67,7 +68,7 @@ class ClientIdDefinition(Identifiable):
 
         # Serialize client_id
         if self.client_id is not None:
-            serialized = ARObject._serialize_item(self.client_id, "Numerical")
+            serialized = SerializationHelper.serialize_item(self.client_id, "Numerical")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CLIENT-ID")
@@ -81,7 +82,7 @@ class ClientIdDefinition(Identifiable):
 
         # Serialize client_server_instance_ref
         if self.client_server_instance_ref is not None:
-            serialized = ARObject._serialize_item(self.client_server_instance_ref, "ClientServerOperation")
+            serialized = SerializationHelper.serialize_item(self.client_server_instance_ref, "ClientServerOperation")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CLIENT-SERVER-INSTANCE-REF")
@@ -109,15 +110,15 @@ class ClientIdDefinition(Identifiable):
         obj = super(ClientIdDefinition, cls).deserialize(element)
 
         # Parse client_id
-        child = ARObject._find_child_element(element, "CLIENT-ID")
+        child = SerializationHelper.find_child_element(element, "CLIENT-ID")
         if child is not None:
             client_id_value = child.text
             obj.client_id = client_id_value
 
         # Parse client_server_instance_ref
-        child = ARObject._find_child_element(element, "CLIENT-SERVER-INSTANCE-REF")
+        child = SerializationHelper.find_child_element(element, "CLIENT-SERVER-INSTANCE-REF")
         if child is not None:
-            client_server_instance_ref_value = ARObject._deserialize_by_tag(child, "ClientServerOperation")
+            client_server_instance_ref_value = SerializationHelper.deserialize_by_tag(child, "ClientServerOperation")
             obj.client_server_instance_ref = client_server_instance_ref_value
 
         return obj

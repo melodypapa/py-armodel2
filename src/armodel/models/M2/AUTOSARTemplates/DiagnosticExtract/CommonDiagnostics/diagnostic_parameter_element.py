@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -48,7 +49,7 @@ class DiagnosticParameterElement(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -67,7 +68,7 @@ class DiagnosticParameterElement(Identifiable):
 
         # Serialize array_size
         if self.array_size is not None:
-            serialized = ARObject._serialize_item(self.array_size, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.array_size, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ARRAY-SIZE")
@@ -83,7 +84,7 @@ class DiagnosticParameterElement(Identifiable):
         if self.sub_elements:
             wrapper = ET.Element("SUB-ELEMENTS")
             for item in self.sub_elements:
-                serialized = ARObject._serialize_item(item, "DiagnosticParameter")
+                serialized = SerializationHelper.serialize_item(item, "DiagnosticParameter")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -105,18 +106,18 @@ class DiagnosticParameterElement(Identifiable):
         obj = super(DiagnosticParameterElement, cls).deserialize(element)
 
         # Parse array_size
-        child = ARObject._find_child_element(element, "ARRAY-SIZE")
+        child = SerializationHelper.find_child_element(element, "ARRAY-SIZE")
         if child is not None:
             array_size_value = child.text
             obj.array_size = array_size_value
 
         # Parse sub_elements (list from container "SUB-ELEMENTS")
         obj.sub_elements = []
-        container = ARObject._find_child_element(element, "SUB-ELEMENTS")
+        container = SerializationHelper.find_child_element(element, "SUB-ELEMENTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.sub_elements.append(child_value)
 

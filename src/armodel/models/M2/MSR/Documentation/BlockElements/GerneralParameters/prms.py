@@ -13,6 +13,7 @@ from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginat
     Paginateable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multilanguage_long_name import (
     MultilanguageLongName,
 )
@@ -45,7 +46,7 @@ class Prms(Paginateable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class Prms(Paginateable):
 
         # Serialize label
         if self.label is not None:
-            serialized = ARObject._serialize_item(self.label, "MultilanguageLongName")
+            serialized = SerializationHelper.serialize_item(self.label, "MultilanguageLongName")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LABEL")
@@ -78,7 +79,7 @@ class Prms(Paginateable):
 
         # Serialize prm
         if self.prm is not None:
-            serialized = ARObject._serialize_item(self.prm, "Any")
+            serialized = SerializationHelper.serialize_item(self.prm, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PRM")
@@ -106,13 +107,13 @@ class Prms(Paginateable):
         obj = super(Prms, cls).deserialize(element)
 
         # Parse label
-        child = ARObject._find_child_element(element, "LABEL")
+        child = SerializationHelper.find_child_element(element, "LABEL")
         if child is not None:
-            label_value = ARObject._deserialize_with_type(child, "MultilanguageLongName")
+            label_value = SerializationHelper.deserialize_with_type(child, "MultilanguageLongName")
             obj.label = label_value
 
         # Parse prm
-        child = ARObject._find_child_element(element, "PRM")
+        child = SerializationHelper.find_child_element(element, "PRM")
         if child is not None:
             prm_value = child.text
             obj.prm = prm_value

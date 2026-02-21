@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DataMapping.data_mapping 
     DataMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.system_signal import (
     SystemSignal,
@@ -57,7 +58,7 @@ class SenderReceiverToSignalMapping(DataMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -76,7 +77,7 @@ class SenderReceiverToSignalMapping(DataMapping):
 
         # Serialize data_element_system_instance_ref
         if self.data_element_system_instance_ref is not None:
-            serialized = ARObject._serialize_item(self.data_element_system_instance_ref, "VariableDataPrototype")
+            serialized = SerializationHelper.serialize_item(self.data_element_system_instance_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-ELEMENT-SYSTEM-INSTANCE-REF-REF")
@@ -90,7 +91,7 @@ class SenderReceiverToSignalMapping(DataMapping):
 
         # Serialize sender_to_signal_ref
         if self.sender_to_signal_ref is not None:
-            serialized = ARObject._serialize_item(self.sender_to_signal_ref, "TextTableMapping")
+            serialized = SerializationHelper.serialize_item(self.sender_to_signal_ref, "TextTableMapping")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SENDER-TO-SIGNAL-REF")
@@ -104,7 +105,7 @@ class SenderReceiverToSignalMapping(DataMapping):
 
         # Serialize signal_to_ref
         if self.signal_to_ref is not None:
-            serialized = ARObject._serialize_item(self.signal_to_ref, "TextTableMapping")
+            serialized = SerializationHelper.serialize_item(self.signal_to_ref, "TextTableMapping")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SIGNAL-TO-REF")
@@ -118,7 +119,7 @@ class SenderReceiverToSignalMapping(DataMapping):
 
         # Serialize system_signal_ref
         if self.system_signal_ref is not None:
-            serialized = ARObject._serialize_item(self.system_signal_ref, "SystemSignal")
+            serialized = SerializationHelper.serialize_item(self.system_signal_ref, "SystemSignal")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SYSTEM-SIGNAL-REF")
@@ -146,25 +147,25 @@ class SenderReceiverToSignalMapping(DataMapping):
         obj = super(SenderReceiverToSignalMapping, cls).deserialize(element)
 
         # Parse data_element_system_instance_ref
-        child = ARObject._find_child_element(element, "DATA-ELEMENT-SYSTEM-INSTANCE-REF-REF")
+        child = SerializationHelper.find_child_element(element, "DATA-ELEMENT-SYSTEM-INSTANCE-REF-REF")
         if child is not None:
             data_element_system_instance_ref_value = ARRef.deserialize(child)
             obj.data_element_system_instance_ref = data_element_system_instance_ref_value
 
         # Parse sender_to_signal_ref
-        child = ARObject._find_child_element(element, "SENDER-TO-SIGNAL-REF")
+        child = SerializationHelper.find_child_element(element, "SENDER-TO-SIGNAL-REF")
         if child is not None:
             sender_to_signal_ref_value = ARRef.deserialize(child)
             obj.sender_to_signal_ref = sender_to_signal_ref_value
 
         # Parse signal_to_ref
-        child = ARObject._find_child_element(element, "SIGNAL-TO-REF")
+        child = SerializationHelper.find_child_element(element, "SIGNAL-TO-REF")
         if child is not None:
             signal_to_ref_value = ARRef.deserialize(child)
             obj.signal_to_ref = signal_to_ref_value
 
         # Parse system_signal_ref
-        child = ARObject._find_child_element(element, "SYSTEM-SIGNAL-REF")
+        child = SerializationHelper.find_child_element(element, "SYSTEM-SIGNAL-REF")
         if child is not None:
             system_signal_ref_value = ARRef.deserialize(child)
             obj.system_signal_ref = system_signal_ref_value

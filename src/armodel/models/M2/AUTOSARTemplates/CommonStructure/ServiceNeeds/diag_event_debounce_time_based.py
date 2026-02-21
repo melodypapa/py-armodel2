@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diag_event_
     DiagEventDebounceAlgorithm,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
 )
@@ -49,7 +50,7 @@ class DiagEventDebounceTimeBased(DiagEventDebounceAlgorithm):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -68,7 +69,7 @@ class DiagEventDebounceTimeBased(DiagEventDebounceAlgorithm):
 
         # Serialize time_based_fdc
         if self.time_based_fdc is not None:
-            serialized = ARObject._serialize_item(self.time_based_fdc, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.time_based_fdc, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIME-BASED-FDC")
@@ -82,7 +83,7 @@ class DiagEventDebounceTimeBased(DiagEventDebounceAlgorithm):
 
         # Serialize time_failed
         if self.time_failed is not None:
-            serialized = ARObject._serialize_item(self.time_failed, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.time_failed, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIME-FAILED")
@@ -96,7 +97,7 @@ class DiagEventDebounceTimeBased(DiagEventDebounceAlgorithm):
 
         # Serialize time_passed
         if self.time_passed is not None:
-            serialized = ARObject._serialize_item(self.time_passed, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.time_passed, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIME-PASSED")
@@ -124,19 +125,19 @@ class DiagEventDebounceTimeBased(DiagEventDebounceAlgorithm):
         obj = super(DiagEventDebounceTimeBased, cls).deserialize(element)
 
         # Parse time_based_fdc
-        child = ARObject._find_child_element(element, "TIME-BASED-FDC")
+        child = SerializationHelper.find_child_element(element, "TIME-BASED-FDC")
         if child is not None:
             time_based_fdc_value = child.text
             obj.time_based_fdc = time_based_fdc_value
 
         # Parse time_failed
-        child = ARObject._find_child_element(element, "TIME-FAILED")
+        child = SerializationHelper.find_child_element(element, "TIME-FAILED")
         if child is not None:
             time_failed_value = child.text
             obj.time_failed = time_failed_value
 
         # Parse time_passed
-        child = ARObject._find_child_element(element, "TIME-PASSED")
+        child = SerializationHelper.find_child_element(element, "TIME-PASSED")
         if child is not None:
             time_passed_value = child.text
             obj.time_passed = time_passed_value

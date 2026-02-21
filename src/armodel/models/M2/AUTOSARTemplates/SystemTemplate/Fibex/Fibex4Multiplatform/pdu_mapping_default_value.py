@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Multiplatform.default_value_element import (
     DefaultValueElement,
 )
@@ -40,14 +41,14 @@ class PduMappingDefaultValue(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize default_values (list to container "DEFAULT-VALUES")
         if self.default_values:
             wrapper = ET.Element("DEFAULT-VALUES")
             for item in self.default_values:
-                serialized = ARObject._serialize_item(item, "DefaultValueElement")
+                serialized = SerializationHelper.serialize_item(item, "DefaultValueElement")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -71,11 +72,11 @@ class PduMappingDefaultValue(ARObject):
 
         # Parse default_values (list from container "DEFAULT-VALUES")
         obj.default_values = []
-        container = ARObject._find_child_element(element, "DEFAULT-VALUES")
+        container = SerializationHelper.find_child_element(element, "DEFAULT-VALUES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.default_values.append(child_value)
 

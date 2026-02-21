@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
     IPdu,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
 )
@@ -50,7 +51,7 @@ class MultiplexedIPdu(IPdu):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -69,7 +70,7 @@ class MultiplexedIPdu(IPdu):
 
         # Serialize dynamic_part
         if self.dynamic_part is not None:
-            serialized = ARObject._serialize_item(self.dynamic_part, "DynamicPart")
+            serialized = SerializationHelper.serialize_item(self.dynamic_part, "DynamicPart")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DYNAMIC-PART")
@@ -83,7 +84,7 @@ class MultiplexedIPdu(IPdu):
 
         # Serialize selector_field
         if self.selector_field is not None:
-            serialized = ARObject._serialize_item(self.selector_field, "Integer")
+            serialized = SerializationHelper.serialize_item(self.selector_field, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SELECTOR-FIELD")
@@ -97,7 +98,7 @@ class MultiplexedIPdu(IPdu):
 
         # Serialize unused_bit
         if self.unused_bit is not None:
-            serialized = ARObject._serialize_item(self.unused_bit, "Integer")
+            serialized = SerializationHelper.serialize_item(self.unused_bit, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("UNUSED-BIT")
@@ -125,19 +126,19 @@ class MultiplexedIPdu(IPdu):
         obj = super(MultiplexedIPdu, cls).deserialize(element)
 
         # Parse dynamic_part
-        child = ARObject._find_child_element(element, "DYNAMIC-PART")
+        child = SerializationHelper.find_child_element(element, "DYNAMIC-PART")
         if child is not None:
-            dynamic_part_value = ARObject._deserialize_by_tag(child, "DynamicPart")
+            dynamic_part_value = SerializationHelper.deserialize_by_tag(child, "DynamicPart")
             obj.dynamic_part = dynamic_part_value
 
         # Parse selector_field
-        child = ARObject._find_child_element(element, "SELECTOR-FIELD")
+        child = SerializationHelper.find_child_element(element, "SELECTOR-FIELD")
         if child is not None:
             selector_field_value = child.text
             obj.selector_field = selector_field_value
 
         # Parse unused_bit
-        child = ARObject._find_child_element(element, "UNUSED-BIT")
+        child = SerializationHelper.find_child_element(element, "UNUSED-BIT")
         if child is not None:
             unused_bit_value = child.text
             obj.unused_bit = unused_bit_value

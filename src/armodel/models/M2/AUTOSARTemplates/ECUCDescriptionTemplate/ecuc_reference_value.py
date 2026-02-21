@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_abstract_re
     EcucAbstractReferenceValue,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
     Referrable,
@@ -45,7 +46,7 @@ class EcucReferenceValue(EcucAbstractReferenceValue):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class EcucReferenceValue(EcucAbstractReferenceValue):
 
         # Serialize value_ref
         if self.value_ref is not None:
-            serialized = ARObject._serialize_item(self.value_ref, "Referrable")
+            serialized = SerializationHelper.serialize_item(self.value_ref, "Referrable")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VALUE-REF")
@@ -92,7 +93,7 @@ class EcucReferenceValue(EcucAbstractReferenceValue):
         obj = super(EcucReferenceValue, cls).deserialize(element)
 
         # Parse value_ref
-        child = ARObject._find_child_element(element, "VALUE-REF")
+        child = SerializationHelper.find_child_element(element, "VALUE-REF")
         if child is not None:
             value_ref_value = ARRef.deserialize(child)
             obj.value_ref = value_ref_value

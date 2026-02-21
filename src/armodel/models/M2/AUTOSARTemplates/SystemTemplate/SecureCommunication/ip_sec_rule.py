@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication import (
     IPsecHeaderTypeEnum,
@@ -86,7 +87,7 @@ class IPSecRule(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -105,7 +106,7 @@ class IPSecRule(Identifiable):
 
         # Serialize direction
         if self.direction is not None:
-            serialized = ARObject._serialize_item(self.direction, "Any")
+            serialized = SerializationHelper.serialize_item(self.direction, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DIRECTION")
@@ -119,7 +120,7 @@ class IPSecRule(Identifiable):
 
         # Serialize header_type
         if self.header_type is not None:
-            serialized = ARObject._serialize_item(self.header_type, "IPsecHeaderTypeEnum")
+            serialized = SerializationHelper.serialize_item(self.header_type, "IPsecHeaderTypeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HEADER-TYPE")
@@ -133,7 +134,7 @@ class IPSecRule(Identifiable):
 
         # Serialize ip_protocol
         if self.ip_protocol is not None:
-            serialized = ARObject._serialize_item(self.ip_protocol, "IPsecIpProtocolEnum")
+            serialized = SerializationHelper.serialize_item(self.ip_protocol, "IPsecIpProtocolEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IP-PROTOCOL")
@@ -149,7 +150,7 @@ class IPSecRule(Identifiable):
         if self.local_certificate_refs:
             wrapper = ET.Element("LOCAL-CERTIFICATE-REFS")
             for item in self.local_certificate_refs:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     child_elem = ET.Element("LOCAL-CERTIFICATE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -164,7 +165,7 @@ class IPSecRule(Identifiable):
 
         # Serialize local_id
         if self.local_id is not None:
-            serialized = ARObject._serialize_item(self.local_id, "String")
+            serialized = SerializationHelper.serialize_item(self.local_id, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LOCAL-ID")
@@ -178,7 +179,7 @@ class IPSecRule(Identifiable):
 
         # Serialize local_port_range
         if self.local_port_range is not None:
-            serialized = ARObject._serialize_item(self.local_port_range, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.local_port_range, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LOCAL-PORT-RANGE")
@@ -192,7 +193,7 @@ class IPSecRule(Identifiable):
 
         # Serialize mode
         if self.mode is not None:
-            serialized = ARObject._serialize_item(self.mode, "IPsecModeEnum")
+            serialized = SerializationHelper.serialize_item(self.mode, "IPsecModeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MODE")
@@ -206,7 +207,7 @@ class IPSecRule(Identifiable):
 
         # Serialize policy
         if self.policy is not None:
-            serialized = ARObject._serialize_item(self.policy, "IPsecPolicyEnum")
+            serialized = SerializationHelper.serialize_item(self.policy, "IPsecPolicyEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("POLICY")
@@ -220,7 +221,7 @@ class IPSecRule(Identifiable):
 
         # Serialize pre_shared_key_ref
         if self.pre_shared_key_ref is not None:
-            serialized = ARObject._serialize_item(self.pre_shared_key_ref, "CryptoServiceKey")
+            serialized = SerializationHelper.serialize_item(self.pre_shared_key_ref, "CryptoServiceKey")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PRE-SHARED-KEY-REF")
@@ -234,7 +235,7 @@ class IPSecRule(Identifiable):
 
         # Serialize priority
         if self.priority is not None:
-            serialized = ARObject._serialize_item(self.priority, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.priority, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PRIORITY")
@@ -250,7 +251,7 @@ class IPSecRule(Identifiable):
         if self.remote_refs:
             wrapper = ET.Element("REMOTE-REFS")
             for item in self.remote_refs:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     child_elem = ET.Element("REMOTE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -265,7 +266,7 @@ class IPSecRule(Identifiable):
 
         # Serialize remote_id
         if self.remote_id is not None:
-            serialized = ARObject._serialize_item(self.remote_id, "String")
+            serialized = SerializationHelper.serialize_item(self.remote_id, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REMOTE-ID")
@@ -281,7 +282,7 @@ class IPSecRule(Identifiable):
         if self.remote_ip_refs:
             wrapper = ET.Element("REMOTE-IP-REFS")
             for item in self.remote_ip_refs:
-                serialized = ARObject._serialize_item(item, "NetworkEndpoint")
+                serialized = SerializationHelper.serialize_item(item, "NetworkEndpoint")
                 if serialized is not None:
                     child_elem = ET.Element("REMOTE-IP-REF")
                     if hasattr(serialized, 'attrib'):
@@ -296,7 +297,7 @@ class IPSecRule(Identifiable):
 
         # Serialize remote_port
         if self.remote_port is not None:
-            serialized = ARObject._serialize_item(self.remote_port, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.remote_port, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REMOTE-PORT")
@@ -324,115 +325,115 @@ class IPSecRule(Identifiable):
         obj = super(IPSecRule, cls).deserialize(element)
 
         # Parse direction
-        child = ARObject._find_child_element(element, "DIRECTION")
+        child = SerializationHelper.find_child_element(element, "DIRECTION")
         if child is not None:
             direction_value = child.text
             obj.direction = direction_value
 
         # Parse header_type
-        child = ARObject._find_child_element(element, "HEADER-TYPE")
+        child = SerializationHelper.find_child_element(element, "HEADER-TYPE")
         if child is not None:
             header_type_value = IPsecHeaderTypeEnum.deserialize(child)
             obj.header_type = header_type_value
 
         # Parse ip_protocol
-        child = ARObject._find_child_element(element, "IP-PROTOCOL")
+        child = SerializationHelper.find_child_element(element, "IP-PROTOCOL")
         if child is not None:
             ip_protocol_value = IPsecIpProtocolEnum.deserialize(child)
             obj.ip_protocol = ip_protocol_value
 
         # Parse local_certificate_refs (list from container "LOCAL-CERTIFICATE-REFS")
         obj.local_certificate_refs = []
-        container = ARObject._find_child_element(element, "LOCAL-CERTIFICATE-REFS")
+        container = SerializationHelper.find_child_element(element, "LOCAL-CERTIFICATE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.local_certificate_refs.append(child_value)
 
         # Parse local_id
-        child = ARObject._find_child_element(element, "LOCAL-ID")
+        child = SerializationHelper.find_child_element(element, "LOCAL-ID")
         if child is not None:
             local_id_value = child.text
             obj.local_id = local_id_value
 
         # Parse local_port_range
-        child = ARObject._find_child_element(element, "LOCAL-PORT-RANGE")
+        child = SerializationHelper.find_child_element(element, "LOCAL-PORT-RANGE")
         if child is not None:
             local_port_range_value = child.text
             obj.local_port_range = local_port_range_value
 
         # Parse mode
-        child = ARObject._find_child_element(element, "MODE")
+        child = SerializationHelper.find_child_element(element, "MODE")
         if child is not None:
             mode_value = IPsecModeEnum.deserialize(child)
             obj.mode = mode_value
 
         # Parse policy
-        child = ARObject._find_child_element(element, "POLICY")
+        child = SerializationHelper.find_child_element(element, "POLICY")
         if child is not None:
             policy_value = IPsecPolicyEnum.deserialize(child)
             obj.policy = policy_value
 
         # Parse pre_shared_key_ref
-        child = ARObject._find_child_element(element, "PRE-SHARED-KEY-REF")
+        child = SerializationHelper.find_child_element(element, "PRE-SHARED-KEY-REF")
         if child is not None:
             pre_shared_key_ref_value = ARRef.deserialize(child)
             obj.pre_shared_key_ref = pre_shared_key_ref_value
 
         # Parse priority
-        child = ARObject._find_child_element(element, "PRIORITY")
+        child = SerializationHelper.find_child_element(element, "PRIORITY")
         if child is not None:
             priority_value = child.text
             obj.priority = priority_value
 
         # Parse remote_refs (list from container "REMOTE-REFS")
         obj.remote_refs = []
-        container = ARObject._find_child_element(element, "REMOTE-REFS")
+        container = SerializationHelper.find_child_element(element, "REMOTE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.remote_refs.append(child_value)
 
         # Parse remote_id
-        child = ARObject._find_child_element(element, "REMOTE-ID")
+        child = SerializationHelper.find_child_element(element, "REMOTE-ID")
         if child is not None:
             remote_id_value = child.text
             obj.remote_id = remote_id_value
 
         # Parse remote_ip_refs (list from container "REMOTE-IP-REFS")
         obj.remote_ip_refs = []
-        container = ARObject._find_child_element(element, "REMOTE-IP-REFS")
+        container = SerializationHelper.find_child_element(element, "REMOTE-IP-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.remote_ip_refs.append(child_value)
 
         # Parse remote_port
-        child = ARObject._find_child_element(element, "REMOTE-PORT")
+        child = SerializationHelper.find_child_element(element, "REMOTE-PORT")
         if child is not None:
             remote_port_value = child.text
             obj.remote_port = remote_port_value

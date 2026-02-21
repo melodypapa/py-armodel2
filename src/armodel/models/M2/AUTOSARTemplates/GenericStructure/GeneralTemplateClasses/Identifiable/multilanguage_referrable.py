@@ -19,6 +19,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Referrable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.Documentation.TextModel.MultilanguageData.multilanguage_long_name import (
     MultilanguageLongName,
 )
@@ -50,7 +51,7 @@ class MultilanguageReferrable(Referrable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -69,7 +70,7 @@ class MultilanguageReferrable(Referrable, ABC):
 
         # Serialize long_name
         if self.long_name is not None:
-            serialized = ARObject._serialize_item(self.long_name, "MultilanguageLongName")
+            serialized = SerializationHelper.serialize_item(self.long_name, "MultilanguageLongName")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LONG-NAME")
@@ -97,9 +98,9 @@ class MultilanguageReferrable(Referrable, ABC):
         obj = super(MultilanguageReferrable, cls).deserialize(element)
 
         # Parse long_name
-        child = ARObject._find_child_element(element, "LONG-NAME")
+        child = SerializationHelper.find_child_element(element, "LONG-NAME")
         if child is not None:
-            long_name_value = ARObject._deserialize_with_type(child, "MultilanguageLongName")
+            long_name_value = SerializationHelper.deserialize_with_type(child, "MultilanguageLongName")
             obj.long_name = long_name_value
 
         return obj

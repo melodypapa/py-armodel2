@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -46,12 +47,12 @@ class EthTSynSubTlvConfig(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize ofs_sub_tlv
         if self.ofs_sub_tlv is not None:
-            serialized = ARObject._serialize_item(self.ofs_sub_tlv, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.ofs_sub_tlv, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("OFS-SUB-TLV")
@@ -65,7 +66,7 @@ class EthTSynSubTlvConfig(ARObject):
 
         # Serialize status_sub_tlv
         if self.status_sub_tlv is not None:
-            serialized = ARObject._serialize_item(self.status_sub_tlv, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.status_sub_tlv, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("STATUS-SUB-TLV")
@@ -79,7 +80,7 @@ class EthTSynSubTlvConfig(ARObject):
 
         # Serialize time_sub_tlv
         if self.time_sub_tlv is not None:
-            serialized = ARObject._serialize_item(self.time_sub_tlv, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.time_sub_tlv, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIME-SUB-TLV")
@@ -93,7 +94,7 @@ class EthTSynSubTlvConfig(ARObject):
 
         # Serialize user_data_sub_tlv
         if self.user_data_sub_tlv is not None:
-            serialized = ARObject._serialize_item(self.user_data_sub_tlv, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.user_data_sub_tlv, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("USER-DATA-SUB-TLV")
@@ -122,25 +123,25 @@ class EthTSynSubTlvConfig(ARObject):
         obj.__init__()
 
         # Parse ofs_sub_tlv
-        child = ARObject._find_child_element(element, "OFS-SUB-TLV")
+        child = SerializationHelper.find_child_element(element, "OFS-SUB-TLV")
         if child is not None:
             ofs_sub_tlv_value = child.text
             obj.ofs_sub_tlv = ofs_sub_tlv_value
 
         # Parse status_sub_tlv
-        child = ARObject._find_child_element(element, "STATUS-SUB-TLV")
+        child = SerializationHelper.find_child_element(element, "STATUS-SUB-TLV")
         if child is not None:
             status_sub_tlv_value = child.text
             obj.status_sub_tlv = status_sub_tlv_value
 
         # Parse time_sub_tlv
-        child = ARObject._find_child_element(element, "TIME-SUB-TLV")
+        child = SerializationHelper.find_child_element(element, "TIME-SUB-TLV")
         if child is not None:
             time_sub_tlv_value = child.text
             obj.time_sub_tlv = time_sub_tlv_value
 
         # Parse user_data_sub_tlv
-        child = ARObject._find_child_element(element, "USER-DATA-SUB-TLV")
+        child = SerializationHelper.find_child_element(element, "USER-DATA-SUB-TLV")
         if child is not None:
             user_data_sub_tlv_value = child.text
             obj.user_data_sub_tlv = user_data_sub_tlv_value

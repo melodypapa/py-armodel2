@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
     DocumentationBlock,
@@ -48,12 +49,12 @@ class FrameMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize introduction
         if self.introduction is not None:
-            serialized = ARObject._serialize_item(self.introduction, "DocumentationBlock")
+            serialized = SerializationHelper.serialize_item(self.introduction, "DocumentationBlock")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INTRODUCTION")
@@ -67,7 +68,7 @@ class FrameMapping(ARObject):
 
         # Serialize source_frame_ref
         if self.source_frame_ref is not None:
-            serialized = ARObject._serialize_item(self.source_frame_ref, "FrameTriggering")
+            serialized = SerializationHelper.serialize_item(self.source_frame_ref, "FrameTriggering")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SOURCE-FRAME-REF")
@@ -81,7 +82,7 @@ class FrameMapping(ARObject):
 
         # Serialize target_frame_ref
         if self.target_frame_ref is not None:
-            serialized = ARObject._serialize_item(self.target_frame_ref, "FrameTriggering")
+            serialized = SerializationHelper.serialize_item(self.target_frame_ref, "FrameTriggering")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TARGET-FRAME-REF")
@@ -110,19 +111,19 @@ class FrameMapping(ARObject):
         obj.__init__()
 
         # Parse introduction
-        child = ARObject._find_child_element(element, "INTRODUCTION")
+        child = SerializationHelper.find_child_element(element, "INTRODUCTION")
         if child is not None:
-            introduction_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            introduction_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
             obj.introduction = introduction_value
 
         # Parse source_frame_ref
-        child = ARObject._find_child_element(element, "SOURCE-FRAME-REF")
+        child = SerializationHelper.find_child_element(element, "SOURCE-FRAME-REF")
         if child is not None:
             source_frame_ref_value = ARRef.deserialize(child)
             obj.source_frame_ref = source_frame_ref_value
 
         # Parse target_frame_ref
-        child = ARObject._find_child_element(element, "TARGET-FRAME-REF")
+        child = SerializationHelper.find_child_element(element, "TARGET-FRAME-REF")
         if child is not None:
             target_frame_ref_value = ARRef.deserialize(child)
             obj.target_frame_ref = target_frame_ref_value

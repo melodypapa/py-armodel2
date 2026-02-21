@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -61,7 +62,7 @@ class DltArgument(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -82,7 +83,7 @@ class DltArgument(Identifiable):
         if self.dlt_arguments:
             wrapper = ET.Element("DLT-ARGUMENTS")
             for item in self.dlt_arguments:
-                serialized = ARObject._serialize_item(item, "DltArgument")
+                serialized = SerializationHelper.serialize_item(item, "DltArgument")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -90,7 +91,7 @@ class DltArgument(Identifiable):
 
         # Serialize length
         if self.length is not None:
-            serialized = ARObject._serialize_item(self.length, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.length, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LENGTH")
@@ -104,7 +105,7 @@ class DltArgument(Identifiable):
 
         # Serialize network
         if self.network is not None:
-            serialized = ARObject._serialize_item(self.network, "SwDataDefProps")
+            serialized = SerializationHelper.serialize_item(self.network, "SwDataDefProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NETWORK")
@@ -118,7 +119,7 @@ class DltArgument(Identifiable):
 
         # Serialize optional
         if self.optional is not None:
-            serialized = ARObject._serialize_item(self.optional, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.optional, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("OPTIONAL")
@@ -132,7 +133,7 @@ class DltArgument(Identifiable):
 
         # Serialize predefined_text
         if self.predefined_text is not None:
-            serialized = ARObject._serialize_item(self.predefined_text, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.predefined_text, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PREDEFINED-TEXT")
@@ -146,7 +147,7 @@ class DltArgument(Identifiable):
 
         # Serialize variable_length
         if self.variable_length is not None:
-            serialized = ARObject._serialize_item(self.variable_length, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.variable_length, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VARIABLE-LENGTH")
@@ -175,40 +176,40 @@ class DltArgument(Identifiable):
 
         # Parse dlt_arguments (list from container "DLT-ARGUMENTS")
         obj.dlt_arguments = []
-        container = ARObject._find_child_element(element, "DLT-ARGUMENTS")
+        container = SerializationHelper.find_child_element(element, "DLT-ARGUMENTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.dlt_arguments.append(child_value)
 
         # Parse length
-        child = ARObject._find_child_element(element, "LENGTH")
+        child = SerializationHelper.find_child_element(element, "LENGTH")
         if child is not None:
             length_value = child.text
             obj.length = length_value
 
         # Parse network
-        child = ARObject._find_child_element(element, "NETWORK")
+        child = SerializationHelper.find_child_element(element, "NETWORK")
         if child is not None:
-            network_value = ARObject._deserialize_by_tag(child, "SwDataDefProps")
+            network_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
             obj.network = network_value
 
         # Parse optional
-        child = ARObject._find_child_element(element, "OPTIONAL")
+        child = SerializationHelper.find_child_element(element, "OPTIONAL")
         if child is not None:
             optional_value = child.text
             obj.optional = optional_value
 
         # Parse predefined_text
-        child = ARObject._find_child_element(element, "PREDEFINED-TEXT")
+        child = SerializationHelper.find_child_element(element, "PREDEFINED-TEXT")
         if child is not None:
             predefined_text_value = child.text
             obj.predefined_text = predefined_text_value
 
         # Parse variable_length
-        child = ARObject._find_child_element(element, "VARIABLE-LENGTH")
+        child = SerializationHelper.find_child_element(element, "VARIABLE-LENGTH")
         if child is not None:
             variable_length_value = child.text
             obj.variable_length = variable_length_value

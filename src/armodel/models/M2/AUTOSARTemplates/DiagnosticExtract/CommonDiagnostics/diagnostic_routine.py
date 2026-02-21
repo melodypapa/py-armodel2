@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -57,7 +58,7 @@ class DiagnosticRoutine(DiagnosticCommonElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -76,7 +77,7 @@ class DiagnosticRoutine(DiagnosticCommonElement):
 
         # Serialize id
         if self.id is not None:
-            serialized = ARObject._serialize_item(self.id, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.id, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ID")
@@ -90,7 +91,7 @@ class DiagnosticRoutine(DiagnosticCommonElement):
 
         # Serialize request_result
         if self.request_result is not None:
-            serialized = ARObject._serialize_item(self.request_result, "Any")
+            serialized = SerializationHelper.serialize_item(self.request_result, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REQUEST-RESULT")
@@ -104,7 +105,7 @@ class DiagnosticRoutine(DiagnosticCommonElement):
 
         # Serialize routine_info
         if self.routine_info is not None:
-            serialized = ARObject._serialize_item(self.routine_info, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.routine_info, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ROUTINE-INFO")
@@ -118,7 +119,7 @@ class DiagnosticRoutine(DiagnosticCommonElement):
 
         # Serialize start
         if self.start is not None:
-            serialized = ARObject._serialize_item(self.start, "DiagnosticStartRoutine")
+            serialized = SerializationHelper.serialize_item(self.start, "DiagnosticStartRoutine")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("START")
@@ -132,7 +133,7 @@ class DiagnosticRoutine(DiagnosticCommonElement):
 
         # Serialize stop
         if self.stop is not None:
-            serialized = ARObject._serialize_item(self.stop, "DiagnosticStopRoutine")
+            serialized = SerializationHelper.serialize_item(self.stop, "DiagnosticStopRoutine")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("STOP")
@@ -160,33 +161,33 @@ class DiagnosticRoutine(DiagnosticCommonElement):
         obj = super(DiagnosticRoutine, cls).deserialize(element)
 
         # Parse id
-        child = ARObject._find_child_element(element, "ID")
+        child = SerializationHelper.find_child_element(element, "ID")
         if child is not None:
             id_value = child.text
             obj.id = id_value
 
         # Parse request_result
-        child = ARObject._find_child_element(element, "REQUEST-RESULT")
+        child = SerializationHelper.find_child_element(element, "REQUEST-RESULT")
         if child is not None:
             request_result_value = child.text
             obj.request_result = request_result_value
 
         # Parse routine_info
-        child = ARObject._find_child_element(element, "ROUTINE-INFO")
+        child = SerializationHelper.find_child_element(element, "ROUTINE-INFO")
         if child is not None:
             routine_info_value = child.text
             obj.routine_info = routine_info_value
 
         # Parse start
-        child = ARObject._find_child_element(element, "START")
+        child = SerializationHelper.find_child_element(element, "START")
         if child is not None:
-            start_value = ARObject._deserialize_by_tag(child, "DiagnosticStartRoutine")
+            start_value = SerializationHelper.deserialize_by_tag(child, "DiagnosticStartRoutine")
             obj.start = start_value
 
         # Parse stop
-        child = ARObject._find_child_element(element, "STOP")
+        child = SerializationHelper.find_child_element(element, "STOP")
         if child is not None:
-            stop_value = ARObject._deserialize_by_tag(child, "DiagnosticStopRoutine")
+            stop_value = SerializationHelper.deserialize_by_tag(child, "DiagnosticStopRoutine")
             obj.stop = stop_value
 
         return obj

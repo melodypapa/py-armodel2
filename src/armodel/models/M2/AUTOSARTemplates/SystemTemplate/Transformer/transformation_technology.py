@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer import (
     TransformerClassEnum,
 )
@@ -66,7 +67,7 @@ class TransformationTechnology(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -85,7 +86,7 @@ class TransformationTechnology(Identifiable):
 
         # Serialize buffer_properties
         if self.buffer_properties is not None:
-            serialized = ARObject._serialize_item(self.buffer_properties, "BufferProperties")
+            serialized = SerializationHelper.serialize_item(self.buffer_properties, "BufferProperties")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BUFFER-PROPERTIES")
@@ -99,7 +100,7 @@ class TransformationTechnology(Identifiable):
 
         # Serialize has_internal
         if self.has_internal is not None:
-            serialized = ARObject._serialize_item(self.has_internal, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.has_internal, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HAS-INTERNAL")
@@ -113,7 +114,7 @@ class TransformationTechnology(Identifiable):
 
         # Serialize needs_original
         if self.needs_original is not None:
-            serialized = ARObject._serialize_item(self.needs_original, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.needs_original, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NEEDS-ORIGINAL")
@@ -127,7 +128,7 @@ class TransformationTechnology(Identifiable):
 
         # Serialize protocol
         if self.protocol is not None:
-            serialized = ARObject._serialize_item(self.protocol, "String")
+            serialized = SerializationHelper.serialize_item(self.protocol, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PROTOCOL")
@@ -141,7 +142,7 @@ class TransformationTechnology(Identifiable):
 
         # Serialize transformation_description
         if self.transformation_description is not None:
-            serialized = ARObject._serialize_item(self.transformation_description, "TransformationDescription")
+            serialized = SerializationHelper.serialize_item(self.transformation_description, "TransformationDescription")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TRANSFORMATION-DESCRIPTION")
@@ -155,7 +156,7 @@ class TransformationTechnology(Identifiable):
 
         # Serialize transformer
         if self.transformer is not None:
-            serialized = ARObject._serialize_item(self.transformer, "TransformerClassEnum")
+            serialized = SerializationHelper.serialize_item(self.transformer, "TransformerClassEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TRANSFORMER")
@@ -169,7 +170,7 @@ class TransformationTechnology(Identifiable):
 
         # Serialize version
         if self.version is not None:
-            serialized = ARObject._serialize_item(self.version, "String")
+            serialized = SerializationHelper.serialize_item(self.version, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VERSION")
@@ -197,43 +198,43 @@ class TransformationTechnology(Identifiable):
         obj = super(TransformationTechnology, cls).deserialize(element)
 
         # Parse buffer_properties
-        child = ARObject._find_child_element(element, "BUFFER-PROPERTIES")
+        child = SerializationHelper.find_child_element(element, "BUFFER-PROPERTIES")
         if child is not None:
-            buffer_properties_value = ARObject._deserialize_by_tag(child, "BufferProperties")
+            buffer_properties_value = SerializationHelper.deserialize_by_tag(child, "BufferProperties")
             obj.buffer_properties = buffer_properties_value
 
         # Parse has_internal
-        child = ARObject._find_child_element(element, "HAS-INTERNAL")
+        child = SerializationHelper.find_child_element(element, "HAS-INTERNAL")
         if child is not None:
             has_internal_value = child.text
             obj.has_internal = has_internal_value
 
         # Parse needs_original
-        child = ARObject._find_child_element(element, "NEEDS-ORIGINAL")
+        child = SerializationHelper.find_child_element(element, "NEEDS-ORIGINAL")
         if child is not None:
             needs_original_value = child.text
             obj.needs_original = needs_original_value
 
         # Parse protocol
-        child = ARObject._find_child_element(element, "PROTOCOL")
+        child = SerializationHelper.find_child_element(element, "PROTOCOL")
         if child is not None:
             protocol_value = child.text
             obj.protocol = protocol_value
 
         # Parse transformation_description
-        child = ARObject._find_child_element(element, "TRANSFORMATION-DESCRIPTION")
+        child = SerializationHelper.find_child_element(element, "TRANSFORMATION-DESCRIPTION")
         if child is not None:
-            transformation_description_value = ARObject._deserialize_by_tag(child, "TransformationDescription")
+            transformation_description_value = SerializationHelper.deserialize_by_tag(child, "TransformationDescription")
             obj.transformation_description = transformation_description_value
 
         # Parse transformer
-        child = ARObject._find_child_element(element, "TRANSFORMER")
+        child = SerializationHelper.find_child_element(element, "TRANSFORMER")
         if child is not None:
             transformer_value = TransformerClassEnum.deserialize(child)
             obj.transformer = transformer_value
 
         # Parse version
-        child = ARObject._find_child_element(element, "VERSION")
+        child = SerializationHelper.find_child_element(element, "VERSION")
         if child is not None:
             version_value = child.text
             obj.version = version_value

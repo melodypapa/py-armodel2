@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
     IPdu,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication import (
     ContainerIPduHeaderTypeEnum,
@@ -74,7 +75,7 @@ class ContainerIPdu(IPdu):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -95,7 +96,7 @@ class ContainerIPdu(IPdu):
         if self.contained_i_pdu_propses:
             wrapper = ET.Element("CONTAINED-I-PDU-PROPSES")
             for item in self.contained_i_pdu_propses:
-                serialized = ARObject._serialize_item(item, "ContainedIPduProps")
+                serialized = SerializationHelper.serialize_item(item, "ContainedIPduProps")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -105,7 +106,7 @@ class ContainerIPdu(IPdu):
         if self.contained_pdu_refs:
             wrapper = ET.Element("CONTAINED-PDU-REFS")
             for item in self.contained_pdu_refs:
-                serialized = ARObject._serialize_item(item, "PduTriggering")
+                serialized = SerializationHelper.serialize_item(item, "PduTriggering")
                 if serialized is not None:
                     child_elem = ET.Element("CONTAINED-PDU-REF")
                     if hasattr(serialized, 'attrib'):
@@ -120,7 +121,7 @@ class ContainerIPdu(IPdu):
 
         # Serialize container
         if self.container is not None:
-            serialized = ARObject._serialize_item(self.container, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.container, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONTAINER")
@@ -134,7 +135,7 @@ class ContainerIPdu(IPdu):
 
         # Serialize container_trigger_ref
         if self.container_trigger_ref is not None:
-            serialized = ARObject._serialize_item(self.container_trigger_ref, "ContainerIPduTriggerEnum")
+            serialized = SerializationHelper.serialize_item(self.container_trigger_ref, "ContainerIPduTriggerEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONTAINER-TRIGGER-REF")
@@ -148,7 +149,7 @@ class ContainerIPdu(IPdu):
 
         # Serialize header_type
         if self.header_type is not None:
-            serialized = ARObject._serialize_item(self.header_type, "ContainerIPduHeaderTypeEnum")
+            serialized = SerializationHelper.serialize_item(self.header_type, "ContainerIPduHeaderTypeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HEADER-TYPE")
@@ -162,7 +163,7 @@ class ContainerIPdu(IPdu):
 
         # Serialize minimum_rx
         if self.minimum_rx is not None:
-            serialized = ARObject._serialize_item(self.minimum_rx, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.minimum_rx, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MINIMUM-RX")
@@ -176,7 +177,7 @@ class ContainerIPdu(IPdu):
 
         # Serialize minimum_tx
         if self.minimum_tx is not None:
-            serialized = ARObject._serialize_item(self.minimum_tx, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.minimum_tx, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MINIMUM-TX")
@@ -190,7 +191,7 @@ class ContainerIPdu(IPdu):
 
         # Serialize rx_accept
         if self.rx_accept is not None:
-            serialized = ARObject._serialize_item(self.rx_accept, "RxAcceptContainedIPduEnum")
+            serialized = SerializationHelper.serialize_item(self.rx_accept, "RxAcceptContainedIPduEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RX-ACCEPT")
@@ -204,7 +205,7 @@ class ContainerIPdu(IPdu):
 
         # Serialize threshold_size
         if self.threshold_size is not None:
-            serialized = ARObject._serialize_item(self.threshold_size, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.threshold_size, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("THRESHOLD-SIZE")
@@ -218,7 +219,7 @@ class ContainerIPdu(IPdu):
 
         # Serialize unused_bit
         if self.unused_bit is not None:
-            serialized = ARObject._serialize_item(self.unused_bit, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.unused_bit, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("UNUSED-BIT")
@@ -247,74 +248,74 @@ class ContainerIPdu(IPdu):
 
         # Parse contained_i_pdu_propses (list from container "CONTAINED-I-PDU-PROPSES")
         obj.contained_i_pdu_propses = []
-        container = ARObject._find_child_element(element, "CONTAINED-I-PDU-PROPSES")
+        container = SerializationHelper.find_child_element(element, "CONTAINED-I-PDU-PROPSES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.contained_i_pdu_propses.append(child_value)
 
         # Parse contained_pdu_refs (list from container "CONTAINED-PDU-REFS")
         obj.contained_pdu_refs = []
-        container = ARObject._find_child_element(element, "CONTAINED-PDU-REFS")
+        container = SerializationHelper.find_child_element(element, "CONTAINED-PDU-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.contained_pdu_refs.append(child_value)
 
         # Parse container
-        child = ARObject._find_child_element(element, "CONTAINER")
+        child = SerializationHelper.find_child_element(element, "CONTAINER")
         if child is not None:
             container_value = child.text
             obj.container = container_value
 
         # Parse container_trigger_ref
-        child = ARObject._find_child_element(element, "CONTAINER-TRIGGER-REF")
+        child = SerializationHelper.find_child_element(element, "CONTAINER-TRIGGER-REF")
         if child is not None:
             container_trigger_ref_value = ARRef.deserialize(child)
             obj.container_trigger_ref = container_trigger_ref_value
 
         # Parse header_type
-        child = ARObject._find_child_element(element, "HEADER-TYPE")
+        child = SerializationHelper.find_child_element(element, "HEADER-TYPE")
         if child is not None:
             header_type_value = ContainerIPduHeaderTypeEnum.deserialize(child)
             obj.header_type = header_type_value
 
         # Parse minimum_rx
-        child = ARObject._find_child_element(element, "MINIMUM-RX")
+        child = SerializationHelper.find_child_element(element, "MINIMUM-RX")
         if child is not None:
             minimum_rx_value = child.text
             obj.minimum_rx = minimum_rx_value
 
         # Parse minimum_tx
-        child = ARObject._find_child_element(element, "MINIMUM-TX")
+        child = SerializationHelper.find_child_element(element, "MINIMUM-TX")
         if child is not None:
             minimum_tx_value = child.text
             obj.minimum_tx = minimum_tx_value
 
         # Parse rx_accept
-        child = ARObject._find_child_element(element, "RX-ACCEPT")
+        child = SerializationHelper.find_child_element(element, "RX-ACCEPT")
         if child is not None:
             rx_accept_value = RxAcceptContainedIPduEnum.deserialize(child)
             obj.rx_accept = rx_accept_value
 
         # Parse threshold_size
-        child = ARObject._find_child_element(element, "THRESHOLD-SIZE")
+        child = SerializationHelper.find_child_element(element, "THRESHOLD-SIZE")
         if child is not None:
             threshold_size_value = child.text
             obj.threshold_size = threshold_size_value
 
         # Parse unused_bit
-        child = ARObject._find_child_element(element, "UNUSED-BIT")
+        child = SerializationHelper.find_child_element(element, "UNUSED-BIT")
         if child is not None:
             unused_bit_value = child.text
             obj.unused_bit = unused_bit_value

@@ -14,6 +14,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel import (
     LEnum,
 )
@@ -59,14 +60,14 @@ class AdminData(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize doc_revisions (list to container "DOC-REVISIONS")
         if self.doc_revisions:
             wrapper = ET.Element("DOC-REVISIONS")
             for item in self.doc_revisions:
-                serialized = ARObject._serialize_item(item, "DocRevision")
+                serialized = SerializationHelper.serialize_item(item, "DocRevision")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -74,7 +75,7 @@ class AdminData(ARObject):
 
         # Serialize language
         if self.language is not None:
-            serialized = ARObject._serialize_item(self.language, "LEnum")
+            serialized = SerializationHelper.serialize_item(self.language, "LEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LANGUAGE")
@@ -88,7 +89,7 @@ class AdminData(ARObject):
 
         # Serialize sdg (list)
         for item in self.sdg:
-            serialized = ARObject._serialize_item(item, "Sdg")
+            serialized = SerializationHelper.serialize_item(item, "Sdg")
             if serialized is not None:
                 # For non-container lists, wrap with correct tag
                 wrapped = ET.Element("SDG")
@@ -102,7 +103,7 @@ class AdminData(ARObject):
 
         # Serialize used_languages
         if self.used_languages is not None:
-            serialized = ARObject._serialize_item(self.used_languages, "MultiLanguagePlainText")
+            serialized = SerializationHelper.serialize_item(self.used_languages, "MultiLanguagePlainText")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("USED-LANGUAGES")
@@ -132,30 +133,30 @@ class AdminData(ARObject):
 
         # Parse doc_revisions (list from container "DOC-REVISIONS")
         obj.doc_revisions = []
-        container = ARObject._find_child_element(element, "DOC-REVISIONS")
+        container = SerializationHelper.find_child_element(element, "DOC-REVISIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.doc_revisions.append(child_value)
 
         # Parse language
-        child = ARObject._find_child_element(element, "LANGUAGE")
+        child = SerializationHelper.find_child_element(element, "LANGUAGE")
         if child is not None:
             language_value = LEnum.deserialize(child)
             obj.language = language_value
 
         # Parse sdg (list)
         obj.sdg = []
-        for child in ARObject._find_all_child_elements(element, "SDG"):
-            sdg_value = ARObject._deserialize_by_tag(child, "Sdg")
+        for child in SerializationHelper.find_all_child_elements(element, "SDG"):
+            sdg_value = SerializationHelper.deserialize_by_tag(child, "Sdg")
             obj.sdg.append(sdg_value)
 
         # Parse used_languages
-        child = ARObject._find_child_element(element, "USED-LANGUAGES")
+        child = SerializationHelper.find_child_element(element, "USED-LANGUAGES")
         if child is not None:
-            used_languages_value = ARObject._deserialize_with_type(child, "MultiLanguagePlainText")
+            used_languages_value = SerializationHelper.deserialize_with_type(child, "MultiLanguagePlainText")
             obj.used_languages = used_languages_value
 
         return obj

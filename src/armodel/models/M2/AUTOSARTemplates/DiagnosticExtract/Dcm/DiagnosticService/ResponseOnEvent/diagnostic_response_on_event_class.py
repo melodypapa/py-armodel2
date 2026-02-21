@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceClass,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -53,7 +54,7 @@ class DiagnosticResponseOnEventClass(DiagnosticServiceClass):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -72,7 +73,7 @@ class DiagnosticResponseOnEventClass(DiagnosticServiceClass):
 
         # Serialize max_number_of
         if self.max_number_of is not None:
-            serialized = ARObject._serialize_item(self.max_number_of, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.max_number_of, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-NUMBER-OF")
@@ -86,7 +87,7 @@ class DiagnosticResponseOnEventClass(DiagnosticServiceClass):
 
         # Serialize max_num
         if self.max_num is not None:
-            serialized = ARObject._serialize_item(self.max_num, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.max_num, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-NUM")
@@ -100,7 +101,7 @@ class DiagnosticResponseOnEventClass(DiagnosticServiceClass):
 
         # Serialize max_supported
         if self.max_supported is not None:
-            serialized = ARObject._serialize_item(self.max_supported, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.max_supported, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-SUPPORTED")
@@ -114,7 +115,7 @@ class DiagnosticResponseOnEventClass(DiagnosticServiceClass):
 
         # Serialize response_on
         if self.response_on is not None:
-            serialized = ARObject._serialize_item(self.response_on, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.response_on, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RESPONSE-ON")
@@ -128,7 +129,7 @@ class DiagnosticResponseOnEventClass(DiagnosticServiceClass):
 
         # Serialize store_event
         if self.store_event is not None:
-            serialized = ARObject._serialize_item(self.store_event, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.store_event, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("STORE-EVENT")
@@ -156,31 +157,31 @@ class DiagnosticResponseOnEventClass(DiagnosticServiceClass):
         obj = super(DiagnosticResponseOnEventClass, cls).deserialize(element)
 
         # Parse max_number_of
-        child = ARObject._find_child_element(element, "MAX-NUMBER-OF")
+        child = SerializationHelper.find_child_element(element, "MAX-NUMBER-OF")
         if child is not None:
             max_number_of_value = child.text
             obj.max_number_of = max_number_of_value
 
         # Parse max_num
-        child = ARObject._find_child_element(element, "MAX-NUM")
+        child = SerializationHelper.find_child_element(element, "MAX-NUM")
         if child is not None:
             max_num_value = child.text
             obj.max_num = max_num_value
 
         # Parse max_supported
-        child = ARObject._find_child_element(element, "MAX-SUPPORTED")
+        child = SerializationHelper.find_child_element(element, "MAX-SUPPORTED")
         if child is not None:
             max_supported_value = child.text
             obj.max_supported = max_supported_value
 
         # Parse response_on
-        child = ARObject._find_child_element(element, "RESPONSE-ON")
+        child = SerializationHelper.find_child_element(element, "RESPONSE-ON")
         if child is not None:
             response_on_value = child.text
             obj.response_on = response_on_value
 
         # Parse store_event
-        child = ARObject._find_child_element(element, "STORE-EVENT")
+        child = SerializationHelper.find_child_element(element, "STORE-EVENT")
         if child is not None:
             store_event_value = child.text
             obj.store_event = store_event_value

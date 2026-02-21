@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.DataDictionary.CalibrationParameter import (
     CalprmAxisCategoryEnum,
@@ -58,12 +59,12 @@ class RuleBasedAxisCont(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize category
         if self.category is not None:
-            serialized = ARObject._serialize_item(self.category, "CalprmAxisCategoryEnum")
+            serialized = SerializationHelper.serialize_item(self.category, "CalprmAxisCategoryEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CATEGORY")
@@ -77,7 +78,7 @@ class RuleBasedAxisCont(ARObject):
 
         # Serialize rule_based
         if self.rule_based is not None:
-            serialized = ARObject._serialize_item(self.rule_based, "Any")
+            serialized = SerializationHelper.serialize_item(self.rule_based, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RULE-BASED")
@@ -91,7 +92,7 @@ class RuleBasedAxisCont(ARObject):
 
         # Serialize sw_arraysize_ref
         if self.sw_arraysize_ref is not None:
-            serialized = ARObject._serialize_item(self.sw_arraysize_ref, "ValueList")
+            serialized = SerializationHelper.serialize_item(self.sw_arraysize_ref, "ValueList")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-ARRAYSIZE-REF")
@@ -105,7 +106,7 @@ class RuleBasedAxisCont(ARObject):
 
         # Serialize sw_axis_index
         if self.sw_axis_index is not None:
-            serialized = ARObject._serialize_item(self.sw_axis_index, "AxisIndexType")
+            serialized = SerializationHelper.serialize_item(self.sw_axis_index, "AxisIndexType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-AXIS-INDEX")
@@ -119,7 +120,7 @@ class RuleBasedAxisCont(ARObject):
 
         # Serialize unit_ref
         if self.unit_ref is not None:
-            serialized = ARObject._serialize_item(self.unit_ref, "Unit")
+            serialized = SerializationHelper.serialize_item(self.unit_ref, "Unit")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("UNIT-REF")
@@ -148,31 +149,31 @@ class RuleBasedAxisCont(ARObject):
         obj.__init__()
 
         # Parse category
-        child = ARObject._find_child_element(element, "CATEGORY")
+        child = SerializationHelper.find_child_element(element, "CATEGORY")
         if child is not None:
             category_value = CalprmAxisCategoryEnum.deserialize(child)
             obj.category = category_value
 
         # Parse rule_based
-        child = ARObject._find_child_element(element, "RULE-BASED")
+        child = SerializationHelper.find_child_element(element, "RULE-BASED")
         if child is not None:
             rule_based_value = child.text
             obj.rule_based = rule_based_value
 
         # Parse sw_arraysize_ref
-        child = ARObject._find_child_element(element, "SW-ARRAYSIZE-REF")
+        child = SerializationHelper.find_child_element(element, "SW-ARRAYSIZE-REF")
         if child is not None:
             sw_arraysize_ref_value = ARRef.deserialize(child)
             obj.sw_arraysize_ref = sw_arraysize_ref_value
 
         # Parse sw_axis_index
-        child = ARObject._find_child_element(element, "SW-AXIS-INDEX")
+        child = SerializationHelper.find_child_element(element, "SW-AXIS-INDEX")
         if child is not None:
             sw_axis_index_value = child.text
             obj.sw_axis_index = sw_axis_index_value
 
         # Parse unit_ref
-        child = ARObject._find_child_element(element, "UNIT-REF")
+        child = SerializationHelper.find_child_element(element, "UNIT-REF")
         if child is not None:
             unit_ref_value = ARRef.deserialize(child)
             obj.unit_ref = unit_ref_value

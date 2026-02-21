@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -53,7 +54,7 @@ class DdsCpDomain(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -74,7 +75,7 @@ class DdsCpDomain(Identifiable):
         if self.dds_partitions:
             wrapper = ET.Element("DDS-PARTITIONS")
             for item in self.dds_partitions:
-                serialized = ARObject._serialize_item(item, "DdsCpPartition")
+                serialized = SerializationHelper.serialize_item(item, "DdsCpPartition")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -84,7 +85,7 @@ class DdsCpDomain(Identifiable):
         if self.dds_topics:
             wrapper = ET.Element("DDS-TOPICS")
             for item in self.dds_topics:
-                serialized = ARObject._serialize_item(item, "DdsCpTopic")
+                serialized = SerializationHelper.serialize_item(item, "DdsCpTopic")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -92,7 +93,7 @@ class DdsCpDomain(Identifiable):
 
         # Serialize domain_id
         if self.domain_id is not None:
-            serialized = ARObject._serialize_item(self.domain_id, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.domain_id, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DOMAIN-ID")
@@ -121,26 +122,26 @@ class DdsCpDomain(Identifiable):
 
         # Parse dds_partitions (list from container "DDS-PARTITIONS")
         obj.dds_partitions = []
-        container = ARObject._find_child_element(element, "DDS-PARTITIONS")
+        container = SerializationHelper.find_child_element(element, "DDS-PARTITIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.dds_partitions.append(child_value)
 
         # Parse dds_topics (list from container "DDS-TOPICS")
         obj.dds_topics = []
-        container = ARObject._find_child_element(element, "DDS-TOPICS")
+        container = SerializationHelper.find_child_element(element, "DDS-TOPICS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.dds_topics.append(child_value)
 
         # Parse domain_id
-        child = ARObject._find_child_element(element, "DOMAIN-ID")
+        child = SerializationHelper.find_child_element(element, "DOMAIN-ID")
         if child is not None:
             domain_id_value = child.text
             obj.domain_id = domain_id_value

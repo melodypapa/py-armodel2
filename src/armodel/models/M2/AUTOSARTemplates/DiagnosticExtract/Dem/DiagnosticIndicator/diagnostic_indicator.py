@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticIndicator import (
     DiagnosticIndicatorTypeEnum,
 )
@@ -43,7 +44,7 @@ class DiagnosticIndicator(DiagnosticCommonElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class DiagnosticIndicator(DiagnosticCommonElement):
 
         # Serialize type
         if self.type is not None:
-            serialized = ARObject._serialize_item(self.type, "DiagnosticIndicatorTypeEnum")
+            serialized = SerializationHelper.serialize_item(self.type, "DiagnosticIndicatorTypeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TYPE")
@@ -90,7 +91,7 @@ class DiagnosticIndicator(DiagnosticCommonElement):
         obj = super(DiagnosticIndicator, cls).deserialize(element)
 
         # Parse type
-        child = ARObject._find_child_element(element, "TYPE")
+        child = SerializationHelper.find_child_element(element, "TYPE")
         if child is not None:
             type_value = DiagnosticIndicatorTypeEnum.deserialize(child)
             obj.type = type_value

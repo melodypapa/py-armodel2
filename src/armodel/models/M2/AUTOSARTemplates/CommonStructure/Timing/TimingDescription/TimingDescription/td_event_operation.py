@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
     TDEventVfbPort,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription import (
     TDEventOperationTypeEnum,
@@ -49,7 +50,7 @@ class TDEventOperation(TDEventVfbPort):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -68,7 +69,7 @@ class TDEventOperation(TDEventVfbPort):
 
         # Serialize operation_ref
         if self.operation_ref is not None:
-            serialized = ARObject._serialize_item(self.operation_ref, "ClientServerOperation")
+            serialized = SerializationHelper.serialize_item(self.operation_ref, "ClientServerOperation")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("OPERATION-REF")
@@ -82,7 +83,7 @@ class TDEventOperation(TDEventVfbPort):
 
         # Serialize td_event
         if self.td_event is not None:
-            serialized = ARObject._serialize_item(self.td_event, "TDEventOperationTypeEnum")
+            serialized = SerializationHelper.serialize_item(self.td_event, "TDEventOperationTypeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TD-EVENT")
@@ -110,13 +111,13 @@ class TDEventOperation(TDEventVfbPort):
         obj = super(TDEventOperation, cls).deserialize(element)
 
         # Parse operation_ref
-        child = ARObject._find_child_element(element, "OPERATION-REF")
+        child = SerializationHelper.find_child_element(element, "OPERATION-REF")
         if child is not None:
             operation_ref_value = ARRef.deserialize(child)
             obj.operation_ref = operation_ref_value
 
         # Parse td_event
-        child = ARObject._find_child_element(element, "TD-EVENT")
+        child = SerializationHelper.find_child_element(element, "TD-EVENT")
         if child is not None:
             td_event_value = TDEventOperationTypeEnum.deserialize(child)
             obj.td_event = td_event_value

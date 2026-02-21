@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Limit,
 )
@@ -42,12 +43,12 @@ class ClientIdRange(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize lower_limit
         if self.lower_limit is not None:
-            serialized = ARObject._serialize_item(self.lower_limit, "Limit")
+            serialized = SerializationHelper.serialize_item(self.lower_limit, "Limit")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LOWER-LIMIT")
@@ -61,7 +62,7 @@ class ClientIdRange(ARObject):
 
         # Serialize upper_limit
         if self.upper_limit is not None:
-            serialized = ARObject._serialize_item(self.upper_limit, "Limit")
+            serialized = SerializationHelper.serialize_item(self.upper_limit, "Limit")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("UPPER-LIMIT")
@@ -90,15 +91,15 @@ class ClientIdRange(ARObject):
         obj.__init__()
 
         # Parse lower_limit
-        child = ARObject._find_child_element(element, "LOWER-LIMIT")
+        child = SerializationHelper.find_child_element(element, "LOWER-LIMIT")
         if child is not None:
-            lower_limit_value = ARObject._deserialize_by_tag(child, "Limit")
+            lower_limit_value = SerializationHelper.deserialize_by_tag(child, "Limit")
             obj.lower_limit = lower_limit_value
 
         # Parse upper_limit
-        child = ARObject._find_child_element(element, "UPPER-LIMIT")
+        child = SerializationHelper.find_child_element(element, "UPPER-LIMIT")
         if child is not None:
-            upper_limit_value = ARObject._deserialize_by_tag(child, "Limit")
+            upper_limit_value = SerializationHelper.deserialize_by_tag(child, "Limit")
             obj.upper_limit = upper_limit_value
 
         return obj

@@ -14,6 +14,7 @@ from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginat
     Paginateable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -52,7 +53,7 @@ class Chapter(Paginateable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -71,7 +72,7 @@ class Chapter(Paginateable):
 
         # Serialize chapter_model
         if self.chapter_model is not None:
-            serialized = ARObject._serialize_item(self.chapter_model, "ChapterModel")
+            serialized = SerializationHelper.serialize_item(self.chapter_model, "ChapterModel")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CHAPTER-MODEL")
@@ -85,7 +86,7 @@ class Chapter(Paginateable):
 
         # Serialize help_entry
         if self.help_entry is not None:
-            serialized = ARObject._serialize_item(self.help_entry, "String")
+            serialized = SerializationHelper.serialize_item(self.help_entry, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HELP-ENTRY")
@@ -113,13 +114,13 @@ class Chapter(Paginateable):
         obj = super(Chapter, cls).deserialize(element)
 
         # Parse chapter_model
-        child = ARObject._find_child_element(element, "CHAPTER-MODEL")
+        child = SerializationHelper.find_child_element(element, "CHAPTER-MODEL")
         if child is not None:
-            chapter_model_value = ARObject._deserialize_by_tag(child, "ChapterModel")
+            chapter_model_value = SerializationHelper.deserialize_by_tag(child, "ChapterModel")
             obj.chapter_model = chapter_model_value
 
         # Parse help_entry
-        child = ARObject._find_child_element(element, "HELP-ENTRY")
+        child = SerializationHelper.find_child_element(element, "HELP-ENTRY")
         if child is not None:
             help_entry_value = child.text
             obj.help_entry = help_entry_value

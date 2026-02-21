@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
     TimingDescriptionEvent,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswOverview.bsw_module_description import (
     BswModuleDescription,
@@ -45,7 +46,7 @@ class TDEventBsw(TimingDescriptionEvent, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class TDEventBsw(TimingDescriptionEvent, ABC):
 
         # Serialize bsw_module_description_ref
         if self.bsw_module_description_ref is not None:
-            serialized = ARObject._serialize_item(self.bsw_module_description_ref, "BswModuleDescription")
+            serialized = SerializationHelper.serialize_item(self.bsw_module_description_ref, "BswModuleDescription")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BSW-MODULE-DESCRIPTION-REF")
@@ -92,7 +93,7 @@ class TDEventBsw(TimingDescriptionEvent, ABC):
         obj = super(TDEventBsw, cls).deserialize(element)
 
         # Parse bsw_module_description_ref
-        child = ARObject._find_child_element(element, "BSW-MODULE-DESCRIPTION-REF")
+        child = SerializationHelper.find_child_element(element, "BSW-MODULE-DESCRIPTION-REF")
         if child is not None:
             bsw_module_description_ref_value = ARRef.deserialize(child)
             obj.bsw_module_description_ref = bsw_module_description_ref_value

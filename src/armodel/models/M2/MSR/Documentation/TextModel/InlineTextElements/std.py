@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     SingleLanguageReferrable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     DateTime,
     String,
@@ -52,7 +53,7 @@ class Std(SingleLanguageReferrable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -71,7 +72,7 @@ class Std(SingleLanguageReferrable):
 
         # Serialize date
         if self.date is not None:
-            serialized = ARObject._serialize_item(self.date, "DateTime")
+            serialized = SerializationHelper.serialize_item(self.date, "DateTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATE")
@@ -85,7 +86,7 @@ class Std(SingleLanguageReferrable):
 
         # Serialize position
         if self.position is not None:
-            serialized = ARObject._serialize_item(self.position, "String")
+            serialized = SerializationHelper.serialize_item(self.position, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("POSITION")
@@ -99,7 +100,7 @@ class Std(SingleLanguageReferrable):
 
         # Serialize state
         if self.state is not None:
-            serialized = ARObject._serialize_item(self.state, "String")
+            serialized = SerializationHelper.serialize_item(self.state, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("STATE")
@@ -113,7 +114,7 @@ class Std(SingleLanguageReferrable):
 
         # Serialize subtitle
         if self.subtitle is not None:
-            serialized = ARObject._serialize_item(self.subtitle, "String")
+            serialized = SerializationHelper.serialize_item(self.subtitle, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SUBTITLE")
@@ -127,7 +128,7 @@ class Std(SingleLanguageReferrable):
 
         # Serialize url
         if self.url is not None:
-            serialized = ARObject._serialize_item(self.url, "Any")
+            serialized = SerializationHelper.serialize_item(self.url, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("URL")
@@ -155,31 +156,31 @@ class Std(SingleLanguageReferrable):
         obj = super(Std, cls).deserialize(element)
 
         # Parse date
-        child = ARObject._find_child_element(element, "DATE")
+        child = SerializationHelper.find_child_element(element, "DATE")
         if child is not None:
             date_value = child.text
             obj.date = date_value
 
         # Parse position
-        child = ARObject._find_child_element(element, "POSITION")
+        child = SerializationHelper.find_child_element(element, "POSITION")
         if child is not None:
             position_value = child.text
             obj.position = position_value
 
         # Parse state
-        child = ARObject._find_child_element(element, "STATE")
+        child = SerializationHelper.find_child_element(element, "STATE")
         if child is not None:
             state_value = child.text
             obj.state = state_value
 
         # Parse subtitle
-        child = ARObject._find_child_element(element, "SUBTITLE")
+        child = SerializationHelper.find_child_element(element, "SUBTITLE")
         if child is not None:
             subtitle_value = child.text
             obj.subtitle = subtitle_value
 
         # Parse url
-        child = ARObject._find_child_element(element, "URL")
+        child = SerializationHelper.find_child_element(element, "URL")
         if child is not None:
             url_value = child.text
             obj.url = url_value

@@ -13,6 +13,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.VariantHandling import (
     BindingTimeEnum,
 )
@@ -43,12 +44,12 @@ class ConditionByFormula(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize binding_time_enum
         if self.binding_time_enum is not None:
-            serialized = ARObject._serialize_item(self.binding_time_enum, "BindingTimeEnum")
+            serialized = SerializationHelper.serialize_item(self.binding_time_enum, "BindingTimeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BINDING-TIME-ENUM")
@@ -77,7 +78,7 @@ class ConditionByFormula(ARObject):
         obj.__init__()
 
         # Parse binding_time_enum
-        child = ARObject._find_child_element(element, "BINDING-TIME-ENUM")
+        child = SerializationHelper.find_child_element(element, "BINDING-TIME-ENUM")
         if child is not None:
             binding_time_enum_value = BindingTimeEnum.deserialize(child)
             obj.binding_time_enum = binding_time_enum_value

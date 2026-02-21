@@ -41,6 +41,12 @@ skip_classes:
   - "LVerbatim"
   - "MixedContentForUnitNames"
 
+  # MultiLanguage classes require custom handling for l_prefix pattern (L-10 elements)
+  - "MultiLanguagePlainText"
+  - "MultiLanguageParagraph"
+  - "MultiLanguageVerbatim"
+  - "MultilanguageLongName"
+
   # Item requires custom serialization - item_contents (DocumentationBlock) is serialized as direct children of ITEM, not wrapped in ITEM-CONTENTS
   - "Item"
 

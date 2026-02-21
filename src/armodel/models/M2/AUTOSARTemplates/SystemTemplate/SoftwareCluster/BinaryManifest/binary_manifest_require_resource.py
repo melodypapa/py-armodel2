@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.BinaryMan
     BinaryManifestResource,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -43,7 +44,7 @@ class BinaryManifestRequireResource(BinaryManifestResource):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class BinaryManifestRequireResource(BinaryManifestResource):
 
         # Serialize connection_is
         if self.connection_is is not None:
-            serialized = ARObject._serialize_item(self.connection_is, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.connection_is, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONNECTION-IS")
@@ -90,7 +91,7 @@ class BinaryManifestRequireResource(BinaryManifestResource):
         obj = super(BinaryManifestRequireResource, cls).deserialize(element)
 
         # Parse connection_is
-        child = ARObject._find_child_element(element, "CONNECTION-IS")
+        child = SerializationHelper.find_child_element(element, "CONNECTION-IS")
         if child is not None:
             connection_is_value = child.text
             obj.connection_is = connection_is_value

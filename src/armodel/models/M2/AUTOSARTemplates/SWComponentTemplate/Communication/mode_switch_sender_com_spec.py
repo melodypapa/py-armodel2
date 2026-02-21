@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.p_port
     PPortComSpec,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -54,7 +55,7 @@ class ModeSwitchSenderComSpec(PPortComSpec):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -73,7 +74,7 @@ class ModeSwitchSenderComSpec(PPortComSpec):
 
         # Serialize enhanced_mode
         if self.enhanced_mode is not None:
-            serialized = ARObject._serialize_item(self.enhanced_mode, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.enhanced_mode, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ENHANCED-MODE")
@@ -87,7 +88,7 @@ class ModeSwitchSenderComSpec(PPortComSpec):
 
         # Serialize mode_group_ref
         if self.mode_group_ref is not None:
-            serialized = ARObject._serialize_item(self.mode_group_ref, "ModeDeclarationGroup")
+            serialized = SerializationHelper.serialize_item(self.mode_group_ref, "ModeDeclarationGroup")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MODE-GROUP-REF")
@@ -101,7 +102,7 @@ class ModeSwitchSenderComSpec(PPortComSpec):
 
         # Serialize mode_switched_ack
         if self.mode_switched_ack is not None:
-            serialized = ARObject._serialize_item(self.mode_switched_ack, "Any")
+            serialized = SerializationHelper.serialize_item(self.mode_switched_ack, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MODE-SWITCHED-ACK")
@@ -115,7 +116,7 @@ class ModeSwitchSenderComSpec(PPortComSpec):
 
         # Serialize queue_length
         if self.queue_length is not None:
-            serialized = ARObject._serialize_item(self.queue_length, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.queue_length, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("QUEUE-LENGTH")
@@ -143,25 +144,25 @@ class ModeSwitchSenderComSpec(PPortComSpec):
         obj = super(ModeSwitchSenderComSpec, cls).deserialize(element)
 
         # Parse enhanced_mode
-        child = ARObject._find_child_element(element, "ENHANCED-MODE")
+        child = SerializationHelper.find_child_element(element, "ENHANCED-MODE")
         if child is not None:
             enhanced_mode_value = child.text
             obj.enhanced_mode = enhanced_mode_value
 
         # Parse mode_group_ref
-        child = ARObject._find_child_element(element, "MODE-GROUP-REF")
+        child = SerializationHelper.find_child_element(element, "MODE-GROUP-REF")
         if child is not None:
             mode_group_ref_value = ARRef.deserialize(child)
             obj.mode_group_ref = mode_group_ref_value
 
         # Parse mode_switched_ack
-        child = ARObject._find_child_element(element, "MODE-SWITCHED-ACK")
+        child = SerializationHelper.find_child_element(element, "MODE-SWITCHED-ACK")
         if child is not None:
             mode_switched_ack_value = child.text
             obj.mode_switched_ack = mode_switched_ack_value
 
         # Parse queue_length
-        child = ARObject._find_child_element(element, "QUEUE-LENGTH")
+        child = SerializationHelper.find_child_element(element, "QUEUE-LENGTH")
         if child is not None:
             queue_length_value = child.text
             obj.queue_length = queue_length_value

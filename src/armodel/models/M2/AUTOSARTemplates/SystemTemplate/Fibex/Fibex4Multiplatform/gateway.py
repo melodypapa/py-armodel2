@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_ele
     FibexElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.ecu_instance import (
     EcuInstance,
@@ -59,7 +60,7 @@ class Gateway(FibexElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -78,7 +79,7 @@ class Gateway(FibexElement):
 
         # Serialize ecu_ref
         if self.ecu_ref is not None:
-            serialized = ARObject._serialize_item(self.ecu_ref, "EcuInstance")
+            serialized = SerializationHelper.serialize_item(self.ecu_ref, "EcuInstance")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ECU-REF")
@@ -94,7 +95,7 @@ class Gateway(FibexElement):
         if self.frame_mapping_refs:
             wrapper = ET.Element("FRAME-MAPPING-REFS")
             for item in self.frame_mapping_refs:
-                serialized = ARObject._serialize_item(item, "FrameMapping")
+                serialized = SerializationHelper.serialize_item(item, "FrameMapping")
                 if serialized is not None:
                     child_elem = ET.Element("FRAME-MAPPING-REF")
                     if hasattr(serialized, 'attrib'):
@@ -111,7 +112,7 @@ class Gateway(FibexElement):
         if self.i_pdu_mapping_refs:
             wrapper = ET.Element("I-PDU-MAPPING-REFS")
             for item in self.i_pdu_mapping_refs:
-                serialized = ARObject._serialize_item(item, "IPduMapping")
+                serialized = SerializationHelper.serialize_item(item, "IPduMapping")
                 if serialized is not None:
                     child_elem = ET.Element("I-PDU-MAPPING-REF")
                     if hasattr(serialized, 'attrib'):
@@ -128,7 +129,7 @@ class Gateway(FibexElement):
         if self.signal_mapping_refs:
             wrapper = ET.Element("SIGNAL-MAPPING-REFS")
             for item in self.signal_mapping_refs:
-                serialized = ARObject._serialize_item(item, "ISignalMapping")
+                serialized = SerializationHelper.serialize_item(item, "ISignalMapping")
                 if serialized is not None:
                     child_elem = ET.Element("SIGNAL-MAPPING-REF")
                     if hasattr(serialized, 'attrib'):
@@ -157,56 +158,56 @@ class Gateway(FibexElement):
         obj = super(Gateway, cls).deserialize(element)
 
         # Parse ecu_ref
-        child = ARObject._find_child_element(element, "ECU-REF")
+        child = SerializationHelper.find_child_element(element, "ECU-REF")
         if child is not None:
             ecu_ref_value = ARRef.deserialize(child)
             obj.ecu_ref = ecu_ref_value
 
         # Parse frame_mapping_refs (list from container "FRAME-MAPPING-REFS")
         obj.frame_mapping_refs = []
-        container = ARObject._find_child_element(element, "FRAME-MAPPING-REFS")
+        container = SerializationHelper.find_child_element(element, "FRAME-MAPPING-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.frame_mapping_refs.append(child_value)
 
         # Parse i_pdu_mapping_refs (list from container "I-PDU-MAPPING-REFS")
         obj.i_pdu_mapping_refs = []
-        container = ARObject._find_child_element(element, "I-PDU-MAPPING-REFS")
+        container = SerializationHelper.find_child_element(element, "I-PDU-MAPPING-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.i_pdu_mapping_refs.append(child_value)
 
         # Parse signal_mapping_refs (list from container "SIGNAL-MAPPING-REFS")
         obj.signal_mapping_refs = []
-        container = ARObject._find_child_element(element, "SIGNAL-MAPPING-REFS")
+        container = SerializationHelper.find_child_element(element, "SIGNAL-MAPPING-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.signal_mapping_refs.append(child_value)
 

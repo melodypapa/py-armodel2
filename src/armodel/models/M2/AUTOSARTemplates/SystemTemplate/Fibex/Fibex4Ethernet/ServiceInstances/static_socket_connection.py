@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances import (
     TcpRoleEnum,
@@ -62,7 +63,7 @@ class StaticSocketConnection(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -83,7 +84,7 @@ class StaticSocketConnection(Identifiable):
         if self.i_pdu_identifier_refs:
             wrapper = ET.Element("I-PDU-IDENTIFIER-REFS")
             for item in self.i_pdu_identifier_refs:
-                serialized = ARObject._serialize_item(item, "SoConIPduIdentifier")
+                serialized = SerializationHelper.serialize_item(item, "SoConIPduIdentifier")
                 if serialized is not None:
                     child_elem = ET.Element("I-PDU-IDENTIFIER-REF")
                     if hasattr(serialized, 'attrib'):
@@ -98,7 +99,7 @@ class StaticSocketConnection(Identifiable):
 
         # Serialize remote_address_ref
         if self.remote_address_ref is not None:
-            serialized = ARObject._serialize_item(self.remote_address_ref, "SocketAddress")
+            serialized = SerializationHelper.serialize_item(self.remote_address_ref, "SocketAddress")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REMOTE-ADDRESS-REF")
@@ -112,7 +113,7 @@ class StaticSocketConnection(Identifiable):
 
         # Serialize tcp_connect
         if self.tcp_connect is not None:
-            serialized = ARObject._serialize_item(self.tcp_connect, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.tcp_connect, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TCP-CONNECT")
@@ -126,7 +127,7 @@ class StaticSocketConnection(Identifiable):
 
         # Serialize tcp_role
         if self.tcp_role is not None:
-            serialized = ARObject._serialize_item(self.tcp_role, "TcpRoleEnum")
+            serialized = SerializationHelper.serialize_item(self.tcp_role, "TcpRoleEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TCP-ROLE")
@@ -155,34 +156,34 @@ class StaticSocketConnection(Identifiable):
 
         # Parse i_pdu_identifier_refs (list from container "I-PDU-IDENTIFIER-REFS")
         obj.i_pdu_identifier_refs = []
-        container = ARObject._find_child_element(element, "I-PDU-IDENTIFIER-REFS")
+        container = SerializationHelper.find_child_element(element, "I-PDU-IDENTIFIER-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.i_pdu_identifier_refs.append(child_value)
 
         # Parse remote_address_ref
-        child = ARObject._find_child_element(element, "REMOTE-ADDRESS-REF")
+        child = SerializationHelper.find_child_element(element, "REMOTE-ADDRESS-REF")
         if child is not None:
             remote_address_ref_value = ARRef.deserialize(child)
             obj.remote_address_ref = remote_address_ref_value
 
         # Parse tcp_connect
-        child = ARObject._find_child_element(element, "TCP-CONNECT")
+        child = SerializationHelper.find_child_element(element, "TCP-CONNECT")
         if child is not None:
             tcp_connect_value = child.text
             obj.tcp_connect = tcp_connect_value
 
         # Parse tcp_role
-        child = ARObject._find_child_element(element, "TCP-ROLE")
+        child = SerializationHelper.find_child_element(element, "TCP-ROLE")
         if child is not None:
             tcp_role_value = TcpRoleEnum.deserialize(child)
             obj.tcp_role = tcp_role_value

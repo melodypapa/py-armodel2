@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommun
     LinConfigurationEntry,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.lin_frame_triggering import (
     LinFrameTriggering,
@@ -44,7 +45,7 @@ class UnassignFrameId(LinConfigurationEntry):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -63,7 +64,7 @@ class UnassignFrameId(LinConfigurationEntry):
 
         # Serialize unassigned_ref
         if self.unassigned_ref is not None:
-            serialized = ARObject._serialize_item(self.unassigned_ref, "LinFrameTriggering")
+            serialized = SerializationHelper.serialize_item(self.unassigned_ref, "LinFrameTriggering")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("UNASSIGNED-REF")
@@ -91,7 +92,7 @@ class UnassignFrameId(LinConfigurationEntry):
         obj = super(UnassignFrameId, cls).deserialize(element)
 
         # Parse unassigned_ref
-        child = ARObject._find_child_element(element, "UNASSIGNED-REF")
+        child = SerializationHelper.find_child_element(element, "UNASSIGNED-REF")
         if child is not None:
             unassigned_ref_value = ARRef.deserialize(child)
             obj.unassigned_ref = unassigned_ref_value

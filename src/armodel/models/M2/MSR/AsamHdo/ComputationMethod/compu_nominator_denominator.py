@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Numerical,
 )
@@ -40,12 +41,12 @@ class CompuNominatorDenominator(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize v (list)
         for item in self.v:
-            serialized = ARObject._serialize_item(item, "Numerical")
+            serialized = SerializationHelper.serialize_item(item, "Numerical")
             if serialized is not None:
                 # For non-container lists, wrap with correct tag
                 wrapped = ET.Element("V")
@@ -75,7 +76,7 @@ class CompuNominatorDenominator(ARObject):
 
         # Parse v (list)
         obj.v = []
-        for child in ARObject._find_all_child_elements(element, "V"):
+        for child in SerializationHelper.find_all_child_elements(element, "V"):
             v_value = child.text
             obj.v.append(v_value)
 

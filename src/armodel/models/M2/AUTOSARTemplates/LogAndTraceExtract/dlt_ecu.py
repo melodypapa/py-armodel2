@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -49,7 +50,7 @@ class DltEcu(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -70,7 +71,7 @@ class DltEcu(ARElement):
         if self.applications:
             wrapper = ET.Element("APPLICATIONS")
             for item in self.applications:
-                serialized = ARObject._serialize_item(item, "DltApplication")
+                serialized = SerializationHelper.serialize_item(item, "DltApplication")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -78,7 +79,7 @@ class DltEcu(ARElement):
 
         # Serialize ecu_id
         if self.ecu_id is not None:
-            serialized = ARObject._serialize_item(self.ecu_id, "String")
+            serialized = SerializationHelper.serialize_item(self.ecu_id, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ECU-ID")
@@ -107,16 +108,16 @@ class DltEcu(ARElement):
 
         # Parse applications (list from container "APPLICATIONS")
         obj.applications = []
-        container = ARObject._find_child_element(element, "APPLICATIONS")
+        container = SerializationHelper.find_child_element(element, "APPLICATIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.applications.append(child_value)
 
         # Parse ecu_id
-        child = ARObject._find_child_element(element, "ECU-ID")
+        child = SerializationHelper.find_child_element(element, "ECU-ID")
         if child is not None:
             ecu_id_value = child.text
             obj.ecu_id = ecu_id_value

@@ -16,6 +16,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_
     AbstractRequiredPortPrototype,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_interface import (
     PortInterface,
 )
@@ -46,7 +47,7 @@ class PRPortPrototype(AbstractRequiredPortPrototype):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class PRPortPrototype(AbstractRequiredPortPrototype):
 
         # Serialize provided
         if self.provided is not None:
-            serialized = ARObject._serialize_item(self.provided, "PortInterface")
+            serialized = SerializationHelper.serialize_item(self.provided, "PortInterface")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PROVIDED")
@@ -93,9 +94,9 @@ class PRPortPrototype(AbstractRequiredPortPrototype):
         obj = super(PRPortPrototype, cls).deserialize(element)
 
         # Parse provided
-        child = ARObject._find_child_element(element, "PROVIDED")
+        child = SerializationHelper.find_child_element(element, "PROVIDED")
         if child is not None:
-            provided_value = ARObject._deserialize_by_tag(child, "PortInterface")
+            provided_value = SerializationHelper.deserialize_by_tag(child, "PortInterface")
             obj.provided = provided_value
 
         return obj

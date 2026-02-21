@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.sw_conne
     SwConnector,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_provided_port_prototype import (
     AbstractProvidedPortPrototype,
@@ -50,7 +51,7 @@ class PassThroughSwConnector(SwConnector):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -69,7 +70,7 @@ class PassThroughSwConnector(SwConnector):
 
         # Serialize provided_outer_ref
         if self.provided_outer_ref is not None:
-            serialized = ARObject._serialize_item(self.provided_outer_ref, "AbstractProvidedPortPrototype")
+            serialized = SerializationHelper.serialize_item(self.provided_outer_ref, "AbstractProvidedPortPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PROVIDED-OUTER-REF")
@@ -83,7 +84,7 @@ class PassThroughSwConnector(SwConnector):
 
         # Serialize required_outer_ref
         if self.required_outer_ref is not None:
-            serialized = ARObject._serialize_item(self.required_outer_ref, "AbstractRequiredPortPrototype")
+            serialized = SerializationHelper.serialize_item(self.required_outer_ref, "AbstractRequiredPortPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REQUIRED-OUTER-REF")
@@ -111,13 +112,13 @@ class PassThroughSwConnector(SwConnector):
         obj = super(PassThroughSwConnector, cls).deserialize(element)
 
         # Parse provided_outer_ref
-        child = ARObject._find_child_element(element, "PROVIDED-OUTER-REF")
+        child = SerializationHelper.find_child_element(element, "PROVIDED-OUTER-REF")
         if child is not None:
             provided_outer_ref_value = ARRef.deserialize(child)
             obj.provided_outer_ref = provided_outer_ref_value
 
         # Parse required_outer_ref
-        child = ARObject._find_child_element(element, "REQUIRED-OUTER-REF")
+        child = SerializationHelper.find_child_element(element, "REQUIRED-OUTER-REF")
         if child is not None:
             required_outer_ref_value = ARRef.deserialize(child)
             obj.required_outer_ref = required_outer_ref_value

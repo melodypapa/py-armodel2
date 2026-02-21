@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class CompositeNetworkRepresentation(ARObject):
@@ -39,12 +40,12 @@ class CompositeNetworkRepresentation(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize leaf_element_element_in_port_interface_instance_ref
         if self.leaf_element_element_in_port_interface_instance_ref is not None:
-            serialized = ARObject._serialize_item(self.leaf_element_element_in_port_interface_instance_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.leaf_element_element_in_port_interface_instance_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LEAF-ELEMENT-ELEMENT-IN-PORT-INTERFACE-INSTANCE-REF")
@@ -58,7 +59,7 @@ class CompositeNetworkRepresentation(ARObject):
 
         # Serialize network_representation
         if self.network_representation is not None:
-            serialized = ARObject._serialize_item(self.network_representation, "Any")
+            serialized = SerializationHelper.serialize_item(self.network_representation, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NETWORK-REPRESENTATION")
@@ -87,13 +88,13 @@ class CompositeNetworkRepresentation(ARObject):
         obj.__init__()
 
         # Parse leaf_element_element_in_port_interface_instance_ref
-        child = ARObject._find_child_element(element, "LEAF-ELEMENT-ELEMENT-IN-PORT-INTERFACE-INSTANCE-REF")
+        child = SerializationHelper.find_child_element(element, "LEAF-ELEMENT-ELEMENT-IN-PORT-INTERFACE-INSTANCE-REF")
         if child is not None:
             leaf_element_element_in_port_interface_instance_ref_value = child.text
             obj.leaf_element_element_in_port_interface_instance_ref = leaf_element_element_in_port_interface_instance_ref_value
 
         # Parse network_representation
-        child = ARObject._find_child_element(element, "NETWORK-REPRESENTATION")
+        child = SerializationHelper.find_child_element(element, "NETWORK-REPRESENTATION")
         if child is not None:
             network_representation_value = child.text
             obj.network_representation = network_representation_value

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DataMapping.data_mapping 
     DataMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DataMapping.sender_rec_composite_type_mapping import (
     SenderRecCompositeTypeMapping,
@@ -54,7 +55,7 @@ class SenderReceiverToSignalGroupMapping(DataMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -73,7 +74,7 @@ class SenderReceiverToSignalGroupMapping(DataMapping):
 
         # Serialize data_element_ref
         if self.data_element_ref is not None:
-            serialized = ARObject._serialize_item(self.data_element_ref, "VariableDataPrototype")
+            serialized = SerializationHelper.serialize_item(self.data_element_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-ELEMENT-REF")
@@ -87,7 +88,7 @@ class SenderReceiverToSignalGroupMapping(DataMapping):
 
         # Serialize signal_group_ref
         if self.signal_group_ref is not None:
-            serialized = ARObject._serialize_item(self.signal_group_ref, "SystemSignalGroup")
+            serialized = SerializationHelper.serialize_item(self.signal_group_ref, "SystemSignalGroup")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SIGNAL-GROUP-REF")
@@ -101,7 +102,7 @@ class SenderReceiverToSignalGroupMapping(DataMapping):
 
         # Serialize type_mapping
         if self.type_mapping is not None:
-            serialized = ARObject._serialize_item(self.type_mapping, "SenderRecCompositeTypeMapping")
+            serialized = SerializationHelper.serialize_item(self.type_mapping, "SenderRecCompositeTypeMapping")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TYPE-MAPPING")
@@ -129,21 +130,21 @@ class SenderReceiverToSignalGroupMapping(DataMapping):
         obj = super(SenderReceiverToSignalGroupMapping, cls).deserialize(element)
 
         # Parse data_element_ref
-        child = ARObject._find_child_element(element, "DATA-ELEMENT-REF")
+        child = SerializationHelper.find_child_element(element, "DATA-ELEMENT-REF")
         if child is not None:
             data_element_ref_value = ARRef.deserialize(child)
             obj.data_element_ref = data_element_ref_value
 
         # Parse signal_group_ref
-        child = ARObject._find_child_element(element, "SIGNAL-GROUP-REF")
+        child = SerializationHelper.find_child_element(element, "SIGNAL-GROUP-REF")
         if child is not None:
             signal_group_ref_value = ARRef.deserialize(child)
             obj.signal_group_ref = signal_group_ref_value
 
         # Parse type_mapping
-        child = ARObject._find_child_element(element, "TYPE-MAPPING")
+        child = SerializationHelper.find_child_element(element, "TYPE-MAPPING")
         if child is not None:
-            type_mapping_value = ARObject._deserialize_by_tag(child, "SenderRecCompositeTypeMapping")
+            type_mapping_value = SerializationHelper.deserialize_by_tag(child, "SenderRecCompositeTypeMapping")
             obj.type_mapping = type_mapping_value
 
         return obj

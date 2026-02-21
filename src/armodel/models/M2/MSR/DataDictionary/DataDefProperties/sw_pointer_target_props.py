@@ -13,6 +13,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
@@ -57,12 +58,12 @@ class SwPointerTargetProps(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize function_pointer_ref
         if self.function_pointer_ref is not None:
-            serialized = ARObject._serialize_item(self.function_pointer_ref, "BswModuleEntry")
+            serialized = SerializationHelper.serialize_item(self.function_pointer_ref, "BswModuleEntry")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FUNCTION-POINTER-REF")
@@ -76,7 +77,7 @@ class SwPointerTargetProps(ARObject):
 
         # Serialize sw_data_def
         if self.sw_data_def is not None:
-            serialized = ARObject._serialize_item(self.sw_data_def, "SwDataDefProps")
+            serialized = SerializationHelper.serialize_item(self.sw_data_def, "SwDataDefProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-DATA-DEF")
@@ -90,7 +91,7 @@ class SwPointerTargetProps(ARObject):
 
         # Serialize target_category
         if self.target_category is not None:
-            serialized = ARObject._serialize_item(self.target_category, "Identifier")
+            serialized = SerializationHelper.serialize_item(self.target_category, "Identifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TARGET-CATEGORY")
@@ -119,21 +120,21 @@ class SwPointerTargetProps(ARObject):
         obj.__init__()
 
         # Parse function_pointer_ref
-        child = ARObject._find_child_element(element, "FUNCTION-POINTER-REF")
+        child = SerializationHelper.find_child_element(element, "FUNCTION-POINTER-REF")
         if child is not None:
             function_pointer_ref_value = ARRef.deserialize(child)
             obj.function_pointer_ref = function_pointer_ref_value
 
         # Parse sw_data_def
-        child = ARObject._find_child_element(element, "SW-DATA-DEF")
+        child = SerializationHelper.find_child_element(element, "SW-DATA-DEF")
         if child is not None:
-            sw_data_def_value = ARObject._deserialize_by_tag(child, "SwDataDefProps")
+            sw_data_def_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
             obj.sw_data_def = sw_data_def_value
 
         # Parse target_category
-        child = ARObject._find_child_element(element, "TARGET-CATEGORY")
+        child = SerializationHelper.find_child_element(element, "TARGET-CATEGORY")
         if child is not None:
-            target_category_value = ARObject._deserialize_by_tag(child, "Identifier")
+            target_category_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
             obj.target_category = target_category_value
 
         return obj

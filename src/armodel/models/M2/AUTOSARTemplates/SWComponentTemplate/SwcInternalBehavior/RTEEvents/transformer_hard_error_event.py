@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
     RTEEvent,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_operation import (
     ClientServerOperation,
@@ -49,7 +50,7 @@ class TransformerHardErrorEvent(RTEEvent):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -68,7 +69,7 @@ class TransformerHardErrorEvent(RTEEvent):
 
         # Serialize operation
         if self.operation is not None:
-            serialized = ARObject._serialize_item(self.operation, "ClientServerOperation")
+            serialized = SerializationHelper.serialize_item(self.operation, "ClientServerOperation")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("OPERATION")
@@ -82,7 +83,7 @@ class TransformerHardErrorEvent(RTEEvent):
 
         # Serialize required_trigger_ref
         if self.required_trigger_ref is not None:
-            serialized = ARObject._serialize_item(self.required_trigger_ref, "Trigger")
+            serialized = SerializationHelper.serialize_item(self.required_trigger_ref, "Trigger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REQUIRED-TRIGGER-REF")
@@ -110,13 +111,13 @@ class TransformerHardErrorEvent(RTEEvent):
         obj = super(TransformerHardErrorEvent, cls).deserialize(element)
 
         # Parse operation
-        child = ARObject._find_child_element(element, "OPERATION")
+        child = SerializationHelper.find_child_element(element, "OPERATION")
         if child is not None:
-            operation_value = ARObject._deserialize_by_tag(child, "ClientServerOperation")
+            operation_value = SerializationHelper.deserialize_by_tag(child, "ClientServerOperation")
             obj.operation = operation_value
 
         # Parse required_trigger_ref
-        child = ARObject._find_child_element(element, "REQUIRED-TRIGGER-REF")
+        child = SerializationHelper.find_child_element(element, "REQUIRED-TRIGGER-REF")
         if child is not None:
             required_trigger_ref_value = ARRef.deserialize(child)
             obj.required_trigger_ref = required_trigger_ref_value

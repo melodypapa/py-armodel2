@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Ip4AddressString,
 )
@@ -40,12 +41,12 @@ class StreamFilterIpv4Address(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize ipv4_address
         if self.ipv4_address is not None:
-            serialized = ARObject._serialize_item(self.ipv4_address, "Ip4AddressString")
+            serialized = SerializationHelper.serialize_item(self.ipv4_address, "Ip4AddressString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IPV4-ADDRESS")
@@ -74,7 +75,7 @@ class StreamFilterIpv4Address(ARObject):
         obj.__init__()
 
         # Parse ipv4_address
-        child = ARObject._find_child_element(element, "IPV4-ADDRESS")
+        child = SerializationHelper.find_child_element(element, "IPV4-ADDRESS")
         if child is not None:
             ipv4_address_value = child.text
             obj.ipv4_address = ipv4_address_value

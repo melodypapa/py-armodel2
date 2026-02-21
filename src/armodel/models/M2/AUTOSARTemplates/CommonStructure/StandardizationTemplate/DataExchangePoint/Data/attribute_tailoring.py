@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
     DataFormatElementScope,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.variation_restriction_with_severity import (
     VariationRestrictionWithSeverity,
 )
@@ -46,7 +47,7 @@ class AttributeTailoring(DataFormatElementScope, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class AttributeTailoring(DataFormatElementScope, ABC):
 
         # Serialize multiplicity
         if self.multiplicity is not None:
-            serialized = ARObject._serialize_item(self.multiplicity, "Any")
+            serialized = SerializationHelper.serialize_item(self.multiplicity, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MULTIPLICITY")
@@ -79,7 +80,7 @@ class AttributeTailoring(DataFormatElementScope, ABC):
 
         # Serialize variation
         if self.variation is not None:
-            serialized = ARObject._serialize_item(self.variation, "VariationRestrictionWithSeverity")
+            serialized = SerializationHelper.serialize_item(self.variation, "VariationRestrictionWithSeverity")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VARIATION")
@@ -107,15 +108,15 @@ class AttributeTailoring(DataFormatElementScope, ABC):
         obj = super(AttributeTailoring, cls).deserialize(element)
 
         # Parse multiplicity
-        child = ARObject._find_child_element(element, "MULTIPLICITY")
+        child = SerializationHelper.find_child_element(element, "MULTIPLICITY")
         if child is not None:
             multiplicity_value = child.text
             obj.multiplicity = multiplicity_value
 
         # Parse variation
-        child = ARObject._find_child_element(element, "VARIATION")
+        child = SerializationHelper.find_child_element(element, "VARIATION")
         if child is not None:
-            variation_value = ARObject._deserialize_by_tag(child, "VariationRestrictionWithSeverity")
+            variation_value = SerializationHelper.deserialize_by_tag(child, "VariationRestrictionWithSeverity")
             obj.variation = variation_value
 
         return obj

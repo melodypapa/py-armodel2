@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
@@ -51,14 +52,14 @@ class Baseline(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize custom_sdg_def_refs (list to container "CUSTOM-SDG-DEF-REFS")
         if self.custom_sdg_def_refs:
             wrapper = ET.Element("CUSTOM-SDG-DEF-REFS")
             for item in self.custom_sdg_def_refs:
-                serialized = ARObject._serialize_item(item, "SdgDef")
+                serialized = SerializationHelper.serialize_item(item, "SdgDef")
                 if serialized is not None:
                     child_elem = ET.Element("CUSTOM-SDG-DEF-REF")
                     if hasattr(serialized, 'attrib'):
@@ -75,7 +76,7 @@ class Baseline(ARObject):
         if self.custom_refs:
             wrapper = ET.Element("CUSTOM-REFS")
             for item in self.custom_refs:
-                serialized = ARObject._serialize_item(item, "Documentation")
+                serialized = SerializationHelper.serialize_item(item, "Documentation")
                 if serialized is not None:
                     child_elem = ET.Element("CUSTOM-REF")
                     if hasattr(serialized, 'attrib'):
@@ -92,7 +93,7 @@ class Baseline(ARObject):
         if self.standards:
             wrapper = ET.Element("STANDARDS")
             for item in self.standards:
-                serialized = ARObject._serialize_item(item, "String")
+                serialized = SerializationHelper.serialize_item(item, "String")
                 if serialized is not None:
                     child_elem = ET.Element("STANDARD")
                     if hasattr(serialized, 'attrib'):
@@ -123,39 +124,39 @@ class Baseline(ARObject):
 
         # Parse custom_sdg_def_refs (list from container "CUSTOM-SDG-DEF-REFS")
         obj.custom_sdg_def_refs = []
-        container = ARObject._find_child_element(element, "CUSTOM-SDG-DEF-REFS")
+        container = SerializationHelper.find_child_element(element, "CUSTOM-SDG-DEF-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.custom_sdg_def_refs.append(child_value)
 
         # Parse custom_refs (list from container "CUSTOM-REFS")
         obj.custom_refs = []
-        container = ARObject._find_child_element(element, "CUSTOM-REFS")
+        container = SerializationHelper.find_child_element(element, "CUSTOM-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.custom_refs.append(child_value)
 
         # Parse standards (list from container "STANDARDS")
         obj.standards = []
-        container = ARObject._find_child_element(element, "STANDARDS")
+        container = SerializationHelper.find_child_element(element, "STANDARDS")
         if container is not None:
             for child in container:
                 # Extract primitive value (String) as text

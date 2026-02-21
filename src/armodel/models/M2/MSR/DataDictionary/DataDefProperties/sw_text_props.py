@@ -13,6 +13,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes import (
     ArraySizeSemanticsEnum,
@@ -56,12 +57,12 @@ class SwTextProps(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize array_size
         if self.array_size is not None:
-            serialized = ARObject._serialize_item(self.array_size, "ArraySizeSemanticsEnum")
+            serialized = SerializationHelper.serialize_item(self.array_size, "ArraySizeSemanticsEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ARRAY-SIZE")
@@ -75,7 +76,7 @@ class SwTextProps(ARObject):
 
         # Serialize base_type_ref
         if self.base_type_ref is not None:
-            serialized = ARObject._serialize_item(self.base_type_ref, "SwBaseType")
+            serialized = SerializationHelper.serialize_item(self.base_type_ref, "SwBaseType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BASE-TYPE-REF")
@@ -89,7 +90,7 @@ class SwTextProps(ARObject):
 
         # Serialize sw_fill_character
         if self.sw_fill_character is not None:
-            serialized = ARObject._serialize_item(self.sw_fill_character, "Integer")
+            serialized = SerializationHelper.serialize_item(self.sw_fill_character, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-FILL-CHARACTER")
@@ -103,7 +104,7 @@ class SwTextProps(ARObject):
 
         # Serialize sw_max_text_size
         if self.sw_max_text_size is not None:
-            serialized = ARObject._serialize_item(self.sw_max_text_size, "Integer")
+            serialized = SerializationHelper.serialize_item(self.sw_max_text_size, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-MAX-TEXT-SIZE")
@@ -132,25 +133,25 @@ class SwTextProps(ARObject):
         obj.__init__()
 
         # Parse array_size
-        child = ARObject._find_child_element(element, "ARRAY-SIZE")
+        child = SerializationHelper.find_child_element(element, "ARRAY-SIZE")
         if child is not None:
             array_size_value = ArraySizeSemanticsEnum.deserialize(child)
             obj.array_size = array_size_value
 
         # Parse base_type_ref
-        child = ARObject._find_child_element(element, "BASE-TYPE-REF")
+        child = SerializationHelper.find_child_element(element, "BASE-TYPE-REF")
         if child is not None:
             base_type_ref_value = ARRef.deserialize(child)
             obj.base_type_ref = base_type_ref_value
 
         # Parse sw_fill_character
-        child = ARObject._find_child_element(element, "SW-FILL-CHARACTER")
+        child = SerializationHelper.find_child_element(element, "SW-FILL-CHARACTER")
         if child is not None:
             sw_fill_character_value = child.text
             obj.sw_fill_character = sw_fill_character_value
 
         # Parse sw_max_text_size
-        child = ARObject._find_child_element(element, "SW-MAX-TEXT-SIZE")
+        child = SerializationHelper.find_child_element(element, "SW-MAX-TEXT-SIZE")
         if child is not None:
             sw_max_text_size_value = child.text
             obj.sw_max_text_size = sw_max_text_size_value

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -43,7 +44,7 @@ class CryptoSignatureScheme(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class CryptoSignatureScheme(ARElement):
 
         # Serialize signature
         if self.signature is not None:
-            serialized = ARObject._serialize_item(self.signature, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.signature, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SIGNATURE")
@@ -90,7 +91,7 @@ class CryptoSignatureScheme(ARElement):
         obj = super(CryptoSignatureScheme, cls).deserialize(element)
 
         # Parse signature
-        child = ARObject._find_child_element(element, "SIGNATURE")
+        child = SerializationHelper.find_child_element(element, "SIGNATURE")
         if child is not None:
             signature_value = child.text
             obj.signature = signature_value

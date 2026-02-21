@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
     AutosarDataPrototype,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 if TYPE_CHECKING:
     from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
@@ -51,7 +52,7 @@ class VariableDataPrototype(AutosarDataPrototype):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -70,7 +71,7 @@ class VariableDataPrototype(AutosarDataPrototype):
 
         # Serialize init_value
         if self.init_value is not None:
-            serialized = ARObject._serialize_item(self.init_value, "ValueSpecification")
+            serialized = SerializationHelper.serialize_item(self.init_value, "ValueSpecification")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INIT-VALUE")
@@ -98,9 +99,9 @@ class VariableDataPrototype(AutosarDataPrototype):
         obj = super(VariableDataPrototype, cls).deserialize(element)
 
         # Parse init_value
-        child = ARObject._find_child_element(element, "INIT-VALUE")
+        child = SerializationHelper.find_child_element(element, "INIT-VALUE")
         if child is not None:
-            init_value_value = ARObject._deserialize_by_tag(child, "ValueSpecification")
+            init_value_value = SerializationHelper.deserialize_by_tag(child, "ValueSpecification")
             obj.init_value = init_value_value
 
         return obj

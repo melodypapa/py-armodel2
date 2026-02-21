@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable import (
     AlignEnum,
 )
@@ -56,12 +57,12 @@ class Colspec(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize align
         if self.align is not None:
-            serialized = ARObject._serialize_item(self.align, "AlignEnum")
+            serialized = SerializationHelper.serialize_item(self.align, "AlignEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ALIGN")
@@ -75,7 +76,7 @@ class Colspec(ARObject):
 
         # Serialize colname
         if self.colname is not None:
-            serialized = ARObject._serialize_item(self.colname, "String")
+            serialized = SerializationHelper.serialize_item(self.colname, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COLNAME")
@@ -89,7 +90,7 @@ class Colspec(ARObject):
 
         # Serialize colnum
         if self.colnum is not None:
-            serialized = ARObject._serialize_item(self.colnum, "String")
+            serialized = SerializationHelper.serialize_item(self.colnum, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COLNUM")
@@ -103,7 +104,7 @@ class Colspec(ARObject):
 
         # Serialize colsep
         if self.colsep is not None:
-            serialized = ARObject._serialize_item(self.colsep, "TableSeparatorString")
+            serialized = SerializationHelper.serialize_item(self.colsep, "TableSeparatorString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COLSEP")
@@ -117,7 +118,7 @@ class Colspec(ARObject):
 
         # Serialize colwidth
         if self.colwidth is not None:
-            serialized = ARObject._serialize_item(self.colwidth, "String")
+            serialized = SerializationHelper.serialize_item(self.colwidth, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COLWIDTH")
@@ -131,7 +132,7 @@ class Colspec(ARObject):
 
         # Serialize rowsep
         if self.rowsep is not None:
-            serialized = ARObject._serialize_item(self.rowsep, "TableSeparatorString")
+            serialized = SerializationHelper.serialize_item(self.rowsep, "TableSeparatorString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ROWSEP")
@@ -160,37 +161,37 @@ class Colspec(ARObject):
         obj.__init__()
 
         # Parse align
-        child = ARObject._find_child_element(element, "ALIGN")
+        child = SerializationHelper.find_child_element(element, "ALIGN")
         if child is not None:
             align_value = AlignEnum.deserialize(child)
             obj.align = align_value
 
         # Parse colname
-        child = ARObject._find_child_element(element, "COLNAME")
+        child = SerializationHelper.find_child_element(element, "COLNAME")
         if child is not None:
             colname_value = child.text
             obj.colname = colname_value
 
         # Parse colnum
-        child = ARObject._find_child_element(element, "COLNUM")
+        child = SerializationHelper.find_child_element(element, "COLNUM")
         if child is not None:
             colnum_value = child.text
             obj.colnum = colnum_value
 
         # Parse colsep
-        child = ARObject._find_child_element(element, "COLSEP")
+        child = SerializationHelper.find_child_element(element, "COLSEP")
         if child is not None:
             colsep_value = child.text
             obj.colsep = colsep_value
 
         # Parse colwidth
-        child = ARObject._find_child_element(element, "COLWIDTH")
+        child = SerializationHelper.find_child_element(element, "COLWIDTH")
         if child is not None:
             colwidth_value = child.text
             obj.colwidth = colwidth_value
 
         # Parse rowsep
-        child = ARObject._find_child_element(element, "ROWSEP")
+        child = SerializationHelper.find_child_element(element, "ROWSEP")
         if child is not None:
             rowsep_value = child.text
             obj.rowsep = rowsep_value

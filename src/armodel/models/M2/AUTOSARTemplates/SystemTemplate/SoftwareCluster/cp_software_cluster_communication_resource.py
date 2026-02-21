@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_softwa
     CpSoftwareClusterResource,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
     CpSoftwareCluster,
 )
@@ -43,7 +44,7 @@ class CpSoftwareClusterCommunicationResource(CpSoftwareClusterResource):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class CpSoftwareClusterCommunicationResource(CpSoftwareClusterResource):
 
         # Serialize communication
         if self.communication is not None:
-            serialized = ARObject._serialize_item(self.communication, "CpSoftwareCluster")
+            serialized = SerializationHelper.serialize_item(self.communication, "CpSoftwareCluster")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COMMUNICATION")
@@ -90,9 +91,9 @@ class CpSoftwareClusterCommunicationResource(CpSoftwareClusterResource):
         obj = super(CpSoftwareClusterCommunicationResource, cls).deserialize(element)
 
         # Parse communication
-        child = ARObject._find_child_element(element, "COMMUNICATION")
+        child = SerializationHelper.find_child_element(element, "COMMUNICATION")
         if child is not None:
-            communication_value = ARObject._deserialize_by_tag(child, "CpSoftwareCluster")
+            communication_value = SerializationHelper.deserialize_by_tag(child, "CpSoftwareCluster")
             obj.communication = communication_value
 
         return obj

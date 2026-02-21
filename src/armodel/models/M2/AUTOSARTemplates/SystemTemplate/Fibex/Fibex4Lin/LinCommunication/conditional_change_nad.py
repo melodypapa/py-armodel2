@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommun
     LinConfigurationEntry,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
     PositiveInteger,
@@ -52,7 +53,7 @@ class ConditionalChangeNad(LinConfigurationEntry):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -71,7 +72,7 @@ class ConditionalChangeNad(LinConfigurationEntry):
 
         # Serialize byte
         if self.byte is not None:
-            serialized = ARObject._serialize_item(self.byte, "Integer")
+            serialized = SerializationHelper.serialize_item(self.byte, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BYTE")
@@ -85,7 +86,7 @@ class ConditionalChangeNad(LinConfigurationEntry):
 
         # Serialize id
         if self.id is not None:
-            serialized = ARObject._serialize_item(self.id, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.id, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ID")
@@ -99,7 +100,7 @@ class ConditionalChangeNad(LinConfigurationEntry):
 
         # Serialize invert
         if self.invert is not None:
-            serialized = ARObject._serialize_item(self.invert, "Integer")
+            serialized = SerializationHelper.serialize_item(self.invert, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INVERT")
@@ -113,7 +114,7 @@ class ConditionalChangeNad(LinConfigurationEntry):
 
         # Serialize mask
         if self.mask is not None:
-            serialized = ARObject._serialize_item(self.mask, "Integer")
+            serialized = SerializationHelper.serialize_item(self.mask, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MASK")
@@ -127,7 +128,7 @@ class ConditionalChangeNad(LinConfigurationEntry):
 
         # Serialize new_nad
         if self.new_nad is not None:
-            serialized = ARObject._serialize_item(self.new_nad, "Integer")
+            serialized = SerializationHelper.serialize_item(self.new_nad, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NEW-NAD")
@@ -155,31 +156,31 @@ class ConditionalChangeNad(LinConfigurationEntry):
         obj = super(ConditionalChangeNad, cls).deserialize(element)
 
         # Parse byte
-        child = ARObject._find_child_element(element, "BYTE")
+        child = SerializationHelper.find_child_element(element, "BYTE")
         if child is not None:
             byte_value = child.text
             obj.byte = byte_value
 
         # Parse id
-        child = ARObject._find_child_element(element, "ID")
+        child = SerializationHelper.find_child_element(element, "ID")
         if child is not None:
             id_value = child.text
             obj.id = id_value
 
         # Parse invert
-        child = ARObject._find_child_element(element, "INVERT")
+        child = SerializationHelper.find_child_element(element, "INVERT")
         if child is not None:
             invert_value = child.text
             obj.invert = invert_value
 
         # Parse mask
-        child = ARObject._find_child_element(element, "MASK")
+        child = SerializationHelper.find_child_element(element, "MASK")
         if child is not None:
             mask_value = child.text
             obj.mask = mask_value
 
         # Parse new_nad
-        child = ARObject._find_child_element(element, "NEW-NAD")
+        child = SerializationHelper.find_child_element(element, "NEW-NAD")
         if child is not None:
             new_nad_value = child.text
             obj.new_nad = new_nad_value

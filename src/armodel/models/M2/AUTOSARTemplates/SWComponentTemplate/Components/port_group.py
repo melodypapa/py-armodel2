@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_prototype import (
     PortPrototype,
@@ -47,7 +48,7 @@ class PortGroup(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -68,7 +69,7 @@ class PortGroup(Identifiable):
         if self.inner_group_refs:
             wrapper = ET.Element("INNER-GROUP-REFS")
             for item in self.inner_group_refs:
-                serialized = ARObject._serialize_item(item, "PortGroup")
+                serialized = SerializationHelper.serialize_item(item, "PortGroup")
                 if serialized is not None:
                     child_elem = ET.Element("INNER-GROUP-REF")
                     if hasattr(serialized, 'attrib'):
@@ -85,7 +86,7 @@ class PortGroup(Identifiable):
         if self.outer_port_refs:
             wrapper = ET.Element("OUTER-PORT-REFS")
             for item in self.outer_port_refs:
-                serialized = ARObject._serialize_item(item, "PortPrototype")
+                serialized = SerializationHelper.serialize_item(item, "PortPrototype")
                 if serialized is not None:
                     child_elem = ET.Element("OUTER-PORT-REF")
                     if hasattr(serialized, 'attrib'):
@@ -115,33 +116,33 @@ class PortGroup(Identifiable):
 
         # Parse inner_group_refs (list from container "INNER-GROUP-REFS")
         obj.inner_group_refs = []
-        container = ARObject._find_child_element(element, "INNER-GROUP-REFS")
+        container = SerializationHelper.find_child_element(element, "INNER-GROUP-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.inner_group_refs.append(child_value)
 
         # Parse outer_port_refs (list from container "OUTER-PORT-REFS")
         obj.outer_port_refs = []
-        container = ARObject._find_child_element(element, "OUTER-PORT-REFS")
+        container = SerializationHelper.find_child_element(element, "OUTER-PORT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.outer_port_refs.append(child_value)
 
