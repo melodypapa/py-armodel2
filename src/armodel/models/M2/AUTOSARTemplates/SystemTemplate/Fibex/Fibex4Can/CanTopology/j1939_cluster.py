@@ -43,6 +43,117 @@ class J1939Cluster(ARObject):
         self.request2_support: Optional[Boolean] = None
         self.uses_address: Optional[Boolean] = None
 
+    def serialize(self) -> ET.Element:
+        """Serialize J1939Cluster to XML element with atp_variant wrapper.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = SerializationHelper.get_xml_tag(self.__class__)
+        elem = ET.Element(tag)
+
+        # Create inner element to hold attributes before wrapping
+        inner_elem = ET.Element("INNER")
+
+        # Serialize network_id
+        if self.network_id is not None:
+            serialized = SerializationHelper.serialize_item(self.network_id, "PositiveInteger")
+            if serialized is not None:
+                wrapped = ET.Element("NETWORK-ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Serialize request2_support
+        if self.request2_support is not None:
+            serialized = SerializationHelper.serialize_item(self.request2_support, "Boolean")
+            if serialized is not None:
+                wrapped = ET.Element("REQUEST2-SUPPORT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Serialize uses_address
+        if self.uses_address is not None:
+            serialized = SerializationHelper.serialize_item(self.uses_address, "Boolean")
+            if serialized is not None:
+                wrapped = ET.Element("USES-ADDRESS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Wrap inner element in atp_variant VARIANTS/CONDITIONAL structure
+        wrapped = SerializationHelper.serialize_with_atp_variant(inner_elem, "J1939Cluster")
+        elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "J1939Cluster":
+        """Deserialize XML element to J1939Cluster object with atp_variant unwrapping.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized J1939Cluster object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Handle ARObject inherited attributes (checksum and timestamp)
+        # Parse timestamp (XML attribute 'T')
+        timestamp_value = element.get("T")
+        if timestamp_value is not None:
+            obj.timestamp = timestamp_value
+
+        # Parse checksum (child element)
+        checksum_elem = SerializationHelper.find_child_element(element, "CHECKSUM")
+        if checksum_elem is not None:
+            checksum_value = checksum_elem.text
+            if checksum_value is not None:
+                obj.checksum = checksum_value
+
+        # Unwrap atp_variant VARIANTS/CONDITIONAL structure
+        inner_elem = SerializationHelper.deserialize_from_atp_variant(element, "J1939Cluster")
+        if inner_elem is None:
+            # No wrapper structure found, return object with default values
+            return obj
+
+        # Parse network_id
+        child = SerializationHelper.find_child_element(inner_elem, "NETWORK-ID")
+        if child is not None:
+            network_id_value = child.text
+            obj.network_id = network_id_value
+
+        # Parse request2_support
+        child = SerializationHelper.find_child_element(inner_elem, "REQUEST2-SUPPORT")
+        if child is not None:
+            request2_support_value = child.text
+            obj.request2_support = request2_support_value
+
+        # Parse uses_address
+        child = SerializationHelper.find_child_element(inner_elem, "USES-ADDRESS")
+        if child is not None:
+            uses_address_value = child.text
+            obj.uses_address = uses_address_value
+
+        return obj
+
 
 
 class J1939ClusterBuilder:

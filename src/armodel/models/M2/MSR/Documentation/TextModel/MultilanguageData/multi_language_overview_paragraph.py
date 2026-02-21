@@ -49,6 +49,54 @@ class MultiLanguageOverviewParagraph(ARObject):
         self._l2 = value
 
 
+    def serialize(self) -> ET.Element:
+        """Serialize MultiLanguageOverviewParagraph to XML element.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = SerializationHelper.get_xml_tag(self.__class__)
+        elem = ET.Element(tag)
+
+        # Serialize l2 (list with l_prefix "L-2")
+        for item in self.l2:
+            serialized = SerializationHelper.serialize_item(item, "LOverviewParagraph")
+            if serialized is not None:
+                # For l_prefix lists, wrap each item in the l_prefix tag
+                wrapped = ET.Element("L-2")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "MultiLanguageOverviewParagraph":
+        """Deserialize XML element to MultiLanguageOverviewParagraph object.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized MultiLanguageOverviewParagraph object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Parse l2 (list with l_prefix "L-2")
+        obj.l2 = []
+        for child in SerializationHelper.find_all_child_elements(element, "L-2"):
+            l2_value = SerializationHelper.deserialize_by_tag(child, "LOverviewParagraph")
+            obj.l2.append(l2_value)
+
+        return obj
+
 
 
 class MultiLanguageOverviewParagraphBuilder:

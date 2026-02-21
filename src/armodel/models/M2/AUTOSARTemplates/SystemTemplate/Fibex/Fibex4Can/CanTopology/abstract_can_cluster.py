@@ -43,6 +43,117 @@ class AbstractCanCluster(ARObject, ABC):
         self.can_fd_baudrate: Optional[PositiveUnlimitedInteger] = None
         self.can_xl_baudrate: Optional[PositiveUnlimitedInteger] = None
 
+    def serialize(self) -> ET.Element:
+        """Serialize AbstractCanCluster to XML element with atp_variant wrapper.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = SerializationHelper.get_xml_tag(self.__class__)
+        elem = ET.Element(tag)
+
+        # Create inner element to hold attributes before wrapping
+        inner_elem = ET.Element("INNER")
+
+        # Serialize bus_off_recovery
+        if self.bus_off_recovery is not None:
+            serialized = SerializationHelper.serialize_item(self.bus_off_recovery, "CanClusterBusOffRecovery")
+            if serialized is not None:
+                wrapped = ET.Element("BUS-OFF-RECOVERY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Serialize can_fd_baudrate
+        if self.can_fd_baudrate is not None:
+            serialized = SerializationHelper.serialize_item(self.can_fd_baudrate, "PositiveUnlimitedInteger")
+            if serialized is not None:
+                wrapped = ET.Element("CAN-FD-BAUDRATE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Serialize can_xl_baudrate
+        if self.can_xl_baudrate is not None:
+            serialized = SerializationHelper.serialize_item(self.can_xl_baudrate, "PositiveUnlimitedInteger")
+            if serialized is not None:
+                wrapped = ET.Element("CAN-XL-BAUDRATE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Wrap inner element in atp_variant VARIANTS/CONDITIONAL structure
+        wrapped = SerializationHelper.serialize_with_atp_variant(inner_elem, "AbstractCanCluster")
+        elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "AbstractCanCluster":
+        """Deserialize XML element to AbstractCanCluster object with atp_variant unwrapping.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized AbstractCanCluster object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Handle ARObject inherited attributes (checksum and timestamp)
+        # Parse timestamp (XML attribute 'T')
+        timestamp_value = element.get("T")
+        if timestamp_value is not None:
+            obj.timestamp = timestamp_value
+
+        # Parse checksum (child element)
+        checksum_elem = SerializationHelper.find_child_element(element, "CHECKSUM")
+        if checksum_elem is not None:
+            checksum_value = checksum_elem.text
+            if checksum_value is not None:
+                obj.checksum = checksum_value
+
+        # Unwrap atp_variant VARIANTS/CONDITIONAL structure
+        inner_elem = SerializationHelper.deserialize_from_atp_variant(element, "AbstractCanCluster")
+        if inner_elem is None:
+            # No wrapper structure found, return object with default values
+            return obj
+
+        # Parse bus_off_recovery
+        child = SerializationHelper.find_child_element(inner_elem, "BUS-OFF-RECOVERY")
+        if child is not None:
+            bus_off_recovery_value = SerializationHelper.deserialize_by_tag(child, "CanClusterBusOffRecovery")
+            obj.bus_off_recovery = bus_off_recovery_value
+
+        # Parse can_fd_baudrate
+        child = SerializationHelper.find_child_element(inner_elem, "CAN-FD-BAUDRATE")
+        if child is not None:
+            can_fd_baudrate_value = child.text
+            obj.can_fd_baudrate = can_fd_baudrate_value
+
+        # Parse can_xl_baudrate
+        child = SerializationHelper.find_child_element(inner_elem, "CAN-XL-BAUDRATE")
+        if child is not None:
+            can_xl_baudrate_value = child.text
+            obj.can_xl_baudrate = can_xl_baudrate_value
+
+        return obj
+
 
 
 class AbstractCanClusterBuilder:

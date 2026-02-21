@@ -47,6 +47,84 @@ class SerializationHelper:
         return f"{class_tag}-VARIANTS/{class_tag}-CONDITIONAL"
 
     @staticmethod
+    def serialize_with_atp_variant(inner_elem: ET.Element, class_name: str) -> ET.Element:
+        """Wrap serialized attributes in atp_variant VARIANTS/CONDITIONAL structure.
+
+        This method takes an element containing all serialized attributes and wraps
+        it in the nested VARIANTS/CONDITIONAL structure required by AUTOSAR atpVariation pattern.
+
+        Args:
+            inner_elem: Element containing all serialized attributes
+            class_name: Python class name to derive wrapper tags from
+
+        Returns:
+            Wrapped element with VARIANTS/CONDITIONAL structure
+        """
+        wrapper_path = SerializationHelper.get_atp_variant_wrapper_path(class_name)
+        wrapper_tags = wrapper_path.split('/')
+
+        # Create the innermost wrapper (CONDITIONAL level)
+        conditional = ET.Element(wrapper_tags[1])
+        # Copy all children from inner_elem to conditional
+        for child in inner_elem:
+            conditional.append(child)
+        # Copy text content if any
+        if inner_elem.text:
+            conditional.text = inner_elem.text
+        # Copy attributes if any
+        if inner_elem.attrib:
+            conditional.attrib.update(inner_elem.attrib)
+
+        # Create the outer wrapper (VARIANTS level)
+        variants = ET.Element(wrapper_tags[0])
+        variants.append(conditional)
+
+        return variants
+
+    @staticmethod
+    def deserialize_from_atp_variant(element: ET.Element, class_name: str) -> Optional[ET.Element]:
+        """Unwrap atp_variant VARIANTS/CONDITIONAL structure to access attributes.
+
+        This method navigates through the VARIANTS/CONDITIONAL wrapper structure
+        to find the element containing the actual attributes.
+
+        Args:
+            element: XML element that may contain atp_variant wrapper structure
+            class_name: Python class name to derive wrapper tags from
+
+        Returns:
+            The inner element containing attributes, or None if wrapper not found
+        """
+        wrapper_path = SerializationHelper.get_atp_variant_wrapper_path(class_name)
+        wrapper_tags = wrapper_path.split('/')
+
+        # Strip namespace for comparison
+        def strip_tag(tag: str) -> str:
+            if '}' in tag:
+                return tag.split('}')[1]
+            return tag
+
+        # Find VARIANTS element
+        variants_elem = None
+        for child in element:
+            if strip_tag(child.tag) == wrapper_tags[0]:
+                variants_elem = child
+                break
+
+        if variants_elem is None:
+            # No wrapper structure found, return None
+            return None
+
+        # Find CONDITIONAL element within VARIANTS
+        conditional_elem = None
+        for child in variants_elem:
+            if strip_tag(child.tag) == wrapper_tags[1]:
+                conditional_elem = child
+                break
+
+        return conditional_elem
+
+    @staticmethod
     def get_xml_tag(cls: type) -> str:
         """Get XML tag name for a class.
 

@@ -36,6 +36,79 @@ class CommunicationController(ARObject, ABC):
         super().__init__()
         self.wake_up_by: Optional[Boolean] = None
 
+    def serialize(self) -> ET.Element:
+        """Serialize CommunicationController to XML element with atp_variant wrapper.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = SerializationHelper.get_xml_tag(self.__class__)
+        elem = ET.Element(tag)
+
+        # Create inner element to hold attributes before wrapping
+        inner_elem = ET.Element("INNER")
+
+        # Serialize wake_up_by
+        if self.wake_up_by is not None:
+            serialized = SerializationHelper.serialize_item(self.wake_up_by, "Boolean")
+            if serialized is not None:
+                wrapped = ET.Element("WAKE-UP-BY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Wrap inner element in atp_variant VARIANTS/CONDITIONAL structure
+        wrapped = SerializationHelper.serialize_with_atp_variant(inner_elem, "CommunicationController")
+        elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "CommunicationController":
+        """Deserialize XML element to CommunicationController object with atp_variant unwrapping.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized CommunicationController object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Handle ARObject inherited attributes (checksum and timestamp)
+        # Parse timestamp (XML attribute 'T')
+        timestamp_value = element.get("T")
+        if timestamp_value is not None:
+            obj.timestamp = timestamp_value
+
+        # Parse checksum (child element)
+        checksum_elem = SerializationHelper.find_child_element(element, "CHECKSUM")
+        if checksum_elem is not None:
+            checksum_value = checksum_elem.text
+            if checksum_value is not None:
+                obj.checksum = checksum_value
+
+        # Unwrap atp_variant VARIANTS/CONDITIONAL structure
+        inner_elem = SerializationHelper.deserialize_from_atp_variant(element, "CommunicationController")
+        if inner_elem is None:
+            # No wrapper structure found, return object with default values
+            return obj
+
+        # Parse wake_up_by
+        child = SerializationHelper.find_child_element(inner_elem, "WAKE-UP-BY")
+        if child is not None:
+            wake_up_by_value = child.text
+            obj.wake_up_by = wake_up_by_value
+
+        return obj
+
 
 
 class CommunicationControllerBuilder:

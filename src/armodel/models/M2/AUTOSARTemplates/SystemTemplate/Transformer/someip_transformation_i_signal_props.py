@@ -61,6 +61,255 @@ class SOMEIPTransformationISignalProps(ARObject):
         self.size_of_union: Optional[PositiveInteger] = None
         self.tlv_data_id_refs: list[ARRef] = []
 
+    def serialize(self) -> ET.Element:
+        """Serialize SOMEIPTransformationISignalProps to XML element with atp_variant wrapper.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = SerializationHelper.get_xml_tag(self.__class__)
+        elem = ET.Element(tag)
+
+        # Create inner element to hold attributes before wrapping
+        inner_elem = ET.Element("INNER")
+
+        # Serialize implements
+        if self.implements is not None:
+            serialized = SerializationHelper.serialize_item(self.implements, "Boolean")
+            if serialized is not None:
+                wrapped = ET.Element("IMPLEMENTS")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Serialize interface_version
+        if self.interface_version is not None:
+            serialized = SerializationHelper.serialize_item(self.interface_version, "PositiveInteger")
+            if serialized is not None:
+                wrapped = ET.Element("INTERFACE-VERSION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Serialize is_dynamic
+        if self.is_dynamic is not None:
+            serialized = SerializationHelper.serialize_item(self.is_dynamic, "Boolean")
+            if serialized is not None:
+                wrapped = ET.Element("IS-DYNAMIC")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Serialize message_type
+        if self.message_type is not None:
+            serialized = SerializationHelper.serialize_item(self.message_type, "SOMEIPMessageTypeEnum")
+            if serialized is not None:
+                wrapped = ET.Element("MESSAGE-TYPE")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Serialize size_of_array
+        if self.size_of_array is not None:
+            serialized = SerializationHelper.serialize_item(self.size_of_array, "PositiveInteger")
+            if serialized is not None:
+                wrapped = ET.Element("SIZE-OF-ARRAY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Serialize size_of_string
+        if self.size_of_string is not None:
+            serialized = SerializationHelper.serialize_item(self.size_of_string, "PositiveInteger")
+            if serialized is not None:
+                wrapped = ET.Element("SIZE-OF-STRING")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Serialize size_of_struct
+        if self.size_of_struct is not None:
+            serialized = SerializationHelper.serialize_item(self.size_of_struct, "PositiveInteger")
+            if serialized is not None:
+                wrapped = ET.Element("SIZE-OF-STRUCT")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Serialize size_of_union
+        if self.size_of_union is not None:
+            serialized = SerializationHelper.serialize_item(self.size_of_union, "PositiveInteger")
+            if serialized is not None:
+                wrapped = ET.Element("SIZE-OF-UNION")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Serialize tlv_data_id_refs (list from container "TLV-DATA-ID-REFS")
+        if self.tlv_data_id_refs:
+            container = ET.Element("TLV-DATA-ID-REFS")
+            for item in self.tlv_data_id_refs:
+                if is_ref:
+                    # For reference lists, serialize as reference
+                    if hasattr(item, "serialize"):
+                        container.append(item.serialize())
+                elif is_primitive_type("TlvDataIdDefinitionSet", package_data):
+                    # Simple primitive type
+                    child = ET.Element("TLV-DATA-ID")
+                    child.text = str(item)
+                    container.append(child)
+                elif is_enum_type("TlvDataIdDefinitionSet", package_data):
+                    # Enum type - use serialize method
+                    if hasattr(item, "serialize"):
+                        container.append(item.serialize())
+                else:
+                    # Complex object type
+                    if hasattr(item, "serialize"):
+                        container.append(item.serialize())
+            inner_elem.append(container)
+
+        # Wrap inner element in atp_variant VARIANTS/CONDITIONAL structure
+        wrapped = SerializationHelper.serialize_with_atp_variant(inner_elem, "SOMEIPTransformationISignalProps")
+        elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "SOMEIPTransformationISignalProps":
+        """Deserialize XML element to SOMEIPTransformationISignalProps object with atp_variant unwrapping.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized SOMEIPTransformationISignalProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Handle ARObject inherited attributes (checksum and timestamp)
+        # Parse timestamp (XML attribute 'T')
+        timestamp_value = element.get("T")
+        if timestamp_value is not None:
+            obj.timestamp = timestamp_value
+
+        # Parse checksum (child element)
+        checksum_elem = SerializationHelper.find_child_element(element, "CHECKSUM")
+        if checksum_elem is not None:
+            checksum_value = checksum_elem.text
+            if checksum_value is not None:
+                obj.checksum = checksum_value
+
+        # Unwrap atp_variant VARIANTS/CONDITIONAL structure
+        inner_elem = SerializationHelper.deserialize_from_atp_variant(element, "SOMEIPTransformationISignalProps")
+        if inner_elem is None:
+            # No wrapper structure found, return object with default values
+            return obj
+
+        # Parse implements
+        child = SerializationHelper.find_child_element(inner_elem, "IMPLEMENTS")
+        if child is not None:
+            implements_value = child.text
+            obj.implements = implements_value
+
+        # Parse interface_version
+        child = SerializationHelper.find_child_element(inner_elem, "INTERFACE-VERSION")
+        if child is not None:
+            interface_version_value = child.text
+            obj.interface_version = interface_version_value
+
+        # Parse is_dynamic
+        child = SerializationHelper.find_child_element(inner_elem, "IS-DYNAMIC")
+        if child is not None:
+            is_dynamic_value = child.text
+            obj.is_dynamic = is_dynamic_value
+
+        # Parse message_type
+        child = SerializationHelper.find_child_element(inner_elem, "MESSAGE-TYPE")
+        if child is not None:
+            message_type_value = SOMEIPMessageTypeEnum.deserialize(child)
+            obj.message_type = message_type_value
+
+        # Parse size_of_array
+        child = SerializationHelper.find_child_element(inner_elem, "SIZE-OF-ARRAY")
+        if child is not None:
+            size_of_array_value = child.text
+            obj.size_of_array = size_of_array_value
+
+        # Parse size_of_string
+        child = SerializationHelper.find_child_element(inner_elem, "SIZE-OF-STRING")
+        if child is not None:
+            size_of_string_value = child.text
+            obj.size_of_string = size_of_string_value
+
+        # Parse size_of_struct
+        child = SerializationHelper.find_child_element(inner_elem, "SIZE-OF-STRUCT")
+        if child is not None:
+            size_of_struct_value = child.text
+            obj.size_of_struct = size_of_struct_value
+
+        # Parse size_of_union
+        child = SerializationHelper.find_child_element(inner_elem, "SIZE-OF-UNION")
+        if child is not None:
+            size_of_union_value = child.text
+            obj.size_of_union = size_of_union_value
+
+        # Parse tlv_data_id_refs (list from container "TLV-DATA-ID-REFS")
+        obj.tlv_data_id_refs = []
+        container = SerializationHelper.find_child_element(inner_elem, "TLV-DATA-ID-REFS")
+        if container is not None:
+            for child in container:
+                if is_ref:
+                    child_tag = SerializationHelper.strip_namespace(child.tag)
+                    if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                        child_value = ARRef.deserialize(child)
+                    else:
+                        child_value = SerializationHelper.deserialize_by_tag(child, None)
+                elif is_primitive_type("TlvDataIdDefinitionSet", package_data):
+                    child_value = child.text
+                elif is_enum_type("TlvDataIdDefinitionSet", package_data):
+                    child_value = TlvDataIdDefinitionSet.deserialize(child)
+                else:
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.tlv_data_id_refs.append(child_value)
+
+        return obj
+
 
 
 class SOMEIPTransformationISignalPropsBuilder:

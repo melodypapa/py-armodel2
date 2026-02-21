@@ -43,6 +43,136 @@ class EndToEndTransformationISignalProps(ARObject):
         self.min_data_length: Optional[PositiveInteger] = None
         self.source_id: Optional[PositiveInteger] = None
 
+    def serialize(self) -> ET.Element:
+        """Serialize EndToEndTransformationISignalProps to XML element with atp_variant wrapper.
+
+        Returns:
+            xml.etree.ElementTree.Element representing this object
+        """
+        # Get XML tag name for this class
+        tag = SerializationHelper.get_xml_tag(self.__class__)
+        elem = ET.Element(tag)
+
+        # Create inner element to hold attributes before wrapping
+        inner_elem = ET.Element("INNER")
+
+        # Serialize data_length
+        if self.data_length is not None:
+            serialized = SerializationHelper.serialize_item(self.data_length, "PositiveInteger")
+            if serialized is not None:
+                wrapped = ET.Element("DATA-LENGTH")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Serialize max_data_length
+        if self.max_data_length is not None:
+            serialized = SerializationHelper.serialize_item(self.max_data_length, "PositiveInteger")
+            if serialized is not None:
+                wrapped = ET.Element("MAX-DATA-LENGTH")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Serialize min_data_length
+        if self.min_data_length is not None:
+            serialized = SerializationHelper.serialize_item(self.min_data_length, "PositiveInteger")
+            if serialized is not None:
+                wrapped = ET.Element("MIN-DATA-LENGTH")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Serialize source_id
+        if self.source_id is not None:
+            serialized = SerializationHelper.serialize_item(self.source_id, "PositiveInteger")
+            if serialized is not None:
+                wrapped = ET.Element("SOURCE-ID")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                inner_elem.append(wrapped)
+
+        # Wrap inner element in atp_variant VARIANTS/CONDITIONAL structure
+        wrapped = SerializationHelper.serialize_with_atp_variant(inner_elem, "EndToEndTransformationISignalProps")
+        elem.append(wrapped)
+
+        return elem
+
+    @classmethod
+    def deserialize(cls, element: ET.Element) -> "EndToEndTransformationISignalProps":
+        """Deserialize XML element to EndToEndTransformationISignalProps object with atp_variant unwrapping.
+
+        Args:
+            element: XML element to deserialize from
+
+        Returns:
+            Deserialized EndToEndTransformationISignalProps object
+        """
+        # Create instance and initialize with default values
+        obj = cls.__new__(cls)
+        obj.__init__()
+
+        # Handle ARObject inherited attributes (checksum and timestamp)
+        # Parse timestamp (XML attribute 'T')
+        timestamp_value = element.get("T")
+        if timestamp_value is not None:
+            obj.timestamp = timestamp_value
+
+        # Parse checksum (child element)
+        checksum_elem = SerializationHelper.find_child_element(element, "CHECKSUM")
+        if checksum_elem is not None:
+            checksum_value = checksum_elem.text
+            if checksum_value is not None:
+                obj.checksum = checksum_value
+
+        # Unwrap atp_variant VARIANTS/CONDITIONAL structure
+        inner_elem = SerializationHelper.deserialize_from_atp_variant(element, "EndToEndTransformationISignalProps")
+        if inner_elem is None:
+            # No wrapper structure found, return object with default values
+            return obj
+
+        # Parse data_length
+        child = SerializationHelper.find_child_element(inner_elem, "DATA-LENGTH")
+        if child is not None:
+            data_length_value = child.text
+            obj.data_length = data_length_value
+
+        # Parse max_data_length
+        child = SerializationHelper.find_child_element(inner_elem, "MAX-DATA-LENGTH")
+        if child is not None:
+            max_data_length_value = child.text
+            obj.max_data_length = max_data_length_value
+
+        # Parse min_data_length
+        child = SerializationHelper.find_child_element(inner_elem, "MIN-DATA-LENGTH")
+        if child is not None:
+            min_data_length_value = child.text
+            obj.min_data_length = min_data_length_value
+
+        # Parse source_id
+        child = SerializationHelper.find_child_element(inner_elem, "SOURCE-ID")
+        if child is not None:
+            source_id_value = child.text
+            obj.source_id = source_id_value
+
+        return obj
+
 
 
 class EndToEndTransformationISignalPropsBuilder:
