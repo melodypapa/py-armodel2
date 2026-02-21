@@ -55,6 +55,20 @@ class DdsCpServiceInstanceEvent(ARObject):
         tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(DdsCpServiceInstanceEvent, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy text from parent element
+        if parent_elem.text:
+            elem.text = parent_elem.text
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
         # Serialize dds_event_ref
         if self.dds_event_ref is not None:
             serialized = SerializationHelper.serialize_item(self.dds_event_ref, "PduTriggering")
@@ -109,9 +123,8 @@ class DdsCpServiceInstanceEvent(ARObject):
         Returns:
             Deserialized DdsCpServiceInstanceEvent object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(DdsCpServiceInstanceEvent, cls).deserialize(element)
 
         # Parse dds_event_ref
         child = SerializationHelper.find_child_element(element, "DDS-EVENT-REF")

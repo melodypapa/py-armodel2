@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_AdaptivePlatform_PlatformModuleDeployment_Firewall.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
@@ -35,13 +35,13 @@ class StateDependentFirewall(ARElement):
         """
         return False
 
-    default_action: Optional[Any]
+    default_action: Optional[FirewallActionEnum]
     firewall_rule_propses: list[FirewallRuleProps]
     firewall_state_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize StateDependentFirewall."""
         super().__init__()
-        self.default_action: Optional[Any] = None
+        self.default_action: Optional[FirewallActionEnum] = None
         self.firewall_rule_propses: list[FirewallRuleProps] = []
         self.firewall_state_refs: list[ARRef] = []
 
@@ -71,7 +71,7 @@ class StateDependentFirewall(ARElement):
 
         # Serialize default_action
         if self.default_action is not None:
-            serialized = SerializationHelper.serialize_item(self.default_action, "Any")
+            serialized = SerializationHelper.serialize_item(self.default_action, "FirewallActionEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DEFAULT-ACTION")
@@ -128,7 +128,7 @@ class StateDependentFirewall(ARElement):
         # Parse default_action
         child = SerializationHelper.find_child_element(element, "DEFAULT-ACTION")
         if child is not None:
-            default_action_value = child.text
+            default_action_value = SerializationHelper.deserialize_by_tag(child, "FirewallActionEnum")
             obj.default_action = default_action_value
 
         # Parse firewall_rule_propses (list from container "FIREWALL-RULE-PROPSES")

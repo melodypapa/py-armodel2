@@ -6,7 +6,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_AdaptivePlatform_PlatformModuleDeployment_Firewall.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
@@ -29,15 +29,15 @@ class FirewallRuleProps(ARObject):
         """
         return False
 
-    action: Optional[Any]
-    matching_egresse_refs: list[ARRef]
-    matching_refs: list[ARRef]
+    action: Optional[FirewallActionEnum]
+    matching_egress_rule_refs: list[ARRef]
+    matching_ingress_rule_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize FirewallRuleProps."""
         super().__init__()
-        self.action: Optional[Any] = None
-        self.matching_egresse_refs: list[ARRef] = []
-        self.matching_refs: list[ARRef] = []
+        self.action: Optional[FirewallActionEnum] = None
+        self.matching_egress_rule_refs: list[ARRef] = []
+        self.matching_ingress_rule_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize FirewallRuleProps to XML element.
@@ -49,9 +49,23 @@ class FirewallRuleProps(ARObject):
         tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(FirewallRuleProps, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy text from parent element
+        if parent_elem.text:
+            elem.text = parent_elem.text
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
         # Serialize action
         if self.action is not None:
-            serialized = SerializationHelper.serialize_item(self.action, "Any")
+            serialized = SerializationHelper.serialize_item(self.action, "FirewallActionEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ACTION")
@@ -63,13 +77,13 @@ class FirewallRuleProps(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize matching_egresse_refs (list to container "MATCHING-EGRESSE-REFS")
-        if self.matching_egresse_refs:
-            wrapper = ET.Element("MATCHING-EGRESSE-REFS")
-            for item in self.matching_egresse_refs:
+        # Serialize matching_egress_rule_refs (list to container "MATCHING-EGRESS-RULE-REFS")
+        if self.matching_egress_rule_refs:
+            wrapper = ET.Element("MATCHING-EGRESS-RULE-REFS")
+            for item in self.matching_egress_rule_refs:
                 serialized = SerializationHelper.serialize_item(item, "FirewallRule")
                 if serialized is not None:
-                    child_elem = ET.Element("MATCHING-EGRESSE-REF")
+                    child_elem = ET.Element("MATCHING-EGRESS-RULE-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -80,13 +94,13 @@ class FirewallRuleProps(ARObject):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize matching_refs (list to container "MATCHING-REFS")
-        if self.matching_refs:
-            wrapper = ET.Element("MATCHING-REFS")
-            for item in self.matching_refs:
+        # Serialize matching_ingress_rule_refs (list to container "MATCHING-INGRESS-RULE-REFS")
+        if self.matching_ingress_rule_refs:
+            wrapper = ET.Element("MATCHING-INGRESS-RULE-REFS")
+            for item in self.matching_ingress_rule_refs:
                 serialized = SerializationHelper.serialize_item(item, "FirewallRule")
                 if serialized is not None:
-                    child_elem = ET.Element("MATCHING-REF")
+                    child_elem = ET.Element("MATCHING-INGRESS-RULE-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -109,19 +123,18 @@ class FirewallRuleProps(ARObject):
         Returns:
             Deserialized FirewallRuleProps object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(FirewallRuleProps, cls).deserialize(element)
 
         # Parse action
         child = SerializationHelper.find_child_element(element, "ACTION")
         if child is not None:
-            action_value = child.text
+            action_value = SerializationHelper.deserialize_by_tag(child, "FirewallActionEnum")
             obj.action = action_value
 
-        # Parse matching_egresse_refs (list from container "MATCHING-EGRESSE-REFS")
-        obj.matching_egresse_refs = []
-        container = SerializationHelper.find_child_element(element, "MATCHING-EGRESSE-REFS")
+        # Parse matching_egress_rule_refs (list from container "MATCHING-EGRESS-RULE-REFS")
+        obj.matching_egress_rule_refs = []
+        container = SerializationHelper.find_child_element(element, "MATCHING-EGRESS-RULE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -133,11 +146,11 @@ class FirewallRuleProps(ARObject):
                     # Deserialize each child element dynamically based on its tag
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.matching_egresse_refs.append(child_value)
+                    obj.matching_egress_rule_refs.append(child_value)
 
-        # Parse matching_refs (list from container "MATCHING-REFS")
-        obj.matching_refs = []
-        container = SerializationHelper.find_child_element(element, "MATCHING-REFS")
+        # Parse matching_ingress_rule_refs (list from container "MATCHING-INGRESS-RULE-REFS")
+        obj.matching_ingress_rule_refs = []
+        container = SerializationHelper.find_child_element(element, "MATCHING-INGRESS-RULE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -149,7 +162,7 @@ class FirewallRuleProps(ARObject):
                     # Deserialize each child element dynamically based on its tag
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.matching_refs.append(child_value)
+                    obj.matching_ingress_rule_refs.append(child_value)
 
         return obj
 

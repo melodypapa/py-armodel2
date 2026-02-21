@@ -44,6 +44,20 @@ class NetworkSegmentIdentification(ARObject):
         tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(NetworkSegmentIdentification, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy text from parent element
+        if parent_elem.text:
+            elem.text = parent_elem.text
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
         # Serialize network
         if self.network is not None:
             serialized = SerializationHelper.serialize_item(self.network, "PositiveInteger")
@@ -70,9 +84,8 @@ class NetworkSegmentIdentification(ARObject):
         Returns:
             Deserialized NetworkSegmentIdentification object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(NetworkSegmentIdentification, cls).deserialize(element)
 
         # Parse network
         child = SerializationHelper.find_child_element(element, "NETWORK")

@@ -46,6 +46,20 @@ class LanguageSpecific(ARObject, ABC):
         tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
+        # First, call parent's serialize to handle inherited attributes (checksum, timestamp)
+        parent_elem = super(LanguageSpecific, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Copy text from parent element
+        if parent_elem.text:
+            elem.text = parent_elem.text
+
         # Serialize l as XML attribute (not child element)
         if self.l is not None:
             elem.set("L", str(self.l))
@@ -66,9 +80,8 @@ class LanguageSpecific(ARObject, ABC):
         Returns:
             Deserialized LanguageSpecific object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes (checksum, timestamp)
+        obj = super(LanguageSpecific, cls).deserialize(element)
 
         # Parse l from XML attribute (not child element)
         l_value = element.get("L")

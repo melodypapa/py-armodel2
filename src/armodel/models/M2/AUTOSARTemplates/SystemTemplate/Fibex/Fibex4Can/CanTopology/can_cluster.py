@@ -42,6 +42,20 @@ class CanCluster(ARObject):
         tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(CanCluster, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy text from parent element
+        if parent_elem.text:
+            elem.text = parent_elem.text
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
         # Create inner element to hold attributes before wrapping
         inner_elem = ET.Element("INNER")
 
@@ -61,22 +75,8 @@ class CanCluster(ARObject):
         Returns:
             Deserialized CanCluster object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
-
-        # Handle ARObject inherited attributes (checksum and timestamp)
-        # Parse timestamp (XML attribute 'T')
-        timestamp_value = element.get("T")
-        if timestamp_value is not None:
-            obj.timestamp = timestamp_value
-
-        # Parse checksum (child element)
-        checksum_elem = SerializationHelper.find_child_element(element, "CHECKSUM")
-        if checksum_elem is not None:
-            checksum_value = checksum_elem.text
-            if checksum_value is not None:
-                obj.checksum = checksum_value
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(CanCluster, cls).deserialize(element)
 
         # Unwrap atp_variant VARIANTS/CONDITIONAL structure
         inner_elem = SerializationHelper.deserialize_from_atp_variant(element, "CanCluster")

@@ -118,6 +118,20 @@ class ARRef(ARObject):
         # We use a temporary tag that will be replaced by parent
         elem = ET.Element("ARREF")
 
+        # First, call parent's serialize to handle inherited attributes (checksum, timestamp)
+        parent_elem = super(ARRef, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Copy text from parent element
+        if parent_elem.text:
+            elem.text = parent_elem.text
+
         # Set BASE attribute if present
         if self._base is not None:
             elem.set("BASE", self._base)
@@ -150,7 +164,8 @@ class ARRef(ARObject):
             Input: <PDU-REF DEST="PDU-TRIGGERING">/Path/to/PduTriggering</PDU-REF>
             Output: ARRef(dest="PDU-TRIGGERING", value="/Path/to/PduTriggering")
         """
-        ref = cls()
+        # First, call parent's deserialize to handle inherited attributes (checksum, timestamp)
+        ref = super(ARRef, cls).deserialize(element)
 
         # Get BASE attribute
         ref.base = element.get("BASE")

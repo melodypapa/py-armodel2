@@ -54,6 +54,20 @@ class EthTSynCrcFlags(ARObject):
         tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(EthTSynCrcFlags, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy text from parent element
+        if parent_elem.text:
+            elem.text = parent_elem.text
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
         # Serialize crc_correction
         if self.crc_correction is not None:
             serialized = SerializationHelper.serialize_item(self.crc_correction, "Boolean")
@@ -150,9 +164,8 @@ class EthTSynCrcFlags(ARObject):
         Returns:
             Deserialized EthTSynCrcFlags object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(EthTSynCrcFlags, cls).deserialize(element)
 
         # Parse crc_correction
         child = SerializationHelper.find_child_element(element, "CRC-CORRECTION")

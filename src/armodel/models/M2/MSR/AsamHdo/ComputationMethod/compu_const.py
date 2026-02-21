@@ -49,6 +49,20 @@ class CompuConst(ARObject):
         tag = NameConverter.to_xml_tag(self.__class__.__name__)
         elem = ET.Element(tag)
 
+        # First, call parent's serialize to handle inherited attributes (checksum, timestamp)
+        parent_elem = super(CompuConst, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
+        # Copy text from parent element
+        if parent_elem.text:
+            elem.text = parent_elem.text
+
         # Serialize compu_const_content_type (polymorphic CompuConstContent subclass)
         if self.compu_const_content_type is not None:
             serialized = self.compu_const_content_type.serialize()
@@ -72,8 +86,8 @@ class CompuConst(ARObject):
         Returns:
             Deserialized CompuConst instance with compu_const_content_type properly set
         """
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes (checksum, timestamp)
+        obj = super(CompuConst, cls).deserialize(element)
 
         # Use ModelFactory for polymorphic type resolution
         factory = ModelFactory()

@@ -36,7 +36,7 @@
       ],
       "attributes": {
         "defaultAction": {
-          "type": "any (FirewallActionEnum)",
+          "type": "FirewallActionEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
@@ -85,20 +85,20 @@
       ],
       "attributes": {
         "action": {
-          "type": "any (FirewallActionEnum)",
+          "type": "FirewallActionEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Action that is performed by the firewall if the matching fulfilled."
         },
-        "matchingEgresses": {
+        "matchingEgressRules": {
           "type": "FirewallRule",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "This element defines an egress rule expression against"
         },
-        "matchings": {
+        "matchingIngressRules": {
           "type": "FirewallRule",
           "multiplicity": "*",
           "kind": "ref",

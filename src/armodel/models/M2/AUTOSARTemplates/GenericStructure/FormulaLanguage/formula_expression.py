@@ -50,6 +50,20 @@ class FormulaExpression(ARObject, ABC):
         tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
+        # First, call parent's serialize to handle inherited attributes
+        parent_elem = super(FormulaExpression, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy text from parent element
+        if parent_elem.text:
+            elem.text = parent_elem.text
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
+
         # Serialize atp_reference_refs (list to container "ATP-REFERENCE-REFS")
         if self.atp_reference_refs:
             wrapper = ET.Element("ATP-REFERENCE-REFS")
@@ -96,9 +110,8 @@ class FormulaExpression(ARObject, ABC):
         Returns:
             Deserialized FormulaExpression object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(FormulaExpression, cls).deserialize(element)
 
         # Parse atp_reference_refs (list from container "ATP-REFERENCE-REFS")
         obj.atp_reference_refs = []
