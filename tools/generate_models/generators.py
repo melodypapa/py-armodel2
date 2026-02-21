@@ -431,10 +431,10 @@ class {class_name}(ABC):
             kind = attr_info.get("kind", "attribute")
 
             # Determine Python type
-            python_type = get_python_type(attr_type, multiplicity, package_data, is_ref)
+            python_type = get_python_type(attr_type, multiplicity, package_data, is_ref, kind)
 
             # Get Python identifier with Ref suffix if needed
-            python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity)
+            python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity, kind)
 
             # For xml_attribute and l_prefix, use private field with property
             if kind == "xml_attribute" or kind == "l_prefix":
@@ -461,7 +461,7 @@ class {class_name}(ABC):
             kind = attr_info.get("kind", "attribute")
 
             # Determine Python type
-            python_type = get_python_type(attr_type, multiplicity, package_data, is_ref)
+            python_type = get_python_type(attr_type, multiplicity, package_data, is_ref, kind)
 
             # Determine initial value based on type
             # Optional types initialize with None
@@ -475,7 +475,7 @@ class {class_name}(ABC):
                 initial_value = "None"
 
             # Get Python identifier with Ref suffix if needed
-            python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity)
+            python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity, kind)
             
             # For xml_attribute and l_prefix, use private field
             if kind == "xml_attribute" or kind == "l_prefix":
@@ -495,7 +495,7 @@ class {class_name}(ABC):
             kind = attr_info.get("kind", "attribute")
 
             if kind == "xml_attribute":
-                python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity)
+                python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity, kind)
                 private_name = f"_{python_name}"
                 # Add @xml_attribute decorator import comment
                 # Generate property with xml_attribute decorator
@@ -512,10 +512,10 @@ class {class_name}(ABC):
 
 '''
             elif kind == "l_prefix":
-                python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity)
+                python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity, kind)
                 private_name = f"_{python_name}"
                 # Determine Python type for this attribute
-                python_type = get_python_type(attr_type, multiplicity, package_data, is_ref)
+                python_type = get_python_type(attr_type, multiplicity, package_data, is_ref, kind)
                 # Extract the suffix from attribute name (e.g., "l10" → "10", "lGraphic" → "Graphic")
                 # Convert to XML tag format (e.g., "L-10", "L-GRAPHIC")
                 suffix = attr_name[1:]  # Remove the 'l' prefix
@@ -644,13 +644,14 @@ def _generate_deserialize_method(
                 print(f"DEBUG [deserialize]: class={class_name}, attr={attr_name}, is_ref={is_ref}, kind={kind}, is_ref and kind == 'reference'={is_ref and kind == 'reference'}")
 
             # Get Python identifier
-            python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity)
+            python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity, kind)
             # Convert attribute name to snake_case then to XML tag (UPPER-CASE-WITH-HYPHENS)
             snake_name = to_snake_case(attr_name)
             xml_tag = snake_name.upper().replace("_", "-")
             # Add -TREF or -REF suffix for reference attributes with multiplicity != "*"
             # Container elements (multiplicity "*") should not have -REF suffix
-            if is_ref and multiplicity != "*":
+            # Note: iref kind is handled separately below and doesn't get -REF suffix
+            if is_ref and multiplicity != "*" and kind != "iref":
                 # Use the kind field from JSON to determine the suffix
                 # "tref" -> -TREF, "ref" -> -REF
                 if kind == "tref":
@@ -670,6 +671,43 @@ def _generate_deserialize_method(
         if "{xml_tag}" in element.attrib:
             {_generate_value_extraction_code_for_attribute(effective_type, attribute_value, package_data, python_name, is_ref)}
             obj.{python_name} = {python_name}_value
+
+'''
+            elif kind == "iref":
+                # Handle iref kind - instance reference with special wrapper
+                # The outer wrapper is attribute name + -IREF
+                # Check if this is a flattened iref (AssemblySwConnector pattern)
+                # Flattened types: PPortInCompositionInstanceRef, RPortInCompositionInstanceRef
+                # These types have their children directly inside the iref wrapper, not wrapped in their own element
+                flattened_iref_types = {
+                    "PPortInCompositionInstanceRef",
+                    "RPortInCompositionInstanceRef",
+                }
+                should_flatten = attr_type in flattened_iref_types
+
+                iref_wrapper_tag = f"{xml_tag}-IREF"
+
+                if should_flatten:
+                    # Flattened type: deserialize wrapper element directly as the type
+                    code += f'''        # Parse {python_name} (instance reference from wrapper "{iref_wrapper_tag}")
+        wrapper = ARObject._find_child_element(element, "{iref_wrapper_tag}")
+        if wrapper is not None:
+            # Deserialize wrapper element directly as the type (flattened structure)
+            {python_name}_value = ARObject._deserialize_by_tag(wrapper, "{effective_type}")
+            obj.{python_name} = {python_name}_value
+
+'''
+                else:
+                    # Non-flattened type: deserialize from child element
+                    code += f'''        # Parse {python_name} (instance reference from wrapper "{iref_wrapper_tag}")
+        wrapper = ARObject._find_child_element(element, "{iref_wrapper_tag}")
+        if wrapper is not None:
+            # Get the first child element (the actual reference)
+            children = list(wrapper)
+            if children:
+                inner_elem = children[0]
+                {_generate_value_extraction_code(effective_type, "inner_elem", package_data, python_name, is_ref, kind)}
+                obj.{python_name} = {python_name}_value
 
 '''
             elif multiplicity == "*":
@@ -755,7 +793,7 @@ def _generate_deserialize_method(
 
 
 def _generate_value_extraction_code(
-    attr_type: str, element_var: str, package_data: Dict[str, Dict[str, Any]], var_name: str, is_ref: bool = False
+    attr_type: str, element_var: str, package_data: Dict[str, Dict[str, Any]], var_name: str, is_ref: bool = False, kind: str = "attribute"
 ) -> str:
     """Generate code to extract value from XML element.
 
@@ -765,6 +803,7 @@ def _generate_value_extraction_code(
         package_data: Package data dictionary
         var_name: Variable name to store the result
         is_ref: Whether this is a reference type (should use ARRef.deserialize)
+        kind: Kind of attribute (e.g., "attribute", "ref", "tref", "iref")
 
     Returns:
         Generated code for value extraction
@@ -772,7 +811,9 @@ def _generate_value_extraction_code(
     value_var = f"{var_name}_value"
 
     # Handle reference types (ARRef)
-    if is_ref:
+    # Note: iref kind represents instance references which are complex objects, not simple references
+    # For iref kind, deserialize as the actual class type, not as ARRef
+    if is_ref and kind != "iref":
         # Use ARRef.deserialize() for reference types
         return f"""{value_var} = ARRef.deserialize({element_var})"""
 
@@ -832,6 +873,11 @@ def _generate_value_extraction_code(
             # Use _deserialize_with_type for types with l_prefix attributes
             # This deserializes the element directly as the specified type
             return f'''{value_var} = ARObject._deserialize_with_type({element_var}, "{attr_type}")'''
+        elif kind == "iref":
+            # For iref kind, don't pass class_name
+            # This allows deserializing based on the actual XML tag (concrete subclass)
+            # instead of forcing the abstract base class type
+            return f'''{value_var} = ARObject._deserialize_by_tag({element_var})'''
         else:
             # Use ARObject._deserialize_by_tag to avoid TYPE_CHECKING issues
             # This doesn't require the type to be imported at runtime
@@ -1654,13 +1700,14 @@ def _generate_serialize_method(
             kind = attr_info.get("kind", "attribute")
 
             # Get Python identifier
-            python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity)
+            python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity, kind)
             # Convert attribute name to snake_case then to XML tag (UPPER-CASE-WITH-HYPHENS)
             snake_name = to_snake_case(attr_name)
             xml_tag = snake_name.upper().replace("_", "-")
             # Add -TREF or -REF suffix for reference attributes with multiplicity != "*"
             # Container elements (multiplicity "*") should not have -REF suffix
-            if is_ref and multiplicity != "*":
+            # Note: iref kind is handled separately below and doesn't get -REF suffix
+            if is_ref and multiplicity != "*" and kind != "iref":
                 # Use the kind field from JSON to determine the suffix
                 # "tref" -> -TREF, "ref" -> -REF
                 if kind == "tref":
@@ -1678,6 +1725,46 @@ def _generate_serialize_method(
                 code += f'''        # Serialize {python_name} as XML attribute
         if self.{python_name} is not None:
             elem.attrib["{xml_tag}"] = str(self.{python_name})
+
+'''
+            elif kind == "iref":
+                # Handle iref kind - instance reference with special wrapper
+                # The outer wrapper is attribute name + -IREF
+                # Check if this is a flattened iref (AssemblySwConnector pattern)
+                # Flattened types: PPortInCompositionInstanceRef, RPortInCompositionInstanceRef
+                # These types have their children directly inside the iref wrapper, not wrapped in their own element
+                flattened_iref_types = {
+                    "PPortInCompositionInstanceRef",
+                    "RPortInCompositionInstanceRef",
+                }
+                should_flatten = attr_type in flattened_iref_types
+
+                iref_wrapper_tag = f"{xml_tag}-IREF"
+                if should_flatten:
+                    # Flattened type: flatten children directly into iref wrapper
+                    code += f'''        # Serialize {python_name} (instance reference with wrapper "{iref_wrapper_tag}")
+        if self.{python_name} is not None:
+            serialized = ARObject._serialize_item(self.{python_name}, "{effective_type}")
+            if serialized is not None:
+                # Wrap in IREF wrapper element
+                iref_wrapper = ET.Element("{iref_wrapper_tag}")
+                # Flatten: append children of serialized element directly to iref wrapper
+                for child in serialized:
+                    iref_wrapper.append(child)
+                elem.append(iref_wrapper)
+
+'''
+                else:
+                    # Non-flattened type: wrap in its own element
+                    code += f'''        # Serialize {python_name} (instance reference with wrapper "{iref_wrapper_tag}")
+        if self.{python_name} is not None:
+            serialized = ARObject._serialize_item(self.{python_name}, "{effective_type}")
+            if serialized is not None:
+                # Wrap in IREF wrapper element
+                iref_wrapper = ET.Element("{iref_wrapper_tag}")
+                # Append the serialized element as a child (don't flatten it)
+                iref_wrapper.append(serialized)
+                elem.append(iref_wrapper)
 
 '''
             elif multiplicity == "*":
@@ -1864,17 +1951,19 @@ def generate_primitive_code(
     for attr_name, attr_info in attributes.items():
         attr_type = attr_info["type"]
         multiplicity = attr_info["multiplicity"]
+        kind = attr_info.get("kind", "attribute")
+        is_ref = attr_info.get("is_ref", False)
 
         # Determine Python type for the attribute
         if is_primitive_type(attr_type, package_data):
-            attribute_type = get_python_type(attr_type, multiplicity, package_data)
+            attribute_type = get_python_type(attr_type, multiplicity, package_data, False, kind)
             primitive_imports.add(attr_type)
         elif is_enum_type(attr_type, package_data):
-            attribute_type = get_python_type(attr_type, multiplicity, package_data)
+            attribute_type = get_python_type(attr_type, multiplicity, package_data, False, kind)
             enum_imports.add(attr_type)
         else:
             # Class type
-            attribute_type = get_python_type(attr_type, multiplicity, package_data)
+            attribute_type = get_python_type(attr_type, multiplicity, package_data, is_ref, kind)
 
         attribute_types[attr_name] = {
             "type": attribute_type,

@@ -44,7 +44,7 @@ def is_enum_type(type_name: str, package_data: Dict[str, Dict[str, Any]]) -> boo
 
 
 def get_python_type(
-    type_name: str, multiplicity: str, package_data: Dict[str, Dict[str, Any]], is_ref: bool = False
+    type_name: str, multiplicity: str, package_data: Dict[str, Dict[str, Any]], is_ref: bool = False, kind: str = "attribute"
 ) -> str:
     """Get Python type annotation for AUTOSAR type.
 
@@ -53,6 +53,7 @@ def get_python_type(
         multiplicity: Multiplicity (e.g., "0..1", "*", "1")
         package_data: Package data dictionary
         is_ref: Whether this is a reference type (wraps in ARRef)
+        kind: Kind of attribute (e.g., "attribute", "ref", "tref", "iref")
 
     Returns:
         Python type annotation string
@@ -83,7 +84,9 @@ def get_python_type(
 
     # Handle reference types - wrap in ARRef only for class types
     # Primitive types and enum types are referenced by their string values, not by ARRef
-    if is_ref and not is_primitive_type(type_name, package_data) and not is_enum_type(type_name, package_data) and type_name != "Any":
+    # Note: iref kind represents instance references which are complex objects, not simple references
+    # For iref kind, use the actual class type directly, not wrapped in ARRef
+    if is_ref and kind != "iref" and not is_primitive_type(type_name, package_data) and not is_enum_type(type_name, package_data) and type_name != "Any":
         base_type = "ARRef"
 
     # Apply multiplicity

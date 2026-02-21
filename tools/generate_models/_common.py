@@ -87,16 +87,17 @@ def get_python_identifier(name: str) -> Tuple[str, Optional[str]]:
         return snake_name, None
 
 
-def get_python_identifier_with_ref(name: str, is_ref: bool = False, multiplicity: str = "1") -> str:
+def get_python_identifier_with_ref(name: str, is_ref: bool = False, multiplicity: str = "1", kind: str = "attribute") -> str:
     """Convert AUTOSAR identifier to Python identifier, handling reference suffix.
 
     Args:
         name: AUTOSAR identifier (e.g., "SHORT-NAME" or "SW-ADDR-METHOD")
-        is_ref: Whether this is a reference type (adds '_ref' suffix if not present)
+        is_ref: Whether this is a reference type (adds suffix if not present)
         multiplicity: Multiplicity of the attribute (e.g., "*", "0..1", "1")
+        kind: Kind of attribute (e.g., "attribute", "ref", "tref", "iref")
 
     Returns:
-        Python identifier (e.g., "short_name" or "sw_addr_method_ref")
+        Python identifier (e.g., "short_name" or "sw_addr_method_ref" or "inner_port_iref")
 
     Examples:
         >>> get_python_identifier_with_ref("SHORT-NAME", False)
@@ -105,24 +106,31 @@ def get_python_identifier_with_ref(name: str, is_ref: bool = False, multiplicity
         "sw_addr_method_ref"
         >>> get_python_identifier_with_ref("indications", True, "*")
         "indication_refs"  # Singularize, then add plural s and _ref
+        >>> get_python_identifier_with_ref("innerPort", True, "0..1", "iref")
+        "inner_port_iref"
     """
     # Convert to snake_case first
     identifier = to_snake_case(name)
 
     # If it's a reference, handle the suffix
     if is_ref:
-        if not identifier.endswith("_ref"):
-            # For list types (multiplicity "*"), singularize first
-            # This ensures "indications" becomes "indication" before adding "s" + "_ref"
+        # Determine the suffix based on kind
+        # iref kind uses _iref suffix, other reference kinds use _ref suffix
+        suffix = "_iref" if kind == "iref" else "_ref"
+        
+        if not identifier.endswith(suffix):
+            # For list types (multiplicity "*"), singularize then add plural suffix
             if multiplicity in ["*", "0..*"]:
                 # Remove trailing 's' to singularize (simple heuristic)
                 if identifier.endswith("s"):
                     identifier = identifier[:-1]
-                # Add plural 's' and '_ref' suffix (combined as '_refs')
-                identifier = f"{identifier}_refs"
+                # Add plural suffix (e.g., _refs or _irefs)
+                # For ref kind: singular + _refs (not singular + s + _ref)
+                # For iref kind: singular + _irefs
+                identifier = f"{identifier}{suffix}s"
             else:
-                # For single items, just add '_ref'
-                identifier = f"{identifier}_ref"
+                # For single items, just add the suffix
+                identifier = f"{identifier}{suffix}"
 
     # Check if the resulting identifier is a Python keyword
     python_keywords = {

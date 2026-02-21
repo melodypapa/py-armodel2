@@ -16,11 +16,12 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.sw_conne
     SwConnector,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_provided_port_prototype import (
-    AbstractProvidedPortPrototype,
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.InstanceRefs.p_port_in_composition_instance_ref import (
+    PPortInCompositionInstanceRef,
 )
-from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_required_port_prototype import (
-    AbstractRequiredPortPrototype,
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.InstanceRefs.r_port_in_composition_instance_ref import (
+    RPortInCompositionInstanceRef,
 )
 
 
@@ -36,13 +37,13 @@ class AssemblySwConnector(SwConnector):
         """
         return False
 
-    provider_instance_ref: Optional[AbstractProvidedPortPrototype]
-    requester_instance_ref: Optional[AbstractRequiredPortPrototype]
+    provider_iref: Optional[PPortInCompositionInstanceRef]
+    requester_iref: Optional[RPortInCompositionInstanceRef]
     def __init__(self) -> None:
         """Initialize AssemblySwConnector."""
         super().__init__()
-        self.provider_instance_ref: Optional[AbstractProvidedPortPrototype] = None
-        self.requester_instance_ref: Optional[AbstractRequiredPortPrototype] = None
+        self.provider_iref: Optional[PPortInCompositionInstanceRef] = None
+        self.requester_iref: Optional[RPortInCompositionInstanceRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize AssemblySwConnector to XML element.
@@ -64,33 +65,27 @@ class AssemblySwConnector(SwConnector):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize provider_instance_ref
-        if self.provider_instance_ref is not None:
-            serialized = ARObject._serialize_item(self.provider_instance_ref, "AbstractProvidedPortPrototype")
+        # Serialize provider_iref (instance reference with wrapper "PROVIDER-IREF")
+        if self.provider_iref is not None:
+            serialized = ARObject._serialize_item(self.provider_iref, "PPortInCompositionInstanceRef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("PROVIDER-INSTANCE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                # Wrap in IREF wrapper element
+                iref_wrapper = ET.Element("PROVIDER-IREF")
+                # Flatten: append children of serialized element directly to iref wrapper
                 for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                    iref_wrapper.append(child)
+                elem.append(iref_wrapper)
 
-        # Serialize requester_instance_ref
-        if self.requester_instance_ref is not None:
-            serialized = ARObject._serialize_item(self.requester_instance_ref, "AbstractRequiredPortPrototype")
+        # Serialize requester_iref (instance reference with wrapper "REQUESTER-IREF")
+        if self.requester_iref is not None:
+            serialized = ARObject._serialize_item(self.requester_iref, "RPortInCompositionInstanceRef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("REQUESTER-INSTANCE-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
+                # Wrap in IREF wrapper element
+                iref_wrapper = ET.Element("REQUESTER-IREF")
+                # Flatten: append children of serialized element directly to iref wrapper
                 for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                    iref_wrapper.append(child)
+                elem.append(iref_wrapper)
 
         return elem
 
@@ -107,17 +102,19 @@ class AssemblySwConnector(SwConnector):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(AssemblySwConnector, cls).deserialize(element)
 
-        # Parse provider_instance_ref
-        child = ARObject._find_child_element(element, "PROVIDER-INSTANCE-REF")
-        if child is not None:
-            provider_instance_ref_value = ARObject._deserialize_by_tag(child, "AbstractProvidedPortPrototype")
-            obj.provider_instance_ref = provider_instance_ref_value
+        # Parse provider_iref (instance reference from wrapper "PROVIDER-IREF")
+        wrapper = ARObject._find_child_element(element, "PROVIDER-IREF")
+        if wrapper is not None:
+            # Deserialize wrapper element directly as the type (flattened structure)
+            provider_iref_value = ARObject._deserialize_by_tag(wrapper, "PPortInCompositionInstanceRef")
+            obj.provider_iref = provider_iref_value
 
-        # Parse requester_instance_ref
-        child = ARObject._find_child_element(element, "REQUESTER-INSTANCE-REF")
-        if child is not None:
-            requester_instance_ref_value = ARObject._deserialize_by_tag(child, "AbstractRequiredPortPrototype")
-            obj.requester_instance_ref = requester_instance_ref_value
+        # Parse requester_iref (instance reference from wrapper "REQUESTER-IREF")
+        wrapper = ARObject._find_child_element(element, "REQUESTER-IREF")
+        if wrapper is not None:
+            # Deserialize wrapper element directly as the type (flattened structure)
+            requester_iref_value = ARObject._deserialize_by_tag(wrapper, "RPortInCompositionInstanceRef")
+            obj.requester_iref = requester_iref_value
 
         return obj
 
