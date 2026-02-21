@@ -733,7 +733,8 @@ def _generate_deserialize_method(
 '''
                     
                     # For reference lists, check if child is a reference element and use ARRef.deserialize()
-                    # For non-reference lists, deserialize each child element dynamically based on its tag
+                    # For primitive/enum lists, extract text directly
+                    # For non-reference class lists, deserialize each child element dynamically based on its tag
                     if is_ref:
                         code += '''                # Check if child is a reference element (ends with -REF or -TREF)
                 child_tag = ARObject._strip_namespace(child.tag)
@@ -744,7 +745,18 @@ def _generate_deserialize_method(
                     # Deserialize each child element dynamically based on its tag
                     child_value = ARObject._deserialize_by_tag(child, None)
 '''
+                    elif is_primitive_type(attr_type, package_data):
+                        # Simple primitive type - extract text directly
+                        code += f'''                # Extract primitive value ({attr_type}) as text
+                child_value = child.text
+'''
+                    elif is_enum_type(attr_type, package_data):
+                        # Enum type - use deserialize method for proper conversion
+                        code += f'''                # Extract enum value ({attr_type})
+                child_value = {attr_type}.deserialize(child)
+'''
                     else:
+                        # Complex object type - deserialize dynamically
                         code += '''                # Deserialize each child element dynamically based on its tag
                 child_value = ARObject._deserialize_by_tag(child, None)
 '''
@@ -1750,8 +1762,6 @@ def _generate_serialize_method(
                 
                 if should_flatten:
                     # Flattened type: flatten children directly into iref wrapper
-                    code += f'''        # Serialize {python_name} (instance reference with wrapper "{iref_wrapper_tag}")
-        if {condition}:
             serialized = ARObject._serialize_item(self.{python_name}, "{effective_type}")
             if serialized is not None:
                 # Wrap in IREF wrapper element
@@ -1764,8 +1774,6 @@ def _generate_serialize_method(
 '''
                 else:
                     # Non-flattened type: wrap in its own element
-                    code += f'''        # Serialize {python_name} (instance reference with wrapper "{iref_wrapper_tag}")
-        if {condition}:
             serialized = ARObject._serialize_item(self.{python_name}, "{effective_type}")
             if serialized is not None:
                 # Wrap in IREF wrapper element
@@ -1800,7 +1808,8 @@ def _generate_serialize_method(
 '''
                     
                     # For reference lists, wrap each item in a child element with -REF suffix
-                    # For non-reference lists, append the serialized item directly (it already has correct tag)
+                    # For primitive/enum lists, wrap each item in a child element with singular tag name
+                    # For complex object lists, append the serialized item directly (it already has correct tag)
                     if is_ref:
                         singular = xml_tag[:-1]  # Remove trailing 'S'
                         # Use the kind field from JSON to determine the suffix
@@ -1818,7 +1827,20 @@ def _generate_serialize_method(
                         child_elem.append(child)
                     wrapper.append(child_elem)
 '''
+                    elif is_primitive_type(attr_type, package_data) or is_enum_type(attr_type, package_data):
+                        # Primitive or enum type - wrap in child element with singular tag name
+                        singular = xml_tag[:-1]  # Remove trailing 'S'
+                        code += f'''                    child_elem = ET.Element("{singular}")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
+'''
                     else:
+                        # Complex object type - append directly (already has correct tag)
                         code += '''                    wrapper.append(serialized)
 '''
                     

@@ -103,7 +103,14 @@ class StructuredReq(Paginateable):
             for item in self.applies_tos:
                 serialized = ARObject._serialize_item(item, "StandardNameEnum")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("APPLIES-TO")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -298,8 +305,8 @@ class StructuredReq(Paginateable):
         container = ARObject._find_child_element(element, "APPLIES-TOS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Extract enum value (StandardNameEnum)
+                child_value = StandardNameEnum.deserialize(child)
                 if child_value is not None:
                     obj.applies_tos.append(child_value)
 

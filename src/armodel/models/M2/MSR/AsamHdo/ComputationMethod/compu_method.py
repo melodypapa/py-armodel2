@@ -60,8 +60,8 @@ class CompuMethod(ARElement):
     def serialize(self) -> ET.Element:
         """Serialize CompuMethod to XML element.
 
-        Handles the @xml_element_tag decorated properties by directly
-        serializing the Compu objects without creating additional wrapper tags.
+        Handles custom serialization for Compu objects by directly
+        serializing them without creating additional wrapper tags.
 
         Returns:
             xml.etree.ElementTree.Element representing this CompuMethod

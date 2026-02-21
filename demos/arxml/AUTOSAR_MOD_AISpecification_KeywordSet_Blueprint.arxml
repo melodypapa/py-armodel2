@@ -34,9 +34,7 @@
                       <LONG-NAME>
                         <L-4 L="EN">Abnormal</L-4>
                       </LONG-NAME>
-                      <DESC>
-                        <L-2 L="EN"/>
-                      </DESC>
+                      <DESC></DESC>
                       <ABBR-NAME>Abnorm</ABBR-NAME>
                       <CLASSIFICATIONS>
                         <CLASSIFICATION>Condition-Qualifier</CLASSIFICATION>
@@ -47,9 +45,7 @@
                       <LONG-NAME>
                         <L-4 L="EN">Accurate</L-4>
                       </LONG-NAME>
-                      <DESC>
-                        <L-2 L="EN"/>
-                      </DESC>
+                      <DESC></DESC>
                       <ABBR-NAME>Acrt</ABBR-NAME>
                       <CLASSIFICATIONS>
                         <CLASSIFICATION>Condition-Qualifier</CLASSIFICATION>
@@ -60,9 +56,7 @@
                       <LONG-NAME>
                         <L-4 L="EN">Adapted</L-4>
                       </LONG-NAME>
-                      <DESC>
-                        <L-2 L="EN"/>
-                      </DESC>
+                      <DESC></DESC>
                       <ABBR-NAME>Adpd</ABBR-NAME>
                       <CLASSIFICATIONS>
                         <CLASSIFICATION>Condition-Qualifier</CLASSIFICATION>
@@ -73,9 +67,7 @@
                       <LONG-NAME>
                         <L-4 L="EN">Aged</L-4>
                       </LONG-NAME>
-                      <DESC>
-                        <L-2 L="EN"/>
-                      </DESC>
+                      <DESC></DESC>
                       <ABBR-NAME>Aged</ABBR-NAME>
                       <CLASSIFICATIONS>
                         <CLASSIFICATION>Condition-Qualifier</CLASSIFICATION>
@@ -86,9 +78,7 @@
                       <LONG-NAME>
                         <L-4 L="EN">Any</L-4>
                       </LONG-NAME>
-                      <DESC>
-                        <L-2 L="EN"/>
-                      </DESC>
+                      <DESC></DESC>
                       <ABBR-NAME>Any</ABBR-NAME>
                       <CLASSIFICATIONS>
                         <CLASSIFICATION>Condition-Qualifier</CLASSIFICATION>
@@ -99,9 +89,7 @@
                       <LONG-NAME>
                         <L-4 L="EN">Approach</L-4>
                       </LONG-NAME>
-                      <DESC>
-                        <L-2 L="EN"/>
-                      </DESC>
+                      <DESC></DESC>
                       <ABBR-NAME>Appch</ABBR-NAME>
                       <CLASSIFICATIONS>
                         <CLASSIFICATION>Action-PhysicalType</CLASSIFICATION>
@@ -112,9 +100,7 @@
                       <LONG-NAME>
                         <L-4 L="EN">Approximate</L-4>
                       </LONG-NAME>
-                      <DESC>
-                        <L-2 L="EN"/>
-                      </DESC>
+                      <DESC></DESC>
                       <ABBR-NAME>Approx</ABBR-NAME>
                       <CLASSIFICATIONS>
                         <CLASSIFICATION>Condition-Qualifier</CLASSIFICATION>
@@ -216,9 +202,7 @@
                       <LONG-NAME>
                         <L-4 L="EN">Backup</L-4>
                       </LONG-NAME>
-                      <DESC>
-                        <L-2 L="EN"/>
-                      </DESC>
+                      <DESC></DESC>
                       <ABBR-NAME>Bkup</ABBR-NAME>
                       <CLASSIFICATIONS>
                         <CLASSIFICATION>Condition-Qualifier</CLASSIFICATION>
@@ -229,9 +213,7 @@
                       <LONG-NAME>
                         <L-4 L="EN">Bulb</L-4>
                       </LONG-NAME>
-                      <DESC>
-                        <L-2 L="EN"/>
-                      </DESC>
+                      <DESC></DESC>
                       <ABBR-NAME>Blb</ABBR-NAME>
                       <CLASSIFICATIONS>
                         <CLASSIFICATION>Mean-Environment-Device</CLASSIFICATION>
@@ -255,9 +237,7 @@
                       <LONG-NAME>
                         <L-4 L="EN">Caloric</L-4>
                       </LONG-NAME>
-                      <DESC>
-                        <L-2 L="EN"/>
-                      </DESC>
+                      <DESC></DESC>
                       <ABBR-NAME>Calrc</ABBR-NAME>
                       <CLASSIFICATIONS>
                         <CLASSIFICATION>Condition-Qualifier</CLASSIFICATION>
@@ -320,9 +300,7 @@
                       <LONG-NAME>
                         <L-4 L="EN">Disabled</L-4>
                       </LONG-NAME>
-                      <DESC>
-                        <L-2 L="EN"/>
-                      </DESC>
+                      <DESC></DESC>
                       <ABBR-NAME>Disad</ABBR-NAME>
                       <CLASSIFICATIONS>
                         <CLASSIFICATION>Action-PhysicalType</CLASSIFICATION>
@@ -372,9 +350,7 @@
                       <LONG-NAME>
                         <L-4 L="EN">Hydrocarbon</L-4>
                       </LONG-NAME>
-                      <DESC>
-                        <L-2 L="EN"/>
-                      </DESC>
+                      <DESC></DESC>
                       <ABBR-NAME>HC</ABBR-NAME>
                       <CLASSIFICATIONS>
                         <CLASSIFICATION>Preposition</CLASSIFICATION>
@@ -398,9 +374,7 @@
                       <LONG-NAME>
                         <L-4 L="EN">Inaccurate</L-4>
                       </LONG-NAME>
-                      <DESC>
-                        <L-2 L="EN"/>
-                      </DESC>
+                      <DESC></DESC>
                       <ABBR-NAME>Inacrt</ABBR-NAME>
                       <CLASSIFICATIONS>
                         <CLASSIFICATION>Condition-Qualifier</CLASSIFICATION>
@@ -450,9 +424,7 @@
                       <LONG-NAME>
                         <L-4 L="EN">Progression</L-4>
                       </LONG-NAME>
-                      <DESC>
-                        <L-2 L="EN"/>
-                      </DESC>
+                      <DESC></DESC>
                       <ABBR-NAME>Progsn</ABBR-NAME>
                       <CLASSIFICATIONS>
                         <CLASSIFICATION>Condition-Qualifier</CLASSIFICATION>
@@ -463,9 +435,7 @@
                       <LONG-NAME>
                         <L-4 L="EN">Reduce</L-4>
                       </LONG-NAME>
-                      <DESC>
-                        <L-2 L="EN"/>
-                      </DESC>
+                      <DESC></DESC>
                       <ABBR-NAME>Red</ABBR-NAME>
                       <CLASSIFICATIONS>
                         <CLASSIFICATION>Condition-Qualifier</CLASSIFICATION>
@@ -541,9 +511,7 @@
                       <LONG-NAME>
                         <L-4 L="EN">Tow</L-4>
                       </LONG-NAME>
-                      <DESC>
-                        <L-2 L="EN"/>
-                      </DESC>
+                      <DESC></DESC>
                       <ABBR-NAME>Tow</ABBR-NAME>
                       <CLASSIFICATIONS>
                         <CLASSIFICATION>Action-PhysicalType</CLASSIFICATION>
@@ -554,9 +522,7 @@
                       <LONG-NAME>
                         <L-4 L="EN">Under</L-4>
                       </LONG-NAME>
-                      <DESC>
-                        <L-2 L="EN"/>
-                      </DESC>
+                      <DESC></DESC>
                       <ABBR-NAME>Under</ABBR-NAME>
                       <CLASSIFICATIONS>
                         <CLASSIFICATION>Condition-Qualifier</CLASSIFICATION>
@@ -567,9 +533,7 @@
                       <LONG-NAME>
                         <L-4 L="EN">Unlimited</L-4>
                       </LONG-NAME>
-                      <DESC>
-                        <L-2 L="EN"/>
-                      </DESC>
+                      <DESC></DESC>
                       <ABBR-NAME>Unlim</ABBR-NAME>
                       <CLASSIFICATIONS>
                         <CLASSIFICATION>Condition-Qualifier</CLASSIFICATION>
@@ -11571,9 +11535,7 @@ Examples: EngN = Engine speed [rpm], WhlN = Wheel speed [rpm]</L-2>
                       <LONG-NAME>
                         <L-4 L="EN">Not</L-4>
                       </LONG-NAME>
-                      <DESC>
-                        <L-2 L="EN"/>
-                      </DESC>
+                      <DESC></DESC>
                       <ABBR-NAME>Not</ABBR-NAME>
                       <CLASSIFICATIONS>
                         <CLASSIFICATION>Preposition</CLASSIFICATION>

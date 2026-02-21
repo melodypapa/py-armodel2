@@ -606,6 +606,80 @@ The following classes are **NOT** auto-generated and must be maintained manually
 - The code generator explicitly skips these classes to prevent accidental overwrites
 - MultiLanguage classes require custom deserialization logic for the l_prefix pattern
 
+### Fixing Issues in Generated Code
+
+**CRITICAL: Never directly edit generated code in `src/armodel/models/M2/`**
+
+When you find an issue in a generated class file:
+1. **Do NOT** modify the generated file directly - your changes will be overwritten when the models are regenerated
+2. **DO** fix the issue in the code generator at `tools/generate_models/`
+3. **DO** regenerate the models after fixing the generator
+4. **DO** run tests to verify the fix works correctly
+
+**Workflow for Fixing Generated Code Issues:**
+
+```bash
+# 1. Identify the issue in the generated code
+# Example: Collection.py has incorrect serialization
+
+# 2. Find and fix the root cause in the code generator
+# Edit: tools/generate_models/generators.py
+
+# 3. Regenerate all models
+python -m tools.generate_models --members --classes --enums --primitives
+
+# 4. Run verification tests
+ruff check src/
+mypy src/
+PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest
+```
+
+**Key Generator Files:**
+- `tools/generate_models/generators.py` - Core code generation functions (`generate_class_code()`, `generate_builder_code()`, etc.)
+- `tools/generate_models/type_utils.py` - Type-related utilities (`get_python_type()`, `detect_circular_import()`, etc.)
+- `tools/generate_models/_common.py` - Common helper functions (`get_python_identifier()`, `to_snake_case()`, etc.)
+- `tools/generate_models/parsers.py` - JSON/YAML parsing functions
+- `tools/generate_models/main.py` - Entry point for code generation
+- `tools/generate_models/utils.py` - Directory structure utilities
+- `tools/skip_classes.yaml` - Configuration for classes to skip and force TYPE_CHECKING imports
+
+**Common Generator Fixes:**
+- **Type issues**: Fix `get_python_type()` in `type_utils.py` to handle edge cases
+- **Import issues**: Fix `get_type_import_path()` or circular import detection in `type_utils.py`
+- **Serialization issues**: Fix `_generate_serialize_method()` or `_generate_deserialize_method()` in `generators.py`
+- **Name conversion issues**: Fix `get_python_identifier()` or `get_python_identifier_with_ref()` in `_common.py`
+- **Attribute handling**: Fix how attributes are parsed and generated in `generate_class_code()`
+
+**When to Regenerate Models:**
+
+Regenerate models whenever you modify:
+- Any file in `tools/generate_models/` (except README.md)
+- `tools/skip_classes.yaml`
+- JSON mapping files in `docs/json/` (rare - these come from AUTOSAR schema)
+
+**Verification After Generator Changes:**
+
+Always run the full verification pipeline after modifying generators:
+```bash
+# 1. Regenerate models
+python -m tools.generate_models --members --classes --enums --primitives
+
+# 2. Regenerate YAML mappings (if model structure changed)
+python tools/generate_model_mappings.py
+
+# 3. Run linting
+ruff check src/ tools/
+
+# 4. Run type checking
+mypy src/
+
+# 5. Run all tests
+PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest
+
+# 6. Run binary comparison tests (critical for serialization verification)
+PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest tests/integration/test_binary_comparison.py -v
+```
+
 ## Python Version Support
 
 - **Minimum**: Python 3.9

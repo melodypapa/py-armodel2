@@ -134,7 +134,14 @@ class CommunicationConnector(Identifiable, ABC):
             for item in self.pnc_filter_arrays:
                 serialized = ARObject._serialize_item(item, "PositiveInteger")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("PNC-FILTER-ARRAY")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -200,8 +207,8 @@ class CommunicationConnector(Identifiable, ABC):
         container = ARObject._find_child_element(element, "PNC-FILTER-ARRAYS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Extract primitive value (PositiveInteger) as text
+                child_value = child.text
                 if child_value is not None:
                     obj.pnc_filter_arrays.append(child_value)
 

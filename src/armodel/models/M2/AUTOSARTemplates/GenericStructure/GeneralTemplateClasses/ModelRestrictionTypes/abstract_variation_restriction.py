@@ -56,7 +56,14 @@ class AbstractVariationRestriction(ARObject, ABC):
             for item in self.valid_bindings:
                 serialized = ARObject._serialize_item(item, "FullBindingTimeEnum")
                 if serialized is not None:
-                    wrapper.append(serialized)
+                    child_elem = ET.Element("VALID-BINDING")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -95,8 +102,8 @@ class AbstractVariationRestriction(ARObject, ABC):
         container = ARObject._find_child_element(element, "VALID-BINDINGS")
         if container is not None:
             for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                # Extract enum value (FullBindingTimeEnum)
+                child_value = FullBindingTimeEnum.deserialize(child)
                 if child_value is not None:
                     obj.valid_bindings.append(child_value)
 

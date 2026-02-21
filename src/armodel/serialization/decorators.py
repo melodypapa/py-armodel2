@@ -82,33 +82,3 @@ def l_prefix(xml_tag: str) -> Callable[[Any], Any]:
         attr_or_func._l_prefix_tag = xml_tag  # type: ignore[union-attr]
         return attr_or_func
     return decorator
-
-
-def polymorphic_flattened(mapping: dict[str, str]) -> Callable[[Any], Any]:
-    """Decorator to mark an attribute as having multiple flattened child element representations.
-
-    This decorator is used for attributes that can appear in multiple XML forms:
-    - Wrapped form: <WRAPPER-TAG><CHILD-TAG>...</CHILD-TAG></WRAPPER-TAG>
-    - Flattened form: <CHILD-TAG>...</CHILD-TAG> (wrapper omitted)
-
-    The decorator maps flattened child XML tags to their wrapper class names.
-    During deserialization, if the wrapper is missing, it will be automatically created.
-
-    Usage:
-        class CompuScale(ARObject):
-            @polymorphic_flattened({
-                "COMPU-CONST": "CompuScaleConstantContents",
-                "COMPU-RATIONAL-COEFFS": "CompuScaleRationalFormula"
-            })
-            compu_scale_contents: Optional[CompuScaleContents] = None
-
-    Args:
-        mapping: Dictionary mapping flattened child XML tags to wrapper class names
-
-    Returns:
-        Decorator that sets _polymorphic_flattened mapping on the attribute
-    """
-    def decorator(attr_or_func: Any) -> Any:
-        attr_or_func._polymorphic_flattened = mapping  # type: ignore[union-attr]
-        return attr_or_func
-    return decorator
