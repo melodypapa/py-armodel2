@@ -86,7 +86,7 @@ class CompuMethod(ARElement):
         # Serialize unit (UNIT-REF is a reference, not a UNIT element)
         # Must come before COMPU-INTERNAL-TO-PHYS to match original XML order
         if self.unit is not None:
-            serialized = super(CompuMethod, self)._serialize_item(self.unit, "ARRef")
+            serialized = SerializationHelper.serialize_item(self.unit, "ARRef")
             if serialized is not None:
                 # ARRef.serialize() returns a generic element, we need to set the correct tag
                 serialized.tag = "UNIT-REF"
@@ -115,7 +115,7 @@ class CompuMethod(ARElement):
 
         # Serialize display_format
         if self.display_format is not None:
-            serialized = super(CompuMethod, self)._serialize_item(self.display_format, "DisplayFormatString")
+            serialized = SerializationHelper.serialize_item(self.display_format, "DisplayFormatString")
             if serialized is not None:
                 elem.append(serialized)
 
