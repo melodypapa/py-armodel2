@@ -22,9 +22,14 @@ from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.HwElementCategory.hw
 from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.HwElementCategory.hw_category import (
     HwCategory,
 )
-from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.HwElementCategory.hw_type import (
-    HwType,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.HwElementCategory.hw_type import (
+        HwType,
+    )
+
+
+
 from abc import ABC, abstractmethod
 
 

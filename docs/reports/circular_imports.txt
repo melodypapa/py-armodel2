@@ -1,0 +1,568 @@
+======================================================================
+Circular Import Detection Report
+======================================================================
+Total cycles found: 17
+
+Cycle #1:
+----------------------------------------------------------------------
+  1. ARList
+     File: src/armodel/models/M2/MSR/Documentation/BlockElements/ListElements/ar_list.py
+     Line: 1
+     Imports: TraceableText
+
+  2. TraceableText
+     File: src/armodel/models/M2/MSR/Documentation/BlockElements/RequirementsTracing/traceable_text.py
+     Line: 1
+     Imports: Note
+
+  3. Note
+     File: src/armodel/models/M2/MSR/Documentation/BlockElements/Note/note.py
+     Line: 1
+     Imports: LabeledItem
+
+  4. LabeledItem
+     File: src/armodel/models/M2/MSR/Documentation/BlockElements/ListElements/labeled_item.py
+     Line: 1
+     Imports: LabeledList
+
+  5. LabeledList
+     File: src/armodel/models/M2/MSR/Documentation/BlockElements/ListElements/labeled_list.py
+     Line: 1
+     Imports: DefItem
+
+  6. DefItem
+     File: src/armodel/models/M2/MSR/Documentation/BlockElements/ListElements/def_item.py
+     Line: 1
+     Imports: DefList
+
+  7. DefList
+     File: src/armodel/models/M2/MSR/Documentation/BlockElements/ListElements/def_list.py
+     Line: 1
+     Imports: MsrQueryP2
+
+  8. MsrQueryP2
+     File: src/armodel/models/M2/MSR/Documentation/MsrQuery/msr_query_p2.py
+     Line: 1
+     Imports: StructuredReq
+
+  9. StructuredReq
+     File: src/armodel/models/M2/MSR/Documentation/BlockElements/RequirementsTracing/structured_req.py
+     Line: 1
+     Imports: DocumentationBlock
+
+  10. DocumentationBlock
+     File: src/armodel/models/M2/MSR/Documentation/BlockElements/documentation_block.py
+     Line: 1
+     Imports: Item
+
+  11. Item
+     File: src/armodel/models/M2/MSR/Documentation/BlockElements/ListElements/item.py
+     Line: 1
+     Imports: ARList
+
+Suggested fix:
+  Move import of 'TraceableText' to TYPE_CHECKING in 'ARList'
+  Add to tools/skip_classes.yaml:
+    "ARList": "*"
+    "TraceableText": "*"
+    "Note": "*"
+    "LabeledItem": "*"
+    "LabeledList": "*"
+    "DefItem": "*"
+    "DefList": "*"
+    "MsrQueryP2": "*"
+    "StructuredReq": "*"
+    "DocumentationBlock": "*"
+    "Item": "*"
+
+Cycle #2:
+----------------------------------------------------------------------
+  1. ARPackage
+     File: src/armodel/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ARPackage/ar_package.py
+     Line: 1
+     Imports: ReferenceBase
+
+  2. ReferenceBase
+     File: src/armodel/models/M2/AUTOSARTemplates/GenericStructure/GeneralTemplateClasses/ARPackage/reference_base.py
+     Line: 1
+     Imports: ARPackage
+
+Suggested fix:
+  Move import of 'ReferenceBase' to TYPE_CHECKING in 'ARPackage'
+  Add to tools/skip_classes.yaml:
+    "ARPackage": "*"
+    "ReferenceBase": "*"
+
+Cycle #3:
+----------------------------------------------------------------------
+  1. AbstractImplementationDataType
+     File: src/armodel/models/M2/AUTOSARTemplates/CommonStructure/ImplementationDataTypes/abstract_implementation_data_type.py
+     Line: 1
+     Imports: VariableDataPrototype
+
+  2. VariableDataPrototype
+     File: src/armodel/models/M2/AUTOSARTemplates/SWComponentTemplate/Datatype/DataPrototypes/variable_data_prototype.py
+     Line: 1
+     Imports: AutosarVariableRef
+
+  3. AutosarVariableRef
+     File: src/armodel/models/M2/AUTOSARTemplates/SWComponentTemplate/SwcInternalBehavior/DataElements/autosar_variable_ref.py
+     Line: 1
+     Imports: VariableAccess
+
+  4. VariableAccess
+     File: src/armodel/models/M2/AUTOSARTemplates/SWComponentTemplate/SwcInternalBehavior/DataElements/variable_access.py
+     Line: 1
+     Imports: WaitPoint
+
+  5. WaitPoint
+     File: src/armodel/models/M2/AUTOSARTemplates/SWComponentTemplate/SwcInternalBehavior/RTEEvents/wait_point.py
+     Line: 1
+     Imports: ArgumentDataPrototype
+
+  6. ArgumentDataPrototype
+     File: src/armodel/models/M2/AUTOSARTemplates/SWComponentTemplate/PortInterface/argument_data_prototype.py
+     Line: 1
+     Imports: ClientServerOperation
+
+  7. ClientServerOperation
+     File: src/armodel/models/M2/AUTOSARTemplates/SWComponentTemplate/PortInterface/client_server_operation.py
+     Line: 1
+     Imports: ServerCallPoint
+
+  8. ServerCallPoint
+     File: src/armodel/models/M2/AUTOSARTemplates/SWComponentTemplate/SwcInternalBehavior/ServerCall/server_call_point.py
+     Line: 1
+     Imports: AutosarParameterRef
+
+  9. AutosarParameterRef
+     File: src/armodel/models/M2/AUTOSARTemplates/SWComponentTemplate/SwcInternalBehavior/DataElements/autosar_parameter_ref.py
+     Line: 1
+     Imports: ParameterAccess
+
+  10. ParameterAccess
+     File: src/armodel/models/M2/AUTOSARTemplates/SWComponentTemplate/SwcInternalBehavior/DataElements/parameter_access.py
+     Line: 1
+     Imports: RunnableEntity
+
+  11. RunnableEntity
+     File: src/armodel/models/M2/AUTOSARTemplates/SWComponentTemplate/SwcInternalBehavior/runnable_entity.py
+     Line: 1
+     Imports: RTEEvent
+
+  12. RTEEvent
+     File: src/armodel/models/M2/AUTOSARTemplates/SWComponentTemplate/SwcInternalBehavior/RTEEvents/rte_event.py
+     Line: 1
+     Imports: McDataAccessDetails
+
+  13. McDataAccessDetails
+     File: src/armodel/models/M2/AUTOSARTemplates/CommonStructure/MeasurementCalibrationSupport/mc_data_access_details.py
+     Line: 1
+     Imports: DataPrototype
+
+  14. DataPrototype
+     File: src/armodel/models/M2/AUTOSARTemplates/SWComponentTemplate/Datatype/DataPrototypes/data_prototype.py
+     Line: 1
+     Imports: AutosarDataPrototype
+
+  15. AutosarDataPrototype
+     File: src/armodel/models/M2/AUTOSARTemplates/SWComponentTemplate/Datatype/DataPrototypes/autosar_data_prototype.py
+     Line: 1
+     Imports: ParameterDataPrototype
+
+  16. ParameterDataPrototype
+     File: src/armodel/models/M2/AUTOSARTemplates/SWComponentTemplate/Datatype/DataPrototypes/parameter_data_prototype.py
+     Line: 1
+     Imports: ImplementationElementInParameterInstanceRef
+
+  17. ImplementationElementInParameterInstanceRef
+     File: src/armodel/models/M2/AUTOSARTemplates/CommonStructure/MeasurementCalibrationSupport/implementation_element_in_parameter_instance_ref.py
+     Line: 1
+     Imports: FlatInstanceDescriptor
+
+  18. FlatInstanceDescriptor
+     File: src/armodel/models/M2/AUTOSARTemplates/CommonStructure/FlatMap/flat_instance_descriptor.py
+     Line: 1
+     Imports: RoleBasedMcDataAssignment
+
+  19. RoleBasedMcDataAssignment
+     File: src/armodel/models/M2/AUTOSARTemplates/CommonStructure/MeasurementCalibrationSupport/role_based_mc_data_assignment.py
+     Line: 1
+     Imports: McDataInstance
+
+  20. McDataInstance
+     File: src/armodel/models/M2/AUTOSARTemplates/CommonStructure/MeasurementCalibrationSupport/mc_data_instance.py
+     Line: 1
+     Imports: SwVariableRefProxy
+
+  21. SwVariableRefProxy
+     File: src/armodel/models/M2/MSR/DataDictionary/DatadictionaryProxies/sw_variable_ref_proxy.py
+     Line: 1
+     Imports: SwServiceArg
+
+  22. SwServiceArg
+     File: src/armodel/models/M2/MSR/DataDictionary/ServiceProcessTask/sw_service_arg.py
+     Line: 1
+     Imports: BswModuleEntry
+
+  23. BswModuleEntry
+     File: src/armodel/models/M2/AUTOSARTemplates/BswModuleTemplate/BswInterfaces/bsw_module_entry.py
+     Line: 1
+     Imports: SwPointerTargetProps
+
+  24. SwPointerTargetProps
+     File: src/armodel/models/M2/MSR/DataDictionary/DataDefProperties/sw_pointer_target_props.py
+     Line: 1
+     Imports: AutosarDataType
+
+  25. AutosarDataType
+     File: src/armodel/models/M2/AUTOSARTemplates/SWComponentTemplate/Datatype/Datatypes/autosar_data_type.py
+     Line: 1
+     Imports: ApplicationDataType
+
+  26. ApplicationDataType
+     File: src/armodel/models/M2/AUTOSARTemplates/SWComponentTemplate/Datatype/Datatypes/application_data_type.py
+     Line: 1
+     Imports: ApplicationPrimitiveDataType
+
+  27. ApplicationPrimitiveDataType
+     File: src/armodel/models/M2/AUTOSARTemplates/SWComponentTemplate/Datatype/Datatypes/application_primitive_data_type.py
+     Line: 1
+     Imports: SwDataDefProps
+
+  28. SwDataDefProps
+     File: src/armodel/models/M2/MSR/DataDictionary/DataDefProperties/sw_data_def_props.py
+     Line: 1
+     Imports: AbstractImplementationDataType
+
+Suggested fix:
+  Move import of 'VariableDataPrototype' to TYPE_CHECKING in 'AbstractImplementationDataType'
+  Add to tools/skip_classes.yaml:
+    "AbstractImplementationDataType": "*"
+    "VariableDataPrototype": "*"
+    "AutosarVariableRef": "*"
+    "VariableAccess": "*"
+    "WaitPoint": "*"
+    "ArgumentDataPrototype": "*"
+    "ClientServerOperation": "*"
+    "ServerCallPoint": "*"
+    "AutosarParameterRef": "*"
+    "ParameterAccess": "*"
+    "RunnableEntity": "*"
+    "RTEEvent": "*"
+    "McDataAccessDetails": "*"
+    "DataPrototype": "*"
+    "AutosarDataPrototype": "*"
+    "ParameterDataPrototype": "*"
+    "ImplementationElementInParameterInstanceRef": "*"
+    "FlatInstanceDescriptor": "*"
+    "RoleBasedMcDataAssignment": "*"
+    "McDataInstance": "*"
+    "SwVariableRefProxy": "*"
+    "SwServiceArg": "*"
+    "BswModuleEntry": "*"
+    "SwPointerTargetProps": "*"
+    "AutosarDataType": "*"
+    "ApplicationDataType": "*"
+    "ApplicationPrimitiveDataType": "*"
+    "SwDataDefProps": "*"
+
+Cycle #4:
+----------------------------------------------------------------------
+  1. BswModuleDependency
+     File: src/armodel/models/M2/AUTOSARTemplates/BswModuleTemplate/BswInterfaces/bsw_module_dependency.py
+     Line: 1
+     Imports: BswModuleDescription
+
+  2. BswModuleDescription
+     File: src/armodel/models/M2/AUTOSARTemplates/BswModuleTemplate/BswOverview/bsw_module_description.py
+     Line: 1
+     Imports: BswModuleDependency
+
+Suggested fix:
+  Move import of 'BswModuleDescription' to TYPE_CHECKING in 'BswModuleDependency'
+  Add to tools/skip_classes.yaml:
+    "BswModuleDependency": "*"
+    "BswModuleDescription": "*"
+
+Cycle #5:
+----------------------------------------------------------------------
+  1. Chapter
+     File: src/armodel/models/M2/MSR/Documentation/Chapters/chapter.py
+     Line: 1
+     Imports: MsrQueryResultChapter
+
+  2. MsrQueryResultChapter
+     File: src/armodel/models/M2/MSR/Documentation/MsrQuery/msr_query_result_chapter.py
+     Line: 1
+     Imports: MsrQueryChapter
+
+  3. MsrQueryChapter
+     File: src/armodel/models/M2/MSR/Documentation/MsrQuery/msr_query_chapter.py
+     Line: 1
+     Imports: ChapterOrMsrQuery
+
+  4. ChapterOrMsrQuery
+     File: src/armodel/models/M2/MSR/Documentation/Chapters/chapter_or_msr_query.py
+     Line: 1
+     Imports: ChapterModel
+
+  5. ChapterModel
+     File: src/armodel/models/M2/MSR/Documentation/Chapters/chapter_model.py
+     Line: 1
+     Imports: Chapter
+
+Suggested fix:
+  Move import of 'MsrQueryResultChapter' to TYPE_CHECKING in 'Chapter'
+  Add to tools/skip_classes.yaml:
+    "Chapter": "*"
+    "MsrQueryResultChapter": "*"
+    "MsrQueryChapter": "*"
+    "ChapterOrMsrQuery": "*"
+    "ChapterModel": "*"
+
+Cycle #6:
+----------------------------------------------------------------------
+  1. EcucConditionFormula
+     File: src/armodel/models/M2/AUTOSARTemplates/ECUCParameterDefTemplate/ecuc_condition_formula.py
+     Line: 1
+     Imports: EcucValidationCondition
+
+  2. EcucValidationCondition
+     File: src/armodel/models/M2/AUTOSARTemplates/ECUCParameterDefTemplate/ecuc_validation_condition.py
+     Line: 1
+     Imports: EcucDefinitionElement
+
+  3. EcucDefinitionElement
+     File: src/armodel/models/M2/AUTOSARTemplates/ECUCParameterDefTemplate/ecuc_definition_element.py
+     Line: 1
+     Imports: EcucQueryExpression
+
+  4. EcucQueryExpression
+     File: src/armodel/models/M2/AUTOSARTemplates/ECUCParameterDefTemplate/ecuc_query_expression.py
+     Line: 1
+     Imports: EcucQuery
+
+  5. EcucQuery
+     File: src/armodel/models/M2/AUTOSARTemplates/ECUCParameterDefTemplate/ecuc_query.py
+     Line: 1
+     Imports: EcucConditionFormula
+
+Suggested fix:
+  Move import of 'EcucValidationCondition' to TYPE_CHECKING in 'EcucConditionFormula'
+  Add to tools/skip_classes.yaml:
+    "EcucConditionFormula": "*"
+    "EcucValidationCondition": "*"
+    "EcucDefinitionElement": "*"
+    "EcucQueryExpression": "*"
+    "EcucQuery": "*"
+
+Cycle #7:
+----------------------------------------------------------------------
+  1. FMFeature
+     File: src/armodel/models/M2/AUTOSARTemplates/FeatureModelTemplate/fm_feature.py
+     Line: 1
+     Imports: FMFeatureRelation
+
+  2. FMFeatureRelation
+     File: src/armodel/models/M2/AUTOSARTemplates/FeatureModelTemplate/fm_feature_relation.py
+     Line: 1
+     Imports: FMFeature
+
+Suggested fix:
+  Move import of 'FMFeatureRelation' to TYPE_CHECKING in 'FMFeature'
+  Add to tools/skip_classes.yaml:
+    "FMFeature": "*"
+    "FMFeatureRelation": "*"
+
+Cycle #8:
+----------------------------------------------------------------------
+  1. FMFeatureMap
+     File: src/armodel/models/M2/AUTOSARTemplates/FeatureModelTemplate/fm_feature_map.py
+     Line: 1
+     Imports: FMFeatureMapElement
+
+  2. FMFeatureMapElement
+     File: src/armodel/models/M2/AUTOSARTemplates/FeatureModelTemplate/fm_feature_map_element.py
+     Line: 1
+     Imports: FMFeatureMap
+
+Suggested fix:
+  Move import of 'FMFeatureMapElement' to TYPE_CHECKING in 'FMFeatureMap'
+  Add to tools/skip_classes.yaml:
+    "FMFeatureMap": "*"
+    "FMFeatureMapElement": "*"
+
+Cycle #9:
+----------------------------------------------------------------------
+  1. HwDescriptionEntity
+     File: src/armodel/models/M2/AUTOSARTemplates/EcuResourceTemplate/hw_description_entity.py
+     Line: 1
+     Imports: HwType
+
+  2. HwType
+     File: src/armodel/models/M2/AUTOSARTemplates/EcuResourceTemplate/HwElementCategory/hw_type.py
+     Line: 1
+     Imports: HwDescriptionEntity
+
+Suggested fix:
+  Move import of 'HwType' to TYPE_CHECKING in 'HwDescriptionEntity'
+  Add to tools/skip_classes.yaml:
+    "HwDescriptionEntity": "*"
+    "HwType": "*"
+
+Cycle #10:
+----------------------------------------------------------------------
+  1. HwElement
+     File: src/armodel/models/M2/AUTOSARTemplates/EcuResourceTemplate/hw_element.py
+     Line: 1
+     Imports: HwElementConnector
+
+  2. HwElementConnector
+     File: src/armodel/models/M2/AUTOSARTemplates/EcuResourceTemplate/hw_element_connector.py
+     Line: 1
+     Imports: HwElement
+
+Suggested fix:
+  Move import of 'HwElementConnector' to TYPE_CHECKING in 'HwElement'
+  Add to tools/skip_classes.yaml:
+    "HwElement": "*"
+    "HwElementConnector": "*"
+
+Cycle #11:
+----------------------------------------------------------------------
+  1. HwPinGroup
+     File: src/armodel/models/M2/AUTOSARTemplates/EcuResourceTemplate/hw_pin_group.py
+     Line: 1
+     Imports: HwPinGroupContent
+
+  2. HwPinGroupContent
+     File: src/armodel/models/M2/AUTOSARTemplates/EcuResourceTemplate/hw_pin_group_content.py
+     Line: 1
+     Imports: HwPinGroup
+
+Suggested fix:
+  Move import of 'HwPinGroupContent' to TYPE_CHECKING in 'HwPinGroup'
+  Add to tools/skip_classes.yaml:
+    "HwPinGroup": "*"
+    "HwPinGroupContent": "*"
+
+Cycle #12:
+----------------------------------------------------------------------
+  1. IPSecConfig
+     File: src/armodel/models/M2/AUTOSARTemplates/SystemTemplate/SecureCommunication/ip_sec_config.py
+     Line: 1
+     Imports: NetworkEndpoint
+
+  2. NetworkEndpoint
+     File: src/armodel/models/M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Ethernet/EthernetTopology/network_endpoint.py
+     Line: 1
+     Imports: IPSecRule
+
+  3. IPSecRule
+     File: src/armodel/models/M2/AUTOSARTemplates/SystemTemplate/SecureCommunication/ip_sec_rule.py
+     Line: 1
+     Imports: IPSecConfig
+
+Suggested fix:
+  Move import of 'NetworkEndpoint' to TYPE_CHECKING in 'IPSecConfig'
+  Add to tools/skip_classes.yaml:
+    "IPSecConfig": "*"
+    "NetworkEndpoint": "*"
+    "IPSecRule": "*"
+
+Cycle #13:
+----------------------------------------------------------------------
+  1. IoHwAbstractionServerAnnotation
+     File: src/armodel/models/M2/AUTOSARTemplates/SWComponentTemplate/ApplicationAttributes/io_hw_abstraction_server_annotation.py
+     Line: 1
+     Imports: PortPrototype
+
+  2. PortPrototype
+     File: src/armodel/models/M2/AUTOSARTemplates/SWComponentTemplate/Components/port_prototype.py
+     Line: 1
+     Imports: IoHwAbstractionServerAnnotation
+
+Suggested fix:
+  Move import of 'PortPrototype' to TYPE_CHECKING in 'IoHwAbstractionServerAnnotation'
+  Add to tools/skip_classes.yaml:
+    "IoHwAbstractionServerAnnotation": "*"
+    "PortPrototype": "*"
+
+Cycle #14:
+----------------------------------------------------------------------
+  1. NmCoordinator
+     File: src/armodel/models/M2/AUTOSARTemplates/SystemTemplate/NetworkManagement/nm_coordinator.py
+     Line: 1
+     Imports: NmEcu
+
+  2. NmEcu
+     File: src/armodel/models/M2/AUTOSARTemplates/SystemTemplate/NetworkManagement/nm_ecu.py
+     Line: 1
+     Imports: NmNode
+
+  3. NmNode
+     File: src/armodel/models/M2/AUTOSARTemplates/SystemTemplate/NetworkManagement/nm_node.py
+     Line: 1
+     Imports: NmCoordinator
+
+Suggested fix:
+  Move import of 'NmEcu' to TYPE_CHECKING in 'NmCoordinator'
+  Add to tools/skip_classes.yaml:
+    "NmCoordinator": "*"
+    "NmEcu": "*"
+    "NmNode": "*"
+
+Cycle #15:
+----------------------------------------------------------------------
+  1. Sdg
+     File: src/armodel/models/M2/MSR/AsamHdo/SpecialData/sdg.py
+     Line: 1
+     Imports: SdgContents
+
+  2. SdgContents
+     File: src/armodel/models/M2/MSR/AsamHdo/SpecialData/sdg_contents.py
+     Line: 1
+     Imports: Sdg
+
+Suggested fix:
+  Move import of 'SdgContents' to TYPE_CHECKING in 'Sdg'
+  Add to tools/skip_classes.yaml:
+    "Sdg": "*"
+    "SdgContents": "*"
+
+Cycle #16:
+----------------------------------------------------------------------
+  1. SocketAddress
+     File: src/armodel/models/M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Ethernet/ServiceInstances/socket_address.py
+     Line: 1
+     Imports: StaticSocketConnection
+
+  2. StaticSocketConnection
+     File: src/armodel/models/M2/AUTOSARTemplates/SystemTemplate/Fibex/Fibex4Ethernet/ServiceInstances/static_socket_connection.py
+     Line: 1
+     Imports: SocketAddress
+
+Suggested fix:
+  Move import of 'StaticSocketConnection' to TYPE_CHECKING in 'SocketAddress'
+  Add to tools/skip_classes.yaml:
+    "SocketAddress": "*"
+    "StaticSocketConnection": "*"
+
+Cycle #17:
+----------------------------------------------------------------------
+  1. SwValues
+     File: src/armodel/models/M2/MSR/CalibrationData/CalibrationValue/sw_values.py
+     Line: 1
+     Imports: ValueGroup
+
+  2. ValueGroup
+     File: src/armodel/models/M2/MSR/CalibrationData/CalibrationValue/value_group.py
+     Line: 1
+     Imports: SwValues
+
+Suggested fix:
+  Move import of 'ValueGroup' to TYPE_CHECKING in 'SwValues'
+  Add to tools/skip_classes.yaml:
+    "SwValues": "*"
+    "ValueGroup": "*"

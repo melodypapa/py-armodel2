@@ -28,9 +28,12 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.application_error import (
     ApplicationError,
 )
-from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.argument_data_prototype import (
-    ArgumentDataPrototype,
-)
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.argument_data_prototype import (
+        ArgumentDataPrototype,
+    )
+
 
 
 class ClientServerOperation(Identifiable):

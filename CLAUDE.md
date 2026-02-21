@@ -90,20 +90,27 @@ If you find bugs, issues, or needed improvements in files under `src/armodel/mod
 - `CompuMethod*` - Custom compu logic (CompuMethod, Compu, CompuScales, CompuScale, CompuConst, CompuConstTextContent)
 - `Item` - Custom serialization for item_contents
 - `DocumentationBlock` - Language-specific elements (L-1 through L-10)
-- `LanguageSpecific*` - Language-specific classes (LLongName, LPlainText, LParagraph, etc.)
+- `LanguageSpecific*` - Language-specific classes (LLongName, LPlainText, LParagraph, LOverviewParagraph, LVerbatim, MixedContent)
+
+**Note**: These classes use `@language_abbr` decorator for proper XML attribute serialization (e.g., `L="EN"`)
 
 ### Reflection-Based Serialization Framework
 
 The project uses a reflection-based serialization framework that eliminates boilerplate code for 95% of classes:
 
 **Key Components**:
+- `SerializationHelper` - Static utility methods extracted from ARObject for code organization (20+ helper methods)
+  - `get_xml_tag()` - Auto-generates XML tag from class name
+  - `serialize_item()` - Serializes individual items (ARPrimitive, AREnum, ARRef, ARObject)
+  - `deserialize_by_tag()` - Deserializes using class name (for TYPE_CHECKING compatibility)
+  - `find_child_element()` - Finds child elements with namespace handling
+  - `validate_deserialization()` - Checks for unrecognized XML elements
+  - `unwrap_primitive()` - Transparently unwraps ARPrimitive to native Python types
 - `ARObject.serialize()` - Uses `vars()` to discover all attributes automatically
 - `ARObject.deserialize()` - Uses `get_type_hints()` for type information
 - `NameConverter` - Handles snake_case ↔ UPPER-CASE-WITH-HYPHENS conversion
 - `ModelFactory` - Factory for creating model instances from XML tags (supports polymorphic deserialization)
-- `@xml_attribute` - Decorator for XML attributes
-- `@atp_variant()` - Decorator for AUTOSAR atpVariation pattern (auto-wraps in VARIANTS/CONDITIONAL)
-- `@l_prefix()` - Decorator for language-specific L-N naming pattern
+- Decorators: `@xml_attribute`, `@atp_variant()`, `@l_prefix()`, `@language_abbr()`
 
 **How It Works**:
 ```python
@@ -148,7 +155,17 @@ class SwDataDefProps(ARObject):
 def l_2(self) -> str:
     return self._l_2
 # Result: <L-2>text</L-2> within multilanguage elements
+
+# @language_abbr("ATTR") - Custom XML attribute name
+@language_abbr("L")
+@property
+def l(self) -> LEnum:
+    return self._l
+# Result: <L-LONG-NAME L="EN">text</L-LONG-NAME>
+# Use when XML attribute name doesn't follow standard naming (e.g., L instead of LANG)
 ```
+
+**Decorator Implementation**: All decorators are in `src/armodel/serialization/decorators.py`
 
 ### Class-Based Architecture
 
@@ -369,7 +386,7 @@ src/armodel/
 │   └── MSR/              # MSR documentation classes
 ├── reader/              # ARXML reading (ARXMLReader class)
 ├── writer/              # ARXML writing (ARXMLWriter class)
-├── serialization/       # Serialization framework (decorators, name_converter)
+├── serialization/       # Serialization framework (decorators, name_converter, serialization_helper, model_factory)
 ├── cli/                 # CLI (armodel format command)
 └── utils/               # Utilities (not yet implemented)
 
@@ -418,3 +435,25 @@ Key rules from `docs/designs/design_rules.md`:
 - **Serialization**: `docs/designs/serialization.md` - Reflection-based serialization framework documentation
 - **Skip Classes**: `tools/skip_classes.yaml` - List of manually maintained classes excluded from code generation
 - **Generator README**: `tools/generate_models/README.md` - Code generator usage and options
+- **SerializationHelper**: `src/armodel/serialization/serialization_helper.py` - Utility methods for serialization (20+ helper functions)
+- **Decorators**: `src/armodel/serialization/decorators.py` - XML serialization decorators (@xml_attribute, @atp_variant, @l_prefix, @language_abbr)
+
+## Recent Improvements (2026-02)
+
+### SerializationHelper Refactoring (PR #82)
+- Extracted 20+ helper methods from ARObject into `SerializationHelper` class
+- Improved code organization and maintainability
+- Static utility methods for common serialization operations
+- Better separation of concerns
+
+### @language_abbr Decorator (PR #86)
+- New decorator for handling language abbreviation XML attributes (e.g., `L="EN"`)
+- Enables proper serialization of language-specific elements in AUTOSAR files
+- Added `blueprint_value` attribute support to `LLongName` class
+- Updated code generator to support the new decorator pattern
+- Net reduction of 540 lines through documentation cleanup
+
+### Inheritance Pattern Fixes
+- Fixed `Referrable` to properly call `super().serialize()` and `super().deserialize()`
+- Ensures inherited attributes (timestamp, checksum) are correctly serialized
+- Established proper inheritance patterns for all manually maintained classes
