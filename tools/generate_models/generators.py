@@ -1752,26 +1752,16 @@ def _generate_serialize_method(
                 should_flatten = attr_type in flattened_iref_types
 
                 iref_wrapper_tag = f"{xml_tag}-IREF"
+                
+                # For list types (multiplicity "*"), check if list is not empty
+                # For single types (multiplicity "0..1" or "1"), check if not None
+                if multiplicity == "*":
+                    condition = f"self.{python_name} and len(self.{python_name}) > 0"
+                else:
+                    condition = f"self.{python_name} is not None"
+                
                 if should_flatten:
                     # Flattened type: flatten children directly into iref wrapper
-                    if multiplicity == "*":
-                        # List type - check if not empty
-                        code += f'''        # Serialize {python_name} (list of instance references with wrapper "{iref_wrapper_tag}")
-        if self.{python_name}:
-            serialized = ARObject._serialize_item(self.{python_name}, "{effective_type}")
-            if serialized is not None:
-                # Wrap in IREF wrapper element
-                iref_wrapper = ET.Element("{iref_wrapper_tag}")
-                # Flatten: append children of serialized element directly to iref wrapper
-                for child in serialized:
-                    iref_wrapper.append(child)
-                elem.append(iref_wrapper)
-
-'''
-                    else:
-                        # Single item type
-                        code += f'''        # Serialize {python_name} (instance reference with wrapper "{iref_wrapper_tag}")
-        if self.{python_name} is not None:
             serialized = ARObject._serialize_item(self.{python_name}, "{effective_type}")
             if serialized is not None:
                 # Wrap in IREF wrapper element
@@ -1784,23 +1774,6 @@ def _generate_serialize_method(
 '''
                 else:
                     # Non-flattened type: wrap in its own element
-                    if multiplicity == "*":
-                        # List type - check if not empty
-                        code += f'''        # Serialize {python_name} (list of instance references with wrapper "{iref_wrapper_tag}")
-        if self.{python_name}:
-            serialized = ARObject._serialize_item(self.{python_name}, "{effective_type}")
-            if serialized is not None:
-                # Wrap in IREF wrapper element
-                iref_wrapper = ET.Element("{iref_wrapper_tag}")
-                # Append the serialized element as a child (don't flatten it)
-                iref_wrapper.append(serialized)
-                elem.append(iref_wrapper)
-
-'''
-                    else:
-                        # Single item type
-                        code += f'''        # Serialize {python_name} (instance reference with wrapper "{iref_wrapper_tag}")
-        if self.{python_name} is not None:
             serialized = ARObject._serialize_item(self.{python_name}, "{effective_type}")
             if serialized is not None:
                 # Wrap in IREF wrapper element
