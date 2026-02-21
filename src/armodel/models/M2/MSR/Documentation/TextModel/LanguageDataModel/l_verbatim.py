@@ -12,8 +12,8 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel.language_specific import (
     LanguageSpecific,
 )
-from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class LVerbatim(LanguageSpecific):
@@ -42,19 +42,19 @@ class LVerbatim(LanguageSpecific):
         tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
-        # First, call parent's serialize to handle inherited attributes (L attribute and text)
+        # First, call parent's serialize to handle inherited attributes
         parent_elem = super(LVerbatim, self).serialize()
 
         # Copy all attributes from parent element
         elem.attrib.update(parent_elem.attrib)
 
+        # Copy text from parent element
+        if parent_elem.text:
+            elem.text = parent_elem.text
+
         # Copy all children from parent element
         for child in parent_elem:
             elem.append(child)
-
-        # Copy text from parent element
-        if parent_elem.text is not None:
-            elem.text = parent_elem.text
 
         return elem
 
@@ -68,7 +68,7 @@ class LVerbatim(LanguageSpecific):
         Returns:
             Deserialized LVerbatim object
         """
-        # First, call parent's deserialize to handle inherited attributes (L attribute and text)
+        # Delegate to parent class to handle inherited attributes
         return super(LVerbatim, cls).deserialize(element)
 
 

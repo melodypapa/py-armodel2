@@ -34,11 +34,8 @@ skip_classes:
 
   # LanguageSpecific requires custom handling - L should be an attribute, not a child element
   - "LanguageSpecific"
-  - "LLongName"
-  - "LPlainText"
+  # LLongName, LPlainText, LVerbatim, LOverviewParagraph now auto-generated with @language_abbr decorator
   - "LParagraph"
-  - "LOverviewParagraph"
-  - "LVerbatim"
   - "MixedContentForUnitNames"
 
   # MultiLanguage classes require custom handling for l_prefix pattern (L-10 elements)
