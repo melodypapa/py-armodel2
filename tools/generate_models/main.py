@@ -247,8 +247,8 @@ def main() -> None:
     parser.add_argument(
         "--members",
         action="store_true",
-        default=False,
-        help="Include member lists from package definitions",
+        default=True,
+        help="Include member lists from package definitions (default: True)",
     )
     parser.add_argument(
         "--no-members", action="store_false", dest="members", help="Skip member list generation"
