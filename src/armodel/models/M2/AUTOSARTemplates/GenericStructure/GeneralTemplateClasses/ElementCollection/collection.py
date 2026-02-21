@@ -23,8 +23,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifier,
     NameToken,
 )
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.AbstractStructure.atp_feature import (
-    AtpFeature,
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.AnyInstanceRef.any_instance_ref import (
+    AnyInstanceRef,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
@@ -44,22 +44,22 @@ class Collection(ARElement):
         return False
 
     auto_collect: Optional[AutoCollectEnum]
-    collected_instances: list[AtpFeature]
+    collected_instance_irefs: list[AnyInstanceRef]
     collection_semantics: Optional[NameToken]
     element_role: Optional[Identifier]
     element_refs: list[ARRef]
     source_element_refs: list[ARRef]
-    source_instance_refs: list[ARRef]
+    source_instance_irefs: list[AnyInstanceRef]
     def __init__(self) -> None:
         """Initialize Collection."""
         super().__init__()
         self.auto_collect: Optional[AutoCollectEnum] = None
-        self.collected_instances: list[AtpFeature] = []
+        self.collected_instance_irefs: list[AnyInstanceRef] = []
         self.collection_semantics: Optional[NameToken] = None
         self.element_role: Optional[Identifier] = None
         self.element_refs: list[ARRef] = []
         self.source_element_refs: list[ARRef] = []
-        self.source_instance_refs: list[ARRef] = []
+        self.source_instance_irefs: list[AnyInstanceRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize Collection to XML element.
@@ -95,15 +95,15 @@ class Collection(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize collected_instances (list to container "COLLECTED-INSTANCES")
-        if self.collected_instances:
-            wrapper = ET.Element("COLLECTED-INSTANCES")
-            for item in self.collected_instances:
-                serialized = ARObject._serialize_item(item, "AtpFeature")
-                if serialized is not None:
-                    wrapper.append(serialized)
-            if len(wrapper) > 0:
-                elem.append(wrapper)
+        # Serialize collected_instance_irefs (instance reference with wrapper "COLLECTED-INSTANCE-IREF")
+        if self.collected_instance_irefs is not None:
+            serialized = ARObject._serialize_item(self.collected_instance_irefs, "AnyInstanceRef")
+            if serialized is not None:
+                # Wrap in IREF wrapper element
+                iref_wrapper = ET.Element("COLLECTED-INSTANCE-IREF")
+                # Append the serialized element as a child (don't flatten it)
+                iref_wrapper.append(serialized)
+                elem.append(iref_wrapper)
 
         # Serialize collection_semantics
         if self.collection_semantics is not None:
@@ -167,22 +167,15 @@ class Collection(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize source_instance_refs (list to container "SOURCE-INSTANCE-REFS")
-        if self.source_instance_refs:
-            wrapper = ET.Element("SOURCE-INSTANCE-REFS")
-            for item in self.source_instance_refs:
-                serialized = ARObject._serialize_item(item, "AtpFeature")
-                if serialized is not None:
-                    child_elem = ET.Element("SOURCE-INSTANCE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
-            if len(wrapper) > 0:
-                elem.append(wrapper)
+        # Serialize source_instance_irefs (instance reference with wrapper "SOURCE-INSTANCES-IREF")
+        if self.source_instance_irefs is not None:
+            serialized = ARObject._serialize_item(self.source_instance_irefs, "AnyInstanceRef")
+            if serialized is not None:
+                # Wrap in IREF wrapper element
+                iref_wrapper = ET.Element("SOURCE-INSTANCES-IREF")
+                # Append the serialized element as a child (don't flatten it)
+                iref_wrapper.append(serialized)
+                elem.append(iref_wrapper)
 
         return elem
 
@@ -205,15 +198,15 @@ class Collection(ARElement):
             auto_collect_value = AutoCollectEnum.deserialize(child)
             obj.auto_collect = auto_collect_value
 
-        # Parse collected_instances (list from container "COLLECTED-INSTANCES")
-        obj.collected_instances = []
-        container = ARObject._find_child_element(element, "COLLECTED-INSTANCES")
-        if container is not None:
-            for child in container:
-                # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.collected_instances.append(child_value)
+        # Parse collected_instance_irefs (instance reference from wrapper "COLLECTED-INSTANCE-IREF")
+        wrapper = ARObject._find_child_element(element, "COLLECTED-INSTANCE-IREF")
+        if wrapper is not None:
+            # Get the first child element (the actual reference)
+            children = list(wrapper)
+            if children:
+                inner_elem = children[0]
+                collected_instance_irefs_value = ARObject._deserialize_by_tag(inner_elem)
+                obj.collected_instance_irefs = collected_instance_irefs_value
 
         # Parse collection_semantics
         child = ARObject._find_child_element(element, "COLLECTION-SEMANTICS")
@@ -259,21 +252,15 @@ class Collection(ARElement):
                 if child_value is not None:
                     obj.source_element_refs.append(child_value)
 
-        # Parse source_instance_refs (list from container "SOURCE-INSTANCE-REFS")
-        obj.source_instance_refs = []
-        container = ARObject._find_child_element(element, "SOURCE-INSTANCE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
-                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.source_instance_refs.append(child_value)
+        # Parse source_instance_irefs (instance reference from wrapper "SOURCE-INSTANCES-IREF")
+        wrapper = ARObject._find_child_element(element, "SOURCE-INSTANCES-IREF")
+        if wrapper is not None:
+            # Get the first child element (the actual reference)
+            children = list(wrapper)
+            if children:
+                inner_elem = children[0]
+                source_instance_irefs_value = ARObject._deserialize_by_tag(inner_elem)
+                obj.source_instance_irefs = source_instance_irefs_value
 
         return obj
 

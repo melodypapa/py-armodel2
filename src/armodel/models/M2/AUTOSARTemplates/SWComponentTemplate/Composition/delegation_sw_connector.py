@@ -35,12 +35,12 @@ class DelegationSwConnector(SwConnector):
         """
         return False
 
-    inner_port_instance_ref: Optional[ARRef]
+    inner_port_iref: Optional[PortInCompositionTypeInstanceRef]
     outer_port_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DelegationSwConnector."""
         super().__init__()
-        self.inner_port_instance_ref: Optional[ARRef] = None
+        self.inner_port_iref: Optional[PortInCompositionTypeInstanceRef] = None
         self.outer_port_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
@@ -63,19 +63,15 @@ class DelegationSwConnector(SwConnector):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize inner_port_instance_ref
-        if self.inner_port_instance_ref is not None:
-            serialized = ARObject._serialize_item(self.inner_port_instance_ref, "PortInCompositionTypeInstanceRef")
+        # Serialize inner_port_iref (instance reference with wrapper "INNER-PORT-IREF")
+        if self.inner_port_iref is not None:
+            serialized = ARObject._serialize_item(self.inner_port_iref, "PortInCompositionTypeInstanceRef")
             if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("INNER-PORT-INSTANCE-REF-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+                # Wrap in IREF wrapper element
+                iref_wrapper = ET.Element("INNER-PORT-IREF")
+                # Append the serialized element as a child (don't flatten it)
+                iref_wrapper.append(serialized)
+                elem.append(iref_wrapper)
 
         # Serialize outer_port_ref
         if self.outer_port_ref is not None:
@@ -106,11 +102,15 @@ class DelegationSwConnector(SwConnector):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DelegationSwConnector, cls).deserialize(element)
 
-        # Parse inner_port_instance_ref
-        child = ARObject._find_child_element(element, "INNER-PORT-INSTANCE-REF-REF")
-        if child is not None:
-            inner_port_instance_ref_value = ARRef.deserialize(child)
-            obj.inner_port_instance_ref = inner_port_instance_ref_value
+        # Parse inner_port_iref (instance reference from wrapper "INNER-PORT-IREF")
+        wrapper = ARObject._find_child_element(element, "INNER-PORT-IREF")
+        if wrapper is not None:
+            # Get the first child element (the actual reference)
+            children = list(wrapper)
+            if children:
+                inner_elem = children[0]
+                inner_port_iref_value = ARObject._deserialize_by_tag(inner_elem)
+                obj.inner_port_iref = inner_port_iref_value
 
         # Parse outer_port_ref
         child = ARObject._find_child_element(element, "OUTER-PORT-REF")

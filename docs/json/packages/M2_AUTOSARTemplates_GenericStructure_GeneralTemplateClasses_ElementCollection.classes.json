@@ -52,11 +52,11 @@
           "is_ref": false,
           "note": "This attribute reflects how far the referenced objects are the collection."
         },
-        "collectedInstances": {
-          "type": "AtpFeature",
+        "collectedInstance": {
+          "type": "AnyInstanceRef",
           "multiplicity": "*",
           "kind": "iref",
-          "is_ref": false,
+          "is_ref": true,
           "note": "This instance ref supports the use case that a particular"
         },
         "collectionSemantics": {
@@ -88,7 +88,7 @@
           "note": "Only if Category = \"RELATION\". This represents the"
         },
         "sourceInstances": {
-          "type": "AtpFeature",
+          "type": "AnyInstanceRef",
           "multiplicity": "*",
           "kind": "iref",
           "is_ref": true,

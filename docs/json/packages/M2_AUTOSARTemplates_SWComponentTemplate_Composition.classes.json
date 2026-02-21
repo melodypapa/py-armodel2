@@ -262,19 +262,19 @@
         }
       ],
       "attributes": {
-        "providerInstanceRef": {
-          "type": "AbstractProvidedPortPrototype",
+        "provider": {
+          "type": "PPortInCompositionInstanceRef",
           "multiplicity": "0..1",
-          "kind": "attribute",
-          "is_ref": false,
-          "note": "implemented by: PPortInComposition"
+          "kind": "iref",
+          "is_ref": true,
+          "note": "implemented by: PPortInCompositionInstanceRef"
         },
-        "requesterInstanceRef": {
-          "type": "AbstractRequiredPortPrototype",
+        "requester": {
+          "type": "RPortInCompositionInstanceRef",
           "multiplicity": "0..1",
-          "kind": "attribute",
-          "is_ref": false,
-          "note": "implemented by: RPortInComposition"
+          "kind": "iref",
+          "is_ref": true,
+          "note": "implemented by: RPortInCompositionInstanceRef"
         }
       }
     },
@@ -382,12 +382,12 @@
         }
       ],
       "attributes": {
-        "innerPortInstanceRef": {
+        "innerPort": {
           "type": "PortInCompositionTypeInstanceRef",
           "multiplicity": "0..1",
           "kind": "iref",
           "is_ref": true,
-          "note": "by: PortInCompositionType"
+          "note": "by: PortInCompositionTypeInstanceRef"
         },
         "outerPort": {
           "type": "PortPrototype",
