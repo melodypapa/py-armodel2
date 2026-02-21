@@ -40,13 +40,13 @@ generate_models/
 python -m tools.generate_models [options]
 
 # Example with defaults (uses default paths: docs/json/mapping.json, docs/json/hierarchy.json, src/armodel/models/M2)
-python -m tools.generate_models --members
+python -m tools.generate_models
 
 # Example with custom paths
-python -m tools.generate_models --mapping-file custom/mapping.json --hierarchy-file custom/hierarchy.json --output-dir custom/output --members
+python -m tools.generate_models --mapping-file custom/mapping.json --hierarchy-file custom/hierarchy.json --output-dir custom/output
 
 # From project root (running from tools directory)
-python generate_models --members
+python generate_models
 ```
 
 ### Arguments
@@ -67,7 +67,7 @@ python generate_models --members
 | `--no-enums` | - | Skip enum file generation |
 | `--primitives` | True | Generate primitive files |
 | `--no-primitives` | - | Skip primitive file generation |
-| `--members` | False | Include member lists from package definitions |
+| `--members` | True | Include member lists from package definitions |
 | `--no-members` | - | Skip member list generation |
 | `--skip-list` | tools/skip_classes.yaml | Path to skip_classes.yaml file |
 
@@ -84,7 +84,7 @@ generate_all_models(
     generate_classes=True,
     generate_enums=True,
     generate_primitives=True,
-    include_members=True,
+    include_members=True,  # Now defaults to True
 )
 ```
 
