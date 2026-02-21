@@ -56,7 +56,7 @@ class TestIndividualFiles:
             writer: ARXML writer instance
             tmp_path: Pytest temporary directory
         """
-        arxml_file = Path("demos/arxml") / filename
+        arxml_file = Path("demos/validated") / filename
 
         if not arxml_file.exists():
             pytest.skip(f"File not found: {arxml_file}")

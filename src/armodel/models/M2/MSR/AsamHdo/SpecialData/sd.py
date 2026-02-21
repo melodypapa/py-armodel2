@@ -6,8 +6,9 @@ References:
 JSON Source: docs/json/packages/M2_MSR_AsamHdo_SpecialData.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import xml_attribute
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
@@ -29,15 +30,26 @@ class Sd(ARObject):
         """
         return False
 
-    gid: NameToken
+    _gid: NameToken
     value: VerbatimStringPlain
-    xml_space: Optional[Any]
+    xml_space: Optional[XmlSpaceEnum]
     def __init__(self) -> None:
         """Initialize Sd."""
         super().__init__()
-        self.gid: NameToken = None
+        self._gid: NameToken = None
         self.value: VerbatimStringPlain = None
-        self.xml_space: Optional[Any] = None
+        self.xml_space: Optional[XmlSpaceEnum] = None
+    @property
+    @xml_attribute
+    def gid(self) -> NameToken:
+        """Get gid XML attribute."""
+        return self._gid
+
+    @gid.setter
+    def gid(self, value: NameToken) -> None:
+        """Set gid XML attribute."""
+        self._gid = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize Sd to XML element.
@@ -63,19 +75,9 @@ class Sd(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize gid
+        # Serialize gid as XML attribute
         if self.gid is not None:
-            serialized = SerializationHelper.serialize_item(self.gid, "NameToken")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("GID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+            elem.attrib["GID"] = str(self.gid)
 
         # Serialize value
         if self.value is not None:
@@ -93,7 +95,7 @@ class Sd(ARObject):
 
         # Serialize xml_space
         if self.xml_space is not None:
-            serialized = SerializationHelper.serialize_item(self.xml_space, "Any")
+            serialized = SerializationHelper.serialize_item(self.xml_space, "XmlSpaceEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("XML-SPACE")
@@ -120,10 +122,9 @@ class Sd(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Sd, cls).deserialize(element)
 
-        # Parse gid
-        child = SerializationHelper.find_child_element(element, "GID")
-        if child is not None:
-            gid_value = child.text
+        # Parse gid from XML attribute
+        if "GID" in element.attrib:
+            gid_value = element.attrib["GID"]
             obj.gid = gid_value
 
         # Parse value
@@ -135,7 +136,7 @@ class Sd(ARObject):
         # Parse xml_space
         child = SerializationHelper.find_child_element(element, "XML-SPACE")
         if child is not None:
-            xml_space_value = child.text
+            xml_space_value = SerializationHelper.deserialize_by_tag(child, "XmlSpaceEnum")
             obj.xml_space = xml_space_value
 
         return obj

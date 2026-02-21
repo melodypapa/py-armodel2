@@ -40,12 +40,12 @@ class TestCompuMethodClasses:
     @pytest.fixture
     def compu_method_file(self):
         """Path to ARXML file with CompuMethod examples."""
-        return Path("demos/arxml/AUTOSAR_Datatypes.arxml")
+        return Path("demos/validated/AUTOSAR_Datatypes.arxml")
 
     @pytest.fixture
     def compu_blueprint_file(self):
         """Path to CompuMethod blueprint file."""
-        return Path("demos/arxml/AUTOSAR_MOD_AISpecification_CompuMethod_Blueprint.arxml")
+        return Path("demos/validated/AUTOSAR_MOD_AISpecification_CompuMethod_Blueprint.arxml")
 
     @pytest.fixture
     def reader(self):
@@ -163,7 +163,7 @@ class TestLanguageSpecificClasses:
     @pytest.fixture
     def application_datatype_file(self):
         """Path to ARXML file with language-specific elements."""
-        return Path("demos/arxml/AUTOSAR_MOD_AISpecification_ApplicationDataType_Blueprint.arxml")
+        return Path("demos/validated/AUTOSAR_MOD_AISpecification_ApplicationDataType_Blueprint.arxml")
 
     @pytest.fixture
     def reader(self):
@@ -261,8 +261,8 @@ class TestARPackageClass:
 
         # Test with multiple ARXML files
         test_files = [
-            Path("demos/arxml/AUTOSAR_Datatypes.arxml"),
-            Path("demos/arxml/AUTOSAR_MOD_AISpecification_CompuMethod_Blueprint.arxml"),
+            Path("demos/validated/AUTOSAR_Datatypes.arxml"),
+            Path("demos/validated/AUTOSAR_MOD_AISpecification_CompuMethod_Blueprint.arxml"),
         ]
 
         for arxml_file in test_files:
@@ -297,7 +297,7 @@ class TestARPackageClass:
         from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
         from armodel.writer import ARXMLWriter
 
-        arxml_file = Path("demos/arxml/AUTOSAR_Datatypes.arxml")
+        arxml_file = Path("demos/validated/AUTOSAR_Datatypes.arxml")
         if not arxml_file.exists():
             pytest.skip(f"File not found: {arxml_file}")
 
@@ -445,7 +445,7 @@ class TestBaseTypeClass:
         from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
 
         # Use file with base types
-        arxml_file = Path("demos/arxml/AUTOSAR_MOD_AISpecification_BaseTypes_Standard.arxml")
+        arxml_file = Path("demos/validated/AUTOSAR_MOD_AISpecification_BaseTypes_Standard.arxml")
         if not arxml_file.exists():
             pytest.skip(f"File not found: {arxml_file}")
 
@@ -501,7 +501,7 @@ class TestSwDataDefPropsClass:
         from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
 
         # Test with application data types (likely to have SwDataDefProps)
-        arxml_file = Path("demos/arxml/AUTOSAR_MOD_AISpecification_ApplicationDataType_Blueprint.arxml")
+        arxml_file = Path("demos/validated/AUTOSAR_MOD_AISpecification_ApplicationDataType_Blueprint.arxml")
         if not arxml_file.exists():
             pytest.skip(f"File not found: {arxml_file}")
 
@@ -583,7 +583,7 @@ class TestARObjectClass:
         """
         from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.autosar import AUTOSAR
 
-        arxml_file = Path("demos/arxml/AUTOSAR_Datatypes.arxml")
+        arxml_file = Path("demos/validated/AUTOSAR_Datatypes.arxml")
         if not arxml_file.exists():
             pytest.skip(f"File not found: {arxml_file}")
 

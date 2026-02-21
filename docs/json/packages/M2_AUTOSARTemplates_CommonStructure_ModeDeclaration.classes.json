@@ -74,7 +74,7 @@
         "type": {
           "type": "ModeDeclarationGroup",
           "multiplicity": "0..1",
-          "kind": "ref",
+          "kind": "tref",
           "is_ref": true,
           "note": "by a component"
         }
@@ -150,35 +150,35 @@
           "is_ref": true,
           "note": "The initial mode of the ModeDeclarationGroup. This active before any mode switches occurred."
         },
-        "modes": {
+        "modeDeclarations": {
           "type": "ModeDeclaration",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "The ModeDeclarations collected in this ModeDeclaration atpVariation"
         },
-        "modeManager": {
+        "modeManagerErrorBehavior": {
           "type": "ModeErrorBehavior",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents the ability to define the error behavior by the mode manager in case of errors on the side (e.g. terminated mode user)."
         },
-        "modeTransitionModeDeclarationGroups": {
+        "modeTransitions": {
           "type": "ModeTransition",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents the avaliable ModeTransitions of the"
         },
-        "modeUserError": {
+        "modeUserErrorBehavior": {
           "type": "ModeErrorBehavior",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This represents the definition of the error behavior by the mode user in case of errors on the mode (e.g. terminated mode manager)."
         },
-        "onTransition": {
+        "onTransitionValue": {
           "type": "PositiveInteger",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -391,7 +391,7 @@
         }
       ],
       "attributes": {
-        "implementation": {
+        "implementationDataType": {
           "type": "AbstractImplementationDataType",
           "multiplicity": "0..1",
           "kind": "ref",

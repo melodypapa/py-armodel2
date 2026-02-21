@@ -46,20 +46,20 @@ class ModeDeclarationGroup(ARElement):
         return False
 
     initial_mode_ref: Optional[ARRef]
-    modes: list[ModeDeclaration]
-    mode_manager: Optional[ModeErrorBehavior]
-    mode_transition_mode_declaration_groups: list[ModeTransition]
-    mode_user_error: Optional[ModeErrorBehavior]
-    on_transition: Optional[PositiveInteger]
+    mode_declarations: list[ModeDeclaration]
+    mode_manager_error_behavior: Optional[ModeErrorBehavior]
+    mode_transitions: list[ModeTransition]
+    mode_user_error_behavior: Optional[ModeErrorBehavior]
+    on_transition_value: Optional[PositiveInteger]
     def __init__(self) -> None:
         """Initialize ModeDeclarationGroup."""
         super().__init__()
         self.initial_mode_ref: Optional[ARRef] = None
-        self.modes: list[ModeDeclaration] = []
-        self.mode_manager: Optional[ModeErrorBehavior] = None
-        self.mode_transition_mode_declaration_groups: list[ModeTransition] = []
-        self.mode_user_error: Optional[ModeErrorBehavior] = None
-        self.on_transition: Optional[PositiveInteger] = None
+        self.mode_declarations: list[ModeDeclaration] = []
+        self.mode_manager_error_behavior: Optional[ModeErrorBehavior] = None
+        self.mode_transitions: list[ModeTransition] = []
+        self.mode_user_error_behavior: Optional[ModeErrorBehavior] = None
+        self.on_transition_value: Optional[PositiveInteger] = None
 
     def serialize(self) -> ET.Element:
         """Serialize ModeDeclarationGroup to XML element.
@@ -99,22 +99,22 @@ class ModeDeclarationGroup(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize modes (list to container "MODES")
-        if self.modes:
-            wrapper = ET.Element("MODES")
-            for item in self.modes:
+        # Serialize mode_declarations (list to container "MODE-DECLARATIONS")
+        if self.mode_declarations:
+            wrapper = ET.Element("MODE-DECLARATIONS")
+            for item in self.mode_declarations:
                 serialized = SerializationHelper.serialize_item(item, "ModeDeclaration")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize mode_manager
-        if self.mode_manager is not None:
-            serialized = SerializationHelper.serialize_item(self.mode_manager, "ModeErrorBehavior")
+        # Serialize mode_manager_error_behavior
+        if self.mode_manager_error_behavior is not None:
+            serialized = SerializationHelper.serialize_item(self.mode_manager_error_behavior, "ModeErrorBehavior")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("MODE-MANAGER")
+                wrapped = ET.Element("MODE-MANAGER-ERROR-BEHAVIOR")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -123,22 +123,22 @@ class ModeDeclarationGroup(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize mode_transition_mode_declaration_groups (list to container "MODE-TRANSITION-MODE-DECLARATION-GROUPS")
-        if self.mode_transition_mode_declaration_groups:
-            wrapper = ET.Element("MODE-TRANSITION-MODE-DECLARATION-GROUPS")
-            for item in self.mode_transition_mode_declaration_groups:
+        # Serialize mode_transitions (list to container "MODE-TRANSITIONS")
+        if self.mode_transitions:
+            wrapper = ET.Element("MODE-TRANSITIONS")
+            for item in self.mode_transitions:
                 serialized = SerializationHelper.serialize_item(item, "ModeTransition")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize mode_user_error
-        if self.mode_user_error is not None:
-            serialized = SerializationHelper.serialize_item(self.mode_user_error, "ModeErrorBehavior")
+        # Serialize mode_user_error_behavior
+        if self.mode_user_error_behavior is not None:
+            serialized = SerializationHelper.serialize_item(self.mode_user_error_behavior, "ModeErrorBehavior")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("MODE-USER-ERROR")
+                wrapped = ET.Element("MODE-USER-ERROR-BEHAVIOR")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -147,12 +147,12 @@ class ModeDeclarationGroup(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize on_transition
-        if self.on_transition is not None:
-            serialized = SerializationHelper.serialize_item(self.on_transition, "PositiveInteger")
+        # Serialize on_transition_value
+        if self.on_transition_value is not None:
+            serialized = SerializationHelper.serialize_item(self.on_transition_value, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ON-TRANSITION")
+                wrapped = ET.Element("ON-TRANSITION-VALUE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -182,43 +182,43 @@ class ModeDeclarationGroup(ARElement):
             initial_mode_ref_value = ARRef.deserialize(child)
             obj.initial_mode_ref = initial_mode_ref_value
 
-        # Parse modes (list from container "MODES")
-        obj.modes = []
-        container = SerializationHelper.find_child_element(element, "MODES")
+        # Parse mode_declarations (list from container "MODE-DECLARATIONS")
+        obj.mode_declarations = []
+        container = SerializationHelper.find_child_element(element, "MODE-DECLARATIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.modes.append(child_value)
+                    obj.mode_declarations.append(child_value)
 
-        # Parse mode_manager
-        child = SerializationHelper.find_child_element(element, "MODE-MANAGER")
+        # Parse mode_manager_error_behavior
+        child = SerializationHelper.find_child_element(element, "MODE-MANAGER-ERROR-BEHAVIOR")
         if child is not None:
-            mode_manager_value = SerializationHelper.deserialize_by_tag(child, "ModeErrorBehavior")
-            obj.mode_manager = mode_manager_value
+            mode_manager_error_behavior_value = SerializationHelper.deserialize_by_tag(child, "ModeErrorBehavior")
+            obj.mode_manager_error_behavior = mode_manager_error_behavior_value
 
-        # Parse mode_transition_mode_declaration_groups (list from container "MODE-TRANSITION-MODE-DECLARATION-GROUPS")
-        obj.mode_transition_mode_declaration_groups = []
-        container = SerializationHelper.find_child_element(element, "MODE-TRANSITION-MODE-DECLARATION-GROUPS")
+        # Parse mode_transitions (list from container "MODE-TRANSITIONS")
+        obj.mode_transitions = []
+        container = SerializationHelper.find_child_element(element, "MODE-TRANSITIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.mode_transition_mode_declaration_groups.append(child_value)
+                    obj.mode_transitions.append(child_value)
 
-        # Parse mode_user_error
-        child = SerializationHelper.find_child_element(element, "MODE-USER-ERROR")
+        # Parse mode_user_error_behavior
+        child = SerializationHelper.find_child_element(element, "MODE-USER-ERROR-BEHAVIOR")
         if child is not None:
-            mode_user_error_value = SerializationHelper.deserialize_by_tag(child, "ModeErrorBehavior")
-            obj.mode_user_error = mode_user_error_value
+            mode_user_error_behavior_value = SerializationHelper.deserialize_by_tag(child, "ModeErrorBehavior")
+            obj.mode_user_error_behavior = mode_user_error_behavior_value
 
-        # Parse on_transition
-        child = SerializationHelper.find_child_element(element, "ON-TRANSITION")
+        # Parse on_transition_value
+        child = SerializationHelper.find_child_element(element, "ON-TRANSITION-VALUE")
         if child is not None:
-            on_transition_value = child.text
-            obj.on_transition = on_transition_value
+            on_transition_value_value = child.text
+            obj.on_transition_value = on_transition_value_value
 
         return obj
 
