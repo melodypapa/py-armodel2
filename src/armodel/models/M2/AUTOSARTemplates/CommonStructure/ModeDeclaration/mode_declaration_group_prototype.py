@@ -90,7 +90,7 @@ class ModeDeclarationGroupPrototype(Identifiable):
             serialized = SerializationHelper.serialize_item(self.type_ref, "ModeDeclarationGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TYPE-REF")
+                wrapped = ET.Element("TYPE-TREF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -121,7 +121,7 @@ class ModeDeclarationGroupPrototype(Identifiable):
             obj.sw_calibration_access = sw_calibration_access_value
 
         # Parse type_ref
-        child = SerializationHelper.find_child_element(element, "TYPE-REF")
+        child = SerializationHelper.find_child_element(element, "TYPE-TREF")
         if child is not None:
             type_ref_value = ARRef.deserialize(child)
             obj.type_ref = type_ref_value

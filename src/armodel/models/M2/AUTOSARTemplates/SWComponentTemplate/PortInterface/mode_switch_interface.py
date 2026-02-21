@@ -15,9 +15,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_i
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
-    ModeDeclarationGroup,
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group_prototype import (
+    ModeDeclarationGroupPrototype,
 )
 
 
@@ -33,11 +32,11 @@ class ModeSwitchInterface(PortInterface):
         """
         return False
 
-    mode_group_ref: Optional[ARRef]
+    mode_group: Optional[ModeDeclarationGroupPrototype]
     def __init__(self) -> None:
         """Initialize ModeSwitchInterface."""
         super().__init__()
-        self.mode_group_ref: Optional[ARRef] = None
+        self.mode_group: Optional[ModeDeclarationGroupPrototype] = None
 
     def serialize(self) -> ET.Element:
         """Serialize ModeSwitchInterface to XML element.
@@ -63,12 +62,12 @@ class ModeSwitchInterface(PortInterface):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize mode_group_ref
-        if self.mode_group_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.mode_group_ref, "ModeDeclarationGroup")
+        # Serialize mode_group
+        if self.mode_group is not None:
+            serialized = SerializationHelper.serialize_item(self.mode_group, "ModeDeclarationGroupPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("MODE-GROUP-REF")
+                wrapped = ET.Element("MODE-GROUP")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -92,11 +91,11 @@ class ModeSwitchInterface(PortInterface):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ModeSwitchInterface, cls).deserialize(element)
 
-        # Parse mode_group_ref
-        child = SerializationHelper.find_child_element(element, "MODE-GROUP-REF")
+        # Parse mode_group
+        child = SerializationHelper.find_child_element(element, "MODE-GROUP")
         if child is not None:
-            mode_group_ref_value = ARRef.deserialize(child)
-            obj.mode_group_ref = mode_group_ref_value
+            mode_group_value = SerializationHelper.deserialize_by_tag(child, "ModeDeclarationGroupPrototype")
+            obj.mode_group = mode_group_value
 
         return obj
 

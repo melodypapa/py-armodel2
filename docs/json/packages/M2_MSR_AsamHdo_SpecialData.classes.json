@@ -204,9 +204,9 @@
         "gid": {
           "type": "NameToken",
           "multiplicity": "1",
-          "kind": "attribute",
+          "kind": "xml_attribute",
           "is_ref": false,
-          "note": "This attributes specifies an identifier. Gid comes from the"
+          "note": "This attributes specifies an identifier. Gid comes from the SGML/XML-Term \"Generic Identifier\" which is the element name in XML. The role of this attribute is the same as the name of an XML - element."
         },
         "value": {
           "type": "VerbatimStringPlain",
@@ -216,7 +216,7 @@
           "note": "This is the value of the special data."
         },
         "xmlSpace": {
-          "type": "any (XmlSpaceEnum)",
+          "type": "XmlSpaceEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,

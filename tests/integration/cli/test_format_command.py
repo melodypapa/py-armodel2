@@ -16,7 +16,7 @@ _SRC_DIR = Path(__file__).parent.parent.parent.parent / "src"
 def test_format_command_integration():
     """Test format command with real ARXML file."""
     # Use existing test fixture from demos directory
-    fixture_path = Path("demos/arxml/AUTOSAR_Datatypes.arxml")
+    fixture_path = Path("demos/validated/AUTOSAR_Datatypes.arxml")
 
     if not fixture_path.exists():
         pytest.skip("Test fixture not available")

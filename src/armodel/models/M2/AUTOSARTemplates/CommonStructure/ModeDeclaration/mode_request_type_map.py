@@ -36,12 +36,12 @@ class ModeRequestTypeMap(ARObject):
         """
         return False
 
-    implementation_ref: Optional[ARRef]
+    implementation_data_type_ref: Optional[ARRef]
     mode_group_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ModeRequestTypeMap."""
         super().__init__()
-        self.implementation_ref: Optional[ARRef] = None
+        self.implementation_data_type_ref: Optional[ARRef] = None
         self.mode_group_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
@@ -68,12 +68,12 @@ class ModeRequestTypeMap(ARObject):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize implementation_ref
-        if self.implementation_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.implementation_ref, "AbstractImplementationDataType")
+        # Serialize implementation_data_type_ref
+        if self.implementation_data_type_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.implementation_data_type_ref, "AbstractImplementationDataType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("IMPLEMENTATION-REF")
+                wrapped = ET.Element("IMPLEMENTATION-DATA-TYPE-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -111,11 +111,11 @@ class ModeRequestTypeMap(ARObject):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ModeRequestTypeMap, cls).deserialize(element)
 
-        # Parse implementation_ref
-        child = SerializationHelper.find_child_element(element, "IMPLEMENTATION-REF")
+        # Parse implementation_data_type_ref
+        child = SerializationHelper.find_child_element(element, "IMPLEMENTATION-DATA-TYPE-REF")
         if child is not None:
-            implementation_ref_value = ARRef.deserialize(child)
-            obj.implementation_ref = implementation_ref_value
+            implementation_data_type_ref_value = ARRef.deserialize(child)
+            obj.implementation_data_type_ref = implementation_data_type_ref_value
 
         # Parse mode_group_ref
         child = SerializationHelper.find_child_element(element, "MODE-GROUP-REF")
