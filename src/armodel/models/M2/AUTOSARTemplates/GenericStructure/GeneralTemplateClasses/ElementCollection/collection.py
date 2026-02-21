@@ -95,6 +95,8 @@ class Collection(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
+        # Serialize collected_instance_irefs (list of instance references with wrapper "COLLECTED-INSTANCE-IREF")
+        if self.collected_instance_irefs:
             serialized = ARObject._serialize_item(self.collected_instance_irefs, "AnyInstanceRef")
             if serialized is not None:
                 # Wrap in IREF wrapper element
@@ -165,6 +167,8 @@ class Collection(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
+        # Serialize source_instance_irefs (list of instance references with wrapper "SOURCE-INSTANCES-IREF")
+        if self.source_instance_irefs:
             serialized = ARObject._serialize_item(self.source_instance_irefs, "AnyInstanceRef")
             if serialized is not None:
                 # Wrap in IREF wrapper element
