@@ -12,8 +12,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 )
 
 
-class TestARObject(ARObject):
-    """Test ARObject subclass for deserialization tests."""
+class MockARObject(ARObject):
+    """Mock ARObject subclass for deserialization tests."""
 
     # Class-level type annotations (required for get_type_hints)
     short_name: str
@@ -21,7 +21,7 @@ class TestARObject(ARObject):
     sw_data_def_props: str
 
     @classmethod
-    def deserialize(cls, element: ET.Element) -> "TestARObject":
+    def deserialize(cls, element: ET.Element) -> "MockARObject":
         """Deserialize this test object."""
         # Call parent's deserialize first to handle inherited attributes (checksum, timestamp)
         obj = super().deserialize(element)
@@ -60,7 +60,7 @@ class TestARObjectDeserialize:
     def test_deserialize_from_xml(self):
         """Test deserializing ARObject from XML element."""
         elem = ET.fromstring(self.test_xml_with_name_and_category)
-        obj = TestARObject.deserialize(elem)
+        obj = MockARObject.deserialize(elem)
 
         assert obj.short_name == "test_name"
         assert obj.category == "STANDARD"
@@ -68,7 +68,7 @@ class TestARObjectDeserialize:
     def test_deserialize_converts_names(self):
         """Test that deserialize converts XML tags to snake_case attribute names."""
         elem = ET.fromstring(self.test_xml_with_sw_data_def_props)
-        obj = TestARObject.deserialize(elem)
+        obj = MockARObject.deserialize(elem)
 
         assert hasattr(obj, 'sw_data_def_props')
         assert obj.sw_data_def_props == "value"

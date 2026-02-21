@@ -14,8 +14,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 # Note: @xml_element_tag decorator has been removed from the framework
 
 
-class TestARObjectForSerialize(ARObject):
-    """Test ARObject subclass for serialization tests."""
+class MockARObjectForSerialize(ARObject):
+    """Mock ARObject subclass for serialization tests."""
 
     def __init__(self):
         super().__init__()
@@ -53,13 +53,13 @@ class TestARObjectSerialize:
     @pytest.fixture(autouse=True)
     def setup(self):
         """Setup test fixtures."""
-        self.test_obj = TestARObjectForSerialize()
+        self.test_obj = MockARObjectForSerialize()
 
     def test_serialize_creates_element(self):
         """Test that serialize creates XML element with correct structure."""
         elem = self.test_obj.serialize()
 
-        assert elem.tag == "TEST-A-R-OBJECT-FOR-SERIALIZE"
+        assert elem.tag == "MOCK-A-R-OBJECT-FOR-SERIALIZE"
         assert elem.find("SHORT-NAME") is not None
         assert elem.find("SHORT-NAME").text == "test_name"
 
