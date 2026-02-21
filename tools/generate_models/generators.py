@@ -141,6 +141,17 @@ def generate_class_code(
                             has_xml_attribute = True
                     break
 
+        # Auto-detect LanguageSpecific series classes and apply language_abbr to l attribute
+        # This handles: LLongName, LPlainText, LVerbatim, LOverviewParagraph, etc.
+        if class_name.startswith("L") and attribute_types:
+            for attr_name, attr_info in attribute_types.items():
+                if attr_name == "l":
+                    # Apply language_abbr kind with XML attribute name "L"
+                    attribute_types[attr_name]["kind"] = "language_abbr"
+                    attribute_types[attr_name]["xml_attr_name"] = "L"
+                    has_language_abbr = True
+                    break
+
         # Check if we need Any type
         uses_any_type = False
         if attribute_types:
@@ -178,6 +189,17 @@ def generate_class_code(
                     break
         if has_l_prefix:
             decorator_import += "from armodel.serialization.decorators import l_prefix\n"
+        
+        # Check if this class has language_abbr attributes
+        has_language_abbr = False
+        if attribute_types:
+            for attr_name, attr_info in attribute_types.items():
+                kind = attr_info.get("kind", "attribute")
+                if kind == "language_abbr":
+                    has_language_abbr = True
+                    break
+        if has_language_abbr:
+            decorator_import += "from armodel.serialization.decorators import language_abbr\n"
         
         code = f'''"""{docstring}"""
 
@@ -438,8 +460,8 @@ class {class_name}(ABC):
             # Get Python identifier with Ref suffix if needed
             python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity, kind)
 
-            # For xml_attribute and l_prefix, use private field with property
-            if kind == "xml_attribute" or kind == "l_prefix":
+            # For xml_attribute, l_prefix, and language_abbr, use private field with property
+            if kind == "xml_attribute" or kind == "l_prefix" or kind == "language_abbr":
                 private_name = f"_{python_name}"
                 code += f"    {private_name}: {python_type}\n"
             else:
@@ -479,8 +501,8 @@ class {class_name}(ABC):
             # Get Python identifier with Ref suffix if needed
             python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity, kind)
             
-            # For xml_attribute and l_prefix, use private field
-            if kind == "xml_attribute" or kind == "l_prefix":
+            # For xml_attribute, l_prefix, and language_abbr, use private field
+            if kind == "xml_attribute" or kind == "l_prefix" or kind == "language_abbr":
                 private_name = f"_{python_name}"
                 attr_code = f"        self.{private_name}: {python_type} = {initial_value}\n"
                 code += attr_code
@@ -510,6 +532,24 @@ class {class_name}(ABC):
     @{python_name}.setter
     def {python_name}(self, value: {attr_type}) -> None:
         """Set {python_name} XML attribute."""
+        self.{private_name} = value
+
+'''
+            elif kind == "language_abbr":
+                python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity, kind)
+                private_name = f"_{python_name}"
+                # Extract the XML attribute name from the attribute definition
+                xml_attr_name = attr_info.get("xml_attr_name", attr_name.upper())
+                # Generate property with language_abbr decorator
+                code += f'''    @property
+    @language_abbr("{xml_attr_name}")
+    def {python_name}(self) -> {attr_type}:
+        """Get {python_name} language abbreviation attribute."""
+        return self.{private_name}
+
+    @{python_name}.setter
+    def {python_name}(self, value: {attr_type}) -> None:
+        """Set {python_name} language abbreviation attribute."""
         self.{private_name} = value
 
 '''
@@ -683,6 +723,16 @@ def _generate_deserialize_method(
                 attribute_value = f'element.attrib["{xml_tag}"]'
                 code += f'''        # Parse {python_name} from XML attribute
         if "{xml_tag}" in element.attrib:
+            {_generate_value_extraction_code_for_attribute(effective_type, attribute_value, package_data, python_name, is_ref)}
+            obj.{python_name} = {python_name}_value
+
+'''
+            elif kind == "language_abbr":
+                # Handle language_abbr - parse from custom XML attribute name
+                xml_attr_name = attr_info.get("xml_attr_name", attr_name.upper())
+                attribute_value = f'element.attrib["{xml_attr_name}"]'
+                code += f'''        # Parse {python_name} from language abbreviation XML attribute
+        if "{xml_attr_name}" in element.attrib:
             {_generate_value_extraction_code_for_attribute(effective_type, attribute_value, package_data, python_name, is_ref)}
             obj.{python_name} = {python_name}_value
 
@@ -1750,6 +1800,14 @@ def _generate_serialize_method(
             elem.attrib["{xml_tag}"] = str(self.{python_name})
 
 '''
+            elif kind == "language_abbr":
+                # Handle language_abbr - serialize with custom XML attribute name
+                xml_attr_name = attr_info.get("xml_attr_name", attr_name.upper())
+                code += f'''        # Serialize {python_name} as language abbreviation XML attribute
+        if self.{python_name} is not None:
+            elem.attrib["{xml_attr_name}"] = str(self.{python_name})
+
+'''
             elif kind == "iref":
                 # Handle iref kind - instance reference with special wrapper
                 # The outer wrapper is attribute name + -IREF
@@ -2037,6 +2095,14 @@ def _generate_serialize_method_for_atp_variant(
                 code += f'''        # Serialize {python_name} as XML attribute
         if self.{python_name} is not None:
             inner_elem.attrib["{xml_tag}"] = str(self.{python_name})
+
+'''
+            elif kind == "language_abbr":
+                # Handle language_abbr - serialize with custom XML attribute name
+                xml_attr_name = attr_info.get("xml_attr_name", attr_name.upper())
+                code += f'''        # Serialize {python_name} as language abbreviation XML attribute
+        if self.{python_name} is not None:
+            inner_elem.attrib["{xml_attr_name}"] = str(self.{python_name})
 
 '''
             elif kind == "iref":
