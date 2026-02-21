@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     CIdentifier,
 )
@@ -52,7 +53,7 @@ class RptExecutableEntity(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -73,7 +74,7 @@ class RptExecutableEntity(Identifiable):
         if self.rpt_executable_entities:
             wrapper = ET.Element("RPT-EXECUTABLE-ENTITIES")
             for item in self.rpt_executable_entities:
-                serialized = ARObject._serialize_item(item, "RptExecutableEntity")
+                serialized = SerializationHelper.serialize_item(item, "RptExecutableEntity")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -83,7 +84,7 @@ class RptExecutableEntity(Identifiable):
         if self.rpt_reads:
             wrapper = ET.Element("RPT-READS")
             for item in self.rpt_reads:
-                serialized = ARObject._serialize_item(item, "RoleBasedMcDataAssignment")
+                serialized = SerializationHelper.serialize_item(item, "RoleBasedMcDataAssignment")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -93,7 +94,7 @@ class RptExecutableEntity(Identifiable):
         if self.rpt_writes:
             wrapper = ET.Element("RPT-WRITES")
             for item in self.rpt_writes:
-                serialized = ARObject._serialize_item(item, "RoleBasedMcDataAssignment")
+                serialized = SerializationHelper.serialize_item(item, "RoleBasedMcDataAssignment")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -101,7 +102,7 @@ class RptExecutableEntity(Identifiable):
 
         # Serialize symbol
         if self.symbol is not None:
-            serialized = ARObject._serialize_item(self.symbol, "CIdentifier")
+            serialized = SerializationHelper.serialize_item(self.symbol, "CIdentifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SYMBOL")
@@ -130,38 +131,38 @@ class RptExecutableEntity(Identifiable):
 
         # Parse rpt_executable_entities (list from container "RPT-EXECUTABLE-ENTITIES")
         obj.rpt_executable_entities = []
-        container = ARObject._find_child_element(element, "RPT-EXECUTABLE-ENTITIES")
+        container = SerializationHelper.find_child_element(element, "RPT-EXECUTABLE-ENTITIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.rpt_executable_entities.append(child_value)
 
         # Parse rpt_reads (list from container "RPT-READS")
         obj.rpt_reads = []
-        container = ARObject._find_child_element(element, "RPT-READS")
+        container = SerializationHelper.find_child_element(element, "RPT-READS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.rpt_reads.append(child_value)
 
         # Parse rpt_writes (list from container "RPT-WRITES")
         obj.rpt_writes = []
-        container = ARObject._find_child_element(element, "RPT-WRITES")
+        container = SerializationHelper.find_child_element(element, "RPT-WRITES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.rpt_writes.append(child_value)
 
         # Parse symbol
-        child = ARObject._find_child_element(element, "SYMBOL")
+        child = SerializationHelper.find_child_element(element, "SYMBOL")
         if child is not None:
-            symbol_value = ARObject._deserialize_by_tag(child, "CIdentifier")
+            symbol_value = SerializationHelper.deserialize_by_tag(child, "CIdentifier")
             obj.symbol = symbol_value
 
         return obj

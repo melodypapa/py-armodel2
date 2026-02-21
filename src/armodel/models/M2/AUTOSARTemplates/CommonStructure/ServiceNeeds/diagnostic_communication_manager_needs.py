@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_
     DiagnosticCapabilityElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class DiagnosticCommunicationManagerNeeds(DiagnosticCapabilityElement):
@@ -41,7 +42,7 @@ class DiagnosticCommunicationManagerNeeds(DiagnosticCapabilityElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -60,7 +61,7 @@ class DiagnosticCommunicationManagerNeeds(DiagnosticCapabilityElement):
 
         # Serialize service_request
         if self.service_request is not None:
-            serialized = ARObject._serialize_item(self.service_request, "Any")
+            serialized = SerializationHelper.serialize_item(self.service_request, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SERVICE-REQUEST")
@@ -88,7 +89,7 @@ class DiagnosticCommunicationManagerNeeds(DiagnosticCapabilityElement):
         obj = super(DiagnosticCommunicationManagerNeeds, cls).deserialize(element)
 
         # Parse service_request
-        child = ARObject._find_child_element(element, "SERVICE-REQUEST")
+        child = SerializationHelper.find_child_element(element, "SERVICE-REQUEST")
         if child is not None:
             service_request_value = child.text
             obj.service_request = service_request_value

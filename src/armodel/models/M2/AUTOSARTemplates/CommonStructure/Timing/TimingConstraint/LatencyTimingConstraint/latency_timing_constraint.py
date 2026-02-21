@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.
     TimingConstraint,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.LatencyTimingConstraint import (
     LatencyConstraintTypeEnum,
@@ -58,7 +59,7 @@ class LatencyTimingConstraint(TimingConstraint):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -77,7 +78,7 @@ class LatencyTimingConstraint(TimingConstraint):
 
         # Serialize latency
         if self.latency is not None:
-            serialized = ARObject._serialize_item(self.latency, "LatencyConstraintTypeEnum")
+            serialized = SerializationHelper.serialize_item(self.latency, "LatencyConstraintTypeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LATENCY")
@@ -91,7 +92,7 @@ class LatencyTimingConstraint(TimingConstraint):
 
         # Serialize maximum
         if self.maximum is not None:
-            serialized = ARObject._serialize_item(self.maximum, "MultidimensionalTime")
+            serialized = SerializationHelper.serialize_item(self.maximum, "MultidimensionalTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAXIMUM")
@@ -105,7 +106,7 @@ class LatencyTimingConstraint(TimingConstraint):
 
         # Serialize minimum
         if self.minimum is not None:
-            serialized = ARObject._serialize_item(self.minimum, "MultidimensionalTime")
+            serialized = SerializationHelper.serialize_item(self.minimum, "MultidimensionalTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MINIMUM")
@@ -119,7 +120,7 @@ class LatencyTimingConstraint(TimingConstraint):
 
         # Serialize nominal
         if self.nominal is not None:
-            serialized = ARObject._serialize_item(self.nominal, "MultidimensionalTime")
+            serialized = SerializationHelper.serialize_item(self.nominal, "MultidimensionalTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NOMINAL")
@@ -133,7 +134,7 @@ class LatencyTimingConstraint(TimingConstraint):
 
         # Serialize scope_ref
         if self.scope_ref is not None:
-            serialized = ARObject._serialize_item(self.scope_ref, "TimingDescriptionEvent")
+            serialized = SerializationHelper.serialize_item(self.scope_ref, "TimingDescriptionEvent")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SCOPE-REF")
@@ -161,31 +162,31 @@ class LatencyTimingConstraint(TimingConstraint):
         obj = super(LatencyTimingConstraint, cls).deserialize(element)
 
         # Parse latency
-        child = ARObject._find_child_element(element, "LATENCY")
+        child = SerializationHelper.find_child_element(element, "LATENCY")
         if child is not None:
             latency_value = LatencyConstraintTypeEnum.deserialize(child)
             obj.latency = latency_value
 
         # Parse maximum
-        child = ARObject._find_child_element(element, "MAXIMUM")
+        child = SerializationHelper.find_child_element(element, "MAXIMUM")
         if child is not None:
-            maximum_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            maximum_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
             obj.maximum = maximum_value
 
         # Parse minimum
-        child = ARObject._find_child_element(element, "MINIMUM")
+        child = SerializationHelper.find_child_element(element, "MINIMUM")
         if child is not None:
-            minimum_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            minimum_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
             obj.minimum = minimum_value
 
         # Parse nominal
-        child = ARObject._find_child_element(element, "NOMINAL")
+        child = SerializationHelper.find_child_element(element, "NOMINAL")
         if child is not None:
-            nominal_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            nominal_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
             obj.nominal = nominal_value
 
         # Parse scope_ref
-        child = ARObject._find_child_element(element, "SCOPE-REF")
+        child = SerializationHelper.find_child_element(element, "SCOPE-REF")
         if child is not None:
             scope_ref_value = ARRef.deserialize(child)
             obj.scope_ref = scope_ref_value

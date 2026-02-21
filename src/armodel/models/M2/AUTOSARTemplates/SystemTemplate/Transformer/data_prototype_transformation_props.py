@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
     DataPrototype,
@@ -54,12 +55,12 @@ class DataPrototypeTransformationProps(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize data_prototype_in_ref
         if self.data_prototype_in_ref is not None:
-            serialized = ARObject._serialize_item(self.data_prototype_in_ref, "DataPrototype")
+            serialized = SerializationHelper.serialize_item(self.data_prototype_in_ref, "DataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-PROTOTYPE-IN-REF")
@@ -73,7 +74,7 @@ class DataPrototypeTransformationProps(ARObject):
 
         # Serialize network
         if self.network is not None:
-            serialized = ARObject._serialize_item(self.network, "SwDataDefProps")
+            serialized = SerializationHelper.serialize_item(self.network, "SwDataDefProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NETWORK")
@@ -87,7 +88,7 @@ class DataPrototypeTransformationProps(ARObject):
 
         # Serialize transformation_props_ref
         if self.transformation_props_ref is not None:
-            serialized = ARObject._serialize_item(self.transformation_props_ref, "TransformationProps")
+            serialized = SerializationHelper.serialize_item(self.transformation_props_ref, "TransformationProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TRANSFORMATION-PROPS-REF")
@@ -116,19 +117,19 @@ class DataPrototypeTransformationProps(ARObject):
         obj.__init__()
 
         # Parse data_prototype_in_ref
-        child = ARObject._find_child_element(element, "DATA-PROTOTYPE-IN-REF")
+        child = SerializationHelper.find_child_element(element, "DATA-PROTOTYPE-IN-REF")
         if child is not None:
             data_prototype_in_ref_value = ARRef.deserialize(child)
             obj.data_prototype_in_ref = data_prototype_in_ref_value
 
         # Parse network
-        child = ARObject._find_child_element(element, "NETWORK")
+        child = SerializationHelper.find_child_element(element, "NETWORK")
         if child is not None:
-            network_value = ARObject._deserialize_by_tag(child, "SwDataDefProps")
+            network_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
             obj.network = network_value
 
         # Parse transformation_props_ref
-        child = ARObject._find_child_element(element, "TRANSFORMATION-PROPS-REF")
+        child = SerializationHelper.find_child_element(element, "TRANSFORMATION-PROPS-REF")
         if child is not None:
             transformation_props_ref_value = ARRef.deserialize(child)
             obj.transformation_props_ref = transformation_props_ref_value

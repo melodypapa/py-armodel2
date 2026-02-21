@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Referrable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology import (
     TimeSyncTechnologyEnum,
 )
@@ -54,7 +55,7 @@ class TimeSyncServerConfiguration(Referrable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -73,7 +74,7 @@ class TimeSyncServerConfiguration(Referrable):
 
         # Serialize priority
         if self.priority is not None:
-            serialized = ARObject._serialize_item(self.priority, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.priority, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PRIORITY")
@@ -87,7 +88,7 @@ class TimeSyncServerConfiguration(Referrable):
 
         # Serialize sync_interval
         if self.sync_interval is not None:
-            serialized = ARObject._serialize_item(self.sync_interval, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.sync_interval, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SYNC-INTERVAL")
@@ -101,7 +102,7 @@ class TimeSyncServerConfiguration(Referrable):
 
         # Serialize time_sync_server_identifier
         if self.time_sync_server_identifier is not None:
-            serialized = ARObject._serialize_item(self.time_sync_server_identifier, "String")
+            serialized = SerializationHelper.serialize_item(self.time_sync_server_identifier, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIME-SYNC-SERVER-IDENTIFIER")
@@ -115,7 +116,7 @@ class TimeSyncServerConfiguration(Referrable):
 
         # Serialize time_sync
         if self.time_sync is not None:
-            serialized = ARObject._serialize_item(self.time_sync, "TimeSyncTechnologyEnum")
+            serialized = SerializationHelper.serialize_item(self.time_sync, "TimeSyncTechnologyEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIME-SYNC")
@@ -143,25 +144,25 @@ class TimeSyncServerConfiguration(Referrable):
         obj = super(TimeSyncServerConfiguration, cls).deserialize(element)
 
         # Parse priority
-        child = ARObject._find_child_element(element, "PRIORITY")
+        child = SerializationHelper.find_child_element(element, "PRIORITY")
         if child is not None:
             priority_value = child.text
             obj.priority = priority_value
 
         # Parse sync_interval
-        child = ARObject._find_child_element(element, "SYNC-INTERVAL")
+        child = SerializationHelper.find_child_element(element, "SYNC-INTERVAL")
         if child is not None:
             sync_interval_value = child.text
             obj.sync_interval = sync_interval_value
 
         # Parse time_sync_server_identifier
-        child = ARObject._find_child_element(element, "TIME-SYNC-SERVER-IDENTIFIER")
+        child = SerializationHelper.find_child_element(element, "TIME-SYNC-SERVER-IDENTIFIER")
         if child is not None:
             time_sync_server_identifier_value = child.text
             obj.time_sync_server_identifier = time_sync_server_identifier_value
 
         # Parse time_sync
-        child = ARObject._find_child_element(element, "TIME-SYNC")
+        child = SerializationHelper.find_child_element(element, "TIME-SYNC")
         if child is not None:
             time_sync_value = TimeSyncTechnologyEnum.deserialize(child)
             obj.time_sync = time_sync_value

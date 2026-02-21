@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.ApplicationAttribute
     SenderReceiverAnnotation,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
     MultidimensionalTime,
 )
@@ -43,7 +44,7 @@ class ReceiverAnnotation(SenderReceiverAnnotation):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class ReceiverAnnotation(SenderReceiverAnnotation):
 
         # Serialize signal_age
         if self.signal_age is not None:
-            serialized = ARObject._serialize_item(self.signal_age, "MultidimensionalTime")
+            serialized = SerializationHelper.serialize_item(self.signal_age, "MultidimensionalTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SIGNAL-AGE")
@@ -90,9 +91,9 @@ class ReceiverAnnotation(SenderReceiverAnnotation):
         obj = super(ReceiverAnnotation, cls).deserialize(element)
 
         # Parse signal_age
-        child = ARObject._find_child_element(element, "SIGNAL-AGE")
+        child = SerializationHelper.find_child_element(element, "SIGNAL-AGE")
         if child is not None:
-            signal_age_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            signal_age_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
             obj.signal_age = signal_age_value
 
         return obj

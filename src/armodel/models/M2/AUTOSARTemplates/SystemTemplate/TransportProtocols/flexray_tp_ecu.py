@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -51,12 +52,12 @@ class FlexrayTpEcu(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize cancellation
         if self.cancellation is not None:
-            serialized = ARObject._serialize_item(self.cancellation, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.cancellation, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CANCELLATION")
@@ -70,7 +71,7 @@ class FlexrayTpEcu(ARObject):
 
         # Serialize cycle_time_main
         if self.cycle_time_main is not None:
-            serialized = ARObject._serialize_item(self.cycle_time_main, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.cycle_time_main, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CYCLE-TIME-MAIN")
@@ -84,7 +85,7 @@ class FlexrayTpEcu(ARObject):
 
         # Serialize ecu_instance_ref
         if self.ecu_instance_ref is not None:
-            serialized = ARObject._serialize_item(self.ecu_instance_ref, "EcuInstance")
+            serialized = SerializationHelper.serialize_item(self.ecu_instance_ref, "EcuInstance")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ECU-INSTANCE-REF")
@@ -98,7 +99,7 @@ class FlexrayTpEcu(ARObject):
 
         # Serialize full_duplex
         if self.full_duplex is not None:
-            serialized = ARObject._serialize_item(self.full_duplex, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.full_duplex, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FULL-DUPLEX")
@@ -127,25 +128,25 @@ class FlexrayTpEcu(ARObject):
         obj.__init__()
 
         # Parse cancellation
-        child = ARObject._find_child_element(element, "CANCELLATION")
+        child = SerializationHelper.find_child_element(element, "CANCELLATION")
         if child is not None:
             cancellation_value = child.text
             obj.cancellation = cancellation_value
 
         # Parse cycle_time_main
-        child = ARObject._find_child_element(element, "CYCLE-TIME-MAIN")
+        child = SerializationHelper.find_child_element(element, "CYCLE-TIME-MAIN")
         if child is not None:
             cycle_time_main_value = child.text
             obj.cycle_time_main = cycle_time_main_value
 
         # Parse ecu_instance_ref
-        child = ARObject._find_child_element(element, "ECU-INSTANCE-REF")
+        child = SerializationHelper.find_child_element(element, "ECU-INSTANCE-REF")
         if child is not None:
             ecu_instance_ref_value = ARRef.deserialize(child)
             obj.ecu_instance_ref = ecu_instance_ref_value
 
         # Parse full_duplex
-        child = ARObject._find_child_element(element, "FULL-DUPLEX")
+        child = SerializationHelper.find_child_element(element, "FULL-DUPLEX")
         if child is not None:
             full_duplex_value = child.text
             obj.full_duplex = full_duplex_value

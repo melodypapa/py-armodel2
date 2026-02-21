@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
     CommunicationConnector,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     Integer,
@@ -56,7 +57,7 @@ class LinCommunicationConnector(CommunicationConnector):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -75,7 +76,7 @@ class LinCommunicationConnector(CommunicationConnector):
 
         # Serialize initial_nad
         if self.initial_nad is not None:
-            serialized = ARObject._serialize_item(self.initial_nad, "Integer")
+            serialized = SerializationHelper.serialize_item(self.initial_nad, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INITIAL-NAD")
@@ -91,7 +92,7 @@ class LinCommunicationConnector(CommunicationConnector):
         if self.lin_configurable_frames:
             wrapper = ET.Element("LIN-CONFIGURABLE-FRAMES")
             for item in self.lin_configurable_frames:
-                serialized = ARObject._serialize_item(item, "LinConfigurableFrame")
+                serialized = SerializationHelper.serialize_item(item, "LinConfigurableFrame")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -101,7 +102,7 @@ class LinCommunicationConnector(CommunicationConnector):
         if self.lin_ordereds:
             wrapper = ET.Element("LIN-ORDEREDS")
             for item in self.lin_ordereds:
-                serialized = ARObject._serialize_item(item, "LinOrderedConfigurableFrame")
+                serialized = SerializationHelper.serialize_item(item, "LinOrderedConfigurableFrame")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -109,7 +110,7 @@ class LinCommunicationConnector(CommunicationConnector):
 
         # Serialize schedule
         if self.schedule is not None:
-            serialized = ARObject._serialize_item(self.schedule, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.schedule, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SCHEDULE")
@@ -137,33 +138,33 @@ class LinCommunicationConnector(CommunicationConnector):
         obj = super(LinCommunicationConnector, cls).deserialize(element)
 
         # Parse initial_nad
-        child = ARObject._find_child_element(element, "INITIAL-NAD")
+        child = SerializationHelper.find_child_element(element, "INITIAL-NAD")
         if child is not None:
             initial_nad_value = child.text
             obj.initial_nad = initial_nad_value
 
         # Parse lin_configurable_frames (list from container "LIN-CONFIGURABLE-FRAMES")
         obj.lin_configurable_frames = []
-        container = ARObject._find_child_element(element, "LIN-CONFIGURABLE-FRAMES")
+        container = SerializationHelper.find_child_element(element, "LIN-CONFIGURABLE-FRAMES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.lin_configurable_frames.append(child_value)
 
         # Parse lin_ordereds (list from container "LIN-ORDEREDS")
         obj.lin_ordereds = []
-        container = ARObject._find_child_element(element, "LIN-ORDEREDS")
+        container = SerializationHelper.find_child_element(element, "LIN-ORDEREDS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.lin_ordereds.append(child_value)
 
         # Parse schedule
-        child = ARObject._find_child_element(element, "SCHEDULE")
+        child = SerializationHelper.find_child_element(element, "SCHEDULE")
         if child is not None:
             schedule_value = child.text
             obj.schedule = schedule_value

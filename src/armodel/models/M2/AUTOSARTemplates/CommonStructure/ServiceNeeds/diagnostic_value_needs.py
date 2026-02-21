@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_
     DiagnosticCapabilityElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
     DiagnosticProcessingStyleEnum,
     DiagnosticValueAccessEnum,
@@ -56,7 +57,7 @@ class DiagnosticValueNeeds(DiagnosticCapabilityElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -75,7 +76,7 @@ class DiagnosticValueNeeds(DiagnosticCapabilityElement):
 
         # Serialize data_length
         if self.data_length is not None:
-            serialized = ARObject._serialize_item(self.data_length, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.data_length, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-LENGTH")
@@ -89,7 +90,7 @@ class DiagnosticValueNeeds(DiagnosticCapabilityElement):
 
         # Serialize diagnostic_value_access
         if self.diagnostic_value_access is not None:
-            serialized = ARObject._serialize_item(self.diagnostic_value_access, "DiagnosticValueAccessEnum")
+            serialized = SerializationHelper.serialize_item(self.diagnostic_value_access, "DiagnosticValueAccessEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DIAGNOSTIC-VALUE-ACCESS")
@@ -103,7 +104,7 @@ class DiagnosticValueNeeds(DiagnosticCapabilityElement):
 
         # Serialize fixed_length
         if self.fixed_length is not None:
-            serialized = ARObject._serialize_item(self.fixed_length, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.fixed_length, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FIXED-LENGTH")
@@ -117,7 +118,7 @@ class DiagnosticValueNeeds(DiagnosticCapabilityElement):
 
         # Serialize processing_style
         if self.processing_style is not None:
-            serialized = ARObject._serialize_item(self.processing_style, "DiagnosticProcessingStyleEnum")
+            serialized = SerializationHelper.serialize_item(self.processing_style, "DiagnosticProcessingStyleEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PROCESSING-STYLE")
@@ -145,25 +146,25 @@ class DiagnosticValueNeeds(DiagnosticCapabilityElement):
         obj = super(DiagnosticValueNeeds, cls).deserialize(element)
 
         # Parse data_length
-        child = ARObject._find_child_element(element, "DATA-LENGTH")
+        child = SerializationHelper.find_child_element(element, "DATA-LENGTH")
         if child is not None:
             data_length_value = child.text
             obj.data_length = data_length_value
 
         # Parse diagnostic_value_access
-        child = ARObject._find_child_element(element, "DIAGNOSTIC-VALUE-ACCESS")
+        child = SerializationHelper.find_child_element(element, "DIAGNOSTIC-VALUE-ACCESS")
         if child is not None:
             diagnostic_value_access_value = DiagnosticValueAccessEnum.deserialize(child)
             obj.diagnostic_value_access = diagnostic_value_access_value
 
         # Parse fixed_length
-        child = ARObject._find_child_element(element, "FIXED-LENGTH")
+        child = SerializationHelper.find_child_element(element, "FIXED-LENGTH")
         if child is not None:
             fixed_length_value = child.text
             obj.fixed_length = fixed_length_value
 
         # Parse processing_style
-        child = ARObject._find_child_element(element, "PROCESSING-STYLE")
+        child = SerializationHelper.find_child_element(element, "PROCESSING-STYLE")
         if child is not None:
             processing_style_value = DiagnosticProcessingStyleEnum.deserialize(child)
             obj.processing_style = processing_style_value

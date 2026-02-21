@@ -14,6 +14,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.AbstractStructure.atp_classifier import (
     AtpClassifier,
@@ -56,12 +57,12 @@ class AtpInstanceRef(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize atp_base_ref
         if self.atp_base_ref is not None:
-            serialized = ARObject._serialize_item(self.atp_base_ref, "AtpClassifier")
+            serialized = SerializationHelper.serialize_item(self.atp_base_ref, "AtpClassifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ATP-BASE-REF")
@@ -77,7 +78,7 @@ class AtpInstanceRef(ARObject, ABC):
         if self.atp_context_refs:
             wrapper = ET.Element("ATP-CONTEXT-REFS")
             for item in self.atp_context_refs:
-                serialized = ARObject._serialize_item(item, "AtpPrototype")
+                serialized = SerializationHelper.serialize_item(item, "AtpPrototype")
                 if serialized is not None:
                     child_elem = ET.Element("ATP-CONTEXT-REF")
                     if hasattr(serialized, 'attrib'):
@@ -92,7 +93,7 @@ class AtpInstanceRef(ARObject, ABC):
 
         # Serialize atp_target_ref
         if self.atp_target_ref is not None:
-            serialized = ARObject._serialize_item(self.atp_target_ref, "AtpFeature")
+            serialized = SerializationHelper.serialize_item(self.atp_target_ref, "AtpFeature")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ATP-TARGET-REF")
@@ -121,29 +122,29 @@ class AtpInstanceRef(ARObject, ABC):
         obj.__init__()
 
         # Parse atp_base_ref
-        child = ARObject._find_child_element(element, "ATP-BASE-REF")
+        child = SerializationHelper.find_child_element(element, "ATP-BASE-REF")
         if child is not None:
             atp_base_ref_value = ARRef.deserialize(child)
             obj.atp_base_ref = atp_base_ref_value
 
         # Parse atp_context_refs (list from container "ATP-CONTEXT-REFS")
         obj.atp_context_refs = []
-        container = ARObject._find_child_element(element, "ATP-CONTEXT-REFS")
+        container = SerializationHelper.find_child_element(element, "ATP-CONTEXT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.atp_context_refs.append(child_value)
 
         # Parse atp_target_ref
-        child = ARObject._find_child_element(element, "ATP-TARGET-REF")
+        child = SerializationHelper.find_child_element(element, "ATP-TARGET-REF")
         if child is not None:
             atp_target_ref_value = ARRef.deserialize(child)
             obj.atp_target_ref = atp_target_ref_value

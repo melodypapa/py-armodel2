@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     CIdentifier,
     String,
@@ -56,7 +57,7 @@ class PerInstanceMemory(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -75,7 +76,7 @@ class PerInstanceMemory(Identifiable):
 
         # Serialize init_value
         if self.init_value is not None:
-            serialized = ARObject._serialize_item(self.init_value, "String")
+            serialized = SerializationHelper.serialize_item(self.init_value, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INIT-VALUE")
@@ -89,7 +90,7 @@ class PerInstanceMemory(Identifiable):
 
         # Serialize sw_data_def
         if self.sw_data_def is not None:
-            serialized = ARObject._serialize_item(self.sw_data_def, "SwDataDefProps")
+            serialized = SerializationHelper.serialize_item(self.sw_data_def, "SwDataDefProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-DATA-DEF")
@@ -103,7 +104,7 @@ class PerInstanceMemory(Identifiable):
 
         # Serialize type
         if self.type is not None:
-            serialized = ARObject._serialize_item(self.type, "CIdentifier")
+            serialized = SerializationHelper.serialize_item(self.type, "CIdentifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TYPE")
@@ -117,7 +118,7 @@ class PerInstanceMemory(Identifiable):
 
         # Serialize type_definition
         if self.type_definition is not None:
-            serialized = ARObject._serialize_item(self.type_definition, "String")
+            serialized = SerializationHelper.serialize_item(self.type_definition, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TYPE-DEFINITION")
@@ -145,25 +146,25 @@ class PerInstanceMemory(Identifiable):
         obj = super(PerInstanceMemory, cls).deserialize(element)
 
         # Parse init_value
-        child = ARObject._find_child_element(element, "INIT-VALUE")
+        child = SerializationHelper.find_child_element(element, "INIT-VALUE")
         if child is not None:
             init_value_value = child.text
             obj.init_value = init_value_value
 
         # Parse sw_data_def
-        child = ARObject._find_child_element(element, "SW-DATA-DEF")
+        child = SerializationHelper.find_child_element(element, "SW-DATA-DEF")
         if child is not None:
-            sw_data_def_value = ARObject._deserialize_by_tag(child, "SwDataDefProps")
+            sw_data_def_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
             obj.sw_data_def = sw_data_def_value
 
         # Parse type
-        child = ARObject._find_child_element(element, "TYPE")
+        child = SerializationHelper.find_child_element(element, "TYPE")
         if child is not None:
-            type_value = ARObject._deserialize_by_tag(child, "CIdentifier")
+            type_value = SerializationHelper.deserialize_by_tag(child, "CIdentifier")
             obj.type = type_value
 
         # Parse type_definition
-        child = ARObject._find_child_element(element, "TYPE-DEFINITION")
+        child = SerializationHelper.find_child_element(element, "TYPE-DEFINITION")
         if child is not None:
             type_definition_value = child.text
             obj.type_definition = type_definition_value

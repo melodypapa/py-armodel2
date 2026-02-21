@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.
     EventTriggeringConstraint,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.EventTriggeringConstraint.confidence_interval import (
     ConfidenceInterval,
 )
@@ -50,7 +51,7 @@ class ArbitraryEventTriggering(EventTriggeringConstraint):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -71,7 +72,7 @@ class ArbitraryEventTriggering(EventTriggeringConstraint):
         if self.confidence_intervals:
             wrapper = ET.Element("CONFIDENCE-INTERVALS")
             for item in self.confidence_intervals:
-                serialized = ARObject._serialize_item(item, "ConfidenceInterval")
+                serialized = SerializationHelper.serialize_item(item, "ConfidenceInterval")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -81,7 +82,7 @@ class ArbitraryEventTriggering(EventTriggeringConstraint):
         if self.maximums:
             wrapper = ET.Element("MAXIMUMS")
             for item in self.maximums:
-                serialized = ARObject._serialize_item(item, "MultidimensionalTime")
+                serialized = SerializationHelper.serialize_item(item, "MultidimensionalTime")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -91,7 +92,7 @@ class ArbitraryEventTriggering(EventTriggeringConstraint):
         if self.minimums:
             wrapper = ET.Element("MINIMUMS")
             for item in self.minimums:
-                serialized = ARObject._serialize_item(item, "MultidimensionalTime")
+                serialized = SerializationHelper.serialize_item(item, "MultidimensionalTime")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -114,31 +115,31 @@ class ArbitraryEventTriggering(EventTriggeringConstraint):
 
         # Parse confidence_intervals (list from container "CONFIDENCE-INTERVALS")
         obj.confidence_intervals = []
-        container = ARObject._find_child_element(element, "CONFIDENCE-INTERVALS")
+        container = SerializationHelper.find_child_element(element, "CONFIDENCE-INTERVALS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.confidence_intervals.append(child_value)
 
         # Parse maximums (list from container "MAXIMUMS")
         obj.maximums = []
-        container = ARObject._find_child_element(element, "MAXIMUMS")
+        container = SerializationHelper.find_child_element(element, "MAXIMUMS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.maximums.append(child_value)
 
         # Parse minimums (list from container "MINIMUMS")
         obj.minimums = []
-        container = ARObject._find_child_element(element, "MINIMUMS")
+        container = SerializationHelper.find_child_element(element, "MINIMUMS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.minimums.append(child_value)
 

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SignalPaths.signal_path_c
     SignalPathConstraint,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SignalPaths.swc_to_swc_signal import (
     SwcToSwcSignal,
 )
@@ -45,7 +46,7 @@ class SeparateSignalPath(SignalPathConstraint):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -66,7 +67,7 @@ class SeparateSignalPath(SignalPathConstraint):
         if self.operations:
             wrapper = ET.Element("OPERATIONS")
             for item in self.operations:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -76,7 +77,7 @@ class SeparateSignalPath(SignalPathConstraint):
         if self.signals:
             wrapper = ET.Element("SIGNALS")
             for item in self.signals:
-                serialized = ARObject._serialize_item(item, "SwcToSwcSignal")
+                serialized = SerializationHelper.serialize_item(item, "SwcToSwcSignal")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -99,21 +100,21 @@ class SeparateSignalPath(SignalPathConstraint):
 
         # Parse operations (list from container "OPERATIONS")
         obj.operations = []
-        container = ARObject._find_child_element(element, "OPERATIONS")
+        container = SerializationHelper.find_child_element(element, "OPERATIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.operations.append(child_value)
 
         # Parse signals (list from container "SIGNALS")
         obj.signals = []
-        container = ARObject._find_child_element(element, "SIGNALS")
+        container = SerializationHelper.find_child_element(element, "SIGNALS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.signals.append(child_value)
 

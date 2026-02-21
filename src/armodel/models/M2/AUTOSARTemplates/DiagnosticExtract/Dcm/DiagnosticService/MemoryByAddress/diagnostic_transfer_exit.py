@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticMemoryByAddress,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
@@ -41,7 +42,7 @@ class DiagnosticTransferExit(DiagnosticMemoryByAddress):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -60,7 +61,7 @@ class DiagnosticTransferExit(DiagnosticMemoryByAddress):
 
         # Serialize transfer_exit_ref
         if self.transfer_exit_ref is not None:
-            serialized = ARObject._serialize_item(self.transfer_exit_ref, "DiagnosticTransferExit")
+            serialized = SerializationHelper.serialize_item(self.transfer_exit_ref, "DiagnosticTransferExit")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TRANSFER-EXIT-REF")
@@ -88,7 +89,7 @@ class DiagnosticTransferExit(DiagnosticMemoryByAddress):
         obj = super(DiagnosticTransferExit, cls).deserialize(element)
 
         # Parse transfer_exit_ref
-        child = ARObject._find_child_element(element, "TRANSFER-EXIT-REF")
+        child = SerializationHelper.find_child_element(element, "TRANSFER-EXIT-REF")
         if child is not None:
             transfer_exit_ref_value = ARRef.deserialize(child)
             obj.transfer_exit_ref = transfer_exit_ref_value

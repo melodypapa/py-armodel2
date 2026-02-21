@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     MonotonyEnum,
 )
@@ -46,12 +47,12 @@ class SwCalprmAxisTypeProps(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize max_gradient
         if self.max_gradient is not None:
-            serialized = ARObject._serialize_item(self.max_gradient, "Float")
+            serialized = SerializationHelper.serialize_item(self.max_gradient, "Float")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-GRADIENT")
@@ -65,7 +66,7 @@ class SwCalprmAxisTypeProps(ARObject, ABC):
 
         # Serialize monotony
         if self.monotony is not None:
-            serialized = ARObject._serialize_item(self.monotony, "MonotonyEnum")
+            serialized = SerializationHelper.serialize_item(self.monotony, "MonotonyEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MONOTONY")
@@ -94,13 +95,13 @@ class SwCalprmAxisTypeProps(ARObject, ABC):
         obj.__init__()
 
         # Parse max_gradient
-        child = ARObject._find_child_element(element, "MAX-GRADIENT")
+        child = SerializationHelper.find_child_element(element, "MAX-GRADIENT")
         if child is not None:
             max_gradient_value = child.text
             obj.max_gradient = max_gradient_value
 
         # Parse monotony
-        child = ARObject._find_child_element(element, "MONOTONY")
+        child = SerializationHelper.find_child_element(element, "MONOTONY")
         if child is not None:
             monotony_value = MonotonyEnum.deserialize(child)
             obj.monotony = monotony_value

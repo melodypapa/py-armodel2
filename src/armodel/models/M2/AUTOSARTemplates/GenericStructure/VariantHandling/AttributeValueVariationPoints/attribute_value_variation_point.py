@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.VariantHandling import (
     BindingTimeEnum,
 )
@@ -53,12 +54,12 @@ class AttributeValueVariationPoint(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize binding_time_enum
         if self.binding_time_enum is not None:
-            serialized = ARObject._serialize_item(self.binding_time_enum, "BindingTimeEnum")
+            serialized = SerializationHelper.serialize_item(self.binding_time_enum, "BindingTimeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BINDING-TIME-ENUM")
@@ -72,7 +73,7 @@ class AttributeValueVariationPoint(ARObject, ABC):
 
         # Serialize blueprint_value
         if self.blueprint_value is not None:
-            serialized = ARObject._serialize_item(self.blueprint_value, "String")
+            serialized = SerializationHelper.serialize_item(self.blueprint_value, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BLUEPRINT-VALUE")
@@ -86,7 +87,7 @@ class AttributeValueVariationPoint(ARObject, ABC):
 
         # Serialize sd
         if self.sd is not None:
-            serialized = ARObject._serialize_item(self.sd, "String")
+            serialized = SerializationHelper.serialize_item(self.sd, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SD")
@@ -100,7 +101,7 @@ class AttributeValueVariationPoint(ARObject, ABC):
 
         # Serialize short_label
         if self.short_label is not None:
-            serialized = ARObject._serialize_item(self.short_label, "PrimitiveIdentifier")
+            serialized = SerializationHelper.serialize_item(self.short_label, "PrimitiveIdentifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SHORT-LABEL")
@@ -129,25 +130,25 @@ class AttributeValueVariationPoint(ARObject, ABC):
         obj.__init__()
 
         # Parse binding_time_enum
-        child = ARObject._find_child_element(element, "BINDING-TIME-ENUM")
+        child = SerializationHelper.find_child_element(element, "BINDING-TIME-ENUM")
         if child is not None:
             binding_time_enum_value = BindingTimeEnum.deserialize(child)
             obj.binding_time_enum = binding_time_enum_value
 
         # Parse blueprint_value
-        child = ARObject._find_child_element(element, "BLUEPRINT-VALUE")
+        child = SerializationHelper.find_child_element(element, "BLUEPRINT-VALUE")
         if child is not None:
             blueprint_value_value = child.text
             obj.blueprint_value = blueprint_value_value
 
         # Parse sd
-        child = ARObject._find_child_element(element, "SD")
+        child = SerializationHelper.find_child_element(element, "SD")
         if child is not None:
             sd_value = child.text
             obj.sd = sd_value
 
         # Parse short_label
-        child = ARObject._find_child_element(element, "SHORT-LABEL")
+        child = SerializationHelper.find_child_element(element, "SHORT-LABEL")
         if child is not None:
             short_label_value = child.text
             obj.short_label = short_label_value

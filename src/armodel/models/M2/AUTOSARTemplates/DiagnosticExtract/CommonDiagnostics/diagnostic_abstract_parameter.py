@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -48,12 +49,12 @@ class DiagnosticAbstractParameter(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize bit_offset
         if self.bit_offset is not None:
-            serialized = ARObject._serialize_item(self.bit_offset, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.bit_offset, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BIT-OFFSET")
@@ -67,7 +68,7 @@ class DiagnosticAbstractParameter(ARObject, ABC):
 
         # Serialize data_element
         if self.data_element is not None:
-            serialized = ARObject._serialize_item(self.data_element, "DiagnosticDataElement")
+            serialized = SerializationHelper.serialize_item(self.data_element, "DiagnosticDataElement")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-ELEMENT")
@@ -81,7 +82,7 @@ class DiagnosticAbstractParameter(ARObject, ABC):
 
         # Serialize parameter_size
         if self.parameter_size is not None:
-            serialized = ARObject._serialize_item(self.parameter_size, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.parameter_size, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PARAMETER-SIZE")
@@ -110,19 +111,19 @@ class DiagnosticAbstractParameter(ARObject, ABC):
         obj.__init__()
 
         # Parse bit_offset
-        child = ARObject._find_child_element(element, "BIT-OFFSET")
+        child = SerializationHelper.find_child_element(element, "BIT-OFFSET")
         if child is not None:
             bit_offset_value = child.text
             obj.bit_offset = bit_offset_value
 
         # Parse data_element
-        child = ARObject._find_child_element(element, "DATA-ELEMENT")
+        child = SerializationHelper.find_child_element(element, "DATA-ELEMENT")
         if child is not None:
-            data_element_value = ARObject._deserialize_by_tag(child, "DiagnosticDataElement")
+            data_element_value = SerializationHelper.deserialize_by_tag(child, "DiagnosticDataElement")
             obj.data_element = data_element_value
 
         # Parse parameter_size
-        child = ARObject._find_child_element(element, "PARAMETER-SIZE")
+        child = SerializationHelper.find_child_element(element, "PARAMETER-SIZE")
         if child is not None:
             parameter_size_value = child.text
             obj.parameter_size = parameter_size_value

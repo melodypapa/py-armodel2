@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -44,12 +45,12 @@ class DdsResourceLimits(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize max_instances
         if self.max_instances is not None:
-            serialized = ARObject._serialize_item(self.max_instances, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.max_instances, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-INSTANCES")
@@ -63,7 +64,7 @@ class DdsResourceLimits(ARObject):
 
         # Serialize max_samples
         if self.max_samples is not None:
-            serialized = ARObject._serialize_item(self.max_samples, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.max_samples, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-SAMPLES")
@@ -77,7 +78,7 @@ class DdsResourceLimits(ARObject):
 
         # Serialize max_samples_per_instance
         if self.max_samples_per_instance is not None:
-            serialized = ARObject._serialize_item(self.max_samples_per_instance, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.max_samples_per_instance, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-SAMPLES-PER-INSTANCE")
@@ -106,19 +107,19 @@ class DdsResourceLimits(ARObject):
         obj.__init__()
 
         # Parse max_instances
-        child = ARObject._find_child_element(element, "MAX-INSTANCES")
+        child = SerializationHelper.find_child_element(element, "MAX-INSTANCES")
         if child is not None:
             max_instances_value = child.text
             obj.max_instances = max_instances_value
 
         # Parse max_samples
-        child = ARObject._find_child_element(element, "MAX-SAMPLES")
+        child = SerializationHelper.find_child_element(element, "MAX-SAMPLES")
         if child is not None:
             max_samples_value = child.text
             obj.max_samples = max_samples_value
 
         # Parse max_samples_per_instance
-        child = ARObject._find_child_element(element, "MAX-SAMPLES-PER-INSTANCE")
+        child = SerializationHelper.find_child_element(element, "MAX-SAMPLES-PER-INSTANCE")
         if child is not None:
             max_samples_per_instance_value = child.text
             obj.max_samples_per_instance = max_samples_per_instance_value

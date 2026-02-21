@@ -13,6 +13,7 @@ from armodel.models.M2.MSR.DataDictionary.CalibrationParameter.sw_calprm_axis_ty
     SwCalprmAxisTypeProps,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
@@ -79,7 +80,7 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -98,7 +99,7 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
 
         # Serialize compu_method_ref
         if self.compu_method_ref is not None:
-            serialized = ARObject._serialize_item(self.compu_method_ref, "CompuMethod")
+            serialized = SerializationHelper.serialize_item(self.compu_method_ref, "CompuMethod")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COMPU-METHOD-REF")
@@ -112,7 +113,7 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
 
         # Serialize data_constr_ref
         if self.data_constr_ref is not None:
-            serialized = ARObject._serialize_item(self.data_constr_ref, "DataConstr")
+            serialized = SerializationHelper.serialize_item(self.data_constr_ref, "DataConstr")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-CONSTR-REF")
@@ -126,7 +127,7 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
 
         # Serialize input_variable_ref
         if self.input_variable_ref is not None:
-            serialized = ARObject._serialize_item(self.input_variable_ref, "ApplicationPrimitiveDataType")
+            serialized = SerializationHelper.serialize_item(self.input_variable_ref, "ApplicationPrimitiveDataType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INPUT-VARIABLE-REF")
@@ -140,7 +141,7 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
 
         # Serialize sw_axis_generic
         if self.sw_axis_generic is not None:
-            serialized = ARObject._serialize_item(self.sw_axis_generic, "SwAxisGeneric")
+            serialized = SerializationHelper.serialize_item(self.sw_axis_generic, "SwAxisGeneric")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-AXIS-GENERIC")
@@ -154,7 +155,7 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
 
         # Serialize sw_max_axis
         if self.sw_max_axis is not None:
-            serialized = ARObject._serialize_item(self.sw_max_axis, "Integer")
+            serialized = SerializationHelper.serialize_item(self.sw_max_axis, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-MAX-AXIS")
@@ -168,7 +169,7 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
 
         # Serialize sw_min_axis
         if self.sw_min_axis is not None:
-            serialized = ARObject._serialize_item(self.sw_min_axis, "Integer")
+            serialized = SerializationHelper.serialize_item(self.sw_min_axis, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-MIN-AXIS")
@@ -184,7 +185,7 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
         if self.sw_variable_ref_proxie_refs:
             wrapper = ET.Element("SW-VARIABLE-REF-PROXIE-REFS")
             for item in self.sw_variable_ref_proxie_refs:
-                serialized = ARObject._serialize_item(item, "SwVariableRefProxy")
+                serialized = SerializationHelper.serialize_item(item, "SwVariableRefProxy")
                 if serialized is not None:
                     child_elem = ET.Element("SW-VARIABLE-REF-PROXIE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -199,7 +200,7 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
 
         # Serialize unit_ref
         if self.unit_ref is not None:
-            serialized = ARObject._serialize_item(self.unit_ref, "Unit")
+            serialized = SerializationHelper.serialize_item(self.unit_ref, "Unit")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("UNIT-REF")
@@ -227,59 +228,59 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
         obj = super(SwAxisIndividual, cls).deserialize(element)
 
         # Parse compu_method_ref
-        child = ARObject._find_child_element(element, "COMPU-METHOD-REF")
+        child = SerializationHelper.find_child_element(element, "COMPU-METHOD-REF")
         if child is not None:
             compu_method_ref_value = ARRef.deserialize(child)
             obj.compu_method_ref = compu_method_ref_value
 
         # Parse data_constr_ref
-        child = ARObject._find_child_element(element, "DATA-CONSTR-REF")
+        child = SerializationHelper.find_child_element(element, "DATA-CONSTR-REF")
         if child is not None:
             data_constr_ref_value = ARRef.deserialize(child)
             obj.data_constr_ref = data_constr_ref_value
 
         # Parse input_variable_ref
-        child = ARObject._find_child_element(element, "INPUT-VARIABLE-REF")
+        child = SerializationHelper.find_child_element(element, "INPUT-VARIABLE-REF")
         if child is not None:
             input_variable_ref_value = ARRef.deserialize(child)
             obj.input_variable_ref = input_variable_ref_value
 
         # Parse sw_axis_generic
-        child = ARObject._find_child_element(element, "SW-AXIS-GENERIC")
+        child = SerializationHelper.find_child_element(element, "SW-AXIS-GENERIC")
         if child is not None:
-            sw_axis_generic_value = ARObject._deserialize_by_tag(child, "SwAxisGeneric")
+            sw_axis_generic_value = SerializationHelper.deserialize_by_tag(child, "SwAxisGeneric")
             obj.sw_axis_generic = sw_axis_generic_value
 
         # Parse sw_max_axis
-        child = ARObject._find_child_element(element, "SW-MAX-AXIS")
+        child = SerializationHelper.find_child_element(element, "SW-MAX-AXIS")
         if child is not None:
             sw_max_axis_value = child.text
             obj.sw_max_axis = sw_max_axis_value
 
         # Parse sw_min_axis
-        child = ARObject._find_child_element(element, "SW-MIN-AXIS")
+        child = SerializationHelper.find_child_element(element, "SW-MIN-AXIS")
         if child is not None:
             sw_min_axis_value = child.text
             obj.sw_min_axis = sw_min_axis_value
 
         # Parse sw_variable_ref_proxie_refs (list from container "SW-VARIABLE-REF-PROXIE-REFS")
         obj.sw_variable_ref_proxie_refs = []
-        container = ARObject._find_child_element(element, "SW-VARIABLE-REF-PROXIE-REFS")
+        container = SerializationHelper.find_child_element(element, "SW-VARIABLE-REF-PROXIE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.sw_variable_ref_proxie_refs.append(child_value)
 
         # Parse unit_ref
-        child = ARObject._find_child_element(element, "UNIT-REF")
+        child = SerializationHelper.find_child_element(element, "UNIT-REF")
         if child is not None:
             unit_ref_value = ARRef.deserialize(child)
             obj.unit_ref = unit_ref_value

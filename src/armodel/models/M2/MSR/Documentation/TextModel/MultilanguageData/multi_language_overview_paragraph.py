@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from armodel.serialization.decorators import l_prefix
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel.l_overview_paragraph import (
     LOverviewParagraph,
 )

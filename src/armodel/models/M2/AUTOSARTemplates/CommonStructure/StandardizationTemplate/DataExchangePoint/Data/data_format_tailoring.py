@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data.class_tailoring import (
     ClassTailoring,
 )
@@ -45,14 +46,14 @@ class DataFormatTailoring(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize class_tailorings (list to container "CLASS-TAILORINGS")
         if self.class_tailorings:
             wrapper = ET.Element("CLASS-TAILORINGS")
             for item in self.class_tailorings:
-                serialized = ARObject._serialize_item(item, "ClassTailoring")
+                serialized = SerializationHelper.serialize_item(item, "ClassTailoring")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -62,7 +63,7 @@ class DataFormatTailoring(ARObject):
         if self.constraints:
             wrapper = ET.Element("CONSTRAINTS")
             for item in self.constraints:
-                serialized = ARObject._serialize_item(item, "ConstraintTailoring")
+                serialized = SerializationHelper.serialize_item(item, "ConstraintTailoring")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -86,21 +87,21 @@ class DataFormatTailoring(ARObject):
 
         # Parse class_tailorings (list from container "CLASS-TAILORINGS")
         obj.class_tailorings = []
-        container = ARObject._find_child_element(element, "CLASS-TAILORINGS")
+        container = SerializationHelper.find_child_element(element, "CLASS-TAILORINGS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.class_tailorings.append(child_value)
 
         # Parse constraints (list from container "CONSTRAINTS")
         obj.constraints = []
-        container = ARObject._find_child_element(element, "CONSTRAINTS")
+        container = SerializationHelper.find_child_element(element, "CONSTRAINTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.constraints.append(child_value)
 

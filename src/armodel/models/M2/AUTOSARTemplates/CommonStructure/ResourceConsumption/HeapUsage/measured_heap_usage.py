@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.Heap
     HeapUsage,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
     String,
@@ -50,7 +51,7 @@ class MeasuredHeapUsage(HeapUsage):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -69,7 +70,7 @@ class MeasuredHeapUsage(HeapUsage):
 
         # Serialize average_memory_consumption
         if self.average_memory_consumption is not None:
-            serialized = ARObject._serialize_item(self.average_memory_consumption, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.average_memory_consumption, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("AVERAGE-MEMORY-CONSUMPTION")
@@ -83,7 +84,7 @@ class MeasuredHeapUsage(HeapUsage):
 
         # Serialize maximum_memory_consumption
         if self.maximum_memory_consumption is not None:
-            serialized = ARObject._serialize_item(self.maximum_memory_consumption, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.maximum_memory_consumption, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAXIMUM-MEMORY-CONSUMPTION")
@@ -97,7 +98,7 @@ class MeasuredHeapUsage(HeapUsage):
 
         # Serialize minimum_memory_consumption
         if self.minimum_memory_consumption is not None:
-            serialized = ARObject._serialize_item(self.minimum_memory_consumption, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.minimum_memory_consumption, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MINIMUM-MEMORY-CONSUMPTION")
@@ -111,7 +112,7 @@ class MeasuredHeapUsage(HeapUsage):
 
         # Serialize test_pattern
         if self.test_pattern is not None:
-            serialized = ARObject._serialize_item(self.test_pattern, "String")
+            serialized = SerializationHelper.serialize_item(self.test_pattern, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TEST-PATTERN")
@@ -139,25 +140,25 @@ class MeasuredHeapUsage(HeapUsage):
         obj = super(MeasuredHeapUsage, cls).deserialize(element)
 
         # Parse average_memory_consumption
-        child = ARObject._find_child_element(element, "AVERAGE-MEMORY-CONSUMPTION")
+        child = SerializationHelper.find_child_element(element, "AVERAGE-MEMORY-CONSUMPTION")
         if child is not None:
             average_memory_consumption_value = child.text
             obj.average_memory_consumption = average_memory_consumption_value
 
         # Parse maximum_memory_consumption
-        child = ARObject._find_child_element(element, "MAXIMUM-MEMORY-CONSUMPTION")
+        child = SerializationHelper.find_child_element(element, "MAXIMUM-MEMORY-CONSUMPTION")
         if child is not None:
             maximum_memory_consumption_value = child.text
             obj.maximum_memory_consumption = maximum_memory_consumption_value
 
         # Parse minimum_memory_consumption
-        child = ARObject._find_child_element(element, "MINIMUM-MEMORY-CONSUMPTION")
+        child = SerializationHelper.find_child_element(element, "MINIMUM-MEMORY-CONSUMPTION")
         if child is not None:
             minimum_memory_consumption_value = child.text
             obj.minimum_memory_consumption = minimum_memory_consumption_value
 
         # Parse test_pattern
-        child = ARObject._find_child_element(element, "TEST-PATTERN")
+        child = SerializationHelper.find_child_element(element, "TEST-PATTERN")
         if child is not None:
             test_pattern_value = child.text
             obj.test_pattern = test_pattern_value

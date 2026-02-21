@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
     VariableDataPrototype,
@@ -44,12 +45,12 @@ class AutosarVariableRef(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize autosar_variable
         if self.autosar_variable is not None:
-            serialized = ARObject._serialize_item(self.autosar_variable, "Any")
+            serialized = SerializationHelper.serialize_item(self.autosar_variable, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("AUTOSAR-VARIABLE")
@@ -63,7 +64,7 @@ class AutosarVariableRef(ARObject):
 
         # Serialize local_variable_ref
         if self.local_variable_ref is not None:
-            serialized = ARObject._serialize_item(self.local_variable_ref, "VariableDataPrototype")
+            serialized = SerializationHelper.serialize_item(self.local_variable_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LOCAL-VARIABLE-REF")
@@ -92,13 +93,13 @@ class AutosarVariableRef(ARObject):
         obj.__init__()
 
         # Parse autosar_variable
-        child = ARObject._find_child_element(element, "AUTOSAR-VARIABLE")
+        child = SerializationHelper.find_child_element(element, "AUTOSAR-VARIABLE")
         if child is not None:
             autosar_variable_value = child.text
             obj.autosar_variable = autosar_variable_value
 
         # Parse local_variable_ref
-        child = ARObject._find_child_element(element, "LOCAL-VARIABLE-REF")
+        child = SerializationHelper.find_child_element(element, "LOCAL-VARIABLE-REF")
         if child is not None:
             local_variable_ref_value = ARRef.deserialize(child)
             obj.local_variable_ref = local_variable_ref_value

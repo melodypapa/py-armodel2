@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
     TransportProtocolConfiguration,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -48,7 +49,7 @@ class RtpTp(TransportProtocolConfiguration):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -67,7 +68,7 @@ class RtpTp(TransportProtocolConfiguration):
 
         # Serialize ssrc
         if self.ssrc is not None:
-            serialized = ARObject._serialize_item(self.ssrc, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.ssrc, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SSRC")
@@ -81,7 +82,7 @@ class RtpTp(TransportProtocolConfiguration):
 
         # Serialize tcp_udp_config
         if self.tcp_udp_config is not None:
-            serialized = ARObject._serialize_item(self.tcp_udp_config, "TcpUdpConfig")
+            serialized = SerializationHelper.serialize_item(self.tcp_udp_config, "TcpUdpConfig")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TCP-UDP-CONFIG")
@@ -109,15 +110,15 @@ class RtpTp(TransportProtocolConfiguration):
         obj = super(RtpTp, cls).deserialize(element)
 
         # Parse ssrc
-        child = ARObject._find_child_element(element, "SSRC")
+        child = SerializationHelper.find_child_element(element, "SSRC")
         if child is not None:
             ssrc_value = child.text
             obj.ssrc = ssrc_value
 
         # Parse tcp_udp_config
-        child = ARObject._find_child_element(element, "TCP-UDP-CONFIG")
+        child = SerializationHelper.find_child_element(element, "TCP-UDP-CONFIG")
         if child is not None:
-            tcp_udp_config_value = ARObject._deserialize_by_tag(child, "TcpUdpConfig")
+            tcp_udp_config_value = SerializationHelper.deserialize_by_tag(child, "TcpUdpConfig")
             obj.tcp_udp_config = tcp_udp_config_value
 
         return obj

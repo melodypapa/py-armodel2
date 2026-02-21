@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer.transformatio
     TransformationProps,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -51,7 +52,7 @@ class SOMEIPTransformationProps(TransformationProps):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -70,7 +71,7 @@ class SOMEIPTransformationProps(TransformationProps):
 
         # Serialize alignment
         if self.alignment is not None:
-            serialized = ARObject._serialize_item(self.alignment, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.alignment, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ALIGNMENT")
@@ -84,7 +85,7 @@ class SOMEIPTransformationProps(TransformationProps):
 
         # Serialize size_of_array
         if self.size_of_array is not None:
-            serialized = ARObject._serialize_item(self.size_of_array, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.size_of_array, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SIZE-OF-ARRAY")
@@ -98,7 +99,7 @@ class SOMEIPTransformationProps(TransformationProps):
 
         # Serialize size_of_string
         if self.size_of_string is not None:
-            serialized = ARObject._serialize_item(self.size_of_string, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.size_of_string, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SIZE-OF-STRING")
@@ -112,7 +113,7 @@ class SOMEIPTransformationProps(TransformationProps):
 
         # Serialize size_of_struct
         if self.size_of_struct is not None:
-            serialized = ARObject._serialize_item(self.size_of_struct, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.size_of_struct, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SIZE-OF-STRUCT")
@@ -126,7 +127,7 @@ class SOMEIPTransformationProps(TransformationProps):
 
         # Serialize size_of_union
         if self.size_of_union is not None:
-            serialized = ARObject._serialize_item(self.size_of_union, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.size_of_union, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SIZE-OF-UNION")
@@ -154,31 +155,31 @@ class SOMEIPTransformationProps(TransformationProps):
         obj = super(SOMEIPTransformationProps, cls).deserialize(element)
 
         # Parse alignment
-        child = ARObject._find_child_element(element, "ALIGNMENT")
+        child = SerializationHelper.find_child_element(element, "ALIGNMENT")
         if child is not None:
             alignment_value = child.text
             obj.alignment = alignment_value
 
         # Parse size_of_array
-        child = ARObject._find_child_element(element, "SIZE-OF-ARRAY")
+        child = SerializationHelper.find_child_element(element, "SIZE-OF-ARRAY")
         if child is not None:
             size_of_array_value = child.text
             obj.size_of_array = size_of_array_value
 
         # Parse size_of_string
-        child = ARObject._find_child_element(element, "SIZE-OF-STRING")
+        child = SerializationHelper.find_child_element(element, "SIZE-OF-STRING")
         if child is not None:
             size_of_string_value = child.text
             obj.size_of_string = size_of_string_value
 
         # Parse size_of_struct
-        child = ARObject._find_child_element(element, "SIZE-OF-STRUCT")
+        child = SerializationHelper.find_child_element(element, "SIZE-OF-STRUCT")
         if child is not None:
             size_of_struct_value = child.text
             obj.size_of_struct = size_of_struct_value
 
         # Parse size_of_union
-        child = ARObject._find_child_element(element, "SIZE-OF-UNION")
+        child = SerializationHelper.find_child_element(element, "SIZE-OF-UNION")
         if child is not None:
             size_of_union_value = child.text
             obj.size_of_union = size_of_union_value

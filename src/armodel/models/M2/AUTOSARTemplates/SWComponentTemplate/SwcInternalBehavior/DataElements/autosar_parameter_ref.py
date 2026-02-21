@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 if TYPE_CHECKING:
@@ -47,12 +48,12 @@ class AutosarParameterRef(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize autosar_ref
         if self.autosar_ref is not None:
-            serialized = ARObject._serialize_item(self.autosar_ref, "DataPrototype")
+            serialized = SerializationHelper.serialize_item(self.autosar_ref, "DataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("AUTOSAR-REF")
@@ -66,7 +67,7 @@ class AutosarParameterRef(ARObject):
 
         # Serialize local_parameter_ref
         if self.local_parameter_ref is not None:
-            serialized = ARObject._serialize_item(self.local_parameter_ref, "DataPrototype")
+            serialized = SerializationHelper.serialize_item(self.local_parameter_ref, "DataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LOCAL-PARAMETER-REF")
@@ -95,13 +96,13 @@ class AutosarParameterRef(ARObject):
         obj.__init__()
 
         # Parse autosar_ref
-        child = ARObject._find_child_element(element, "AUTOSAR-REF")
+        child = SerializationHelper.find_child_element(element, "AUTOSAR-REF")
         if child is not None:
             autosar_ref_value = ARRef.deserialize(child)
             obj.autosar_ref = autosar_ref_value
 
         # Parse local_parameter_ref
-        child = ARObject._find_child_element(element, "LOCAL-PARAMETER-REF")
+        child = SerializationHelper.find_child_element(element, "LOCAL-PARAMETER-REF")
         if child is not None:
             local_parameter_ref_value = ARRef.deserialize(child)
             obj.local_parameter_ref = local_parameter_ref_value

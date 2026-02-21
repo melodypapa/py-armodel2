@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
@@ -48,12 +49,12 @@ class BswTriggerDirectImplementation(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize cat2_isr
         if self.cat2_isr is not None:
-            serialized = ARObject._serialize_item(self.cat2_isr, "Identifier")
+            serialized = SerializationHelper.serialize_item(self.cat2_isr, "Identifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CAT2-ISR")
@@ -67,7 +68,7 @@ class BswTriggerDirectImplementation(ARObject):
 
         # Serialize mastered_trigger_ref
         if self.mastered_trigger_ref is not None:
-            serialized = ARObject._serialize_item(self.mastered_trigger_ref, "Trigger")
+            serialized = SerializationHelper.serialize_item(self.mastered_trigger_ref, "Trigger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MASTERED-TRIGGER-REF")
@@ -81,7 +82,7 @@ class BswTriggerDirectImplementation(ARObject):
 
         # Serialize task
         if self.task is not None:
-            serialized = ARObject._serialize_item(self.task, "Identifier")
+            serialized = SerializationHelper.serialize_item(self.task, "Identifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TASK")
@@ -110,21 +111,21 @@ class BswTriggerDirectImplementation(ARObject):
         obj.__init__()
 
         # Parse cat2_isr
-        child = ARObject._find_child_element(element, "CAT2-ISR")
+        child = SerializationHelper.find_child_element(element, "CAT2-ISR")
         if child is not None:
-            cat2_isr_value = ARObject._deserialize_by_tag(child, "Identifier")
+            cat2_isr_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
             obj.cat2_isr = cat2_isr_value
 
         # Parse mastered_trigger_ref
-        child = ARObject._find_child_element(element, "MASTERED-TRIGGER-REF")
+        child = SerializationHelper.find_child_element(element, "MASTERED-TRIGGER-REF")
         if child is not None:
             mastered_trigger_ref_value = ARRef.deserialize(child)
             obj.mastered_trigger_ref = mastered_trigger_ref_value
 
         # Parse task
-        child = ARObject._find_child_element(element, "TASK")
+        child = SerializationHelper.find_child_element(element, "TASK")
         if child is not None:
-            task_value = ARObject._deserialize_by_tag(child, "Identifier")
+            task_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
             obj.task = task_value
 
         return obj

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.BinaryManifest.binary_manifest_item import (
     BinaryManifestItem,
 )
@@ -43,7 +44,7 @@ class BinaryManifestResourceDefinition(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class BinaryManifestResourceDefinition(Identifiable):
         if self.item_definitions:
             wrapper = ET.Element("ITEM-DEFINITIONS")
             for item in self.item_definitions:
-                serialized = ARObject._serialize_item(item, "BinaryManifestItem")
+                serialized = SerializationHelper.serialize_item(item, "BinaryManifestItem")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -87,11 +88,11 @@ class BinaryManifestResourceDefinition(Identifiable):
 
         # Parse item_definitions (list from container "ITEM-DEFINITIONS")
         obj.item_definitions = []
-        container = ARObject._find_child_element(element, "ITEM-DEFINITIONS")
+        container = SerializationHelper.find_child_element(element, "ITEM-DEFINITIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.item_definitions.append(child_value)
 

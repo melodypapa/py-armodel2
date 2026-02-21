@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
     CpSoftwareCluster,
@@ -47,7 +48,7 @@ class DiagnosticMapping(DiagnosticCommonElement, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -66,7 +67,7 @@ class DiagnosticMapping(DiagnosticCommonElement, ABC):
 
         # Serialize provider_ref
         if self.provider_ref is not None:
-            serialized = ARObject._serialize_item(self.provider_ref, "CpSoftwareCluster")
+            serialized = SerializationHelper.serialize_item(self.provider_ref, "CpSoftwareCluster")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PROVIDER-REF")
@@ -80,7 +81,7 @@ class DiagnosticMapping(DiagnosticCommonElement, ABC):
 
         # Serialize requester_ref
         if self.requester_ref is not None:
-            serialized = ARObject._serialize_item(self.requester_ref, "CpSoftwareCluster")
+            serialized = SerializationHelper.serialize_item(self.requester_ref, "CpSoftwareCluster")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REQUESTER-REF")
@@ -108,13 +109,13 @@ class DiagnosticMapping(DiagnosticCommonElement, ABC):
         obj = super(DiagnosticMapping, cls).deserialize(element)
 
         # Parse provider_ref
-        child = ARObject._find_child_element(element, "PROVIDER-REF")
+        child = SerializationHelper.find_child_element(element, "PROVIDER-REF")
         if child is not None:
             provider_ref_value = ARRef.deserialize(child)
             obj.provider_ref = provider_ref_value
 
         # Parse requester_ref
-        child = ARObject._find_child_element(element, "REQUESTER-REF")
+        child = SerializationHelper.find_child_element(element, "REQUESTER-REF")
         if child is not None:
             requester_ref_value = ARRef.deserialize(child)
             obj.requester_ref = requester_ref_value

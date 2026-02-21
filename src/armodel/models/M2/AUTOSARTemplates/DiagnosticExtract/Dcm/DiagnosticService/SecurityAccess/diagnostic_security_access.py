@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -54,7 +55,7 @@ class DiagnosticSecurityAccess(DiagnosticServiceInstance):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -73,7 +74,7 @@ class DiagnosticSecurityAccess(DiagnosticServiceInstance):
 
         # Serialize request_seed_id
         if self.request_seed_id is not None:
-            serialized = ARObject._serialize_item(self.request_seed_id, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.request_seed_id, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REQUEST-SEED-ID")
@@ -87,7 +88,7 @@ class DiagnosticSecurityAccess(DiagnosticServiceInstance):
 
         # Serialize security_access_ref
         if self.security_access_ref is not None:
-            serialized = ARObject._serialize_item(self.security_access_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.security_access_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SECURITY-ACCESS-REF")
@@ -101,7 +102,7 @@ class DiagnosticSecurityAccess(DiagnosticServiceInstance):
 
         # Serialize security_delay
         if self.security_delay is not None:
-            serialized = ARObject._serialize_item(self.security_delay, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.security_delay, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SECURITY-DELAY")
@@ -115,7 +116,7 @@ class DiagnosticSecurityAccess(DiagnosticServiceInstance):
 
         # Serialize security_level_ref
         if self.security_level_ref is not None:
-            serialized = ARObject._serialize_item(self.security_level_ref, "DiagnosticSecurityLevel")
+            serialized = SerializationHelper.serialize_item(self.security_level_ref, "DiagnosticSecurityLevel")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SECURITY-LEVEL-REF")
@@ -143,25 +144,25 @@ class DiagnosticSecurityAccess(DiagnosticServiceInstance):
         obj = super(DiagnosticSecurityAccess, cls).deserialize(element)
 
         # Parse request_seed_id
-        child = ARObject._find_child_element(element, "REQUEST-SEED-ID")
+        child = SerializationHelper.find_child_element(element, "REQUEST-SEED-ID")
         if child is not None:
             request_seed_id_value = child.text
             obj.request_seed_id = request_seed_id_value
 
         # Parse security_access_ref
-        child = ARObject._find_child_element(element, "SECURITY-ACCESS-REF")
+        child = SerializationHelper.find_child_element(element, "SECURITY-ACCESS-REF")
         if child is not None:
             security_access_ref_value = ARRef.deserialize(child)
             obj.security_access_ref = security_access_ref_value
 
         # Parse security_delay
-        child = ARObject._find_child_element(element, "SECURITY-DELAY")
+        child = SerializationHelper.find_child_element(element, "SECURITY-DELAY")
         if child is not None:
             security_delay_value = child.text
             obj.security_delay = security_delay_value
 
         # Parse security_level_ref
-        child = ARObject._find_child_element(element, "SECURITY-LEVEL-REF")
+        child = SerializationHelper.find_child_element(element, "SECURITY-LEVEL-REF")
         if child is not None:
             security_level_ref_value = ARRef.deserialize(child)
             obj.security_level_ref = security_level_ref_value

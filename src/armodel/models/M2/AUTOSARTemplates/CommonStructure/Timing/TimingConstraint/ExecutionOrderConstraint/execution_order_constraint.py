@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.
     TimingConstraint,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -57,7 +58,7 @@ class ExecutionOrderConstraint(TimingConstraint):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -76,7 +77,7 @@ class ExecutionOrderConstraint(TimingConstraint):
 
         # Serialize base_ref
         if self.base_ref is not None:
-            serialized = ARObject._serialize_item(self.base_ref, "CompositionSwComponentType")
+            serialized = SerializationHelper.serialize_item(self.base_ref, "CompositionSwComponentType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BASE-REF")
@@ -90,7 +91,7 @@ class ExecutionOrderConstraint(TimingConstraint):
 
         # Serialize execution_order
         if self.execution_order is not None:
-            serialized = ARObject._serialize_item(self.execution_order, "Any")
+            serialized = SerializationHelper.serialize_item(self.execution_order, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("EXECUTION-ORDER")
@@ -104,7 +105,7 @@ class ExecutionOrderConstraint(TimingConstraint):
 
         # Serialize ignore_order
         if self.ignore_order is not None:
-            serialized = ARObject._serialize_item(self.ignore_order, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.ignore_order, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IGNORE-ORDER")
@@ -118,7 +119,7 @@ class ExecutionOrderConstraint(TimingConstraint):
 
         # Serialize is_event
         if self.is_event is not None:
-            serialized = ARObject._serialize_item(self.is_event, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.is_event, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IS-EVENT")
@@ -134,7 +135,7 @@ class ExecutionOrderConstraint(TimingConstraint):
         if self.ordered_elements:
             wrapper = ET.Element("ORDERED-ELEMENTS")
             for item in self.ordered_elements:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -142,7 +143,7 @@ class ExecutionOrderConstraint(TimingConstraint):
 
         # Serialize permit_multiple
         if self.permit_multiple is not None:
-            serialized = ARObject._serialize_item(self.permit_multiple, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.permit_multiple, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PERMIT-MULTIPLE")
@@ -170,41 +171,41 @@ class ExecutionOrderConstraint(TimingConstraint):
         obj = super(ExecutionOrderConstraint, cls).deserialize(element)
 
         # Parse base_ref
-        child = ARObject._find_child_element(element, "BASE-REF")
+        child = SerializationHelper.find_child_element(element, "BASE-REF")
         if child is not None:
             base_ref_value = ARRef.deserialize(child)
             obj.base_ref = base_ref_value
 
         # Parse execution_order
-        child = ARObject._find_child_element(element, "EXECUTION-ORDER")
+        child = SerializationHelper.find_child_element(element, "EXECUTION-ORDER")
         if child is not None:
             execution_order_value = child.text
             obj.execution_order = execution_order_value
 
         # Parse ignore_order
-        child = ARObject._find_child_element(element, "IGNORE-ORDER")
+        child = SerializationHelper.find_child_element(element, "IGNORE-ORDER")
         if child is not None:
             ignore_order_value = child.text
             obj.ignore_order = ignore_order_value
 
         # Parse is_event
-        child = ARObject._find_child_element(element, "IS-EVENT")
+        child = SerializationHelper.find_child_element(element, "IS-EVENT")
         if child is not None:
             is_event_value = child.text
             obj.is_event = is_event_value
 
         # Parse ordered_elements (list from container "ORDERED-ELEMENTS")
         obj.ordered_elements = []
-        container = ARObject._find_child_element(element, "ORDERED-ELEMENTS")
+        container = SerializationHelper.find_child_element(element, "ORDERED-ELEMENTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.ordered_elements.append(child_value)
 
         # Parse permit_multiple
-        child = ARObject._find_child_element(element, "PERMIT-MULTIPLE")
+        child = SerializationHelper.find_child_element(element, "PERMIT-MULTIPLE")
         if child is not None:
             permit_multiple_value = child.text
             obj.permit_multiple = permit_multiple_value

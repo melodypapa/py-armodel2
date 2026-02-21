@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation.implement
     Implementation,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
@@ -56,7 +57,7 @@ class SwcImplementation(Implementation):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -75,7 +76,7 @@ class SwcImplementation(Implementation):
 
         # Serialize behavior_ref
         if self.behavior_ref is not None:
-            serialized = ARObject._serialize_item(self.behavior_ref, "SwcInternalBehavior")
+            serialized = SerializationHelper.serialize_item(self.behavior_ref, "SwcInternalBehavior")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BEHAVIOR-REF")
@@ -91,7 +92,7 @@ class SwcImplementation(Implementation):
         if self.per_instance_memories:
             wrapper = ET.Element("PER-INSTANCE-MEMORIES")
             for item in self.per_instance_memories:
-                serialized = ARObject._serialize_item(item, "PerInstanceMemory")
+                serialized = SerializationHelper.serialize_item(item, "PerInstanceMemory")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -99,7 +100,7 @@ class SwcImplementation(Implementation):
 
         # Serialize required
         if self.required is not None:
-            serialized = ARObject._serialize_item(self.required, "String")
+            serialized = SerializationHelper.serialize_item(self.required, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REQUIRED")
@@ -127,23 +128,23 @@ class SwcImplementation(Implementation):
         obj = super(SwcImplementation, cls).deserialize(element)
 
         # Parse behavior_ref
-        child = ARObject._find_child_element(element, "BEHAVIOR-REF")
+        child = SerializationHelper.find_child_element(element, "BEHAVIOR-REF")
         if child is not None:
             behavior_ref_value = ARRef.deserialize(child)
             obj.behavior_ref = behavior_ref_value
 
         # Parse per_instance_memories (list from container "PER-INSTANCE-MEMORIES")
         obj.per_instance_memories = []
-        container = ARObject._find_child_element(element, "PER-INSTANCE-MEMORIES")
+        container = SerializationHelper.find_child_element(element, "PER-INSTANCE-MEMORIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.per_instance_memories.append(child_value)
 
         # Parse required
-        child = ARObject._find_child_element(element, "REQUIRED")
+        child = SerializationHelper.find_child_element(element, "REQUIRED")
         if child is not None:
             required_value = child.text
             obj.required = required_value

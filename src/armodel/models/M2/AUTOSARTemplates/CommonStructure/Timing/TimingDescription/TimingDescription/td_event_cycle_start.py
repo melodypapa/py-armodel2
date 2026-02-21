@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
     TDEventCom,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
 )
@@ -44,7 +45,7 @@ class TDEventCycleStart(TDEventCom, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -63,7 +64,7 @@ class TDEventCycleStart(TDEventCom, ABC):
 
         # Serialize cycle_repetition
         if self.cycle_repetition is not None:
-            serialized = ARObject._serialize_item(self.cycle_repetition, "Integer")
+            serialized = SerializationHelper.serialize_item(self.cycle_repetition, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CYCLE-REPETITION")
@@ -91,7 +92,7 @@ class TDEventCycleStart(TDEventCom, ABC):
         obj = super(TDEventCycleStart, cls).deserialize(element)
 
         # Parse cycle_repetition
-        child = ARObject._find_child_element(element, "CYCLE-REPETITION")
+        child = SerializationHelper.find_child_element(element, "CYCLE-REPETITION")
         if child is not None:
             cycle_repetition_value = child.text
             obj.cycle_repetition = cycle_repetition_value

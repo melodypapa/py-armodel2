@@ -30,6 +30,7 @@ from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu import (
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import (
     ARRef,
 )
+from armodel.serialization import SerializationHelper
 
 
 class CompuMethod(ARElement):
@@ -150,7 +151,7 @@ class CompuMethod(ARElement):
         # Deserialize compu_internal_to_phys from COMPU-INTERNAL-TO-PHYS element
         compu_internal_elem = None
         for child in element:
-            if ARObject._strip_namespace(child.tag) == "COMPU-INTERNAL-TO-PHYS":
+            if SerializationHelper.strip_namespace(child.tag) == "COMPU-INTERNAL-TO-PHYS":
                 compu_internal_elem = child
                 break
 
@@ -162,7 +163,7 @@ class CompuMethod(ARElement):
 
             # Find CompuContent or CompuConst subclasses in the children
             for child in compu_internal_elem:
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 concrete_class = factory.get_class(child_tag)
 
                 if concrete_class:
@@ -170,14 +171,14 @@ class CompuMethod(ARElement):
                     from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_const import CompuConst
 
                     if isinstance(concrete_class, type) and issubclass(concrete_class, CompuContent):
-                        compu_obj.compu_content = ARObject._unwrap_primitive(concrete_class.deserialize(child))
+                        compu_obj.compu_content = SerializationHelper.unwrap_primitive(concrete_class.deserialize(child))
                     elif isinstance(concrete_class, type) and issubclass(concrete_class, CompuConst):
-                        compu_obj.compu_default = ARObject._unwrap_primitive(concrete_class.deserialize(child))
+                        compu_obj.compu_default = SerializationHelper.unwrap_primitive(concrete_class.deserialize(child))
 
         # Deserialize compu_phys_to_internal from COMPU-PHYS-TO-INTERNAL element
         compu_phys_elem = None
         for child in element:
-            if ARObject._strip_namespace(child.tag) == "COMPU-PHYS-TO-INTERNAL":
+            if SerializationHelper.strip_namespace(child.tag) == "COMPU-PHYS-TO-INTERNAL":
                 compu_phys_elem = child
                 break
 
@@ -187,7 +188,7 @@ class CompuMethod(ARElement):
             compu_obj = obj._compu_phys_to_internal
 
             for child in compu_phys_elem:
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 concrete_class = factory.get_class(child_tag)
 
                 if concrete_class:
@@ -195,14 +196,14 @@ class CompuMethod(ARElement):
                     from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_const import CompuConst
 
                     if isinstance(concrete_class, type) and issubclass(concrete_class, CompuContent):
-                        compu_obj.compu_content = ARObject._unwrap_primitive(concrete_class.deserialize(child))
+                        compu_obj.compu_content = SerializationHelper.unwrap_primitive(concrete_class.deserialize(child))
                     elif isinstance(concrete_class, type) and issubclass(concrete_class, CompuConst):
-                        compu_obj.compu_default = ARObject._unwrap_primitive(concrete_class.deserialize(child))
+                        compu_obj.compu_default = SerializationHelper.unwrap_primitive(concrete_class.deserialize(child))
 
         # Deserialize display_format
         display_format_elem = None
         for child in element:
-            if ARObject._strip_namespace(child.tag) == "DISPLAY-FORMAT":
+            if SerializationHelper.strip_namespace(child.tag) == "DISPLAY-FORMAT":
                 display_format_elem = child
                 break
         if display_format_elem is not None:
@@ -211,7 +212,7 @@ class CompuMethod(ARElement):
         # Deserialize unit (UNIT-REF is a reference, not a UNIT element)
         unit_elem = None
         for child in element:
-            if ARObject._strip_namespace(child.tag) == "UNIT-REF":
+            if SerializationHelper.strip_namespace(child.tag) == "UNIT-REF":
                 unit_elem = child
                 break
         if unit_elem is not None:

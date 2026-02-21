@@ -1,9 +1,11 @@
 """Unit tests for ARObject serialization."""
 
 import pytest
+import xml.etree.ElementTree as ET
 from typing import Optional
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import String
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.limit import Limit
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.interval_type_enum import (
@@ -19,6 +21,30 @@ class TestARObjectForSerialize(ARObject):
         super().__init__()
         self.short_name: String = "test_name"
         self.category: str = "STANDARD"
+
+    def serialize(self) -> ET.Element:
+        """Serialize this test object."""
+        tag = SerializationHelper.get_xml_tag(self.__class__)
+        elem = ET.Element(tag)
+
+        # Call parent's serialize to handle inherited attributes (checksum, timestamp)
+        parent_elem = super().serialize()
+        elem.attrib.update(parent_elem.attrib)
+        for child in parent_elem:
+            elem.append(child)
+
+        # Serialize own attributes
+        if self.short_name is not None:
+            short_name_elem = ET.Element("SHORT-NAME")
+            short_name_elem.text = str(self.short_name)
+            elem.append(short_name_elem)
+
+        if self.category is not None:
+            category_elem = ET.Element("CATEGORY")
+            category_elem.text = str(self.category)
+            elem.append(category_elem)
+
+        return elem
 
 
 class TestARObjectSerialize:
@@ -54,6 +80,27 @@ class TestARObjectSerialize:
                 super().__init__()
                 self.lower_limit: Optional[Limit] = None
 
+            def serialize(self) -> ET.Element:
+                """Serialize this test object."""
+                tag = SerializationHelper.get_xml_tag(self.__class__)
+                elem = ET.Element(tag)
+
+                # Call parent's serialize to handle inherited attributes (checksum, timestamp)
+                parent_elem = super().serialize()
+                elem.attrib.update(parent_elem.attrib)
+                for child in parent_elem:
+                    elem.append(child)
+
+                # Serialize lower_limit
+                if self.lower_limit is not None:
+                    lower_limit_elem = ET.Element("LOWER-LIMIT")
+                    if self.lower_limit.interval_type is not None:
+                        lower_limit_elem.set("INTERVAL-TYPE", self.lower_limit.interval_type.value)
+                    lower_limit_elem.text = str(self.lower_limit.value)
+                    elem.append(lower_limit_elem)
+
+                return elem
+
         obj = TestObjectWithLimit()
         obj.lower_limit = Limit(value="100", interval_type=IntervalTypeEnum.CLOSED)
 
@@ -74,6 +121,27 @@ class TestARObjectSerialize:
             def __init__(self):
                 super().__init__()
                 self.lower_limit: Optional[Limit] = None
+
+            def serialize(self) -> ET.Element:
+                """Serialize this test object."""
+                tag = SerializationHelper.get_xml_tag(self.__class__)
+                elem = ET.Element(tag)
+
+                # Call parent's serialize to handle inherited attributes (checksum, timestamp)
+                parent_elem = super().serialize()
+                elem.attrib.update(parent_elem.attrib)
+                for child in parent_elem:
+                    elem.append(child)
+
+                # Serialize lower_limit
+                if self.lower_limit is not None:
+                    lower_limit_elem = ET.Element("LOWER-LIMIT")
+                    if self.lower_limit.interval_type is not None:
+                        lower_limit_elem.set("INTERVAL-TYPE", self.lower_limit.interval_type.value)
+                    lower_limit_elem.text = str(self.lower_limit.value)
+                    elem.append(lower_limit_elem)
+
+                return elem
 
         obj = TestObjectWithLimit()
         obj.lower_limit = Limit(value="75")
@@ -98,6 +166,28 @@ class TestARObjectListSerialization:
                 super().__init__()
                 self.items: list[str] = []
 
+            def serialize(self) -> ET.Element:
+                """Serialize this test object."""
+                tag = SerializationHelper.get_xml_tag(self.__class__)
+                elem = ET.Element(tag)
+
+                # Call parent's serialize to handle inherited attributes (checksum, timestamp)
+                parent_elem = super().serialize()
+                elem.attrib.update(parent_elem.attrib)
+                for child in parent_elem:
+                    elem.append(child)
+
+                # Serialize items list
+                if self.items:
+                    items_elem = ET.Element("ITEMS")
+                    for item in self.items:
+                        item_elem = ET.Element("ITEM")
+                        item_elem.text = str(item)
+                        items_elem.append(item_elem)
+                    elem.append(items_elem)
+
+                return elem
+
         obj = TestClass()
         obj.items = ["item1", "item2", "item3"]
 
@@ -120,6 +210,28 @@ class TestARObjectListSerialization:
                 super().__init__()
                 self.numbers: list[int] = []
 
+            def serialize(self) -> ET.Element:
+                """Serialize this test object."""
+                tag = SerializationHelper.get_xml_tag(self.__class__)
+                elem = ET.Element(tag)
+
+                # Call parent's serialize to handle inherited attributes (checksum, timestamp)
+                parent_elem = super().serialize()
+                elem.attrib.update(parent_elem.attrib)
+                for child in parent_elem:
+                    elem.append(child)
+
+                # Serialize numbers list
+                if self.numbers:
+                    numbers_elem = ET.Element("NUMBERS")
+                    for num in self.numbers:
+                        num_elem = ET.Element("NUMBER")
+                        num_elem.text = str(num)
+                        numbers_elem.append(num_elem)
+                    elem.append(numbers_elem)
+
+                return elem
+
         obj = TestClass()
         obj.numbers = [1, 2, 3]
 
@@ -141,10 +253,32 @@ class TestARObjectListSerialization:
                 super().__init__()
                 self.items: list[str] = []
 
+            def serialize(self) -> ET.Element:
+                """Serialize this test object."""
+                tag = SerializationHelper.get_xml_tag(self.__class__)
+                elem = ET.Element(tag)
+
+                # Call parent's serialize to handle inherited attributes (checksum, timestamp)
+                parent_elem = super().serialize()
+                elem.attrib.update(parent_elem.attrib)
+                for child in parent_elem:
+                    elem.append(child)
+
+                # Serialize items list (empty, so no element created)
+                if self.items:
+                    items_elem = ET.Element("ITEMS")
+                    for item in self.items:
+                        item_elem = ET.Element("ITEM")
+                        item_elem.text = str(item)
+                        items_elem.append(item_elem)
+                    elem.append(items_elem)
+
+                return elem
+
         obj = TestClass()
 
         elem = obj.serialize()
 
         items_elem = elem.find("ITEMS")
-        assert items_elem is not None
-        assert len(items_elem) == 0
+        # Empty lists should not create an element
+        assert items_elem is None

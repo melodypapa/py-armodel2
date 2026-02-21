@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.ResponseOnEvent.diagnostic_event_window import (
     DiagnosticEventWindow,
@@ -46,7 +47,7 @@ class DiagnosticResponseOnEvent(DiagnosticServiceInstance):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -67,7 +68,7 @@ class DiagnosticResponseOnEvent(DiagnosticServiceInstance):
         if self.event_windows:
             wrapper = ET.Element("EVENT-WINDOWS")
             for item in self.event_windows:
-                serialized = ARObject._serialize_item(item, "DiagnosticEventWindow")
+                serialized = SerializationHelper.serialize_item(item, "DiagnosticEventWindow")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -75,7 +76,7 @@ class DiagnosticResponseOnEvent(DiagnosticServiceInstance):
 
         # Serialize response_on_ref
         if self.response_on_ref is not None:
-            serialized = ARObject._serialize_item(self.response_on_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.response_on_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RESPONSE-ON-REF")
@@ -104,16 +105,16 @@ class DiagnosticResponseOnEvent(DiagnosticServiceInstance):
 
         # Parse event_windows (list from container "EVENT-WINDOWS")
         obj.event_windows = []
-        container = ARObject._find_child_element(element, "EVENT-WINDOWS")
+        container = SerializationHelper.find_child_element(element, "EVENT-WINDOWS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.event_windows.append(child_value)
 
         # Parse response_on_ref
-        child = ARObject._find_child_element(element, "RESPONSE-ON-REF")
+        child = SerializationHelper.find_child_element(element, "RESPONSE-ON-REF")
         if child is not None:
             response_on_ref_value = ARRef.deserialize(child)
             obj.response_on_ref = response_on_ref_value

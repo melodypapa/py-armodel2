@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specific
     ValueSpecification,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.constant_specification import (
     ConstantSpecification,
@@ -44,7 +45,7 @@ class ConstantReference(ValueSpecification):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -63,7 +64,7 @@ class ConstantReference(ValueSpecification):
 
         # Serialize constant_ref
         if self.constant_ref is not None:
-            serialized = ARObject._serialize_item(self.constant_ref, "ConstantSpecification")
+            serialized = SerializationHelper.serialize_item(self.constant_ref, "ConstantSpecification")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONSTANT-REF")
@@ -91,7 +92,7 @@ class ConstantReference(ValueSpecification):
         obj = super(ConstantReference, cls).deserialize(element)
 
         # Parse constant_ref
-        child = ARObject._find_child_element(element, "CONSTANT-REF")
+        child = SerializationHelper.find_child_element(element, "CONSTANT-REF")
         if child is not None:
             constant_ref_value = ARRef.deserialize(child)
             obj.constant_ref = constant_ref_value

@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.ipv4_dhcp_server_configuration import (
     Ipv4DhcpServerConfiguration,
 )
@@ -45,12 +46,12 @@ class DhcpServerConfiguration(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize ipv4_dhcp_server
         if self.ipv4_dhcp_server is not None:
-            serialized = ARObject._serialize_item(self.ipv4_dhcp_server, "Ipv4DhcpServerConfiguration")
+            serialized = SerializationHelper.serialize_item(self.ipv4_dhcp_server, "Ipv4DhcpServerConfiguration")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IPV4-DHCP-SERVER")
@@ -64,7 +65,7 @@ class DhcpServerConfiguration(ARObject):
 
         # Serialize ipv6_dhcp_server
         if self.ipv6_dhcp_server is not None:
-            serialized = ARObject._serialize_item(self.ipv6_dhcp_server, "Ipv6DhcpServerConfiguration")
+            serialized = SerializationHelper.serialize_item(self.ipv6_dhcp_server, "Ipv6DhcpServerConfiguration")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IPV6-DHCP-SERVER")
@@ -93,15 +94,15 @@ class DhcpServerConfiguration(ARObject):
         obj.__init__()
 
         # Parse ipv4_dhcp_server
-        child = ARObject._find_child_element(element, "IPV4-DHCP-SERVER")
+        child = SerializationHelper.find_child_element(element, "IPV4-DHCP-SERVER")
         if child is not None:
-            ipv4_dhcp_server_value = ARObject._deserialize_by_tag(child, "Ipv4DhcpServerConfiguration")
+            ipv4_dhcp_server_value = SerializationHelper.deserialize_by_tag(child, "Ipv4DhcpServerConfiguration")
             obj.ipv4_dhcp_server = ipv4_dhcp_server_value
 
         # Parse ipv6_dhcp_server
-        child = ARObject._find_child_element(element, "IPV6-DHCP-SERVER")
+        child = SerializationHelper.find_child_element(element, "IPV6-DHCP-SERVER")
         if child is not None:
-            ipv6_dhcp_server_value = ARObject._deserialize_by_tag(child, "Ipv6DhcpServerConfiguration")
+            ipv6_dhcp_server_value = SerializationHelper.deserialize_by_tag(child, "Ipv6DhcpServerConfiguration")
             obj.ipv6_dhcp_server = ipv6_dhcp_server_value
 
         return obj

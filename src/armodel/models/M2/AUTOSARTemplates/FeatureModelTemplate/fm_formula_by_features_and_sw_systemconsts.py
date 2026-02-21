@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.FeatureModelTemplate.fm_feature import (
     FMFeature,
@@ -42,12 +43,12 @@ class FMFormulaByFeaturesAndSwSystemconsts(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize feature_ref
         if self.feature_ref is not None:
-            serialized = ARObject._serialize_item(self.feature_ref, "FMFeature")
+            serialized = SerializationHelper.serialize_item(self.feature_ref, "FMFeature")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FEATURE-REF")
@@ -76,7 +77,7 @@ class FMFormulaByFeaturesAndSwSystemconsts(ARObject, ABC):
         obj.__init__()
 
         # Parse feature_ref
-        child = ARObject._find_child_element(element, "FEATURE-REF")
+        child = SerializationHelper.find_child_element(element, "FEATURE-REF")
         if child is not None:
             feature_ref_value = ARRef.deserialize(child)
             obj.feature_ref = feature_ref_value

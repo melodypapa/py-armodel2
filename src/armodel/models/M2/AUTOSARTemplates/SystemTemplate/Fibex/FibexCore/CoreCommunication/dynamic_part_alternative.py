@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -49,12 +50,12 @@ class DynamicPartAlternative(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize initial_dynamic
         if self.initial_dynamic is not None:
-            serialized = ARObject._serialize_item(self.initial_dynamic, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.initial_dynamic, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INITIAL-DYNAMIC")
@@ -68,7 +69,7 @@ class DynamicPartAlternative(ARObject):
 
         # Serialize i_pdu_ref
         if self.i_pdu_ref is not None:
-            serialized = ARObject._serialize_item(self.i_pdu_ref, "ISignalIPdu")
+            serialized = SerializationHelper.serialize_item(self.i_pdu_ref, "ISignalIPdu")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("I-PDU-REF")
@@ -82,7 +83,7 @@ class DynamicPartAlternative(ARObject):
 
         # Serialize selector_field
         if self.selector_field is not None:
-            serialized = ARObject._serialize_item(self.selector_field, "Integer")
+            serialized = SerializationHelper.serialize_item(self.selector_field, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SELECTOR-FIELD")
@@ -111,19 +112,19 @@ class DynamicPartAlternative(ARObject):
         obj.__init__()
 
         # Parse initial_dynamic
-        child = ARObject._find_child_element(element, "INITIAL-DYNAMIC")
+        child = SerializationHelper.find_child_element(element, "INITIAL-DYNAMIC")
         if child is not None:
             initial_dynamic_value = child.text
             obj.initial_dynamic = initial_dynamic_value
 
         # Parse i_pdu_ref
-        child = ARObject._find_child_element(element, "I-PDU-REF")
+        child = SerializationHelper.find_child_element(element, "I-PDU-REF")
         if child is not None:
             i_pdu_ref_value = ARRef.deserialize(child)
             obj.i_pdu_ref = i_pdu_ref_value
 
         # Parse selector_field
-        child = ARObject._find_child_element(element, "SELECTOR-FIELD")
+        child = SerializationHelper.find_child_element(element, "SELECTOR-FIELD")
         if child is not None:
             selector_field_value = child.text
             obj.selector_field = selector_field_value

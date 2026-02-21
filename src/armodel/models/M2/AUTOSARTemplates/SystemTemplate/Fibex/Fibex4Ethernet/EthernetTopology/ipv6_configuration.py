@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
     NetworkEndpointAddress,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology import (
     IpAddressKeepEnum,
     Ipv6AddressSourceEnum,
@@ -65,7 +66,7 @@ class Ipv6Configuration(NetworkEndpointAddress):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -84,7 +85,7 @@ class Ipv6Configuration(NetworkEndpointAddress):
 
         # Serialize assignment
         if self.assignment is not None:
-            serialized = ARObject._serialize_item(self.assignment, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.assignment, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ASSIGNMENT")
@@ -98,7 +99,7 @@ class Ipv6Configuration(NetworkEndpointAddress):
 
         # Serialize default_router
         if self.default_router is not None:
-            serialized = ARObject._serialize_item(self.default_router, "Ip6AddressString")
+            serialized = SerializationHelper.serialize_item(self.default_router, "Ip6AddressString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DEFAULT-ROUTER")
@@ -114,7 +115,7 @@ class Ipv6Configuration(NetworkEndpointAddress):
         if self.dns_servers:
             wrapper = ET.Element("DNS-SERVERS")
             for item in self.dns_servers:
-                serialized = ARObject._serialize_item(item, "Ip6AddressString")
+                serialized = SerializationHelper.serialize_item(item, "Ip6AddressString")
                 if serialized is not None:
                     child_elem = ET.Element("DNS-SERVER")
                     if hasattr(serialized, 'attrib'):
@@ -129,7 +130,7 @@ class Ipv6Configuration(NetworkEndpointAddress):
 
         # Serialize enable_anycast
         if self.enable_anycast is not None:
-            serialized = ARObject._serialize_item(self.enable_anycast, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.enable_anycast, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ENABLE-ANYCAST")
@@ -143,7 +144,7 @@ class Ipv6Configuration(NetworkEndpointAddress):
 
         # Serialize hop_count
         if self.hop_count is not None:
-            serialized = ARObject._serialize_item(self.hop_count, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.hop_count, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HOP-COUNT")
@@ -157,7 +158,7 @@ class Ipv6Configuration(NetworkEndpointAddress):
 
         # Serialize ip_address_keep_enum
         if self.ip_address_keep_enum is not None:
-            serialized = ARObject._serialize_item(self.ip_address_keep_enum, "IpAddressKeepEnum")
+            serialized = SerializationHelper.serialize_item(self.ip_address_keep_enum, "IpAddressKeepEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IP-ADDRESS-KEEP-ENUM")
@@ -171,7 +172,7 @@ class Ipv6Configuration(NetworkEndpointAddress):
 
         # Serialize ip_address_prefix
         if self.ip_address_prefix is not None:
-            serialized = ARObject._serialize_item(self.ip_address_prefix, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.ip_address_prefix, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IP-ADDRESS-PREFIX")
@@ -185,7 +186,7 @@ class Ipv6Configuration(NetworkEndpointAddress):
 
         # Serialize ipv6_address
         if self.ipv6_address is not None:
-            serialized = ARObject._serialize_item(self.ipv6_address, "Ip6AddressString")
+            serialized = SerializationHelper.serialize_item(self.ipv6_address, "Ip6AddressString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IPV6-ADDRESS")
@@ -199,7 +200,7 @@ class Ipv6Configuration(NetworkEndpointAddress):
 
         # Serialize ipv6_address_source
         if self.ipv6_address_source is not None:
-            serialized = ARObject._serialize_item(self.ipv6_address_source, "Ipv6AddressSourceEnum")
+            serialized = SerializationHelper.serialize_item(self.ipv6_address_source, "Ipv6AddressSourceEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IPV6-ADDRESS-SOURCE")
@@ -227,20 +228,20 @@ class Ipv6Configuration(NetworkEndpointAddress):
         obj = super(Ipv6Configuration, cls).deserialize(element)
 
         # Parse assignment
-        child = ARObject._find_child_element(element, "ASSIGNMENT")
+        child = SerializationHelper.find_child_element(element, "ASSIGNMENT")
         if child is not None:
             assignment_value = child.text
             obj.assignment = assignment_value
 
         # Parse default_router
-        child = ARObject._find_child_element(element, "DEFAULT-ROUTER")
+        child = SerializationHelper.find_child_element(element, "DEFAULT-ROUTER")
         if child is not None:
             default_router_value = child.text
             obj.default_router = default_router_value
 
         # Parse dns_servers (list from container "DNS-SERVERS")
         obj.dns_servers = []
-        container = ARObject._find_child_element(element, "DNS-SERVERS")
+        container = SerializationHelper.find_child_element(element, "DNS-SERVERS")
         if container is not None:
             for child in container:
                 # Extract primitive value (Ip6AddressString) as text
@@ -249,37 +250,37 @@ class Ipv6Configuration(NetworkEndpointAddress):
                     obj.dns_servers.append(child_value)
 
         # Parse enable_anycast
-        child = ARObject._find_child_element(element, "ENABLE-ANYCAST")
+        child = SerializationHelper.find_child_element(element, "ENABLE-ANYCAST")
         if child is not None:
             enable_anycast_value = child.text
             obj.enable_anycast = enable_anycast_value
 
         # Parse hop_count
-        child = ARObject._find_child_element(element, "HOP-COUNT")
+        child = SerializationHelper.find_child_element(element, "HOP-COUNT")
         if child is not None:
             hop_count_value = child.text
             obj.hop_count = hop_count_value
 
         # Parse ip_address_keep_enum
-        child = ARObject._find_child_element(element, "IP-ADDRESS-KEEP-ENUM")
+        child = SerializationHelper.find_child_element(element, "IP-ADDRESS-KEEP-ENUM")
         if child is not None:
             ip_address_keep_enum_value = IpAddressKeepEnum.deserialize(child)
             obj.ip_address_keep_enum = ip_address_keep_enum_value
 
         # Parse ip_address_prefix
-        child = ARObject._find_child_element(element, "IP-ADDRESS-PREFIX")
+        child = SerializationHelper.find_child_element(element, "IP-ADDRESS-PREFIX")
         if child is not None:
             ip_address_prefix_value = child.text
             obj.ip_address_prefix = ip_address_prefix_value
 
         # Parse ipv6_address
-        child = ARObject._find_child_element(element, "IPV6-ADDRESS")
+        child = SerializationHelper.find_child_element(element, "IPV6-ADDRESS")
         if child is not None:
             ipv6_address_value = child.text
             obj.ipv6_address = ipv6_address_value
 
         # Parse ipv6_address_source
-        child = ARObject._find_child_element(element, "IPV6-ADDRESS-SOURCE")
+        child = SerializationHelper.find_child_element(element, "IPV6-ADDRESS-SOURCE")
         if child is not None:
             ipv6_address_source_value = Ipv6AddressSourceEnum.deserialize(child)
             obj.ipv6_address_source = ipv6_address_source_value

@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_ele
     FibexElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     UnlimitedInteger,
@@ -48,7 +49,7 @@ class Pdu(FibexElement, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -67,7 +68,7 @@ class Pdu(FibexElement, ABC):
 
         # Serialize has_dynamic
         if self.has_dynamic is not None:
-            serialized = ARObject._serialize_item(self.has_dynamic, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.has_dynamic, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HAS-DYNAMIC")
@@ -81,7 +82,7 @@ class Pdu(FibexElement, ABC):
 
         # Serialize length
         if self.length is not None:
-            serialized = ARObject._serialize_item(self.length, "UnlimitedInteger")
+            serialized = SerializationHelper.serialize_item(self.length, "UnlimitedInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LENGTH")
@@ -109,13 +110,13 @@ class Pdu(FibexElement, ABC):
         obj = super(Pdu, cls).deserialize(element)
 
         # Parse has_dynamic
-        child = ARObject._find_child_element(element, "HAS-DYNAMIC")
+        child = SerializationHelper.find_child_element(element, "HAS-DYNAMIC")
         if child is not None:
             has_dynamic_value = child.text
             obj.has_dynamic = has_dynamic_value
 
         # Parse length
-        child = ARObject._find_child_element(element, "LENGTH")
+        child = SerializationHelper.find_child_element(element, "LENGTH")
         if child is not None:
             length_value = child.text
             obj.length = length_value

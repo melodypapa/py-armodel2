@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Transformer import (
     DataTransformationKindEnum,
@@ -52,7 +53,7 @@ class DataTransformation(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -71,7 +72,7 @@ class DataTransformation(Identifiable):
 
         # Serialize data
         if self.data is not None:
-            serialized = ARObject._serialize_item(self.data, "DataTransformationKindEnum")
+            serialized = SerializationHelper.serialize_item(self.data, "DataTransformationKindEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA")
@@ -85,7 +86,7 @@ class DataTransformation(Identifiable):
 
         # Serialize execute_despite
         if self.execute_despite is not None:
-            serialized = ARObject._serialize_item(self.execute_despite, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.execute_despite, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("EXECUTE-DESPITE")
@@ -101,7 +102,7 @@ class DataTransformation(Identifiable):
         if self.transformer_refs:
             wrapper = ET.Element("TRANSFORMER-REFS")
             for item in self.transformer_refs:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     child_elem = ET.Element("TRANSFORMER-REF")
                     if hasattr(serialized, 'attrib'):
@@ -130,30 +131,30 @@ class DataTransformation(Identifiable):
         obj = super(DataTransformation, cls).deserialize(element)
 
         # Parse data
-        child = ARObject._find_child_element(element, "DATA")
+        child = SerializationHelper.find_child_element(element, "DATA")
         if child is not None:
             data_value = DataTransformationKindEnum.deserialize(child)
             obj.data = data_value
 
         # Parse execute_despite
-        child = ARObject._find_child_element(element, "EXECUTE-DESPITE")
+        child = SerializationHelper.find_child_element(element, "EXECUTE-DESPITE")
         if child is not None:
             execute_despite_value = child.text
             obj.execute_despite = execute_despite_value
 
         # Parse transformer_refs (list from container "TRANSFORMER-REFS")
         obj.transformer_refs = []
-        container = ARObject._find_child_element(element, "TRANSFORMER-REFS")
+        container = SerializationHelper.find_child_element(element, "TRANSFORMER-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.transformer_refs.append(child_value)
 

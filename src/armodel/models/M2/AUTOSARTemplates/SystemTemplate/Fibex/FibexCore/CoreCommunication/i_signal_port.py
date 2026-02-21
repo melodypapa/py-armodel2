@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
     CommConnectorPort,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication import (
     HandleInvalidEnum,
@@ -61,7 +62,7 @@ class ISignalPort(CommConnectorPort):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -80,7 +81,7 @@ class ISignalPort(CommConnectorPort):
 
         # Serialize data_filter
         if self.data_filter is not None:
-            serialized = ARObject._serialize_item(self.data_filter, "DataFilter")
+            serialized = SerializationHelper.serialize_item(self.data_filter, "DataFilter")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-FILTER")
@@ -94,7 +95,7 @@ class ISignalPort(CommConnectorPort):
 
         # Serialize dds_qos_profile_ref
         if self.dds_qos_profile_ref is not None:
-            serialized = ARObject._serialize_item(self.dds_qos_profile_ref, "DdsCpQosProfile")
+            serialized = SerializationHelper.serialize_item(self.dds_qos_profile_ref, "DdsCpQosProfile")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DDS-QOS-PROFILE-REF")
@@ -108,7 +109,7 @@ class ISignalPort(CommConnectorPort):
 
         # Serialize first_timeout
         if self.first_timeout is not None:
-            serialized = ARObject._serialize_item(self.first_timeout, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.first_timeout, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FIRST-TIMEOUT")
@@ -122,7 +123,7 @@ class ISignalPort(CommConnectorPort):
 
         # Serialize handle_invalid_enum
         if self.handle_invalid_enum is not None:
-            serialized = ARObject._serialize_item(self.handle_invalid_enum, "HandleInvalidEnum")
+            serialized = SerializationHelper.serialize_item(self.handle_invalid_enum, "HandleInvalidEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HANDLE-INVALID-ENUM")
@@ -136,7 +137,7 @@ class ISignalPort(CommConnectorPort):
 
         # Serialize timeout
         if self.timeout is not None:
-            serialized = ARObject._serialize_item(self.timeout, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.timeout, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIMEOUT")
@@ -164,31 +165,31 @@ class ISignalPort(CommConnectorPort):
         obj = super(ISignalPort, cls).deserialize(element)
 
         # Parse data_filter
-        child = ARObject._find_child_element(element, "DATA-FILTER")
+        child = SerializationHelper.find_child_element(element, "DATA-FILTER")
         if child is not None:
-            data_filter_value = ARObject._deserialize_by_tag(child, "DataFilter")
+            data_filter_value = SerializationHelper.deserialize_by_tag(child, "DataFilter")
             obj.data_filter = data_filter_value
 
         # Parse dds_qos_profile_ref
-        child = ARObject._find_child_element(element, "DDS-QOS-PROFILE-REF")
+        child = SerializationHelper.find_child_element(element, "DDS-QOS-PROFILE-REF")
         if child is not None:
             dds_qos_profile_ref_value = ARRef.deserialize(child)
             obj.dds_qos_profile_ref = dds_qos_profile_ref_value
 
         # Parse first_timeout
-        child = ARObject._find_child_element(element, "FIRST-TIMEOUT")
+        child = SerializationHelper.find_child_element(element, "FIRST-TIMEOUT")
         if child is not None:
             first_timeout_value = child.text
             obj.first_timeout = first_timeout_value
 
         # Parse handle_invalid_enum
-        child = ARObject._find_child_element(element, "HANDLE-INVALID-ENUM")
+        child = SerializationHelper.find_child_element(element, "HANDLE-INVALID-ENUM")
         if child is not None:
             handle_invalid_enum_value = HandleInvalidEnum.deserialize(child)
             obj.handle_invalid_enum = handle_invalid_enum_value
 
         # Parse timeout
-        child = ARObject._find_child_element(element, "TIMEOUT")
+        child = SerializationHelper.find_child_element(element, "TIMEOUT")
         if child is not None:
             timeout_value = child.text
             obj.timeout = timeout_value

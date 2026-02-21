@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_destination_uri_def import (
     EcucDestinationUriDef,
 )
@@ -43,7 +44,7 @@ class EcucDestinationUriDefSet(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class EcucDestinationUriDefSet(ARElement):
         if self.destination_uri_defs:
             wrapper = ET.Element("DESTINATION-URI-DEFS")
             for item in self.destination_uri_defs:
-                serialized = ARObject._serialize_item(item, "EcucDestinationUriDef")
+                serialized = SerializationHelper.serialize_item(item, "EcucDestinationUriDef")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -87,11 +88,11 @@ class EcucDestinationUriDefSet(ARElement):
 
         # Parse destination_uri_defs (list from container "DESTINATION-URI-DEFS")
         obj.destination_uri_defs = []
-        container = ARObject._find_child_element(element, "DESTINATION-URI-DEFS")
+        container = SerializationHelper.find_child_element(element, "DESTINATION-URI-DEFS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.destination_uri_defs.append(child_value)
 

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_ele
     FibexElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
@@ -43,7 +44,7 @@ class ConsumedProvidedServiceInstanceGroup(FibexElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class ConsumedProvidedServiceInstanceGroup(FibexElement):
         if self.consumed_service_refs:
             wrapper = ET.Element("CONSUMED-SERVICE-REFS")
             for item in self.consumed_service_refs:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     child_elem = ET.Element("CONSUMED-SERVICE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -81,7 +82,7 @@ class ConsumedProvidedServiceInstanceGroup(FibexElement):
         if self.provided_service_refs:
             wrapper = ET.Element("PROVIDED-SERVICE-REFS")
             for item in self.provided_service_refs:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     child_elem = ET.Element("PROVIDED-SERVICE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -111,33 +112,33 @@ class ConsumedProvidedServiceInstanceGroup(FibexElement):
 
         # Parse consumed_service_refs (list from container "CONSUMED-SERVICE-REFS")
         obj.consumed_service_refs = []
-        container = ARObject._find_child_element(element, "CONSUMED-SERVICE-REFS")
+        container = SerializationHelper.find_child_element(element, "CONSUMED-SERVICE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.consumed_service_refs.append(child_value)
 
         # Parse provided_service_refs (list from container "PROVIDED-SERVICE-REFS")
         obj.provided_service_refs = []
-        container = ARObject._find_child_element(element, "PROVIDED-SERVICE-REFS")
+        container = SerializationHelper.find_child_element(element, "PROVIDED-SERVICE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.provided_service_refs.append(child_value)
 

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -57,7 +58,7 @@ class EthernetWakeupSleepOnDatalineConfig(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -76,7 +77,7 @@ class EthernetWakeupSleepOnDatalineConfig(Identifiable):
 
         # Serialize sleep_mode
         if self.sleep_mode is not None:
-            serialized = ARObject._serialize_item(self.sleep_mode, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.sleep_mode, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SLEEP-MODE")
@@ -90,7 +91,7 @@ class EthernetWakeupSleepOnDatalineConfig(Identifiable):
 
         # Serialize sleep_repetition
         if self.sleep_repetition is not None:
-            serialized = ARObject._serialize_item(self.sleep_repetition, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.sleep_repetition, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SLEEP-REPETITION")
@@ -104,7 +105,7 @@ class EthernetWakeupSleepOnDatalineConfig(Identifiable):
 
         # Serialize sleep
         if self.sleep is not None:
-            serialized = ARObject._serialize_item(self.sleep, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.sleep, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SLEEP")
@@ -118,7 +119,7 @@ class EthernetWakeupSleepOnDatalineConfig(Identifiable):
 
         # Serialize wakeup_forward
         if self.wakeup_forward is not None:
-            serialized = ARObject._serialize_item(self.wakeup_forward, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.wakeup_forward, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("WAKEUP-FORWARD")
@@ -132,7 +133,7 @@ class EthernetWakeupSleepOnDatalineConfig(Identifiable):
 
         # Serialize wakeup_local
         if self.wakeup_local is not None:
-            serialized = ARObject._serialize_item(self.wakeup_local, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.wakeup_local, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("WAKEUP-LOCAL")
@@ -146,7 +147,7 @@ class EthernetWakeupSleepOnDatalineConfig(Identifiable):
 
         # Serialize wakeup_remote
         if self.wakeup_remote is not None:
-            serialized = ARObject._serialize_item(self.wakeup_remote, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.wakeup_remote, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("WAKEUP-REMOTE")
@@ -160,7 +161,7 @@ class EthernetWakeupSleepOnDatalineConfig(Identifiable):
 
         # Serialize wakeup
         if self.wakeup is not None:
-            serialized = ARObject._serialize_item(self.wakeup, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.wakeup, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("WAKEUP")
@@ -188,43 +189,43 @@ class EthernetWakeupSleepOnDatalineConfig(Identifiable):
         obj = super(EthernetWakeupSleepOnDatalineConfig, cls).deserialize(element)
 
         # Parse sleep_mode
-        child = ARObject._find_child_element(element, "SLEEP-MODE")
+        child = SerializationHelper.find_child_element(element, "SLEEP-MODE")
         if child is not None:
             sleep_mode_value = child.text
             obj.sleep_mode = sleep_mode_value
 
         # Parse sleep_repetition
-        child = ARObject._find_child_element(element, "SLEEP-REPETITION")
+        child = SerializationHelper.find_child_element(element, "SLEEP-REPETITION")
         if child is not None:
             sleep_repetition_value = child.text
             obj.sleep_repetition = sleep_repetition_value
 
         # Parse sleep
-        child = ARObject._find_child_element(element, "SLEEP")
+        child = SerializationHelper.find_child_element(element, "SLEEP")
         if child is not None:
             sleep_value = child.text
             obj.sleep = sleep_value
 
         # Parse wakeup_forward
-        child = ARObject._find_child_element(element, "WAKEUP-FORWARD")
+        child = SerializationHelper.find_child_element(element, "WAKEUP-FORWARD")
         if child is not None:
             wakeup_forward_value = child.text
             obj.wakeup_forward = wakeup_forward_value
 
         # Parse wakeup_local
-        child = ARObject._find_child_element(element, "WAKEUP-LOCAL")
+        child = SerializationHelper.find_child_element(element, "WAKEUP-LOCAL")
         if child is not None:
             wakeup_local_value = child.text
             obj.wakeup_local = wakeup_local_value
 
         # Parse wakeup_remote
-        child = ARObject._find_child_element(element, "WAKEUP-REMOTE")
+        child = SerializationHelper.find_child_element(element, "WAKEUP-REMOTE")
         if child is not None:
             wakeup_remote_value = child.text
             obj.wakeup_remote = wakeup_remote_value
 
         # Parse wakeup
-        child = ARObject._find_child_element(element, "WAKEUP")
+        child = SerializationHelper.find_child_element(element, "WAKEUP")
         if child is not None:
             wakeup_value = child.text
             obj.wakeup = wakeup_value

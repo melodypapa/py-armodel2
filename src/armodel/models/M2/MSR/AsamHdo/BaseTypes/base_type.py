@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.MSR.AsamHdo.BaseTypes.base_type_definition import (
     BaseTypeDefinition,
 )
+from armodel.serialization import SerializationHelper
 
 
 class BaseType(ARElement):
@@ -46,18 +47,18 @@ class BaseType(ARElement):
         # Remove the BASE-TYPE-DIRECT-DEFINITION element that parent added
         # (we want flat format instead)
         for child in list(elem):
-            tag = ARObject._strip_namespace(child.tag)
+            tag = SerializationHelper.strip_namespace(child.tag)
             if tag == 'BASE-TYPE-DIRECT-DEFINITION':
                 elem.remove(child)
 
         # Flatten base_type_definition fields as direct children
         if self.base_type_definition is not None:
             defn = self.base_type_definition
-            ARObject._add_text_element(elem, 'BASE-TYPE-SIZE', getattr(defn, 'base_type_size', None))
-            ARObject._add_text_element(elem, 'BASE-TYPE-ENCODING', getattr(defn, 'base_type_encoding', None))
-            ARObject._add_text_element(elem, 'MEM-ALIGNMENT', getattr(defn, 'mem_alignment', None))
-            ARObject._add_text_element(elem, 'BYTE-ORDER', getattr(defn, 'byte_order', None))
-            ARObject._add_text_element(elem, 'NATIVE-DECLARATION', getattr(defn, 'native', None))
+            SerializationHelper.add_text_element(elem, 'BASE-TYPE-SIZE', getattr(defn, 'base_type_size', None))
+            SerializationHelper.add_text_element(elem, 'BASE-TYPE-ENCODING', getattr(defn, 'base_type_encoding', None))
+            SerializationHelper.add_text_element(elem, 'MEM-ALIGNMENT', getattr(defn, 'mem_alignment', None))
+            SerializationHelper.add_text_element(elem, 'BYTE-ORDER', getattr(defn, 'byte_order', None))
+            SerializationHelper.add_text_element(elem, 'NATIVE-DECLARATION', getattr(defn, 'native', None))
 
         return elem
 
@@ -83,11 +84,11 @@ class BaseType(ARElement):
         # Create BaseTypeDirectDefinition and populate from direct children
         # Using _extract_text with tag parameter for namespace-aware element finding
         defn = BaseTypeDirectDefinition()
-        defn.base_type_size = ARObject._extract_text(element, 'BASE-TYPE-SIZE')
-        defn.base_type_encoding = ARObject._extract_text(element, 'BASE-TYPE-ENCODING')
-        defn.mem_alignment = ARObject._extract_text(element, 'MEM-ALIGNMENT')
-        defn.byte_order = ARObject._extract_text(element, 'BYTE-ORDER')
-        defn.native = ARObject._extract_text(element, 'NATIVE-DECLARATION')
+        defn.base_type_size = SerializationHelper.extract_text(element, 'BASE-TYPE-SIZE')
+        defn.base_type_encoding = SerializationHelper.extract_text(element, 'BASE-TYPE-ENCODING')
+        defn.mem_alignment = SerializationHelper.extract_text(element, 'MEM-ALIGNMENT')
+        defn.byte_order = SerializationHelper.extract_text(element, 'BYTE-ORDER')
+        defn.native = SerializationHelper.extract_text(element, 'NATIVE-DECLARATION')
 
         obj.base_type_definition = defn
 

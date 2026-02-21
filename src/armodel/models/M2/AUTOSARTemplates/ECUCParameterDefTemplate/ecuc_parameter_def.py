@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_common_att
     EcucCommonAttributes,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -52,7 +53,7 @@ class EcucParameterDef(EcucCommonAttributes, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -71,7 +72,7 @@ class EcucParameterDef(EcucCommonAttributes, ABC):
 
         # Serialize derivation
         if self.derivation is not None:
-            serialized = ARObject._serialize_item(self.derivation, "EcucDerivationSpecification")
+            serialized = SerializationHelper.serialize_item(self.derivation, "EcucDerivationSpecification")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DERIVATION")
@@ -85,7 +86,7 @@ class EcucParameterDef(EcucCommonAttributes, ABC):
 
         # Serialize symbolic_name
         if self.symbolic_name is not None:
-            serialized = ARObject._serialize_item(self.symbolic_name, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.symbolic_name, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SYMBOLIC-NAME")
@@ -99,7 +100,7 @@ class EcucParameterDef(EcucCommonAttributes, ABC):
 
         # Serialize with_auto
         if self.with_auto is not None:
-            serialized = ARObject._serialize_item(self.with_auto, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.with_auto, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("WITH-AUTO")
@@ -127,19 +128,19 @@ class EcucParameterDef(EcucCommonAttributes, ABC):
         obj = super(EcucParameterDef, cls).deserialize(element)
 
         # Parse derivation
-        child = ARObject._find_child_element(element, "DERIVATION")
+        child = SerializationHelper.find_child_element(element, "DERIVATION")
         if child is not None:
-            derivation_value = ARObject._deserialize_by_tag(child, "EcucDerivationSpecification")
+            derivation_value = SerializationHelper.deserialize_by_tag(child, "EcucDerivationSpecification")
             obj.derivation = derivation_value
 
         # Parse symbolic_name
-        child = ARObject._find_child_element(element, "SYMBOLIC-NAME")
+        child = SerializationHelper.find_child_element(element, "SYMBOLIC-NAME")
         if child is not None:
             symbolic_name_value = child.text
             obj.symbolic_name = symbolic_name_value
 
         # Parse with_auto
-        child = ARObject._find_child_element(element, "WITH-AUTO")
+        child = SerializationHelper.find_child_element(element, "WITH-AUTO")
         if child is not None:
             with_auto_value = child.text
             obj.with_auto = with_auto_value

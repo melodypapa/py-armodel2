@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_
     AbstractRequiredPortPrototype,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -53,7 +54,7 @@ class RPortPrototype(AbstractRequiredPortPrototype):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -72,7 +73,7 @@ class RPortPrototype(AbstractRequiredPortPrototype):
 
         # Serialize may_be_unconnected
         if self.may_be_unconnected is not None:
-            serialized = ARObject._serialize_item(self.may_be_unconnected, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.may_be_unconnected, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAY-BE-UNCONNECTED")
@@ -86,7 +87,7 @@ class RPortPrototype(AbstractRequiredPortPrototype):
 
         # Serialize required_interface_ref
         if self.required_interface_ref is not None:
-            serialized = ARObject._serialize_item(self.required_interface_ref, "PortInterface")
+            serialized = SerializationHelper.serialize_item(self.required_interface_ref, "PortInterface")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REQUIRED-INTERFACE-TREF")
@@ -114,13 +115,13 @@ class RPortPrototype(AbstractRequiredPortPrototype):
         obj = super(RPortPrototype, cls).deserialize(element)
 
         # Parse may_be_unconnected
-        child = ARObject._find_child_element(element, "MAY-BE-UNCONNECTED")
+        child = SerializationHelper.find_child_element(element, "MAY-BE-UNCONNECTED")
         if child is not None:
             may_be_unconnected_value = child.text
             obj.may_be_unconnected = may_be_unconnected_value
 
         # Parse required_interface_ref
-        child = ARObject._find_child_element(element, "REQUIRED-INTERFACE-TREF")
+        child = SerializationHelper.find_child_element(element, "REQUIRED-INTERFACE-TREF")
         if child is not None:
             required_interface_ref_value = ARRef.deserialize(child)
             obj.required_interface_ref = required_interface_ref_value

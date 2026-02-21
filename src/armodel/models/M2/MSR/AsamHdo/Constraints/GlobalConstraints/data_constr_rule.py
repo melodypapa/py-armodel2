@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
 )
@@ -51,12 +52,12 @@ class DataConstrRule(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize constr_level
         if self.constr_level is not None:
-            serialized = ARObject._serialize_item(self.constr_level, "Integer")
+            serialized = SerializationHelper.serialize_item(self.constr_level, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONSTR-LEVEL")
@@ -70,7 +71,7 @@ class DataConstrRule(ARObject):
 
         # Serialize internal_constrs
         if self.internal_constrs is not None:
-            serialized = ARObject._serialize_item(self.internal_constrs, "InternalConstrs")
+            serialized = SerializationHelper.serialize_item(self.internal_constrs, "InternalConstrs")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INTERNAL-CONSTRS")
@@ -84,7 +85,7 @@ class DataConstrRule(ARObject):
 
         # Serialize phys_constrs
         if self.phys_constrs is not None:
-            serialized = ARObject._serialize_item(self.phys_constrs, "PhysConstrs")
+            serialized = SerializationHelper.serialize_item(self.phys_constrs, "PhysConstrs")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PHYS-CONSTRS")
@@ -113,21 +114,21 @@ class DataConstrRule(ARObject):
         obj.__init__()
 
         # Parse constr_level
-        child = ARObject._find_child_element(element, "CONSTR-LEVEL")
+        child = SerializationHelper.find_child_element(element, "CONSTR-LEVEL")
         if child is not None:
             constr_level_value = child.text
             obj.constr_level = constr_level_value
 
         # Parse internal_constrs
-        child = ARObject._find_child_element(element, "INTERNAL-CONSTRS")
+        child = SerializationHelper.find_child_element(element, "INTERNAL-CONSTRS")
         if child is not None:
-            internal_constrs_value = ARObject._deserialize_by_tag(child, "InternalConstrs")
+            internal_constrs_value = SerializationHelper.deserialize_by_tag(child, "InternalConstrs")
             obj.internal_constrs = internal_constrs_value
 
         # Parse phys_constrs
-        child = ARObject._find_child_element(element, "PHYS-CONSTRS")
+        child = SerializationHelper.find_child_element(element, "PHYS-CONSTRS")
         if child is not None:
-            phys_constrs_value = ARObject._deserialize_by_tag(child, "PhysConstrs")
+            phys_constrs_value = SerializationHelper.deserialize_by_tag(child, "PhysConstrs")
             obj.phys_constrs = phys_constrs_value
 
         return obj

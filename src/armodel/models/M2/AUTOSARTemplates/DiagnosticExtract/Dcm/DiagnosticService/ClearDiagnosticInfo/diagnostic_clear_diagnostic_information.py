@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
@@ -41,7 +42,7 @@ class DiagnosticClearDiagnosticInformation(DiagnosticServiceInstance):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -60,7 +61,7 @@ class DiagnosticClearDiagnosticInformation(DiagnosticServiceInstance):
 
         # Serialize clear_diagnostic_ref
         if self.clear_diagnostic_ref is not None:
-            serialized = ARObject._serialize_item(self.clear_diagnostic_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.clear_diagnostic_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CLEAR-DIAGNOSTIC-REF")
@@ -88,7 +89,7 @@ class DiagnosticClearDiagnosticInformation(DiagnosticServiceInstance):
         obj = super(DiagnosticClearDiagnosticInformation, cls).deserialize(element)
 
         # Parse clear_diagnostic_ref
-        child = ARObject._find_child_element(element, "CLEAR-DIAGNOSTIC-REF")
+        child = SerializationHelper.find_child_element(element, "CLEAR-DIAGNOSTIC-REF")
         if child is not None:
             clear_diagnostic_ref_value = ARRef.deserialize(child)
             obj.clear_diagnostic_ref = clear_diagnostic_ref_value

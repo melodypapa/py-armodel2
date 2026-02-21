@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
@@ -41,7 +42,7 @@ class DiagnosticClearResetEmissionRelatedInfo(DiagnosticServiceInstance):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -60,7 +61,7 @@ class DiagnosticClearResetEmissionRelatedInfo(DiagnosticServiceInstance):
 
         # Serialize clear_reset_ref
         if self.clear_reset_ref is not None:
-            serialized = ARObject._serialize_item(self.clear_reset_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.clear_reset_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CLEAR-RESET-REF")
@@ -88,7 +89,7 @@ class DiagnosticClearResetEmissionRelatedInfo(DiagnosticServiceInstance):
         obj = super(DiagnosticClearResetEmissionRelatedInfo, cls).deserialize(element)
 
         # Parse clear_reset_ref
-        child = ARObject._find_child_element(element, "CLEAR-RESET-REF")
+        child = SerializationHelper.find_child_element(element, "CLEAR-RESET-REF")
         if child is not None:
             clear_reset_ref_value = ARRef.deserialize(child)
             obj.clear_reset_ref = clear_reset_ref_value

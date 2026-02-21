@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Numerical,
     String,
@@ -44,12 +45,12 @@ class NumericalOrText(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize vf
         if self.vf is not None:
-            serialized = ARObject._serialize_item(self.vf, "Numerical")
+            serialized = SerializationHelper.serialize_item(self.vf, "Numerical")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VF")
@@ -63,7 +64,7 @@ class NumericalOrText(ARObject):
 
         # Serialize vt
         if self.vt is not None:
-            serialized = ARObject._serialize_item(self.vt, "String")
+            serialized = SerializationHelper.serialize_item(self.vt, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VT")
@@ -92,13 +93,13 @@ class NumericalOrText(ARObject):
         obj.__init__()
 
         # Parse vf
-        child = ARObject._find_child_element(element, "VF")
+        child = SerializationHelper.find_child_element(element, "VF")
         if child is not None:
             vf_value = child.text
             obj.vf = vf_value
 
         # Parse vt
-        child = ARObject._find_child_element(element, "VT")
+        child = SerializationHelper.find_child_element(element, "VT")
         if child is not None:
             vt_value = child.text
             obj.vt = vt_value

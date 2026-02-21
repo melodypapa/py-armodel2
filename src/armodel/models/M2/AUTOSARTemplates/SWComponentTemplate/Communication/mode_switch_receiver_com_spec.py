@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.r_port
     RPortComSpec,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -51,7 +52,7 @@ class ModeSwitchReceiverComSpec(RPortComSpec):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -70,7 +71,7 @@ class ModeSwitchReceiverComSpec(RPortComSpec):
 
         # Serialize enhanced_mode
         if self.enhanced_mode is not None:
-            serialized = ARObject._serialize_item(self.enhanced_mode, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.enhanced_mode, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ENHANCED-MODE")
@@ -84,7 +85,7 @@ class ModeSwitchReceiverComSpec(RPortComSpec):
 
         # Serialize mode_group_ref
         if self.mode_group_ref is not None:
-            serialized = ARObject._serialize_item(self.mode_group_ref, "ModeDeclarationGroup")
+            serialized = SerializationHelper.serialize_item(self.mode_group_ref, "ModeDeclarationGroup")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MODE-GROUP-REF")
@@ -98,7 +99,7 @@ class ModeSwitchReceiverComSpec(RPortComSpec):
 
         # Serialize supports
         if self.supports is not None:
-            serialized = ARObject._serialize_item(self.supports, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.supports, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SUPPORTS")
@@ -126,19 +127,19 @@ class ModeSwitchReceiverComSpec(RPortComSpec):
         obj = super(ModeSwitchReceiverComSpec, cls).deserialize(element)
 
         # Parse enhanced_mode
-        child = ARObject._find_child_element(element, "ENHANCED-MODE")
+        child = SerializationHelper.find_child_element(element, "ENHANCED-MODE")
         if child is not None:
             enhanced_mode_value = child.text
             obj.enhanced_mode = enhanced_mode_value
 
         # Parse mode_group_ref
-        child = ARObject._find_child_element(element, "MODE-GROUP-REF")
+        child = SerializationHelper.find_child_element(element, "MODE-GROUP-REF")
         if child is not None:
             mode_group_ref_value = ARRef.deserialize(child)
             obj.mode_group_ref = mode_group_ref_value
 
         # Parse supports
-        child = ARObject._find_child_element(element, "SUPPORTS")
+        child = SerializationHelper.find_child_element(element, "SUPPORTS")
         if child is not None:
             supports_value = child.text
             obj.supports = supports_value

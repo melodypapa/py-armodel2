@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -53,7 +54,7 @@ class SignalServiceTranslationEventProps(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -74,7 +75,7 @@ class SignalServiceTranslationEventProps(Identifiable):
         if self.element_propses:
             wrapper = ET.Element("ELEMENT-PROPSES")
             for item in self.element_propses:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -82,7 +83,7 @@ class SignalServiceTranslationEventProps(Identifiable):
 
         # Serialize safe_translation
         if self.safe_translation is not None:
-            serialized = ARObject._serialize_item(self.safe_translation, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.safe_translation, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SAFE-TRANSLATION")
@@ -96,7 +97,7 @@ class SignalServiceTranslationEventProps(Identifiable):
 
         # Serialize secure
         if self.secure is not None:
-            serialized = ARObject._serialize_item(self.secure, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.secure, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SECURE")
@@ -110,7 +111,7 @@ class SignalServiceTranslationEventProps(Identifiable):
 
         # Serialize translation_ref
         if self.translation_ref is not None:
-            serialized = ARObject._serialize_item(self.translation_ref, "VariableDataPrototype")
+            serialized = SerializationHelper.serialize_item(self.translation_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TRANSLATION-REF")
@@ -139,28 +140,28 @@ class SignalServiceTranslationEventProps(Identifiable):
 
         # Parse element_propses (list from container "ELEMENT-PROPSES")
         obj.element_propses = []
-        container = ARObject._find_child_element(element, "ELEMENT-PROPSES")
+        container = SerializationHelper.find_child_element(element, "ELEMENT-PROPSES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.element_propses.append(child_value)
 
         # Parse safe_translation
-        child = ARObject._find_child_element(element, "SAFE-TRANSLATION")
+        child = SerializationHelper.find_child_element(element, "SAFE-TRANSLATION")
         if child is not None:
             safe_translation_value = child.text
             obj.safe_translation = safe_translation_value
 
         # Parse secure
-        child = ARObject._find_child_element(element, "SECURE")
+        child = SerializationHelper.find_child_element(element, "SECURE")
         if child is not None:
             secure_value = child.text
             obj.secure = secure_value
 
         # Parse translation_ref
-        child = ARObject._find_child_element(element, "TRANSLATION-REF")
+        child = SerializationHelper.find_child_element(element, "TRANSLATION-REF")
         if child is not None:
             translation_ref_value = ARRef.deserialize(child)
             obj.translation_ref = translation_ref_value

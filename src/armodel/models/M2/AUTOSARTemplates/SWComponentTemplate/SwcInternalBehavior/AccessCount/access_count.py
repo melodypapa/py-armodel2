@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -46,12 +47,12 @@ class AccessCount(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize access_point_ref
         if self.access_point_ref is not None:
-            serialized = ARObject._serialize_item(self.access_point_ref, "AbstractAccessPoint")
+            serialized = SerializationHelper.serialize_item(self.access_point_ref, "AbstractAccessPoint")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ACCESS-POINT-REF")
@@ -65,7 +66,7 @@ class AccessCount(ARObject):
 
         # Serialize value
         if self.value is not None:
-            serialized = ARObject._serialize_item(self.value, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.value, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VALUE")
@@ -94,13 +95,13 @@ class AccessCount(ARObject):
         obj.__init__()
 
         # Parse access_point_ref
-        child = ARObject._find_child_element(element, "ACCESS-POINT-REF")
+        child = SerializationHelper.find_child_element(element, "ACCESS-POINT-REF")
         if child is not None:
             access_point_ref_value = ARRef.deserialize(child)
             obj.access_point_ref = access_point_ref_value
 
         # Parse value
-        child = ARObject._find_child_element(element, "VALUE")
+        child = SerializationHelper.find_child_element(element, "VALUE")
         if child is not None:
             value_value = child.text
             obj.value = value_value

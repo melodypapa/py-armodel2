@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     NameToken,
 )
@@ -45,14 +46,14 @@ class AccessCountSet(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize access_counts (list to container "ACCESS-COUNTS")
         if self.access_counts:
             wrapper = ET.Element("ACCESS-COUNTS")
             for item in self.access_counts:
-                serialized = ARObject._serialize_item(item, "AccessCount")
+                serialized = SerializationHelper.serialize_item(item, "AccessCount")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -60,7 +61,7 @@ class AccessCountSet(ARObject):
 
         # Serialize count_profile
         if self.count_profile is not None:
-            serialized = ARObject._serialize_item(self.count_profile, "NameToken")
+            serialized = SerializationHelper.serialize_item(self.count_profile, "NameToken")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COUNT-PROFILE")
@@ -90,16 +91,16 @@ class AccessCountSet(ARObject):
 
         # Parse access_counts (list from container "ACCESS-COUNTS")
         obj.access_counts = []
-        container = ARObject._find_child_element(element, "ACCESS-COUNTS")
+        container = SerializationHelper.find_child_element(element, "ACCESS-COUNTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.access_counts.append(child_value)
 
         # Parse count_profile
-        child = ARObject._find_child_element(element, "COUNT-PROFILE")
+        child = SerializationHelper.find_child_element(element, "COUNT-PROFILE")
         if child is not None:
             count_profile_value = child.text
             obj.count_profile = count_profile_value

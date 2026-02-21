@@ -16,6 +16,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.FlatMap.flat_instance_descriptor import (
     FlatInstanceDescriptor,
 )
@@ -46,7 +47,7 @@ class FlatMap(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -67,7 +68,7 @@ class FlatMap(ARElement):
         if self.instances:
             wrapper = ET.Element("INSTANCES")
             for item in self.instances:
-                serialized = ARObject._serialize_item(item, "FlatInstanceDescriptor")
+                serialized = SerializationHelper.serialize_item(item, "FlatInstanceDescriptor")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -90,11 +91,11 @@ class FlatMap(ARElement):
 
         # Parse instances (list from container "INSTANCES")
         obj.instances = []
-        container = ARObject._find_child_element(element, "INSTANCES")
+        container = SerializationHelper.find_child_element(element, "INSTANCES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.instances.append(child_value)
 

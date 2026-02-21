@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_nee
     ServiceNeeds,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
     DiagnosticAudienceEnum,
 )
@@ -53,7 +54,7 @@ class DiagnosticCapabilityElement(ServiceNeeds, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -74,7 +75,7 @@ class DiagnosticCapabilityElement(ServiceNeeds, ABC):
         if self.audiences:
             wrapper = ET.Element("AUDIENCES")
             for item in self.audiences:
-                serialized = ARObject._serialize_item(item, "DiagnosticAudienceEnum")
+                serialized = SerializationHelper.serialize_item(item, "DiagnosticAudienceEnum")
                 if serialized is not None:
                     child_elem = ET.Element("AUDIENCE")
                     if hasattr(serialized, 'attrib'):
@@ -89,7 +90,7 @@ class DiagnosticCapabilityElement(ServiceNeeds, ABC):
 
         # Serialize diag
         if self.diag is not None:
-            serialized = ARObject._serialize_item(self.diag, "DiagRequirementIdString")
+            serialized = SerializationHelper.serialize_item(self.diag, "DiagRequirementIdString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DIAG")
@@ -103,7 +104,7 @@ class DiagnosticCapabilityElement(ServiceNeeds, ABC):
 
         # Serialize security_access
         if self.security_access is not None:
-            serialized = ARObject._serialize_item(self.security_access, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.security_access, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SECURITY-ACCESS")
@@ -132,7 +133,7 @@ class DiagnosticCapabilityElement(ServiceNeeds, ABC):
 
         # Parse audiences (list from container "AUDIENCES")
         obj.audiences = []
-        container = ARObject._find_child_element(element, "AUDIENCES")
+        container = SerializationHelper.find_child_element(element, "AUDIENCES")
         if container is not None:
             for child in container:
                 # Extract enum value (DiagnosticAudienceEnum)
@@ -141,13 +142,13 @@ class DiagnosticCapabilityElement(ServiceNeeds, ABC):
                     obj.audiences.append(child_value)
 
         # Parse diag
-        child = ARObject._find_child_element(element, "DIAG")
+        child = SerializationHelper.find_child_element(element, "DIAG")
         if child is not None:
             diag_value = child.text
             obj.diag = diag_value
 
         # Parse security_access
-        child = ARObject._find_child_element(element, "SECURITY-ACCESS")
+        child = SerializationHelper.find_child_element(element, "SECURITY-ACCESS")
         if child is not None:
             security_access_value = child.text
             obj.security_access = security_access_value

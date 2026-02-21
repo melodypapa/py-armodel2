@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Dds import (
     DdsLivenessKindEnum,
 )
@@ -45,12 +46,12 @@ class DdsLiveliness(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize liveliness_lease
         if self.liveliness_lease is not None:
-            serialized = ARObject._serialize_item(self.liveliness_lease, "Float")
+            serialized = SerializationHelper.serialize_item(self.liveliness_lease, "Float")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LIVELINESS-LEASE")
@@ -64,7 +65,7 @@ class DdsLiveliness(ARObject):
 
         # Serialize liveness_kind
         if self.liveness_kind is not None:
-            serialized = ARObject._serialize_item(self.liveness_kind, "DdsLivenessKindEnum")
+            serialized = SerializationHelper.serialize_item(self.liveness_kind, "DdsLivenessKindEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LIVENESS-KIND")
@@ -93,13 +94,13 @@ class DdsLiveliness(ARObject):
         obj.__init__()
 
         # Parse liveliness_lease
-        child = ARObject._find_child_element(element, "LIVELINESS-LEASE")
+        child = SerializationHelper.find_child_element(element, "LIVELINESS-LEASE")
         if child is not None:
             liveliness_lease_value = child.text
             obj.liveliness_lease = liveliness_lease_value
 
         # Parse liveness_kind
-        child = ARObject._find_child_element(element, "LIVENESS-KIND")
+        child = SerializationHelper.find_child_element(element, "LIVENESS-KIND")
         if child is not None:
             liveness_kind_value = DdsLivenessKindEnum.deserialize(child)
             obj.liveness_kind = liveness_kind_value

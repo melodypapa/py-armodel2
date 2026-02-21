@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -46,12 +47,12 @@ class BusMirrorChannel(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize bus_mirror
         if self.bus_mirror is not None:
-            serialized = ARObject._serialize_item(self.bus_mirror, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.bus_mirror, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BUS-MIRROR")
@@ -65,7 +66,7 @@ class BusMirrorChannel(ARObject):
 
         # Serialize channel_ref
         if self.channel_ref is not None:
-            serialized = ARObject._serialize_item(self.channel_ref, "PhysicalChannel")
+            serialized = SerializationHelper.serialize_item(self.channel_ref, "PhysicalChannel")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CHANNEL-REF")
@@ -94,13 +95,13 @@ class BusMirrorChannel(ARObject):
         obj.__init__()
 
         # Parse bus_mirror
-        child = ARObject._find_child_element(element, "BUS-MIRROR")
+        child = SerializationHelper.find_child_element(element, "BUS-MIRROR")
         if child is not None:
             bus_mirror_value = child.text
             obj.bus_mirror = bus_mirror_value
 
         # Parse channel_ref
-        child = ARObject._find_child_element(element, "CHANNEL-REF")
+        child = SerializationHelper.find_child_element(element, "CHANNEL-REF")
         if child is not None:
             channel_ref_value = ARRef.deserialize(child)
             obj.channel_ref = channel_ref_value

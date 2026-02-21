@@ -16,6 +16,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.DataDictionary.DataDefProperties import (
     SwImplPolicyEnum,
 )
@@ -51,7 +52,7 @@ class Trigger(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -70,7 +71,7 @@ class Trigger(Identifiable):
 
         # Serialize sw_impl_policy_enum
         if self.sw_impl_policy_enum is not None:
-            serialized = ARObject._serialize_item(self.sw_impl_policy_enum, "SwImplPolicyEnum")
+            serialized = SerializationHelper.serialize_item(self.sw_impl_policy_enum, "SwImplPolicyEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-IMPL-POLICY-ENUM")
@@ -84,7 +85,7 @@ class Trigger(Identifiable):
 
         # Serialize trigger_period
         if self.trigger_period is not None:
-            serialized = ARObject._serialize_item(self.trigger_period, "MultidimensionalTime")
+            serialized = SerializationHelper.serialize_item(self.trigger_period, "MultidimensionalTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TRIGGER-PERIOD")
@@ -112,15 +113,15 @@ class Trigger(Identifiable):
         obj = super(Trigger, cls).deserialize(element)
 
         # Parse sw_impl_policy_enum
-        child = ARObject._find_child_element(element, "SW-IMPL-POLICY-ENUM")
+        child = SerializationHelper.find_child_element(element, "SW-IMPL-POLICY-ENUM")
         if child is not None:
             sw_impl_policy_enum_value = SwImplPolicyEnum.deserialize(child)
             obj.sw_impl_policy_enum = sw_impl_policy_enum_value
 
         # Parse trigger_period
-        child = ARObject._find_child_element(element, "TRIGGER-PERIOD")
+        child = SerializationHelper.find_child_element(element, "TRIGGER-PERIOD")
         if child is not None:
-            trigger_period_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            trigger_period_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
             obj.trigger_period = trigger_period_value
 
         return obj

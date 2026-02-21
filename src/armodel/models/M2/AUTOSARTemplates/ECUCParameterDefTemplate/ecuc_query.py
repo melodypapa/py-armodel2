@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 if TYPE_CHECKING:
     from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_query_expression import (
@@ -46,7 +47,7 @@ class EcucQuery(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class EcucQuery(Identifiable):
 
         # Serialize ecuc_query
         if self.ecuc_query is not None:
-            serialized = ARObject._serialize_item(self.ecuc_query, "EcucQueryExpression")
+            serialized = SerializationHelper.serialize_item(self.ecuc_query, "EcucQueryExpression")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ECUC-QUERY")
@@ -93,9 +94,9 @@ class EcucQuery(Identifiable):
         obj = super(EcucQuery, cls).deserialize(element)
 
         # Parse ecuc_query
-        child = ARObject._find_child_element(element, "ECUC-QUERY")
+        child = SerializationHelper.find_child_element(element, "ECUC-QUERY")
         if child is not None:
-            ecuc_query_value = ARObject._deserialize_by_tag(child, "EcucQueryExpression")
+            ecuc_query_value = SerializationHelper.deserialize_by_tag(child, "EcucQueryExpression")
             obj.ecuc_query = ecuc_query_value
 
         return obj

@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
     AutosarDataPrototype,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     ArgumentDirectionEnum,
 )
@@ -53,7 +54,7 @@ class ArgumentDataPrototype(AutosarDataPrototype):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -72,7 +73,7 @@ class ArgumentDataPrototype(AutosarDataPrototype):
 
         # Serialize direction
         if self.direction is not None:
-            serialized = ARObject._serialize_item(self.direction, "ArgumentDirectionEnum")
+            serialized = SerializationHelper.serialize_item(self.direction, "ArgumentDirectionEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DIRECTION")
@@ -86,7 +87,7 @@ class ArgumentDataPrototype(AutosarDataPrototype):
 
         # Serialize server_argument_impl
         if self.server_argument_impl is not None:
-            serialized = ARObject._serialize_item(self.server_argument_impl, "ServerArgumentImplPolicyEnum")
+            serialized = SerializationHelper.serialize_item(self.server_argument_impl, "ServerArgumentImplPolicyEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SERVER-ARGUMENT-IMPL")
@@ -114,13 +115,13 @@ class ArgumentDataPrototype(AutosarDataPrototype):
         obj = super(ArgumentDataPrototype, cls).deserialize(element)
 
         # Parse direction
-        child = ARObject._find_child_element(element, "DIRECTION")
+        child = SerializationHelper.find_child_element(element, "DIRECTION")
         if child is not None:
             direction_value = ArgumentDirectionEnum.deserialize(child)
             obj.direction = direction_value
 
         # Parse server_argument_impl
-        child = ARObject._find_child_element(element, "SERVER-ARGUMENT-IMPL")
+        child = SerializationHelper.find_child_element(element, "SERVER-ARGUMENT-IMPL")
         if child is not None:
             server_argument_impl_value = ServerArgumentImplPolicyEnum.deserialize(child)
             obj.server_argument_impl = server_argument_impl_value

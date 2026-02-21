@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DataMapping.data_mapping 
     DataMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.system_signal import (
     SystemSignal,
@@ -49,7 +50,7 @@ class TriggerToSignalMapping(DataMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -68,7 +69,7 @@ class TriggerToSignalMapping(DataMapping):
 
         # Serialize system_signal_ref
         if self.system_signal_ref is not None:
-            serialized = ARObject._serialize_item(self.system_signal_ref, "SystemSignal")
+            serialized = SerializationHelper.serialize_item(self.system_signal_ref, "SystemSignal")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SYSTEM-SIGNAL-REF")
@@ -82,7 +83,7 @@ class TriggerToSignalMapping(DataMapping):
 
         # Serialize trigger_ref
         if self.trigger_ref is not None:
-            serialized = ARObject._serialize_item(self.trigger_ref, "Trigger")
+            serialized = SerializationHelper.serialize_item(self.trigger_ref, "Trigger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TRIGGER-REF")
@@ -110,13 +111,13 @@ class TriggerToSignalMapping(DataMapping):
         obj = super(TriggerToSignalMapping, cls).deserialize(element)
 
         # Parse system_signal_ref
-        child = ARObject._find_child_element(element, "SYSTEM-SIGNAL-REF")
+        child = SerializationHelper.find_child_element(element, "SYSTEM-SIGNAL-REF")
         if child is not None:
             system_signal_ref_value = ARRef.deserialize(child)
             obj.system_signal_ref = system_signal_ref_value
 
         # Parse trigger_ref
-        child = ARObject._find_child_element(element, "TRIGGER-REF")
+        child = SerializationHelper.find_child_element(element, "TRIGGER-REF")
         if child is not None:
             trigger_ref_value = ARRef.deserialize(child)
             obj.trigger_ref = trigger_ref_value

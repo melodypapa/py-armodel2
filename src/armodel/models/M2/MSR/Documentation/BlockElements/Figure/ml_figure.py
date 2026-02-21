@@ -14,6 +14,7 @@ from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginat
     Paginateable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable import (
     FrameEnum,
     PgwideEnum,
@@ -78,7 +79,7 @@ class MlFigure(Paginateable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -97,7 +98,7 @@ class MlFigure(Paginateable):
 
         # Serialize figure_caption
         if self.figure_caption is not None:
-            serialized = ARObject._serialize_item(self.figure_caption, "Caption")
+            serialized = SerializationHelper.serialize_item(self.figure_caption, "Caption")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FIGURE-CAPTION")
@@ -111,7 +112,7 @@ class MlFigure(Paginateable):
 
         # Serialize frame
         if self.frame is not None:
-            serialized = ARObject._serialize_item(self.frame, "FrameEnum")
+            serialized = SerializationHelper.serialize_item(self.frame, "FrameEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FRAME")
@@ -125,7 +126,7 @@ class MlFigure(Paginateable):
 
         # Serialize help_entry
         if self.help_entry is not None:
-            serialized = ARObject._serialize_item(self.help_entry, "String")
+            serialized = SerializationHelper.serialize_item(self.help_entry, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HELP-ENTRY")
@@ -139,7 +140,7 @@ class MlFigure(Paginateable):
 
         # Serialize l_graphic (list with l_prefix "L-GRAPHIC")
         for item in self.l_graphic:
-            serialized = ARObject._serialize_item(item, "LGraphic")
+            serialized = SerializationHelper.serialize_item(item, "LGraphic")
             if serialized is not None:
                 # For l_prefix lists, wrap each item in the l_prefix tag
                 wrapped = ET.Element("L-GRAPHIC")
@@ -153,7 +154,7 @@ class MlFigure(Paginateable):
 
         # Serialize pgwide
         if self.pgwide is not None:
-            serialized = ARObject._serialize_item(self.pgwide, "PgwideEnum")
+            serialized = SerializationHelper.serialize_item(self.pgwide, "PgwideEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PGWIDE")
@@ -167,7 +168,7 @@ class MlFigure(Paginateable):
 
         # Serialize verbatim
         if self.verbatim is not None:
-            serialized = ARObject._serialize_item(self.verbatim, "MultiLanguageVerbatim")
+            serialized = SerializationHelper.serialize_item(self.verbatim, "MultiLanguageVerbatim")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VERBATIM")
@@ -195,39 +196,39 @@ class MlFigure(Paginateable):
         obj = super(MlFigure, cls).deserialize(element)
 
         # Parse figure_caption
-        child = ARObject._find_child_element(element, "FIGURE-CAPTION")
+        child = SerializationHelper.find_child_element(element, "FIGURE-CAPTION")
         if child is not None:
-            figure_caption_value = ARObject._deserialize_by_tag(child, "Caption")
+            figure_caption_value = SerializationHelper.deserialize_by_tag(child, "Caption")
             obj.figure_caption = figure_caption_value
 
         # Parse frame
-        child = ARObject._find_child_element(element, "FRAME")
+        child = SerializationHelper.find_child_element(element, "FRAME")
         if child is not None:
             frame_value = FrameEnum.deserialize(child)
             obj.frame = frame_value
 
         # Parse help_entry
-        child = ARObject._find_child_element(element, "HELP-ENTRY")
+        child = SerializationHelper.find_child_element(element, "HELP-ENTRY")
         if child is not None:
             help_entry_value = child.text
             obj.help_entry = help_entry_value
 
         # Parse l_graphic (list with l_prefix "L-GRAPHIC")
         obj.l_graphic = []
-        for child in ARObject._find_all_child_elements(element, "L-GRAPHIC"):
-            l_graphic_value = ARObject._deserialize_by_tag(child, "LGraphic")
+        for child in SerializationHelper.find_all_child_elements(element, "L-GRAPHIC"):
+            l_graphic_value = SerializationHelper.deserialize_by_tag(child, "LGraphic")
             obj.l_graphic.append(l_graphic_value)
 
         # Parse pgwide
-        child = ARObject._find_child_element(element, "PGWIDE")
+        child = SerializationHelper.find_child_element(element, "PGWIDE")
         if child is not None:
             pgwide_value = PgwideEnum.deserialize(child)
             obj.pgwide = pgwide_value
 
         # Parse verbatim
-        child = ARObject._find_child_element(element, "VERBATIM")
+        child = SerializationHelper.find_child_element(element, "VERBATIM")
         if child is not None:
-            verbatim_value = ARObject._deserialize_with_type(child, "MultiLanguageVerbatim")
+            verbatim_value = SerializationHelper.deserialize_with_type(child, "MultiLanguageVerbatim")
             obj.verbatim = verbatim_value
 
         return obj

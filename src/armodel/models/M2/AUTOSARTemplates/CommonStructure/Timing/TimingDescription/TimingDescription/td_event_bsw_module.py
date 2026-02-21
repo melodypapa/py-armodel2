@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
     TDEventBsw,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_module_entry import (
     BswModuleEntry,
@@ -46,7 +47,7 @@ class TDEventBswModule(TDEventBsw):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class TDEventBswModule(TDEventBsw):
 
         # Serialize bsw_module_entry_entry_ref
         if self.bsw_module_entry_entry_ref is not None:
-            serialized = ARObject._serialize_item(self.bsw_module_entry_entry_ref, "BswModuleEntry")
+            serialized = SerializationHelper.serialize_item(self.bsw_module_entry_entry_ref, "BswModuleEntry")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BSW-MODULE-ENTRY-ENTRY-REF")
@@ -79,7 +80,7 @@ class TDEventBswModule(TDEventBsw):
 
         # Serialize td_event_bsw
         if self.td_event_bsw is not None:
-            serialized = ARObject._serialize_item(self.td_event_bsw, "TDEventBswModule")
+            serialized = SerializationHelper.serialize_item(self.td_event_bsw, "TDEventBswModule")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TD-EVENT-BSW")
@@ -107,15 +108,15 @@ class TDEventBswModule(TDEventBsw):
         obj = super(TDEventBswModule, cls).deserialize(element)
 
         # Parse bsw_module_entry_entry_ref
-        child = ARObject._find_child_element(element, "BSW-MODULE-ENTRY-ENTRY-REF")
+        child = SerializationHelper.find_child_element(element, "BSW-MODULE-ENTRY-ENTRY-REF")
         if child is not None:
             bsw_module_entry_entry_ref_value = ARRef.deserialize(child)
             obj.bsw_module_entry_entry_ref = bsw_module_entry_entry_ref_value
 
         # Parse td_event_bsw
-        child = ARObject._find_child_element(element, "TD-EVENT-BSW")
+        child = SerializationHelper.find_child_element(element, "TD-EVENT-BSW")
         if child is not None:
-            td_event_bsw_value = ARObject._deserialize_by_tag(child, "TDEventBswModule")
+            td_event_bsw_value = SerializationHelper.deserialize_by_tag(child, "TDEventBswModule")
             obj.td_event_bsw = td_event_bsw_value
 
         return obj

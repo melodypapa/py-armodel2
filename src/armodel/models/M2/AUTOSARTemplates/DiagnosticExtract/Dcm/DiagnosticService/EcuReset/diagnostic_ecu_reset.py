@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -46,7 +47,7 @@ class DiagnosticEcuReset(DiagnosticServiceInstance):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class DiagnosticEcuReset(DiagnosticServiceInstance):
 
         # Serialize custom_sub
         if self.custom_sub is not None:
-            serialized = ARObject._serialize_item(self.custom_sub, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.custom_sub, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CUSTOM-SUB")
@@ -79,7 +80,7 @@ class DiagnosticEcuReset(DiagnosticServiceInstance):
 
         # Serialize ecu_reset_class_ref
         if self.ecu_reset_class_ref is not None:
-            serialized = ARObject._serialize_item(self.ecu_reset_class_ref, "DiagnosticEcuReset")
+            serialized = SerializationHelper.serialize_item(self.ecu_reset_class_ref, "DiagnosticEcuReset")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ECU-RESET-CLASS-REF")
@@ -107,13 +108,13 @@ class DiagnosticEcuReset(DiagnosticServiceInstance):
         obj = super(DiagnosticEcuReset, cls).deserialize(element)
 
         # Parse custom_sub
-        child = ARObject._find_child_element(element, "CUSTOM-SUB")
+        child = SerializationHelper.find_child_element(element, "CUSTOM-SUB")
         if child is not None:
             custom_sub_value = child.text
             obj.custom_sub = custom_sub_value
 
         # Parse ecu_reset_class_ref
-        child = ARObject._find_child_element(element, "ECU-RESET-CLASS-REF")
+        child = SerializationHelper.find_child_element(element, "ECU-RESET-CLASS-REF")
         if child is not None:
             ecu_reset_class_ref_value = ARRef.deserialize(child)
             obj.ecu_reset_class_ref = ecu_reset_class_ref_value

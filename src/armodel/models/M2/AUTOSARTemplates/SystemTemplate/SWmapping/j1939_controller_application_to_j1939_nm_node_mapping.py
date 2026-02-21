@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.j1939_nm_node import (
     J1939NmNode,
@@ -43,12 +44,12 @@ class J1939ControllerApplicationToJ1939NmNodeMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize j1939_controller_ref
         if self.j1939_controller_ref is not None:
-            serialized = ARObject._serialize_item(self.j1939_controller_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.j1939_controller_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("J1939-CONTROLLER-REF")
@@ -62,7 +63,7 @@ class J1939ControllerApplicationToJ1939NmNodeMapping(ARObject):
 
         # Serialize j1939_nm_node_ref
         if self.j1939_nm_node_ref is not None:
-            serialized = ARObject._serialize_item(self.j1939_nm_node_ref, "J1939NmNode")
+            serialized = SerializationHelper.serialize_item(self.j1939_nm_node_ref, "J1939NmNode")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("J1939-NM-NODE-REF")
@@ -91,13 +92,13 @@ class J1939ControllerApplicationToJ1939NmNodeMapping(ARObject):
         obj.__init__()
 
         # Parse j1939_controller_ref
-        child = ARObject._find_child_element(element, "J1939-CONTROLLER-REF")
+        child = SerializationHelper.find_child_element(element, "J1939-CONTROLLER-REF")
         if child is not None:
             j1939_controller_ref_value = ARRef.deserialize(child)
             obj.j1939_controller_ref = j1939_controller_ref_value
 
         # Parse j1939_nm_node_ref
-        child = ARObject._find_child_element(element, "J1939-NM-NODE-REF")
+        child = SerializationHelper.find_child_element(element, "J1939-NM-NODE-REF")
         if child is not None:
             j1939_nm_node_ref_value = ARRef.deserialize(child)
             obj.j1939_nm_node_ref = j1939_nm_node_ref_value

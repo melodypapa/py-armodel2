@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Limit,
     Numerical,
@@ -48,7 +49,7 @@ class FMAttributeDef(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -67,7 +68,7 @@ class FMAttributeDef(Identifiable):
 
         # Serialize default_value
         if self.default_value is not None:
-            serialized = ARObject._serialize_item(self.default_value, "Numerical")
+            serialized = SerializationHelper.serialize_item(self.default_value, "Numerical")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DEFAULT-VALUE")
@@ -81,7 +82,7 @@ class FMAttributeDef(Identifiable):
 
         # Serialize max
         if self.max is not None:
-            serialized = ARObject._serialize_item(self.max, "Limit")
+            serialized = SerializationHelper.serialize_item(self.max, "Limit")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX")
@@ -95,7 +96,7 @@ class FMAttributeDef(Identifiable):
 
         # Serialize min
         if self.min is not None:
-            serialized = ARObject._serialize_item(self.min, "Limit")
+            serialized = SerializationHelper.serialize_item(self.min, "Limit")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MIN")
@@ -123,21 +124,21 @@ class FMAttributeDef(Identifiable):
         obj = super(FMAttributeDef, cls).deserialize(element)
 
         # Parse default_value
-        child = ARObject._find_child_element(element, "DEFAULT-VALUE")
+        child = SerializationHelper.find_child_element(element, "DEFAULT-VALUE")
         if child is not None:
             default_value_value = child.text
             obj.default_value = default_value_value
 
         # Parse max
-        child = ARObject._find_child_element(element, "MAX")
+        child = SerializationHelper.find_child_element(element, "MAX")
         if child is not None:
-            max_value = ARObject._deserialize_by_tag(child, "Limit")
+            max_value = SerializationHelper.deserialize_by_tag(child, "Limit")
             obj.max = max_value
 
         # Parse min
-        child = ARObject._find_child_element(element, "MIN")
+        child = SerializationHelper.find_child_element(element, "MIN")
         if child is not None:
-            min_value = ARObject._deserialize_by_tag(child, "Limit")
+            min_value = SerializationHelper.deserialize_by_tag(child, "Limit")
             obj.min = min_value
 
         return obj

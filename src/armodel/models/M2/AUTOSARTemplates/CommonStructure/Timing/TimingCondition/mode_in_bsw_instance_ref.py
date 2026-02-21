@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswImplementation.bsw_implementation import (
     BswImplementation,
@@ -51,12 +52,12 @@ class ModeInBswInstanceRef(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize context_bsw_ref
         if self.context_bsw_ref is not None:
-            serialized = ARObject._serialize_item(self.context_bsw_ref, "BswImplementation")
+            serialized = SerializationHelper.serialize_item(self.context_bsw_ref, "BswImplementation")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONTEXT-BSW-REF")
@@ -70,7 +71,7 @@ class ModeInBswInstanceRef(ARObject):
 
         # Serialize context_mode_ref
         if self.context_mode_ref is not None:
-            serialized = ARObject._serialize_item(self.context_mode_ref, "ModeDeclarationGroup")
+            serialized = SerializationHelper.serialize_item(self.context_mode_ref, "ModeDeclarationGroup")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONTEXT-MODE-REF")
@@ -84,7 +85,7 @@ class ModeInBswInstanceRef(ARObject):
 
         # Serialize target_mode_ref
         if self.target_mode_ref is not None:
-            serialized = ARObject._serialize_item(self.target_mode_ref, "ModeDeclaration")
+            serialized = SerializationHelper.serialize_item(self.target_mode_ref, "ModeDeclaration")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TARGET-MODE-REF")
@@ -113,19 +114,19 @@ class ModeInBswInstanceRef(ARObject):
         obj.__init__()
 
         # Parse context_bsw_ref
-        child = ARObject._find_child_element(element, "CONTEXT-BSW-REF")
+        child = SerializationHelper.find_child_element(element, "CONTEXT-BSW-REF")
         if child is not None:
             context_bsw_ref_value = ARRef.deserialize(child)
             obj.context_bsw_ref = context_bsw_ref_value
 
         # Parse context_mode_ref
-        child = ARObject._find_child_element(element, "CONTEXT-MODE-REF")
+        child = SerializationHelper.find_child_element(element, "CONTEXT-MODE-REF")
         if child is not None:
             context_mode_ref_value = ARRef.deserialize(child)
             obj.context_mode_ref = context_mode_ref_value
 
         # Parse target_mode_ref
-        child = ARObject._find_child_element(element, "TARGET-MODE-REF")
+        child = SerializationHelper.find_child_element(element, "TARGET-MODE-REF")
         if child is not None:
             target_mode_ref_value = ARRef.deserialize(child)
             obj.target_mode_ref = target_mode_ref_value

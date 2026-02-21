@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -45,12 +46,12 @@ class AbstractMultiplicityRestriction(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize lower_multiplicity
         if self.lower_multiplicity is not None:
-            serialized = ARObject._serialize_item(self.lower_multiplicity, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.lower_multiplicity, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LOWER-MULTIPLICITY")
@@ -64,7 +65,7 @@ class AbstractMultiplicityRestriction(ARObject, ABC):
 
         # Serialize upper_multiplicity
         if self.upper_multiplicity is not None:
-            serialized = ARObject._serialize_item(self.upper_multiplicity, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.upper_multiplicity, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("UPPER-MULTIPLICITY")
@@ -93,13 +94,13 @@ class AbstractMultiplicityRestriction(ARObject, ABC):
         obj.__init__()
 
         # Parse lower_multiplicity
-        child = ARObject._find_child_element(element, "LOWER-MULTIPLICITY")
+        child = SerializationHelper.find_child_element(element, "LOWER-MULTIPLICITY")
         if child is not None:
             lower_multiplicity_value = child.text
             obj.lower_multiplicity = lower_multiplicity_value
 
         # Parse upper_multiplicity
-        child = ARObject._find_child_element(element, "UPPER-MULTIPLICITY")
+        child = SerializationHelper.find_child_element(element, "UPPER-MULTIPLICITY")
         if child is not None:
             upper_multiplicity_value = child.text
             obj.upper_multiplicity = upper_multiplicity_value

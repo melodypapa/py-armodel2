@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DiagnosticConnection.tp_c
     TpConnection,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu_triggering import (
     PduTriggering,
@@ -44,7 +45,7 @@ class EthTpConnection(TpConnection):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class EthTpConnection(TpConnection):
         if self.tp_sdu_refs:
             wrapper = ET.Element("TP-SDU-REFS")
             for item in self.tp_sdu_refs:
-                serialized = ARObject._serialize_item(item, "PduTriggering")
+                serialized = SerializationHelper.serialize_item(item, "PduTriggering")
                 if serialized is not None:
                     child_elem = ET.Element("TP-SDU-REF")
                     if hasattr(serialized, 'attrib'):
@@ -95,17 +96,17 @@ class EthTpConnection(TpConnection):
 
         # Parse tp_sdu_refs (list from container "TP-SDU-REFS")
         obj.tp_sdu_refs = []
-        container = ARObject._find_child_element(element, "TP-SDU-REFS")
+        container = SerializationHelper.find_child_element(element, "TP-SDU-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.tp_sdu_refs.append(child_value)
 

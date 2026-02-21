@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
     TimeValue,
@@ -45,12 +46,12 @@ class GlobalTimeCorrectionProps(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize offset_correction
         if self.offset_correction is not None:
-            serialized = ARObject._serialize_item(self.offset_correction, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.offset_correction, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("OFFSET-CORRECTION")
@@ -64,7 +65,7 @@ class GlobalTimeCorrectionProps(ARObject):
 
         # Serialize rate_correction
         if self.rate_correction is not None:
-            serialized = ARObject._serialize_item(self.rate_correction, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.rate_correction, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RATE-CORRECTION")
@@ -78,7 +79,7 @@ class GlobalTimeCorrectionProps(ARObject):
 
         # Serialize rate_corrections
         if self.rate_corrections is not None:
-            serialized = ARObject._serialize_item(self.rate_corrections, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.rate_corrections, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RATE-CORRECTIONS")
@@ -107,19 +108,19 @@ class GlobalTimeCorrectionProps(ARObject):
         obj.__init__()
 
         # Parse offset_correction
-        child = ARObject._find_child_element(element, "OFFSET-CORRECTION")
+        child = SerializationHelper.find_child_element(element, "OFFSET-CORRECTION")
         if child is not None:
             offset_correction_value = child.text
             obj.offset_correction = offset_correction_value
 
         # Parse rate_correction
-        child = ARObject._find_child_element(element, "RATE-CORRECTION")
+        child = SerializationHelper.find_child_element(element, "RATE-CORRECTION")
         if child is not None:
             rate_correction_value = child.text
             obj.rate_correction = rate_correction_value
 
         # Parse rate_corrections
-        child = ARObject._find_child_element(element, "RATE-CORRECTIONS")
+        child = SerializationHelper.find_child_element(element, "RATE-CORRECTIONS")
         if child is not None:
             rate_corrections_value = child.text
             obj.rate_corrections = rate_corrections_value

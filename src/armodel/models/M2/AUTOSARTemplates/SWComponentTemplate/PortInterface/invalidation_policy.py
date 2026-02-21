@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication import (
     HandleInvalidEnum,
@@ -46,12 +47,12 @@ class InvalidationPolicy(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize data_element_ref
         if self.data_element_ref is not None:
-            serialized = ARObject._serialize_item(self.data_element_ref, "VariableDataPrototype")
+            serialized = SerializationHelper.serialize_item(self.data_element_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-ELEMENT-REF")
@@ -65,7 +66,7 @@ class InvalidationPolicy(ARObject):
 
         # Serialize handle_invalid_enum
         if self.handle_invalid_enum is not None:
-            serialized = ARObject._serialize_item(self.handle_invalid_enum, "HandleInvalidEnum")
+            serialized = SerializationHelper.serialize_item(self.handle_invalid_enum, "HandleInvalidEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HANDLE-INVALID-ENUM")
@@ -94,13 +95,13 @@ class InvalidationPolicy(ARObject):
         obj.__init__()
 
         # Parse data_element_ref
-        child = ARObject._find_child_element(element, "DATA-ELEMENT-REF")
+        child = SerializationHelper.find_child_element(element, "DATA-ELEMENT-REF")
         if child is not None:
             data_element_ref_value = ARRef.deserialize(child)
             obj.data_element_ref = data_element_ref_value
 
         # Parse handle_invalid_enum
-        child = ARObject._find_child_element(element, "HANDLE-INVALID-ENUM")
+        child = SerializationHelper.find_child_element(element, "HANDLE-INVALID-ENUM")
         if child is not None:
             handle_invalid_enum_value = HandleInvalidEnum.deserialize(child)
             obj.handle_invalid_enum = handle_invalid_enum_value

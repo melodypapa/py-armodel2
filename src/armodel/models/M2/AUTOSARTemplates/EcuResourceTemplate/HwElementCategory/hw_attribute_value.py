@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Numerical,
@@ -54,12 +55,12 @@ class HwAttributeValue(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize annotation
         if self.annotation is not None:
-            serialized = ARObject._serialize_item(self.annotation, "Annotation")
+            serialized = SerializationHelper.serialize_item(self.annotation, "Annotation")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ANNOTATION")
@@ -73,7 +74,7 @@ class HwAttributeValue(ARObject):
 
         # Serialize hw_attribute_def_ref
         if self.hw_attribute_def_ref is not None:
-            serialized = ARObject._serialize_item(self.hw_attribute_def_ref, "HwAttributeDef")
+            serialized = SerializationHelper.serialize_item(self.hw_attribute_def_ref, "HwAttributeDef")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HW-ATTRIBUTE-DEF-REF")
@@ -87,7 +88,7 @@ class HwAttributeValue(ARObject):
 
         # Serialize v
         if self.v is not None:
-            serialized = ARObject._serialize_item(self.v, "Numerical")
+            serialized = SerializationHelper.serialize_item(self.v, "Numerical")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("V")
@@ -101,7 +102,7 @@ class HwAttributeValue(ARObject):
 
         # Serialize vt
         if self.vt is not None:
-            serialized = ARObject._serialize_item(self.vt, "VerbatimString")
+            serialized = SerializationHelper.serialize_item(self.vt, "VerbatimString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VT")
@@ -130,27 +131,27 @@ class HwAttributeValue(ARObject):
         obj.__init__()
 
         # Parse annotation
-        child = ARObject._find_child_element(element, "ANNOTATION")
+        child = SerializationHelper.find_child_element(element, "ANNOTATION")
         if child is not None:
-            annotation_value = ARObject._deserialize_by_tag(child, "Annotation")
+            annotation_value = SerializationHelper.deserialize_by_tag(child, "Annotation")
             obj.annotation = annotation_value
 
         # Parse hw_attribute_def_ref
-        child = ARObject._find_child_element(element, "HW-ATTRIBUTE-DEF-REF")
+        child = SerializationHelper.find_child_element(element, "HW-ATTRIBUTE-DEF-REF")
         if child is not None:
             hw_attribute_def_ref_value = ARRef.deserialize(child)
             obj.hw_attribute_def_ref = hw_attribute_def_ref_value
 
         # Parse v
-        child = ARObject._find_child_element(element, "V")
+        child = SerializationHelper.find_child_element(element, "V")
         if child is not None:
             v_value = child.text
             obj.v = v_value
 
         # Parse vt
-        child = ARObject._find_child_element(element, "VT")
+        child = SerializationHelper.find_child_element(element, "VT")
         if child is not None:
-            vt_value = ARObject._deserialize_by_tag(child, "VerbatimString")
+            vt_value = SerializationHelper.deserialize_by_tag(child, "VerbatimString")
             obj.vt = vt_value
 
         return obj

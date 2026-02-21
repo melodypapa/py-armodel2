@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Numerical,
 )
@@ -42,12 +43,12 @@ class TextTableValuePair(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize first_value
         if self.first_value is not None:
-            serialized = ARObject._serialize_item(self.first_value, "Numerical")
+            serialized = SerializationHelper.serialize_item(self.first_value, "Numerical")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FIRST-VALUE")
@@ -61,7 +62,7 @@ class TextTableValuePair(ARObject):
 
         # Serialize second_value
         if self.second_value is not None:
-            serialized = ARObject._serialize_item(self.second_value, "Numerical")
+            serialized = SerializationHelper.serialize_item(self.second_value, "Numerical")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SECOND-VALUE")
@@ -90,13 +91,13 @@ class TextTableValuePair(ARObject):
         obj.__init__()
 
         # Parse first_value
-        child = ARObject._find_child_element(element, "FIRST-VALUE")
+        child = SerializationHelper.find_child_element(element, "FIRST-VALUE")
         if child is not None:
             first_value_value = child.text
             obj.first_value = first_value_value
 
         # Parse second_value
-        child = ARObject._find_child_element(element, "SECOND-VALUE")
+        child = SerializationHelper.find_child_element(element, "SECOND-VALUE")
         if child is not None:
             second_value_value = child.text
             obj.second_value = second_value_value

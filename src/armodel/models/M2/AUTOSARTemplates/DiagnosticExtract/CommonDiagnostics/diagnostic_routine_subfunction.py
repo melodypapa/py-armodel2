@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.diagnostic_access_permission import (
     DiagnosticAccessPermission,
@@ -45,7 +46,7 @@ class DiagnosticRoutineSubfunction(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class DiagnosticRoutineSubfunction(Identifiable, ABC):
 
         # Serialize access_ref
         if self.access_ref is not None:
-            serialized = ARObject._serialize_item(self.access_ref, "DiagnosticAccessPermission")
+            serialized = SerializationHelper.serialize_item(self.access_ref, "DiagnosticAccessPermission")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ACCESS-REF")
@@ -92,7 +93,7 @@ class DiagnosticRoutineSubfunction(Identifiable, ABC):
         obj = super(DiagnosticRoutineSubfunction, cls).deserialize(element)
 
         # Parse access_ref
-        child = ARObject._find_child_element(element, "ACCESS-REF")
+        child = SerializationHelper.find_child_element(element, "ACCESS-REF")
         if child is not None:
             access_ref_value = ARRef.deserialize(child)
             obj.access_ref = access_ref_value

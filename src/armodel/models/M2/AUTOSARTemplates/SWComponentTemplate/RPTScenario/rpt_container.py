@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.AbstractStructure.atp_feature import (
     AtpFeature,
@@ -71,7 +72,7 @@ class RptContainer(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -92,7 +93,7 @@ class RptContainer(Identifiable):
         if self.by_pass_points:
             wrapper = ET.Element("BY-PASS-POINTS")
             for item in self.by_pass_points:
-                serialized = ARObject._serialize_item(item, "AtpFeature")
+                serialized = SerializationHelper.serialize_item(item, "AtpFeature")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -102,7 +103,7 @@ class RptContainer(Identifiable):
         if self.explicit_rpt_refs:
             wrapper = ET.Element("EXPLICIT-RPT-REFS")
             for item in self.explicit_rpt_refs:
-                serialized = ARObject._serialize_item(item, "RptProfile")
+                serialized = SerializationHelper.serialize_item(item, "RptProfile")
                 if serialized is not None:
                     child_elem = ET.Element("EXPLICIT-RPT-REF")
                     if hasattr(serialized, 'attrib'):
@@ -119,7 +120,7 @@ class RptContainer(Identifiable):
         if self.rpt_containers:
             wrapper = ET.Element("RPT-CONTAINERS")
             for item in self.rpt_containers:
-                serialized = ARObject._serialize_item(item, "RptContainer")
+                serialized = SerializationHelper.serialize_item(item, "RptContainer")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -127,7 +128,7 @@ class RptContainer(Identifiable):
 
         # Serialize rpt_executable_entity
         if self.rpt_executable_entity is not None:
-            serialized = ARObject._serialize_item(self.rpt_executable_entity, "RptExecutableEntity")
+            serialized = SerializationHelper.serialize_item(self.rpt_executable_entity, "RptExecutableEntity")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RPT-EXECUTABLE-ENTITY")
@@ -141,7 +142,7 @@ class RptContainer(Identifiable):
 
         # Serialize rpt_hook
         if self.rpt_hook is not None:
-            serialized = ARObject._serialize_item(self.rpt_hook, "RptHook")
+            serialized = SerializationHelper.serialize_item(self.rpt_hook, "RptHook")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RPT-HOOK")
@@ -155,7 +156,7 @@ class RptContainer(Identifiable):
 
         # Serialize rpt_impl_policy
         if self.rpt_impl_policy is not None:
-            serialized = ARObject._serialize_item(self.rpt_impl_policy, "RptImplPolicy")
+            serialized = SerializationHelper.serialize_item(self.rpt_impl_policy, "RptImplPolicy")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RPT-IMPL-POLICY")
@@ -169,7 +170,7 @@ class RptContainer(Identifiable):
 
         # Serialize rpt_sw
         if self.rpt_sw is not None:
-            serialized = ARObject._serialize_item(self.rpt_sw, "RptSwPrototypingAccess")
+            serialized = SerializationHelper.serialize_item(self.rpt_sw, "RptSwPrototypingAccess")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RPT-SW")
@@ -198,62 +199,62 @@ class RptContainer(Identifiable):
 
         # Parse by_pass_points (list from container "BY-PASS-POINTS")
         obj.by_pass_points = []
-        container = ARObject._find_child_element(element, "BY-PASS-POINTS")
+        container = SerializationHelper.find_child_element(element, "BY-PASS-POINTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.by_pass_points.append(child_value)
 
         # Parse explicit_rpt_refs (list from container "EXPLICIT-RPT-REFS")
         obj.explicit_rpt_refs = []
-        container = ARObject._find_child_element(element, "EXPLICIT-RPT-REFS")
+        container = SerializationHelper.find_child_element(element, "EXPLICIT-RPT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.explicit_rpt_refs.append(child_value)
 
         # Parse rpt_containers (list from container "RPT-CONTAINERS")
         obj.rpt_containers = []
-        container = ARObject._find_child_element(element, "RPT-CONTAINERS")
+        container = SerializationHelper.find_child_element(element, "RPT-CONTAINERS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.rpt_containers.append(child_value)
 
         # Parse rpt_executable_entity
-        child = ARObject._find_child_element(element, "RPT-EXECUTABLE-ENTITY")
+        child = SerializationHelper.find_child_element(element, "RPT-EXECUTABLE-ENTITY")
         if child is not None:
-            rpt_executable_entity_value = ARObject._deserialize_by_tag(child, "RptExecutableEntity")
+            rpt_executable_entity_value = SerializationHelper.deserialize_by_tag(child, "RptExecutableEntity")
             obj.rpt_executable_entity = rpt_executable_entity_value
 
         # Parse rpt_hook
-        child = ARObject._find_child_element(element, "RPT-HOOK")
+        child = SerializationHelper.find_child_element(element, "RPT-HOOK")
         if child is not None:
-            rpt_hook_value = ARObject._deserialize_by_tag(child, "RptHook")
+            rpt_hook_value = SerializationHelper.deserialize_by_tag(child, "RptHook")
             obj.rpt_hook = rpt_hook_value
 
         # Parse rpt_impl_policy
-        child = ARObject._find_child_element(element, "RPT-IMPL-POLICY")
+        child = SerializationHelper.find_child_element(element, "RPT-IMPL-POLICY")
         if child is not None:
-            rpt_impl_policy_value = ARObject._deserialize_by_tag(child, "RptImplPolicy")
+            rpt_impl_policy_value = SerializationHelper.deserialize_by_tag(child, "RptImplPolicy")
             obj.rpt_impl_policy = rpt_impl_policy_value
 
         # Parse rpt_sw
-        child = ARObject._find_child_element(element, "RPT-SW")
+        child = SerializationHelper.find_child_element(element, "RPT-SW")
         if child is not None:
-            rpt_sw_value = ARObject._deserialize_by_tag(child, "RptSwPrototypingAccess")
+            rpt_sw_value = SerializationHelper.deserialize_by_tag(child, "RptSwPrototypingAccess")
             obj.rpt_sw = rpt_sw_value
 
         return obj

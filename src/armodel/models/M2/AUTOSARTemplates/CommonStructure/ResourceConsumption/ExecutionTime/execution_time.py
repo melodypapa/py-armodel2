@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation.dependency_on_artifact import (
     DependencyOnArtifact,
@@ -76,7 +77,7 @@ class ExecutionTime(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -95,7 +96,7 @@ class ExecutionTime(Identifiable, ABC):
 
         # Serialize exclusive_area_ref
         if self.exclusive_area_ref is not None:
-            serialized = ARObject._serialize_item(self.exclusive_area_ref, "ExclusiveArea")
+            serialized = SerializationHelper.serialize_item(self.exclusive_area_ref, "ExclusiveArea")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("EXCLUSIVE-AREA-REF")
@@ -109,7 +110,7 @@ class ExecutionTime(Identifiable, ABC):
 
         # Serialize executable_entity_ref
         if self.executable_entity_ref is not None:
-            serialized = ARObject._serialize_item(self.executable_entity_ref, "ExecutableEntity")
+            serialized = SerializationHelper.serialize_item(self.executable_entity_ref, "ExecutableEntity")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("EXECUTABLE-ENTITY-REF")
@@ -123,7 +124,7 @@ class ExecutionTime(Identifiable, ABC):
 
         # Serialize hardware
         if self.hardware is not None:
-            serialized = ARObject._serialize_item(self.hardware, "HardwareConfiguration")
+            serialized = SerializationHelper.serialize_item(self.hardware, "HardwareConfiguration")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HARDWARE")
@@ -137,7 +138,7 @@ class ExecutionTime(Identifiable, ABC):
 
         # Serialize hw_element_ref
         if self.hw_element_ref is not None:
-            serialized = ARObject._serialize_item(self.hw_element_ref, "HwElement")
+            serialized = SerializationHelper.serialize_item(self.hw_element_ref, "HwElement")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HW-ELEMENT-REF")
@@ -153,7 +154,7 @@ class ExecutionTime(Identifiable, ABC):
         if self.included_librarie_refs:
             wrapper = ET.Element("INCLUDED-LIBRARIE-REFS")
             for item in self.included_librarie_refs:
-                serialized = ARObject._serialize_item(item, "DependencyOnArtifact")
+                serialized = SerializationHelper.serialize_item(item, "DependencyOnArtifact")
                 if serialized is not None:
                     child_elem = ET.Element("INCLUDED-LIBRARIE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -170,7 +171,7 @@ class ExecutionTime(Identifiable, ABC):
         if self.memory_section_locations:
             wrapper = ET.Element("MEMORY-SECTION-LOCATIONS")
             for item in self.memory_section_locations:
-                serialized = ARObject._serialize_item(item, "MemorySectionLocation")
+                serialized = SerializationHelper.serialize_item(item, "MemorySectionLocation")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -178,7 +179,7 @@ class ExecutionTime(Identifiable, ABC):
 
         # Serialize software_context
         if self.software_context is not None:
-            serialized = ARObject._serialize_item(self.software_context, "SoftwareContext")
+            serialized = SerializationHelper.serialize_item(self.software_context, "SoftwareContext")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SOFTWARE-CONTEXT")
@@ -206,59 +207,59 @@ class ExecutionTime(Identifiable, ABC):
         obj = super(ExecutionTime, cls).deserialize(element)
 
         # Parse exclusive_area_ref
-        child = ARObject._find_child_element(element, "EXCLUSIVE-AREA-REF")
+        child = SerializationHelper.find_child_element(element, "EXCLUSIVE-AREA-REF")
         if child is not None:
             exclusive_area_ref_value = ARRef.deserialize(child)
             obj.exclusive_area_ref = exclusive_area_ref_value
 
         # Parse executable_entity_ref
-        child = ARObject._find_child_element(element, "EXECUTABLE-ENTITY-REF")
+        child = SerializationHelper.find_child_element(element, "EXECUTABLE-ENTITY-REF")
         if child is not None:
             executable_entity_ref_value = ARRef.deserialize(child)
             obj.executable_entity_ref = executable_entity_ref_value
 
         # Parse hardware
-        child = ARObject._find_child_element(element, "HARDWARE")
+        child = SerializationHelper.find_child_element(element, "HARDWARE")
         if child is not None:
-            hardware_value = ARObject._deserialize_by_tag(child, "HardwareConfiguration")
+            hardware_value = SerializationHelper.deserialize_by_tag(child, "HardwareConfiguration")
             obj.hardware = hardware_value
 
         # Parse hw_element_ref
-        child = ARObject._find_child_element(element, "HW-ELEMENT-REF")
+        child = SerializationHelper.find_child_element(element, "HW-ELEMENT-REF")
         if child is not None:
             hw_element_ref_value = ARRef.deserialize(child)
             obj.hw_element_ref = hw_element_ref_value
 
         # Parse included_librarie_refs (list from container "INCLUDED-LIBRARIE-REFS")
         obj.included_librarie_refs = []
-        container = ARObject._find_child_element(element, "INCLUDED-LIBRARIE-REFS")
+        container = SerializationHelper.find_child_element(element, "INCLUDED-LIBRARIE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.included_librarie_refs.append(child_value)
 
         # Parse memory_section_locations (list from container "MEMORY-SECTION-LOCATIONS")
         obj.memory_section_locations = []
-        container = ARObject._find_child_element(element, "MEMORY-SECTION-LOCATIONS")
+        container = SerializationHelper.find_child_element(element, "MEMORY-SECTION-LOCATIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.memory_section_locations.append(child_value)
 
         # Parse software_context
-        child = ARObject._find_child_element(element, "SOFTWARE-CONTEXT")
+        child = SerializationHelper.find_child_element(element, "SOFTWARE-CONTEXT")
         if child is not None:
-            software_context_value = ARObject._deserialize_by_tag(child, "SoftwareContext")
+            software_context_value = SerializationHelper.deserialize_by_tag(child, "SoftwareContext")
             obj.software_context = software_context_value
 
         return obj

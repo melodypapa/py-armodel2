@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     GeneralAnnotation,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.ApplicationAttributes import (
     SignalFanEnum,
 )
@@ -43,7 +44,7 @@ class DelegatedPortAnnotation(GeneralAnnotation):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class DelegatedPortAnnotation(GeneralAnnotation):
 
         # Serialize signal_fan
         if self.signal_fan is not None:
-            serialized = ARObject._serialize_item(self.signal_fan, "SignalFanEnum")
+            serialized = SerializationHelper.serialize_item(self.signal_fan, "SignalFanEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SIGNAL-FAN")
@@ -90,7 +91,7 @@ class DelegatedPortAnnotation(GeneralAnnotation):
         obj = super(DelegatedPortAnnotation, cls).deserialize(element)
 
         # Parse signal_fan
-        child = ARObject._find_child_element(element, "SIGNAL-FAN")
+        child = SerializationHelper.find_child_element(element, "SIGNAL-FAN")
         if child is not None:
             signal_fan_value = SignalFanEnum.deserialize(child)
             obj.signal_fan = signal_fan_value

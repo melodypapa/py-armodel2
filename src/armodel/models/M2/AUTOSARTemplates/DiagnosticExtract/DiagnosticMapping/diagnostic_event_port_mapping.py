@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
     DiagnosticSwMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_event import (
     DiagnosticEvent,
@@ -50,7 +51,7 @@ class DiagnosticEventPortMapping(DiagnosticSwMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -69,7 +70,7 @@ class DiagnosticEventPortMapping(DiagnosticSwMapping):
 
         # Serialize bsw_service_ref
         if self.bsw_service_ref is not None:
-            serialized = ARObject._serialize_item(self.bsw_service_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.bsw_service_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BSW-SERVICE-REF")
@@ -83,7 +84,7 @@ class DiagnosticEventPortMapping(DiagnosticSwMapping):
 
         # Serialize diagnostic_event_ref
         if self.diagnostic_event_ref is not None:
-            serialized = ARObject._serialize_item(self.diagnostic_event_ref, "DiagnosticEvent")
+            serialized = SerializationHelper.serialize_item(self.diagnostic_event_ref, "DiagnosticEvent")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DIAGNOSTIC-EVENT-REF")
@@ -97,7 +98,7 @@ class DiagnosticEventPortMapping(DiagnosticSwMapping):
 
         # Serialize swc_flat_service_ref
         if self.swc_flat_service_ref is not None:
-            serialized = ARObject._serialize_item(self.swc_flat_service_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.swc_flat_service_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SWC-FLAT-SERVICE-REF")
@@ -111,7 +112,7 @@ class DiagnosticEventPortMapping(DiagnosticSwMapping):
 
         # Serialize swc_service
         if self.swc_service is not None:
-            serialized = ARObject._serialize_item(self.swc_service, "Any")
+            serialized = SerializationHelper.serialize_item(self.swc_service, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SWC-SERVICE")
@@ -139,25 +140,25 @@ class DiagnosticEventPortMapping(DiagnosticSwMapping):
         obj = super(DiagnosticEventPortMapping, cls).deserialize(element)
 
         # Parse bsw_service_ref
-        child = ARObject._find_child_element(element, "BSW-SERVICE-REF")
+        child = SerializationHelper.find_child_element(element, "BSW-SERVICE-REF")
         if child is not None:
             bsw_service_ref_value = ARRef.deserialize(child)
             obj.bsw_service_ref = bsw_service_ref_value
 
         # Parse diagnostic_event_ref
-        child = ARObject._find_child_element(element, "DIAGNOSTIC-EVENT-REF")
+        child = SerializationHelper.find_child_element(element, "DIAGNOSTIC-EVENT-REF")
         if child is not None:
             diagnostic_event_ref_value = ARRef.deserialize(child)
             obj.diagnostic_event_ref = diagnostic_event_ref_value
 
         # Parse swc_flat_service_ref
-        child = ARObject._find_child_element(element, "SWC-FLAT-SERVICE-REF")
+        child = SerializationHelper.find_child_element(element, "SWC-FLAT-SERVICE-REF")
         if child is not None:
             swc_flat_service_ref_value = ARRef.deserialize(child)
             obj.swc_flat_service_ref = swc_flat_service_ref_value
 
         # Parse swc_service
-        child = ARObject._find_child_element(element, "SWC-SERVICE")
+        child = SerializationHelper.find_child_element(element, "SWC-SERVICE")
         if child is not None:
             swc_service_value = child.text
             obj.swc_service = swc_service_value

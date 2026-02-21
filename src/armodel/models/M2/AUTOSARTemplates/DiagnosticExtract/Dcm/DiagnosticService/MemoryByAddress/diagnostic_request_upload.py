@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticMemoryAddressableRangeAccess,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
@@ -41,7 +42,7 @@ class DiagnosticRequestUpload(DiagnosticMemoryAddressableRangeAccess):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -60,7 +61,7 @@ class DiagnosticRequestUpload(DiagnosticMemoryAddressableRangeAccess):
 
         # Serialize request_upload_ref
         if self.request_upload_ref is not None:
-            serialized = ARObject._serialize_item(self.request_upload_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.request_upload_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REQUEST-UPLOAD-REF")
@@ -88,7 +89,7 @@ class DiagnosticRequestUpload(DiagnosticMemoryAddressableRangeAccess):
         obj = super(DiagnosticRequestUpload, cls).deserialize(element)
 
         # Parse request_upload_ref
-        child = ARObject._find_child_element(element, "REQUEST-UPLOAD-REF")
+        child = SerializationHelper.find_child_element(element, "REQUEST-UPLOAD-REF")
         if child is not None:
             request_upload_ref_value = ARRef.deserialize(child)
             obj.request_upload_ref = request_upload_ref_value

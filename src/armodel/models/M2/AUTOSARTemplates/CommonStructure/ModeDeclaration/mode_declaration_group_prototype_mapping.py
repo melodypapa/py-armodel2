@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
     ModeDeclaration,
@@ -48,12 +49,12 @@ class ModeDeclarationGroupPrototypeMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize first_mode_group_prototype_ref
         if self.first_mode_group_prototype_ref is not None:
-            serialized = ARObject._serialize_item(self.first_mode_group_prototype_ref, "ModeDeclarationGroup")
+            serialized = SerializationHelper.serialize_item(self.first_mode_group_prototype_ref, "ModeDeclarationGroup")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FIRST-MODE-GROUP-PROTOTYPE-REF")
@@ -67,7 +68,7 @@ class ModeDeclarationGroupPrototypeMapping(ARObject):
 
         # Serialize mode_ref
         if self.mode_ref is not None:
-            serialized = ARObject._serialize_item(self.mode_ref, "ModeDeclaration")
+            serialized = SerializationHelper.serialize_item(self.mode_ref, "ModeDeclaration")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MODE-REF")
@@ -81,7 +82,7 @@ class ModeDeclarationGroupPrototypeMapping(ARObject):
 
         # Serialize second_mode_ref
         if self.second_mode_ref is not None:
-            serialized = ARObject._serialize_item(self.second_mode_ref, "ModeDeclarationGroup")
+            serialized = SerializationHelper.serialize_item(self.second_mode_ref, "ModeDeclarationGroup")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SECOND-MODE-REF")
@@ -110,19 +111,19 @@ class ModeDeclarationGroupPrototypeMapping(ARObject):
         obj.__init__()
 
         # Parse first_mode_group_prototype_ref
-        child = ARObject._find_child_element(element, "FIRST-MODE-GROUP-PROTOTYPE-REF")
+        child = SerializationHelper.find_child_element(element, "FIRST-MODE-GROUP-PROTOTYPE-REF")
         if child is not None:
             first_mode_group_prototype_ref_value = ARRef.deserialize(child)
             obj.first_mode_group_prototype_ref = first_mode_group_prototype_ref_value
 
         # Parse mode_ref
-        child = ARObject._find_child_element(element, "MODE-REF")
+        child = SerializationHelper.find_child_element(element, "MODE-REF")
         if child is not None:
             mode_ref_value = ARRef.deserialize(child)
             obj.mode_ref = mode_ref_value
 
         # Parse second_mode_ref
-        child = ARObject._find_child_element(element, "SECOND-MODE-REF")
+        child = SerializationHelper.find_child_element(element, "SECOND-MODE-REF")
         if child is not None:
             second_mode_ref_value = ARRef.deserialize(child)
             obj.second_mode_ref = second_mode_ref_value

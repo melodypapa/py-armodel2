@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu_triggering import (
     PduTriggering,
@@ -41,12 +42,12 @@ class DdsCpServiceInstanceOperation(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize dds_operation_ref
         if self.dds_operation_ref is not None:
-            serialized = ARObject._serialize_item(self.dds_operation_ref, "PduTriggering")
+            serialized = SerializationHelper.serialize_item(self.dds_operation_ref, "PduTriggering")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DDS-OPERATION-REF")
@@ -75,7 +76,7 @@ class DdsCpServiceInstanceOperation(ARObject):
         obj.__init__()
 
         # Parse dds_operation_ref
-        child = ARObject._find_child_element(element, "DDS-OPERATION-REF")
+        child = SerializationHelper.find_child_element(element, "DDS-OPERATION-REF")
         if child is not None:
             dds_operation_ref_value = ARRef.deserialize(child)
             obj.dds_operation_ref = dds_operation_ref_value

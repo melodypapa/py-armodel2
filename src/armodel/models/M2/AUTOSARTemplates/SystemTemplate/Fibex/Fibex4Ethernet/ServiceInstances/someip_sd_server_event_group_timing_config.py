@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances.request_response_delay import (
     RequestResponseDelay,
 )
@@ -43,7 +44,7 @@ class SomeipSdServerEventGroupTimingConfig(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class SomeipSdServerEventGroupTimingConfig(ARElement):
 
         # Serialize request
         if self.request is not None:
-            serialized = ARObject._serialize_item(self.request, "RequestResponseDelay")
+            serialized = SerializationHelper.serialize_item(self.request, "RequestResponseDelay")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REQUEST")
@@ -90,9 +91,9 @@ class SomeipSdServerEventGroupTimingConfig(ARElement):
         obj = super(SomeipSdServerEventGroupTimingConfig, cls).deserialize(element)
 
         # Parse request
-        child = ARObject._find_child_element(element, "REQUEST")
+        child = SerializationHelper.find_child_element(element, "REQUEST")
         if child is not None:
-            request_value = ARObject._deserialize_by_tag(child, "RequestResponseDelay")
+            request_value = SerializationHelper.deserialize_by_tag(child, "RequestResponseDelay")
             obj.request = request_value
 
         return obj

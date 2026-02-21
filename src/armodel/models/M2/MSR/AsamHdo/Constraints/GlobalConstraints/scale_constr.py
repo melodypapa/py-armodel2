@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
     Limit,
@@ -52,12 +53,12 @@ class ScaleConstr(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize desc
         if self.desc is not None:
-            serialized = ARObject._serialize_item(self.desc, "MultiLanguageOverviewParagraph")
+            serialized = SerializationHelper.serialize_item(self.desc, "MultiLanguageOverviewParagraph")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DESC")
@@ -71,7 +72,7 @@ class ScaleConstr(ARObject):
 
         # Serialize lower_limit
         if self.lower_limit is not None:
-            serialized = ARObject._serialize_item(self.lower_limit, "Limit")
+            serialized = SerializationHelper.serialize_item(self.lower_limit, "Limit")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LOWER-LIMIT")
@@ -85,7 +86,7 @@ class ScaleConstr(ARObject):
 
         # Serialize short_label
         if self.short_label is not None:
-            serialized = ARObject._serialize_item(self.short_label, "Identifier")
+            serialized = SerializationHelper.serialize_item(self.short_label, "Identifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SHORT-LABEL")
@@ -99,7 +100,7 @@ class ScaleConstr(ARObject):
 
         # Serialize upper_limit
         if self.upper_limit is not None:
-            serialized = ARObject._serialize_item(self.upper_limit, "Limit")
+            serialized = SerializationHelper.serialize_item(self.upper_limit, "Limit")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("UPPER-LIMIT")
@@ -113,7 +114,7 @@ class ScaleConstr(ARObject):
 
         # Serialize validity
         if self.validity is not None:
-            serialized = ARObject._serialize_item(self.validity, "Any")
+            serialized = SerializationHelper.serialize_item(self.validity, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VALIDITY")
@@ -142,31 +143,31 @@ class ScaleConstr(ARObject):
         obj.__init__()
 
         # Parse desc
-        child = ARObject._find_child_element(element, "DESC")
+        child = SerializationHelper.find_child_element(element, "DESC")
         if child is not None:
-            desc_value = ARObject._deserialize_with_type(child, "MultiLanguageOverviewParagraph")
+            desc_value = SerializationHelper.deserialize_with_type(child, "MultiLanguageOverviewParagraph")
             obj.desc = desc_value
 
         # Parse lower_limit
-        child = ARObject._find_child_element(element, "LOWER-LIMIT")
+        child = SerializationHelper.find_child_element(element, "LOWER-LIMIT")
         if child is not None:
-            lower_limit_value = ARObject._deserialize_by_tag(child, "Limit")
+            lower_limit_value = SerializationHelper.deserialize_by_tag(child, "Limit")
             obj.lower_limit = lower_limit_value
 
         # Parse short_label
-        child = ARObject._find_child_element(element, "SHORT-LABEL")
+        child = SerializationHelper.find_child_element(element, "SHORT-LABEL")
         if child is not None:
-            short_label_value = ARObject._deserialize_by_tag(child, "Identifier")
+            short_label_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
             obj.short_label = short_label_value
 
         # Parse upper_limit
-        child = ARObject._find_child_element(element, "UPPER-LIMIT")
+        child = SerializationHelper.find_child_element(element, "UPPER-LIMIT")
         if child is not None:
-            upper_limit_value = ARObject._deserialize_by_tag(child, "Limit")
+            upper_limit_value = SerializationHelper.deserialize_by_tag(child, "Limit")
             obj.upper_limit = upper_limit_value
 
         # Parse validity
-        child = ARObject._find_child_element(element, "VALIDITY")
+        child = SerializationHelper.find_child_element(element, "VALIDITY")
         if child is not None:
             validity_value = child.text
             obj.validity = validity_value

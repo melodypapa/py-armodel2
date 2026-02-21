@@ -15,6 +15,7 @@ from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginat
     Paginateable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 if TYPE_CHECKING:
     from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
@@ -48,7 +49,7 @@ class TraceableText(Paginateable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -67,7 +68,7 @@ class TraceableText(Paginateable):
 
         # Serialize text
         if self.text is not None:
-            serialized = ARObject._serialize_item(self.text, "DocumentationBlock")
+            serialized = SerializationHelper.serialize_item(self.text, "DocumentationBlock")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TEXT")
@@ -95,9 +96,9 @@ class TraceableText(Paginateable):
         obj = super(TraceableText, cls).deserialize(element)
 
         # Parse text
-        child = ARObject._find_child_element(element, "TEXT")
+        child = SerializationHelper.find_child_element(element, "TEXT")
         if child is not None:
-            text_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            text_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
             obj.text = text_value
 
         return obj

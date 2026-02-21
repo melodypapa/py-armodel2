@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -50,12 +51,12 @@ class CouplingPortRatePolicy(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize data_length
         if self.data_length is not None:
-            serialized = ARObject._serialize_item(self.data_length, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.data_length, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-LENGTH")
@@ -69,7 +70,7 @@ class CouplingPortRatePolicy(ARObject):
 
         # Serialize policy_action
         if self.policy_action is not None:
-            serialized = ARObject._serialize_item(self.policy_action, "CouplingPortRatePolicy")
+            serialized = SerializationHelper.serialize_item(self.policy_action, "CouplingPortRatePolicy")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("POLICY-ACTION")
@@ -83,7 +84,7 @@ class CouplingPortRatePolicy(ARObject):
 
         # Serialize priority
         if self.priority is not None:
-            serialized = ARObject._serialize_item(self.priority, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.priority, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PRIORITY")
@@ -97,7 +98,7 @@ class CouplingPortRatePolicy(ARObject):
 
         # Serialize time_interval
         if self.time_interval is not None:
-            serialized = ARObject._serialize_item(self.time_interval, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.time_interval, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIME-INTERVAL")
@@ -113,7 +114,7 @@ class CouplingPortRatePolicy(ARObject):
         if self.v_lan_refs:
             wrapper = ET.Element("V-LAN-REFS")
             for item in self.v_lan_refs:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     child_elem = ET.Element("V-LAN-REF")
                     if hasattr(serialized, 'attrib'):
@@ -143,42 +144,42 @@ class CouplingPortRatePolicy(ARObject):
         obj.__init__()
 
         # Parse data_length
-        child = ARObject._find_child_element(element, "DATA-LENGTH")
+        child = SerializationHelper.find_child_element(element, "DATA-LENGTH")
         if child is not None:
             data_length_value = child.text
             obj.data_length = data_length_value
 
         # Parse policy_action
-        child = ARObject._find_child_element(element, "POLICY-ACTION")
+        child = SerializationHelper.find_child_element(element, "POLICY-ACTION")
         if child is not None:
-            policy_action_value = ARObject._deserialize_by_tag(child, "CouplingPortRatePolicy")
+            policy_action_value = SerializationHelper.deserialize_by_tag(child, "CouplingPortRatePolicy")
             obj.policy_action = policy_action_value
 
         # Parse priority
-        child = ARObject._find_child_element(element, "PRIORITY")
+        child = SerializationHelper.find_child_element(element, "PRIORITY")
         if child is not None:
             priority_value = child.text
             obj.priority = priority_value
 
         # Parse time_interval
-        child = ARObject._find_child_element(element, "TIME-INTERVAL")
+        child = SerializationHelper.find_child_element(element, "TIME-INTERVAL")
         if child is not None:
             time_interval_value = child.text
             obj.time_interval = time_interval_value
 
         # Parse v_lan_refs (list from container "V-LAN-REFS")
         obj.v_lan_refs = []
-        container = ARObject._find_child_element(element, "V-LAN-REFS")
+        container = SerializationHelper.find_child_element(element, "V-LAN-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.v_lan_refs.append(child_value)
 

@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.p_port_com_spec import (
     PPortComSpec,
@@ -58,7 +59,7 @@ class PortPrototypeBlueprint(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -79,7 +80,7 @@ class PortPrototypeBlueprint(ARElement):
         if self.init_value_refs:
             wrapper = ET.Element("INIT-VALUE-REFS")
             for item in self.init_value_refs:
-                serialized = ARObject._serialize_item(item, "PortPrototypeBlueprint")
+                serialized = SerializationHelper.serialize_item(item, "PortPrototypeBlueprint")
                 if serialized is not None:
                     child_elem = ET.Element("INIT-VALUE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -94,7 +95,7 @@ class PortPrototypeBlueprint(ARElement):
 
         # Serialize interface_ref
         if self.interface_ref is not None:
-            serialized = ARObject._serialize_item(self.interface_ref, "PortInterface")
+            serialized = SerializationHelper.serialize_item(self.interface_ref, "PortInterface")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INTERFACE-REF")
@@ -110,7 +111,7 @@ class PortPrototypeBlueprint(ARElement):
         if self.provided_coms:
             wrapper = ET.Element("PROVIDED-COMS")
             for item in self.provided_coms:
-                serialized = ARObject._serialize_item(item, "PPortComSpec")
+                serialized = SerializationHelper.serialize_item(item, "PPortComSpec")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -120,7 +121,7 @@ class PortPrototypeBlueprint(ARElement):
         if self.required_coms:
             wrapper = ET.Element("REQUIRED-COMS")
             for item in self.required_coms:
-                serialized = ARObject._serialize_item(item, "RPortComSpec")
+                serialized = SerializationHelper.serialize_item(item, "RPortComSpec")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -143,43 +144,43 @@ class PortPrototypeBlueprint(ARElement):
 
         # Parse init_value_refs (list from container "INIT-VALUE-REFS")
         obj.init_value_refs = []
-        container = ARObject._find_child_element(element, "INIT-VALUE-REFS")
+        container = SerializationHelper.find_child_element(element, "INIT-VALUE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.init_value_refs.append(child_value)
 
         # Parse interface_ref
-        child = ARObject._find_child_element(element, "INTERFACE-REF")
+        child = SerializationHelper.find_child_element(element, "INTERFACE-REF")
         if child is not None:
             interface_ref_value = ARRef.deserialize(child)
             obj.interface_ref = interface_ref_value
 
         # Parse provided_coms (list from container "PROVIDED-COMS")
         obj.provided_coms = []
-        container = ARObject._find_child_element(element, "PROVIDED-COMS")
+        container = SerializationHelper.find_child_element(element, "PROVIDED-COMS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.provided_coms.append(child_value)
 
         # Parse required_coms (list from container "REQUIRED-COMS")
         obj.required_coms = []
-        container = ARObject._find_child_element(element, "REQUIRED-COMS")
+        container = SerializationHelper.find_child_element(element, "REQUIRED-COMS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.required_coms.append(child_value)
 

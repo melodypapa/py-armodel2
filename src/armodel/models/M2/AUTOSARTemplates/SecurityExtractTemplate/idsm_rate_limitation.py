@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Float,
     PositiveInteger,
@@ -46,7 +47,7 @@ class IdsmRateLimitation(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class IdsmRateLimitation(Identifiable):
 
         # Serialize max_events_in
         if self.max_events_in is not None:
-            serialized = ARObject._serialize_item(self.max_events_in, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.max_events_in, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-EVENTS-IN")
@@ -79,7 +80,7 @@ class IdsmRateLimitation(Identifiable):
 
         # Serialize time_interval
         if self.time_interval is not None:
-            serialized = ARObject._serialize_item(self.time_interval, "Float")
+            serialized = SerializationHelper.serialize_item(self.time_interval, "Float")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIME-INTERVAL")
@@ -107,13 +108,13 @@ class IdsmRateLimitation(Identifiable):
         obj = super(IdsmRateLimitation, cls).deserialize(element)
 
         # Parse max_events_in
-        child = ARObject._find_child_element(element, "MAX-EVENTS-IN")
+        child = SerializationHelper.find_child_element(element, "MAX-EVENTS-IN")
         if child is not None:
             max_events_in_value = child.text
             obj.max_events_in = max_events_in_value
 
         # Parse time_interval
-        child = ARObject._find_child_element(element, "TIME-INTERVAL")
+        child = SerializationHelper.find_child_element(element, "TIME-INTERVAL")
         if child is not None:
             time_interval_value = child.text
             obj.time_interval = time_interval_value

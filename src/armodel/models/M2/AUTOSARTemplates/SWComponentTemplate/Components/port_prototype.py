@@ -26,6 +26,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.ApplicationAttributes.client_server_annotation import (
     ClientServerAnnotation,
@@ -95,7 +96,7 @@ class PortPrototype(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -116,7 +117,7 @@ class PortPrototype(Identifiable, ABC):
         if self.client_servers:
             wrapper = ET.Element("CLIENT-SERVERS")
             for item in self.client_servers:
-                serialized = ARObject._serialize_item(item, "ClientServerAnnotation")
+                serialized = SerializationHelper.serialize_item(item, "ClientServerAnnotation")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -124,7 +125,7 @@ class PortPrototype(Identifiable, ABC):
 
         # Serialize delegated_port
         if self.delegated_port is not None:
-            serialized = ARObject._serialize_item(self.delegated_port, "DelegatedPortAnnotation")
+            serialized = SerializationHelper.serialize_item(self.delegated_port, "DelegatedPortAnnotation")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DELEGATED-PORT")
@@ -140,7 +141,7 @@ class PortPrototype(Identifiable, ABC):
         if self.io_hw_abstraction_server_annotations:
             wrapper = ET.Element("IO-HW-ABSTRACTION-SERVER-ANNOTATIONS")
             for item in self.io_hw_abstraction_server_annotations:
-                serialized = ARObject._serialize_item(item, "IoHwAbstractionServerAnnotation")
+                serialized = SerializationHelper.serialize_item(item, "IoHwAbstractionServerAnnotation")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -150,7 +151,7 @@ class PortPrototype(Identifiable, ABC):
         if self.mode_port_annotations:
             wrapper = ET.Element("MODE-PORT-ANNOTATIONS")
             for item in self.mode_port_annotations:
-                serialized = ARObject._serialize_item(item, "ModePortAnnotation")
+                serialized = SerializationHelper.serialize_item(item, "ModePortAnnotation")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -160,7 +161,7 @@ class PortPrototype(Identifiable, ABC):
         if self.nv_data_port_annotations:
             wrapper = ET.Element("NV-DATA-PORT-ANNOTATIONS")
             for item in self.nv_data_port_annotations:
-                serialized = ARObject._serialize_item(item, "NvDataPortAnnotation")
+                serialized = SerializationHelper.serialize_item(item, "NvDataPortAnnotation")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -170,7 +171,7 @@ class PortPrototype(Identifiable, ABC):
         if self.parameter_ports:
             wrapper = ET.Element("PARAMETER-PORTS")
             for item in self.parameter_ports:
-                serialized = ARObject._serialize_item(item, "ParameterPortAnnotation")
+                serialized = SerializationHelper.serialize_item(item, "ParameterPortAnnotation")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -180,7 +181,7 @@ class PortPrototype(Identifiable, ABC):
         if self.sender_receivers:
             wrapper = ET.Element("SENDER-RECEIVERS")
             for item in self.sender_receivers:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -190,7 +191,7 @@ class PortPrototype(Identifiable, ABC):
         if self.trigger_port_annotation_refs:
             wrapper = ET.Element("TRIGGER-PORT-ANNOTATION-REFS")
             for item in self.trigger_port_annotation_refs:
-                serialized = ARObject._serialize_item(item, "TriggerPortAnnotation")
+                serialized = SerializationHelper.serialize_item(item, "TriggerPortAnnotation")
                 if serialized is not None:
                     child_elem = ET.Element("TRIGGER-PORT-ANNOTATION-REF")
                     if hasattr(serialized, 'attrib'):
@@ -220,83 +221,83 @@ class PortPrototype(Identifiable, ABC):
 
         # Parse client_servers (list from container "CLIENT-SERVERS")
         obj.client_servers = []
-        container = ARObject._find_child_element(element, "CLIENT-SERVERS")
+        container = SerializationHelper.find_child_element(element, "CLIENT-SERVERS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.client_servers.append(child_value)
 
         # Parse delegated_port
-        child = ARObject._find_child_element(element, "DELEGATED-PORT")
+        child = SerializationHelper.find_child_element(element, "DELEGATED-PORT")
         if child is not None:
-            delegated_port_value = ARObject._deserialize_by_tag(child, "DelegatedPortAnnotation")
+            delegated_port_value = SerializationHelper.deserialize_by_tag(child, "DelegatedPortAnnotation")
             obj.delegated_port = delegated_port_value
 
         # Parse io_hw_abstraction_server_annotations (list from container "IO-HW-ABSTRACTION-SERVER-ANNOTATIONS")
         obj.io_hw_abstraction_server_annotations = []
-        container = ARObject._find_child_element(element, "IO-HW-ABSTRACTION-SERVER-ANNOTATIONS")
+        container = SerializationHelper.find_child_element(element, "IO-HW-ABSTRACTION-SERVER-ANNOTATIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.io_hw_abstraction_server_annotations.append(child_value)
 
         # Parse mode_port_annotations (list from container "MODE-PORT-ANNOTATIONS")
         obj.mode_port_annotations = []
-        container = ARObject._find_child_element(element, "MODE-PORT-ANNOTATIONS")
+        container = SerializationHelper.find_child_element(element, "MODE-PORT-ANNOTATIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.mode_port_annotations.append(child_value)
 
         # Parse nv_data_port_annotations (list from container "NV-DATA-PORT-ANNOTATIONS")
         obj.nv_data_port_annotations = []
-        container = ARObject._find_child_element(element, "NV-DATA-PORT-ANNOTATIONS")
+        container = SerializationHelper.find_child_element(element, "NV-DATA-PORT-ANNOTATIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.nv_data_port_annotations.append(child_value)
 
         # Parse parameter_ports (list from container "PARAMETER-PORTS")
         obj.parameter_ports = []
-        container = ARObject._find_child_element(element, "PARAMETER-PORTS")
+        container = SerializationHelper.find_child_element(element, "PARAMETER-PORTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.parameter_ports.append(child_value)
 
         # Parse sender_receivers (list from container "SENDER-RECEIVERS")
         obj.sender_receivers = []
-        container = ARObject._find_child_element(element, "SENDER-RECEIVERS")
+        container = SerializationHelper.find_child_element(element, "SENDER-RECEIVERS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.sender_receivers.append(child_value)
 
         # Parse trigger_port_annotation_refs (list from container "TRIGGER-PORT-ANNOTATION-REFS")
         obj.trigger_port_annotation_refs = []
-        container = ARObject._find_child_element(element, "TRIGGER-PORT-ANNOTATION-REFS")
+        container = SerializationHelper.find_child_element(element, "TRIGGER-PORT-ANNOTATION-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.trigger_port_annotation_refs.append(child_value)
 

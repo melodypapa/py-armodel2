@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_nee
     ServiceNeeds,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
     MaxCommModeEnum,
 )
@@ -44,7 +45,7 @@ class ComMgrUserNeeds(ServiceNeeds):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -63,7 +64,7 @@ class ComMgrUserNeeds(ServiceNeeds):
 
         # Serialize max_comm_mode_enum
         if self.max_comm_mode_enum is not None:
-            serialized = ARObject._serialize_item(self.max_comm_mode_enum, "MaxCommModeEnum")
+            serialized = SerializationHelper.serialize_item(self.max_comm_mode_enum, "MaxCommModeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-COMM-MODE-ENUM")
@@ -91,7 +92,7 @@ class ComMgrUserNeeds(ServiceNeeds):
         obj = super(ComMgrUserNeeds, cls).deserialize(element)
 
         # Parse max_comm_mode_enum
-        child = ARObject._find_child_element(element, "MAX-COMM-MODE-ENUM")
+        child = SerializationHelper.find_child_element(element, "MAX-COMM-MODE-ENUM")
         if child is not None:
             max_comm_mode_enum_value = MaxCommModeEnum.deserialize(child)
             obj.max_comm_mode_enum = max_comm_mode_enum_value

@@ -14,6 +14,7 @@ from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginat
     Paginateable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.Documentation.BlockElements.ListElements import (
     ListEnum,
 )
@@ -63,7 +64,7 @@ class ARList(Paginateable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -82,7 +83,7 @@ class ARList(Paginateable):
 
         # Serialize item (list)
         for item in self.item:
-            serialized = ARObject._serialize_item(item, "Item")
+            serialized = SerializationHelper.serialize_item(item, "Item")
             if serialized is not None:
                 # For non-container lists, wrap with correct tag
                 wrapped = ET.Element("ITEM")
@@ -115,8 +116,8 @@ class ARList(Paginateable):
 
         # Parse item (list)
         obj.item = []
-        for child in ARObject._find_all_child_elements(element, "ITEM"):
-            item_value = ARObject._deserialize_by_tag(child, "Item")
+        for child in SerializationHelper.find_all_child_elements(element, "ITEM"):
+            item_value = SerializationHelper.deserialize_by_tag(child, "Item")
             obj.item.append(item_value)
 
         # Parse type from XML attribute

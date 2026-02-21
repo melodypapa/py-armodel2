@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
     DiagnosticSwMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.J1939.diagnostic_j1939_node import (
     DiagnosticJ1939Node,
@@ -49,7 +50,7 @@ class DiagnosticJ1939SwMapping(DiagnosticSwMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -68,7 +69,7 @@ class DiagnosticJ1939SwMapping(DiagnosticSwMapping):
 
         # Serialize node_ref
         if self.node_ref is not None:
-            serialized = ARObject._serialize_item(self.node_ref, "DiagnosticJ1939Node")
+            serialized = SerializationHelper.serialize_item(self.node_ref, "DiagnosticJ1939Node")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NODE-REF")
@@ -82,7 +83,7 @@ class DiagnosticJ1939SwMapping(DiagnosticSwMapping):
 
         # Serialize sw_component_prototype_composition_instance_ref
         if self.sw_component_prototype_composition_instance_ref is not None:
-            serialized = ARObject._serialize_item(self.sw_component_prototype_composition_instance_ref, "SwComponentPrototype")
+            serialized = SerializationHelper.serialize_item(self.sw_component_prototype_composition_instance_ref, "SwComponentPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-COMPONENT-PROTOTYPE-COMPOSITION-INSTANCE-REF-REF")
@@ -110,13 +111,13 @@ class DiagnosticJ1939SwMapping(DiagnosticSwMapping):
         obj = super(DiagnosticJ1939SwMapping, cls).deserialize(element)
 
         # Parse node_ref
-        child = ARObject._find_child_element(element, "NODE-REF")
+        child = SerializationHelper.find_child_element(element, "NODE-REF")
         if child is not None:
             node_ref_value = ARRef.deserialize(child)
             obj.node_ref = node_ref_value
 
         # Parse sw_component_prototype_composition_instance_ref
-        child = ARObject._find_child_element(element, "SW-COMPONENT-PROTOTYPE-COMPOSITION-INSTANCE-REF-REF")
+        child = SerializationHelper.find_child_element(element, "SW-COMPONENT-PROTOTYPE-COMPOSITION-INSTANCE-REF-REF")
         if child is not None:
             sw_component_prototype_composition_instance_ref_value = ARRef.deserialize(child)
             obj.sw_component_prototype_composition_instance_ref = sw_component_prototype_composition_instance_ref_value

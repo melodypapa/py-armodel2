@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.composite_rule
     CompositeRuleBasedValueArgument,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
 )
@@ -54,7 +55,7 @@ class ApplicationRuleBasedValueSpecification(CompositeRuleBasedValueArgument):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -73,7 +74,7 @@ class ApplicationRuleBasedValueSpecification(CompositeRuleBasedValueArgument):
 
         # Serialize category_specification
         if self.category_specification is not None:
-            serialized = ARObject._serialize_item(self.category_specification, "Identifier")
+            serialized = SerializationHelper.serialize_item(self.category_specification, "Identifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CATEGORY-SPECIFICATION")
@@ -89,7 +90,7 @@ class ApplicationRuleBasedValueSpecification(CompositeRuleBasedValueArgument):
         if self.sw_axis_conts:
             wrapper = ET.Element("SW-AXIS-CONTS")
             for item in self.sw_axis_conts:
-                serialized = ARObject._serialize_item(item, "RuleBasedAxisCont")
+                serialized = SerializationHelper.serialize_item(item, "RuleBasedAxisCont")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -97,7 +98,7 @@ class ApplicationRuleBasedValueSpecification(CompositeRuleBasedValueArgument):
 
         # Serialize sw_value_cont
         if self.sw_value_cont is not None:
-            serialized = ARObject._serialize_item(self.sw_value_cont, "RuleBasedValueCont")
+            serialized = SerializationHelper.serialize_item(self.sw_value_cont, "RuleBasedValueCont")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-VALUE-CONT")
@@ -125,25 +126,25 @@ class ApplicationRuleBasedValueSpecification(CompositeRuleBasedValueArgument):
         obj = super(ApplicationRuleBasedValueSpecification, cls).deserialize(element)
 
         # Parse category_specification
-        child = ARObject._find_child_element(element, "CATEGORY-SPECIFICATION")
+        child = SerializationHelper.find_child_element(element, "CATEGORY-SPECIFICATION")
         if child is not None:
-            category_specification_value = ARObject._deserialize_by_tag(child, "Identifier")
+            category_specification_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
             obj.category_specification = category_specification_value
 
         # Parse sw_axis_conts (list from container "SW-AXIS-CONTS")
         obj.sw_axis_conts = []
-        container = ARObject._find_child_element(element, "SW-AXIS-CONTS")
+        container = SerializationHelper.find_child_element(element, "SW-AXIS-CONTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.sw_axis_conts.append(child_value)
 
         # Parse sw_value_cont
-        child = ARObject._find_child_element(element, "SW-VALUE-CONT")
+        child = SerializationHelper.find_child_element(element, "SW-VALUE-CONT")
         if child is not None:
-            sw_value_cont_value = ARObject._deserialize_by_tag(child, "RuleBasedValueCont")
+            sw_value_cont_value = SerializationHelper.deserialize_by_tag(child, "RuleBasedValueCont")
             obj.sw_value_cont = sw_value_cont_value
 
         return obj

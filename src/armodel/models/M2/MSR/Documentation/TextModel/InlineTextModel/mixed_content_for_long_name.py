@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.Documentation.TextModel.InlineTextElements import (
     Superscript,
 )
@@ -58,12 +59,12 @@ class MixedContentForLongName(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize e
         if self.e is not None:
-            serialized = ARObject._serialize_item(self.e, "EmphasisText")
+            serialized = SerializationHelper.serialize_item(self.e, "EmphasisText")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("E")
@@ -77,7 +78,7 @@ class MixedContentForLongName(ARObject, ABC):
 
         # Serialize ie
         if self.ie is not None:
-            serialized = ARObject._serialize_item(self.ie, "IndexEntry")
+            serialized = SerializationHelper.serialize_item(self.ie, "IndexEntry")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IE")
@@ -91,7 +92,7 @@ class MixedContentForLongName(ARObject, ABC):
 
         # Serialize sub
         if self.sub is not None:
-            serialized = ARObject._serialize_item(self.sub, "Superscript")
+            serialized = SerializationHelper.serialize_item(self.sub, "Superscript")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SUB")
@@ -105,7 +106,7 @@ class MixedContentForLongName(ARObject, ABC):
 
         # Serialize sup
         if self.sup is not None:
-            serialized = ARObject._serialize_item(self.sup, "Superscript")
+            serialized = SerializationHelper.serialize_item(self.sup, "Superscript")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SUP")
@@ -119,7 +120,7 @@ class MixedContentForLongName(ARObject, ABC):
 
         # Serialize tt
         if self.tt is not None:
-            serialized = ARObject._serialize_item(self.tt, "Tt")
+            serialized = SerializationHelper.serialize_item(self.tt, "Tt")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TT")
@@ -148,33 +149,33 @@ class MixedContentForLongName(ARObject, ABC):
         obj.__init__()
 
         # Parse e
-        child = ARObject._find_child_element(element, "E")
+        child = SerializationHelper.find_child_element(element, "E")
         if child is not None:
-            e_value = ARObject._deserialize_by_tag(child, "EmphasisText")
+            e_value = SerializationHelper.deserialize_by_tag(child, "EmphasisText")
             obj.e = e_value
 
         # Parse ie
-        child = ARObject._find_child_element(element, "IE")
+        child = SerializationHelper.find_child_element(element, "IE")
         if child is not None:
-            ie_value = ARObject._deserialize_by_tag(child, "IndexEntry")
+            ie_value = SerializationHelper.deserialize_by_tag(child, "IndexEntry")
             obj.ie = ie_value
 
         # Parse sub
-        child = ARObject._find_child_element(element, "SUB")
+        child = SerializationHelper.find_child_element(element, "SUB")
         if child is not None:
             sub_value = child.text
             obj.sub = sub_value
 
         # Parse sup
-        child = ARObject._find_child_element(element, "SUP")
+        child = SerializationHelper.find_child_element(element, "SUP")
         if child is not None:
             sup_value = child.text
             obj.sup = sup_value
 
         # Parse tt
-        child = ARObject._find_child_element(element, "TT")
+        child = SerializationHelper.find_child_element(element, "TT")
         if child is not None:
-            tt_value = ARObject._deserialize_by_tag(child, "Tt")
+            tt_value = SerializationHelper.deserialize_by_tag(child, "Tt")
             obj.tt = tt_value
 
         return obj

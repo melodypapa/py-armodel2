@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
     CommunicationCycle,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology import (
     CycleRepetitionType,
 )
@@ -48,7 +49,7 @@ class CycleRepetition(CommunicationCycle):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -67,7 +68,7 @@ class CycleRepetition(CommunicationCycle):
 
         # Serialize base_cycle
         if self.base_cycle is not None:
-            serialized = ARObject._serialize_item(self.base_cycle, "Integer")
+            serialized = SerializationHelper.serialize_item(self.base_cycle, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BASE-CYCLE")
@@ -81,7 +82,7 @@ class CycleRepetition(CommunicationCycle):
 
         # Serialize cycle_repetition
         if self.cycle_repetition is not None:
-            serialized = ARObject._serialize_item(self.cycle_repetition, "CycleRepetitionType")
+            serialized = SerializationHelper.serialize_item(self.cycle_repetition, "CycleRepetitionType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CYCLE-REPETITION")
@@ -109,13 +110,13 @@ class CycleRepetition(CommunicationCycle):
         obj = super(CycleRepetition, cls).deserialize(element)
 
         # Parse base_cycle
-        child = ARObject._find_child_element(element, "BASE-CYCLE")
+        child = SerializationHelper.find_child_element(element, "BASE-CYCLE")
         if child is not None:
             base_cycle_value = child.text
             obj.base_cycle = base_cycle_value
 
         # Parse cycle_repetition
-        child = ARObject._find_child_element(element, "CYCLE-REPETITION")
+        child = SerializationHelper.find_child_element(element, "CYCLE-REPETITION")
         if child is not None:
             cycle_repetition_value = CycleRepetitionType.deserialize(child)
             obj.cycle_repetition = cycle_repetition_value

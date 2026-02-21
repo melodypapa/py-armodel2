@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
@@ -52,7 +53,7 @@ class DltApplication(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -71,7 +72,7 @@ class DltApplication(Identifiable):
 
         # Serialize application
         if self.application is not None:
-            serialized = ARObject._serialize_item(self.application, "String")
+            serialized = SerializationHelper.serialize_item(self.application, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("APPLICATION")
@@ -85,7 +86,7 @@ class DltApplication(Identifiable):
 
         # Serialize application_id
         if self.application_id is not None:
-            serialized = ARObject._serialize_item(self.application_id, "String")
+            serialized = SerializationHelper.serialize_item(self.application_id, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("APPLICATION-ID")
@@ -101,7 +102,7 @@ class DltApplication(Identifiable):
         if self.context_refs:
             wrapper = ET.Element("CONTEXT-REFS")
             for item in self.context_refs:
-                serialized = ARObject._serialize_item(item, "DltContext")
+                serialized = SerializationHelper.serialize_item(item, "DltContext")
                 if serialized is not None:
                     child_elem = ET.Element("CONTEXT-REF")
                     if hasattr(serialized, 'attrib'):
@@ -130,30 +131,30 @@ class DltApplication(Identifiable):
         obj = super(DltApplication, cls).deserialize(element)
 
         # Parse application
-        child = ARObject._find_child_element(element, "APPLICATION")
+        child = SerializationHelper.find_child_element(element, "APPLICATION")
         if child is not None:
             application_value = child.text
             obj.application = application_value
 
         # Parse application_id
-        child = ARObject._find_child_element(element, "APPLICATION-ID")
+        child = SerializationHelper.find_child_element(element, "APPLICATION-ID")
         if child is not None:
             application_id_value = child.text
             obj.application_id = application_id_value
 
         # Parse context_refs (list from container "CONTEXT-REFS")
         obj.context_refs = []
-        container = ARObject._find_child_element(element, "CONTEXT-REFS")
+        container = SerializationHelper.find_child_element(element, "CONTEXT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.context_refs.append(child_value)
 

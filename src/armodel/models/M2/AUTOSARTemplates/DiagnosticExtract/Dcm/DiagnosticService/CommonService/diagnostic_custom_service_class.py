@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceClass,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -43,7 +44,7 @@ class DiagnosticCustomServiceClass(DiagnosticServiceClass):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class DiagnosticCustomServiceClass(DiagnosticServiceClass):
 
         # Serialize custom_service
         if self.custom_service is not None:
-            serialized = ARObject._serialize_item(self.custom_service, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.custom_service, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CUSTOM-SERVICE")
@@ -90,7 +91,7 @@ class DiagnosticCustomServiceClass(DiagnosticServiceClass):
         obj = super(DiagnosticCustomServiceClass, cls).deserialize(element)
 
         # Parse custom_service
-        child = ARObject._find_child_element(element, "CUSTOM-SERVICE")
+        child = SerializationHelper.find_child_element(element, "CUSTOM-SERVICE")
         if child is not None:
             custom_service_value = child.text
             obj.custom_service = custom_service_value

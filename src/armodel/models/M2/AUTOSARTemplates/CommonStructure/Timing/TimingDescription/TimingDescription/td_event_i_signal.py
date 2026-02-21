@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
     TDEventCom,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription.TimingDescription import (
     TDEventISignalTypeEnum,
@@ -54,7 +55,7 @@ class TDEventISignal(TDEventCom):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -73,7 +74,7 @@ class TDEventISignal(TDEventCom):
 
         # Serialize i_signal_ref
         if self.i_signal_ref is not None:
-            serialized = ARObject._serialize_item(self.i_signal_ref, "ISignal")
+            serialized = SerializationHelper.serialize_item(self.i_signal_ref, "ISignal")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("I-SIGNAL-REF")
@@ -87,7 +88,7 @@ class TDEventISignal(TDEventCom):
 
         # Serialize physical_channel_ref
         if self.physical_channel_ref is not None:
-            serialized = ARObject._serialize_item(self.physical_channel_ref, "PhysicalChannel")
+            serialized = SerializationHelper.serialize_item(self.physical_channel_ref, "PhysicalChannel")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PHYSICAL-CHANNEL-REF")
@@ -101,7 +102,7 @@ class TDEventISignal(TDEventCom):
 
         # Serialize td_event_type_enum
         if self.td_event_type_enum is not None:
-            serialized = ARObject._serialize_item(self.td_event_type_enum, "TDEventISignalTypeEnum")
+            serialized = SerializationHelper.serialize_item(self.td_event_type_enum, "TDEventISignalTypeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TD-EVENT-TYPE-ENUM")
@@ -129,19 +130,19 @@ class TDEventISignal(TDEventCom):
         obj = super(TDEventISignal, cls).deserialize(element)
 
         # Parse i_signal_ref
-        child = ARObject._find_child_element(element, "I-SIGNAL-REF")
+        child = SerializationHelper.find_child_element(element, "I-SIGNAL-REF")
         if child is not None:
             i_signal_ref_value = ARRef.deserialize(child)
             obj.i_signal_ref = i_signal_ref_value
 
         # Parse physical_channel_ref
-        child = ARObject._find_child_element(element, "PHYSICAL-CHANNEL-REF")
+        child = SerializationHelper.find_child_element(element, "PHYSICAL-CHANNEL-REF")
         if child is not None:
             physical_channel_ref_value = ARRef.deserialize(child)
             obj.physical_channel_ref = physical_channel_ref_value
 
         # Parse td_event_type_enum
-        child = ARObject._find_child_element(element, "TD-EVENT-TYPE-ENUM")
+        child = SerializationHelper.find_child_element(element, "TD-EVENT-TYPE-ENUM")
         if child is not None:
             td_event_type_enum_value = TDEventISignalTypeEnum.deserialize(child)
             obj.td_event_type_enum = td_event_type_enum_value

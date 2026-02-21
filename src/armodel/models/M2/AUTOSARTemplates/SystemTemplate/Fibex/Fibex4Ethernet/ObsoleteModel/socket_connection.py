@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Describable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -66,7 +67,7 @@ class SocketConnection(Describable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -85,7 +86,7 @@ class SocketConnection(Describable):
 
         # Serialize client_ip_addr
         if self.client_ip_addr is not None:
-            serialized = ARObject._serialize_item(self.client_ip_addr, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.client_ip_addr, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CLIENT-IP-ADDR")
@@ -99,7 +100,7 @@ class SocketConnection(Describable):
 
         # Serialize client_port_ref
         if self.client_port_ref is not None:
-            serialized = ARObject._serialize_item(self.client_port_ref, "SocketAddress")
+            serialized = SerializationHelper.serialize_item(self.client_port_ref, "SocketAddress")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CLIENT-PORT-REF")
@@ -113,7 +114,7 @@ class SocketConnection(Describable):
 
         # Serialize client_port_from
         if self.client_port_from is not None:
-            serialized = ARObject._serialize_item(self.client_port_from, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.client_port_from, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CLIENT-PORT-FROM")
@@ -129,7 +130,7 @@ class SocketConnection(Describable):
         if self.pdus:
             wrapper = ET.Element("PDUS")
             for item in self.pdus:
-                serialized = ARObject._serialize_item(item, "SocketConnectionIpduIdentifierSet")
+                serialized = SerializationHelper.serialize_item(item, "SocketConnectionIpduIdentifierSet")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -137,7 +138,7 @@ class SocketConnection(Describable):
 
         # Serialize pdu_collection
         if self.pdu_collection is not None:
-            serialized = ARObject._serialize_item(self.pdu_collection, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.pdu_collection, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PDU-COLLECTION")
@@ -151,7 +152,7 @@ class SocketConnection(Describable):
 
         # Serialize runtime_ip
         if self.runtime_ip is not None:
-            serialized = ARObject._serialize_item(self.runtime_ip, "Any")
+            serialized = SerializationHelper.serialize_item(self.runtime_ip, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RUNTIME-IP")
@@ -165,7 +166,7 @@ class SocketConnection(Describable):
 
         # Serialize runtime_port
         if self.runtime_port is not None:
-            serialized = ARObject._serialize_item(self.runtime_port, "Any")
+            serialized = SerializationHelper.serialize_item(self.runtime_port, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RUNTIME-PORT")
@@ -179,7 +180,7 @@ class SocketConnection(Describable):
 
         # Serialize short_label
         if self.short_label is not None:
-            serialized = ARObject._serialize_item(self.short_label, "Identifier")
+            serialized = SerializationHelper.serialize_item(self.short_label, "Identifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SHORT-LABEL")
@@ -207,55 +208,55 @@ class SocketConnection(Describable):
         obj = super(SocketConnection, cls).deserialize(element)
 
         # Parse client_ip_addr
-        child = ARObject._find_child_element(element, "CLIENT-IP-ADDR")
+        child = SerializationHelper.find_child_element(element, "CLIENT-IP-ADDR")
         if child is not None:
             client_ip_addr_value = child.text
             obj.client_ip_addr = client_ip_addr_value
 
         # Parse client_port_ref
-        child = ARObject._find_child_element(element, "CLIENT-PORT-REF")
+        child = SerializationHelper.find_child_element(element, "CLIENT-PORT-REF")
         if child is not None:
             client_port_ref_value = ARRef.deserialize(child)
             obj.client_port_ref = client_port_ref_value
 
         # Parse client_port_from
-        child = ARObject._find_child_element(element, "CLIENT-PORT-FROM")
+        child = SerializationHelper.find_child_element(element, "CLIENT-PORT-FROM")
         if child is not None:
             client_port_from_value = child.text
             obj.client_port_from = client_port_from_value
 
         # Parse pdus (list from container "PDUS")
         obj.pdus = []
-        container = ARObject._find_child_element(element, "PDUS")
+        container = SerializationHelper.find_child_element(element, "PDUS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.pdus.append(child_value)
 
         # Parse pdu_collection
-        child = ARObject._find_child_element(element, "PDU-COLLECTION")
+        child = SerializationHelper.find_child_element(element, "PDU-COLLECTION")
         if child is not None:
             pdu_collection_value = child.text
             obj.pdu_collection = pdu_collection_value
 
         # Parse runtime_ip
-        child = ARObject._find_child_element(element, "RUNTIME-IP")
+        child = SerializationHelper.find_child_element(element, "RUNTIME-IP")
         if child is not None:
             runtime_ip_value = child.text
             obj.runtime_ip = runtime_ip_value
 
         # Parse runtime_port
-        child = ARObject._find_child_element(element, "RUNTIME-PORT")
+        child = SerializationHelper.find_child_element(element, "RUNTIME-PORT")
         if child is not None:
             runtime_port_value = child.text
             obj.runtime_port = runtime_port_value
 
         # Parse short_label
-        child = ARObject._find_child_element(element, "SHORT-LABEL")
+        child = SerializationHelper.find_child_element(element, "SHORT-LABEL")
         if child is not None:
-            short_label_value = ARObject._deserialize_by_tag(child, "Identifier")
+            short_label_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
             obj.short_label = short_label_value
 
         return obj

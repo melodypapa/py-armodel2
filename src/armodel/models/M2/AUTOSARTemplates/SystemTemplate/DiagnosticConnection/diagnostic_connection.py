@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.pdu_triggering import (
     PduTriggering,
@@ -56,7 +57,7 @@ class DiagnosticConnection(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -77,7 +78,7 @@ class DiagnosticConnection(ARElement):
         if self.functional_request_refs:
             wrapper = ET.Element("FUNCTIONAL-REQUEST-REFS")
             for item in self.functional_request_refs:
-                serialized = ARObject._serialize_item(item, "TpConnectionIdent")
+                serialized = SerializationHelper.serialize_item(item, "TpConnectionIdent")
                 if serialized is not None:
                     child_elem = ET.Element("FUNCTIONAL-REQUEST-REF")
                     if hasattr(serialized, 'attrib'):
@@ -94,7 +95,7 @@ class DiagnosticConnection(ARElement):
         if self.periodic_response_uudt_refs:
             wrapper = ET.Element("PERIODIC-RESPONSE-UUDT-REFS")
             for item in self.periodic_response_uudt_refs:
-                serialized = ARObject._serialize_item(item, "PduTriggering")
+                serialized = SerializationHelper.serialize_item(item, "PduTriggering")
                 if serialized is not None:
                     child_elem = ET.Element("PERIODIC-RESPONSE-UUDT-REF")
                     if hasattr(serialized, 'attrib'):
@@ -109,7 +110,7 @@ class DiagnosticConnection(ARElement):
 
         # Serialize physical_request_ref
         if self.physical_request_ref is not None:
-            serialized = ARObject._serialize_item(self.physical_request_ref, "TpConnectionIdent")
+            serialized = SerializationHelper.serialize_item(self.physical_request_ref, "TpConnectionIdent")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PHYSICAL-REQUEST-REF")
@@ -123,7 +124,7 @@ class DiagnosticConnection(ARElement):
 
         # Serialize response_ref
         if self.response_ref is not None:
-            serialized = ARObject._serialize_item(self.response_ref, "TpConnectionIdent")
+            serialized = SerializationHelper.serialize_item(self.response_ref, "TpConnectionIdent")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RESPONSE-REF")
@@ -137,7 +138,7 @@ class DiagnosticConnection(ARElement):
 
         # Serialize response_on_ref
         if self.response_on_ref is not None:
-            serialized = ARObject._serialize_item(self.response_on_ref, "TpConnectionIdent")
+            serialized = SerializationHelper.serialize_item(self.response_on_ref, "TpConnectionIdent")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RESPONSE-ON-REF")
@@ -166,50 +167,50 @@ class DiagnosticConnection(ARElement):
 
         # Parse functional_request_refs (list from container "FUNCTIONAL-REQUEST-REFS")
         obj.functional_request_refs = []
-        container = ARObject._find_child_element(element, "FUNCTIONAL-REQUEST-REFS")
+        container = SerializationHelper.find_child_element(element, "FUNCTIONAL-REQUEST-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.functional_request_refs.append(child_value)
 
         # Parse periodic_response_uudt_refs (list from container "PERIODIC-RESPONSE-UUDT-REFS")
         obj.periodic_response_uudt_refs = []
-        container = ARObject._find_child_element(element, "PERIODIC-RESPONSE-UUDT-REFS")
+        container = SerializationHelper.find_child_element(element, "PERIODIC-RESPONSE-UUDT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.periodic_response_uudt_refs.append(child_value)
 
         # Parse physical_request_ref
-        child = ARObject._find_child_element(element, "PHYSICAL-REQUEST-REF")
+        child = SerializationHelper.find_child_element(element, "PHYSICAL-REQUEST-REF")
         if child is not None:
             physical_request_ref_value = ARRef.deserialize(child)
             obj.physical_request_ref = physical_request_ref_value
 
         # Parse response_ref
-        child = ARObject._find_child_element(element, "RESPONSE-REF")
+        child = SerializationHelper.find_child_element(element, "RESPONSE-REF")
         if child is not None:
             response_ref_value = ARRef.deserialize(child)
             obj.response_ref = response_ref_value
 
         # Parse response_on_ref
-        child = ARObject._find_child_element(element, "RESPONSE-ON-REF")
+        child = SerializationHelper.find_child_element(element, "RESPONSE-ON-REF")
         if child is not None:
             response_on_ref_value = ARRef.deserialize(child)
             obj.response_on_ref = response_on_ref_value

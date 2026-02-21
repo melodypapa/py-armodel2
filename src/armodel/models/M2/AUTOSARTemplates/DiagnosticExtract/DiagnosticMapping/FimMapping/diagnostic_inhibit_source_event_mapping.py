@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
     DiagnosticMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_event import (
     DiagnosticEvent,
@@ -51,7 +52,7 @@ class DiagnosticInhibitSourceEventMapping(DiagnosticMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -70,7 +71,7 @@ class DiagnosticInhibitSourceEventMapping(DiagnosticMapping):
 
         # Serialize diagnostic_event_ref
         if self.diagnostic_event_ref is not None:
-            serialized = ARObject._serialize_item(self.diagnostic_event_ref, "DiagnosticEvent")
+            serialized = SerializationHelper.serialize_item(self.diagnostic_event_ref, "DiagnosticEvent")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DIAGNOSTIC-EVENT-REF")
@@ -84,7 +85,7 @@ class DiagnosticInhibitSourceEventMapping(DiagnosticMapping):
 
         # Serialize event_group_group_ref
         if self.event_group_group_ref is not None:
-            serialized = ARObject._serialize_item(self.event_group_group_ref, "DiagnosticFimEventGroup")
+            serialized = SerializationHelper.serialize_item(self.event_group_group_ref, "DiagnosticFimEventGroup")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("EVENT-GROUP-GROUP-REF")
@@ -98,7 +99,7 @@ class DiagnosticInhibitSourceEventMapping(DiagnosticMapping):
 
         # Serialize inhibition_source_ref
         if self.inhibition_source_ref is not None:
-            serialized = ARObject._serialize_item(self.inhibition_source_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.inhibition_source_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INHIBITION-SOURCE-REF")
@@ -126,19 +127,19 @@ class DiagnosticInhibitSourceEventMapping(DiagnosticMapping):
         obj = super(DiagnosticInhibitSourceEventMapping, cls).deserialize(element)
 
         # Parse diagnostic_event_ref
-        child = ARObject._find_child_element(element, "DIAGNOSTIC-EVENT-REF")
+        child = SerializationHelper.find_child_element(element, "DIAGNOSTIC-EVENT-REF")
         if child is not None:
             diagnostic_event_ref_value = ARRef.deserialize(child)
             obj.diagnostic_event_ref = diagnostic_event_ref_value
 
         # Parse event_group_group_ref
-        child = ARObject._find_child_element(element, "EVENT-GROUP-GROUP-REF")
+        child = SerializationHelper.find_child_element(element, "EVENT-GROUP-GROUP-REF")
         if child is not None:
             event_group_group_ref_value = ARRef.deserialize(child)
             obj.event_group_group_ref = event_group_group_ref_value
 
         # Parse inhibition_source_ref
-        child = ARObject._find_child_element(element, "INHIBITION-SOURCE-REF")
+        child = SerializationHelper.find_child_element(element, "INHIBITION-SOURCE-REF")
         if child is not None:
             inhibition_source_ref_value = ARRef.deserialize(child)
             obj.inhibition_source_ref = inhibition_source_ref_value

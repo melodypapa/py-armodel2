@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -66,7 +67,7 @@ class CpSoftwareClusterBinaryManifestDescriptor(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -85,7 +86,7 @@ class CpSoftwareClusterBinaryManifestDescriptor(ARElement):
 
         # Serialize cp_software_cluster_ref
         if self.cp_software_cluster_ref is not None:
-            serialized = ARObject._serialize_item(self.cp_software_cluster_ref, "CpSoftwareCluster")
+            serialized = SerializationHelper.serialize_item(self.cp_software_cluster_ref, "CpSoftwareCluster")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CP-SOFTWARE-CLUSTER-REF")
@@ -101,7 +102,7 @@ class CpSoftwareClusterBinaryManifestDescriptor(ARElement):
         if self.meta_data_fields:
             wrapper = ET.Element("META-DATA-FIELDS")
             for item in self.meta_data_fields:
-                serialized = ARObject._serialize_item(item, "BinaryManifestMetaDataField")
+                serialized = SerializationHelper.serialize_item(item, "BinaryManifestMetaDataField")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -111,7 +112,7 @@ class CpSoftwareClusterBinaryManifestDescriptor(ARElement):
         if self.provides:
             wrapper = ET.Element("PROVIDES")
             for item in self.provides:
-                serialized = ARObject._serialize_item(item, "BinaryManifestProvideResource")
+                serialized = SerializationHelper.serialize_item(item, "BinaryManifestProvideResource")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -121,7 +122,7 @@ class CpSoftwareClusterBinaryManifestDescriptor(ARElement):
         if self.requires:
             wrapper = ET.Element("REQUIRES")
             for item in self.requires:
-                serialized = ARObject._serialize_item(item, "BinaryManifestRequireResource")
+                serialized = SerializationHelper.serialize_item(item, "BinaryManifestRequireResource")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -131,7 +132,7 @@ class CpSoftwareClusterBinaryManifestDescriptor(ARElement):
         if self.resources:
             wrapper = ET.Element("RESOURCES")
             for item in self.resources:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -139,7 +140,7 @@ class CpSoftwareClusterBinaryManifestDescriptor(ARElement):
 
         # Serialize software_cluster
         if self.software_cluster is not None:
-            serialized = ARObject._serialize_item(self.software_cluster, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.software_cluster, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SOFTWARE-CLUSTER")
@@ -167,53 +168,53 @@ class CpSoftwareClusterBinaryManifestDescriptor(ARElement):
         obj = super(CpSoftwareClusterBinaryManifestDescriptor, cls).deserialize(element)
 
         # Parse cp_software_cluster_ref
-        child = ARObject._find_child_element(element, "CP-SOFTWARE-CLUSTER-REF")
+        child = SerializationHelper.find_child_element(element, "CP-SOFTWARE-CLUSTER-REF")
         if child is not None:
             cp_software_cluster_ref_value = ARRef.deserialize(child)
             obj.cp_software_cluster_ref = cp_software_cluster_ref_value
 
         # Parse meta_data_fields (list from container "META-DATA-FIELDS")
         obj.meta_data_fields = []
-        container = ARObject._find_child_element(element, "META-DATA-FIELDS")
+        container = SerializationHelper.find_child_element(element, "META-DATA-FIELDS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.meta_data_fields.append(child_value)
 
         # Parse provides (list from container "PROVIDES")
         obj.provides = []
-        container = ARObject._find_child_element(element, "PROVIDES")
+        container = SerializationHelper.find_child_element(element, "PROVIDES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.provides.append(child_value)
 
         # Parse requires (list from container "REQUIRES")
         obj.requires = []
-        container = ARObject._find_child_element(element, "REQUIRES")
+        container = SerializationHelper.find_child_element(element, "REQUIRES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.requires.append(child_value)
 
         # Parse resources (list from container "RESOURCES")
         obj.resources = []
-        container = ARObject._find_child_element(element, "RESOURCES")
+        container = SerializationHelper.find_child_element(element, "RESOURCES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.resources.append(child_value)
 
         # Parse software_cluster
-        child = ARObject._find_child_element(element, "SOFTWARE-CLUSTER")
+        child = SerializationHelper.find_child_element(element, "SOFTWARE-CLUSTER")
         if child is not None:
             software_cluster_value = child.text
             obj.software_cluster = software_cluster_value

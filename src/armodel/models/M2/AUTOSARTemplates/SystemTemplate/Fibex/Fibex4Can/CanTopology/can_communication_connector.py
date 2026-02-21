@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Can.CanTopolo
     AbstractCanCommunicationConnector,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
     PositiveUnlimitedInteger,
@@ -48,7 +49,7 @@ class CanCommunicationConnector(AbstractCanCommunicationConnector):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -67,7 +68,7 @@ class CanCommunicationConnector(AbstractCanCommunicationConnector):
 
         # Serialize pnc_wakeup_can
         if self.pnc_wakeup_can is not None:
-            serialized = ARObject._serialize_item(self.pnc_wakeup_can, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.pnc_wakeup_can, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PNC-WAKEUP-CAN")
@@ -81,7 +82,7 @@ class CanCommunicationConnector(AbstractCanCommunicationConnector):
 
         # Serialize pnc_wakeup
         if self.pnc_wakeup is not None:
-            serialized = ARObject._serialize_item(self.pnc_wakeup, "PositiveUnlimitedInteger")
+            serialized = SerializationHelper.serialize_item(self.pnc_wakeup, "PositiveUnlimitedInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PNC-WAKEUP")
@@ -95,7 +96,7 @@ class CanCommunicationConnector(AbstractCanCommunicationConnector):
 
         # Serialize pnc_wakeup_dlc
         if self.pnc_wakeup_dlc is not None:
-            serialized = ARObject._serialize_item(self.pnc_wakeup_dlc, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.pnc_wakeup_dlc, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PNC-WAKEUP-DLC")
@@ -123,19 +124,19 @@ class CanCommunicationConnector(AbstractCanCommunicationConnector):
         obj = super(CanCommunicationConnector, cls).deserialize(element)
 
         # Parse pnc_wakeup_can
-        child = ARObject._find_child_element(element, "PNC-WAKEUP-CAN")
+        child = SerializationHelper.find_child_element(element, "PNC-WAKEUP-CAN")
         if child is not None:
             pnc_wakeup_can_value = child.text
             obj.pnc_wakeup_can = pnc_wakeup_can_value
 
         # Parse pnc_wakeup
-        child = ARObject._find_child_element(element, "PNC-WAKEUP")
+        child = SerializationHelper.find_child_element(element, "PNC-WAKEUP")
         if child is not None:
             pnc_wakeup_value = child.text
             obj.pnc_wakeup = pnc_wakeup_value
 
         # Parse pnc_wakeup_dlc
-        child = ARObject._find_child_element(element, "PNC-WAKEUP-DLC")
+        child = SerializationHelper.find_child_element(element, "PNC-WAKEUP-DLC")
         if child is not None:
             pnc_wakeup_dlc_value = child.text
             obj.pnc_wakeup_dlc = pnc_wakeup_dlc_value

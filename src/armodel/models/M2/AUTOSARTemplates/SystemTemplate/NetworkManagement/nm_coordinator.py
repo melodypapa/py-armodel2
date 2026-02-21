@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -55,12 +56,12 @@ class NmCoordinator(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize index
         if self.index is not None:
-            serialized = ARObject._serialize_item(self.index, "Integer")
+            serialized = SerializationHelper.serialize_item(self.index, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INDEX")
@@ -74,7 +75,7 @@ class NmCoordinator(ARObject):
 
         # Serialize nm_coord_sync
         if self.nm_coord_sync is not None:
-            serialized = ARObject._serialize_item(self.nm_coord_sync, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.nm_coord_sync, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM-COORD-SYNC")
@@ -88,7 +89,7 @@ class NmCoordinator(ARObject):
 
         # Serialize nm_global
         if self.nm_global is not None:
-            serialized = ARObject._serialize_item(self.nm_global, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.nm_global, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM-GLOBAL")
@@ -104,7 +105,7 @@ class NmCoordinator(ARObject):
         if self.nm_node_refs:
             wrapper = ET.Element("NM-NODE-REFS")
             for item in self.nm_node_refs:
-                serialized = ARObject._serialize_item(item, "NmNode")
+                serialized = SerializationHelper.serialize_item(item, "NmNode")
                 if serialized is not None:
                     child_elem = ET.Element("NM-NODE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -134,36 +135,36 @@ class NmCoordinator(ARObject):
         obj.__init__()
 
         # Parse index
-        child = ARObject._find_child_element(element, "INDEX")
+        child = SerializationHelper.find_child_element(element, "INDEX")
         if child is not None:
             index_value = child.text
             obj.index = index_value
 
         # Parse nm_coord_sync
-        child = ARObject._find_child_element(element, "NM-COORD-SYNC")
+        child = SerializationHelper.find_child_element(element, "NM-COORD-SYNC")
         if child is not None:
             nm_coord_sync_value = child.text
             obj.nm_coord_sync = nm_coord_sync_value
 
         # Parse nm_global
-        child = ARObject._find_child_element(element, "NM-GLOBAL")
+        child = SerializationHelper.find_child_element(element, "NM-GLOBAL")
         if child is not None:
             nm_global_value = child.text
             obj.nm_global = nm_global_value
 
         # Parse nm_node_refs (list from container "NM-NODE-REFS")
         obj.nm_node_refs = []
-        container = ARObject._find_child_element(element, "NM-NODE-REFS")
+        container = SerializationHelper.find_child_element(element, "NM-NODE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.nm_node_refs.append(child_value)
 

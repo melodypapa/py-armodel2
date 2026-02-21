@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingExtensions.
     TimingExtension,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_value_collection import (
     EcucValueCollection,
@@ -44,7 +45,7 @@ class EcuTiming(TimingExtension):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -63,7 +64,7 @@ class EcuTiming(TimingExtension):
 
         # Serialize ecu_ref
         if self.ecu_ref is not None:
-            serialized = ARObject._serialize_item(self.ecu_ref, "EcucValueCollection")
+            serialized = SerializationHelper.serialize_item(self.ecu_ref, "EcucValueCollection")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ECU-REF")
@@ -91,7 +92,7 @@ class EcuTiming(TimingExtension):
         obj = super(EcuTiming, cls).deserialize(element)
 
         # Parse ecu_ref
-        child = ARObject._find_child_element(element, "ECU-REF")
+        child = SerializationHelper.find_child_element(element, "ECU-REF")
         if child is not None:
             ecu_ref_value = ARRef.deserialize(child)
             obj.ecu_ref = ecu_ref_value

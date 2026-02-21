@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_softwa
     CpSoftwareClusterCommunicationResourceProps,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -43,7 +44,7 @@ class ClientServerOperationComProps(CpSoftwareClusterCommunicationResourceProps)
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class ClientServerOperationComProps(CpSoftwareClusterCommunicationResourceProps)
 
         # Serialize queue_length
         if self.queue_length is not None:
-            serialized = ARObject._serialize_item(self.queue_length, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.queue_length, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("QUEUE-LENGTH")
@@ -90,7 +91,7 @@ class ClientServerOperationComProps(CpSoftwareClusterCommunicationResourceProps)
         obj = super(ClientServerOperationComProps, cls).deserialize(element)
 
         # Parse queue_length
-        child = ARObject._find_child_element(element, "QUEUE-LENGTH")
+        child = SerializationHelper.find_child_element(element, "QUEUE-LENGTH")
         if child is not None:
             queue_length_value = child.text
             obj.queue_length = queue_length_value

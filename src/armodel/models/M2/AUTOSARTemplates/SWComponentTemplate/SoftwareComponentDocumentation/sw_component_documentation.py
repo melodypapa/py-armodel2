@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.Documentation.Chapters.chapter import (
     Chapter,
 )
@@ -56,14 +57,14 @@ class SwComponentDocumentation(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize chapters (list to container "CHAPTERS")
         if self.chapters:
             wrapper = ET.Element("CHAPTERS")
             for item in self.chapters:
-                serialized = ARObject._serialize_item(item, "Chapter")
+                serialized = SerializationHelper.serialize_item(item, "Chapter")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -71,7 +72,7 @@ class SwComponentDocumentation(ARObject):
 
         # Serialize sw_calibration
         if self.sw_calibration is not None:
-            serialized = ARObject._serialize_item(self.sw_calibration, "Chapter")
+            serialized = SerializationHelper.serialize_item(self.sw_calibration, "Chapter")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-CALIBRATION")
@@ -85,7 +86,7 @@ class SwComponentDocumentation(ARObject):
 
         # Serialize sw_carb_doc
         if self.sw_carb_doc is not None:
-            serialized = ARObject._serialize_item(self.sw_carb_doc, "Chapter")
+            serialized = SerializationHelper.serialize_item(self.sw_carb_doc, "Chapter")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-CARB-DOC")
@@ -99,7 +100,7 @@ class SwComponentDocumentation(ARObject):
 
         # Serialize sw_diagnostics
         if self.sw_diagnostics is not None:
-            serialized = ARObject._serialize_item(self.sw_diagnostics, "Chapter")
+            serialized = SerializationHelper.serialize_item(self.sw_diagnostics, "Chapter")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-DIAGNOSTICS")
@@ -113,7 +114,7 @@ class SwComponentDocumentation(ARObject):
 
         # Serialize sw_feature_def
         if self.sw_feature_def is not None:
-            serialized = ARObject._serialize_item(self.sw_feature_def, "Chapter")
+            serialized = SerializationHelper.serialize_item(self.sw_feature_def, "Chapter")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-FEATURE-DEF")
@@ -127,7 +128,7 @@ class SwComponentDocumentation(ARObject):
 
         # Serialize sw_feature_desc
         if self.sw_feature_desc is not None:
-            serialized = ARObject._serialize_item(self.sw_feature_desc, "Chapter")
+            serialized = SerializationHelper.serialize_item(self.sw_feature_desc, "Chapter")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-FEATURE-DESC")
@@ -141,7 +142,7 @@ class SwComponentDocumentation(ARObject):
 
         # Serialize sw_maintenance
         if self.sw_maintenance is not None:
-            serialized = ARObject._serialize_item(self.sw_maintenance, "Chapter")
+            serialized = SerializationHelper.serialize_item(self.sw_maintenance, "Chapter")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-MAINTENANCE")
@@ -155,7 +156,7 @@ class SwComponentDocumentation(ARObject):
 
         # Serialize sw_test_desc
         if self.sw_test_desc is not None:
-            serialized = ARObject._serialize_item(self.sw_test_desc, "Chapter")
+            serialized = SerializationHelper.serialize_item(self.sw_test_desc, "Chapter")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-TEST-DESC")
@@ -185,54 +186,54 @@ class SwComponentDocumentation(ARObject):
 
         # Parse chapters (list from container "CHAPTERS")
         obj.chapters = []
-        container = ARObject._find_child_element(element, "CHAPTERS")
+        container = SerializationHelper.find_child_element(element, "CHAPTERS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.chapters.append(child_value)
 
         # Parse sw_calibration
-        child = ARObject._find_child_element(element, "SW-CALIBRATION")
+        child = SerializationHelper.find_child_element(element, "SW-CALIBRATION")
         if child is not None:
-            sw_calibration_value = ARObject._deserialize_by_tag(child, "Chapter")
+            sw_calibration_value = SerializationHelper.deserialize_by_tag(child, "Chapter")
             obj.sw_calibration = sw_calibration_value
 
         # Parse sw_carb_doc
-        child = ARObject._find_child_element(element, "SW-CARB-DOC")
+        child = SerializationHelper.find_child_element(element, "SW-CARB-DOC")
         if child is not None:
-            sw_carb_doc_value = ARObject._deserialize_by_tag(child, "Chapter")
+            sw_carb_doc_value = SerializationHelper.deserialize_by_tag(child, "Chapter")
             obj.sw_carb_doc = sw_carb_doc_value
 
         # Parse sw_diagnostics
-        child = ARObject._find_child_element(element, "SW-DIAGNOSTICS")
+        child = SerializationHelper.find_child_element(element, "SW-DIAGNOSTICS")
         if child is not None:
-            sw_diagnostics_value = ARObject._deserialize_by_tag(child, "Chapter")
+            sw_diagnostics_value = SerializationHelper.deserialize_by_tag(child, "Chapter")
             obj.sw_diagnostics = sw_diagnostics_value
 
         # Parse sw_feature_def
-        child = ARObject._find_child_element(element, "SW-FEATURE-DEF")
+        child = SerializationHelper.find_child_element(element, "SW-FEATURE-DEF")
         if child is not None:
-            sw_feature_def_value = ARObject._deserialize_by_tag(child, "Chapter")
+            sw_feature_def_value = SerializationHelper.deserialize_by_tag(child, "Chapter")
             obj.sw_feature_def = sw_feature_def_value
 
         # Parse sw_feature_desc
-        child = ARObject._find_child_element(element, "SW-FEATURE-DESC")
+        child = SerializationHelper.find_child_element(element, "SW-FEATURE-DESC")
         if child is not None:
-            sw_feature_desc_value = ARObject._deserialize_by_tag(child, "Chapter")
+            sw_feature_desc_value = SerializationHelper.deserialize_by_tag(child, "Chapter")
             obj.sw_feature_desc = sw_feature_desc_value
 
         # Parse sw_maintenance
-        child = ARObject._find_child_element(element, "SW-MAINTENANCE")
+        child = SerializationHelper.find_child_element(element, "SW-MAINTENANCE")
         if child is not None:
-            sw_maintenance_value = ARObject._deserialize_by_tag(child, "Chapter")
+            sw_maintenance_value = SerializationHelper.deserialize_by_tag(child, "Chapter")
             obj.sw_maintenance = sw_maintenance_value
 
         # Parse sw_test_desc
-        child = ARObject._find_child_element(element, "SW-TEST-DESC")
+        child = SerializationHelper.find_child_element(element, "SW-TEST-DESC")
         if child is not None:
-            sw_test_desc_value = ARObject._deserialize_by_tag(child, "Chapter")
+            sw_test_desc_value = SerializationHelper.deserialize_by_tag(child, "Chapter")
             obj.sw_test_desc = sw_test_desc_value
 
         return obj

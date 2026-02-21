@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_module_entry import (
     BswModuleEntry,
@@ -46,12 +47,12 @@ class BswEntryRelationship(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize bsw_entry
         if self.bsw_entry is not None:
-            serialized = ARObject._serialize_item(self.bsw_entry, "BswEntryRelationship")
+            serialized = SerializationHelper.serialize_item(self.bsw_entry, "BswEntryRelationship")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BSW-ENTRY")
@@ -65,7 +66,7 @@ class BswEntryRelationship(ARObject):
 
         # Serialize from_ref
         if self.from_ref is not None:
-            serialized = ARObject._serialize_item(self.from_ref, "BswModuleEntry")
+            serialized = SerializationHelper.serialize_item(self.from_ref, "BswModuleEntry")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FROM-REF")
@@ -79,7 +80,7 @@ class BswEntryRelationship(ARObject):
 
         # Serialize to_ref
         if self.to_ref is not None:
-            serialized = ARObject._serialize_item(self.to_ref, "BswModuleEntry")
+            serialized = SerializationHelper.serialize_item(self.to_ref, "BswModuleEntry")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TO-REF")
@@ -108,19 +109,19 @@ class BswEntryRelationship(ARObject):
         obj.__init__()
 
         # Parse bsw_entry
-        child = ARObject._find_child_element(element, "BSW-ENTRY")
+        child = SerializationHelper.find_child_element(element, "BSW-ENTRY")
         if child is not None:
-            bsw_entry_value = ARObject._deserialize_by_tag(child, "BswEntryRelationship")
+            bsw_entry_value = SerializationHelper.deserialize_by_tag(child, "BswEntryRelationship")
             obj.bsw_entry = bsw_entry_value
 
         # Parse from_ref
-        child = ARObject._find_child_element(element, "FROM-REF")
+        child = SerializationHelper.find_child_element(element, "FROM-REF")
         if child is not None:
             from_ref_value = ARRef.deserialize(child)
             obj.from_ref = from_ref_value
 
         # Parse to_ref
-        child = ARObject._find_child_element(element, "TO-REF")
+        child = SerializationHelper.find_child_element(element, "TO-REF")
         if child is not None:
             to_ref_value = ARRef.deserialize(child)
             obj.to_ref = to_ref_value

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommun
     LinFrame,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication.lin_schedule_table import (
     LinScheduleTable,
@@ -49,7 +50,7 @@ class LinEventTriggeredFrame(LinFrame):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -68,7 +69,7 @@ class LinEventTriggeredFrame(LinFrame):
 
         # Serialize collision_schedule_ref
         if self.collision_schedule_ref is not None:
-            serialized = ARObject._serialize_item(self.collision_schedule_ref, "LinScheduleTable")
+            serialized = SerializationHelper.serialize_item(self.collision_schedule_ref, "LinScheduleTable")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COLLISION-SCHEDULE-REF")
@@ -84,7 +85,7 @@ class LinEventTriggeredFrame(LinFrame):
         if self.lin_unconditional_frame_refs:
             wrapper = ET.Element("LIN-UNCONDITIONAL-FRAME-REFS")
             for item in self.lin_unconditional_frame_refs:
-                serialized = ARObject._serialize_item(item, "LinUnconditionalFrame")
+                serialized = SerializationHelper.serialize_item(item, "LinUnconditionalFrame")
                 if serialized is not None:
                     child_elem = ET.Element("LIN-UNCONDITIONAL-FRAME-REF")
                     if hasattr(serialized, 'attrib'):
@@ -113,24 +114,24 @@ class LinEventTriggeredFrame(LinFrame):
         obj = super(LinEventTriggeredFrame, cls).deserialize(element)
 
         # Parse collision_schedule_ref
-        child = ARObject._find_child_element(element, "COLLISION-SCHEDULE-REF")
+        child = SerializationHelper.find_child_element(element, "COLLISION-SCHEDULE-REF")
         if child is not None:
             collision_schedule_ref_value = ARRef.deserialize(child)
             obj.collision_schedule_ref = collision_schedule_ref_value
 
         # Parse lin_unconditional_frame_refs (list from container "LIN-UNCONDITIONAL-FRAME-REFS")
         obj.lin_unconditional_frame_refs = []
-        container = ARObject._find_child_element(element, "LIN-UNCONDITIONAL-FRAME-REFS")
+        container = SerializationHelper.find_child_element(element, "LIN-UNCONDITIONAL-FRAME-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.lin_unconditional_frame_refs.append(child_value)
 

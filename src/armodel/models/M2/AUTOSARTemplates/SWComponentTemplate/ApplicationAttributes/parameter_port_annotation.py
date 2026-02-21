@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     GeneralAnnotation,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.parameter_data_prototype import (
     ParameterDataPrototype,
@@ -44,7 +45,7 @@ class ParameterPortAnnotation(GeneralAnnotation):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -63,7 +64,7 @@ class ParameterPortAnnotation(GeneralAnnotation):
 
         # Serialize parameter_ref
         if self.parameter_ref is not None:
-            serialized = ARObject._serialize_item(self.parameter_ref, "ParameterDataPrototype")
+            serialized = SerializationHelper.serialize_item(self.parameter_ref, "ParameterDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PARAMETER-REF")
@@ -91,7 +92,7 @@ class ParameterPortAnnotation(GeneralAnnotation):
         obj = super(ParameterPortAnnotation, cls).deserialize(element)
 
         # Parse parameter_ref
-        child = ARObject._find_child_element(element, "PARAMETER-REF")
+        child = SerializationHelper.find_child_element(element, "PARAMETER-REF")
         if child is not None:
             parameter_ref_value = ARRef.deserialize(child)
             obj.parameter_ref = parameter_ref_value

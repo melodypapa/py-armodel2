@@ -17,6 +17,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces import (
     BswCallType,
     BswEntryKindEnum,
@@ -84,7 +85,7 @@ class BswModuleEntry(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -105,7 +106,7 @@ class BswModuleEntry(ARElement):
         if self.arguments:
             wrapper = ET.Element("ARGUMENTS")
             for item in self.arguments:
-                serialized = ARObject._serialize_item(item, "SwServiceArg")
+                serialized = SerializationHelper.serialize_item(item, "SwServiceArg")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -113,7 +114,7 @@ class BswModuleEntry(ARElement):
 
         # Serialize bsw_entry_kind_enum
         if self.bsw_entry_kind_enum is not None:
-            serialized = ARObject._serialize_item(self.bsw_entry_kind_enum, "BswEntryKindEnum")
+            serialized = SerializationHelper.serialize_item(self.bsw_entry_kind_enum, "BswEntryKindEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BSW-ENTRY-KIND-ENUM")
@@ -127,7 +128,7 @@ class BswModuleEntry(ARElement):
 
         # Serialize call_type
         if self.call_type is not None:
-            serialized = ARObject._serialize_item(self.call_type, "BswCallType")
+            serialized = SerializationHelper.serialize_item(self.call_type, "BswCallType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CALL-TYPE")
@@ -141,7 +142,7 @@ class BswModuleEntry(ARElement):
 
         # Serialize execution
         if self.execution is not None:
-            serialized = ARObject._serialize_item(self.execution, "BswExecutionContext")
+            serialized = SerializationHelper.serialize_item(self.execution, "BswExecutionContext")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("EXECUTION")
@@ -155,7 +156,7 @@ class BswModuleEntry(ARElement):
 
         # Serialize function
         if self.function is not None:
-            serialized = ARObject._serialize_item(self.function, "NameToken")
+            serialized = SerializationHelper.serialize_item(self.function, "NameToken")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FUNCTION")
@@ -169,7 +170,7 @@ class BswModuleEntry(ARElement):
 
         # Serialize is_reentrant
         if self.is_reentrant is not None:
-            serialized = ARObject._serialize_item(self.is_reentrant, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.is_reentrant, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IS-REENTRANT")
@@ -183,7 +184,7 @@ class BswModuleEntry(ARElement):
 
         # Serialize is_synchronous
         if self.is_synchronous is not None:
-            serialized = ARObject._serialize_item(self.is_synchronous, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.is_synchronous, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IS-SYNCHRONOUS")
@@ -197,7 +198,7 @@ class BswModuleEntry(ARElement):
 
         # Serialize return_type
         if self.return_type is not None:
-            serialized = ARObject._serialize_item(self.return_type, "SwServiceArg")
+            serialized = SerializationHelper.serialize_item(self.return_type, "SwServiceArg")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RETURN-TYPE")
@@ -211,7 +212,7 @@ class BswModuleEntry(ARElement):
 
         # Serialize role
         if self.role is not None:
-            serialized = ARObject._serialize_item(self.role, "Identifier")
+            serialized = SerializationHelper.serialize_item(self.role, "Identifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ROLE")
@@ -225,7 +226,7 @@ class BswModuleEntry(ARElement):
 
         # Serialize service_id
         if self.service_id is not None:
-            serialized = ARObject._serialize_item(self.service_id, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.service_id, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SERVICE-ID")
@@ -239,7 +240,7 @@ class BswModuleEntry(ARElement):
 
         # Serialize sw_service_impl_policy
         if self.sw_service_impl_policy is not None:
-            serialized = ARObject._serialize_item(self.sw_service_impl_policy, "SwServiceImplPolicyEnum")
+            serialized = SerializationHelper.serialize_item(self.sw_service_impl_policy, "SwServiceImplPolicyEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-SERVICE-IMPL-POLICY")
@@ -268,70 +269,70 @@ class BswModuleEntry(ARElement):
 
         # Parse arguments (list from container "ARGUMENTS")
         obj.arguments = []
-        container = ARObject._find_child_element(element, "ARGUMENTS")
+        container = SerializationHelper.find_child_element(element, "ARGUMENTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.arguments.append(child_value)
 
         # Parse bsw_entry_kind_enum
-        child = ARObject._find_child_element(element, "BSW-ENTRY-KIND-ENUM")
+        child = SerializationHelper.find_child_element(element, "BSW-ENTRY-KIND-ENUM")
         if child is not None:
             bsw_entry_kind_enum_value = BswEntryKindEnum.deserialize(child)
             obj.bsw_entry_kind_enum = bsw_entry_kind_enum_value
 
         # Parse call_type
-        child = ARObject._find_child_element(element, "CALL-TYPE")
+        child = SerializationHelper.find_child_element(element, "CALL-TYPE")
         if child is not None:
             call_type_value = BswCallType.deserialize(child)
             obj.call_type = call_type_value
 
         # Parse execution
-        child = ARObject._find_child_element(element, "EXECUTION")
+        child = SerializationHelper.find_child_element(element, "EXECUTION")
         if child is not None:
             execution_value = BswExecutionContext.deserialize(child)
             obj.execution = execution_value
 
         # Parse function
-        child = ARObject._find_child_element(element, "FUNCTION")
+        child = SerializationHelper.find_child_element(element, "FUNCTION")
         if child is not None:
             function_value = child.text
             obj.function = function_value
 
         # Parse is_reentrant
-        child = ARObject._find_child_element(element, "IS-REENTRANT")
+        child = SerializationHelper.find_child_element(element, "IS-REENTRANT")
         if child is not None:
             is_reentrant_value = child.text
             obj.is_reentrant = is_reentrant_value
 
         # Parse is_synchronous
-        child = ARObject._find_child_element(element, "IS-SYNCHRONOUS")
+        child = SerializationHelper.find_child_element(element, "IS-SYNCHRONOUS")
         if child is not None:
             is_synchronous_value = child.text
             obj.is_synchronous = is_synchronous_value
 
         # Parse return_type
-        child = ARObject._find_child_element(element, "RETURN-TYPE")
+        child = SerializationHelper.find_child_element(element, "RETURN-TYPE")
         if child is not None:
-            return_type_value = ARObject._deserialize_by_tag(child, "SwServiceArg")
+            return_type_value = SerializationHelper.deserialize_by_tag(child, "SwServiceArg")
             obj.return_type = return_type_value
 
         # Parse role
-        child = ARObject._find_child_element(element, "ROLE")
+        child = SerializationHelper.find_child_element(element, "ROLE")
         if child is not None:
-            role_value = ARObject._deserialize_by_tag(child, "Identifier")
+            role_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
             obj.role = role_value
 
         # Parse service_id
-        child = ARObject._find_child_element(element, "SERVICE-ID")
+        child = SerializationHelper.find_child_element(element, "SERVICE-ID")
         if child is not None:
             service_id_value = child.text
             obj.service_id = service_id_value
 
         # Parse sw_service_impl_policy
-        child = ARObject._find_child_element(element, "SW-SERVICE-IMPL-POLICY")
+        child = SerializationHelper.find_child_element(element, "SW-SERVICE-IMPL-POLICY")
         if child is not None:
             sw_service_impl_policy_value = SwServiceImplPolicyEnum.deserialize(child)
             obj.sw_service_impl_policy = sw_service_impl_policy_value

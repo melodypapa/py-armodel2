@@ -9,6 +9,8 @@ from __future__ import annotations
 
 import xml.etree.ElementTree as ET
 
+from armodel.serialization import SerializationHelper
+
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes.identifier import (
     Identifier,
 )
@@ -162,7 +164,7 @@ class TestAREnumTransparentEquality:
 
 
 class TestARObjectExtractValueUnwrapping:
-    """Tests for ARObject._extract_value primitive unwrapping."""
+    """Tests for SerializationHelper.extract_value primitive unwrapping."""
 
     def test_extract_value_identifier_unwraps_to_string(self) -> None:
         """_extract_value should unwrap Identifier to plain string."""
@@ -175,7 +177,7 @@ class TestARObjectExtractValueUnwrapping:
         element.text = "MyPackage"
 
         # Act
-        result = ARObject._extract_value(element, "Identifier")
+        result = SerializationHelper.extract_value(element, "Identifier")
 
         # Assert
         # Result should be the plain string, not Identifier wrapper
@@ -195,7 +197,7 @@ class TestARObjectExtractValueUnwrapping:
         element.text = "42"
 
         # Act
-        result = ARObject._extract_value(element, "Integer")
+        result = SerializationHelper.extract_value(element, "Integer")
 
         # Assert
         # Result should be the plain int, not Integer wrapper
@@ -217,7 +219,7 @@ class TestARObjectExtractValueUnwrapping:
         element.text = "MOST-SIGNIFICANT-BYTE-FIRST"
 
         # Act
-        result = ARObject._extract_value(element, "ByteOrderEnum")
+        result = SerializationHelper.extract_value(element, "ByteOrderEnum")
 
         # Assert
         # Enums keep their wrapper
@@ -359,7 +361,7 @@ class TestAREnumCaseInsensitiveDeserialization:
 
 
 class TestARPrimitiveWithAttributesUnwrapping:
-    """Tests for ARObject._unwrap_primitive with primitives that have additional attributes."""
+    """Tests for SerializationHelper.unwrap_primitive with primitives that have additional attributes."""
 
     def test_unwrap_primitive_without_attributes_returns_value(self) -> None:
         """Test unwrapping primitive without attributes returns value."""
@@ -368,7 +370,7 @@ class TestARPrimitiveWithAttributesUnwrapping:
         )
 
         integer = Integer(42)
-        result = ARObject._unwrap_primitive(integer)
+        result = SerializationHelper.unwrap_primitive(integer)
 
         assert isinstance(result, int)
         assert result == 42
@@ -380,7 +382,7 @@ class TestARPrimitiveWithAttributesUnwrapping:
         )
 
         limit = Limit(value="100", interval_type=IntervalTypeEnum.CLOSED)
-        result = ARObject._unwrap_primitive(limit)
+        result = SerializationHelper.unwrap_primitive(limit)
 
         # Should return the Limit wrapper, not the value
         assert isinstance(result, Limit)
@@ -394,7 +396,7 @@ class TestARPrimitiveWithAttributesUnwrapping:
         )
 
         limit = Limit(value="50", interval_type=None)
-        result = ARObject._unwrap_primitive(limit)
+        result = SerializationHelper.unwrap_primitive(limit)
 
         # Should return the value since interval_type is None
         assert isinstance(result, str)

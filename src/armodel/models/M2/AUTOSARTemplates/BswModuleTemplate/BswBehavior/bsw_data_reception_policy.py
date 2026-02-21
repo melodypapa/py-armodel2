@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
     VariableDataPrototype,
@@ -42,12 +43,12 @@ class BswDataReceptionPolicy(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize received_data_ref
         if self.received_data_ref is not None:
-            serialized = ARObject._serialize_item(self.received_data_ref, "VariableDataPrototype")
+            serialized = SerializationHelper.serialize_item(self.received_data_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RECEIVED-DATA-REF")
@@ -76,7 +77,7 @@ class BswDataReceptionPolicy(ARObject, ABC):
         obj.__init__()
 
         # Parse received_data_ref
-        child = ARObject._find_child_element(element, "RECEIVED-DATA-REF")
+        child = SerializationHelper.find_child_element(element, "RECEIVED-DATA-REF")
         if child is not None:
             received_data_ref_value = ARRef.deserialize(child)
             obj.received_data_ref = received_data_ref_value

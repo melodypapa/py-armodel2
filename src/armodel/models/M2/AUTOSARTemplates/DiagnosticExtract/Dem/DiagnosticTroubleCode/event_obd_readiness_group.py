@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     NameToken,
 )
@@ -40,12 +41,12 @@ class EventObdReadinessGroup(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize event_obd
         if self.event_obd is not None:
-            serialized = ARObject._serialize_item(self.event_obd, "NameToken")
+            serialized = SerializationHelper.serialize_item(self.event_obd, "NameToken")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("EVENT-OBD")
@@ -74,7 +75,7 @@ class EventObdReadinessGroup(ARObject):
         obj.__init__()
 
         # Parse event_obd
-        child = ARObject._find_child_element(element, "EVENT-OBD")
+        child = SerializationHelper.find_child_element(element, "EVENT-OBD")
         if child is not None:
             event_obd_value = child.text
             obj.event_obd = event_obd_value

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_ele
     FibexElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances.so_con_i_pdu_identifier import (
     SoConIPduIdentifier,
 )
@@ -43,7 +44,7 @@ class SocketConnectionIpduIdentifierSet(FibexElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class SocketConnectionIpduIdentifierSet(FibexElement):
         if self.i_pdu_identifiers:
             wrapper = ET.Element("I-PDU-IDENTIFIERS")
             for item in self.i_pdu_identifiers:
-                serialized = ARObject._serialize_item(item, "SoConIPduIdentifier")
+                serialized = SerializationHelper.serialize_item(item, "SoConIPduIdentifier")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -87,11 +88,11 @@ class SocketConnectionIpduIdentifierSet(FibexElement):
 
         # Parse i_pdu_identifiers (list from container "I-PDU-IDENTIFIERS")
         obj.i_pdu_identifiers = []
-        container = ARObject._find_child_element(element, "I-PDU-IDENTIFIERS")
+        container = SerializationHelper.find_child_element(element, "I-PDU-IDENTIFIERS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.i_pdu_identifiers.append(child_value)
 

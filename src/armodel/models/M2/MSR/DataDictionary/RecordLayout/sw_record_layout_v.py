@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
@@ -59,12 +60,12 @@ class SwRecordLayoutV(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize base_type_ref
         if self.base_type_ref is not None:
-            serialized = ARObject._serialize_item(self.base_type_ref, "SwBaseType")
+            serialized = SerializationHelper.serialize_item(self.base_type_ref, "SwBaseType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BASE-TYPE-REF")
@@ -78,7 +79,7 @@ class SwRecordLayoutV(ARObject):
 
         # Serialize desc
         if self.desc is not None:
-            serialized = ARObject._serialize_item(self.desc, "MultiLanguageOverviewParagraph")
+            serialized = SerializationHelper.serialize_item(self.desc, "MultiLanguageOverviewParagraph")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DESC")
@@ -92,7 +93,7 @@ class SwRecordLayoutV(ARObject):
 
         # Serialize short_label
         if self.short_label is not None:
-            serialized = ARObject._serialize_item(self.short_label, "Identifier")
+            serialized = SerializationHelper.serialize_item(self.short_label, "Identifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SHORT-LABEL")
@@ -106,7 +107,7 @@ class SwRecordLayoutV(ARObject):
 
         # Serialize sw_generic_axis_param_ref
         if self.sw_generic_axis_param_ref is not None:
-            serialized = ARObject._serialize_item(self.sw_generic_axis_param_ref, "SwGenericAxisParam")
+            serialized = SerializationHelper.serialize_item(self.sw_generic_axis_param_ref, "SwGenericAxisParam")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-GENERIC-AXIS-PARAM-REF")
@@ -120,7 +121,7 @@ class SwRecordLayoutV(ARObject):
 
         # Serialize sw_record
         if self.sw_record is not None:
-            serialized = ARObject._serialize_item(self.sw_record, "NameToken")
+            serialized = SerializationHelper.serialize_item(self.sw_record, "NameToken")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-RECORD")
@@ -149,31 +150,31 @@ class SwRecordLayoutV(ARObject):
         obj.__init__()
 
         # Parse base_type_ref
-        child = ARObject._find_child_element(element, "BASE-TYPE-REF")
+        child = SerializationHelper.find_child_element(element, "BASE-TYPE-REF")
         if child is not None:
             base_type_ref_value = ARRef.deserialize(child)
             obj.base_type_ref = base_type_ref_value
 
         # Parse desc
-        child = ARObject._find_child_element(element, "DESC")
+        child = SerializationHelper.find_child_element(element, "DESC")
         if child is not None:
-            desc_value = ARObject._deserialize_with_type(child, "MultiLanguageOverviewParagraph")
+            desc_value = SerializationHelper.deserialize_with_type(child, "MultiLanguageOverviewParagraph")
             obj.desc = desc_value
 
         # Parse short_label
-        child = ARObject._find_child_element(element, "SHORT-LABEL")
+        child = SerializationHelper.find_child_element(element, "SHORT-LABEL")
         if child is not None:
-            short_label_value = ARObject._deserialize_by_tag(child, "Identifier")
+            short_label_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
             obj.short_label = short_label_value
 
         # Parse sw_generic_axis_param_ref
-        child = ARObject._find_child_element(element, "SW-GENERIC-AXIS-PARAM-REF")
+        child = SerializationHelper.find_child_element(element, "SW-GENERIC-AXIS-PARAM-REF")
         if child is not None:
             sw_generic_axis_param_ref_value = ARRef.deserialize(child)
             obj.sw_generic_axis_param_ref = sw_generic_axis_param_ref_value
 
         # Parse sw_record
-        child = ARObject._find_child_element(element, "SW-RECORD")
+        child = SerializationHelper.find_child_element(element, "SW-RECORD")
         if child is not None:
             sw_record_value = child.text
             obj.sw_record = sw_record_value

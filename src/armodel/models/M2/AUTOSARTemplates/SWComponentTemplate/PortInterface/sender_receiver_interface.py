@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.data_i
     DataInterface,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.invalidation_policy import (
     InvalidationPolicy,
 )
@@ -58,7 +59,7 @@ class SenderReceiverInterface(DataInterface):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -79,7 +80,7 @@ class SenderReceiverInterface(DataInterface):
         if self.data_elements:
             wrapper = ET.Element("DATA-ELEMENTS")
             for item in self.data_elements:
-                serialized = ARObject._serialize_item(item, "VariableDataPrototype")
+                serialized = SerializationHelper.serialize_item(item, "VariableDataPrototype")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -89,7 +90,7 @@ class SenderReceiverInterface(DataInterface):
         if self.invalidation_policy_policies:
             wrapper = ET.Element("INVALIDATION-POLICY-POLICIES")
             for item in self.invalidation_policy_policies:
-                serialized = ARObject._serialize_item(item, "InvalidationPolicy")
+                serialized = SerializationHelper.serialize_item(item, "InvalidationPolicy")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -99,7 +100,7 @@ class SenderReceiverInterface(DataInterface):
         if self.meta_data_item_sets:
             wrapper = ET.Element("META-DATA-ITEM-SETS")
             for item in self.meta_data_item_sets:
-                serialized = ARObject._serialize_item(item, "MetaDataItemSet")
+                serialized = SerializationHelper.serialize_item(item, "MetaDataItemSet")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -122,31 +123,31 @@ class SenderReceiverInterface(DataInterface):
 
         # Parse data_elements (list from container "DATA-ELEMENTS")
         obj.data_elements = []
-        container = ARObject._find_child_element(element, "DATA-ELEMENTS")
+        container = SerializationHelper.find_child_element(element, "DATA-ELEMENTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.data_elements.append(child_value)
 
         # Parse invalidation_policy_policies (list from container "INVALIDATION-POLICY-POLICIES")
         obj.invalidation_policy_policies = []
-        container = ARObject._find_child_element(element, "INVALIDATION-POLICY-POLICIES")
+        container = SerializationHelper.find_child_element(element, "INVALIDATION-POLICY-POLICIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.invalidation_policy_policies.append(child_value)
 
         # Parse meta_data_item_sets (list from container "META-DATA-ITEM-SETS")
         obj.meta_data_item_sets = []
-        container = ARObject._find_child_element(element, "META-DATA-ITEM-SETS")
+        container = SerializationHelper.find_child_element(element, "META-DATA-ITEM-SETS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.meta_data_item_sets.append(child_value)
 

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommun
     LinConfigurationEntry,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
 )
@@ -43,7 +44,7 @@ class AssignNad(LinConfigurationEntry):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class AssignNad(LinConfigurationEntry):
 
         # Serialize new_nad
         if self.new_nad is not None:
-            serialized = ARObject._serialize_item(self.new_nad, "Integer")
+            serialized = SerializationHelper.serialize_item(self.new_nad, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NEW-NAD")
@@ -90,7 +91,7 @@ class AssignNad(LinConfigurationEntry):
         obj = super(AssignNad, cls).deserialize(element)
 
         # Parse new_nad
-        child = ARObject._find_child_element(element, "NEW-NAD")
+        child = SerializationHelper.find_child_element(element, "NEW-NAD")
         if child is not None:
             new_nad_value = child.text
             obj.new_nad = new_nad_value

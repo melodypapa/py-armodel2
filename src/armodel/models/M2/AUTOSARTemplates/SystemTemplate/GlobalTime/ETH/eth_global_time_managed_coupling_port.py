@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.ETH import (
     GlobalTimePortRoleEnum,
@@ -60,12 +61,12 @@ class EthGlobalTimeManagedCouplingPort(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize coupling_port_ref
         if self.coupling_port_ref is not None:
-            serialized = ARObject._serialize_item(self.coupling_port_ref, "CouplingPort")
+            serialized = SerializationHelper.serialize_item(self.coupling_port_ref, "CouplingPort")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COUPLING-PORT-REF")
@@ -79,7 +80,7 @@ class EthGlobalTimeManagedCouplingPort(ARObject):
 
         # Serialize global_time_port_role
         if self.global_time_port_role is not None:
-            serialized = ARObject._serialize_item(self.global_time_port_role, "GlobalTimePortRoleEnum")
+            serialized = SerializationHelper.serialize_item(self.global_time_port_role, "GlobalTimePortRoleEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("GLOBAL-TIME-PORT-ROLE")
@@ -93,7 +94,7 @@ class EthGlobalTimeManagedCouplingPort(ARObject):
 
         # Serialize global_time_tx_period
         if self.global_time_tx_period is not None:
-            serialized = ARObject._serialize_item(self.global_time_tx_period, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.global_time_tx_period, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("GLOBAL-TIME-TX-PERIOD")
@@ -107,7 +108,7 @@ class EthGlobalTimeManagedCouplingPort(ARObject):
 
         # Serialize pdelay_latency
         if self.pdelay_latency is not None:
-            serialized = ARObject._serialize_item(self.pdelay_latency, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.pdelay_latency, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PDELAY-LATENCY")
@@ -121,7 +122,7 @@ class EthGlobalTimeManagedCouplingPort(ARObject):
 
         # Serialize pdelay_request
         if self.pdelay_request is not None:
-            serialized = ARObject._serialize_item(self.pdelay_request, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.pdelay_request, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PDELAY-REQUEST")
@@ -135,7 +136,7 @@ class EthGlobalTimeManagedCouplingPort(ARObject):
 
         # Serialize pdelay_resp_and
         if self.pdelay_resp_and is not None:
-            serialized = ARObject._serialize_item(self.pdelay_resp_and, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.pdelay_resp_and, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PDELAY-RESP-AND")
@@ -149,7 +150,7 @@ class EthGlobalTimeManagedCouplingPort(ARObject):
 
         # Serialize pdelay
         if self.pdelay is not None:
-            serialized = ARObject._serialize_item(self.pdelay, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.pdelay, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PDELAY")
@@ -178,43 +179,43 @@ class EthGlobalTimeManagedCouplingPort(ARObject):
         obj.__init__()
 
         # Parse coupling_port_ref
-        child = ARObject._find_child_element(element, "COUPLING-PORT-REF")
+        child = SerializationHelper.find_child_element(element, "COUPLING-PORT-REF")
         if child is not None:
             coupling_port_ref_value = ARRef.deserialize(child)
             obj.coupling_port_ref = coupling_port_ref_value
 
         # Parse global_time_port_role
-        child = ARObject._find_child_element(element, "GLOBAL-TIME-PORT-ROLE")
+        child = SerializationHelper.find_child_element(element, "GLOBAL-TIME-PORT-ROLE")
         if child is not None:
             global_time_port_role_value = GlobalTimePortRoleEnum.deserialize(child)
             obj.global_time_port_role = global_time_port_role_value
 
         # Parse global_time_tx_period
-        child = ARObject._find_child_element(element, "GLOBAL-TIME-TX-PERIOD")
+        child = SerializationHelper.find_child_element(element, "GLOBAL-TIME-TX-PERIOD")
         if child is not None:
             global_time_tx_period_value = child.text
             obj.global_time_tx_period = global_time_tx_period_value
 
         # Parse pdelay_latency
-        child = ARObject._find_child_element(element, "PDELAY-LATENCY")
+        child = SerializationHelper.find_child_element(element, "PDELAY-LATENCY")
         if child is not None:
             pdelay_latency_value = child.text
             obj.pdelay_latency = pdelay_latency_value
 
         # Parse pdelay_request
-        child = ARObject._find_child_element(element, "PDELAY-REQUEST")
+        child = SerializationHelper.find_child_element(element, "PDELAY-REQUEST")
         if child is not None:
             pdelay_request_value = child.text
             obj.pdelay_request = pdelay_request_value
 
         # Parse pdelay_resp_and
-        child = ARObject._find_child_element(element, "PDELAY-RESP-AND")
+        child = SerializationHelper.find_child_element(element, "PDELAY-RESP-AND")
         if child is not None:
             pdelay_resp_and_value = child.text
             obj.pdelay_resp_and = pdelay_resp_and_value
 
         # Parse pdelay
-        child = ARObject._find_child_element(element, "PDELAY")
+        child = SerializationHelper.find_child_element(element, "PDELAY")
         if child is not None:
             pdelay_value = child.text
             obj.pdelay = pdelay_value

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
     AttributeTailoring,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint.Data import (
     DefaultValueApplicationStrategyEnum,
 )
@@ -50,7 +51,7 @@ class PrimitiveAttributeTailoring(AttributeTailoring):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -69,7 +70,7 @@ class PrimitiveAttributeTailoring(AttributeTailoring):
 
         # Serialize default_value
         if self.default_value is not None:
-            serialized = ARObject._serialize_item(self.default_value, "DefaultValueApplicationStrategyEnum")
+            serialized = SerializationHelper.serialize_item(self.default_value, "DefaultValueApplicationStrategyEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DEFAULT-VALUE")
@@ -85,7 +86,7 @@ class PrimitiveAttributeTailoring(AttributeTailoring):
         if self.sub_attributes:
             wrapper = ET.Element("SUB-ATTRIBUTES")
             for item in self.sub_attributes:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -93,7 +94,7 @@ class PrimitiveAttributeTailoring(AttributeTailoring):
 
         # Serialize value_restriction_with_severity
         if self.value_restriction_with_severity is not None:
-            serialized = ARObject._serialize_item(self.value_restriction_with_severity, "ValueRestrictionWithSeverity")
+            serialized = SerializationHelper.serialize_item(self.value_restriction_with_severity, "ValueRestrictionWithSeverity")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VALUE-RESTRICTION-WITH-SEVERITY")
@@ -121,25 +122,25 @@ class PrimitiveAttributeTailoring(AttributeTailoring):
         obj = super(PrimitiveAttributeTailoring, cls).deserialize(element)
 
         # Parse default_value
-        child = ARObject._find_child_element(element, "DEFAULT-VALUE")
+        child = SerializationHelper.find_child_element(element, "DEFAULT-VALUE")
         if child is not None:
             default_value_value = DefaultValueApplicationStrategyEnum.deserialize(child)
             obj.default_value = default_value_value
 
         # Parse sub_attributes (list from container "SUB-ATTRIBUTES")
         obj.sub_attributes = []
-        container = ARObject._find_child_element(element, "SUB-ATTRIBUTES")
+        container = SerializationHelper.find_child_element(element, "SUB-ATTRIBUTES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.sub_attributes.append(child_value)
 
         # Parse value_restriction_with_severity
-        child = ARObject._find_child_element(element, "VALUE-RESTRICTION-WITH-SEVERITY")
+        child = SerializationHelper.find_child_element(element, "VALUE-RESTRICTION-WITH-SEVERITY")
         if child is not None:
-            value_restriction_with_severity_value = ARObject._deserialize_by_tag(child, "ValueRestrictionWithSeverity")
+            value_restriction_with_severity_value = SerializationHelper.deserialize_by_tag(child, "ValueRestrictionWithSeverity")
             obj.value_restriction_with_severity = value_restriction_with_severity_value
 
         return obj

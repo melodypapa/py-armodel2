@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.autosar_data_prototype import (
     AutosarDataPrototype,
@@ -61,12 +62,12 @@ class DataPrototypeMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize first_data_ref
         if self.first_data_ref is not None:
-            serialized = ARObject._serialize_item(self.first_data_ref, "AutosarDataPrototype")
+            serialized = SerializationHelper.serialize_item(self.first_data_ref, "AutosarDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FIRST-DATA-REF")
@@ -80,7 +81,7 @@ class DataPrototypeMapping(ARObject):
 
         # Serialize first_to_second_ref
         if self.first_to_second_ref is not None:
-            serialized = ARObject._serialize_item(self.first_to_second_ref, "DataTransformation")
+            serialized = SerializationHelper.serialize_item(self.first_to_second_ref, "DataTransformation")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FIRST-TO-SECOND-REF")
@@ -94,7 +95,7 @@ class DataPrototypeMapping(ARObject):
 
         # Serialize second_data_ref
         if self.second_data_ref is not None:
-            serialized = ARObject._serialize_item(self.second_data_ref, "AutosarDataPrototype")
+            serialized = SerializationHelper.serialize_item(self.second_data_ref, "AutosarDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SECOND-DATA-REF")
@@ -108,7 +109,7 @@ class DataPrototypeMapping(ARObject):
 
         # Serialize second_to_first_ref
         if self.second_to_first_ref is not None:
-            serialized = ARObject._serialize_item(self.second_to_first_ref, "DataTransformation")
+            serialized = SerializationHelper.serialize_item(self.second_to_first_ref, "DataTransformation")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SECOND-TO-FIRST-REF")
@@ -124,7 +125,7 @@ class DataPrototypeMapping(ARObject):
         if self.sub_element_refs:
             wrapper = ET.Element("SUB-ELEMENT-REFS")
             for item in self.sub_element_refs:
-                serialized = ARObject._serialize_item(item, "SubElementMapping")
+                serialized = SerializationHelper.serialize_item(item, "SubElementMapping")
                 if serialized is not None:
                     child_elem = ET.Element("SUB-ELEMENT-REF")
                     if hasattr(serialized, 'attrib'):
@@ -139,7 +140,7 @@ class DataPrototypeMapping(ARObject):
 
         # Serialize text_table_ref
         if self.text_table_ref is not None:
-            serialized = ARObject._serialize_item(self.text_table_ref, "TextTableMapping")
+            serialized = SerializationHelper.serialize_item(self.text_table_ref, "TextTableMapping")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TEXT-TABLE-REF")
@@ -168,47 +169,47 @@ class DataPrototypeMapping(ARObject):
         obj.__init__()
 
         # Parse first_data_ref
-        child = ARObject._find_child_element(element, "FIRST-DATA-REF")
+        child = SerializationHelper.find_child_element(element, "FIRST-DATA-REF")
         if child is not None:
             first_data_ref_value = ARRef.deserialize(child)
             obj.first_data_ref = first_data_ref_value
 
         # Parse first_to_second_ref
-        child = ARObject._find_child_element(element, "FIRST-TO-SECOND-REF")
+        child = SerializationHelper.find_child_element(element, "FIRST-TO-SECOND-REF")
         if child is not None:
             first_to_second_ref_value = ARRef.deserialize(child)
             obj.first_to_second_ref = first_to_second_ref_value
 
         # Parse second_data_ref
-        child = ARObject._find_child_element(element, "SECOND-DATA-REF")
+        child = SerializationHelper.find_child_element(element, "SECOND-DATA-REF")
         if child is not None:
             second_data_ref_value = ARRef.deserialize(child)
             obj.second_data_ref = second_data_ref_value
 
         # Parse second_to_first_ref
-        child = ARObject._find_child_element(element, "SECOND-TO-FIRST-REF")
+        child = SerializationHelper.find_child_element(element, "SECOND-TO-FIRST-REF")
         if child is not None:
             second_to_first_ref_value = ARRef.deserialize(child)
             obj.second_to_first_ref = second_to_first_ref_value
 
         # Parse sub_element_refs (list from container "SUB-ELEMENT-REFS")
         obj.sub_element_refs = []
-        container = ARObject._find_child_element(element, "SUB-ELEMENT-REFS")
+        container = SerializationHelper.find_child_element(element, "SUB-ELEMENT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.sub_element_refs.append(child_value)
 
         # Parse text_table_ref
-        child = ARObject._find_child_element(element, "TEXT-TABLE-REF")
+        child = SerializationHelper.find_child_element(element, "TEXT-TABLE-REF")
         if child is not None:
             text_table_ref_value = ARRef.deserialize(child)
             obj.text_table_ref = text_table_ref_value

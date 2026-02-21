@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.
     DataFormatElementScope,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -43,7 +44,7 @@ class ConcreteClassTailoring(DataFormatElementScope):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class ConcreteClassTailoring(DataFormatElementScope):
 
         # Serialize validation_root
         if self.validation_root is not None:
-            serialized = ARObject._serialize_item(self.validation_root, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.validation_root, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VALIDATION-ROOT")
@@ -90,7 +91,7 @@ class ConcreteClassTailoring(DataFormatElementScope):
         obj = super(ConcreteClassTailoring, cls).deserialize(element)
 
         # Parse validation_root
-        child = ARObject._find_child_element(element, "VALIDATION-ROOT")
+        child = SerializationHelper.find_child_element(element, "VALIDATION-ROOT")
         if child is not None:
             validation_root_value = child.text
             obj.validation_root = validation_root_value

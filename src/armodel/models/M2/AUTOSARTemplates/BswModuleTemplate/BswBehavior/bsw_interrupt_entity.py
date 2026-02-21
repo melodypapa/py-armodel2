@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_module
     BswModuleEntity,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior import (
     BswInterruptCategory,
 )
@@ -49,7 +50,7 @@ class BswInterruptEntity(BswModuleEntity):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -68,7 +69,7 @@ class BswInterruptEntity(BswModuleEntity):
 
         # Serialize interrupt_category
         if self.interrupt_category is not None:
-            serialized = ARObject._serialize_item(self.interrupt_category, "BswInterruptCategory")
+            serialized = SerializationHelper.serialize_item(self.interrupt_category, "BswInterruptCategory")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INTERRUPT-CATEGORY")
@@ -82,7 +83,7 @@ class BswInterruptEntity(BswModuleEntity):
 
         # Serialize interrupt_source
         if self.interrupt_source is not None:
-            serialized = ARObject._serialize_item(self.interrupt_source, "String")
+            serialized = SerializationHelper.serialize_item(self.interrupt_source, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INTERRUPT-SOURCE")
@@ -110,13 +111,13 @@ class BswInterruptEntity(BswModuleEntity):
         obj = super(BswInterruptEntity, cls).deserialize(element)
 
         # Parse interrupt_category
-        child = ARObject._find_child_element(element, "INTERRUPT-CATEGORY")
+        child = SerializationHelper.find_child_element(element, "INTERRUPT-CATEGORY")
         if child is not None:
             interrupt_category_value = BswInterruptCategory.deserialize(child)
             obj.interrupt_category = interrupt_category_value
 
         # Parse interrupt_source
-        child = ARObject._find_child_element(element, "INTERRUPT-SOURCE")
+        child = SerializationHelper.find_child_element(element, "INTERRUPT-SOURCE")
         if child is not None:
             interrupt_source_value = child.text
             obj.interrupt_source = interrupt_source_value

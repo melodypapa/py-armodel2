@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.
     SwcSupportedFeature,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.PortAPIOptions import (
     SupportBufferLockingEnum,
 )
@@ -43,7 +44,7 @@ class CommunicationBufferLocking(SwcSupportedFeature):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class CommunicationBufferLocking(SwcSupportedFeature):
 
         # Serialize support_buffer_locking
         if self.support_buffer_locking is not None:
-            serialized = ARObject._serialize_item(self.support_buffer_locking, "SupportBufferLockingEnum")
+            serialized = SerializationHelper.serialize_item(self.support_buffer_locking, "SupportBufferLockingEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SUPPORT-BUFFER-LOCKING")
@@ -90,7 +91,7 @@ class CommunicationBufferLocking(SwcSupportedFeature):
         obj = super(CommunicationBufferLocking, cls).deserialize(element)
 
         # Parse support_buffer_locking
-        child = ARObject._find_child_element(element, "SUPPORT-BUFFER-LOCKING")
+        child = SerializationHelper.find_child_element(element, "SUPPORT-BUFFER-LOCKING")
         if child is not None:
             support_buffer_locking_value = SupportBufferLockingEnum.deserialize(child)
             obj.support_buffer_locking = support_buffer_locking_value

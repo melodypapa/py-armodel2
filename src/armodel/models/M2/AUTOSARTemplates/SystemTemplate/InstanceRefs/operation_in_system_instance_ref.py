@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_operation import (
     ClientServerOperation,
@@ -56,12 +57,12 @@ class OperationInSystemInstanceRef(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize base_ref
         if self.base_ref is not None:
-            serialized = ARObject._serialize_item(self.base_ref, "System")
+            serialized = SerializationHelper.serialize_item(self.base_ref, "System")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BASE-REF")
@@ -75,7 +76,7 @@ class OperationInSystemInstanceRef(ARObject):
 
         # Serialize context_ref
         if self.context_ref is not None:
-            serialized = ARObject._serialize_item(self.context_ref, "RootSwCompositionPrototype")
+            serialized = SerializationHelper.serialize_item(self.context_ref, "RootSwCompositionPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONTEXT-REF")
@@ -89,7 +90,7 @@ class OperationInSystemInstanceRef(ARObject):
 
         # Serialize context_port_ref
         if self.context_port_ref is not None:
-            serialized = ARObject._serialize_item(self.context_port_ref, "PortPrototype")
+            serialized = SerializationHelper.serialize_item(self.context_port_ref, "PortPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONTEXT-PORT-REF")
@@ -103,7 +104,7 @@ class OperationInSystemInstanceRef(ARObject):
 
         # Serialize target_operation_ref
         if self.target_operation_ref is not None:
-            serialized = ARObject._serialize_item(self.target_operation_ref, "ClientServerOperation")
+            serialized = SerializationHelper.serialize_item(self.target_operation_ref, "ClientServerOperation")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TARGET-OPERATION-REF")
@@ -132,25 +133,25 @@ class OperationInSystemInstanceRef(ARObject):
         obj.__init__()
 
         # Parse base_ref
-        child = ARObject._find_child_element(element, "BASE-REF")
+        child = SerializationHelper.find_child_element(element, "BASE-REF")
         if child is not None:
             base_ref_value = ARRef.deserialize(child)
             obj.base_ref = base_ref_value
 
         # Parse context_ref
-        child = ARObject._find_child_element(element, "CONTEXT-REF")
+        child = SerializationHelper.find_child_element(element, "CONTEXT-REF")
         if child is not None:
             context_ref_value = ARRef.deserialize(child)
             obj.context_ref = context_ref_value
 
         # Parse context_port_ref
-        child = ARObject._find_child_element(element, "CONTEXT-PORT-REF")
+        child = SerializationHelper.find_child_element(element, "CONTEXT-PORT-REF")
         if child is not None:
             context_port_ref_value = ARRef.deserialize(child)
             obj.context_port_ref = context_port_ref_value
 
         # Parse target_operation_ref
-        child = ARObject._find_child_element(element, "TARGET-OPERATION-REF")
+        child = SerializationHelper.find_child_element(element, "TARGET-OPERATION-REF")
         if child is not None:
             target_operation_ref_value = ARRef.deserialize(child)
             obj.target_operation_ref = target_operation_ref_value

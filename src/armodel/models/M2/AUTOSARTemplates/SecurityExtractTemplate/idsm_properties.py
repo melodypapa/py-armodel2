@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.ids_common_eleme
     IdsCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.idsm_rate_limitation import (
     IdsmRateLimitation,
 )
@@ -48,7 +49,7 @@ class IdsmProperties(IdsCommonElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -69,7 +70,7 @@ class IdsmProperties(IdsCommonElement):
         if self.rate_limitations:
             wrapper = ET.Element("RATE-LIMITATIONS")
             for item in self.rate_limitations:
-                serialized = ARObject._serialize_item(item, "IdsmRateLimitation")
+                serialized = SerializationHelper.serialize_item(item, "IdsmRateLimitation")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -79,7 +80,7 @@ class IdsmProperties(IdsCommonElement):
         if self.traffic_limitations:
             wrapper = ET.Element("TRAFFIC-LIMITATIONS")
             for item in self.traffic_limitations:
-                serialized = ARObject._serialize_item(item, "IdsmTrafficLimitation")
+                serialized = SerializationHelper.serialize_item(item, "IdsmTrafficLimitation")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -102,21 +103,21 @@ class IdsmProperties(IdsCommonElement):
 
         # Parse rate_limitations (list from container "RATE-LIMITATIONS")
         obj.rate_limitations = []
-        container = ARObject._find_child_element(element, "RATE-LIMITATIONS")
+        container = SerializationHelper.find_child_element(element, "RATE-LIMITATIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.rate_limitations.append(child_value)
 
         # Parse traffic_limitations (list from container "TRAFFIC-LIMITATIONS")
         obj.traffic_limitations = []
-        container = ARObject._find_child_element(element, "TRAFFIC-LIMITATIONS")
+        container = SerializationHelper.find_child_element(element, "TRAFFIC-LIMITATIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.traffic_limitations.append(child_value)
 

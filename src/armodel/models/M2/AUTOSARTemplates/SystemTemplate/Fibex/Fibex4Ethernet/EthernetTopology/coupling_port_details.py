@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.coupling_port_rate_policy import (
     CouplingPortRatePolicy,
@@ -66,14 +67,14 @@ class CouplingPortDetails(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize coupling_ports (list to container "COUPLING-PORTS")
         if self.coupling_ports:
             wrapper = ET.Element("COUPLING-PORTS")
             for item in self.coupling_ports:
-                serialized = ARObject._serialize_item(item, "CouplingPortStructuralElement")
+                serialized = SerializationHelper.serialize_item(item, "CouplingPortStructuralElement")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -81,7 +82,7 @@ class CouplingPortDetails(ARObject):
 
         # Serialize ethernet_priority
         if self.ethernet_priority is not None:
-            serialized = ARObject._serialize_item(self.ethernet_priority, "EthernetPriorityRegeneration")
+            serialized = SerializationHelper.serialize_item(self.ethernet_priority, "EthernetPriorityRegeneration")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ETHERNET-PRIORITY")
@@ -95,7 +96,7 @@ class CouplingPortDetails(ARObject):
 
         # Serialize ethernet_traffic
         if self.ethernet_traffic is not None:
-            serialized = ARObject._serialize_item(self.ethernet_traffic, "CouplingPortTrafficClassAssignment")
+            serialized = SerializationHelper.serialize_item(self.ethernet_traffic, "CouplingPortTrafficClassAssignment")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ETHERNET-TRAFFIC")
@@ -109,7 +110,7 @@ class CouplingPortDetails(ARObject):
 
         # Serialize global_time_coupling
         if self.global_time_coupling is not None:
-            serialized = ARObject._serialize_item(self.global_time_coupling, "GlobalTimeCouplingPortProps")
+            serialized = SerializationHelper.serialize_item(self.global_time_coupling, "GlobalTimeCouplingPortProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("GLOBAL-TIME-COUPLING")
@@ -123,7 +124,7 @@ class CouplingPortDetails(ARObject):
 
         # Serialize last_egress_ref
         if self.last_egress_ref is not None:
-            serialized = ARObject._serialize_item(self.last_egress_ref, "CouplingPortScheduler")
+            serialized = SerializationHelper.serialize_item(self.last_egress_ref, "CouplingPortScheduler")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LAST-EGRESS-REF")
@@ -139,7 +140,7 @@ class CouplingPortDetails(ARObject):
         if self.rate_policies:
             wrapper = ET.Element("RATE-POLICIES")
             for item in self.rate_policies:
-                serialized = ARObject._serialize_item(item, "CouplingPortRatePolicy")
+                serialized = SerializationHelper.serialize_item(item, "CouplingPortRatePolicy")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -163,45 +164,45 @@ class CouplingPortDetails(ARObject):
 
         # Parse coupling_ports (list from container "COUPLING-PORTS")
         obj.coupling_ports = []
-        container = ARObject._find_child_element(element, "COUPLING-PORTS")
+        container = SerializationHelper.find_child_element(element, "COUPLING-PORTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.coupling_ports.append(child_value)
 
         # Parse ethernet_priority
-        child = ARObject._find_child_element(element, "ETHERNET-PRIORITY")
+        child = SerializationHelper.find_child_element(element, "ETHERNET-PRIORITY")
         if child is not None:
-            ethernet_priority_value = ARObject._deserialize_by_tag(child, "EthernetPriorityRegeneration")
+            ethernet_priority_value = SerializationHelper.deserialize_by_tag(child, "EthernetPriorityRegeneration")
             obj.ethernet_priority = ethernet_priority_value
 
         # Parse ethernet_traffic
-        child = ARObject._find_child_element(element, "ETHERNET-TRAFFIC")
+        child = SerializationHelper.find_child_element(element, "ETHERNET-TRAFFIC")
         if child is not None:
-            ethernet_traffic_value = ARObject._deserialize_by_tag(child, "CouplingPortTrafficClassAssignment")
+            ethernet_traffic_value = SerializationHelper.deserialize_by_tag(child, "CouplingPortTrafficClassAssignment")
             obj.ethernet_traffic = ethernet_traffic_value
 
         # Parse global_time_coupling
-        child = ARObject._find_child_element(element, "GLOBAL-TIME-COUPLING")
+        child = SerializationHelper.find_child_element(element, "GLOBAL-TIME-COUPLING")
         if child is not None:
-            global_time_coupling_value = ARObject._deserialize_by_tag(child, "GlobalTimeCouplingPortProps")
+            global_time_coupling_value = SerializationHelper.deserialize_by_tag(child, "GlobalTimeCouplingPortProps")
             obj.global_time_coupling = global_time_coupling_value
 
         # Parse last_egress_ref
-        child = ARObject._find_child_element(element, "LAST-EGRESS-REF")
+        child = SerializationHelper.find_child_element(element, "LAST-EGRESS-REF")
         if child is not None:
             last_egress_ref_value = ARRef.deserialize(child)
             obj.last_egress_ref = last_egress_ref_value
 
         # Parse rate_policies (list from container "RATE-POLICIES")
         obj.rate_policies = []
-        container = ARObject._find_child_element(element, "RATE-POLICIES")
+        container = SerializationHelper.find_child_element(element, "RATE-POLICIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.rate_policies.append(child_value)
 

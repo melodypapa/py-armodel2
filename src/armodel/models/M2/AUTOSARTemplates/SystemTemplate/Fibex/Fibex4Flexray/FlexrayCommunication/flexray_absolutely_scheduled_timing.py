@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -45,12 +46,12 @@ class FlexrayAbsolutelyScheduledTiming(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize communication_cycle_cycle
         if self.communication_cycle_cycle is not None:
-            serialized = ARObject._serialize_item(self.communication_cycle_cycle, "CommunicationCycle")
+            serialized = SerializationHelper.serialize_item(self.communication_cycle_cycle, "CommunicationCycle")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COMMUNICATION-CYCLE-CYCLE")
@@ -64,7 +65,7 @@ class FlexrayAbsolutelyScheduledTiming(ARObject):
 
         # Serialize slot_id
         if self.slot_id is not None:
-            serialized = ARObject._serialize_item(self.slot_id, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.slot_id, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SLOT-ID")
@@ -93,13 +94,13 @@ class FlexrayAbsolutelyScheduledTiming(ARObject):
         obj.__init__()
 
         # Parse communication_cycle_cycle
-        child = ARObject._find_child_element(element, "COMMUNICATION-CYCLE-CYCLE")
+        child = SerializationHelper.find_child_element(element, "COMMUNICATION-CYCLE-CYCLE")
         if child is not None:
-            communication_cycle_cycle_value = ARObject._deserialize_by_tag(child, "CommunicationCycle")
+            communication_cycle_cycle_value = SerializationHelper.deserialize_by_tag(child, "CommunicationCycle")
             obj.communication_cycle_cycle = communication_cycle_cycle_value
 
         # Parse slot_id
-        child = ARObject._find_child_element(element, "SLOT-ID")
+        child = SerializationHelper.find_child_element(element, "SLOT-ID")
         if child is not None:
             slot_id_value = child.text
             obj.slot_id = slot_id_value

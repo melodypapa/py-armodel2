@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -102,7 +103,7 @@ class BswModuleDescription(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -123,7 +124,7 @@ class BswModuleDescription(ARElement):
         if self.bsw_module_refs:
             wrapper = ET.Element("BSW-MODULE-REFS")
             for item in self.bsw_module_refs:
-                serialized = ARObject._serialize_item(item, "BswModuleDependency")
+                serialized = SerializationHelper.serialize_item(item, "BswModuleDependency")
                 if serialized is not None:
                     child_elem = ET.Element("BSW-MODULE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -138,7 +139,7 @@ class BswModuleDescription(ARElement):
 
         # Serialize bsw_module_documentation
         if self.bsw_module_documentation is not None:
-            serialized = ARObject._serialize_item(self.bsw_module_documentation, "SwComponentDocumentation")
+            serialized = SerializationHelper.serialize_item(self.bsw_module_documentation, "SwComponentDocumentation")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BSW-MODULE-DOCUMENTATION")
@@ -154,7 +155,7 @@ class BswModuleDescription(ARElement):
         if self.expected_entrie_refs:
             wrapper = ET.Element("EXPECTED-ENTRIE-REFS")
             for item in self.expected_entrie_refs:
-                serialized = ARObject._serialize_item(item, "BswModuleEntry")
+                serialized = SerializationHelper.serialize_item(item, "BswModuleEntry")
                 if serialized is not None:
                     child_elem = ET.Element("EXPECTED-ENTRIE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -171,7 +172,7 @@ class BswModuleDescription(ARElement):
         if self.implemented_refs:
             wrapper = ET.Element("IMPLEMENTED-REFS")
             for item in self.implemented_refs:
-                serialized = ARObject._serialize_item(item, "BswModuleEntry")
+                serialized = SerializationHelper.serialize_item(item, "BswModuleEntry")
                 if serialized is not None:
                     child_elem = ET.Element("IMPLEMENTED-REF")
                     if hasattr(serialized, 'attrib'):
@@ -188,7 +189,7 @@ class BswModuleDescription(ARElement):
         if self.internal_behaviors:
             wrapper = ET.Element("INTERNAL-BEHAVIORS")
             for item in self.internal_behaviors:
-                serialized = ARObject._serialize_item(item, "BswInternalBehavior")
+                serialized = SerializationHelper.serialize_item(item, "BswInternalBehavior")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -196,7 +197,7 @@ class BswModuleDescription(ARElement):
 
         # Serialize module_id
         if self.module_id is not None:
-            serialized = ARObject._serialize_item(self.module_id, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.module_id, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MODULE-ID")
@@ -212,7 +213,7 @@ class BswModuleDescription(ARElement):
         if self.provided_clients:
             wrapper = ET.Element("PROVIDED-CLIENTS")
             for item in self.provided_clients:
-                serialized = ARObject._serialize_item(item, "BswModuleClientServerEntry")
+                serialized = SerializationHelper.serialize_item(item, "BswModuleClientServerEntry")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -222,7 +223,7 @@ class BswModuleDescription(ARElement):
         if self.provided_data_refs:
             wrapper = ET.Element("PROVIDED-DATA-REFS")
             for item in self.provided_data_refs:
-                serialized = ARObject._serialize_item(item, "VariableDataPrototype")
+                serialized = SerializationHelper.serialize_item(item, "VariableDataPrototype")
                 if serialized is not None:
                     child_elem = ET.Element("PROVIDED-DATA-REF")
                     if hasattr(serialized, 'attrib'):
@@ -239,7 +240,7 @@ class BswModuleDescription(ARElement):
         if self.provided_mode_refs:
             wrapper = ET.Element("PROVIDED-MODE-REFS")
             for item in self.provided_mode_refs:
-                serialized = ARObject._serialize_item(item, "ModeDeclarationGroup")
+                serialized = SerializationHelper.serialize_item(item, "ModeDeclarationGroup")
                 if serialized is not None:
                     child_elem = ET.Element("PROVIDED-MODE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -256,7 +257,7 @@ class BswModuleDescription(ARElement):
         if self.released_trigger_refs:
             wrapper = ET.Element("RELEASED-TRIGGER-REFS")
             for item in self.released_trigger_refs:
-                serialized = ARObject._serialize_item(item, "Trigger")
+                serialized = SerializationHelper.serialize_item(item, "Trigger")
                 if serialized is not None:
                     child_elem = ET.Element("RELEASED-TRIGGER-REF")
                     if hasattr(serialized, 'attrib'):
@@ -273,7 +274,7 @@ class BswModuleDescription(ARElement):
         if self.required_clients:
             wrapper = ET.Element("REQUIRED-CLIENTS")
             for item in self.required_clients:
-                serialized = ARObject._serialize_item(item, "BswModuleClientServerEntry")
+                serialized = SerializationHelper.serialize_item(item, "BswModuleClientServerEntry")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -283,7 +284,7 @@ class BswModuleDescription(ARElement):
         if self.required_data_refs:
             wrapper = ET.Element("REQUIRED-DATA-REFS")
             for item in self.required_data_refs:
-                serialized = ARObject._serialize_item(item, "VariableDataPrototype")
+                serialized = SerializationHelper.serialize_item(item, "VariableDataPrototype")
                 if serialized is not None:
                     child_elem = ET.Element("REQUIRED-DATA-REF")
                     if hasattr(serialized, 'attrib'):
@@ -300,7 +301,7 @@ class BswModuleDescription(ARElement):
         if self.required_mode_refs:
             wrapper = ET.Element("REQUIRED-MODE-REFS")
             for item in self.required_mode_refs:
-                serialized = ARObject._serialize_item(item, "ModeDeclarationGroup")
+                serialized = SerializationHelper.serialize_item(item, "ModeDeclarationGroup")
                 if serialized is not None:
                     child_elem = ET.Element("REQUIRED-MODE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -317,7 +318,7 @@ class BswModuleDescription(ARElement):
         if self.required_trigger_refs:
             wrapper = ET.Element("REQUIRED-TRIGGER-REFS")
             for item in self.required_trigger_refs:
-                serialized = ARObject._serialize_item(item, "Trigger")
+                serialized = SerializationHelper.serialize_item(item, "Trigger")
                 if serialized is not None:
                     child_elem = ET.Element("REQUIRED-TRIGGER-REF")
                     if hasattr(serialized, 'attrib'):
@@ -347,187 +348,187 @@ class BswModuleDescription(ARElement):
 
         # Parse bsw_module_refs (list from container "BSW-MODULE-REFS")
         obj.bsw_module_refs = []
-        container = ARObject._find_child_element(element, "BSW-MODULE-REFS")
+        container = SerializationHelper.find_child_element(element, "BSW-MODULE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.bsw_module_refs.append(child_value)
 
         # Parse bsw_module_documentation
-        child = ARObject._find_child_element(element, "BSW-MODULE-DOCUMENTATION")
+        child = SerializationHelper.find_child_element(element, "BSW-MODULE-DOCUMENTATION")
         if child is not None:
-            bsw_module_documentation_value = ARObject._deserialize_by_tag(child, "SwComponentDocumentation")
+            bsw_module_documentation_value = SerializationHelper.deserialize_by_tag(child, "SwComponentDocumentation")
             obj.bsw_module_documentation = bsw_module_documentation_value
 
         # Parse expected_entrie_refs (list from container "EXPECTED-ENTRIE-REFS")
         obj.expected_entrie_refs = []
-        container = ARObject._find_child_element(element, "EXPECTED-ENTRIE-REFS")
+        container = SerializationHelper.find_child_element(element, "EXPECTED-ENTRIE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.expected_entrie_refs.append(child_value)
 
         # Parse implemented_refs (list from container "IMPLEMENTED-REFS")
         obj.implemented_refs = []
-        container = ARObject._find_child_element(element, "IMPLEMENTED-REFS")
+        container = SerializationHelper.find_child_element(element, "IMPLEMENTED-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.implemented_refs.append(child_value)
 
         # Parse internal_behaviors (list from container "INTERNAL-BEHAVIORS")
         obj.internal_behaviors = []
-        container = ARObject._find_child_element(element, "INTERNAL-BEHAVIORS")
+        container = SerializationHelper.find_child_element(element, "INTERNAL-BEHAVIORS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.internal_behaviors.append(child_value)
 
         # Parse module_id
-        child = ARObject._find_child_element(element, "MODULE-ID")
+        child = SerializationHelper.find_child_element(element, "MODULE-ID")
         if child is not None:
             module_id_value = child.text
             obj.module_id = module_id_value
 
         # Parse provided_clients (list from container "PROVIDED-CLIENTS")
         obj.provided_clients = []
-        container = ARObject._find_child_element(element, "PROVIDED-CLIENTS")
+        container = SerializationHelper.find_child_element(element, "PROVIDED-CLIENTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.provided_clients.append(child_value)
 
         # Parse provided_data_refs (list from container "PROVIDED-DATA-REFS")
         obj.provided_data_refs = []
-        container = ARObject._find_child_element(element, "PROVIDED-DATA-REFS")
+        container = SerializationHelper.find_child_element(element, "PROVIDED-DATA-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.provided_data_refs.append(child_value)
 
         # Parse provided_mode_refs (list from container "PROVIDED-MODE-REFS")
         obj.provided_mode_refs = []
-        container = ARObject._find_child_element(element, "PROVIDED-MODE-REFS")
+        container = SerializationHelper.find_child_element(element, "PROVIDED-MODE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.provided_mode_refs.append(child_value)
 
         # Parse released_trigger_refs (list from container "RELEASED-TRIGGER-REFS")
         obj.released_trigger_refs = []
-        container = ARObject._find_child_element(element, "RELEASED-TRIGGER-REFS")
+        container = SerializationHelper.find_child_element(element, "RELEASED-TRIGGER-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.released_trigger_refs.append(child_value)
 
         # Parse required_clients (list from container "REQUIRED-CLIENTS")
         obj.required_clients = []
-        container = ARObject._find_child_element(element, "REQUIRED-CLIENTS")
+        container = SerializationHelper.find_child_element(element, "REQUIRED-CLIENTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.required_clients.append(child_value)
 
         # Parse required_data_refs (list from container "REQUIRED-DATA-REFS")
         obj.required_data_refs = []
-        container = ARObject._find_child_element(element, "REQUIRED-DATA-REFS")
+        container = SerializationHelper.find_child_element(element, "REQUIRED-DATA-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.required_data_refs.append(child_value)
 
         # Parse required_mode_refs (list from container "REQUIRED-MODE-REFS")
         obj.required_mode_refs = []
-        container = ARObject._find_child_element(element, "REQUIRED-MODE-REFS")
+        container = SerializationHelper.find_child_element(element, "REQUIRED-MODE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.required_mode_refs.append(child_value)
 
         # Parse required_trigger_refs (list from container "REQUIRED-TRIGGER-REFS")
         obj.required_trigger_refs = []
-        container = ARObject._find_child_element(element, "REQUIRED-TRIGGER-REFS")
+        container = SerializationHelper.find_child_element(element, "REQUIRED-TRIGGER-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.required_trigger_refs.append(child_value)
 

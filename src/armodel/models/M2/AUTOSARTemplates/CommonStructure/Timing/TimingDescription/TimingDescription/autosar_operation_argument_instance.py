@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.data_prototype import (
     DataPrototype,
@@ -44,7 +45,7 @@ class AutosarOperationArgumentInstance(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -63,7 +64,7 @@ class AutosarOperationArgumentInstance(Identifiable):
 
         # Serialize operation_ref
         if self.operation_ref is not None:
-            serialized = ARObject._serialize_item(self.operation_ref, "DataPrototype")
+            serialized = SerializationHelper.serialize_item(self.operation_ref, "DataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("OPERATION-REF")
@@ -91,7 +92,7 @@ class AutosarOperationArgumentInstance(Identifiable):
         obj = super(AutosarOperationArgumentInstance, cls).deserialize(element)
 
         # Parse operation_ref
-        child = ARObject._find_child_element(element, "OPERATION-REF")
+        child = SerializationHelper.find_child_element(element, "OPERATION-REF")
         if child is not None:
             operation_ref_value = ARRef.deserialize(child)
             obj.operation_ref = operation_ref_value

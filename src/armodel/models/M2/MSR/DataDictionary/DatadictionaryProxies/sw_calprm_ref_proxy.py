@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.autosar_parameter_ref import (
     AutosarParameterRef,
@@ -46,12 +47,12 @@ class SwCalprmRefProxy(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize ar_parameter_ref
         if self.ar_parameter_ref is not None:
-            serialized = ARObject._serialize_item(self.ar_parameter_ref, "AutosarParameterRef")
+            serialized = SerializationHelper.serialize_item(self.ar_parameter_ref, "AutosarParameterRef")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("AR-PARAMETER-REF")
@@ -65,7 +66,7 @@ class SwCalprmRefProxy(ARObject):
 
         # Serialize mc_data_instance_ref
         if self.mc_data_instance_ref is not None:
-            serialized = ARObject._serialize_item(self.mc_data_instance_ref, "McDataInstance")
+            serialized = SerializationHelper.serialize_item(self.mc_data_instance_ref, "McDataInstance")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MC-DATA-INSTANCE-REF")
@@ -94,13 +95,13 @@ class SwCalprmRefProxy(ARObject):
         obj.__init__()
 
         # Parse ar_parameter_ref
-        child = ARObject._find_child_element(element, "AR-PARAMETER-REF")
+        child = SerializationHelper.find_child_element(element, "AR-PARAMETER-REF")
         if child is not None:
             ar_parameter_ref_value = ARRef.deserialize(child)
             obj.ar_parameter_ref = ar_parameter_ref_value
 
         # Parse mc_data_instance_ref
-        child = ARObject._find_child_element(element, "MC-DATA-INSTANCE-REF")
+        child = SerializationHelper.find_child_element(element, "MC-DATA-INSTANCE-REF")
         if child is not None:
             mc_data_instance_ref_value = ARRef.deserialize(child)
             obj.mc_data_instance_ref = mc_data_instance_ref_value

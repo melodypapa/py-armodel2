@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_indexable_v
     EcucIndexableValue,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -57,7 +58,7 @@ class EcucParameterValue(EcucIndexableValue, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -78,7 +79,7 @@ class EcucParameterValue(EcucIndexableValue, ABC):
         if self.annotations:
             wrapper = ET.Element("ANNOTATIONS")
             for item in self.annotations:
-                serialized = ARObject._serialize_item(item, "Annotation")
+                serialized = SerializationHelper.serialize_item(item, "Annotation")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -86,7 +87,7 @@ class EcucParameterValue(EcucIndexableValue, ABC):
 
         # Serialize definition_ref
         if self.definition_ref is not None:
-            serialized = ARObject._serialize_item(self.definition_ref, "EcucParameterDef")
+            serialized = SerializationHelper.serialize_item(self.definition_ref, "EcucParameterDef")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DEFINITION-REF")
@@ -100,7 +101,7 @@ class EcucParameterValue(EcucIndexableValue, ABC):
 
         # Serialize is_auto_value
         if self.is_auto_value is not None:
-            serialized = ARObject._serialize_item(self.is_auto_value, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.is_auto_value, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IS-AUTO-VALUE")
@@ -129,22 +130,22 @@ class EcucParameterValue(EcucIndexableValue, ABC):
 
         # Parse annotations (list from container "ANNOTATIONS")
         obj.annotations = []
-        container = ARObject._find_child_element(element, "ANNOTATIONS")
+        container = SerializationHelper.find_child_element(element, "ANNOTATIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.annotations.append(child_value)
 
         # Parse definition_ref
-        child = ARObject._find_child_element(element, "DEFINITION-REF")
+        child = SerializationHelper.find_child_element(element, "DEFINITION-REF")
         if child is not None:
             definition_ref_value = ARRef.deserialize(child)
             obj.definition_ref = definition_ref_value
 
         # Parse is_auto_value
-        child = ARObject._find_child_element(element, "IS-AUTO-VALUE")
+        child = SerializationHelper.find_child_element(element, "IS-AUTO-VALUE")
         if child is not None:
             is_auto_value_value = child.text
             obj.is_auto_value = is_auto_value_value

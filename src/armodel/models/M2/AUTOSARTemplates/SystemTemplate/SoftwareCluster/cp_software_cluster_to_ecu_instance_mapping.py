@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -54,7 +55,7 @@ class CpSoftwareClusterToEcuInstanceMapping(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -73,7 +74,7 @@ class CpSoftwareClusterToEcuInstanceMapping(Identifiable):
 
         # Serialize ecu_instance_ref
         if self.ecu_instance_ref is not None:
-            serialized = ARObject._serialize_item(self.ecu_instance_ref, "EcuInstance")
+            serialized = SerializationHelper.serialize_item(self.ecu_instance_ref, "EcuInstance")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ECU-INSTANCE-REF")
@@ -87,7 +88,7 @@ class CpSoftwareClusterToEcuInstanceMapping(Identifiable):
 
         # Serialize machine_id
         if self.machine_id is not None:
-            serialized = ARObject._serialize_item(self.machine_id, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.machine_id, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MACHINE-ID")
@@ -103,7 +104,7 @@ class CpSoftwareClusterToEcuInstanceMapping(Identifiable):
         if self.sw_cluster_refs:
             wrapper = ET.Element("SW-CLUSTER-REFS")
             for item in self.sw_cluster_refs:
-                serialized = ARObject._serialize_item(item, "CpSoftwareCluster")
+                serialized = SerializationHelper.serialize_item(item, "CpSoftwareCluster")
                 if serialized is not None:
                     child_elem = ET.Element("SW-CLUSTER-REF")
                     if hasattr(serialized, 'attrib'):
@@ -132,30 +133,30 @@ class CpSoftwareClusterToEcuInstanceMapping(Identifiable):
         obj = super(CpSoftwareClusterToEcuInstanceMapping, cls).deserialize(element)
 
         # Parse ecu_instance_ref
-        child = ARObject._find_child_element(element, "ECU-INSTANCE-REF")
+        child = SerializationHelper.find_child_element(element, "ECU-INSTANCE-REF")
         if child is not None:
             ecu_instance_ref_value = ARRef.deserialize(child)
             obj.ecu_instance_ref = ecu_instance_ref_value
 
         # Parse machine_id
-        child = ARObject._find_child_element(element, "MACHINE-ID")
+        child = SerializationHelper.find_child_element(element, "MACHINE-ID")
         if child is not None:
             machine_id_value = child.text
             obj.machine_id = machine_id_value
 
         # Parse sw_cluster_refs (list from container "SW-CLUSTER-REFS")
         obj.sw_cluster_refs = []
-        container = ARObject._find_child_element(element, "SW-CLUSTER-REFS")
+        container = SerializationHelper.find_child_element(element, "SW-CLUSTER-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.sw_cluster_refs.append(child_value)
 

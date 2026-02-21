@@ -5,6 +5,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARObject,
     ARObjectBuilder,
 )
+from armodel.serialization import SerializationHelper
 
 
 class TestARObjectBuilder:
@@ -20,5 +21,6 @@ class TestARObjectBuilder:
         builder = ARObjectBuilder()
         obj = builder.build()
 
-        # Builder returns the ARObject class itself
-        assert obj is ARObject
+        # Builder returns an instance of ARObject
+        assert isinstance(obj, ARObject)
+        assert obj is not ARObject  # Not the class itself

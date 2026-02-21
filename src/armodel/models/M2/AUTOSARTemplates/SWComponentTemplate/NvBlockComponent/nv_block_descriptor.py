@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -93,7 +94,7 @@ class NvBlockDescriptor(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -114,7 +115,7 @@ class NvBlockDescriptor(Identifiable):
         if self.client_server_ports:
             wrapper = ET.Element("CLIENT-SERVER-PORTS")
             for item in self.client_server_ports:
-                serialized = ARObject._serialize_item(item, "RoleBasedPortAssignment")
+                serialized = SerializationHelper.serialize_item(item, "RoleBasedPortAssignment")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -124,7 +125,7 @@ class NvBlockDescriptor(Identifiable):
         if self.constant_value_refs:
             wrapper = ET.Element("CONSTANT-VALUE-REFS")
             for item in self.constant_value_refs:
-                serialized = ARObject._serialize_item(item, "ConstantSpecification")
+                serialized = SerializationHelper.serialize_item(item, "ConstantSpecification")
                 if serialized is not None:
                     child_elem = ET.Element("CONSTANT-VALUE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -141,7 +142,7 @@ class NvBlockDescriptor(Identifiable):
         if self.data_type_refs:
             wrapper = ET.Element("DATA-TYPE-REFS")
             for item in self.data_type_refs:
-                serialized = ARObject._serialize_item(item, "DataTypeMappingSet")
+                serialized = SerializationHelper.serialize_item(item, "DataTypeMappingSet")
                 if serialized is not None:
                     child_elem = ET.Element("DATA-TYPE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -158,7 +159,7 @@ class NvBlockDescriptor(Identifiable):
         if self.instantiation_data_defs:
             wrapper = ET.Element("INSTANTIATION-DATA-DEFS")
             for item in self.instantiation_data_defs:
-                serialized = ARObject._serialize_item(item, "InstantiationDataDefProps")
+                serialized = SerializationHelper.serialize_item(item, "InstantiationDataDefProps")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -168,7 +169,7 @@ class NvBlockDescriptor(Identifiable):
         if self.mode_switch_events:
             wrapper = ET.Element("MODE-SWITCH-EVENTS")
             for item in self.mode_switch_events:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -178,7 +179,7 @@ class NvBlockDescriptor(Identifiable):
         if self.nv_block_data_refs:
             wrapper = ET.Element("NV-BLOCK-DATA-REFS")
             for item in self.nv_block_data_refs:
-                serialized = ARObject._serialize_item(item, "NvBlockDataMapping")
+                serialized = SerializationHelper.serialize_item(item, "NvBlockDataMapping")
                 if serialized is not None:
                     child_elem = ET.Element("NV-BLOCK-DATA-REF")
                     if hasattr(serialized, 'attrib'):
@@ -193,7 +194,7 @@ class NvBlockDescriptor(Identifiable):
 
         # Serialize nv_block_needs
         if self.nv_block_needs is not None:
-            serialized = ARObject._serialize_item(self.nv_block_needs, "NvBlockNeeds")
+            serialized = SerializationHelper.serialize_item(self.nv_block_needs, "NvBlockNeeds")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NV-BLOCK-NEEDS")
@@ -207,7 +208,7 @@ class NvBlockDescriptor(Identifiable):
 
         # Serialize ram_block_ref
         if self.ram_block_ref is not None:
-            serialized = ARObject._serialize_item(self.ram_block_ref, "VariableDataPrototype")
+            serialized = SerializationHelper.serialize_item(self.ram_block_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RAM-BLOCK-REF")
@@ -221,7 +222,7 @@ class NvBlockDescriptor(Identifiable):
 
         # Serialize rom_block_ref
         if self.rom_block_ref is not None:
-            serialized = ARObject._serialize_item(self.rom_block_ref, "ParameterDataPrototype")
+            serialized = SerializationHelper.serialize_item(self.rom_block_ref, "ParameterDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ROM-BLOCK-REF")
@@ -235,7 +236,7 @@ class NvBlockDescriptor(Identifiable):
 
         # Serialize support_dirty
         if self.support_dirty is not None:
-            serialized = ARObject._serialize_item(self.support_dirty, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.support_dirty, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SUPPORT-DIRTY")
@@ -249,7 +250,7 @@ class NvBlockDescriptor(Identifiable):
 
         # Serialize timing_event_ref
         if self.timing_event_ref is not None:
-            serialized = ARObject._serialize_item(self.timing_event_ref, "TimingEvent")
+            serialized = SerializationHelper.serialize_item(self.timing_event_ref, "TimingEvent")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIMING-EVENT-REF")
@@ -265,7 +266,7 @@ class NvBlockDescriptor(Identifiable):
         if self.writing_strategies:
             wrapper = ET.Element("WRITING-STRATEGIES")
             for item in self.writing_strategies:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -288,119 +289,119 @@ class NvBlockDescriptor(Identifiable):
 
         # Parse client_server_ports (list from container "CLIENT-SERVER-PORTS")
         obj.client_server_ports = []
-        container = ARObject._find_child_element(element, "CLIENT-SERVER-PORTS")
+        container = SerializationHelper.find_child_element(element, "CLIENT-SERVER-PORTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.client_server_ports.append(child_value)
 
         # Parse constant_value_refs (list from container "CONSTANT-VALUE-REFS")
         obj.constant_value_refs = []
-        container = ARObject._find_child_element(element, "CONSTANT-VALUE-REFS")
+        container = SerializationHelper.find_child_element(element, "CONSTANT-VALUE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.constant_value_refs.append(child_value)
 
         # Parse data_type_refs (list from container "DATA-TYPE-REFS")
         obj.data_type_refs = []
-        container = ARObject._find_child_element(element, "DATA-TYPE-REFS")
+        container = SerializationHelper.find_child_element(element, "DATA-TYPE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.data_type_refs.append(child_value)
 
         # Parse instantiation_data_defs (list from container "INSTANTIATION-DATA-DEFS")
         obj.instantiation_data_defs = []
-        container = ARObject._find_child_element(element, "INSTANTIATION-DATA-DEFS")
+        container = SerializationHelper.find_child_element(element, "INSTANTIATION-DATA-DEFS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.instantiation_data_defs.append(child_value)
 
         # Parse mode_switch_events (list from container "MODE-SWITCH-EVENTS")
         obj.mode_switch_events = []
-        container = ARObject._find_child_element(element, "MODE-SWITCH-EVENTS")
+        container = SerializationHelper.find_child_element(element, "MODE-SWITCH-EVENTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.mode_switch_events.append(child_value)
 
         # Parse nv_block_data_refs (list from container "NV-BLOCK-DATA-REFS")
         obj.nv_block_data_refs = []
-        container = ARObject._find_child_element(element, "NV-BLOCK-DATA-REFS")
+        container = SerializationHelper.find_child_element(element, "NV-BLOCK-DATA-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.nv_block_data_refs.append(child_value)
 
         # Parse nv_block_needs
-        child = ARObject._find_child_element(element, "NV-BLOCK-NEEDS")
+        child = SerializationHelper.find_child_element(element, "NV-BLOCK-NEEDS")
         if child is not None:
-            nv_block_needs_value = ARObject._deserialize_by_tag(child, "NvBlockNeeds")
+            nv_block_needs_value = SerializationHelper.deserialize_by_tag(child, "NvBlockNeeds")
             obj.nv_block_needs = nv_block_needs_value
 
         # Parse ram_block_ref
-        child = ARObject._find_child_element(element, "RAM-BLOCK-REF")
+        child = SerializationHelper.find_child_element(element, "RAM-BLOCK-REF")
         if child is not None:
             ram_block_ref_value = ARRef.deserialize(child)
             obj.ram_block_ref = ram_block_ref_value
 
         # Parse rom_block_ref
-        child = ARObject._find_child_element(element, "ROM-BLOCK-REF")
+        child = SerializationHelper.find_child_element(element, "ROM-BLOCK-REF")
         if child is not None:
             rom_block_ref_value = ARRef.deserialize(child)
             obj.rom_block_ref = rom_block_ref_value
 
         # Parse support_dirty
-        child = ARObject._find_child_element(element, "SUPPORT-DIRTY")
+        child = SerializationHelper.find_child_element(element, "SUPPORT-DIRTY")
         if child is not None:
             support_dirty_value = child.text
             obj.support_dirty = support_dirty_value
 
         # Parse timing_event_ref
-        child = ARObject._find_child_element(element, "TIMING-EVENT-REF")
+        child = SerializationHelper.find_child_element(element, "TIMING-EVENT-REF")
         if child is not None:
             timing_event_ref_value = ARRef.deserialize(child)
             obj.timing_event_ref = timing_event_ref_value
 
         # Parse writing_strategies (list from container "WRITING-STRATEGIES")
         obj.writing_strategies = []
-        container = ARObject._find_child_element(element, "WRITING-STRATEGIES")
+        container = SerializationHelper.find_child_element(element, "WRITING-STRATEGIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.writing_strategies.append(child_value)
 

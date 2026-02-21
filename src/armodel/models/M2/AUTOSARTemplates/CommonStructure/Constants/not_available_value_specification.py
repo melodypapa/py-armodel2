@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specific
     ValueSpecification,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -43,7 +44,7 @@ class NotAvailableValueSpecification(ValueSpecification):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class NotAvailableValueSpecification(ValueSpecification):
 
         # Serialize default_pattern
         if self.default_pattern is not None:
-            serialized = ARObject._serialize_item(self.default_pattern, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.default_pattern, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DEFAULT-PATTERN")
@@ -90,7 +91,7 @@ class NotAvailableValueSpecification(ValueSpecification):
         obj = super(NotAvailableValueSpecification, cls).deserialize(element)
 
         # Parse default_pattern
-        child = ARObject._find_child_element(element, "DEFAULT-PATTERN")
+        child = SerializationHelper.find_child_element(element, "DEFAULT-PATTERN")
         if child is not None:
             default_pattern_value = child.text
             obj.default_pattern = default_pattern_value

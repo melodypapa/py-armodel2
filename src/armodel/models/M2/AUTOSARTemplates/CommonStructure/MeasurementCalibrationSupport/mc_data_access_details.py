@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.DataElements.variable_access import (
     VariableAccess,
 )
@@ -48,14 +49,14 @@ class McDataAccessDetails(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize rte_event_refs (list to container "RTE-EVENT-REFS")
         if self.rte_event_refs:
             wrapper = ET.Element("RTE-EVENT-REFS")
             for item in self.rte_event_refs:
-                serialized = ARObject._serialize_item(item, "RTEEvent")
+                serialized = SerializationHelper.serialize_item(item, "RTEEvent")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -65,7 +66,7 @@ class McDataAccessDetails(ARObject):
         if self.variable_accesses:
             wrapper = ET.Element("VARIABLE-ACCESSES")
             for item in self.variable_accesses:
-                serialized = ARObject._serialize_item(item, "VariableAccess")
+                serialized = SerializationHelper.serialize_item(item, "VariableAccess")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -89,21 +90,21 @@ class McDataAccessDetails(ARObject):
 
         # Parse rte_event_refs (list from container "RTE-EVENT-REFS")
         obj.rte_event_refs = []
-        container = ARObject._find_child_element(element, "RTE-EVENT-REFS")
+        container = SerializationHelper.find_child_element(element, "RTE-EVENT-REFS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.rte_event_refs.append(child_value)
 
         # Parse variable_accesses (list from container "VARIABLE-ACCESSES")
         obj.variable_accesses = []
-        container = ARObject._find_child_element(element, "VARIABLE-ACCESSES")
+        container = SerializationHelper.find_child_element(element, "VARIABLE-ACCESSES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.variable_accesses.append(child_value)
 

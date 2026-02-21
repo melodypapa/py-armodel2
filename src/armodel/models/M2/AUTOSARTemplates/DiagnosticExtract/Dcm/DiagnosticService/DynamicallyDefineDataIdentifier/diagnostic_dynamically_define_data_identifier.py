@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -51,7 +52,7 @@ class DiagnosticDynamicallyDefineDataIdentifier(DiagnosticServiceInstance):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -70,7 +71,7 @@ class DiagnosticDynamicallyDefineDataIdentifier(DiagnosticServiceInstance):
 
         # Serialize data_identifier_ref
         if self.data_identifier_ref is not None:
-            serialized = ARObject._serialize_item(self.data_identifier_ref, "DiagnosticDynamicDataIdentifier")
+            serialized = SerializationHelper.serialize_item(self.data_identifier_ref, "DiagnosticDynamicDataIdentifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-IDENTIFIER-REF")
@@ -84,7 +85,7 @@ class DiagnosticDynamicallyDefineDataIdentifier(DiagnosticServiceInstance):
 
         # Serialize dynamically_ref
         if self.dynamically_ref is not None:
-            serialized = ARObject._serialize_item(self.dynamically_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.dynamically_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DYNAMICALLY-REF")
@@ -98,7 +99,7 @@ class DiagnosticDynamicallyDefineDataIdentifier(DiagnosticServiceInstance):
 
         # Serialize max_source
         if self.max_source is not None:
-            serialized = ARObject._serialize_item(self.max_source, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.max_source, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-SOURCE")
@@ -126,19 +127,19 @@ class DiagnosticDynamicallyDefineDataIdentifier(DiagnosticServiceInstance):
         obj = super(DiagnosticDynamicallyDefineDataIdentifier, cls).deserialize(element)
 
         # Parse data_identifier_ref
-        child = ARObject._find_child_element(element, "DATA-IDENTIFIER-REF")
+        child = SerializationHelper.find_child_element(element, "DATA-IDENTIFIER-REF")
         if child is not None:
             data_identifier_ref_value = ARRef.deserialize(child)
             obj.data_identifier_ref = data_identifier_ref_value
 
         # Parse dynamically_ref
-        child = ARObject._find_child_element(element, "DYNAMICALLY-REF")
+        child = SerializationHelper.find_child_element(element, "DYNAMICALLY-REF")
         if child is not None:
             dynamically_ref_value = ARRef.deserialize(child)
             obj.dynamically_ref = dynamically_ref_value
 
         # Parse max_source
-        child = ARObject._find_child_element(element, "MAX-SOURCE")
+        child = SerializationHelper.find_child_element(element, "MAX-SOURCE")
         if child is not None:
             max_source_value = child.text
             obj.max_source = max_source_value

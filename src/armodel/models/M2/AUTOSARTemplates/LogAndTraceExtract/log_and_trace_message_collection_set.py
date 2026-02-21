@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.LogAndTraceExtract.dlt_message import (
     DltMessage,
 )
@@ -43,7 +44,7 @@ class LogAndTraceMessageCollectionSet(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class LogAndTraceMessageCollectionSet(ARElement):
         if self.dlt_messages:
             wrapper = ET.Element("DLT-MESSAGES")
             for item in self.dlt_messages:
-                serialized = ARObject._serialize_item(item, "DltMessage")
+                serialized = SerializationHelper.serialize_item(item, "DltMessage")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -87,11 +88,11 @@ class LogAndTraceMessageCollectionSet(ARElement):
 
         # Parse dlt_messages (list from container "DLT-MESSAGES")
         obj.dlt_messages = []
-        container = ARObject._find_child_element(element, "DLT-MESSAGES")
+        container = SerializationHelper.find_child_element(element, "DLT-MESSAGES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.dlt_messages.append(child_value)
 

@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -42,12 +43,12 @@ class DiagnosticSupportInfoByte(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize position
         if self.position is not None:
-            serialized = ARObject._serialize_item(self.position, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.position, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("POSITION")
@@ -61,7 +62,7 @@ class DiagnosticSupportInfoByte(ARObject):
 
         # Serialize size
         if self.size is not None:
-            serialized = ARObject._serialize_item(self.size, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.size, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SIZE")
@@ -90,13 +91,13 @@ class DiagnosticSupportInfoByte(ARObject):
         obj.__init__()
 
         # Parse position
-        child = ARObject._find_child_element(element, "POSITION")
+        child = SerializationHelper.find_child_element(element, "POSITION")
         if child is not None:
             position_value = child.text
             obj.position = position_value
 
         # Parse size
-        child = ARObject._find_child_element(element, "SIZE")
+        child = SerializationHelper.find_child_element(element, "SIZE")
         if child is not None:
             size_value = child.text
             obj.size = size_value

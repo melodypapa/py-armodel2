@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
     NetworkEndpointAddress,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology import (
     IpAddressKeepEnum,
     Ipv4AddressSourceEnum,
@@ -62,7 +63,7 @@ class Ipv4Configuration(NetworkEndpointAddress):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -81,7 +82,7 @@ class Ipv4Configuration(NetworkEndpointAddress):
 
         # Serialize assignment
         if self.assignment is not None:
-            serialized = ARObject._serialize_item(self.assignment, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.assignment, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ASSIGNMENT")
@@ -95,7 +96,7 @@ class Ipv4Configuration(NetworkEndpointAddress):
 
         # Serialize default_gateway
         if self.default_gateway is not None:
-            serialized = ARObject._serialize_item(self.default_gateway, "Ip4AddressString")
+            serialized = SerializationHelper.serialize_item(self.default_gateway, "Ip4AddressString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DEFAULT-GATEWAY")
@@ -111,7 +112,7 @@ class Ipv4Configuration(NetworkEndpointAddress):
         if self.dns_servers:
             wrapper = ET.Element("DNS-SERVERS")
             for item in self.dns_servers:
-                serialized = ARObject._serialize_item(item, "Ip4AddressString")
+                serialized = SerializationHelper.serialize_item(item, "Ip4AddressString")
                 if serialized is not None:
                     child_elem = ET.Element("DNS-SERVER")
                     if hasattr(serialized, 'attrib'):
@@ -126,7 +127,7 @@ class Ipv4Configuration(NetworkEndpointAddress):
 
         # Serialize ip_address_keep_enum
         if self.ip_address_keep_enum is not None:
-            serialized = ARObject._serialize_item(self.ip_address_keep_enum, "IpAddressKeepEnum")
+            serialized = SerializationHelper.serialize_item(self.ip_address_keep_enum, "IpAddressKeepEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IP-ADDRESS-KEEP-ENUM")
@@ -140,7 +141,7 @@ class Ipv4Configuration(NetworkEndpointAddress):
 
         # Serialize ipv4_address
         if self.ipv4_address is not None:
-            serialized = ARObject._serialize_item(self.ipv4_address, "Ip4AddressString")
+            serialized = SerializationHelper.serialize_item(self.ipv4_address, "Ip4AddressString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IPV4-ADDRESS")
@@ -154,7 +155,7 @@ class Ipv4Configuration(NetworkEndpointAddress):
 
         # Serialize ipv4_address_source
         if self.ipv4_address_source is not None:
-            serialized = ARObject._serialize_item(self.ipv4_address_source, "Ipv4AddressSourceEnum")
+            serialized = SerializationHelper.serialize_item(self.ipv4_address_source, "Ipv4AddressSourceEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IPV4-ADDRESS-SOURCE")
@@ -168,7 +169,7 @@ class Ipv4Configuration(NetworkEndpointAddress):
 
         # Serialize network_mask
         if self.network_mask is not None:
-            serialized = ARObject._serialize_item(self.network_mask, "Ip4AddressString")
+            serialized = SerializationHelper.serialize_item(self.network_mask, "Ip4AddressString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NETWORK-MASK")
@@ -182,7 +183,7 @@ class Ipv4Configuration(NetworkEndpointAddress):
 
         # Serialize ttl
         if self.ttl is not None:
-            serialized = ARObject._serialize_item(self.ttl, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.ttl, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TTL")
@@ -210,20 +211,20 @@ class Ipv4Configuration(NetworkEndpointAddress):
         obj = super(Ipv4Configuration, cls).deserialize(element)
 
         # Parse assignment
-        child = ARObject._find_child_element(element, "ASSIGNMENT")
+        child = SerializationHelper.find_child_element(element, "ASSIGNMENT")
         if child is not None:
             assignment_value = child.text
             obj.assignment = assignment_value
 
         # Parse default_gateway
-        child = ARObject._find_child_element(element, "DEFAULT-GATEWAY")
+        child = SerializationHelper.find_child_element(element, "DEFAULT-GATEWAY")
         if child is not None:
             default_gateway_value = child.text
             obj.default_gateway = default_gateway_value
 
         # Parse dns_servers (list from container "DNS-SERVERS")
         obj.dns_servers = []
-        container = ARObject._find_child_element(element, "DNS-SERVERS")
+        container = SerializationHelper.find_child_element(element, "DNS-SERVERS")
         if container is not None:
             for child in container:
                 # Extract primitive value (Ip4AddressString) as text
@@ -232,31 +233,31 @@ class Ipv4Configuration(NetworkEndpointAddress):
                     obj.dns_servers.append(child_value)
 
         # Parse ip_address_keep_enum
-        child = ARObject._find_child_element(element, "IP-ADDRESS-KEEP-ENUM")
+        child = SerializationHelper.find_child_element(element, "IP-ADDRESS-KEEP-ENUM")
         if child is not None:
             ip_address_keep_enum_value = IpAddressKeepEnum.deserialize(child)
             obj.ip_address_keep_enum = ip_address_keep_enum_value
 
         # Parse ipv4_address
-        child = ARObject._find_child_element(element, "IPV4-ADDRESS")
+        child = SerializationHelper.find_child_element(element, "IPV4-ADDRESS")
         if child is not None:
             ipv4_address_value = child.text
             obj.ipv4_address = ipv4_address_value
 
         # Parse ipv4_address_source
-        child = ARObject._find_child_element(element, "IPV4-ADDRESS-SOURCE")
+        child = SerializationHelper.find_child_element(element, "IPV4-ADDRESS-SOURCE")
         if child is not None:
             ipv4_address_source_value = Ipv4AddressSourceEnum.deserialize(child)
             obj.ipv4_address_source = ipv4_address_source_value
 
         # Parse network_mask
-        child = ARObject._find_child_element(element, "NETWORK-MASK")
+        child = SerializationHelper.find_child_element(element, "NETWORK-MASK")
         if child is not None:
             network_mask_value = child.text
             obj.network_mask = network_mask_value
 
         # Parse ttl
-        child = ARObject._find_child_element(element, "TTL")
+        child = SerializationHelper.find_child_element(element, "TTL")
         if child is not None:
             ttl_value = child.text
             obj.ttl = ttl_value

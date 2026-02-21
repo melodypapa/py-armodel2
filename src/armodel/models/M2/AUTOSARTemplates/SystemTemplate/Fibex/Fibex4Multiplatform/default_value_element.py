@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
 )
@@ -42,12 +43,12 @@ class DefaultValueElement(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize element_byte_value
         if self.element_byte_value is not None:
-            serialized = ARObject._serialize_item(self.element_byte_value, "Integer")
+            serialized = SerializationHelper.serialize_item(self.element_byte_value, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ELEMENT-BYTE-VALUE")
@@ -61,7 +62,7 @@ class DefaultValueElement(ARObject):
 
         # Serialize element_position
         if self.element_position is not None:
-            serialized = ARObject._serialize_item(self.element_position, "Integer")
+            serialized = SerializationHelper.serialize_item(self.element_position, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ELEMENT-POSITION")
@@ -90,13 +91,13 @@ class DefaultValueElement(ARObject):
         obj.__init__()
 
         # Parse element_byte_value
-        child = ARObject._find_child_element(element, "ELEMENT-BYTE-VALUE")
+        child = SerializationHelper.find_child_element(element, "ELEMENT-BYTE-VALUE")
         if child is not None:
             element_byte_value_value = child.text
             obj.element_byte_value = element_byte_value_value
 
         # Parse element_position
-        child = ARObject._find_child_element(element, "ELEMENT-POSITION")
+        child = SerializationHelper.find_child_element(element, "ELEMENT-POSITION")
         if child is not None:
             element_position_value = child.text
             obj.element_position = element_position_value

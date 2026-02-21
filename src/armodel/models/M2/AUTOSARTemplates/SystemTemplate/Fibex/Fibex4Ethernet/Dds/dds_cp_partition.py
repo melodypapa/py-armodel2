@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -43,7 +44,7 @@ class DdsCpPartition(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class DdsCpPartition(Identifiable):
 
         # Serialize partition_name
         if self.partition_name is not None:
-            serialized = ARObject._serialize_item(self.partition_name, "String")
+            serialized = SerializationHelper.serialize_item(self.partition_name, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PARTITION-NAME")
@@ -90,7 +91,7 @@ class DdsCpPartition(Identifiable):
         obj = super(DdsCpPartition, cls).deserialize(element)
 
         # Parse partition_name
-        child = ARObject._find_child_element(element, "PARTITION-NAME")
+        child = SerializationHelper.find_child_element(element, "PARTITION-NAME")
         if child is not None:
             partition_name_value = child.text
             obj.partition_name = partition_name_value

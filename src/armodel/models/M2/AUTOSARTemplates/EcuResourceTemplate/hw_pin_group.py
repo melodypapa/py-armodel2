@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 if TYPE_CHECKING:
@@ -48,7 +49,7 @@ class HwPinGroup(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -67,7 +68,7 @@ class HwPinGroup(Identifiable):
 
         # Serialize hw_pin_group_content_ref
         if self.hw_pin_group_content_ref is not None:
-            serialized = ARObject._serialize_item(self.hw_pin_group_content_ref, "HwPinGroupContent")
+            serialized = SerializationHelper.serialize_item(self.hw_pin_group_content_ref, "HwPinGroupContent")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HW-PIN-GROUP-CONTENT-REF")
@@ -95,7 +96,7 @@ class HwPinGroup(Identifiable):
         obj = super(HwPinGroup, cls).deserialize(element)
 
         # Parse hw_pin_group_content_ref
-        child = ARObject._find_child_element(element, "HW-PIN-GROUP-CONTENT-REF")
+        child = SerializationHelper.find_child_element(element, "HW-PIN-GROUP-CONTENT-REF")
         if child is not None:
             hw_pin_group_content_ref_value = ARRef.deserialize(child)
             obj.hw_pin_group_content_ref = hw_pin_group_content_ref_value

@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.hardware_configuration import (
     HardwareConfiguration,
@@ -56,7 +57,7 @@ class HeapUsage(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -75,7 +76,7 @@ class HeapUsage(Identifiable, ABC):
 
         # Serialize hardware
         if self.hardware is not None:
-            serialized = ARObject._serialize_item(self.hardware, "HardwareConfiguration")
+            serialized = SerializationHelper.serialize_item(self.hardware, "HardwareConfiguration")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HARDWARE")
@@ -89,7 +90,7 @@ class HeapUsage(Identifiable, ABC):
 
         # Serialize hw_element_ref
         if self.hw_element_ref is not None:
-            serialized = ARObject._serialize_item(self.hw_element_ref, "HwElement")
+            serialized = SerializationHelper.serialize_item(self.hw_element_ref, "HwElement")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HW-ELEMENT-REF")
@@ -103,7 +104,7 @@ class HeapUsage(Identifiable, ABC):
 
         # Serialize software_context
         if self.software_context is not None:
-            serialized = ARObject._serialize_item(self.software_context, "SoftwareContext")
+            serialized = SerializationHelper.serialize_item(self.software_context, "SoftwareContext")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SOFTWARE-CONTEXT")
@@ -131,21 +132,21 @@ class HeapUsage(Identifiable, ABC):
         obj = super(HeapUsage, cls).deserialize(element)
 
         # Parse hardware
-        child = ARObject._find_child_element(element, "HARDWARE")
+        child = SerializationHelper.find_child_element(element, "HARDWARE")
         if child is not None:
-            hardware_value = ARObject._deserialize_by_tag(child, "HardwareConfiguration")
+            hardware_value = SerializationHelper.deserialize_by_tag(child, "HardwareConfiguration")
             obj.hardware = hardware_value
 
         # Parse hw_element_ref
-        child = ARObject._find_child_element(element, "HW-ELEMENT-REF")
+        child = SerializationHelper.find_child_element(element, "HW-ELEMENT-REF")
         if child is not None:
             hw_element_ref_value = ARRef.deserialize(child)
             obj.hw_element_ref = hw_element_ref_value
 
         # Parse software_context
-        child = ARObject._find_child_element(element, "SOFTWARE-CONTEXT")
+        child = SerializationHelper.find_child_element(element, "SOFTWARE-CONTEXT")
         if child is not None:
-            software_context_value = ARObject._deserialize_by_tag(child, "SoftwareContext")
+            software_context_value = SerializationHelper.deserialize_by_tag(child, "SoftwareContext")
             obj.software_context = software_context_value
 
         return obj

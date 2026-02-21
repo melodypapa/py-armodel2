@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.executa
     ExecutableEntity,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -109,7 +110,7 @@ class RunnableEntity(ExecutableEntity):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -130,7 +131,7 @@ class RunnableEntity(ExecutableEntity):
         if self.arguments:
             wrapper = ET.Element("ARGUMENTS")
             for item in self.arguments:
-                serialized = ARObject._serialize_item(item, "RunnableEntity")
+                serialized = SerializationHelper.serialize_item(item, "RunnableEntity")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -140,7 +141,7 @@ class RunnableEntity(ExecutableEntity):
         if self.asynchronous_servers:
             wrapper = ET.Element("ASYNCHRONOUS-SERVERS")
             for item in self.asynchronous_servers:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -148,7 +149,7 @@ class RunnableEntity(ExecutableEntity):
 
         # Serialize can_be_invoked
         if self.can_be_invoked is not None:
-            serialized = ARObject._serialize_item(self.can_be_invoked, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.can_be_invoked, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CAN-BE-INVOKED")
@@ -164,7 +165,7 @@ class RunnableEntity(ExecutableEntity):
         if self.data_reads:
             wrapper = ET.Element("DATA-READS")
             for item in self.data_reads:
-                serialized = ARObject._serialize_item(item, "VariableAccess")
+                serialized = SerializationHelper.serialize_item(item, "VariableAccess")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -174,7 +175,7 @@ class RunnableEntity(ExecutableEntity):
         if self.data_receives:
             wrapper = ET.Element("DATA-RECEIVES")
             for item in self.data_receives:
-                serialized = ARObject._serialize_item(item, "VariableAccess")
+                serialized = SerializationHelper.serialize_item(item, "VariableAccess")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -184,7 +185,7 @@ class RunnableEntity(ExecutableEntity):
         if self.data_send_points:
             wrapper = ET.Element("DATA-SEND-POINTS")
             for item in self.data_send_points:
-                serialized = ARObject._serialize_item(item, "VariableAccess")
+                serialized = SerializationHelper.serialize_item(item, "VariableAccess")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -194,7 +195,7 @@ class RunnableEntity(ExecutableEntity):
         if self.data_writes:
             wrapper = ET.Element("DATA-WRITES")
             for item in self.data_writes:
-                serialized = ARObject._serialize_item(item, "VariableAccess")
+                serialized = SerializationHelper.serialize_item(item, "VariableAccess")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -204,7 +205,7 @@ class RunnableEntity(ExecutableEntity):
         if self.external_refs:
             wrapper = ET.Element("EXTERNAL-REFS")
             for item in self.external_refs:
-                serialized = ARObject._serialize_item(item, "ExternalTriggeringPoint")
+                serialized = SerializationHelper.serialize_item(item, "ExternalTriggeringPoint")
                 if serialized is not None:
                     child_elem = ET.Element("EXTERNAL-REF")
                     if hasattr(serialized, 'attrib'):
@@ -221,7 +222,7 @@ class RunnableEntity(ExecutableEntity):
         if self.internal_refs:
             wrapper = ET.Element("INTERNAL-REFS")
             for item in self.internal_refs:
-                serialized = ARObject._serialize_item(item, "InternalTriggeringPoint")
+                serialized = SerializationHelper.serialize_item(item, "InternalTriggeringPoint")
                 if serialized is not None:
                     child_elem = ET.Element("INTERNAL-REF")
                     if hasattr(serialized, 'attrib'):
@@ -238,7 +239,7 @@ class RunnableEntity(ExecutableEntity):
         if self.mode_access_points:
             wrapper = ET.Element("MODE-ACCESS-POINTS")
             for item in self.mode_access_points:
-                serialized = ARObject._serialize_item(item, "ModeAccessPoint")
+                serialized = SerializationHelper.serialize_item(item, "ModeAccessPoint")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -248,7 +249,7 @@ class RunnableEntity(ExecutableEntity):
         if self.mode_switch_points:
             wrapper = ET.Element("MODE-SWITCH-POINTS")
             for item in self.mode_switch_points:
-                serialized = ARObject._serialize_item(item, "ModeSwitchPoint")
+                serialized = SerializationHelper.serialize_item(item, "ModeSwitchPoint")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -258,7 +259,7 @@ class RunnableEntity(ExecutableEntity):
         if self.parameter_accesses:
             wrapper = ET.Element("PARAMETER-ACCESSES")
             for item in self.parameter_accesses:
-                serialized = ARObject._serialize_item(item, "ParameterAccess")
+                serialized = SerializationHelper.serialize_item(item, "ParameterAccess")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -268,7 +269,7 @@ class RunnableEntity(ExecutableEntity):
         if self.read_locals:
             wrapper = ET.Element("READ-LOCALS")
             for item in self.read_locals:
-                serialized = ARObject._serialize_item(item, "VariableAccess")
+                serialized = SerializationHelper.serialize_item(item, "VariableAccess")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -278,7 +279,7 @@ class RunnableEntity(ExecutableEntity):
         if self.server_call_points:
             wrapper = ET.Element("SERVER-CALL-POINTS")
             for item in self.server_call_points:
-                serialized = ARObject._serialize_item(item, "ServerCallPoint")
+                serialized = SerializationHelper.serialize_item(item, "ServerCallPoint")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -286,7 +287,7 @@ class RunnableEntity(ExecutableEntity):
 
         # Serialize symbol
         if self.symbol is not None:
-            serialized = ARObject._serialize_item(self.symbol, "CIdentifier")
+            serialized = SerializationHelper.serialize_item(self.symbol, "CIdentifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SYMBOL")
@@ -302,7 +303,7 @@ class RunnableEntity(ExecutableEntity):
         if self.wait_points:
             wrapper = ET.Element("WAIT-POINTS")
             for item in self.wait_points:
-                serialized = ARObject._serialize_item(item, "WaitPoint")
+                serialized = SerializationHelper.serialize_item(item, "WaitPoint")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -312,7 +313,7 @@ class RunnableEntity(ExecutableEntity):
         if self.written_locals:
             wrapper = ET.Element("WRITTEN-LOCALS")
             for item in self.written_locals:
-                serialized = ARObject._serialize_item(item, "VariableAccess")
+                serialized = SerializationHelper.serialize_item(item, "VariableAccess")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -335,175 +336,175 @@ class RunnableEntity(ExecutableEntity):
 
         # Parse arguments (list from container "ARGUMENTS")
         obj.arguments = []
-        container = ARObject._find_child_element(element, "ARGUMENTS")
+        container = SerializationHelper.find_child_element(element, "ARGUMENTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.arguments.append(child_value)
 
         # Parse asynchronous_servers (list from container "ASYNCHRONOUS-SERVERS")
         obj.asynchronous_servers = []
-        container = ARObject._find_child_element(element, "ASYNCHRONOUS-SERVERS")
+        container = SerializationHelper.find_child_element(element, "ASYNCHRONOUS-SERVERS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.asynchronous_servers.append(child_value)
 
         # Parse can_be_invoked
-        child = ARObject._find_child_element(element, "CAN-BE-INVOKED")
+        child = SerializationHelper.find_child_element(element, "CAN-BE-INVOKED")
         if child is not None:
             can_be_invoked_value = child.text
             obj.can_be_invoked = can_be_invoked_value
 
         # Parse data_reads (list from container "DATA-READS")
         obj.data_reads = []
-        container = ARObject._find_child_element(element, "DATA-READS")
+        container = SerializationHelper.find_child_element(element, "DATA-READS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.data_reads.append(child_value)
 
         # Parse data_receives (list from container "DATA-RECEIVES")
         obj.data_receives = []
-        container = ARObject._find_child_element(element, "DATA-RECEIVES")
+        container = SerializationHelper.find_child_element(element, "DATA-RECEIVES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.data_receives.append(child_value)
 
         # Parse data_send_points (list from container "DATA-SEND-POINTS")
         obj.data_send_points = []
-        container = ARObject._find_child_element(element, "DATA-SEND-POINTS")
+        container = SerializationHelper.find_child_element(element, "DATA-SEND-POINTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.data_send_points.append(child_value)
 
         # Parse data_writes (list from container "DATA-WRITES")
         obj.data_writes = []
-        container = ARObject._find_child_element(element, "DATA-WRITES")
+        container = SerializationHelper.find_child_element(element, "DATA-WRITES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.data_writes.append(child_value)
 
         # Parse external_refs (list from container "EXTERNAL-REFS")
         obj.external_refs = []
-        container = ARObject._find_child_element(element, "EXTERNAL-REFS")
+        container = SerializationHelper.find_child_element(element, "EXTERNAL-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.external_refs.append(child_value)
 
         # Parse internal_refs (list from container "INTERNAL-REFS")
         obj.internal_refs = []
-        container = ARObject._find_child_element(element, "INTERNAL-REFS")
+        container = SerializationHelper.find_child_element(element, "INTERNAL-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.internal_refs.append(child_value)
 
         # Parse mode_access_points (list from container "MODE-ACCESS-POINTS")
         obj.mode_access_points = []
-        container = ARObject._find_child_element(element, "MODE-ACCESS-POINTS")
+        container = SerializationHelper.find_child_element(element, "MODE-ACCESS-POINTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.mode_access_points.append(child_value)
 
         # Parse mode_switch_points (list from container "MODE-SWITCH-POINTS")
         obj.mode_switch_points = []
-        container = ARObject._find_child_element(element, "MODE-SWITCH-POINTS")
+        container = SerializationHelper.find_child_element(element, "MODE-SWITCH-POINTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.mode_switch_points.append(child_value)
 
         # Parse parameter_accesses (list from container "PARAMETER-ACCESSES")
         obj.parameter_accesses = []
-        container = ARObject._find_child_element(element, "PARAMETER-ACCESSES")
+        container = SerializationHelper.find_child_element(element, "PARAMETER-ACCESSES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.parameter_accesses.append(child_value)
 
         # Parse read_locals (list from container "READ-LOCALS")
         obj.read_locals = []
-        container = ARObject._find_child_element(element, "READ-LOCALS")
+        container = SerializationHelper.find_child_element(element, "READ-LOCALS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.read_locals.append(child_value)
 
         # Parse server_call_points (list from container "SERVER-CALL-POINTS")
         obj.server_call_points = []
-        container = ARObject._find_child_element(element, "SERVER-CALL-POINTS")
+        container = SerializationHelper.find_child_element(element, "SERVER-CALL-POINTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.server_call_points.append(child_value)
 
         # Parse symbol
-        child = ARObject._find_child_element(element, "SYMBOL")
+        child = SerializationHelper.find_child_element(element, "SYMBOL")
         if child is not None:
-            symbol_value = ARObject._deserialize_by_tag(child, "CIdentifier")
+            symbol_value = SerializationHelper.deserialize_by_tag(child, "CIdentifier")
             obj.symbol = symbol_value
 
         # Parse wait_points (list from container "WAIT-POINTS")
         obj.wait_points = []
-        container = ARObject._find_child_element(element, "WAIT-POINTS")
+        container = SerializationHelper.find_child_element(element, "WAIT-POINTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.wait_points.append(child_value)
 
         # Parse written_locals (list from container "WRITTEN-LOCALS")
         obj.written_locals = []
-        container = ARObject._find_child_element(element, "WRITTEN-LOCALS")
+        container = SerializationHelper.find_child_element(element, "WRITTEN-LOCALS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.written_locals.append(child_value)
 

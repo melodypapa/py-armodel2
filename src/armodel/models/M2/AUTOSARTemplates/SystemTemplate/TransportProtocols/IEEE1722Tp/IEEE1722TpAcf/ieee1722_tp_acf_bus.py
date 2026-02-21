@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -49,7 +50,7 @@ class IEEE1722TpAcfBus(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -70,7 +71,7 @@ class IEEE1722TpAcfBus(Identifiable, ABC):
         if self.acf_parts:
             wrapper = ET.Element("ACF-PARTS")
             for item in self.acf_parts:
-                serialized = ARObject._serialize_item(item, "IEEE1722TpAcfBusPart")
+                serialized = SerializationHelper.serialize_item(item, "IEEE1722TpAcfBusPart")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -78,7 +79,7 @@ class IEEE1722TpAcfBus(Identifiable, ABC):
 
         # Serialize bus_id
         if self.bus_id is not None:
-            serialized = ARObject._serialize_item(self.bus_id, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.bus_id, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BUS-ID")
@@ -107,16 +108,16 @@ class IEEE1722TpAcfBus(Identifiable, ABC):
 
         # Parse acf_parts (list from container "ACF-PARTS")
         obj.acf_parts = []
-        container = ARObject._find_child_element(element, "ACF-PARTS")
+        container = SerializationHelper.find_child_element(element, "ACF-PARTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.acf_parts.append(child_value)
 
         # Parse bus_id
-        child = ARObject._find_child_element(element, "BUS-ID")
+        child = SerializationHelper.find_child_element(element, "BUS-ID")
         if child is not None:
             bus_id_value = child.text
             obj.bus_id = bus_id_value

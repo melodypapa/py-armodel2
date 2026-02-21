@@ -19,6 +19,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.sw_compon
     SwComponentType,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.constant_specification_mapping_set import (
     ConstantSpecificationMappingSet,
@@ -75,7 +76,7 @@ class CompositionSwComponentType(SwComponentType):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -96,7 +97,7 @@ class CompositionSwComponentType(SwComponentType):
         if self.components:
             wrapper = ET.Element("COMPONENTS")
             for item in self.components:
-                serialized = ARObject._serialize_item(item, "SwComponentPrototype")
+                serialized = SerializationHelper.serialize_item(item, "SwComponentPrototype")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -106,7 +107,7 @@ class CompositionSwComponentType(SwComponentType):
         if self.connectors:
             wrapper = ET.Element("CONNECTORS")
             for item in self.connectors:
-                serialized = ARObject._serialize_item(item, "SwConnector")
+                serialized = SerializationHelper.serialize_item(item, "SwConnector")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -116,7 +117,7 @@ class CompositionSwComponentType(SwComponentType):
         if self.constant_value_mapping_refs:
             wrapper = ET.Element("CONSTANT-VALUE-MAPPING-REFS")
             for item in self.constant_value_mapping_refs:
-                serialized = ARObject._serialize_item(item, "ConstantSpecificationMappingSet")
+                serialized = SerializationHelper.serialize_item(item, "ConstantSpecificationMappingSet")
                 if serialized is not None:
                     child_elem = ET.Element("CONSTANT-VALUE-MAPPING-REF")
                     if hasattr(serialized, 'attrib'):
@@ -133,7 +134,7 @@ class CompositionSwComponentType(SwComponentType):
         if self.data_type_mapping_refs:
             wrapper = ET.Element("DATA-TYPE-MAPPING-REFS")
             for item in self.data_type_mapping_refs:
-                serialized = ARObject._serialize_item(item, "DataTypeMappingSet")
+                serialized = SerializationHelper.serialize_item(item, "DataTypeMappingSet")
                 if serialized is not None:
                     child_elem = ET.Element("DATA-TYPE-MAPPING-REF")
                     if hasattr(serialized, 'attrib'):
@@ -150,7 +151,7 @@ class CompositionSwComponentType(SwComponentType):
         if self.instantiation_rte_event_props:
             wrapper = ET.Element("INSTANTIATION-RTE-EVENT-PROPS")
             for item in self.instantiation_rte_event_props:
-                serialized = ARObject._serialize_item(item, "InstantiationRTEEventProps")
+                serialized = SerializationHelper.serialize_item(item, "InstantiationRTEEventProps")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -158,7 +159,7 @@ class CompositionSwComponentType(SwComponentType):
 
         # Serialize physical_dimension_mapping_ref
         if self.physical_dimension_mapping_ref is not None:
-            serialized = ARObject._serialize_item(self.physical_dimension_mapping_ref, "PhysicalDimensionMappingSet")
+            serialized = SerializationHelper.serialize_item(self.physical_dimension_mapping_ref, "PhysicalDimensionMappingSet")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PHYSICAL-DIMENSION-MAPPING-REF")
@@ -187,68 +188,68 @@ class CompositionSwComponentType(SwComponentType):
 
         # Parse components (list from container "COMPONENTS")
         obj.components = []
-        container = ARObject._find_child_element(element, "COMPONENTS")
+        container = SerializationHelper.find_child_element(element, "COMPONENTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.components.append(child_value)
 
         # Parse connectors (list from container "CONNECTORS")
         obj.connectors = []
-        container = ARObject._find_child_element(element, "CONNECTORS")
+        container = SerializationHelper.find_child_element(element, "CONNECTORS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.connectors.append(child_value)
 
         # Parse constant_value_mapping_refs (list from container "CONSTANT-VALUE-MAPPING-REFS")
         obj.constant_value_mapping_refs = []
-        container = ARObject._find_child_element(element, "CONSTANT-VALUE-MAPPING-REFS")
+        container = SerializationHelper.find_child_element(element, "CONSTANT-VALUE-MAPPING-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.constant_value_mapping_refs.append(child_value)
 
         # Parse data_type_mapping_refs (list from container "DATA-TYPE-MAPPING-REFS")
         obj.data_type_mapping_refs = []
-        container = ARObject._find_child_element(element, "DATA-TYPE-MAPPING-REFS")
+        container = SerializationHelper.find_child_element(element, "DATA-TYPE-MAPPING-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.data_type_mapping_refs.append(child_value)
 
         # Parse instantiation_rte_event_props (list from container "INSTANTIATION-RTE-EVENT-PROPS")
         obj.instantiation_rte_event_props = []
-        container = ARObject._find_child_element(element, "INSTANTIATION-RTE-EVENT-PROPS")
+        container = SerializationHelper.find_child_element(element, "INSTANTIATION-RTE-EVENT-PROPS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.instantiation_rte_event_props.append(child_value)
 
         # Parse physical_dimension_mapping_ref
-        child = ARObject._find_child_element(element, "PHYSICAL-DIMENSION-MAPPING-REF")
+        child = SerializationHelper.find_child_element(element, "PHYSICAL-DIMENSION-MAPPING-REF")
         if child is not None:
             physical_dimension_mapping_ref_value = ARRef.deserialize(child)
             obj.physical_dimension_mapping_ref = physical_dimension_mapping_ref_value

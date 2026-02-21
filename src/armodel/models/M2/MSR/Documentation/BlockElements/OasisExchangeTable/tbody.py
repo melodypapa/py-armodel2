@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.Documentation.BlockElements.OasisExchangeTable import (
     ValignEnum,
 )
@@ -40,12 +41,12 @@ class Tbody(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize valign
         if self.valign is not None:
-            serialized = ARObject._serialize_item(self.valign, "ValignEnum")
+            serialized = SerializationHelper.serialize_item(self.valign, "ValignEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VALIGN")
@@ -74,7 +75,7 @@ class Tbody(ARObject):
         obj.__init__()
 
         # Parse valign
-        child = ARObject._find_child_element(element, "VALIGN")
+        child = SerializationHelper.find_child_element(element, "VALIGN")
         if child is not None:
             valign_value = ValignEnum.deserialize(child)
             obj.valign = valign_value

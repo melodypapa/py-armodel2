@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     GeneralAnnotation,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
     VariableDataPrototype,
@@ -44,7 +45,7 @@ class NvDataPortAnnotation(GeneralAnnotation):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -63,7 +64,7 @@ class NvDataPortAnnotation(GeneralAnnotation):
 
         # Serialize variable_ref
         if self.variable_ref is not None:
-            serialized = ARObject._serialize_item(self.variable_ref, "VariableDataPrototype")
+            serialized = SerializationHelper.serialize_item(self.variable_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VARIABLE-REF")
@@ -91,7 +92,7 @@ class NvDataPortAnnotation(GeneralAnnotation):
         obj = super(NvDataPortAnnotation, cls).deserialize(element)
 
         # Parse variable_ref
-        child = ARObject._find_child_element(element, "VARIABLE-REF")
+        child = SerializationHelper.find_child_element(element, "VARIABLE-REF")
         if child is not None:
             variable_ref_value = ARRef.deserialize(child)
             obj.variable_ref = variable_ref_value

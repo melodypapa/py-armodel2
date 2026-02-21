@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_generic_math import (
     CompuGenericMath,
 )
@@ -40,12 +41,12 @@ class SwDataDependency(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize sw_data
         if self.sw_data is not None:
-            serialized = ARObject._serialize_item(self.sw_data, "CompuGenericMath")
+            serialized = SerializationHelper.serialize_item(self.sw_data, "CompuGenericMath")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-DATA")
@@ -74,9 +75,9 @@ class SwDataDependency(ARObject):
         obj.__init__()
 
         # Parse sw_data
-        child = ARObject._find_child_element(element, "SW-DATA")
+        child = SerializationHelper.find_child_element(element, "SW-DATA")
         if child is not None:
-            sw_data_value = ARObject._deserialize_by_tag(child, "CompuGenericMath")
+            sw_data_value = SerializationHelper.deserialize_by_tag(child, "CompuGenericMath")
             obj.sw_data = sw_data_value
 
         return obj

@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.nm_node
     NmNode,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement import (
     J1939NmAddressConfigurationCapabilityEnum,
 )
@@ -49,7 +50,7 @@ class J1939NmNode(NmNode):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -68,7 +69,7 @@ class J1939NmNode(NmNode):
 
         # Serialize address
         if self.address is not None:
-            serialized = ARObject._serialize_item(self.address, "J1939NmAddressConfigurationCapabilityEnum")
+            serialized = SerializationHelper.serialize_item(self.address, "J1939NmAddressConfigurationCapabilityEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ADDRESS")
@@ -82,7 +83,7 @@ class J1939NmNode(NmNode):
 
         # Serialize node_name
         if self.node_name is not None:
-            serialized = ARObject._serialize_item(self.node_name, "J1939NodeName")
+            serialized = SerializationHelper.serialize_item(self.node_name, "J1939NodeName")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NODE-NAME")
@@ -110,15 +111,15 @@ class J1939NmNode(NmNode):
         obj = super(J1939NmNode, cls).deserialize(element)
 
         # Parse address
-        child = ARObject._find_child_element(element, "ADDRESS")
+        child = SerializationHelper.find_child_element(element, "ADDRESS")
         if child is not None:
             address_value = J1939NmAddressConfigurationCapabilityEnum.deserialize(child)
             obj.address = address_value
 
         # Parse node_name
-        child = ARObject._find_child_element(element, "NODE-NAME")
+        child = SerializationHelper.find_child_element(element, "NODE-NAME")
         if child is not None:
-            node_name_value = ARObject._deserialize_by_tag(child, "J1939NodeName")
+            node_name_value = SerializationHelper.deserialize_by_tag(child, "J1939NodeName")
             obj.node_name = node_name_value
 
         return obj

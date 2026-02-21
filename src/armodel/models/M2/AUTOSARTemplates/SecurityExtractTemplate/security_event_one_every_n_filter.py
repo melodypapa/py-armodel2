@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.abstract_securit
     AbstractSecurityEventFilter,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -43,7 +44,7 @@ class SecurityEventOneEveryNFilter(AbstractSecurityEventFilter):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class SecurityEventOneEveryNFilter(AbstractSecurityEventFilter):
 
         # Serialize n
         if self.n is not None:
-            serialized = ARObject._serialize_item(self.n, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.n, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("N")
@@ -90,7 +91,7 @@ class SecurityEventOneEveryNFilter(AbstractSecurityEventFilter):
         obj = super(SecurityEventOneEveryNFilter, cls).deserialize(element)
 
         # Parse n
-        child = ARObject._find_child_element(element, "N")
+        child = SerializationHelper.find_child_element(element, "N")
         if child is not None:
             n_value = child.text
             obj.n = n_value

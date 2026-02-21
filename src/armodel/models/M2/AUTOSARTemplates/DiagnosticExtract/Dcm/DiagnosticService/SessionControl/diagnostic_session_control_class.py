@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceClass,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
 )
@@ -43,7 +44,7 @@ class DiagnosticSessionControlClass(DiagnosticServiceClass):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class DiagnosticSessionControlClass(DiagnosticServiceClass):
 
         # Serialize s3_server
         if self.s3_server is not None:
-            serialized = ARObject._serialize_item(self.s3_server, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.s3_server, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("S3-SERVER")
@@ -90,7 +91,7 @@ class DiagnosticSessionControlClass(DiagnosticServiceClass):
         obj = super(DiagnosticSessionControlClass, cls).deserialize(element)
 
         # Parse s3_server
-        child = ARObject._find_child_element(element, "S3-SERVER")
+        child = SerializationHelper.find_child_element(element, "S3-SERVER")
         if child is not None:
             s3_server_value = child.text
             obj.s3_server = s3_server_value

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticDataByIdentifier,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 
@@ -41,7 +42,7 @@ class DiagnosticReadScalingDataByIdentifier(DiagnosticDataByIdentifier):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -60,7 +61,7 @@ class DiagnosticReadScalingDataByIdentifier(DiagnosticDataByIdentifier):
 
         # Serialize read_scaling_ref
         if self.read_scaling_ref is not None:
-            serialized = ARObject._serialize_item(self.read_scaling_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.read_scaling_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("READ-SCALING-REF")
@@ -88,7 +89,7 @@ class DiagnosticReadScalingDataByIdentifier(DiagnosticDataByIdentifier):
         obj = super(DiagnosticReadScalingDataByIdentifier, cls).deserialize(element)
 
         # Parse read_scaling_ref
-        child = ARObject._find_child_element(element, "READ-SCALING-REF")
+        child = SerializationHelper.find_child_element(element, "READ-SCALING-REF")
         if child is not None:
             read_scaling_ref_value = ARRef.deserialize(child)
             obj.read_scaling_ref = read_scaling_ref_value

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_
     DiagnosticCapabilityElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
     ObdRatioConnectionKindEnum,
@@ -54,7 +55,7 @@ class ObdRatioServiceNeeds(DiagnosticCapabilityElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -73,7 +74,7 @@ class ObdRatioServiceNeeds(DiagnosticCapabilityElement):
 
         # Serialize connection_type
         if self.connection_type is not None:
-            serialized = ARObject._serialize_item(self.connection_type, "ObdRatioConnectionKindEnum")
+            serialized = SerializationHelper.serialize_item(self.connection_type, "ObdRatioConnectionKindEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONNECTION-TYPE")
@@ -87,7 +88,7 @@ class ObdRatioServiceNeeds(DiagnosticCapabilityElement):
 
         # Serialize rate_based_monitored_event_ref
         if self.rate_based_monitored_event_ref is not None:
-            serialized = ARObject._serialize_item(self.rate_based_monitored_event_ref, "DiagnosticEventNeeds")
+            serialized = SerializationHelper.serialize_item(self.rate_based_monitored_event_ref, "DiagnosticEventNeeds")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RATE-BASED-MONITORED-EVENT-REF")
@@ -101,7 +102,7 @@ class ObdRatioServiceNeeds(DiagnosticCapabilityElement):
 
         # Serialize used_fid_ref
         if self.used_fid_ref is not None:
-            serialized = ARObject._serialize_item(self.used_fid_ref, "FunctionInhibitionNeeds")
+            serialized = SerializationHelper.serialize_item(self.used_fid_ref, "FunctionInhibitionNeeds")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("USED-FID-REF")
@@ -129,19 +130,19 @@ class ObdRatioServiceNeeds(DiagnosticCapabilityElement):
         obj = super(ObdRatioServiceNeeds, cls).deserialize(element)
 
         # Parse connection_type
-        child = ARObject._find_child_element(element, "CONNECTION-TYPE")
+        child = SerializationHelper.find_child_element(element, "CONNECTION-TYPE")
         if child is not None:
             connection_type_value = ObdRatioConnectionKindEnum.deserialize(child)
             obj.connection_type = connection_type_value
 
         # Parse rate_based_monitored_event_ref
-        child = ARObject._find_child_element(element, "RATE-BASED-MONITORED-EVENT-REF")
+        child = SerializationHelper.find_child_element(element, "RATE-BASED-MONITORED-EVENT-REF")
         if child is not None:
             rate_based_monitored_event_ref_value = ARRef.deserialize(child)
             obj.rate_based_monitored_event_ref = rate_based_monitored_event_ref_value
 
         # Parse used_fid_ref
-        child = ARObject._find_child_element(element, "USED-FID-REF")
+        child = SerializationHelper.find_child_element(element, "USED-FID-REF")
         if child is not None:
             used_fid_ref_value = ARRef.deserialize(child)
             obj.used_fid_ref = used_fid_ref_value

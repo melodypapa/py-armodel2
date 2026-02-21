@@ -541,6 +541,7 @@ class TestARObjectClass:
         - _strip_namespace() works
         """
         from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+        from armodel.serialization import SerializationHelper
 
         # Create test element
         parent = ET.Element("PARENT")
@@ -553,18 +554,18 @@ class TestARObjectClass:
         parent.append(child3)
 
         # Test _find_child_element
-        found = ARObject._find_child_element(parent, "CHILD-1")
+        found = SerializationHelper.find_child_element(parent, "CHILD-1")
         assert found is not None, "Failed to find CHILD-1"
         print("   _find_child_element: ✅")
 
         # Test _find_all_child_elements
-        all_children = ARObject._find_all_child_elements(parent, "CHILD-1")
+        all_children = SerializationHelper.find_all_child_elements(parent, "CHILD-1")
         assert len(all_children) == 1, "Should find one CHILD-1"
         print(f"   _find_all_child_elements: ✅ (found {len(all_children)} CHILD-1)")
 
         # Test _strip_namespace
         tag = "{http://autosar.org}CHILD-2"
-        stripped = ARObject._strip_namespace(tag)
+        stripped = SerializationHelper.strip_namespace(tag)
         assert stripped == "CHILD-2", f"Expected 'CHILD-2', got '{stripped}'"
         print("   _strip_namespace: ✅")
 

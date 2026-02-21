@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances.consumed_event_group import (
     ConsumedEventGroup,
@@ -60,7 +61,7 @@ class SignalServiceTranslationProps(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -81,7 +82,7 @@ class SignalServiceTranslationProps(Identifiable):
         if self.control_refs:
             wrapper = ET.Element("CONTROL-REFS")
             for item in self.control_refs:
-                serialized = ARObject._serialize_item(item, "ConsumedEventGroup")
+                serialized = SerializationHelper.serialize_item(item, "ConsumedEventGroup")
                 if serialized is not None:
                     child_elem = ET.Element("CONTROL-REF")
                     if hasattr(serialized, 'attrib'):
@@ -98,7 +99,7 @@ class SignalServiceTranslationProps(Identifiable):
         if self.control_pnc_refs:
             wrapper = ET.Element("CONTROL-PNC-REFS")
             for item in self.control_pnc_refs:
-                serialized = ARObject._serialize_item(item, "PncMappingIdent")
+                serialized = SerializationHelper.serialize_item(item, "PncMappingIdent")
                 if serialized is not None:
                     child_elem = ET.Element("CONTROL-PNC-REF")
                     if hasattr(serialized, 'attrib'):
@@ -115,7 +116,7 @@ class SignalServiceTranslationProps(Identifiable):
         if self.control_provided_refs:
             wrapper = ET.Element("CONTROL-PROVIDED-REFS")
             for item in self.control_provided_refs:
-                serialized = ARObject._serialize_item(item, "EventHandler")
+                serialized = SerializationHelper.serialize_item(item, "EventHandler")
                 if serialized is not None:
                     child_elem = ET.Element("CONTROL-PROVIDED-REF")
                     if hasattr(serialized, 'attrib'):
@@ -130,7 +131,7 @@ class SignalServiceTranslationProps(Identifiable):
 
         # Serialize service_control
         if self.service_control is not None:
-            serialized = ARObject._serialize_item(self.service_control, "Any")
+            serialized = SerializationHelper.serialize_item(self.service_control, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SERVICE-CONTROL")
@@ -146,7 +147,7 @@ class SignalServiceTranslationProps(Identifiable):
         if self.signal_service_event_propses:
             wrapper = ET.Element("SIGNAL-SERVICE-EVENT-PROPSES")
             for item in self.signal_service_event_propses:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -169,65 +170,65 @@ class SignalServiceTranslationProps(Identifiable):
 
         # Parse control_refs (list from container "CONTROL-REFS")
         obj.control_refs = []
-        container = ARObject._find_child_element(element, "CONTROL-REFS")
+        container = SerializationHelper.find_child_element(element, "CONTROL-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.control_refs.append(child_value)
 
         # Parse control_pnc_refs (list from container "CONTROL-PNC-REFS")
         obj.control_pnc_refs = []
-        container = ARObject._find_child_element(element, "CONTROL-PNC-REFS")
+        container = SerializationHelper.find_child_element(element, "CONTROL-PNC-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.control_pnc_refs.append(child_value)
 
         # Parse control_provided_refs (list from container "CONTROL-PROVIDED-REFS")
         obj.control_provided_refs = []
-        container = ARObject._find_child_element(element, "CONTROL-PROVIDED-REFS")
+        container = SerializationHelper.find_child_element(element, "CONTROL-PROVIDED-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.control_provided_refs.append(child_value)
 
         # Parse service_control
-        child = ARObject._find_child_element(element, "SERVICE-CONTROL")
+        child = SerializationHelper.find_child_element(element, "SERVICE-CONTROL")
         if child is not None:
             service_control_value = child.text
             obj.service_control = service_control_value
 
         # Parse signal_service_event_propses (list from container "SIGNAL-SERVICE-EVENT-PROPSES")
         obj.signal_service_event_propses = []
-        container = ARObject._find_child_element(element, "SIGNAL-SERVICE-EVENT-PROPSES")
+        container = SerializationHelper.find_child_element(element, "SIGNAL-SERVICE-EVENT-PROPSES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.signal_service_event_propses.append(child_value)
 

@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -53,7 +54,7 @@ class CpSoftwareCluster(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -72,7 +73,7 @@ class CpSoftwareCluster(ARElement):
 
         # Serialize software_cluster
         if self.software_cluster is not None:
-            serialized = ARObject._serialize_item(self.software_cluster, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.software_cluster, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SOFTWARE-CLUSTER")
@@ -88,7 +89,7 @@ class CpSoftwareCluster(ARElement):
         if self.sw_components:
             wrapper = ET.Element("SW-COMPONENTS")
             for item in self.sw_components:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -98,7 +99,7 @@ class CpSoftwareCluster(ARElement):
         if self.sw_composition_component_type_refs:
             wrapper = ET.Element("SW-COMPOSITION-COMPONENT-TYPE-REFS")
             for item in self.sw_composition_component_type_refs:
-                serialized = ARObject._serialize_item(item, "CompositionSwComponentType")
+                serialized = SerializationHelper.serialize_item(item, "CompositionSwComponentType")
                 if serialized is not None:
                     child_elem = ET.Element("SW-COMPOSITION-COMPONENT-TYPE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -127,34 +128,34 @@ class CpSoftwareCluster(ARElement):
         obj = super(CpSoftwareCluster, cls).deserialize(element)
 
         # Parse software_cluster
-        child = ARObject._find_child_element(element, "SOFTWARE-CLUSTER")
+        child = SerializationHelper.find_child_element(element, "SOFTWARE-CLUSTER")
         if child is not None:
             software_cluster_value = child.text
             obj.software_cluster = software_cluster_value
 
         # Parse sw_components (list from container "SW-COMPONENTS")
         obj.sw_components = []
-        container = ARObject._find_child_element(element, "SW-COMPONENTS")
+        container = SerializationHelper.find_child_element(element, "SW-COMPONENTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.sw_components.append(child_value)
 
         # Parse sw_composition_component_type_refs (list from container "SW-COMPOSITION-COMPONENT-TYPE-REFS")
         obj.sw_composition_component_type_refs = []
-        container = ARObject._find_child_element(element, "SW-COMPOSITION-COMPONENT-TYPE-REFS")
+        container = SerializationHelper.find_child_element(element, "SW-COMPOSITION-COMPONENT-TYPE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.sw_composition_component_type_refs.append(child_value)
 

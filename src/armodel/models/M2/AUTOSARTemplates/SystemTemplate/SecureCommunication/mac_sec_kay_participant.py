@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication.crypto_service_key import (
     CryptoServiceKey,
@@ -51,7 +52,7 @@ class MacSecKayParticipant(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -70,7 +71,7 @@ class MacSecKayParticipant(Identifiable):
 
         # Serialize ckn_ref
         if self.ckn_ref is not None:
-            serialized = ARObject._serialize_item(self.ckn_ref, "CryptoServiceKey")
+            serialized = SerializationHelper.serialize_item(self.ckn_ref, "CryptoServiceKey")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CKN-REF")
@@ -84,7 +85,7 @@ class MacSecKayParticipant(Identifiable):
 
         # Serialize crypto_algo
         if self.crypto_algo is not None:
-            serialized = ARObject._serialize_item(self.crypto_algo, "MacSecCryptoAlgoConfig")
+            serialized = SerializationHelper.serialize_item(self.crypto_algo, "MacSecCryptoAlgoConfig")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CRYPTO-ALGO")
@@ -98,7 +99,7 @@ class MacSecKayParticipant(Identifiable):
 
         # Serialize sak_ref
         if self.sak_ref is not None:
-            serialized = ARObject._serialize_item(self.sak_ref, "CryptoServiceKey")
+            serialized = SerializationHelper.serialize_item(self.sak_ref, "CryptoServiceKey")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SAK-REF")
@@ -126,19 +127,19 @@ class MacSecKayParticipant(Identifiable):
         obj = super(MacSecKayParticipant, cls).deserialize(element)
 
         # Parse ckn_ref
-        child = ARObject._find_child_element(element, "CKN-REF")
+        child = SerializationHelper.find_child_element(element, "CKN-REF")
         if child is not None:
             ckn_ref_value = ARRef.deserialize(child)
             obj.ckn_ref = ckn_ref_value
 
         # Parse crypto_algo
-        child = ARObject._find_child_element(element, "CRYPTO-ALGO")
+        child = SerializationHelper.find_child_element(element, "CRYPTO-ALGO")
         if child is not None:
-            crypto_algo_value = ARObject._deserialize_by_tag(child, "MacSecCryptoAlgoConfig")
+            crypto_algo_value = SerializationHelper.deserialize_by_tag(child, "MacSecCryptoAlgoConfig")
             obj.crypto_algo = crypto_algo_value
 
         # Parse sak_ref
-        child = ARObject._find_child_element(element, "SAK-REF")
+        child = SerializationHelper.find_child_element(element, "SAK-REF")
         if child is not None:
             sak_ref_value = ARRef.deserialize(child)
             obj.sak_ref = sak_ref_value

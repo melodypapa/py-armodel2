@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class ISignalProps(ARObject):
@@ -37,12 +38,12 @@ class ISignalProps(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize handle_out_of_range
         if self.handle_out_of_range is not None:
-            serialized = ARObject._serialize_item(self.handle_out_of_range, "Any")
+            serialized = SerializationHelper.serialize_item(self.handle_out_of_range, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HANDLE-OUT-OF-RANGE")
@@ -71,7 +72,7 @@ class ISignalProps(ARObject):
         obj.__init__()
 
         # Parse handle_out_of_range
-        child = ARObject._find_child_element(element, "HANDLE-OUT-OF-RANGE")
+        child = SerializationHelper.find_child_element(element, "HANDLE-OUT-OF-RANGE")
         if child is not None:
             handle_out_of_range_value = child.text
             obj.handle_out_of_range = handle_out_of_range_value

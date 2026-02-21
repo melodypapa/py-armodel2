@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Referrable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.Documentation.TextModel.SingleLanguageData.single_language_long_name import (
     SingleLanguageLongName,
 )
@@ -44,7 +45,7 @@ class SingleLanguageReferrable(Referrable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -63,7 +64,7 @@ class SingleLanguageReferrable(Referrable, ABC):
 
         # Serialize long_name1
         if self.long_name1 is not None:
-            serialized = ARObject._serialize_item(self.long_name1, "SingleLanguageLongName")
+            serialized = SerializationHelper.serialize_item(self.long_name1, "SingleLanguageLongName")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LONG-NAME1")
@@ -91,9 +92,9 @@ class SingleLanguageReferrable(Referrable, ABC):
         obj = super(SingleLanguageReferrable, cls).deserialize(element)
 
         # Parse long_name1
-        child = ARObject._find_child_element(element, "LONG-NAME1")
+        child = SerializationHelper.find_child_element(element, "LONG-NAME1")
         if child is not None:
-            long_name1_value = ARObject._deserialize_by_tag(child, "SingleLanguageLongName")
+            long_name1_value = SerializationHelper.deserialize_by_tag(child, "SingleLanguageLongName")
             obj.long_name1 = long_name1_value
 
         return obj

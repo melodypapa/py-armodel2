@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -48,12 +49,12 @@ class PerInstanceMemorySize(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize alignment
         if self.alignment is not None:
-            serialized = ARObject._serialize_item(self.alignment, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.alignment, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ALIGNMENT")
@@ -67,7 +68,7 @@ class PerInstanceMemorySize(ARObject):
 
         # Serialize per_instance_memory_memory_ref
         if self.per_instance_memory_memory_ref is not None:
-            serialized = ARObject._serialize_item(self.per_instance_memory_memory_ref, "PerInstanceMemory")
+            serialized = SerializationHelper.serialize_item(self.per_instance_memory_memory_ref, "PerInstanceMemory")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PER-INSTANCE-MEMORY-MEMORY-REF")
@@ -81,7 +82,7 @@ class PerInstanceMemorySize(ARObject):
 
         # Serialize size
         if self.size is not None:
-            serialized = ARObject._serialize_item(self.size, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.size, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SIZE")
@@ -110,19 +111,19 @@ class PerInstanceMemorySize(ARObject):
         obj.__init__()
 
         # Parse alignment
-        child = ARObject._find_child_element(element, "ALIGNMENT")
+        child = SerializationHelper.find_child_element(element, "ALIGNMENT")
         if child is not None:
             alignment_value = child.text
             obj.alignment = alignment_value
 
         # Parse per_instance_memory_memory_ref
-        child = ARObject._find_child_element(element, "PER-INSTANCE-MEMORY-MEMORY-REF")
+        child = SerializationHelper.find_child_element(element, "PER-INSTANCE-MEMORY-MEMORY-REF")
         if child is not None:
             per_instance_memory_memory_ref_value = ARRef.deserialize(child)
             obj.per_instance_memory_memory_ref = per_instance_memory_memory_ref_value
 
         # Parse size
-        child = ARObject._find_child_element(element, "SIZE")
+        child = SerializationHelper.find_child_element(element, "SIZE")
         if child is not None:
             size_value = child.text
             obj.size = size_value

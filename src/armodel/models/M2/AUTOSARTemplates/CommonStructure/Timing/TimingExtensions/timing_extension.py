@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingClock.timing_clock import (
     TimingClock,
 )
@@ -61,7 +62,7 @@ class TimingExtension(ARElement, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -82,7 +83,7 @@ class TimingExtension(ARElement, ABC):
         if self.timing_clocks:
             wrapper = ET.Element("TIMING-CLOCKS")
             for item in self.timing_clocks:
-                serialized = ARObject._serialize_item(item, "TimingClock")
+                serialized = SerializationHelper.serialize_item(item, "TimingClock")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -92,7 +93,7 @@ class TimingExtension(ARElement, ABC):
         if self.timing_clock_syncs:
             wrapper = ET.Element("TIMING-CLOCK-SYNCS")
             for item in self.timing_clock_syncs:
-                serialized = ARObject._serialize_item(item, "TimingClockSyncAccuracy")
+                serialized = SerializationHelper.serialize_item(item, "TimingClockSyncAccuracy")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -102,7 +103,7 @@ class TimingExtension(ARElement, ABC):
         if self.timing_conditions:
             wrapper = ET.Element("TIMING-CONDITIONS")
             for item in self.timing_conditions:
-                serialized = ARObject._serialize_item(item, "TimingCondition")
+                serialized = SerializationHelper.serialize_item(item, "TimingCondition")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -112,7 +113,7 @@ class TimingExtension(ARElement, ABC):
         if self.timings:
             wrapper = ET.Element("TIMINGS")
             for item in self.timings:
-                serialized = ARObject._serialize_item(item, "TimingConstraint")
+                serialized = SerializationHelper.serialize_item(item, "TimingConstraint")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -120,7 +121,7 @@ class TimingExtension(ARElement, ABC):
 
         # Serialize timing_resource
         if self.timing_resource is not None:
-            serialized = ARObject._serialize_item(self.timing_resource, "TimingExtension")
+            serialized = SerializationHelper.serialize_item(self.timing_resource, "TimingExtension")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIMING-RESOURCE")
@@ -149,48 +150,48 @@ class TimingExtension(ARElement, ABC):
 
         # Parse timing_clocks (list from container "TIMING-CLOCKS")
         obj.timing_clocks = []
-        container = ARObject._find_child_element(element, "TIMING-CLOCKS")
+        container = SerializationHelper.find_child_element(element, "TIMING-CLOCKS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.timing_clocks.append(child_value)
 
         # Parse timing_clock_syncs (list from container "TIMING-CLOCK-SYNCS")
         obj.timing_clock_syncs = []
-        container = ARObject._find_child_element(element, "TIMING-CLOCK-SYNCS")
+        container = SerializationHelper.find_child_element(element, "TIMING-CLOCK-SYNCS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.timing_clock_syncs.append(child_value)
 
         # Parse timing_conditions (list from container "TIMING-CONDITIONS")
         obj.timing_conditions = []
-        container = ARObject._find_child_element(element, "TIMING-CONDITIONS")
+        container = SerializationHelper.find_child_element(element, "TIMING-CONDITIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.timing_conditions.append(child_value)
 
         # Parse timings (list from container "TIMINGS")
         obj.timings = []
-        container = ARObject._find_child_element(element, "TIMINGS")
+        container = SerializationHelper.find_child_element(element, "TIMINGS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.timings.append(child_value)
 
         # Parse timing_resource
-        child = ARObject._find_child_element(element, "TIMING-RESOURCE")
+        child = SerializationHelper.find_child_element(element, "TIMING-RESOURCE")
         if child is not None:
-            timing_resource_value = ARObject._deserialize_by_tag(child, "TimingExtension")
+            timing_resource_value = SerializationHelper.deserialize_by_tag(child, "TimingExtension")
             obj.timing_resource = timing_resource_value
 
         return obj

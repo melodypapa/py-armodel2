@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.j1939_nm_node import (
     J1939NmNode,
@@ -44,7 +45,7 @@ class DiagnosticJ1939Node(DiagnosticCommonElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -63,7 +64,7 @@ class DiagnosticJ1939Node(DiagnosticCommonElement):
 
         # Serialize nm_node_ref
         if self.nm_node_ref is not None:
-            serialized = ARObject._serialize_item(self.nm_node_ref, "J1939NmNode")
+            serialized = SerializationHelper.serialize_item(self.nm_node_ref, "J1939NmNode")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM-NODE-REF")
@@ -91,7 +92,7 @@ class DiagnosticJ1939Node(DiagnosticCommonElement):
         obj = super(DiagnosticJ1939Node, cls).deserialize(element)
 
         # Parse nm_node_ref
-        child = ARObject._find_child_element(element, "NM-NODE-REF")
+        child = SerializationHelper.find_child_element(element, "NM-NODE-REF")
         if child is not None:
             nm_node_ref_value = ARRef.deserialize(child)
             obj.nm_node_ref = nm_node_ref_value

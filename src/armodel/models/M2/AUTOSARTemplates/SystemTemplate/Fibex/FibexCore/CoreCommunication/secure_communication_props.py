@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -52,12 +53,12 @@ class SecureCommunicationProps(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize auth_data
         if self.auth_data is not None:
-            serialized = ARObject._serialize_item(self.auth_data, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.auth_data, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("AUTH-DATA")
@@ -71,7 +72,7 @@ class SecureCommunicationProps(ARObject):
 
         # Serialize authentication
         if self.authentication is not None:
-            serialized = ARObject._serialize_item(self.authentication, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.authentication, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("AUTHENTICATION")
@@ -85,7 +86,7 @@ class SecureCommunicationProps(ARObject):
 
         # Serialize data_id
         if self.data_id is not None:
-            serialized = ARObject._serialize_item(self.data_id, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.data_id, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-ID")
@@ -99,7 +100,7 @@ class SecureCommunicationProps(ARObject):
 
         # Serialize freshness_value
         if self.freshness_value is not None:
-            serialized = ARObject._serialize_item(self.freshness_value, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.freshness_value, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FRESHNESS-VALUE")
@@ -113,7 +114,7 @@ class SecureCommunicationProps(ARObject):
 
         # Serialize message_link
         if self.message_link is not None:
-            serialized = ARObject._serialize_item(self.message_link, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.message_link, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MESSAGE-LINK")
@@ -127,7 +128,7 @@ class SecureCommunicationProps(ARObject):
 
         # Serialize secondary
         if self.secondary is not None:
-            serialized = ARObject._serialize_item(self.secondary, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.secondary, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SECONDARY")
@@ -141,7 +142,7 @@ class SecureCommunicationProps(ARObject):
 
         # Serialize secured_area
         if self.secured_area is not None:
-            serialized = ARObject._serialize_item(self.secured_area, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.secured_area, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SECURED-AREA")
@@ -170,43 +171,43 @@ class SecureCommunicationProps(ARObject):
         obj.__init__()
 
         # Parse auth_data
-        child = ARObject._find_child_element(element, "AUTH-DATA")
+        child = SerializationHelper.find_child_element(element, "AUTH-DATA")
         if child is not None:
             auth_data_value = child.text
             obj.auth_data = auth_data_value
 
         # Parse authentication
-        child = ARObject._find_child_element(element, "AUTHENTICATION")
+        child = SerializationHelper.find_child_element(element, "AUTHENTICATION")
         if child is not None:
             authentication_value = child.text
             obj.authentication = authentication_value
 
         # Parse data_id
-        child = ARObject._find_child_element(element, "DATA-ID")
+        child = SerializationHelper.find_child_element(element, "DATA-ID")
         if child is not None:
             data_id_value = child.text
             obj.data_id = data_id_value
 
         # Parse freshness_value
-        child = ARObject._find_child_element(element, "FRESHNESS-VALUE")
+        child = SerializationHelper.find_child_element(element, "FRESHNESS-VALUE")
         if child is not None:
             freshness_value_value = child.text
             obj.freshness_value = freshness_value_value
 
         # Parse message_link
-        child = ARObject._find_child_element(element, "MESSAGE-LINK")
+        child = SerializationHelper.find_child_element(element, "MESSAGE-LINK")
         if child is not None:
             message_link_value = child.text
             obj.message_link = message_link_value
 
         # Parse secondary
-        child = ARObject._find_child_element(element, "SECONDARY")
+        child = SerializationHelper.find_child_element(element, "SECONDARY")
         if child is not None:
             secondary_value = child.text
             obj.secondary = secondary_value
 
         # Parse secured_area
-        child = ARObject._find_child_element(element, "SECURED-AREA")
+        child = SerializationHelper.find_child_element(element, "SECURED-AREA")
         if child is not None:
             secured_area_value = child.text
             obj.secured_area = secured_area_value

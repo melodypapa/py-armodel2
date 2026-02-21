@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 
 if TYPE_CHECKING:
@@ -49,7 +50,7 @@ class FMFeatureRelation(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -70,7 +71,7 @@ class FMFeatureRelation(Identifiable):
         if self.feature_refs:
             wrapper = ET.Element("FEATURE-REFS")
             for item in self.feature_refs:
-                serialized = ARObject._serialize_item(item, "FMFeature")
+                serialized = SerializationHelper.serialize_item(item, "FMFeature")
                 if serialized is not None:
                     child_elem = ET.Element("FEATURE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -85,7 +86,7 @@ class FMFeatureRelation(Identifiable):
 
         # Serialize restriction
         if self.restriction is not None:
-            serialized = ARObject._serialize_item(self.restriction, "Any")
+            serialized = SerializationHelper.serialize_item(self.restriction, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RESTRICTION")
@@ -114,22 +115,22 @@ class FMFeatureRelation(Identifiable):
 
         # Parse feature_refs (list from container "FEATURE-REFS")
         obj.feature_refs = []
-        container = ARObject._find_child_element(element, "FEATURE-REFS")
+        container = SerializationHelper.find_child_element(element, "FEATURE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.feature_refs.append(child_value)
 
         # Parse restriction
-        child = ARObject._find_child_element(element, "RESTRICTION")
+        child = SerializationHelper.find_child_element(element, "RESTRICTION")
         if child is not None:
             restriction_value = child.text
             obj.restriction = restriction_value

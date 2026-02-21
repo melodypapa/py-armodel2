@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     GeneralAnnotation,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.ApplicationAttributes import (
     DataLimitKindEnum,
@@ -58,7 +59,7 @@ class SenderReceiverAnnotation(GeneralAnnotation, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -77,7 +78,7 @@ class SenderReceiverAnnotation(GeneralAnnotation, ABC):
 
         # Serialize computed
         if self.computed is not None:
-            serialized = ARObject._serialize_item(self.computed, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.computed, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COMPUTED")
@@ -91,7 +92,7 @@ class SenderReceiverAnnotation(GeneralAnnotation, ABC):
 
         # Serialize data_element_ref
         if self.data_element_ref is not None:
-            serialized = ARObject._serialize_item(self.data_element_ref, "VariableDataPrototype")
+            serialized = SerializationHelper.serialize_item(self.data_element_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-ELEMENT-REF")
@@ -105,7 +106,7 @@ class SenderReceiverAnnotation(GeneralAnnotation, ABC):
 
         # Serialize limit_kind
         if self.limit_kind is not None:
-            serialized = ARObject._serialize_item(self.limit_kind, "DataLimitKindEnum")
+            serialized = SerializationHelper.serialize_item(self.limit_kind, "DataLimitKindEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LIMIT-KIND")
@@ -119,7 +120,7 @@ class SenderReceiverAnnotation(GeneralAnnotation, ABC):
 
         # Serialize processing_kind_enum
         if self.processing_kind_enum is not None:
-            serialized = ARObject._serialize_item(self.processing_kind_enum, "ProcessingKindEnum")
+            serialized = SerializationHelper.serialize_item(self.processing_kind_enum, "ProcessingKindEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PROCESSING-KIND-ENUM")
@@ -147,25 +148,25 @@ class SenderReceiverAnnotation(GeneralAnnotation, ABC):
         obj = super(SenderReceiverAnnotation, cls).deserialize(element)
 
         # Parse computed
-        child = ARObject._find_child_element(element, "COMPUTED")
+        child = SerializationHelper.find_child_element(element, "COMPUTED")
         if child is not None:
             computed_value = child.text
             obj.computed = computed_value
 
         # Parse data_element_ref
-        child = ARObject._find_child_element(element, "DATA-ELEMENT-REF")
+        child = SerializationHelper.find_child_element(element, "DATA-ELEMENT-REF")
         if child is not None:
             data_element_ref_value = ARRef.deserialize(child)
             obj.data_element_ref = data_element_ref_value
 
         # Parse limit_kind
-        child = ARObject._find_child_element(element, "LIMIT-KIND")
+        child = SerializationHelper.find_child_element(element, "LIMIT-KIND")
         if child is not None:
             limit_kind_value = DataLimitKindEnum.deserialize(child)
             obj.limit_kind = limit_kind_value
 
         # Parse processing_kind_enum
-        child = ARObject._find_child_element(element, "PROCESSING-KIND-ENUM")
+        child = SerializationHelper.find_child_element(element, "PROCESSING-KIND-ENUM")
         if child is not None:
             processing_kind_enum_value = ProcessingKindEnum.deserialize(child)
             obj.processing_kind_enum = processing_kind_enum_value

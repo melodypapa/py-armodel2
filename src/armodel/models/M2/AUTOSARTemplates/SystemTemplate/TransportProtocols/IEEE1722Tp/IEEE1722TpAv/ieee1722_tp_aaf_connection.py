@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE17
     IEEE1722TpAvConnection,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.IEEE1722TpAv import (
     IEEE1722TpAafAes3DataTypeEnum,
     IEEE1722TpAafFormatEnum,
@@ -66,7 +67,7 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -85,7 +86,7 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
 
         # Serialize aaf_aes3_data
         if self.aaf_aes3_data is not None:
-            serialized = ARObject._serialize_item(self.aaf_aes3_data, "IEEE1722TpAafAes3DataTypeEnum")
+            serialized = SerializationHelper.serialize_item(self.aaf_aes3_data, "IEEE1722TpAafAes3DataTypeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("AAF-AES3-DATA")
@@ -99,7 +100,7 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
 
         # Serialize aaf_format_enum
         if self.aaf_format_enum is not None:
-            serialized = ARObject._serialize_item(self.aaf_format_enum, "IEEE1722TpAafFormatEnum")
+            serialized = SerializationHelper.serialize_item(self.aaf_format_enum, "IEEE1722TpAafFormatEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("AAF-FORMAT-ENUM")
@@ -113,7 +114,7 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
 
         # Serialize aaf_nominal_rate
         if self.aaf_nominal_rate is not None:
-            serialized = ARObject._serialize_item(self.aaf_nominal_rate, "Any")
+            serialized = SerializationHelper.serialize_item(self.aaf_nominal_rate, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("AAF-NOMINAL-RATE")
@@ -127,7 +128,7 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
 
         # Serialize aes3_data_type_h
         if self.aes3_data_type_h is not None:
-            serialized = ARObject._serialize_item(self.aes3_data_type_h, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.aes3_data_type_h, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("AES3-DATA-TYPE-H")
@@ -141,7 +142,7 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
 
         # Serialize aes3_data_type_l
         if self.aes3_data_type_l is not None:
-            serialized = ARObject._serialize_item(self.aes3_data_type_l, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.aes3_data_type_l, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("AES3-DATA-TYPE-L")
@@ -155,7 +156,7 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
 
         # Serialize channels_per
         if self.channels_per is not None:
-            serialized = ARObject._serialize_item(self.channels_per, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.channels_per, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CHANNELS-PER")
@@ -169,7 +170,7 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
 
         # Serialize event_default
         if self.event_default is not None:
-            serialized = ARObject._serialize_item(self.event_default, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.event_default, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("EVENT-DEFAULT")
@@ -183,7 +184,7 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
 
         # Serialize pcm_bit_depth
         if self.pcm_bit_depth is not None:
-            serialized = ARObject._serialize_item(self.pcm_bit_depth, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.pcm_bit_depth, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PCM-BIT-DEPTH")
@@ -197,7 +198,7 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
 
         # Serialize sparse
         if self.sparse is not None:
-            serialized = ARObject._serialize_item(self.sparse, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.sparse, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SPARSE")
@@ -211,7 +212,7 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
 
         # Serialize streams_per
         if self.streams_per is not None:
-            serialized = ARObject._serialize_item(self.streams_per, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.streams_per, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("STREAMS-PER")
@@ -239,61 +240,61 @@ class IEEE1722TpAafConnection(IEEE1722TpAvConnection):
         obj = super(IEEE1722TpAafConnection, cls).deserialize(element)
 
         # Parse aaf_aes3_data
-        child = ARObject._find_child_element(element, "AAF-AES3-DATA")
+        child = SerializationHelper.find_child_element(element, "AAF-AES3-DATA")
         if child is not None:
             aaf_aes3_data_value = IEEE1722TpAafAes3DataTypeEnum.deserialize(child)
             obj.aaf_aes3_data = aaf_aes3_data_value
 
         # Parse aaf_format_enum
-        child = ARObject._find_child_element(element, "AAF-FORMAT-ENUM")
+        child = SerializationHelper.find_child_element(element, "AAF-FORMAT-ENUM")
         if child is not None:
             aaf_format_enum_value = IEEE1722TpAafFormatEnum.deserialize(child)
             obj.aaf_format_enum = aaf_format_enum_value
 
         # Parse aaf_nominal_rate
-        child = ARObject._find_child_element(element, "AAF-NOMINAL-RATE")
+        child = SerializationHelper.find_child_element(element, "AAF-NOMINAL-RATE")
         if child is not None:
             aaf_nominal_rate_value = child.text
             obj.aaf_nominal_rate = aaf_nominal_rate_value
 
         # Parse aes3_data_type_h
-        child = ARObject._find_child_element(element, "AES3-DATA-TYPE-H")
+        child = SerializationHelper.find_child_element(element, "AES3-DATA-TYPE-H")
         if child is not None:
             aes3_data_type_h_value = child.text
             obj.aes3_data_type_h = aes3_data_type_h_value
 
         # Parse aes3_data_type_l
-        child = ARObject._find_child_element(element, "AES3-DATA-TYPE-L")
+        child = SerializationHelper.find_child_element(element, "AES3-DATA-TYPE-L")
         if child is not None:
             aes3_data_type_l_value = child.text
             obj.aes3_data_type_l = aes3_data_type_l_value
 
         # Parse channels_per
-        child = ARObject._find_child_element(element, "CHANNELS-PER")
+        child = SerializationHelper.find_child_element(element, "CHANNELS-PER")
         if child is not None:
             channels_per_value = child.text
             obj.channels_per = channels_per_value
 
         # Parse event_default
-        child = ARObject._find_child_element(element, "EVENT-DEFAULT")
+        child = SerializationHelper.find_child_element(element, "EVENT-DEFAULT")
         if child is not None:
             event_default_value = child.text
             obj.event_default = event_default_value
 
         # Parse pcm_bit_depth
-        child = ARObject._find_child_element(element, "PCM-BIT-DEPTH")
+        child = SerializationHelper.find_child_element(element, "PCM-BIT-DEPTH")
         if child is not None:
             pcm_bit_depth_value = child.text
             obj.pcm_bit_depth = pcm_bit_depth_value
 
         # Parse sparse
-        child = ARObject._find_child_element(element, "SPARSE")
+        child = SerializationHelper.find_child_element(element, "SPARSE")
         if child is not None:
             sparse_value = child.text
             obj.sparse = sparse_value
 
         # Parse streams_per
-        child = ARObject._find_child_element(element, "STREAMS-PER")
+        child = SerializationHelper.find_child_element(element, "STREAMS-PER")
         if child is not None:
             streams_per_value = child.text
             obj.streams_per = streams_per_value

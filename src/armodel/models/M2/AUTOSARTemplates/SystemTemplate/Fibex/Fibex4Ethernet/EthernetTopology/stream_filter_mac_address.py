@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     MacAddressString,
 )
@@ -40,12 +41,12 @@ class StreamFilterMACAddress(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize mac_address_string
         if self.mac_address_string is not None:
-            serialized = ARObject._serialize_item(self.mac_address_string, "MacAddressString")
+            serialized = SerializationHelper.serialize_item(self.mac_address_string, "MacAddressString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAC-ADDRESS-STRING")
@@ -74,7 +75,7 @@ class StreamFilterMACAddress(ARObject):
         obj.__init__()
 
         # Parse mac_address_string
-        child = ARObject._find_child_element(element, "MAC-ADDRESS-STRING")
+        child = SerializationHelper.find_child_element(element, "MAC-ADDRESS-STRING")
         if child is not None:
             mac_address_string_value = child.text
             obj.mac_address_string = mac_address_string_value

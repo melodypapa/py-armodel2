@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -42,12 +43,12 @@ class SoftwareContext(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize input
         if self.input is not None:
-            serialized = ARObject._serialize_item(self.input, "String")
+            serialized = SerializationHelper.serialize_item(self.input, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INPUT")
@@ -61,7 +62,7 @@ class SoftwareContext(ARObject):
 
         # Serialize state
         if self.state is not None:
-            serialized = ARObject._serialize_item(self.state, "String")
+            serialized = SerializationHelper.serialize_item(self.state, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("STATE")
@@ -90,13 +91,13 @@ class SoftwareContext(ARObject):
         obj.__init__()
 
         # Parse input
-        child = ARObject._find_child_element(element, "INPUT")
+        child = SerializationHelper.find_child_element(element, "INPUT")
         if child is not None:
             input_value = child.text
             obj.input = input_value
 
         # Parse state
-        child = ARObject._find_child_element(element, "STATE")
+        child = SerializationHelper.find_child_element(element, "STATE")
         if child is not None:
             state_value = child.text
             obj.state = state_value

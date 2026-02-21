@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -48,7 +49,7 @@ class SecureCommunicationFreshnessProps(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -67,7 +68,7 @@ class SecureCommunicationFreshnessProps(Identifiable):
 
         # Serialize freshness
         if self.freshness is not None:
-            serialized = ARObject._serialize_item(self.freshness, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.freshness, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FRESHNESS")
@@ -81,7 +82,7 @@ class SecureCommunicationFreshnessProps(Identifiable):
 
         # Serialize freshness_value
         if self.freshness_value is not None:
-            serialized = ARObject._serialize_item(self.freshness_value, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.freshness_value, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FRESHNESS-VALUE")
@@ -95,7 +96,7 @@ class SecureCommunicationFreshnessProps(Identifiable):
 
         # Serialize use_freshness
         if self.use_freshness is not None:
-            serialized = ARObject._serialize_item(self.use_freshness, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.use_freshness, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("USE-FRESHNESS")
@@ -123,19 +124,19 @@ class SecureCommunicationFreshnessProps(Identifiable):
         obj = super(SecureCommunicationFreshnessProps, cls).deserialize(element)
 
         # Parse freshness
-        child = ARObject._find_child_element(element, "FRESHNESS")
+        child = SerializationHelper.find_child_element(element, "FRESHNESS")
         if child is not None:
             freshness_value = child.text
             obj.freshness = freshness_value
 
         # Parse freshness_value
-        child = ARObject._find_child_element(element, "FRESHNESS-VALUE")
+        child = SerializationHelper.find_child_element(element, "FRESHNESS-VALUE")
         if child is not None:
             freshness_value_value = child.text
             obj.freshness_value = freshness_value_value
 
         # Parse use_freshness
-        child = ARObject._find_child_element(element, "USE-FRESHNESS")
+        child = SerializationHelper.find_child_element(element, "USE-FRESHNESS")
         if child is not None:
             use_freshness_value = child.text
             obj.use_freshness = use_freshness_value

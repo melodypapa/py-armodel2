@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from abc import ABC, abstractmethod
 
 
@@ -38,12 +39,12 @@ class WhitespaceControlled(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize xml_space
         if self.xml_space is not None:
-            serialized = ARObject._serialize_item(self.xml_space, "Any")
+            serialized = SerializationHelper.serialize_item(self.xml_space, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("XML-SPACE")
@@ -72,7 +73,7 @@ class WhitespaceControlled(ARObject, ABC):
         obj.__init__()
 
         # Parse xml_space
-        child = ARObject._find_child_element(element, "XML-SPACE")
+        child = SerializationHelper.find_child_element(element, "XML-SPACE")
         if child is not None:
             xml_space_value = child.text
             obj.xml_space = xml_space_value

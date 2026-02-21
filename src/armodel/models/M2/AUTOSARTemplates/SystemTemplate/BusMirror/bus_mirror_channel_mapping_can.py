@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.BusMirror.bus_mirror_chan
     BusMirrorChannelMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -60,7 +61,7 @@ class BusMirrorChannelMappingCan(BusMirrorChannelMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -81,7 +82,7 @@ class BusMirrorChannelMappingCan(BusMirrorChannelMapping):
         if self.can_id_ranges:
             wrapper = ET.Element("CAN-ID-RANGES")
             for item in self.can_id_ranges:
-                serialized = ARObject._serialize_item(item, "BusMirrorCanIdRangeMapping")
+                serialized = SerializationHelper.serialize_item(item, "BusMirrorCanIdRangeMapping")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -91,7 +92,7 @@ class BusMirrorChannelMappingCan(BusMirrorChannelMapping):
         if self.can_id_to_can_ids:
             wrapper = ET.Element("CAN-ID-TO-CAN-IDS")
             for item in self.can_id_to_can_ids:
-                serialized = ARObject._serialize_item(item, "BusMirrorCanIdToCanIdMapping")
+                serialized = SerializationHelper.serialize_item(item, "BusMirrorCanIdToCanIdMapping")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -101,7 +102,7 @@ class BusMirrorChannelMappingCan(BusMirrorChannelMapping):
         if self.lin_pid_to_can_ids:
             wrapper = ET.Element("LIN-PID-TO-CAN-IDS")
             for item in self.lin_pid_to_can_ids:
-                serialized = ARObject._serialize_item(item, "BusMirrorLinPidToCanIdMapping")
+                serialized = SerializationHelper.serialize_item(item, "BusMirrorLinPidToCanIdMapping")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -109,7 +110,7 @@ class BusMirrorChannelMappingCan(BusMirrorChannelMapping):
 
         # Serialize mirror_source_lin
         if self.mirror_source_lin is not None:
-            serialized = ARObject._serialize_item(self.mirror_source_lin, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.mirror_source_lin, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MIRROR-SOURCE-LIN")
@@ -123,7 +124,7 @@ class BusMirrorChannelMappingCan(BusMirrorChannelMapping):
 
         # Serialize mirror_status
         if self.mirror_status is not None:
-            serialized = ARObject._serialize_item(self.mirror_status, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.mirror_status, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MIRROR-STATUS")
@@ -152,42 +153,42 @@ class BusMirrorChannelMappingCan(BusMirrorChannelMapping):
 
         # Parse can_id_ranges (list from container "CAN-ID-RANGES")
         obj.can_id_ranges = []
-        container = ARObject._find_child_element(element, "CAN-ID-RANGES")
+        container = SerializationHelper.find_child_element(element, "CAN-ID-RANGES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.can_id_ranges.append(child_value)
 
         # Parse can_id_to_can_ids (list from container "CAN-ID-TO-CAN-IDS")
         obj.can_id_to_can_ids = []
-        container = ARObject._find_child_element(element, "CAN-ID-TO-CAN-IDS")
+        container = SerializationHelper.find_child_element(element, "CAN-ID-TO-CAN-IDS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.can_id_to_can_ids.append(child_value)
 
         # Parse lin_pid_to_can_ids (list from container "LIN-PID-TO-CAN-IDS")
         obj.lin_pid_to_can_ids = []
-        container = ARObject._find_child_element(element, "LIN-PID-TO-CAN-IDS")
+        container = SerializationHelper.find_child_element(element, "LIN-PID-TO-CAN-IDS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.lin_pid_to_can_ids.append(child_value)
 
         # Parse mirror_source_lin
-        child = ARObject._find_child_element(element, "MIRROR-SOURCE-LIN")
+        child = SerializationHelper.find_child_element(element, "MIRROR-SOURCE-LIN")
         if child is not None:
             mirror_source_lin_value = child.text
             obj.mirror_source_lin = mirror_source_lin_value
 
         # Parse mirror_status
-        child = ARObject._find_child_element(element, "MIRROR-STATUS")
+        child = SerializationHelper.find_child_element(element, "MIRROR-STATUS")
         if child is not None:
             mirror_status_value = child.text
             obj.mirror_status = mirror_status_value

@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation.implement
     ImplementationProps,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation.dependency_on_artifact import (
     DependencyOnArtifact,
@@ -45,7 +46,7 @@ class SectionNamePrefix(ImplementationProps):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class SectionNamePrefix(ImplementationProps):
 
         # Serialize implemented_in_ref
         if self.implemented_in_ref is not None:
-            serialized = ARObject._serialize_item(self.implemented_in_ref, "DependencyOnArtifact")
+            serialized = SerializationHelper.serialize_item(self.implemented_in_ref, "DependencyOnArtifact")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IMPLEMENTED-IN-REF")
@@ -92,7 +93,7 @@ class SectionNamePrefix(ImplementationProps):
         obj = super(SectionNamePrefix, cls).deserialize(element)
 
         # Parse implemented_in_ref
-        child = ARObject._find_child_element(element, "IMPLEMENTED-IN-REF")
+        child = SerializationHelper.find_child_element(element, "IMPLEMENTED-IN-REF")
         if child is not None:
             implemented_in_ref_value = ARRef.deserialize(child)
             obj.implemented_in_ref = implemented_in_ref_value

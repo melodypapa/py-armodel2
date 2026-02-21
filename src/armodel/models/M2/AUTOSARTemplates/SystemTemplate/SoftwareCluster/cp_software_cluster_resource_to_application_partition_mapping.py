@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SWmapping.application_partition import (
     ApplicationPartition,
@@ -49,7 +50,7 @@ class CpSoftwareClusterResourceToApplicationPartitionMapping(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -68,7 +69,7 @@ class CpSoftwareClusterResourceToApplicationPartitionMapping(Identifiable):
 
         # Serialize application_ref
         if self.application_ref is not None:
-            serialized = ARObject._serialize_item(self.application_ref, "ApplicationPartition")
+            serialized = SerializationHelper.serialize_item(self.application_ref, "ApplicationPartition")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("APPLICATION-REF")
@@ -82,7 +83,7 @@ class CpSoftwareClusterResourceToApplicationPartitionMapping(Identifiable):
 
         # Serialize resource_ref
         if self.resource_ref is not None:
-            serialized = ARObject._serialize_item(self.resource_ref, "CpSoftwareCluster")
+            serialized = SerializationHelper.serialize_item(self.resource_ref, "CpSoftwareCluster")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RESOURCE-REF")
@@ -110,13 +111,13 @@ class CpSoftwareClusterResourceToApplicationPartitionMapping(Identifiable):
         obj = super(CpSoftwareClusterResourceToApplicationPartitionMapping, cls).deserialize(element)
 
         # Parse application_ref
-        child = ARObject._find_child_element(element, "APPLICATION-REF")
+        child = SerializationHelper.find_child_element(element, "APPLICATION-REF")
         if child is not None:
             application_ref_value = ARRef.deserialize(child)
             obj.application_ref = application_ref_value
 
         # Parse resource_ref
-        child = ARObject._find_child_element(element, "RESOURCE-REF")
+        child = SerializationHelper.find_child_element(element, "RESOURCE-REF")
         if child is not None:
             resource_ref_value = ARRef.deserialize(child)
             obj.resource_ref = resource_ref_value

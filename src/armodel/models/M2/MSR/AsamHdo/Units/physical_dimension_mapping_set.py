@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.AsamHdo.Units.physical_dimension import (
     PhysicalDimension,
 )
@@ -43,7 +44,7 @@ class PhysicalDimensionMappingSet(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class PhysicalDimensionMappingSet(ARElement):
         if self.physicals:
             wrapper = ET.Element("PHYSICALS")
             for item in self.physicals:
-                serialized = ARObject._serialize_item(item, "PhysicalDimension")
+                serialized = SerializationHelper.serialize_item(item, "PhysicalDimension")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -87,11 +88,11 @@ class PhysicalDimensionMappingSet(ARElement):
 
         # Parse physicals (list from container "PHYSICALS")
         obj.physicals = []
-        container = ARObject._find_child_element(element, "PHYSICALS")
+        container = SerializationHelper.find_child_element(element, "PHYSICALS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.physicals.append(child_value)
 

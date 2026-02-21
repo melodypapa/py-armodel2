@@ -22,6 +22,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     CollectableElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.packageable_element import (
     PackageableElement,
 )
@@ -61,7 +62,7 @@ class ARPackage(CollectableElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -78,7 +79,7 @@ class ARPackage(CollectableElement):
         if self.reference_bases:
             wrapper = ET.Element("REFERENCE-BASES")
             for item in self.reference_bases:
-                serialized = ARObject._serialize_item(item, "ReferenceBase")
+                serialized = SerializationHelper.serialize_item(item, "ReferenceBase")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -88,7 +89,7 @@ class ARPackage(CollectableElement):
         if self.elements:
             wrapper = ET.Element("ELEMENTS")
             for item in self.elements:
-                serialized = ARObject._serialize_item(item, "PackageableElement")
+                serialized = SerializationHelper.serialize_item(item, "PackageableElement")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -98,7 +99,7 @@ class ARPackage(CollectableElement):
         if self.ar_packages:
             wrapper = ET.Element("AR-PACKAGES")
             for item in self.ar_packages:
-                serialized = ARObject._serialize_item(item, "ARPackage")
+                serialized = SerializationHelper.serialize_item(item, "ARPackage")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -121,31 +122,31 @@ class ARPackage(CollectableElement):
 
         # Parse reference_bases (list from container "REFERENCE-BASES")
         obj.reference_bases = []
-        container = ARObject._find_child_element(element, "REFERENCE-BASES")
+        container = SerializationHelper.find_child_element(element, "REFERENCE-BASES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.reference_bases.append(child_value)
 
         # Parse elements (list from container "ELEMENTS")
         obj.elements = []
-        container = ARObject._find_child_element(element, "ELEMENTS")
+        container = SerializationHelper.find_child_element(element, "ELEMENTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.elements.append(child_value)
 
         # Parse ar_packages (list from container "AR-PACKAGES")
         obj.ar_packages = []
-        container = ARObject._find_child_element(element, "AR-PACKAGES")
+        container = SerializationHelper.find_child_element(element, "AR-PACKAGES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.ar_packages.append(child_value)
 

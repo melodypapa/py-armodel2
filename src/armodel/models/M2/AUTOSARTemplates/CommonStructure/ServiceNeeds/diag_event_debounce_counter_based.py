@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diag_event_
     DiagEventDebounceAlgorithm,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
 )
@@ -55,7 +56,7 @@ class DiagEventDebounceCounterBased(DiagEventDebounceAlgorithm):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -74,7 +75,7 @@ class DiagEventDebounceCounterBased(DiagEventDebounceAlgorithm):
 
         # Serialize counter_based
         if self.counter_based is not None:
-            serialized = ARObject._serialize_item(self.counter_based, "Integer")
+            serialized = SerializationHelper.serialize_item(self.counter_based, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COUNTER-BASED")
@@ -88,7 +89,7 @@ class DiagEventDebounceCounterBased(DiagEventDebounceAlgorithm):
 
         # Serialize counter
         if self.counter is not None:
-            serialized = ARObject._serialize_item(self.counter, "Integer")
+            serialized = SerializationHelper.serialize_item(self.counter, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COUNTER")
@@ -102,7 +103,7 @@ class DiagEventDebounceCounterBased(DiagEventDebounceAlgorithm):
 
         # Serialize counter_failed
         if self.counter_failed is not None:
-            serialized = ARObject._serialize_item(self.counter_failed, "Integer")
+            serialized = SerializationHelper.serialize_item(self.counter_failed, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COUNTER-FAILED")
@@ -116,7 +117,7 @@ class DiagEventDebounceCounterBased(DiagEventDebounceAlgorithm):
 
         # Serialize counter_jump
         if self.counter_jump is not None:
-            serialized = ARObject._serialize_item(self.counter_jump, "Integer")
+            serialized = SerializationHelper.serialize_item(self.counter_jump, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COUNTER-JUMP")
@@ -130,7 +131,7 @@ class DiagEventDebounceCounterBased(DiagEventDebounceAlgorithm):
 
         # Serialize counter_jump_up
         if self.counter_jump_up is not None:
-            serialized = ARObject._serialize_item(self.counter_jump_up, "Integer")
+            serialized = SerializationHelper.serialize_item(self.counter_jump_up, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COUNTER-JUMP-UP")
@@ -144,7 +145,7 @@ class DiagEventDebounceCounterBased(DiagEventDebounceAlgorithm):
 
         # Serialize counter_passed
         if self.counter_passed is not None:
-            serialized = ARObject._serialize_item(self.counter_passed, "Integer")
+            serialized = SerializationHelper.serialize_item(self.counter_passed, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COUNTER-PASSED")
@@ -172,37 +173,37 @@ class DiagEventDebounceCounterBased(DiagEventDebounceAlgorithm):
         obj = super(DiagEventDebounceCounterBased, cls).deserialize(element)
 
         # Parse counter_based
-        child = ARObject._find_child_element(element, "COUNTER-BASED")
+        child = SerializationHelper.find_child_element(element, "COUNTER-BASED")
         if child is not None:
             counter_based_value = child.text
             obj.counter_based = counter_based_value
 
         # Parse counter
-        child = ARObject._find_child_element(element, "COUNTER")
+        child = SerializationHelper.find_child_element(element, "COUNTER")
         if child is not None:
             counter_value = child.text
             obj.counter = counter_value
 
         # Parse counter_failed
-        child = ARObject._find_child_element(element, "COUNTER-FAILED")
+        child = SerializationHelper.find_child_element(element, "COUNTER-FAILED")
         if child is not None:
             counter_failed_value = child.text
             obj.counter_failed = counter_failed_value
 
         # Parse counter_jump
-        child = ARObject._find_child_element(element, "COUNTER-JUMP")
+        child = SerializationHelper.find_child_element(element, "COUNTER-JUMP")
         if child is not None:
             counter_jump_value = child.text
             obj.counter_jump = counter_jump_value
 
         # Parse counter_jump_up
-        child = ARObject._find_child_element(element, "COUNTER-JUMP-UP")
+        child = SerializationHelper.find_child_element(element, "COUNTER-JUMP-UP")
         if child is not None:
             counter_jump_up_value = child.text
             obj.counter_jump_up = counter_jump_up_value
 
         # Parse counter_passed
-        child = ARObject._find_child_element(element, "COUNTER-PASSED")
+        child = SerializationHelper.find_child_element(element, "COUNTER-PASSED")
         if child is not None:
             counter_passed_value = child.text
             obj.counter_passed = counter_passed_value

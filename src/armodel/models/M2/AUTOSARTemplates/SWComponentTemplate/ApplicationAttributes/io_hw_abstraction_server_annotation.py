@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     GeneralAnnotation,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.ApplicationAttributes import (
     FilterDebouncingEnum,
@@ -80,7 +81,7 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -99,7 +100,7 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
 
         # Serialize age
         if self.age is not None:
-            serialized = ARObject._serialize_item(self.age, "MultidimensionalTime")
+            serialized = SerializationHelper.serialize_item(self.age, "MultidimensionalTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("AGE")
@@ -113,7 +114,7 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
 
         # Serialize argument_ref
         if self.argument_ref is not None:
-            serialized = ARObject._serialize_item(self.argument_ref, "ArgumentDataPrototype")
+            serialized = SerializationHelper.serialize_item(self.argument_ref, "ArgumentDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ARGUMENT-REF")
@@ -127,7 +128,7 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
 
         # Serialize bsw_resolution
         if self.bsw_resolution is not None:
-            serialized = ARObject._serialize_item(self.bsw_resolution, "Float")
+            serialized = SerializationHelper.serialize_item(self.bsw_resolution, "Float")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BSW-RESOLUTION")
@@ -141,7 +142,7 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
 
         # Serialize data_element_ref
         if self.data_element_ref is not None:
-            serialized = ARObject._serialize_item(self.data_element_ref, "VariableDataPrototype")
+            serialized = SerializationHelper.serialize_item(self.data_element_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-ELEMENT-REF")
@@ -155,7 +156,7 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
 
         # Serialize failure_ref
         if self.failure_ref is not None:
-            serialized = ARObject._serialize_item(self.failure_ref, "PortPrototype")
+            serialized = SerializationHelper.serialize_item(self.failure_ref, "PortPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FAILURE-REF")
@@ -169,7 +170,7 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
 
         # Serialize filtering
         if self.filtering is not None:
-            serialized = ARObject._serialize_item(self.filtering, "FilterDebouncingEnum")
+            serialized = SerializationHelper.serialize_item(self.filtering, "FilterDebouncingEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FILTERING")
@@ -183,7 +184,7 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
 
         # Serialize pulse_test
         if self.pulse_test is not None:
-            serialized = ARObject._serialize_item(self.pulse_test, "PulseTestEnum")
+            serialized = SerializationHelper.serialize_item(self.pulse_test, "PulseTestEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PULSE-TEST")
@@ -197,7 +198,7 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
 
         # Serialize trigger_ref
         if self.trigger_ref is not None:
-            serialized = ARObject._serialize_item(self.trigger_ref, "Trigger")
+            serialized = SerializationHelper.serialize_item(self.trigger_ref, "Trigger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TRIGGER-REF")
@@ -225,49 +226,49 @@ class IoHwAbstractionServerAnnotation(GeneralAnnotation):
         obj = super(IoHwAbstractionServerAnnotation, cls).deserialize(element)
 
         # Parse age
-        child = ARObject._find_child_element(element, "AGE")
+        child = SerializationHelper.find_child_element(element, "AGE")
         if child is not None:
-            age_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            age_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
             obj.age = age_value
 
         # Parse argument_ref
-        child = ARObject._find_child_element(element, "ARGUMENT-REF")
+        child = SerializationHelper.find_child_element(element, "ARGUMENT-REF")
         if child is not None:
             argument_ref_value = ARRef.deserialize(child)
             obj.argument_ref = argument_ref_value
 
         # Parse bsw_resolution
-        child = ARObject._find_child_element(element, "BSW-RESOLUTION")
+        child = SerializationHelper.find_child_element(element, "BSW-RESOLUTION")
         if child is not None:
             bsw_resolution_value = child.text
             obj.bsw_resolution = bsw_resolution_value
 
         # Parse data_element_ref
-        child = ARObject._find_child_element(element, "DATA-ELEMENT-REF")
+        child = SerializationHelper.find_child_element(element, "DATA-ELEMENT-REF")
         if child is not None:
             data_element_ref_value = ARRef.deserialize(child)
             obj.data_element_ref = data_element_ref_value
 
         # Parse failure_ref
-        child = ARObject._find_child_element(element, "FAILURE-REF")
+        child = SerializationHelper.find_child_element(element, "FAILURE-REF")
         if child is not None:
             failure_ref_value = ARRef.deserialize(child)
             obj.failure_ref = failure_ref_value
 
         # Parse filtering
-        child = ARObject._find_child_element(element, "FILTERING")
+        child = SerializationHelper.find_child_element(element, "FILTERING")
         if child is not None:
             filtering_value = FilterDebouncingEnum.deserialize(child)
             obj.filtering = filtering_value
 
         # Parse pulse_test
-        child = ARObject._find_child_element(element, "PULSE-TEST")
+        child = SerializationHelper.find_child_element(element, "PULSE-TEST")
         if child is not None:
             pulse_test_value = PulseTestEnum.deserialize(child)
             obj.pulse_test = pulse_test_value
 
         # Parse trigger_ref
-        child = ARObject._find_child_element(element, "TRIGGER-REF")
+        child = SerializationHelper.find_child_element(element, "TRIGGER-REF")
         if child is not None:
             trigger_ref_value = ARRef.deserialize(child)
             obj.trigger_ref = trigger_ref_value

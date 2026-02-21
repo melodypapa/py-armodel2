@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Dds import (
     DdsReliabilityKindEnum,
 )
@@ -45,12 +46,12 @@ class DdsReliability(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize reliability_kind
         if self.reliability_kind is not None:
-            serialized = ARObject._serialize_item(self.reliability_kind, "DdsReliabilityKindEnum")
+            serialized = SerializationHelper.serialize_item(self.reliability_kind, "DdsReliabilityKindEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RELIABILITY-KIND")
@@ -64,7 +65,7 @@ class DdsReliability(ARObject):
 
         # Serialize reliability_max
         if self.reliability_max is not None:
-            serialized = ARObject._serialize_item(self.reliability_max, "Float")
+            serialized = SerializationHelper.serialize_item(self.reliability_max, "Float")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RELIABILITY-MAX")
@@ -93,13 +94,13 @@ class DdsReliability(ARObject):
         obj.__init__()
 
         # Parse reliability_kind
-        child = ARObject._find_child_element(element, "RELIABILITY-KIND")
+        child = SerializationHelper.find_child_element(element, "RELIABILITY-KIND")
         if child is not None:
             reliability_kind_value = DdsReliabilityKindEnum.deserialize(child)
             obj.reliability_kind = reliability_kind_value
 
         # Parse reliability_max
-        child = ARObject._find_child_element(element, "RELIABILITY-MAX")
+        child = SerializationHelper.find_child_element(element, "RELIABILITY-MAX")
         if child is not None:
             reliability_max_value = child.text
             obj.reliability_max = reliability_max_value

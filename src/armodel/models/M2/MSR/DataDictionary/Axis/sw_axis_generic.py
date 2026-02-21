@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.DataDictionary.Axis.sw_axis_type import (
     SwAxisType,
@@ -46,12 +47,12 @@ class SwAxisGeneric(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize sw_axis_type_ref
         if self.sw_axis_type_ref is not None:
-            serialized = ARObject._serialize_item(self.sw_axis_type_ref, "SwAxisType")
+            serialized = SerializationHelper.serialize_item(self.sw_axis_type_ref, "SwAxisType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-AXIS-TYPE-REF")
@@ -67,7 +68,7 @@ class SwAxisGeneric(ARObject):
         if self.sw_generic_axis_params:
             wrapper = ET.Element("SW-GENERIC-AXIS-PARAMS")
             for item in self.sw_generic_axis_params:
-                serialized = ARObject._serialize_item(item, "SwGenericAxisParam")
+                serialized = SerializationHelper.serialize_item(item, "SwGenericAxisParam")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -90,18 +91,18 @@ class SwAxisGeneric(ARObject):
         obj.__init__()
 
         # Parse sw_axis_type_ref
-        child = ARObject._find_child_element(element, "SW-AXIS-TYPE-REF")
+        child = SerializationHelper.find_child_element(element, "SW-AXIS-TYPE-REF")
         if child is not None:
             sw_axis_type_ref_value = ARRef.deserialize(child)
             obj.sw_axis_type_ref = sw_axis_type_ref_value
 
         # Parse sw_generic_axis_params (list from container "SW-GENERIC-AXIS-PARAMS")
         obj.sw_generic_axis_params = []
-        container = ARObject._find_child_element(element, "SW-GENERIC-AXIS-PARAMS")
+        container = SerializationHelper.find_child_element(element, "SW-GENERIC-AXIS-PARAMS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.sw_generic_axis_params.append(child_value)
 

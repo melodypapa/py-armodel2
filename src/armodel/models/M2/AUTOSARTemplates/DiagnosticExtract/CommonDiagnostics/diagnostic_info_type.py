@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -48,7 +49,7 @@ class DiagnosticInfoType(DiagnosticCommonElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -69,7 +70,7 @@ class DiagnosticInfoType(DiagnosticCommonElement):
         if self.data_elements:
             wrapper = ET.Element("DATA-ELEMENTS")
             for item in self.data_elements:
-                serialized = ARObject._serialize_item(item, "DiagnosticParameter")
+                serialized = SerializationHelper.serialize_item(item, "DiagnosticParameter")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -77,7 +78,7 @@ class DiagnosticInfoType(DiagnosticCommonElement):
 
         # Serialize id
         if self.id is not None:
-            serialized = ARObject._serialize_item(self.id, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.id, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ID")
@@ -106,16 +107,16 @@ class DiagnosticInfoType(DiagnosticCommonElement):
 
         # Parse data_elements (list from container "DATA-ELEMENTS")
         obj.data_elements = []
-        container = ARObject._find_child_element(element, "DATA-ELEMENTS")
+        container = SerializationHelper.find_child_element(element, "DATA-ELEMENTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.data_elements.append(child_value)
 
         # Parse id
-        child = ARObject._find_child_element(element, "ID")
+        child = SerializationHelper.find_child_element(element, "ID")
         if child is not None:
             id_value = child.text
             obj.id = id_value

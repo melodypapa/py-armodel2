@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_abstract_i
     EcucAbstractInternalReferenceDef,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_container_def import (
     EcucContainerDef,
@@ -46,7 +47,7 @@ class EcucReferenceDef(EcucAbstractInternalReferenceDef):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class EcucReferenceDef(EcucAbstractInternalReferenceDef):
 
         # Serialize destination_ref
         if self.destination_ref is not None:
-            serialized = ARObject._serialize_item(self.destination_ref, "EcucContainerDef")
+            serialized = SerializationHelper.serialize_item(self.destination_ref, "EcucContainerDef")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DESTINATION-REF")
@@ -93,7 +94,7 @@ class EcucReferenceDef(EcucAbstractInternalReferenceDef):
         obj = super(EcucReferenceDef, cls).deserialize(element)
 
         # Parse destination_ref
-        child = ARObject._find_child_element(element, "DESTINATION-REF")
+        child = SerializationHelper.find_child_element(element, "DESTINATION-REF")
         if child is not None:
             destination_ref_value = ARRef.deserialize(child)
             obj.destination_ref = destination_ref_value

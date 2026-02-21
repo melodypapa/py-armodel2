@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import (
     DocumentationBlock,
 )
@@ -47,12 +48,12 @@ class TopicContent(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize block_level
         if self.block_level is not None:
-            serialized = ARObject._serialize_item(self.block_level, "DocumentationBlock")
+            serialized = SerializationHelper.serialize_item(self.block_level, "DocumentationBlock")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BLOCK-LEVEL")
@@ -66,7 +67,7 @@ class TopicContent(ARObject):
 
         # Serialize table
         if self.table is not None:
-            serialized = ARObject._serialize_item(self.table, "Table")
+            serialized = SerializationHelper.serialize_item(self.table, "Table")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TABLE")
@@ -80,7 +81,7 @@ class TopicContent(ARObject):
 
         # Serialize traceable_table
         if self.traceable_table is not None:
-            serialized = ARObject._serialize_item(self.traceable_table, "Any")
+            serialized = SerializationHelper.serialize_item(self.traceable_table, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TRACEABLE-TABLE")
@@ -109,19 +110,19 @@ class TopicContent(ARObject):
         obj.__init__()
 
         # Parse block_level
-        child = ARObject._find_child_element(element, "BLOCK-LEVEL")
+        child = SerializationHelper.find_child_element(element, "BLOCK-LEVEL")
         if child is not None:
-            block_level_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            block_level_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
             obj.block_level = block_level_value
 
         # Parse table
-        child = ARObject._find_child_element(element, "TABLE")
+        child = SerializationHelper.find_child_element(element, "TABLE")
         if child is not None:
-            table_value = ARObject._deserialize_by_tag(child, "Table")
+            table_value = SerializationHelper.deserialize_by_tag(child, "Table")
             obj.table = table_value
 
         # Parse traceable_table
-        child = ARObject._find_child_element(element, "TRACEABLE-TABLE")
+        child = SerializationHelper.find_child_element(element, "TRACEABLE-TABLE")
         if child is not None:
             traceable_table_value = child.text
             obj.traceable_table = traceable_table_value

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -47,7 +48,7 @@ class CouplingPortCreditBasedShaper(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -66,7 +67,7 @@ class CouplingPortCreditBasedShaper(Identifiable):
 
         # Serialize idle_slope
         if self.idle_slope is not None:
-            serialized = ARObject._serialize_item(self.idle_slope, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.idle_slope, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IDLE-SLOPE")
@@ -80,7 +81,7 @@ class CouplingPortCreditBasedShaper(Identifiable):
 
         # Serialize lower_boundary
         if self.lower_boundary is not None:
-            serialized = ARObject._serialize_item(self.lower_boundary, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.lower_boundary, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LOWER-BOUNDARY")
@@ -94,7 +95,7 @@ class CouplingPortCreditBasedShaper(Identifiable):
 
         # Serialize upper_boundary
         if self.upper_boundary is not None:
-            serialized = ARObject._serialize_item(self.upper_boundary, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.upper_boundary, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("UPPER-BOUNDARY")
@@ -122,19 +123,19 @@ class CouplingPortCreditBasedShaper(Identifiable):
         obj = super(CouplingPortCreditBasedShaper, cls).deserialize(element)
 
         # Parse idle_slope
-        child = ARObject._find_child_element(element, "IDLE-SLOPE")
+        child = SerializationHelper.find_child_element(element, "IDLE-SLOPE")
         if child is not None:
             idle_slope_value = child.text
             obj.idle_slope = idle_slope_value
 
         # Parse lower_boundary
-        child = ARObject._find_child_element(element, "LOWER-BOUNDARY")
+        child = SerializationHelper.find_child_element(element, "LOWER-BOUNDARY")
         if child is not None:
             lower_boundary_value = child.text
             obj.lower_boundary = lower_boundary_value
 
         # Parse upper_boundary
-        child = ARObject._find_child_element(element, "UPPER-BOUNDARY")
+        child = SerializationHelper.find_child_element(element, "UPPER-BOUNDARY")
         if child is not None:
             upper_boundary_value = child.text
             obj.upper_boundary = upper_boundary_value

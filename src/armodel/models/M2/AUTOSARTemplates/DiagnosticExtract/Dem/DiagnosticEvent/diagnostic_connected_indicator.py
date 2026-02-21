@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -53,7 +54,7 @@ class DiagnosticConnectedIndicator(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -72,7 +73,7 @@ class DiagnosticConnectedIndicator(Identifiable):
 
         # Serialize behavior_indicator_behavior_enum
         if self.behavior_indicator_behavior_enum is not None:
-            serialized = ARObject._serialize_item(self.behavior_indicator_behavior_enum, "Any")
+            serialized = SerializationHelper.serialize_item(self.behavior_indicator_behavior_enum, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BEHAVIOR-INDICATOR-BEHAVIOR-ENUM")
@@ -86,7 +87,7 @@ class DiagnosticConnectedIndicator(Identifiable):
 
         # Serialize healing_cycle
         if self.healing_cycle is not None:
-            serialized = ARObject._serialize_item(self.healing_cycle, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.healing_cycle, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HEALING-CYCLE")
@@ -100,7 +101,7 @@ class DiagnosticConnectedIndicator(Identifiable):
 
         # Serialize indicator_ref
         if self.indicator_ref is not None:
-            serialized = ARObject._serialize_item(self.indicator_ref, "DiagnosticIndicator")
+            serialized = SerializationHelper.serialize_item(self.indicator_ref, "DiagnosticIndicator")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INDICATOR-REF")
@@ -114,7 +115,7 @@ class DiagnosticConnectedIndicator(Identifiable):
 
         # Serialize indicator_failure
         if self.indicator_failure is not None:
-            serialized = ARObject._serialize_item(self.indicator_failure, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.indicator_failure, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INDICATOR-FAILURE")
@@ -142,25 +143,25 @@ class DiagnosticConnectedIndicator(Identifiable):
         obj = super(DiagnosticConnectedIndicator, cls).deserialize(element)
 
         # Parse behavior_indicator_behavior_enum
-        child = ARObject._find_child_element(element, "BEHAVIOR-INDICATOR-BEHAVIOR-ENUM")
+        child = SerializationHelper.find_child_element(element, "BEHAVIOR-INDICATOR-BEHAVIOR-ENUM")
         if child is not None:
             behavior_indicator_behavior_enum_value = child.text
             obj.behavior_indicator_behavior_enum = behavior_indicator_behavior_enum_value
 
         # Parse healing_cycle
-        child = ARObject._find_child_element(element, "HEALING-CYCLE")
+        child = SerializationHelper.find_child_element(element, "HEALING-CYCLE")
         if child is not None:
             healing_cycle_value = child.text
             obj.healing_cycle = healing_cycle_value
 
         # Parse indicator_ref
-        child = ARObject._find_child_element(element, "INDICATOR-REF")
+        child = SerializationHelper.find_child_element(element, "INDICATOR-REF")
         if child is not None:
             indicator_ref_value = ARRef.deserialize(child)
             obj.indicator_ref = indicator_ref_value
 
         # Parse indicator_failure
-        child = ARObject._find_child_element(element, "INDICATOR-FAILURE")
+        child = SerializationHelper.find_child_element(element, "INDICATOR-FAILURE")
         if child is not None:
             indicator_failure_value = child.text
             obj.indicator_failure = indicator_failure_value

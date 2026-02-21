@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -51,7 +52,7 @@ class CouplingPortAsynchronousTrafficShaper(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -70,7 +71,7 @@ class CouplingPortAsynchronousTrafficShaper(Identifiable):
 
         # Serialize committed_burst
         if self.committed_burst is not None:
-            serialized = ARObject._serialize_item(self.committed_burst, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.committed_burst, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COMMITTED-BURST")
@@ -84,7 +85,7 @@ class CouplingPortAsynchronousTrafficShaper(Identifiable):
 
         # Serialize committed
         if self.committed is not None:
-            serialized = ARObject._serialize_item(self.committed, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.committed, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COMMITTED")
@@ -98,7 +99,7 @@ class CouplingPortAsynchronousTrafficShaper(Identifiable):
 
         # Serialize traffic_shaper_ref
         if self.traffic_shaper_ref is not None:
-            serialized = ARObject._serialize_item(self.traffic_shaper_ref, "SwitchAsynchronousTrafficShaperGroupEntry")
+            serialized = SerializationHelper.serialize_item(self.traffic_shaper_ref, "SwitchAsynchronousTrafficShaperGroupEntry")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TRAFFIC-SHAPER-REF")
@@ -126,19 +127,19 @@ class CouplingPortAsynchronousTrafficShaper(Identifiable):
         obj = super(CouplingPortAsynchronousTrafficShaper, cls).deserialize(element)
 
         # Parse committed_burst
-        child = ARObject._find_child_element(element, "COMMITTED-BURST")
+        child = SerializationHelper.find_child_element(element, "COMMITTED-BURST")
         if child is not None:
             committed_burst_value = child.text
             obj.committed_burst = committed_burst_value
 
         # Parse committed
-        child = ARObject._find_child_element(element, "COMMITTED")
+        child = SerializationHelper.find_child_element(element, "COMMITTED")
         if child is not None:
             committed_value = child.text
             obj.committed = committed_value
 
         # Parse traffic_shaper_ref
-        child = ARObject._find_child_element(element, "TRAFFIC-SHAPER-REF")
+        child = SerializationHelper.find_child_element(element, "TRAFFIC-SHAPER-REF")
         if child is not None:
             traffic_shaper_ref_value = ARRef.deserialize(child)
             obj.traffic_shaper_ref = traffic_shaper_ref_value

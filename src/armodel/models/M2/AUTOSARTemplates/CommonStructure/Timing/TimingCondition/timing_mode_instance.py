@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class TimingModeInstance(Identifiable):
@@ -40,7 +41,7 @@ class TimingModeInstance(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -59,7 +60,7 @@ class TimingModeInstance(Identifiable):
 
         # Serialize mode_instance
         if self.mode_instance is not None:
-            serialized = ARObject._serialize_item(self.mode_instance, "Any")
+            serialized = SerializationHelper.serialize_item(self.mode_instance, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MODE-INSTANCE")
@@ -87,7 +88,7 @@ class TimingModeInstance(Identifiable):
         obj = super(TimingModeInstance, cls).deserialize(element)
 
         # Parse mode_instance
-        child = ARObject._find_child_element(element, "MODE-INSTANCE")
+        child = SerializationHelper.find_child_element(element, "MODE-INSTANCE")
         if child is not None:
             mode_instance_value = child.text
             obj.mode_instance = mode_instance_value

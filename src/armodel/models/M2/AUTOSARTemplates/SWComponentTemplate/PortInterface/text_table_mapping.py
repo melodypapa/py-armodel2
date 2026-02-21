@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface import (
     MappingDirectionEnum,
@@ -55,12 +56,12 @@ class TextTableMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize bitfield_text_table
         if self.bitfield_text_table is not None:
-            serialized = ARObject._serialize_item(self.bitfield_text_table, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.bitfield_text_table, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BITFIELD-TEXT-TABLE")
@@ -74,7 +75,7 @@ class TextTableMapping(ARObject):
 
         # Serialize identical
         if self.identical is not None:
-            serialized = ARObject._serialize_item(self.identical, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.identical, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IDENTICAL")
@@ -88,7 +89,7 @@ class TextTableMapping(ARObject):
 
         # Serialize mapping_ref
         if self.mapping_ref is not None:
-            serialized = ARObject._serialize_item(self.mapping_ref, "MappingDirectionEnum")
+            serialized = SerializationHelper.serialize_item(self.mapping_ref, "MappingDirectionEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAPPING-REF")
@@ -104,7 +105,7 @@ class TextTableMapping(ARObject):
         if self.value_pairs:
             wrapper = ET.Element("VALUE-PAIRS")
             for item in self.value_pairs:
-                serialized = ARObject._serialize_item(item, "TextTableValuePair")
+                serialized = SerializationHelper.serialize_item(item, "TextTableValuePair")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -127,30 +128,30 @@ class TextTableMapping(ARObject):
         obj.__init__()
 
         # Parse bitfield_text_table
-        child = ARObject._find_child_element(element, "BITFIELD-TEXT-TABLE")
+        child = SerializationHelper.find_child_element(element, "BITFIELD-TEXT-TABLE")
         if child is not None:
             bitfield_text_table_value = child.text
             obj.bitfield_text_table = bitfield_text_table_value
 
         # Parse identical
-        child = ARObject._find_child_element(element, "IDENTICAL")
+        child = SerializationHelper.find_child_element(element, "IDENTICAL")
         if child is not None:
             identical_value = child.text
             obj.identical = identical_value
 
         # Parse mapping_ref
-        child = ARObject._find_child_element(element, "MAPPING-REF")
+        child = SerializationHelper.find_child_element(element, "MAPPING-REF")
         if child is not None:
             mapping_ref_value = ARRef.deserialize(child)
             obj.mapping_ref = mapping_ref_value
 
         # Parse value_pairs (list from container "VALUE-PAIRS")
         obj.value_pairs = []
-        container = ARObject._find_child_element(element, "VALUE-PAIRS")
+        container = SerializationHelper.find_child_element(element, "VALUE-PAIRS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.value_pairs.append(child_value)
 

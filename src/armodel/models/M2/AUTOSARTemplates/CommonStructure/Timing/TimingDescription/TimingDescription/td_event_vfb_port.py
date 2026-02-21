@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
     TDEventVfb,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -56,7 +57,7 @@ class TDEventVfbPort(TDEventVfb, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -75,7 +76,7 @@ class TDEventVfbPort(TDEventVfb, ABC):
 
         # Serialize is_external
         if self.is_external is not None:
-            serialized = ARObject._serialize_item(self.is_external, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.is_external, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IS-EXTERNAL")
@@ -89,7 +90,7 @@ class TDEventVfbPort(TDEventVfb, ABC):
 
         # Serialize port_ref
         if self.port_ref is not None:
-            serialized = ARObject._serialize_item(self.port_ref, "PortPrototype")
+            serialized = SerializationHelper.serialize_item(self.port_ref, "PortPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PORT-REF")
@@ -103,7 +104,7 @@ class TDEventVfbPort(TDEventVfb, ABC):
 
         # Serialize port_prototype_ref
         if self.port_prototype_ref is not None:
-            serialized = ARObject._serialize_item(self.port_prototype_ref, "PortPrototypeBlueprint")
+            serialized = SerializationHelper.serialize_item(self.port_prototype_ref, "PortPrototypeBlueprint")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PORT-PROTOTYPE-REF")
@@ -131,19 +132,19 @@ class TDEventVfbPort(TDEventVfb, ABC):
         obj = super(TDEventVfbPort, cls).deserialize(element)
 
         # Parse is_external
-        child = ARObject._find_child_element(element, "IS-EXTERNAL")
+        child = SerializationHelper.find_child_element(element, "IS-EXTERNAL")
         if child is not None:
             is_external_value = child.text
             obj.is_external = is_external_value
 
         # Parse port_ref
-        child = ARObject._find_child_element(element, "PORT-REF")
+        child = SerializationHelper.find_child_element(element, "PORT-REF")
         if child is not None:
             port_ref_value = ARRef.deserialize(child)
             obj.port_ref = port_ref_value
 
         # Parse port_prototype_ref
-        child = ARObject._find_child_element(element, "PORT-PROTOTYPE-REF")
+        child = SerializationHelper.find_child_element(element, "PORT-PROTOTYPE-REF")
         if child is not None:
             port_prototype_ref_value = ARRef.deserialize(child)
             obj.port_prototype_ref = port_prototype_ref_value

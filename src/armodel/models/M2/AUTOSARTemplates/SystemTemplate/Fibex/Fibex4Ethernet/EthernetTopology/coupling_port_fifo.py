@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
     CouplingPortStructuralElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -47,7 +48,7 @@ class CouplingPortFifo(CouplingPortStructuralElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -66,7 +67,7 @@ class CouplingPortFifo(CouplingPortStructuralElement):
 
         # Serialize assigned_traffic
         if self.assigned_traffic is not None:
-            serialized = ARObject._serialize_item(self.assigned_traffic, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.assigned_traffic, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ASSIGNED-TRAFFIC")
@@ -80,7 +81,7 @@ class CouplingPortFifo(CouplingPortStructuralElement):
 
         # Serialize minimum_fifo
         if self.minimum_fifo is not None:
-            serialized = ARObject._serialize_item(self.minimum_fifo, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.minimum_fifo, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MINIMUM-FIFO")
@@ -94,7 +95,7 @@ class CouplingPortFifo(CouplingPortStructuralElement):
 
         # Serialize shaper
         if self.shaper is not None:
-            serialized = ARObject._serialize_item(self.shaper, "Any")
+            serialized = SerializationHelper.serialize_item(self.shaper, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SHAPER")
@@ -122,19 +123,19 @@ class CouplingPortFifo(CouplingPortStructuralElement):
         obj = super(CouplingPortFifo, cls).deserialize(element)
 
         # Parse assigned_traffic
-        child = ARObject._find_child_element(element, "ASSIGNED-TRAFFIC")
+        child = SerializationHelper.find_child_element(element, "ASSIGNED-TRAFFIC")
         if child is not None:
             assigned_traffic_value = child.text
             obj.assigned_traffic = assigned_traffic_value
 
         # Parse minimum_fifo
-        child = ARObject._find_child_element(element, "MINIMUM-FIFO")
+        child = SerializationHelper.find_child_element(element, "MINIMUM-FIFO")
         if child is not None:
             minimum_fifo_value = child.text
             obj.minimum_fifo = minimum_fifo_value
 
         # Parse shaper
-        child = ARObject._find_child_element(element, "SHAPER")
+        child = SerializationHelper.find_child_element(element, "SHAPER")
         if child is not None:
             shaper_value = child.text
             obj.shaper = shaper_value

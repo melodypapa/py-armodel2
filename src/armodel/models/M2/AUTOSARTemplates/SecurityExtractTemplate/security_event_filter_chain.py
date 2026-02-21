@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.ids_common_eleme
     IdsCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.security_event_one_every_n_filter import (
     SecurityEventOneEveryNFilter,
 )
@@ -55,7 +56,7 @@ class SecurityEventFilterChain(IdsCommonElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -74,7 +75,7 @@ class SecurityEventFilterChain(IdsCommonElement):
 
         # Serialize aggregation
         if self.aggregation is not None:
-            serialized = ARObject._serialize_item(self.aggregation, "Any")
+            serialized = SerializationHelper.serialize_item(self.aggregation, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("AGGREGATION")
@@ -88,7 +89,7 @@ class SecurityEventFilterChain(IdsCommonElement):
 
         # Serialize one_every_n
         if self.one_every_n is not None:
-            serialized = ARObject._serialize_item(self.one_every_n, "SecurityEventOneEveryNFilter")
+            serialized = SerializationHelper.serialize_item(self.one_every_n, "SecurityEventOneEveryNFilter")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ONE-EVERY-N")
@@ -102,7 +103,7 @@ class SecurityEventFilterChain(IdsCommonElement):
 
         # Serialize state
         if self.state is not None:
-            serialized = ARObject._serialize_item(self.state, "SecurityEventStateFilter")
+            serialized = SerializationHelper.serialize_item(self.state, "SecurityEventStateFilter")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("STATE")
@@ -116,7 +117,7 @@ class SecurityEventFilterChain(IdsCommonElement):
 
         # Serialize threshold
         if self.threshold is not None:
-            serialized = ARObject._serialize_item(self.threshold, "SecurityEventThresholdFilter")
+            serialized = SerializationHelper.serialize_item(self.threshold, "SecurityEventThresholdFilter")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("THRESHOLD")
@@ -144,27 +145,27 @@ class SecurityEventFilterChain(IdsCommonElement):
         obj = super(SecurityEventFilterChain, cls).deserialize(element)
 
         # Parse aggregation
-        child = ARObject._find_child_element(element, "AGGREGATION")
+        child = SerializationHelper.find_child_element(element, "AGGREGATION")
         if child is not None:
             aggregation_value = child.text
             obj.aggregation = aggregation_value
 
         # Parse one_every_n
-        child = ARObject._find_child_element(element, "ONE-EVERY-N")
+        child = SerializationHelper.find_child_element(element, "ONE-EVERY-N")
         if child is not None:
-            one_every_n_value = ARObject._deserialize_by_tag(child, "SecurityEventOneEveryNFilter")
+            one_every_n_value = SerializationHelper.deserialize_by_tag(child, "SecurityEventOneEveryNFilter")
             obj.one_every_n = one_every_n_value
 
         # Parse state
-        child = ARObject._find_child_element(element, "STATE")
+        child = SerializationHelper.find_child_element(element, "STATE")
         if child is not None:
-            state_value = ARObject._deserialize_by_tag(child, "SecurityEventStateFilter")
+            state_value = SerializationHelper.deserialize_by_tag(child, "SecurityEventStateFilter")
             obj.state = state_value
 
         # Parse threshold
-        child = ARObject._find_child_element(element, "THRESHOLD")
+        child = SerializationHelper.find_child_element(element, "THRESHOLD")
         if child is not None:
-            threshold_value = ARObject._deserialize_by_tag(child, "SecurityEventThresholdFilter")
+            threshold_value = SerializationHelper.deserialize_by_tag(child, "SecurityEventThresholdFilter")
             obj.threshold = threshold_value
 
         return obj

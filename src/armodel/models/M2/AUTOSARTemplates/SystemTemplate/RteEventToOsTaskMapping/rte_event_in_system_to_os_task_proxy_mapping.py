@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
@@ -54,7 +55,7 @@ class RteEventInSystemToOsTaskProxyMapping(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -73,7 +74,7 @@ class RteEventInSystemToOsTaskProxyMapping(Identifiable):
 
         # Serialize offset
         if self.offset is not None:
-            serialized = ARObject._serialize_item(self.offset, "Integer")
+            serialized = SerializationHelper.serialize_item(self.offset, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("OFFSET")
@@ -87,7 +88,7 @@ class RteEventInSystemToOsTaskProxyMapping(Identifiable):
 
         # Serialize os_task_proxy_ref
         if self.os_task_proxy_ref is not None:
-            serialized = ARObject._serialize_item(self.os_task_proxy_ref, "OsTaskProxy")
+            serialized = SerializationHelper.serialize_item(self.os_task_proxy_ref, "OsTaskProxy")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("OS-TASK-PROXY-REF")
@@ -101,7 +102,7 @@ class RteEventInSystemToOsTaskProxyMapping(Identifiable):
 
         # Serialize rte_event_instance_ref
         if self.rte_event_instance_ref is not None:
-            serialized = ARObject._serialize_item(self.rte_event_instance_ref, "RTEEvent")
+            serialized = SerializationHelper.serialize_item(self.rte_event_instance_ref, "RTEEvent")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RTE-EVENT-INSTANCE-REF")
@@ -129,21 +130,21 @@ class RteEventInSystemToOsTaskProxyMapping(Identifiable):
         obj = super(RteEventInSystemToOsTaskProxyMapping, cls).deserialize(element)
 
         # Parse offset
-        child = ARObject._find_child_element(element, "OFFSET")
+        child = SerializationHelper.find_child_element(element, "OFFSET")
         if child is not None:
             offset_value = child.text
             obj.offset = offset_value
 
         # Parse os_task_proxy_ref
-        child = ARObject._find_child_element(element, "OS-TASK-PROXY-REF")
+        child = SerializationHelper.find_child_element(element, "OS-TASK-PROXY-REF")
         if child is not None:
             os_task_proxy_ref_value = ARRef.deserialize(child)
             obj.os_task_proxy_ref = os_task_proxy_ref_value
 
         # Parse rte_event_instance_ref
-        child = ARObject._find_child_element(element, "RTE-EVENT-INSTANCE-REF")
+        child = SerializationHelper.find_child_element(element, "RTE-EVENT-INSTANCE-REF")
         if child is not None:
-            rte_event_instance_ref_value = ARObject._deserialize_by_tag(child, "RTEEvent")
+            rte_event_instance_ref_value = SerializationHelper.deserialize_by_tag(child, "RTEEvent")
             obj.rte_event_instance_ref = rte_event_instance_ref_value
 
         return obj

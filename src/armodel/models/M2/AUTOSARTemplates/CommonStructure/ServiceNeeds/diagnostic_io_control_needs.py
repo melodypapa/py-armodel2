@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_
     DiagnosticCapabilityElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -55,7 +56,7 @@ class DiagnosticIoControlNeeds(DiagnosticCapabilityElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -74,7 +75,7 @@ class DiagnosticIoControlNeeds(DiagnosticCapabilityElement):
 
         # Serialize current_value_ref
         if self.current_value_ref is not None:
-            serialized = ARObject._serialize_item(self.current_value_ref, "DiagnosticValueNeeds")
+            serialized = SerializationHelper.serialize_item(self.current_value_ref, "DiagnosticValueNeeds")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CURRENT-VALUE-REF")
@@ -88,7 +89,7 @@ class DiagnosticIoControlNeeds(DiagnosticCapabilityElement):
 
         # Serialize freeze_current
         if self.freeze_current is not None:
-            serialized = ARObject._serialize_item(self.freeze_current, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.freeze_current, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FREEZE-CURRENT")
@@ -102,7 +103,7 @@ class DiagnosticIoControlNeeds(DiagnosticCapabilityElement):
 
         # Serialize reset_to_default
         if self.reset_to_default is not None:
-            serialized = ARObject._serialize_item(self.reset_to_default, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.reset_to_default, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RESET-TO-DEFAULT")
@@ -116,7 +117,7 @@ class DiagnosticIoControlNeeds(DiagnosticCapabilityElement):
 
         # Serialize short_term
         if self.short_term is not None:
-            serialized = ARObject._serialize_item(self.short_term, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.short_term, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SHORT-TERM")
@@ -144,25 +145,25 @@ class DiagnosticIoControlNeeds(DiagnosticCapabilityElement):
         obj = super(DiagnosticIoControlNeeds, cls).deserialize(element)
 
         # Parse current_value_ref
-        child = ARObject._find_child_element(element, "CURRENT-VALUE-REF")
+        child = SerializationHelper.find_child_element(element, "CURRENT-VALUE-REF")
         if child is not None:
             current_value_ref_value = ARRef.deserialize(child)
             obj.current_value_ref = current_value_ref_value
 
         # Parse freeze_current
-        child = ARObject._find_child_element(element, "FREEZE-CURRENT")
+        child = SerializationHelper.find_child_element(element, "FREEZE-CURRENT")
         if child is not None:
             freeze_current_value = child.text
             obj.freeze_current = freeze_current_value
 
         # Parse reset_to_default
-        child = ARObject._find_child_element(element, "RESET-TO-DEFAULT")
+        child = SerializationHelper.find_child_element(element, "RESET-TO-DEFAULT")
         if child is not None:
             reset_to_default_value = child.text
             obj.reset_to_default = reset_to_default_value
 
         # Parse short_term
-        child = ARObject._find_child_element(element, "SHORT-TERM")
+        child = SerializationHelper.find_child_element(element, "SHORT-TERM")
         if child is not None:
             short_term_value = child.text
             obj.short_term = short_term_value

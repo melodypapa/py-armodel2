@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -49,7 +50,7 @@ class DiagnosticTroubleCodeGroup(DiagnosticCommonElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -70,7 +71,7 @@ class DiagnosticTroubleCodeGroup(DiagnosticCommonElement):
         if self.dtc_refs:
             wrapper = ET.Element("DTC-REFS")
             for item in self.dtc_refs:
-                serialized = ARObject._serialize_item(item, "DiagnosticTroubleCode")
+                serialized = SerializationHelper.serialize_item(item, "DiagnosticTroubleCode")
                 if serialized is not None:
                     child_elem = ET.Element("DTC-REF")
                     if hasattr(serialized, 'attrib'):
@@ -85,7 +86,7 @@ class DiagnosticTroubleCodeGroup(DiagnosticCommonElement):
 
         # Serialize group_number
         if self.group_number is not None:
-            serialized = ARObject._serialize_item(self.group_number, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.group_number, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("GROUP-NUMBER")
@@ -114,22 +115,22 @@ class DiagnosticTroubleCodeGroup(DiagnosticCommonElement):
 
         # Parse dtc_refs (list from container "DTC-REFS")
         obj.dtc_refs = []
-        container = ARObject._find_child_element(element, "DTC-REFS")
+        container = SerializationHelper.find_child_element(element, "DTC-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.dtc_refs.append(child_value)
 
         # Parse group_number
-        child = ARObject._find_child_element(element, "GROUP-NUMBER")
+        child = SerializationHelper.find_child_element(element, "GROUP-NUMBER")
         if child is not None:
             group_number_value = child.text
             obj.group_number = group_number_value

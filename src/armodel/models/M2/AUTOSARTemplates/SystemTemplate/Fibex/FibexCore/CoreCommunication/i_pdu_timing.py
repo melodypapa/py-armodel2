@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Describable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
 )
@@ -45,7 +46,7 @@ class IPduTiming(Describable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class IPduTiming(Describable):
 
         # Serialize minimum_delay
         if self.minimum_delay is not None:
-            serialized = ARObject._serialize_item(self.minimum_delay, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.minimum_delay, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MINIMUM-DELAY")
@@ -78,7 +79,7 @@ class IPduTiming(Describable):
 
         # Serialize transmission
         if self.transmission is not None:
-            serialized = ARObject._serialize_item(self.transmission, "Any")
+            serialized = SerializationHelper.serialize_item(self.transmission, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TRANSMISSION")
@@ -106,13 +107,13 @@ class IPduTiming(Describable):
         obj = super(IPduTiming, cls).deserialize(element)
 
         # Parse minimum_delay
-        child = ARObject._find_child_element(element, "MINIMUM-DELAY")
+        child = SerializationHelper.find_child_element(element, "MINIMUM-DELAY")
         if child is not None:
             minimum_delay_value = child.text
             obj.minimum_delay = minimum_delay_value
 
         # Parse transmission
-        child = ARObject._find_child_element(element, "TRANSMISSION")
+        child = SerializationHelper.find_child_element(element, "TRANSMISSION")
         if child is not None:
             transmission_value = child.text
             obj.transmission = transmission_value

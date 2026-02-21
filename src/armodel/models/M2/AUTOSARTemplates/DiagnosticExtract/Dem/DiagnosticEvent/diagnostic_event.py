@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent import (
     DiagnosticClearEventAllowedBehaviorEnum,
     DiagnosticEventClearAllowedEnum,
@@ -65,7 +66,7 @@ class DiagnosticEvent(DiagnosticCommonElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -84,7 +85,7 @@ class DiagnosticEvent(DiagnosticCommonElement):
 
         # Serialize associated
         if self.associated is not None:
-            serialized = ARObject._serialize_item(self.associated, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.associated, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ASSOCIATED")
@@ -98,7 +99,7 @@ class DiagnosticEvent(DiagnosticCommonElement):
 
         # Serialize clear_event
         if self.clear_event is not None:
-            serialized = ARObject._serialize_item(self.clear_event, "DiagnosticClearEventAllowedBehaviorEnum")
+            serialized = SerializationHelper.serialize_item(self.clear_event, "DiagnosticClearEventAllowedBehaviorEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CLEAR-EVENT")
@@ -112,7 +113,7 @@ class DiagnosticEvent(DiagnosticCommonElement):
 
         # Serialize confirmation
         if self.confirmation is not None:
-            serialized = ARObject._serialize_item(self.confirmation, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.confirmation, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONFIRMATION")
@@ -128,7 +129,7 @@ class DiagnosticEvent(DiagnosticCommonElement):
         if self.connecteds:
             wrapper = ET.Element("CONNECTEDS")
             for item in self.connecteds:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -136,7 +137,7 @@ class DiagnosticEvent(DiagnosticCommonElement):
 
         # Serialize event_clear
         if self.event_clear is not None:
-            serialized = ARObject._serialize_item(self.event_clear, "DiagnosticEventClearAllowedEnum")
+            serialized = SerializationHelper.serialize_item(self.event_clear, "DiagnosticEventClearAllowedEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("EVENT-CLEAR")
@@ -150,7 +151,7 @@ class DiagnosticEvent(DiagnosticCommonElement):
 
         # Serialize event_kind
         if self.event_kind is not None:
-            serialized = ARObject._serialize_item(self.event_kind, "DiagnosticEventKindEnum")
+            serialized = SerializationHelper.serialize_item(self.event_kind, "DiagnosticEventKindEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("EVENT-KIND")
@@ -164,7 +165,7 @@ class DiagnosticEvent(DiagnosticCommonElement):
 
         # Serialize prestorage
         if self.prestorage is not None:
-            serialized = ARObject._serialize_item(self.prestorage, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.prestorage, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PRESTORAGE")
@@ -178,7 +179,7 @@ class DiagnosticEvent(DiagnosticCommonElement):
 
         # Serialize prestored
         if self.prestored is not None:
-            serialized = ARObject._serialize_item(self.prestored, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.prestored, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PRESTORED")
@@ -192,7 +193,7 @@ class DiagnosticEvent(DiagnosticCommonElement):
 
         # Serialize recoverable_in
         if self.recoverable_in is not None:
-            serialized = ARObject._serialize_item(self.recoverable_in, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.recoverable_in, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RECOVERABLE-IN")
@@ -220,59 +221,59 @@ class DiagnosticEvent(DiagnosticCommonElement):
         obj = super(DiagnosticEvent, cls).deserialize(element)
 
         # Parse associated
-        child = ARObject._find_child_element(element, "ASSOCIATED")
+        child = SerializationHelper.find_child_element(element, "ASSOCIATED")
         if child is not None:
             associated_value = child.text
             obj.associated = associated_value
 
         # Parse clear_event
-        child = ARObject._find_child_element(element, "CLEAR-EVENT")
+        child = SerializationHelper.find_child_element(element, "CLEAR-EVENT")
         if child is not None:
             clear_event_value = DiagnosticClearEventAllowedBehaviorEnum.deserialize(child)
             obj.clear_event = clear_event_value
 
         # Parse confirmation
-        child = ARObject._find_child_element(element, "CONFIRMATION")
+        child = SerializationHelper.find_child_element(element, "CONFIRMATION")
         if child is not None:
             confirmation_value = child.text
             obj.confirmation = confirmation_value
 
         # Parse connecteds (list from container "CONNECTEDS")
         obj.connecteds = []
-        container = ARObject._find_child_element(element, "CONNECTEDS")
+        container = SerializationHelper.find_child_element(element, "CONNECTEDS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.connecteds.append(child_value)
 
         # Parse event_clear
-        child = ARObject._find_child_element(element, "EVENT-CLEAR")
+        child = SerializationHelper.find_child_element(element, "EVENT-CLEAR")
         if child is not None:
             event_clear_value = DiagnosticEventClearAllowedEnum.deserialize(child)
             obj.event_clear = event_clear_value
 
         # Parse event_kind
-        child = ARObject._find_child_element(element, "EVENT-KIND")
+        child = SerializationHelper.find_child_element(element, "EVENT-KIND")
         if child is not None:
             event_kind_value = DiagnosticEventKindEnum.deserialize(child)
             obj.event_kind = event_kind_value
 
         # Parse prestorage
-        child = ARObject._find_child_element(element, "PRESTORAGE")
+        child = SerializationHelper.find_child_element(element, "PRESTORAGE")
         if child is not None:
             prestorage_value = child.text
             obj.prestorage = prestorage_value
 
         # Parse prestored
-        child = ARObject._find_child_element(element, "PRESTORED")
+        child = SerializationHelper.find_child_element(element, "PRESTORED")
         if child is not None:
             prestored_value = child.text
             obj.prestored = prestored_value
 
         # Parse recoverable_in
-        child = ARObject._find_child_element(element, "RECOVERABLE-IN")
+        child = SerializationHelper.find_child_element(element, "RECOVERABLE-IN")
         if child is not None:
             recoverable_in_value = child.text
             obj.recoverable_in = recoverable_in_value

@@ -13,6 +13,7 @@ from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginat
     Paginateable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -56,7 +57,7 @@ class LabeledItem(Paginateable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -75,7 +76,7 @@ class LabeledItem(Paginateable):
 
         # Serialize help_entry
         if self.help_entry is not None:
-            serialized = ARObject._serialize_item(self.help_entry, "String")
+            serialized = SerializationHelper.serialize_item(self.help_entry, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HELP-ENTRY")
@@ -89,7 +90,7 @@ class LabeledItem(Paginateable):
 
         # Serialize item_contents
         if self.item_contents is not None:
-            serialized = ARObject._serialize_item(self.item_contents, "DocumentationBlock")
+            serialized = SerializationHelper.serialize_item(self.item_contents, "DocumentationBlock")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ITEM-CONTENTS")
@@ -103,7 +104,7 @@ class LabeledItem(Paginateable):
 
         # Serialize item_label
         if self.item_label is not None:
-            serialized = ARObject._serialize_item(self.item_label, "MultiLanguageOverviewParagraph")
+            serialized = SerializationHelper.serialize_item(self.item_label, "MultiLanguageOverviewParagraph")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ITEM-LABEL")
@@ -131,21 +132,21 @@ class LabeledItem(Paginateable):
         obj = super(LabeledItem, cls).deserialize(element)
 
         # Parse help_entry
-        child = ARObject._find_child_element(element, "HELP-ENTRY")
+        child = SerializationHelper.find_child_element(element, "HELP-ENTRY")
         if child is not None:
             help_entry_value = child.text
             obj.help_entry = help_entry_value
 
         # Parse item_contents
-        child = ARObject._find_child_element(element, "ITEM-CONTENTS")
+        child = SerializationHelper.find_child_element(element, "ITEM-CONTENTS")
         if child is not None:
-            item_contents_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            item_contents_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
             obj.item_contents = item_contents_value
 
         # Parse item_label
-        child = ARObject._find_child_element(element, "ITEM-LABEL")
+        child = SerializationHelper.find_child_element(element, "ITEM-LABEL")
         if child is not None:
-            item_label_value = ARObject._deserialize_with_type(child, "MultiLanguageOverviewParagraph")
+            item_label_value = SerializationHelper.deserialize_with_type(child, "MultiLanguageOverviewParagraph")
             obj.item_label = item_label_value
 
         return obj

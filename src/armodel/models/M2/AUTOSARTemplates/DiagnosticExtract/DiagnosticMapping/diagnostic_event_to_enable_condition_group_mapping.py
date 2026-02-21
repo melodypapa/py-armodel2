@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
     DiagnosticMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_event import (
     DiagnosticEvent,
@@ -46,7 +47,7 @@ class DiagnosticEventToEnableConditionGroupMapping(DiagnosticMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class DiagnosticEventToEnableConditionGroupMapping(DiagnosticMapping):
 
         # Serialize diagnostic_event_ref
         if self.diagnostic_event_ref is not None:
-            serialized = ARObject._serialize_item(self.diagnostic_event_ref, "DiagnosticEvent")
+            serialized = SerializationHelper.serialize_item(self.diagnostic_event_ref, "DiagnosticEvent")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DIAGNOSTIC-EVENT-REF")
@@ -79,7 +80,7 @@ class DiagnosticEventToEnableConditionGroupMapping(DiagnosticMapping):
 
         # Serialize enable_condition_ref
         if self.enable_condition_ref is not None:
-            serialized = ARObject._serialize_item(self.enable_condition_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.enable_condition_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ENABLE-CONDITION-REF")
@@ -107,13 +108,13 @@ class DiagnosticEventToEnableConditionGroupMapping(DiagnosticMapping):
         obj = super(DiagnosticEventToEnableConditionGroupMapping, cls).deserialize(element)
 
         # Parse diagnostic_event_ref
-        child = ARObject._find_child_element(element, "DIAGNOSTIC-EVENT-REF")
+        child = SerializationHelper.find_child_element(element, "DIAGNOSTIC-EVENT-REF")
         if child is not None:
             diagnostic_event_ref_value = ARRef.deserialize(child)
             obj.diagnostic_event_ref = diagnostic_event_ref_value
 
         # Parse enable_condition_ref
-        child = ARObject._find_child_element(element, "ENABLE-CONDITION-REF")
+        child = SerializationHelper.find_child_element(element, "ENABLE-CONDITION-REF")
         if child is not None:
             enable_condition_ref_value = ARRef.deserialize(child)
             obj.enable_condition_ref = enable_condition_ref_value

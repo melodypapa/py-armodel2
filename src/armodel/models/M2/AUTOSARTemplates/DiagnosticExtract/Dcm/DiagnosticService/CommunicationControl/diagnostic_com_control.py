@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -46,7 +47,7 @@ class DiagnosticComControl(DiagnosticServiceInstance):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class DiagnosticComControl(DiagnosticServiceInstance):
 
         # Serialize com_control_ref
         if self.com_control_ref is not None:
-            serialized = ARObject._serialize_item(self.com_control_ref, "DiagnosticComControl")
+            serialized = SerializationHelper.serialize_item(self.com_control_ref, "DiagnosticComControl")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COM-CONTROL-REF")
@@ -79,7 +80,7 @@ class DiagnosticComControl(DiagnosticServiceInstance):
 
         # Serialize custom_sub
         if self.custom_sub is not None:
-            serialized = ARObject._serialize_item(self.custom_sub, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.custom_sub, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CUSTOM-SUB")
@@ -107,13 +108,13 @@ class DiagnosticComControl(DiagnosticServiceInstance):
         obj = super(DiagnosticComControl, cls).deserialize(element)
 
         # Parse com_control_ref
-        child = ARObject._find_child_element(element, "COM-CONTROL-REF")
+        child = SerializationHelper.find_child_element(element, "COM-CONTROL-REF")
         if child is not None:
             com_control_ref_value = ARRef.deserialize(child)
             obj.com_control_ref = com_control_ref_value
 
         # Parse custom_sub
-        child = ARObject._find_child_element(element, "CUSTOM-SUB")
+        child = SerializationHelper.find_child_element(element, "CUSTOM-SUB")
         if child is not None:
             custom_sub_value = child.text
             obj.custom_sub = custom_sub_value

@@ -18,6 +18,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
     ServiceProviderEnum,
 )
@@ -54,7 +55,7 @@ class PortInterface(ARElement, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -73,7 +74,7 @@ class PortInterface(ARElement, ABC):
 
         # Serialize is_service
         if self.is_service is not None:
-            serialized = ARObject._serialize_item(self.is_service, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.is_service, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IS-SERVICE")
@@ -87,7 +88,7 @@ class PortInterface(ARElement, ABC):
 
         # Serialize service_kind
         if self.service_kind is not None:
-            serialized = ARObject._serialize_item(self.service_kind, "ServiceProviderEnum")
+            serialized = SerializationHelper.serialize_item(self.service_kind, "ServiceProviderEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SERVICE-KIND")
@@ -115,13 +116,13 @@ class PortInterface(ARElement, ABC):
         obj = super(PortInterface, cls).deserialize(element)
 
         # Parse is_service
-        child = ARObject._find_child_element(element, "IS-SERVICE")
+        child = SerializationHelper.find_child_element(element, "IS-SERVICE")
         if child is not None:
             is_service_value = child.text
             obj.is_service = is_service_value
 
         # Parse service_kind
-        child = ARObject._find_child_element(element, "SERVICE-KIND")
+        child = SerializationHelper.find_child_element(element, "SERVICE-KIND")
         if child is not None:
             service_kind_value = ServiceProviderEnum.deserialize(child)
             obj.service_kind = service_kind_value

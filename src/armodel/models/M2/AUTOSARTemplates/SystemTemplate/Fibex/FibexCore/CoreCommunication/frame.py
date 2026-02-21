@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_ele
     FibexElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
@@ -52,7 +53,7 @@ class Frame(FibexElement, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -71,7 +72,7 @@ class Frame(FibexElement, ABC):
 
         # Serialize frame_length
         if self.frame_length is not None:
-            serialized = ARObject._serialize_item(self.frame_length, "Integer")
+            serialized = SerializationHelper.serialize_item(self.frame_length, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FRAME-LENGTH")
@@ -87,7 +88,7 @@ class Frame(FibexElement, ABC):
         if self.pdu_to_frame_refs:
             wrapper = ET.Element("PDU-TO-FRAME-REFS")
             for item in self.pdu_to_frame_refs:
-                serialized = ARObject._serialize_item(item, "PduToFrameMapping")
+                serialized = SerializationHelper.serialize_item(item, "PduToFrameMapping")
                 if serialized is not None:
                     child_elem = ET.Element("PDU-TO-FRAME-REF")
                     if hasattr(serialized, 'attrib'):
@@ -116,24 +117,24 @@ class Frame(FibexElement, ABC):
         obj = super(Frame, cls).deserialize(element)
 
         # Parse frame_length
-        child = ARObject._find_child_element(element, "FRAME-LENGTH")
+        child = SerializationHelper.find_child_element(element, "FRAME-LENGTH")
         if child is not None:
             frame_length_value = child.text
             obj.frame_length = frame_length_value
 
         # Parse pdu_to_frame_refs (list from container "PDU-TO-FRAME-REFS")
         obj.pdu_to_frame_refs = []
-        container = ARObject._find_child_element(element, "PDU-TO-FRAME-REFS")
+        container = SerializationHelper.find_child_element(element, "PDU-TO-FRAME-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.pdu_to_frame_refs.append(child_value)
 

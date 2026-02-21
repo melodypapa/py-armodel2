@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_provided_port_prototype import (
     AbstractProvidedPortPrototype,
@@ -61,12 +62,12 @@ class PModeInSystemInstanceRef(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize base_ref
         if self.base_ref is not None:
-            serialized = ARObject._serialize_item(self.base_ref, "System")
+            serialized = SerializationHelper.serialize_item(self.base_ref, "System")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BASE-REF")
@@ -80,7 +81,7 @@ class PModeInSystemInstanceRef(ARObject):
 
         # Serialize context_ref
         if self.context_ref is not None:
-            serialized = ARObject._serialize_item(self.context_ref, "RootSwCompositionPrototype")
+            serialized = SerializationHelper.serialize_item(self.context_ref, "RootSwCompositionPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONTEXT-REF")
@@ -94,7 +95,7 @@ class PModeInSystemInstanceRef(ARObject):
 
         # Serialize context_mode_group_ref
         if self.context_mode_group_ref is not None:
-            serialized = ARObject._serialize_item(self.context_mode_group_ref, "ModeDeclarationGroup")
+            serialized = SerializationHelper.serialize_item(self.context_mode_group_ref, "ModeDeclarationGroup")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONTEXT-MODE-GROUP-REF")
@@ -108,7 +109,7 @@ class PModeInSystemInstanceRef(ARObject):
 
         # Serialize context_p_port_prototype_ref
         if self.context_p_port_prototype_ref is not None:
-            serialized = ARObject._serialize_item(self.context_p_port_prototype_ref, "AbstractProvidedPortPrototype")
+            serialized = SerializationHelper.serialize_item(self.context_p_port_prototype_ref, "AbstractProvidedPortPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONTEXT-P-PORT-PROTOTYPE-REF")
@@ -122,7 +123,7 @@ class PModeInSystemInstanceRef(ARObject):
 
         # Serialize target_mode_ref
         if self.target_mode_ref is not None:
-            serialized = ARObject._serialize_item(self.target_mode_ref, "ModeDeclaration")
+            serialized = SerializationHelper.serialize_item(self.target_mode_ref, "ModeDeclaration")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TARGET-MODE-REF")
@@ -151,31 +152,31 @@ class PModeInSystemInstanceRef(ARObject):
         obj.__init__()
 
         # Parse base_ref
-        child = ARObject._find_child_element(element, "BASE-REF")
+        child = SerializationHelper.find_child_element(element, "BASE-REF")
         if child is not None:
             base_ref_value = ARRef.deserialize(child)
             obj.base_ref = base_ref_value
 
         # Parse context_ref
-        child = ARObject._find_child_element(element, "CONTEXT-REF")
+        child = SerializationHelper.find_child_element(element, "CONTEXT-REF")
         if child is not None:
             context_ref_value = ARRef.deserialize(child)
             obj.context_ref = context_ref_value
 
         # Parse context_mode_group_ref
-        child = ARObject._find_child_element(element, "CONTEXT-MODE-GROUP-REF")
+        child = SerializationHelper.find_child_element(element, "CONTEXT-MODE-GROUP-REF")
         if child is not None:
             context_mode_group_ref_value = ARRef.deserialize(child)
             obj.context_mode_group_ref = context_mode_group_ref_value
 
         # Parse context_p_port_prototype_ref
-        child = ARObject._find_child_element(element, "CONTEXT-P-PORT-PROTOTYPE-REF")
+        child = SerializationHelper.find_child_element(element, "CONTEXT-P-PORT-PROTOTYPE-REF")
         if child is not None:
             context_p_port_prototype_ref_value = ARRef.deserialize(child)
             obj.context_p_port_prototype_ref = context_p_port_prototype_ref_value
 
         # Parse target_mode_ref
-        child = ARObject._find_child_element(element, "TARGET-MODE-REF")
+        child = SerializationHelper.find_child_element(element, "TARGET-MODE-REF")
         if child is not None:
             target_mode_ref_value = ARRef.deserialize(child)
             obj.target_mode_ref = target_mode_ref_value

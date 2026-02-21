@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -69,7 +70,7 @@ class RptExecutableEntityEvent(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -90,7 +91,7 @@ class RptExecutableEntityEvent(Identifiable):
         if self.execution_refs:
             wrapper = ET.Element("EXECUTION-REFS")
             for item in self.execution_refs:
-                serialized = ARObject._serialize_item(item, "RptExecutionContext")
+                serialized = SerializationHelper.serialize_item(item, "RptExecutionContext")
                 if serialized is not None:
                     child_elem = ET.Element("EXECUTION-REF")
                     if hasattr(serialized, 'attrib'):
@@ -107,7 +108,7 @@ class RptExecutableEntityEvent(Identifiable):
         if self.mc_datas:
             wrapper = ET.Element("MC-DATAS")
             for item in self.mc_datas:
-                serialized = ARObject._serialize_item(item, "RoleBasedMcDataAssignment")
+                serialized = SerializationHelper.serialize_item(item, "RoleBasedMcDataAssignment")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -115,7 +116,7 @@ class RptExecutableEntityEvent(Identifiable):
 
         # Serialize rpt_event_id
         if self.rpt_event_id is not None:
-            serialized = ARObject._serialize_item(self.rpt_event_id, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.rpt_event_id, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RPT-EVENT-ID")
@@ -129,7 +130,7 @@ class RptExecutableEntityEvent(Identifiable):
 
         # Serialize rpt_executable_entity
         if self.rpt_executable_entity is not None:
-            serialized = ARObject._serialize_item(self.rpt_executable_entity, "RptExecutableEntity")
+            serialized = SerializationHelper.serialize_item(self.rpt_executable_entity, "RptExecutableEntity")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RPT-EXECUTABLE-ENTITY")
@@ -143,7 +144,7 @@ class RptExecutableEntityEvent(Identifiable):
 
         # Serialize rpt_impl_policy
         if self.rpt_impl_policy is not None:
-            serialized = ARObject._serialize_item(self.rpt_impl_policy, "RptImplPolicy")
+            serialized = SerializationHelper.serialize_item(self.rpt_impl_policy, "RptImplPolicy")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RPT-IMPL-POLICY")
@@ -159,7 +160,7 @@ class RptExecutableEntityEvent(Identifiable):
         if self.rpt_service_point_refs:
             wrapper = ET.Element("RPT-SERVICE-POINT-REFS")
             for item in self.rpt_service_point_refs:
-                serialized = ARObject._serialize_item(item, "RptServicePoint")
+                serialized = SerializationHelper.serialize_item(item, "RptServicePoint")
                 if serialized is not None:
                     child_elem = ET.Element("RPT-SERVICE-POINT-REF")
                     if hasattr(serialized, 'attrib'):
@@ -189,61 +190,61 @@ class RptExecutableEntityEvent(Identifiable):
 
         # Parse execution_refs (list from container "EXECUTION-REFS")
         obj.execution_refs = []
-        container = ARObject._find_child_element(element, "EXECUTION-REFS")
+        container = SerializationHelper.find_child_element(element, "EXECUTION-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.execution_refs.append(child_value)
 
         # Parse mc_datas (list from container "MC-DATAS")
         obj.mc_datas = []
-        container = ARObject._find_child_element(element, "MC-DATAS")
+        container = SerializationHelper.find_child_element(element, "MC-DATAS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.mc_datas.append(child_value)
 
         # Parse rpt_event_id
-        child = ARObject._find_child_element(element, "RPT-EVENT-ID")
+        child = SerializationHelper.find_child_element(element, "RPT-EVENT-ID")
         if child is not None:
             rpt_event_id_value = child.text
             obj.rpt_event_id = rpt_event_id_value
 
         # Parse rpt_executable_entity
-        child = ARObject._find_child_element(element, "RPT-EXECUTABLE-ENTITY")
+        child = SerializationHelper.find_child_element(element, "RPT-EXECUTABLE-ENTITY")
         if child is not None:
-            rpt_executable_entity_value = ARObject._deserialize_by_tag(child, "RptExecutableEntity")
+            rpt_executable_entity_value = SerializationHelper.deserialize_by_tag(child, "RptExecutableEntity")
             obj.rpt_executable_entity = rpt_executable_entity_value
 
         # Parse rpt_impl_policy
-        child = ARObject._find_child_element(element, "RPT-IMPL-POLICY")
+        child = SerializationHelper.find_child_element(element, "RPT-IMPL-POLICY")
         if child is not None:
-            rpt_impl_policy_value = ARObject._deserialize_by_tag(child, "RptImplPolicy")
+            rpt_impl_policy_value = SerializationHelper.deserialize_by_tag(child, "RptImplPolicy")
             obj.rpt_impl_policy = rpt_impl_policy_value
 
         # Parse rpt_service_point_refs (list from container "RPT-SERVICE-POINT-REFS")
         obj.rpt_service_point_refs = []
-        container = ARObject._find_child_element(element, "RPT-SERVICE-POINT-REFS")
+        container = SerializationHelper.find_child_element(element, "RPT-SERVICE-POINT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.rpt_service_point_refs.append(child_value)
 

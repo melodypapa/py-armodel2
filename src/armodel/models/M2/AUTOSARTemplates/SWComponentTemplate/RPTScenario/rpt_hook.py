@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     CIdentifier,
     NameToken,
@@ -53,12 +54,12 @@ class RptHook(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize code_label
         if self.code_label is not None:
-            serialized = ARObject._serialize_item(self.code_label, "CIdentifier")
+            serialized = SerializationHelper.serialize_item(self.code_label, "CIdentifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CODE-LABEL")
@@ -72,7 +73,7 @@ class RptHook(ARObject):
 
         # Serialize mcd_identifier
         if self.mcd_identifier is not None:
-            serialized = ARObject._serialize_item(self.mcd_identifier, "NameToken")
+            serialized = SerializationHelper.serialize_item(self.mcd_identifier, "NameToken")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MCD-IDENTIFIER")
@@ -86,7 +87,7 @@ class RptHook(ARObject):
 
         # Serialize rpt_ar_hook
         if self.rpt_ar_hook is not None:
-            serialized = ARObject._serialize_item(self.rpt_ar_hook, "AtpFeature")
+            serialized = SerializationHelper.serialize_item(self.rpt_ar_hook, "AtpFeature")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RPT-AR-HOOK")
@@ -102,7 +103,7 @@ class RptHook(ARObject):
         if self.sdgs:
             wrapper = ET.Element("SDGS")
             for item in self.sdgs:
-                serialized = ARObject._serialize_item(item, "Sdg")
+                serialized = SerializationHelper.serialize_item(item, "Sdg")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -125,30 +126,30 @@ class RptHook(ARObject):
         obj.__init__()
 
         # Parse code_label
-        child = ARObject._find_child_element(element, "CODE-LABEL")
+        child = SerializationHelper.find_child_element(element, "CODE-LABEL")
         if child is not None:
-            code_label_value = ARObject._deserialize_by_tag(child, "CIdentifier")
+            code_label_value = SerializationHelper.deserialize_by_tag(child, "CIdentifier")
             obj.code_label = code_label_value
 
         # Parse mcd_identifier
-        child = ARObject._find_child_element(element, "MCD-IDENTIFIER")
+        child = SerializationHelper.find_child_element(element, "MCD-IDENTIFIER")
         if child is not None:
             mcd_identifier_value = child.text
             obj.mcd_identifier = mcd_identifier_value
 
         # Parse rpt_ar_hook
-        child = ARObject._find_child_element(element, "RPT-AR-HOOK")
+        child = SerializationHelper.find_child_element(element, "RPT-AR-HOOK")
         if child is not None:
-            rpt_ar_hook_value = ARObject._deserialize_by_tag(child, "AtpFeature")
+            rpt_ar_hook_value = SerializationHelper.deserialize_by_tag(child, "AtpFeature")
             obj.rpt_ar_hook = rpt_ar_hook_value
 
         # Parse sdgs (list from container "SDGS")
         obj.sdgs = []
-        container = ARObject._find_child_element(element, "SDGS")
+        container = SerializationHelper.find_child_element(element, "SDGS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.sdgs.append(child_value)
 

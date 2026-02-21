@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     NameToken,
     PositiveInteger,
@@ -54,12 +55,12 @@ class EndToEndDescription(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize category
         if self.category is not None:
-            serialized = ARObject._serialize_item(self.category, "NameToken")
+            serialized = SerializationHelper.serialize_item(self.category, "NameToken")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CATEGORY")
@@ -73,7 +74,7 @@ class EndToEndDescription(ARObject):
 
         # Serialize counter_offset
         if self.counter_offset is not None:
-            serialized = ARObject._serialize_item(self.counter_offset, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.counter_offset, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COUNTER-OFFSET")
@@ -87,7 +88,7 @@ class EndToEndDescription(ARObject):
 
         # Serialize crc_offset
         if self.crc_offset is not None:
-            serialized = ARObject._serialize_item(self.crc_offset, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.crc_offset, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CRC-OFFSET")
@@ -101,7 +102,7 @@ class EndToEndDescription(ARObject):
 
         # Serialize data_id_mode
         if self.data_id_mode is not None:
-            serialized = ARObject._serialize_item(self.data_id_mode, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.data_id_mode, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-ID-MODE")
@@ -115,7 +116,7 @@ class EndToEndDescription(ARObject):
 
         # Serialize data_id_nibble
         if self.data_id_nibble is not None:
-            serialized = ARObject._serialize_item(self.data_id_nibble, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.data_id_nibble, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-ID-NIBBLE")
@@ -129,7 +130,7 @@ class EndToEndDescription(ARObject):
 
         # Serialize data_length
         if self.data_length is not None:
-            serialized = ARObject._serialize_item(self.data_length, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.data_length, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-LENGTH")
@@ -143,7 +144,7 @@ class EndToEndDescription(ARObject):
 
         # Serialize max_delta
         if self.max_delta is not None:
-            serialized = ARObject._serialize_item(self.max_delta, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.max_delta, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-DELTA")
@@ -172,43 +173,43 @@ class EndToEndDescription(ARObject):
         obj.__init__()
 
         # Parse category
-        child = ARObject._find_child_element(element, "CATEGORY")
+        child = SerializationHelper.find_child_element(element, "CATEGORY")
         if child is not None:
             category_value = child.text
             obj.category = category_value
 
         # Parse counter_offset
-        child = ARObject._find_child_element(element, "COUNTER-OFFSET")
+        child = SerializationHelper.find_child_element(element, "COUNTER-OFFSET")
         if child is not None:
             counter_offset_value = child.text
             obj.counter_offset = counter_offset_value
 
         # Parse crc_offset
-        child = ARObject._find_child_element(element, "CRC-OFFSET")
+        child = SerializationHelper.find_child_element(element, "CRC-OFFSET")
         if child is not None:
             crc_offset_value = child.text
             obj.crc_offset = crc_offset_value
 
         # Parse data_id_mode
-        child = ARObject._find_child_element(element, "DATA-ID-MODE")
+        child = SerializationHelper.find_child_element(element, "DATA-ID-MODE")
         if child is not None:
             data_id_mode_value = child.text
             obj.data_id_mode = data_id_mode_value
 
         # Parse data_id_nibble
-        child = ARObject._find_child_element(element, "DATA-ID-NIBBLE")
+        child = SerializationHelper.find_child_element(element, "DATA-ID-NIBBLE")
         if child is not None:
             data_id_nibble_value = child.text
             obj.data_id_nibble = data_id_nibble_value
 
         # Parse data_length
-        child = ARObject._find_child_element(element, "DATA-LENGTH")
+        child = SerializationHelper.find_child_element(element, "DATA-LENGTH")
         if child is not None:
             data_length_value = child.text
             obj.data_length = data_length_value
 
         # Parse max_delta
-        child = ARObject._find_child_element(element, "MAX-DELTA")
+        child = SerializationHelper.find_child_element(element, "MAX-DELTA")
         if child is not None:
             max_delta_value = child.text
             obj.max_delta = max_delta_value

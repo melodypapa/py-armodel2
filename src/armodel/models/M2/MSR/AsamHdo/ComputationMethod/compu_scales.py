@@ -16,6 +16,7 @@ from armodel.models.M2.MSR.AsamHdo.ComputationMethod.compu_scale import (
     CompuScale,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.serialization.name_converter import NameConverter
 
 
@@ -46,8 +47,18 @@ class CompuScales(CompuContent):
             xml.etree.ElementTree.Element representing this CompuScales
         """
         # Get XML tag name
-        tag = NameConverter.to_xml_tag(self.__class__.__name__)
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes (checksum, timestamp)
+        parent_elem = super(CompuScales, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
 
         # Serialize each CompuScale directly as a child element
         for scale in self.compu_scales:
@@ -68,16 +79,15 @@ class CompuScales(CompuContent):
         Returns:
             Deserialized CompuScales instance
         """
-        # Create instance and initialize
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes
+        obj = super(CompuScales, cls).deserialize(element)
 
         # Find all COMPU-SCALE child elements directly
         for child in element:
-            child_tag = ARObject._strip_namespace(child.tag)
+            child_tag = SerializationHelper.strip_namespace(child.tag)
             if child_tag == "COMPU-SCALE":
                 if hasattr(CompuScale, 'deserialize'):
-                    scale = ARObject._unwrap_primitive(CompuScale.deserialize(child))
+                    scale = SerializationHelper.unwrap_primitive(CompuScale.deserialize(child))
                     obj.compu_scales.append(scale)
 
         return obj

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.role_based_mc_data_assignment import (
     RoleBasedMcDataAssignment,
 )
@@ -53,7 +54,7 @@ class RptComponent(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -74,7 +75,7 @@ class RptComponent(Identifiable):
         if self.mc_datas:
             wrapper = ET.Element("MC-DATAS")
             for item in self.mc_datas:
-                serialized = ARObject._serialize_item(item, "RoleBasedMcDataAssignment")
+                serialized = SerializationHelper.serialize_item(item, "RoleBasedMcDataAssignment")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -82,7 +83,7 @@ class RptComponent(Identifiable):
 
         # Serialize rp_impl_policy
         if self.rp_impl_policy is not None:
-            serialized = ARObject._serialize_item(self.rp_impl_policy, "RptImplPolicy")
+            serialized = SerializationHelper.serialize_item(self.rp_impl_policy, "RptImplPolicy")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RP-IMPL-POLICY")
@@ -98,7 +99,7 @@ class RptComponent(Identifiable):
         if self.rpt_executable_entities:
             wrapper = ET.Element("RPT-EXECUTABLE-ENTITIES")
             for item in self.rpt_executable_entities:
-                serialized = ARObject._serialize_item(item, "RptExecutableEntity")
+                serialized = SerializationHelper.serialize_item(item, "RptExecutableEntity")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -121,27 +122,27 @@ class RptComponent(Identifiable):
 
         # Parse mc_datas (list from container "MC-DATAS")
         obj.mc_datas = []
-        container = ARObject._find_child_element(element, "MC-DATAS")
+        container = SerializationHelper.find_child_element(element, "MC-DATAS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.mc_datas.append(child_value)
 
         # Parse rp_impl_policy
-        child = ARObject._find_child_element(element, "RP-IMPL-POLICY")
+        child = SerializationHelper.find_child_element(element, "RP-IMPL-POLICY")
         if child is not None:
-            rp_impl_policy_value = ARObject._deserialize_by_tag(child, "RptImplPolicy")
+            rp_impl_policy_value = SerializationHelper.deserialize_by_tag(child, "RptImplPolicy")
             obj.rp_impl_policy = rp_impl_policy_value
 
         # Parse rpt_executable_entities (list from container "RPT-EXECUTABLE-ENTITIES")
         obj.rpt_executable_entities = []
-        container = ARObject._find_child_element(element, "RPT-EXECUTABLE-ENTITIES")
+        container = SerializationHelper.find_child_element(element, "RPT-EXECUTABLE-ENTITIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.rpt_executable_entities.append(child_value)
 

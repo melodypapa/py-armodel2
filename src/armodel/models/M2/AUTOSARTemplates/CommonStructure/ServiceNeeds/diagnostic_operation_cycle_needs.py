@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_
     DiagnosticCapabilityElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class DiagnosticOperationCycleNeeds(DiagnosticCapabilityElement):
@@ -40,7 +41,7 @@ class DiagnosticOperationCycleNeeds(DiagnosticCapabilityElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -59,7 +60,7 @@ class DiagnosticOperationCycleNeeds(DiagnosticCapabilityElement):
 
         # Serialize operation_cycle
         if self.operation_cycle is not None:
-            serialized = ARObject._serialize_item(self.operation_cycle, "Any")
+            serialized = SerializationHelper.serialize_item(self.operation_cycle, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("OPERATION-CYCLE")
@@ -87,7 +88,7 @@ class DiagnosticOperationCycleNeeds(DiagnosticCapabilityElement):
         obj = super(DiagnosticOperationCycleNeeds, cls).deserialize(element)
 
         # Parse operation_cycle
-        child = ARObject._find_child_element(element, "OPERATION-CYCLE")
+        child = SerializationHelper.find_child_element(element, "OPERATION-CYCLE")
         if child is not None:
             operation_cycle_value = child.text
             obj.operation_cycle = operation_cycle_value

@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_pin import (
     HwPin,
@@ -49,12 +50,12 @@ class HwPinGroupContent(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize hw_pin
         if self.hw_pin is not None:
-            serialized = ARObject._serialize_item(self.hw_pin, "HwPin")
+            serialized = SerializationHelper.serialize_item(self.hw_pin, "HwPin")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HW-PIN")
@@ -68,7 +69,7 @@ class HwPinGroupContent(ARObject):
 
         # Serialize hw_pin_group_ref
         if self.hw_pin_group_ref is not None:
-            serialized = ARObject._serialize_item(self.hw_pin_group_ref, "HwPinGroup")
+            serialized = SerializationHelper.serialize_item(self.hw_pin_group_ref, "HwPinGroup")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HW-PIN-GROUP-REF")
@@ -97,13 +98,13 @@ class HwPinGroupContent(ARObject):
         obj.__init__()
 
         # Parse hw_pin
-        child = ARObject._find_child_element(element, "HW-PIN")
+        child = SerializationHelper.find_child_element(element, "HW-PIN")
         if child is not None:
-            hw_pin_value = ARObject._deserialize_by_tag(child, "HwPin")
+            hw_pin_value = SerializationHelper.deserialize_by_tag(child, "HwPin")
             obj.hw_pin = hw_pin_value
 
         # Parse hw_pin_group_ref
-        child = ARObject._find_child_element(element, "HW-PIN-GROUP-REF")
+        child = SerializationHelper.find_child_element(element, "HW-PIN-GROUP-REF")
         if child is not None:
             hw_pin_group_ref_value = ARRef.deserialize(child)
             obj.hw_pin_group_ref = hw_pin_group_ref_value

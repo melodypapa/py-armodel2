@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances import (
     PduCollectionTriggerEnum,
@@ -64,12 +65,12 @@ class ContainedIPduProps(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize collection
         if self.collection is not None:
-            serialized = ARObject._serialize_item(self.collection, "Any")
+            serialized = SerializationHelper.serialize_item(self.collection, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COLLECTION")
@@ -83,7 +84,7 @@ class ContainedIPduProps(ARObject):
 
         # Serialize contained_pdu_ref
         if self.contained_pdu_ref is not None:
-            serialized = ARObject._serialize_item(self.contained_pdu_ref, "PduTriggering")
+            serialized = SerializationHelper.serialize_item(self.contained_pdu_ref, "PduTriggering")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONTAINED-PDU-REF")
@@ -97,7 +98,7 @@ class ContainedIPduProps(ARObject):
 
         # Serialize header_id_long
         if self.header_id_long is not None:
-            serialized = ARObject._serialize_item(self.header_id_long, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.header_id_long, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HEADER-ID-LONG")
@@ -111,7 +112,7 @@ class ContainedIPduProps(ARObject):
 
         # Serialize header_id_short
         if self.header_id_short is not None:
-            serialized = ARObject._serialize_item(self.header_id_short, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.header_id_short, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HEADER-ID-SHORT")
@@ -125,7 +126,7 @@ class ContainedIPduProps(ARObject):
 
         # Serialize offset
         if self.offset is not None:
-            serialized = ARObject._serialize_item(self.offset, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.offset, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("OFFSET")
@@ -139,7 +140,7 @@ class ContainedIPduProps(ARObject):
 
         # Serialize priority
         if self.priority is not None:
-            serialized = ARObject._serialize_item(self.priority, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.priority, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PRIORITY")
@@ -153,7 +154,7 @@ class ContainedIPduProps(ARObject):
 
         # Serialize timeout
         if self.timeout is not None:
-            serialized = ARObject._serialize_item(self.timeout, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.timeout, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIMEOUT")
@@ -167,7 +168,7 @@ class ContainedIPduProps(ARObject):
 
         # Serialize trigger_ref
         if self.trigger_ref is not None:
-            serialized = ARObject._serialize_item(self.trigger_ref, "PduCollectionTriggerEnum")
+            serialized = SerializationHelper.serialize_item(self.trigger_ref, "PduCollectionTriggerEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TRIGGER-REF")
@@ -181,7 +182,7 @@ class ContainedIPduProps(ARObject):
 
         # Serialize update
         if self.update is not None:
-            serialized = ARObject._serialize_item(self.update, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.update, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("UPDATE")
@@ -210,55 +211,55 @@ class ContainedIPduProps(ARObject):
         obj.__init__()
 
         # Parse collection
-        child = ARObject._find_child_element(element, "COLLECTION")
+        child = SerializationHelper.find_child_element(element, "COLLECTION")
         if child is not None:
             collection_value = child.text
             obj.collection = collection_value
 
         # Parse contained_pdu_ref
-        child = ARObject._find_child_element(element, "CONTAINED-PDU-REF")
+        child = SerializationHelper.find_child_element(element, "CONTAINED-PDU-REF")
         if child is not None:
             contained_pdu_ref_value = ARRef.deserialize(child)
             obj.contained_pdu_ref = contained_pdu_ref_value
 
         # Parse header_id_long
-        child = ARObject._find_child_element(element, "HEADER-ID-LONG")
+        child = SerializationHelper.find_child_element(element, "HEADER-ID-LONG")
         if child is not None:
             header_id_long_value = child.text
             obj.header_id_long = header_id_long_value
 
         # Parse header_id_short
-        child = ARObject._find_child_element(element, "HEADER-ID-SHORT")
+        child = SerializationHelper.find_child_element(element, "HEADER-ID-SHORT")
         if child is not None:
             header_id_short_value = child.text
             obj.header_id_short = header_id_short_value
 
         # Parse offset
-        child = ARObject._find_child_element(element, "OFFSET")
+        child = SerializationHelper.find_child_element(element, "OFFSET")
         if child is not None:
             offset_value = child.text
             obj.offset = offset_value
 
         # Parse priority
-        child = ARObject._find_child_element(element, "PRIORITY")
+        child = SerializationHelper.find_child_element(element, "PRIORITY")
         if child is not None:
             priority_value = child.text
             obj.priority = priority_value
 
         # Parse timeout
-        child = ARObject._find_child_element(element, "TIMEOUT")
+        child = SerializationHelper.find_child_element(element, "TIMEOUT")
         if child is not None:
             timeout_value = child.text
             obj.timeout = timeout_value
 
         # Parse trigger_ref
-        child = ARObject._find_child_element(element, "TRIGGER-REF")
+        child = SerializationHelper.find_child_element(element, "TRIGGER-REF")
         if child is not None:
             trigger_ref_value = ARRef.deserialize(child)
             obj.trigger_ref = trigger_ref_value
 
         # Parse update
-        child = ARObject._find_child_element(element, "UPDATE")
+        child = SerializationHelper.find_child_element(element, "UPDATE")
         if child is not None:
             update_value = child.text
             obj.update = update_value

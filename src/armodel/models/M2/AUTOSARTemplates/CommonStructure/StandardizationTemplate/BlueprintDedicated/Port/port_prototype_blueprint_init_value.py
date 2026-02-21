@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.autosar_data_prototype import (
     AutosarDataPrototype,
@@ -49,12 +50,12 @@ class PortPrototypeBlueprintInitValue(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize data_prototype_ref
         if self.data_prototype_ref is not None:
-            serialized = ARObject._serialize_item(self.data_prototype_ref, "AutosarDataPrototype")
+            serialized = SerializationHelper.serialize_item(self.data_prototype_ref, "AutosarDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-PROTOTYPE-REF")
@@ -68,7 +69,7 @@ class PortPrototypeBlueprintInitValue(ARObject):
 
         # Serialize value
         if self.value is not None:
-            serialized = ARObject._serialize_item(self.value, "ValueSpecification")
+            serialized = SerializationHelper.serialize_item(self.value, "ValueSpecification")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VALUE")
@@ -97,15 +98,15 @@ class PortPrototypeBlueprintInitValue(ARObject):
         obj.__init__()
 
         # Parse data_prototype_ref
-        child = ARObject._find_child_element(element, "DATA-PROTOTYPE-REF")
+        child = SerializationHelper.find_child_element(element, "DATA-PROTOTYPE-REF")
         if child is not None:
             data_prototype_ref_value = ARRef.deserialize(child)
             obj.data_prototype_ref = data_prototype_ref_value
 
         # Parse value
-        child = ARObject._find_child_element(element, "VALUE")
+        child = SerializationHelper.find_child_element(element, "VALUE")
         if child is not None:
-            value_value = ARObject._deserialize_by_tag(child, "ValueSpecification")
+            value_value = SerializationHelper.deserialize_by_tag(child, "ValueSpecification")
             obj.value = value_value
 
         return obj

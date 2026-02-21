@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.HwElementCategory.hw_attribute_def import (
     HwAttributeDef,
 )
@@ -43,7 +44,7 @@ class HwCategory(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class HwCategory(ARElement):
         if self.hw_attribute_defs:
             wrapper = ET.Element("HW-ATTRIBUTE-DEFS")
             for item in self.hw_attribute_defs:
-                serialized = ARObject._serialize_item(item, "HwAttributeDef")
+                serialized = SerializationHelper.serialize_item(item, "HwAttributeDef")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -87,11 +88,11 @@ class HwCategory(ARElement):
 
         # Parse hw_attribute_defs (list from container "HW-ATTRIBUTE-DEFS")
         obj.hw_attribute_defs = []
-        container = ARObject._find_child_element(element, "HW-ATTRIBUTE-DEFS")
+        container = SerializationHelper.find_child_element(element, "HW-ATTRIBUTE-DEFS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.hw_attribute_defs.append(child_value)
 

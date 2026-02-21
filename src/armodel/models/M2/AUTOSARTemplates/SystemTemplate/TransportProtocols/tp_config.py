@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_ele
     FibexElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_cluster import (
     CommunicationCluster,
@@ -45,7 +46,7 @@ class TpConfig(FibexElement, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class TpConfig(FibexElement, ABC):
 
         # Serialize communication_cluster_ref
         if self.communication_cluster_ref is not None:
-            serialized = ARObject._serialize_item(self.communication_cluster_ref, "CommunicationCluster")
+            serialized = SerializationHelper.serialize_item(self.communication_cluster_ref, "CommunicationCluster")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COMMUNICATION-CLUSTER-REF")
@@ -92,7 +93,7 @@ class TpConfig(FibexElement, ABC):
         obj = super(TpConfig, cls).deserialize(element)
 
         # Parse communication_cluster_ref
-        child = ARObject._find_child_element(element, "COMMUNICATION-CLUSTER-REF")
+        child = SerializationHelper.find_child_element(element, "COMMUNICATION-CLUSTER-REF")
         if child is not None:
             communication_cluster_ref_value = ARRef.deserialize(child)
             obj.communication_cluster_ref = communication_cluster_ref_value

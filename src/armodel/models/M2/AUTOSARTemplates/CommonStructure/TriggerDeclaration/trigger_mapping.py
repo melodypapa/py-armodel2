@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigger import (
     Trigger,
@@ -43,12 +44,12 @@ class TriggerMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize first_trigger_ref
         if self.first_trigger_ref is not None:
-            serialized = ARObject._serialize_item(self.first_trigger_ref, "Trigger")
+            serialized = SerializationHelper.serialize_item(self.first_trigger_ref, "Trigger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FIRST-TRIGGER-REF")
@@ -62,7 +63,7 @@ class TriggerMapping(ARObject):
 
         # Serialize second_trigger_ref
         if self.second_trigger_ref is not None:
-            serialized = ARObject._serialize_item(self.second_trigger_ref, "Trigger")
+            serialized = SerializationHelper.serialize_item(self.second_trigger_ref, "Trigger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SECOND-TRIGGER-REF")
@@ -91,13 +92,13 @@ class TriggerMapping(ARObject):
         obj.__init__()
 
         # Parse first_trigger_ref
-        child = ARObject._find_child_element(element, "FIRST-TRIGGER-REF")
+        child = SerializationHelper.find_child_element(element, "FIRST-TRIGGER-REF")
         if child is not None:
             first_trigger_ref_value = ARRef.deserialize(child)
             obj.first_trigger_ref = first_trigger_ref_value
 
         # Parse second_trigger_ref
-        child = ARObject._find_child_element(element, "SECOND-TRIGGER-REF")
+        child = SerializationHelper.find_child_element(element, "SECOND-TRIGGER-REF")
         if child is not None:
             second_trigger_ref_value = ARRef.deserialize(child)
             obj.second_trigger_ref = second_trigger_ref_value

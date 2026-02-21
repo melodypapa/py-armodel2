@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Dds.dds_cp_domain import (
     DdsCpDomain,
 )
@@ -48,7 +49,7 @@ class DdsCpConfig(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -69,7 +70,7 @@ class DdsCpConfig(ARElement):
         if self.dds_domains:
             wrapper = ET.Element("DDS-DOMAINS")
             for item in self.dds_domains:
-                serialized = ARObject._serialize_item(item, "DdsCpDomain")
+                serialized = SerializationHelper.serialize_item(item, "DdsCpDomain")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -79,7 +80,7 @@ class DdsCpConfig(ARElement):
         if self.dds_qos_profiles:
             wrapper = ET.Element("DDS-QOS-PROFILES")
             for item in self.dds_qos_profiles:
-                serialized = ARObject._serialize_item(item, "DdsCpQosProfile")
+                serialized = SerializationHelper.serialize_item(item, "DdsCpQosProfile")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -102,21 +103,21 @@ class DdsCpConfig(ARElement):
 
         # Parse dds_domains (list from container "DDS-DOMAINS")
         obj.dds_domains = []
-        container = ARObject._find_child_element(element, "DDS-DOMAINS")
+        container = SerializationHelper.find_child_element(element, "DDS-DOMAINS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.dds_domains.append(child_value)
 
         # Parse dds_qos_profiles (list from container "DDS-QOS-PROFILES")
         obj.dds_qos_profiles = []
-        container = ARObject._find_child_element(element, "DDS-QOS-PROFILES")
+        container = SerializationHelper.find_child_element(element, "DDS-QOS-PROFILES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.dds_qos_profiles.append(child_value)
 

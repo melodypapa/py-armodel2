@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
 )
@@ -65,7 +66,7 @@ class FlatInstanceDescriptor(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -84,7 +85,7 @@ class FlatInstanceDescriptor(Identifiable):
 
         # Serialize ecu_extract
         if self.ecu_extract is not None:
-            serialized = ARObject._serialize_item(self.ecu_extract, "AtpFeature")
+            serialized = SerializationHelper.serialize_item(self.ecu_extract, "AtpFeature")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ECU-EXTRACT")
@@ -98,7 +99,7 @@ class FlatInstanceDescriptor(Identifiable):
 
         # Serialize role
         if self.role is not None:
-            serialized = ARObject._serialize_item(self.role, "Identifier")
+            serialized = SerializationHelper.serialize_item(self.role, "Identifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ROLE")
@@ -112,7 +113,7 @@ class FlatInstanceDescriptor(Identifiable):
 
         # Serialize rte_plugin_props
         if self.rte_plugin_props is not None:
-            serialized = ARObject._serialize_item(self.rte_plugin_props, "RtePluginProps")
+            serialized = SerializationHelper.serialize_item(self.rte_plugin_props, "RtePluginProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RTE-PLUGIN-PROPS")
@@ -126,7 +127,7 @@ class FlatInstanceDescriptor(Identifiable):
 
         # Serialize sw_data_def
         if self.sw_data_def is not None:
-            serialized = ARObject._serialize_item(self.sw_data_def, "SwDataDefProps")
+            serialized = SerializationHelper.serialize_item(self.sw_data_def, "SwDataDefProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-DATA-DEF")
@@ -140,7 +141,7 @@ class FlatInstanceDescriptor(Identifiable):
 
         # Serialize upstream
         if self.upstream is not None:
-            serialized = ARObject._serialize_item(self.upstream, "AtpFeature")
+            serialized = SerializationHelper.serialize_item(self.upstream, "AtpFeature")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("UPSTREAM")
@@ -168,33 +169,33 @@ class FlatInstanceDescriptor(Identifiable):
         obj = super(FlatInstanceDescriptor, cls).deserialize(element)
 
         # Parse ecu_extract
-        child = ARObject._find_child_element(element, "ECU-EXTRACT")
+        child = SerializationHelper.find_child_element(element, "ECU-EXTRACT")
         if child is not None:
-            ecu_extract_value = ARObject._deserialize_by_tag(child, "AtpFeature")
+            ecu_extract_value = SerializationHelper.deserialize_by_tag(child, "AtpFeature")
             obj.ecu_extract = ecu_extract_value
 
         # Parse role
-        child = ARObject._find_child_element(element, "ROLE")
+        child = SerializationHelper.find_child_element(element, "ROLE")
         if child is not None:
-            role_value = ARObject._deserialize_by_tag(child, "Identifier")
+            role_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
             obj.role = role_value
 
         # Parse rte_plugin_props
-        child = ARObject._find_child_element(element, "RTE-PLUGIN-PROPS")
+        child = SerializationHelper.find_child_element(element, "RTE-PLUGIN-PROPS")
         if child is not None:
-            rte_plugin_props_value = ARObject._deserialize_by_tag(child, "RtePluginProps")
+            rte_plugin_props_value = SerializationHelper.deserialize_by_tag(child, "RtePluginProps")
             obj.rte_plugin_props = rte_plugin_props_value
 
         # Parse sw_data_def
-        child = ARObject._find_child_element(element, "SW-DATA-DEF")
+        child = SerializationHelper.find_child_element(element, "SW-DATA-DEF")
         if child is not None:
-            sw_data_def_value = ARObject._deserialize_by_tag(child, "SwDataDefProps")
+            sw_data_def_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
             obj.sw_data_def = sw_data_def_value
 
         # Parse upstream
-        child = ARObject._find_child_element(element, "UPSTREAM")
+        child = SerializationHelper.find_child_element(element, "UPSTREAM")
         if child is not None:
-            upstream_value = ARObject._deserialize_by_tag(child, "AtpFeature")
+            upstream_value = SerializationHelper.deserialize_by_tag(child, "AtpFeature")
             obj.upstream = upstream_value
 
         return obj

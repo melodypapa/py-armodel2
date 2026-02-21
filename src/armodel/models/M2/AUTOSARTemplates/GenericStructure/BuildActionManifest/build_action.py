@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.BuildActionManifest.bui
     BuildActionEntity,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.BuildActionManifest.build_action_environment import (
     BuildActionEnvironment,
@@ -58,7 +59,7 @@ class BuildAction(BuildActionEntity):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -79,7 +80,7 @@ class BuildAction(BuildActionEntity):
         if self.created_datas:
             wrapper = ET.Element("CREATED-DATAS")
             for item in self.created_datas:
-                serialized = ARObject._serialize_item(item, "BuildActionIoElement")
+                serialized = SerializationHelper.serialize_item(item, "BuildActionIoElement")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -89,7 +90,7 @@ class BuildAction(BuildActionEntity):
         if self.follow_up_action_refs:
             wrapper = ET.Element("FOLLOW-UP-ACTION-REFS")
             for item in self.follow_up_action_refs:
-                serialized = ARObject._serialize_item(item, "BuildAction")
+                serialized = SerializationHelper.serialize_item(item, "BuildAction")
                 if serialized is not None:
                     child_elem = ET.Element("FOLLOW-UP-ACTION-REF")
                     if hasattr(serialized, 'attrib'):
@@ -106,7 +107,7 @@ class BuildAction(BuildActionEntity):
         if self.input_datas:
             wrapper = ET.Element("INPUT-DATAS")
             for item in self.input_datas:
-                serialized = ARObject._serialize_item(item, "BuildActionIoElement")
+                serialized = SerializationHelper.serialize_item(item, "BuildActionIoElement")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -116,7 +117,7 @@ class BuildAction(BuildActionEntity):
         if self.modified_datas:
             wrapper = ET.Element("MODIFIED-DATAS")
             for item in self.modified_datas:
-                serialized = ARObject._serialize_item(item, "BuildActionIoElement")
+                serialized = SerializationHelper.serialize_item(item, "BuildActionIoElement")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -126,7 +127,7 @@ class BuildAction(BuildActionEntity):
         if self.predecessor_refs:
             wrapper = ET.Element("PREDECESSOR-REFS")
             for item in self.predecessor_refs:
-                serialized = ARObject._serialize_item(item, "BuildAction")
+                serialized = SerializationHelper.serialize_item(item, "BuildAction")
                 if serialized is not None:
                     child_elem = ET.Element("PREDECESSOR-REF")
                     if hasattr(serialized, 'attrib'):
@@ -141,7 +142,7 @@ class BuildAction(BuildActionEntity):
 
         # Serialize required_ref
         if self.required_ref is not None:
-            serialized = ARObject._serialize_item(self.required_ref, "BuildActionEnvironment")
+            serialized = SerializationHelper.serialize_item(self.required_ref, "BuildActionEnvironment")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REQUIRED-REF")
@@ -170,68 +171,68 @@ class BuildAction(BuildActionEntity):
 
         # Parse created_datas (list from container "CREATED-DATAS")
         obj.created_datas = []
-        container = ARObject._find_child_element(element, "CREATED-DATAS")
+        container = SerializationHelper.find_child_element(element, "CREATED-DATAS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.created_datas.append(child_value)
 
         # Parse follow_up_action_refs (list from container "FOLLOW-UP-ACTION-REFS")
         obj.follow_up_action_refs = []
-        container = ARObject._find_child_element(element, "FOLLOW-UP-ACTION-REFS")
+        container = SerializationHelper.find_child_element(element, "FOLLOW-UP-ACTION-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.follow_up_action_refs.append(child_value)
 
         # Parse input_datas (list from container "INPUT-DATAS")
         obj.input_datas = []
-        container = ARObject._find_child_element(element, "INPUT-DATAS")
+        container = SerializationHelper.find_child_element(element, "INPUT-DATAS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.input_datas.append(child_value)
 
         # Parse modified_datas (list from container "MODIFIED-DATAS")
         obj.modified_datas = []
-        container = ARObject._find_child_element(element, "MODIFIED-DATAS")
+        container = SerializationHelper.find_child_element(element, "MODIFIED-DATAS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.modified_datas.append(child_value)
 
         # Parse predecessor_refs (list from container "PREDECESSOR-REFS")
         obj.predecessor_refs = []
-        container = ARObject._find_child_element(element, "PREDECESSOR-REFS")
+        container = SerializationHelper.find_child_element(element, "PREDECESSOR-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.predecessor_refs.append(child_value)
 
         # Parse required_ref
-        child = ARObject._find_child_element(element, "REQUIRED-REF")
+        child = SerializationHelper.find_child_element(element, "REQUIRED-REF")
         if child is not None:
             required_ref_value = ARRef.deserialize(child)
             obj.required_ref = required_ref_value

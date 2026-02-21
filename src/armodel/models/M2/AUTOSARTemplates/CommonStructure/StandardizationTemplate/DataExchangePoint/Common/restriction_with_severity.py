@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.StandardizationTemplate.DataExchangePoint import (
     SeverityEnum,
 )
@@ -41,12 +42,12 @@ class RestrictionWithSeverity(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize severity
         if self.severity is not None:
-            serialized = ARObject._serialize_item(self.severity, "SeverityEnum")
+            serialized = SerializationHelper.serialize_item(self.severity, "SeverityEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SEVERITY")
@@ -75,7 +76,7 @@ class RestrictionWithSeverity(ARObject, ABC):
         obj.__init__()
 
         # Parse severity
-        child = ARObject._find_child_element(element, "SEVERITY")
+        child = SerializationHelper.find_child_element(element, "SEVERITY")
         if child is not None:
             severity_value = SeverityEnum.deserialize(child)
             obj.severity = severity_value

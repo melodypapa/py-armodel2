@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Describable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.Timing.time_range_type import (
     TimeRangeType,
 )
@@ -45,7 +46,7 @@ class CyclicTiming(Describable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class CyclicTiming(Describable):
 
         # Serialize time_offset
         if self.time_offset is not None:
-            serialized = ARObject._serialize_item(self.time_offset, "TimeRangeType")
+            serialized = SerializationHelper.serialize_item(self.time_offset, "TimeRangeType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIME-OFFSET")
@@ -78,7 +79,7 @@ class CyclicTiming(Describable):
 
         # Serialize time_period
         if self.time_period is not None:
-            serialized = ARObject._serialize_item(self.time_period, "TimeRangeType")
+            serialized = SerializationHelper.serialize_item(self.time_period, "TimeRangeType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIME-PERIOD")
@@ -106,15 +107,15 @@ class CyclicTiming(Describable):
         obj = super(CyclicTiming, cls).deserialize(element)
 
         # Parse time_offset
-        child = ARObject._find_child_element(element, "TIME-OFFSET")
+        child = SerializationHelper.find_child_element(element, "TIME-OFFSET")
         if child is not None:
-            time_offset_value = ARObject._deserialize_by_tag(child, "TimeRangeType")
+            time_offset_value = SerializationHelper.deserialize_by_tag(child, "TimeRangeType")
             obj.time_offset = time_offset_value
 
         # Parse time_period
-        child = ARObject._find_child_element(element, "TIME-PERIOD")
+        child = SerializationHelper.find_child_element(element, "TIME-PERIOD")
         if child is not None:
-            time_period_value = ARObject._deserialize_by_tag(child, "TimeRangeType")
+            time_period_value = SerializationHelper.deserialize_by_tag(child, "TimeRangeType")
             obj.time_period = time_period_value
 
         return obj

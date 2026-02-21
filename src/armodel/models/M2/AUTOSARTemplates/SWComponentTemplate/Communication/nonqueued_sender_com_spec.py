@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.sender
     SenderComSpec,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Filter.data_filter import (
     DataFilter,
 )
@@ -52,7 +53,7 @@ class NonqueuedSenderComSpec(SenderComSpec):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -71,7 +72,7 @@ class NonqueuedSenderComSpec(SenderComSpec):
 
         # Serialize data_filter
         if self.data_filter is not None:
-            serialized = ARObject._serialize_item(self.data_filter, "DataFilter")
+            serialized = SerializationHelper.serialize_item(self.data_filter, "DataFilter")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-FILTER")
@@ -85,7 +86,7 @@ class NonqueuedSenderComSpec(SenderComSpec):
 
         # Serialize init_value
         if self.init_value is not None:
-            serialized = ARObject._serialize_item(self.init_value, "ValueSpecification")
+            serialized = SerializationHelper.serialize_item(self.init_value, "ValueSpecification")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INIT-VALUE")
@@ -113,15 +114,15 @@ class NonqueuedSenderComSpec(SenderComSpec):
         obj = super(NonqueuedSenderComSpec, cls).deserialize(element)
 
         # Parse data_filter
-        child = ARObject._find_child_element(element, "DATA-FILTER")
+        child = SerializationHelper.find_child_element(element, "DATA-FILTER")
         if child is not None:
-            data_filter_value = ARObject._deserialize_by_tag(child, "DataFilter")
+            data_filter_value = SerializationHelper.deserialize_by_tag(child, "DataFilter")
             obj.data_filter = data_filter_value
 
         # Parse init_value
-        child = ARObject._find_child_element(element, "INIT-VALUE")
+        child = SerializationHelper.find_child_element(element, "INIT-VALUE")
         if child is not None:
-            init_value_value = ARObject._deserialize_by_tag(child, "ValueSpecification")
+            init_value_value = SerializationHelper.deserialize_by_tag(child, "ValueSpecification")
             obj.init_value = init_value_value
 
         return obj

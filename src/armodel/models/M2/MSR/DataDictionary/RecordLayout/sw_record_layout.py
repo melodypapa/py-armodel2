@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.DataDictionary.RecordLayout.sw_record_layout_group import (
     SwRecordLayoutGroup,
@@ -45,7 +46,7 @@ class SwRecordLayout(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class SwRecordLayout(ARElement):
 
         # Serialize sw_record_ref
         if self.sw_record_ref is not None:
-            serialized = ARObject._serialize_item(self.sw_record_ref, "SwRecordLayoutGroup")
+            serialized = SerializationHelper.serialize_item(self.sw_record_ref, "SwRecordLayoutGroup")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-RECORD-REF")
@@ -92,7 +93,7 @@ class SwRecordLayout(ARElement):
         obj = super(SwRecordLayout, cls).deserialize(element)
 
         # Parse sw_record_ref
-        child = ARObject._find_child_element(element, "SW-RECORD-REF")
+        child = SerializationHelper.find_child_element(element, "SW-RECORD-REF")
         if child is not None:
             sw_record_ref_value = ARRef.deserialize(child)
             obj.sw_record_ref = sw_record_ref_value

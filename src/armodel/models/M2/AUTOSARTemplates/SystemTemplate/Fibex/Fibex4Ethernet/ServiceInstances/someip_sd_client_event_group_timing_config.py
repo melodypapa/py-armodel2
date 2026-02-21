@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -50,7 +51,7 @@ class SomeipSdClientEventGroupTimingConfig(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -69,7 +70,7 @@ class SomeipSdClientEventGroupTimingConfig(ARElement):
 
         # Serialize request
         if self.request is not None:
-            serialized = ARObject._serialize_item(self.request, "RequestResponseDelay")
+            serialized = SerializationHelper.serialize_item(self.request, "RequestResponseDelay")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REQUEST")
@@ -83,7 +84,7 @@ class SomeipSdClientEventGroupTimingConfig(ARElement):
 
         # Serialize subscribe
         if self.subscribe is not None:
-            serialized = ARObject._serialize_item(self.subscribe, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.subscribe, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SUBSCRIBE")
@@ -97,7 +98,7 @@ class SomeipSdClientEventGroupTimingConfig(ARElement):
 
         # Serialize time_to_live
         if self.time_to_live is not None:
-            serialized = ARObject._serialize_item(self.time_to_live, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.time_to_live, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIME-TO-LIVE")
@@ -125,19 +126,19 @@ class SomeipSdClientEventGroupTimingConfig(ARElement):
         obj = super(SomeipSdClientEventGroupTimingConfig, cls).deserialize(element)
 
         # Parse request
-        child = ARObject._find_child_element(element, "REQUEST")
+        child = SerializationHelper.find_child_element(element, "REQUEST")
         if child is not None:
-            request_value = ARObject._deserialize_by_tag(child, "RequestResponseDelay")
+            request_value = SerializationHelper.deserialize_by_tag(child, "RequestResponseDelay")
             obj.request = request_value
 
         # Parse subscribe
-        child = ARObject._find_child_element(element, "SUBSCRIBE")
+        child = SerializationHelper.find_child_element(element, "SUBSCRIBE")
         if child is not None:
             subscribe_value = child.text
             obj.subscribe = subscribe_value
 
         # Parse time_to_live
-        child = ARObject._find_child_element(element, "TIME-TO-LIVE")
+        child = SerializationHelper.find_child_element(element, "TIME-TO-LIVE")
         if child is not None:
             time_to_live_value = child.text
             obj.time_to_live = time_to_live_value

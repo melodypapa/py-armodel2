@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
@@ -55,12 +56,12 @@ class McSwEmulationMethodSupport(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize base_reference_ref
         if self.base_reference_ref is not None:
-            serialized = ARObject._serialize_item(self.base_reference_ref, "VariableDataPrototype")
+            serialized = SerializationHelper.serialize_item(self.base_reference_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BASE-REFERENCE-REF")
@@ -74,7 +75,7 @@ class McSwEmulationMethodSupport(ARObject):
 
         # Serialize category
         if self.category is not None:
-            serialized = ARObject._serialize_item(self.category, "Identifier")
+            serialized = SerializationHelper.serialize_item(self.category, "Identifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CATEGORY")
@@ -90,7 +91,7 @@ class McSwEmulationMethodSupport(ARObject):
         if self.element_groups:
             wrapper = ET.Element("ELEMENT-GROUPS")
             for item in self.element_groups:
-                serialized = ARObject._serialize_item(item, "McParameterElementGroup")
+                serialized = SerializationHelper.serialize_item(item, "McParameterElementGroup")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -98,7 +99,7 @@ class McSwEmulationMethodSupport(ARObject):
 
         # Serialize reference_table_ref
         if self.reference_table_ref is not None:
-            serialized = ARObject._serialize_item(self.reference_table_ref, "VariableDataPrototype")
+            serialized = SerializationHelper.serialize_item(self.reference_table_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REFERENCE-TABLE-REF")
@@ -112,7 +113,7 @@ class McSwEmulationMethodSupport(ARObject):
 
         # Serialize short_label
         if self.short_label is not None:
-            serialized = ARObject._serialize_item(self.short_label, "Identifier")
+            serialized = SerializationHelper.serialize_item(self.short_label, "Identifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SHORT-LABEL")
@@ -141,37 +142,37 @@ class McSwEmulationMethodSupport(ARObject):
         obj.__init__()
 
         # Parse base_reference_ref
-        child = ARObject._find_child_element(element, "BASE-REFERENCE-REF")
+        child = SerializationHelper.find_child_element(element, "BASE-REFERENCE-REF")
         if child is not None:
             base_reference_ref_value = ARRef.deserialize(child)
             obj.base_reference_ref = base_reference_ref_value
 
         # Parse category
-        child = ARObject._find_child_element(element, "CATEGORY")
+        child = SerializationHelper.find_child_element(element, "CATEGORY")
         if child is not None:
-            category_value = ARObject._deserialize_by_tag(child, "Identifier")
+            category_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
             obj.category = category_value
 
         # Parse element_groups (list from container "ELEMENT-GROUPS")
         obj.element_groups = []
-        container = ARObject._find_child_element(element, "ELEMENT-GROUPS")
+        container = SerializationHelper.find_child_element(element, "ELEMENT-GROUPS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.element_groups.append(child_value)
 
         # Parse reference_table_ref
-        child = ARObject._find_child_element(element, "REFERENCE-TABLE-REF")
+        child = SerializationHelper.find_child_element(element, "REFERENCE-TABLE-REF")
         if child is not None:
             reference_table_ref_value = ARRef.deserialize(child)
             obj.reference_table_ref = reference_table_ref_value
 
         # Parse short_label
-        child = ARObject._find_child_element(element, "SHORT-LABEL")
+        child = SerializationHelper.find_child_element(element, "SHORT-LABEL")
         if child is not None:
-            short_label_value = ARObject._deserialize_by_tag(child, "Identifier")
+            short_label_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
             obj.short_label = short_label_value
 
         return obj

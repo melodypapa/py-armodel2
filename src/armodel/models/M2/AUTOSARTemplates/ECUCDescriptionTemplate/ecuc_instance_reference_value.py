@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_abstract_re
     EcucAbstractReferenceValue,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.AbstractStructure.atp_feature import (
     AtpFeature,
 )
@@ -43,7 +44,7 @@ class EcucInstanceReferenceValue(EcucAbstractReferenceValue):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class EcucInstanceReferenceValue(EcucAbstractReferenceValue):
 
         # Serialize value
         if self.value is not None:
-            serialized = ARObject._serialize_item(self.value, "AtpFeature")
+            serialized = SerializationHelper.serialize_item(self.value, "AtpFeature")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VALUE")
@@ -90,9 +91,9 @@ class EcucInstanceReferenceValue(EcucAbstractReferenceValue):
         obj = super(EcucInstanceReferenceValue, cls).deserialize(element)
 
         # Parse value
-        child = ARObject._find_child_element(element, "VALUE")
+        child = SerializationHelper.find_child_element(element, "VALUE")
         if child is not None:
-            value_value = ARObject._deserialize_by_tag(child, "AtpFeature")
+            value_value = SerializationHelper.deserialize_by_tag(child, "AtpFeature")
             obj.value = value_value
 
         return obj

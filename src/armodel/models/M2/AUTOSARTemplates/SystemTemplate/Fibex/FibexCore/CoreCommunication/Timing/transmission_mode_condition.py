@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Filter.data_filter import (
     DataFilter,
@@ -46,12 +47,12 @@ class TransmissionModeCondition(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize data_filter
         if self.data_filter is not None:
-            serialized = ARObject._serialize_item(self.data_filter, "DataFilter")
+            serialized = SerializationHelper.serialize_item(self.data_filter, "DataFilter")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-FILTER")
@@ -65,7 +66,7 @@ class TransmissionModeCondition(ARObject):
 
         # Serialize i_signal_in_i_pdu_ref
         if self.i_signal_in_i_pdu_ref is not None:
-            serialized = ARObject._serialize_item(self.i_signal_in_i_pdu_ref, "ISignalToIPduMapping")
+            serialized = SerializationHelper.serialize_item(self.i_signal_in_i_pdu_ref, "ISignalToIPduMapping")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("I-SIGNAL-IN-I-PDU-REF")
@@ -94,13 +95,13 @@ class TransmissionModeCondition(ARObject):
         obj.__init__()
 
         # Parse data_filter
-        child = ARObject._find_child_element(element, "DATA-FILTER")
+        child = SerializationHelper.find_child_element(element, "DATA-FILTER")
         if child is not None:
-            data_filter_value = ARObject._deserialize_by_tag(child, "DataFilter")
+            data_filter_value = SerializationHelper.deserialize_by_tag(child, "DataFilter")
             obj.data_filter = data_filter_value
 
         # Parse i_signal_in_i_pdu_ref
-        child = ARObject._find_child_element(element, "I-SIGNAL-IN-I-PDU-REF")
+        child = SerializationHelper.find_child_element(element, "I-SIGNAL-IN-I-PDU-REF")
         if child is not None:
             i_signal_in_i_pdu_ref_value = ARRef.deserialize(child)
             obj.i_signal_in_i_pdu_ref = i_signal_in_i_pdu_ref_value

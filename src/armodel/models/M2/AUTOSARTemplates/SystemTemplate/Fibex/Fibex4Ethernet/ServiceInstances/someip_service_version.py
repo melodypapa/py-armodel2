@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -42,12 +43,12 @@ class SomeipServiceVersion(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize major_version
         if self.major_version is not None:
-            serialized = ARObject._serialize_item(self.major_version, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.major_version, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAJOR-VERSION")
@@ -61,7 +62,7 @@ class SomeipServiceVersion(ARObject):
 
         # Serialize minor_version
         if self.minor_version is not None:
-            serialized = ARObject._serialize_item(self.minor_version, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.minor_version, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MINOR-VERSION")
@@ -90,13 +91,13 @@ class SomeipServiceVersion(ARObject):
         obj.__init__()
 
         # Parse major_version
-        child = ARObject._find_child_element(element, "MAJOR-VERSION")
+        child = SerializationHelper.find_child_element(element, "MAJOR-VERSION")
         if child is not None:
             major_version_value = child.text
             obj.major_version = major_version_value
 
         # Parse minor_version
-        child = ARObject._find_child_element(element, "MINOR-VERSION")
+        child = SerializationHelper.find_child_element(element, "MINOR-VERSION")
         if child is not None:
             minor_version_value = child.text
             obj.minor_version = minor_version_value

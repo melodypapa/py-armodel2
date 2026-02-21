@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     SdgElementWithGid,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     MetaClassName,
 )
@@ -44,7 +45,7 @@ class SdgAbstractForeignReference(SdgElementWithGid, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -63,7 +64,7 @@ class SdgAbstractForeignReference(SdgElementWithGid, ABC):
 
         # Serialize dest_meta_class
         if self.dest_meta_class is not None:
-            serialized = ARObject._serialize_item(self.dest_meta_class, "MetaClassName")
+            serialized = SerializationHelper.serialize_item(self.dest_meta_class, "MetaClassName")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DEST-META-CLASS")
@@ -91,7 +92,7 @@ class SdgAbstractForeignReference(SdgElementWithGid, ABC):
         obj = super(SdgAbstractForeignReference, cls).deserialize(element)
 
         # Parse dest_meta_class
-        child = ARObject._find_child_element(element, "DEST-META-CLASS")
+        child = SerializationHelper.find_child_element(element, "DEST-META-CLASS")
         if child is not None:
             dest_meta_class_value = child.text
             obj.dest_meta_class = dest_meta_class_value

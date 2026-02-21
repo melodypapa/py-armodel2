@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.ids_mapping impo
     IdsMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.idsm_instance import (
     IdsmInstance,
@@ -49,7 +50,7 @@ class SecurityEventContextMapping(IdsMapping, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -68,7 +69,7 @@ class SecurityEventContextMapping(IdsMapping, ABC):
 
         # Serialize filter_chain_ref
         if self.filter_chain_ref is not None:
-            serialized = ARObject._serialize_item(self.filter_chain_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.filter_chain_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FILTER-CHAIN-REF")
@@ -82,7 +83,7 @@ class SecurityEventContextMapping(IdsMapping, ABC):
 
         # Serialize idsm_instance_ref
         if self.idsm_instance_ref is not None:
-            serialized = ARObject._serialize_item(self.idsm_instance_ref, "IdsmInstance")
+            serialized = SerializationHelper.serialize_item(self.idsm_instance_ref, "IdsmInstance")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IDSM-INSTANCE-REF")
@@ -98,7 +99,7 @@ class SecurityEventContextMapping(IdsMapping, ABC):
         if self.mapped_securities:
             wrapper = ET.Element("MAPPED-SECURITIES")
             for item in self.mapped_securities:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -120,24 +121,24 @@ class SecurityEventContextMapping(IdsMapping, ABC):
         obj = super(SecurityEventContextMapping, cls).deserialize(element)
 
         # Parse filter_chain_ref
-        child = ARObject._find_child_element(element, "FILTER-CHAIN-REF")
+        child = SerializationHelper.find_child_element(element, "FILTER-CHAIN-REF")
         if child is not None:
             filter_chain_ref_value = ARRef.deserialize(child)
             obj.filter_chain_ref = filter_chain_ref_value
 
         # Parse idsm_instance_ref
-        child = ARObject._find_child_element(element, "IDSM-INSTANCE-REF")
+        child = SerializationHelper.find_child_element(element, "IDSM-INSTANCE-REF")
         if child is not None:
             idsm_instance_ref_value = ARRef.deserialize(child)
             obj.idsm_instance_ref = idsm_instance_ref_value
 
         # Parse mapped_securities (list from container "MAPPED-SECURITIES")
         obj.mapped_securities = []
-        container = ARObject._find_child_element(element, "MAPPED-SECURITIES")
+        container = SerializationHelper.find_child_element(element, "MAPPED-SECURITIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.mapped_securities.append(child_value)
 

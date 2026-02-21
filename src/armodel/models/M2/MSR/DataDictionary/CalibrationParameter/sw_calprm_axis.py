@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.DataDictionary.CalibrationParameter import (
     CalprmAxisCategoryEnum,
 )
@@ -60,12 +61,12 @@ class SwCalprmAxis(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize category
         if self.category is not None:
-            serialized = ARObject._serialize_item(self.category, "CalprmAxisCategoryEnum")
+            serialized = SerializationHelper.serialize_item(self.category, "CalprmAxisCategoryEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CATEGORY")
@@ -79,7 +80,7 @@ class SwCalprmAxis(ARObject):
 
         # Serialize display_format_string
         if self.display_format_string is not None:
-            serialized = ARObject._serialize_item(self.display_format_string, "DisplayFormatString")
+            serialized = SerializationHelper.serialize_item(self.display_format_string, "DisplayFormatString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DISPLAY-FORMAT-STRING")
@@ -93,7 +94,7 @@ class SwCalprmAxis(ARObject):
 
         # Serialize sw_axis_index
         if self.sw_axis_index is not None:
-            serialized = ARObject._serialize_item(self.sw_axis_index, "AxisIndexType")
+            serialized = SerializationHelper.serialize_item(self.sw_axis_index, "AxisIndexType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-AXIS-INDEX")
@@ -107,7 +108,7 @@ class SwCalprmAxis(ARObject):
 
         # Serialize sw_calibration_access
         if self.sw_calibration_access is not None:
-            serialized = ARObject._serialize_item(self.sw_calibration_access, "SwCalibrationAccessEnum")
+            serialized = SerializationHelper.serialize_item(self.sw_calibration_access, "SwCalibrationAccessEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-CALIBRATION-ACCESS")
@@ -121,7 +122,7 @@ class SwCalprmAxis(ARObject):
 
         # Serialize sw_calprm_axis
         if self.sw_calprm_axis is not None:
-            serialized = ARObject._serialize_item(self.sw_calprm_axis, "SwCalprmAxisTypeProps")
+            serialized = SerializationHelper.serialize_item(self.sw_calprm_axis, "SwCalprmAxisTypeProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-CALPRM-AXIS")
@@ -150,33 +151,33 @@ class SwCalprmAxis(ARObject):
         obj.__init__()
 
         # Parse category
-        child = ARObject._find_child_element(element, "CATEGORY")
+        child = SerializationHelper.find_child_element(element, "CATEGORY")
         if child is not None:
             category_value = CalprmAxisCategoryEnum.deserialize(child)
             obj.category = category_value
 
         # Parse display_format_string
-        child = ARObject._find_child_element(element, "DISPLAY-FORMAT-STRING")
+        child = SerializationHelper.find_child_element(element, "DISPLAY-FORMAT-STRING")
         if child is not None:
             display_format_string_value = child.text
             obj.display_format_string = display_format_string_value
 
         # Parse sw_axis_index
-        child = ARObject._find_child_element(element, "SW-AXIS-INDEX")
+        child = SerializationHelper.find_child_element(element, "SW-AXIS-INDEX")
         if child is not None:
             sw_axis_index_value = child.text
             obj.sw_axis_index = sw_axis_index_value
 
         # Parse sw_calibration_access
-        child = ARObject._find_child_element(element, "SW-CALIBRATION-ACCESS")
+        child = SerializationHelper.find_child_element(element, "SW-CALIBRATION-ACCESS")
         if child is not None:
             sw_calibration_access_value = SwCalibrationAccessEnum.deserialize(child)
             obj.sw_calibration_access = sw_calibration_access_value
 
         # Parse sw_calprm_axis
-        child = ARObject._find_child_element(element, "SW-CALPRM-AXIS")
+        child = SerializationHelper.find_child_element(element, "SW-CALPRM-AXIS")
         if child is not None:
-            sw_calprm_axis_value = ARObject._deserialize_by_tag(child, "SwCalprmAxisTypeProps")
+            sw_calprm_axis_value = SerializationHelper.deserialize_by_tag(child, "SwCalprmAxisTypeProps")
             obj.sw_calprm_axis = sw_calprm_axis_value
 
         return obj

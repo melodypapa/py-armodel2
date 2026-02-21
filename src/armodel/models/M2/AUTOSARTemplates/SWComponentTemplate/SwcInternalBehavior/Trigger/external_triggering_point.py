@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigger import (
     Trigger,
@@ -44,12 +45,12 @@ class ExternalTriggeringPoint(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize ident_ref
         if self.ident_ref is not None:
-            serialized = ARObject._serialize_item(self.ident_ref, "ExternalTriggeringPoint")
+            serialized = SerializationHelper.serialize_item(self.ident_ref, "ExternalTriggeringPoint")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IDENT-REF")
@@ -63,7 +64,7 @@ class ExternalTriggeringPoint(ARObject):
 
         # Serialize trigger_ref
         if self.trigger_ref is not None:
-            serialized = ARObject._serialize_item(self.trigger_ref, "Trigger")
+            serialized = SerializationHelper.serialize_item(self.trigger_ref, "Trigger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TRIGGER-REF")
@@ -92,13 +93,13 @@ class ExternalTriggeringPoint(ARObject):
         obj.__init__()
 
         # Parse ident_ref
-        child = ARObject._find_child_element(element, "IDENT-REF")
+        child = SerializationHelper.find_child_element(element, "IDENT-REF")
         if child is not None:
             ident_ref_value = ARRef.deserialize(child)
             obj.ident_ref = ident_ref_value
 
         # Parse trigger_ref
-        child = ARObject._find_child_element(element, "TRIGGER-REF")
+        child = SerializationHelper.find_child_element(element, "TRIGGER-REF")
         if child is not None:
             trigger_ref_value = ARRef.deserialize(child)
             obj.trigger_ref = trigger_ref_value

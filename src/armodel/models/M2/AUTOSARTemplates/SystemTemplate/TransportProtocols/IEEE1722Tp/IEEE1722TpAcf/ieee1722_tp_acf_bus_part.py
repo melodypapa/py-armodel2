@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.ServiceInstances import (
     PduCollectionTriggerEnum,
@@ -45,7 +46,7 @@ class IEEE1722TpAcfBusPart(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class IEEE1722TpAcfBusPart(Identifiable, ABC):
 
         # Serialize collection_trigger_ref
         if self.collection_trigger_ref is not None:
-            serialized = ARObject._serialize_item(self.collection_trigger_ref, "PduCollectionTriggerEnum")
+            serialized = SerializationHelper.serialize_item(self.collection_trigger_ref, "PduCollectionTriggerEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COLLECTION-TRIGGER-REF")
@@ -92,7 +93,7 @@ class IEEE1722TpAcfBusPart(Identifiable, ABC):
         obj = super(IEEE1722TpAcfBusPart, cls).deserialize(element)
 
         # Parse collection_trigger_ref
-        child = ARObject._find_child_element(element, "COLLECTION-TRIGGER-REF")
+        child = SerializationHelper.find_child_element(element, "COLLECTION-TRIGGER-REF")
         if child is not None:
             collection_trigger_ref_value = ARRef.deserialize(child)
             obj.collection_trigger_ref = collection_trigger_ref_value

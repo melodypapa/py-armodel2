@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     CIdentifier,
 )
@@ -40,12 +41,12 @@ class RunnableEntityArgument(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize symbol
         if self.symbol is not None:
-            serialized = ARObject._serialize_item(self.symbol, "CIdentifier")
+            serialized = SerializationHelper.serialize_item(self.symbol, "CIdentifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SYMBOL")
@@ -74,9 +75,9 @@ class RunnableEntityArgument(ARObject):
         obj.__init__()
 
         # Parse symbol
-        child = ARObject._find_child_element(element, "SYMBOL")
+        child = SerializationHelper.find_child_element(element, "SYMBOL")
         if child is not None:
-            symbol_value = ARObject._deserialize_by_tag(child, "CIdentifier")
+            symbol_value = SerializationHelper.deserialize_by_tag(child, "CIdentifier")
             obj.symbol = symbol_value
 
         return obj

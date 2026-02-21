@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTestResult.diagnostic_test_result import (
     DiagnosticTestResult,
@@ -46,7 +47,7 @@ class DiagnosticRequestOnBoardMonitoringTestResults(DiagnosticServiceInstance):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -67,7 +68,7 @@ class DiagnosticRequestOnBoardMonitoringTestResults(DiagnosticServiceInstance):
         if self.diagnostic_test_result_refs:
             wrapper = ET.Element("DIAGNOSTIC-TEST-RESULT-REFS")
             for item in self.diagnostic_test_result_refs:
-                serialized = ARObject._serialize_item(item, "DiagnosticTestResult")
+                serialized = SerializationHelper.serialize_item(item, "DiagnosticTestResult")
                 if serialized is not None:
                     child_elem = ET.Element("DIAGNOSTIC-TEST-RESULT-REF")
                     if hasattr(serialized, 'attrib'):
@@ -82,7 +83,7 @@ class DiagnosticRequestOnBoardMonitoringTestResults(DiagnosticServiceInstance):
 
         # Serialize request_on_ref
         if self.request_on_ref is not None:
-            serialized = ARObject._serialize_item(self.request_on_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.request_on_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REQUEST-ON-REF")
@@ -111,22 +112,22 @@ class DiagnosticRequestOnBoardMonitoringTestResults(DiagnosticServiceInstance):
 
         # Parse diagnostic_test_result_refs (list from container "DIAGNOSTIC-TEST-RESULT-REFS")
         obj.diagnostic_test_result_refs = []
-        container = ARObject._find_child_element(element, "DIAGNOSTIC-TEST-RESULT-REFS")
+        container = SerializationHelper.find_child_element(element, "DIAGNOSTIC-TEST-RESULT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.diagnostic_test_result_refs.append(child_value)
 
         # Parse request_on_ref
-        child = ARObject._find_child_element(element, "REQUEST-ON-REF")
+        child = SerializationHelper.find_child_element(element, "REQUEST-ON-REF")
         if child is not None:
             request_on_ref_value = ARRef.deserialize(child)
             obj.request_on_ref = request_on_ref_value

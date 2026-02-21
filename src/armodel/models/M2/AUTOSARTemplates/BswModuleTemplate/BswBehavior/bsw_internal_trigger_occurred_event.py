@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_schedu
     BswScheduleEvent,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_internal_triggering_point import (
     BswInternalTriggeringPoint,
@@ -44,7 +45,7 @@ class BswInternalTriggerOccurredEvent(BswScheduleEvent):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -63,7 +64,7 @@ class BswInternalTriggerOccurredEvent(BswScheduleEvent):
 
         # Serialize event_source_point_ref
         if self.event_source_point_ref is not None:
-            serialized = ARObject._serialize_item(self.event_source_point_ref, "BswInternalTriggeringPoint")
+            serialized = SerializationHelper.serialize_item(self.event_source_point_ref, "BswInternalTriggeringPoint")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("EVENT-SOURCE-POINT-REF")
@@ -91,7 +92,7 @@ class BswInternalTriggerOccurredEvent(BswScheduleEvent):
         obj = super(BswInternalTriggerOccurredEvent, cls).deserialize(element)
 
         # Parse event_source_point_ref
-        child = ARObject._find_child_element(element, "EVENT-SOURCE-POINT-REF")
+        child = SerializationHelper.find_child_element(element, "EVENT-SOURCE-POINT-REF")
         if child is not None:
             event_source_point_ref_value = ARRef.deserialize(child)
             obj.event_source_point_ref = event_source_point_ref_value

@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SecureCommunication import (
     CryptoCertificateFormatEnum,
@@ -57,7 +58,7 @@ class CryptoServiceCertificate(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -76,7 +77,7 @@ class CryptoServiceCertificate(ARElement):
 
         # Serialize algorithm_family
         if self.algorithm_family is not None:
-            serialized = ARObject._serialize_item(self.algorithm_family, "Any")
+            serialized = SerializationHelper.serialize_item(self.algorithm_family, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ALGORITHM-FAMILY")
@@ -90,7 +91,7 @@ class CryptoServiceCertificate(ARElement):
 
         # Serialize format
         if self.format is not None:
-            serialized = ARObject._serialize_item(self.format, "CryptoCertificateFormatEnum")
+            serialized = SerializationHelper.serialize_item(self.format, "CryptoCertificateFormatEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FORMAT")
@@ -104,7 +105,7 @@ class CryptoServiceCertificate(ARElement):
 
         # Serialize maximum
         if self.maximum is not None:
-            serialized = ARObject._serialize_item(self.maximum, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.maximum, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAXIMUM")
@@ -118,7 +119,7 @@ class CryptoServiceCertificate(ARElement):
 
         # Serialize next_higher_ref
         if self.next_higher_ref is not None:
-            serialized = ARObject._serialize_item(self.next_higher_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.next_higher_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NEXT-HIGHER-REF")
@@ -132,7 +133,7 @@ class CryptoServiceCertificate(ARElement):
 
         # Serialize server_name
         if self.server_name is not None:
-            serialized = ARObject._serialize_item(self.server_name, "String")
+            serialized = SerializationHelper.serialize_item(self.server_name, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SERVER-NAME")
@@ -160,31 +161,31 @@ class CryptoServiceCertificate(ARElement):
         obj = super(CryptoServiceCertificate, cls).deserialize(element)
 
         # Parse algorithm_family
-        child = ARObject._find_child_element(element, "ALGORITHM-FAMILY")
+        child = SerializationHelper.find_child_element(element, "ALGORITHM-FAMILY")
         if child is not None:
             algorithm_family_value = child.text
             obj.algorithm_family = algorithm_family_value
 
         # Parse format
-        child = ARObject._find_child_element(element, "FORMAT")
+        child = SerializationHelper.find_child_element(element, "FORMAT")
         if child is not None:
             format_value = CryptoCertificateFormatEnum.deserialize(child)
             obj.format = format_value
 
         # Parse maximum
-        child = ARObject._find_child_element(element, "MAXIMUM")
+        child = SerializationHelper.find_child_element(element, "MAXIMUM")
         if child is not None:
             maximum_value = child.text
             obj.maximum = maximum_value
 
         # Parse next_higher_ref
-        child = ARObject._find_child_element(element, "NEXT-HIGHER-REF")
+        child = SerializationHelper.find_child_element(element, "NEXT-HIGHER-REF")
         if child is not None:
             next_higher_ref_value = ARRef.deserialize(child)
             obj.next_higher_ref = next_higher_ref_value
 
         # Parse server_name
-        child = ARObject._find_child_element(element, "SERVER-NAME")
+        child = SerializationHelper.find_child_element(element, "SERVER-NAME")
         if child is not None:
             server_name_value = child.text
             obj.server_name = server_name_value

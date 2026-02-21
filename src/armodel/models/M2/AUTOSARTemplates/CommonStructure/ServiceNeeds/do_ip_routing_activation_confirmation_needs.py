@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.do_ip_servi
     DoIpServiceNeeds,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     NameToken,
     PositiveInteger,
@@ -46,7 +47,7 @@ class DoIpRoutingActivationConfirmationNeeds(DoIpServiceNeeds):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class DoIpRoutingActivationConfirmationNeeds(DoIpServiceNeeds):
 
         # Serialize data_length
         if self.data_length is not None:
-            serialized = ARObject._serialize_item(self.data_length, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.data_length, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-LENGTH")
@@ -79,7 +80,7 @@ class DoIpRoutingActivationConfirmationNeeds(DoIpServiceNeeds):
 
         # Serialize routing
         if self.routing is not None:
-            serialized = ARObject._serialize_item(self.routing, "NameToken")
+            serialized = SerializationHelper.serialize_item(self.routing, "NameToken")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ROUTING")
@@ -107,13 +108,13 @@ class DoIpRoutingActivationConfirmationNeeds(DoIpServiceNeeds):
         obj = super(DoIpRoutingActivationConfirmationNeeds, cls).deserialize(element)
 
         # Parse data_length
-        child = ARObject._find_child_element(element, "DATA-LENGTH")
+        child = SerializationHelper.find_child_element(element, "DATA-LENGTH")
         if child is not None:
             data_length_value = child.text
             obj.data_length = data_length_value
 
         # Parse routing
-        child = ARObject._find_child_element(element, "ROUTING")
+        child = SerializationHelper.find_child_element(element, "ROUTING")
         if child is not None:
             routing_value = child.text
             obj.routing = routing_value

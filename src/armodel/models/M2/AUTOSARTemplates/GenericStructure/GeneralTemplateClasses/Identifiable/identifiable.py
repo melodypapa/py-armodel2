@@ -25,6 +25,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     MultilanguageReferrable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     CategoryString,
     String,
@@ -79,7 +80,7 @@ class Identifiable(MultilanguageReferrable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -98,7 +99,7 @@ class Identifiable(MultilanguageReferrable, ABC):
 
         # Serialize admin_data
         if self.admin_data is not None:
-            serialized = ARObject._serialize_item(self.admin_data, "AdminData")
+            serialized = SerializationHelper.serialize_item(self.admin_data, "AdminData")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ADMIN-DATA")
@@ -114,7 +115,7 @@ class Identifiable(MultilanguageReferrable, ABC):
         if self.annotations:
             wrapper = ET.Element("ANNOTATIONS")
             for item in self.annotations:
-                serialized = ARObject._serialize_item(item, "Annotation")
+                serialized = SerializationHelper.serialize_item(item, "Annotation")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -122,7 +123,7 @@ class Identifiable(MultilanguageReferrable, ABC):
 
         # Serialize desc
         if self.desc is not None:
-            serialized = ARObject._serialize_item(self.desc, "MultiLanguageOverviewParagraph")
+            serialized = SerializationHelper.serialize_item(self.desc, "MultiLanguageOverviewParagraph")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DESC")
@@ -136,7 +137,7 @@ class Identifiable(MultilanguageReferrable, ABC):
 
         # Serialize category
         if self.category is not None:
-            serialized = ARObject._serialize_item(self.category, "CategoryString")
+            serialized = SerializationHelper.serialize_item(self.category, "CategoryString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CATEGORY")
@@ -150,7 +151,7 @@ class Identifiable(MultilanguageReferrable, ABC):
 
         # Serialize introduction
         if self.introduction is not None:
-            serialized = ARObject._serialize_item(self.introduction, "DocumentationBlock")
+            serialized = SerializationHelper.serialize_item(self.introduction, "DocumentationBlock")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INTRODUCTION")
@@ -164,7 +165,7 @@ class Identifiable(MultilanguageReferrable, ABC):
 
         # Serialize uuid
         if self.uuid is not None:
-            serialized = ARObject._serialize_item(self.uuid, "String")
+            serialized = SerializationHelper.serialize_item(self.uuid, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("UUID")
@@ -192,41 +193,41 @@ class Identifiable(MultilanguageReferrable, ABC):
         obj = super(Identifiable, cls).deserialize(element)
 
         # Parse admin_data
-        child = ARObject._find_child_element(element, "ADMIN-DATA")
+        child = SerializationHelper.find_child_element(element, "ADMIN-DATA")
         if child is not None:
-            admin_data_value = ARObject._deserialize_by_tag(child, "AdminData")
+            admin_data_value = SerializationHelper.deserialize_by_tag(child, "AdminData")
             obj.admin_data = admin_data_value
 
         # Parse annotations (list from container "ANNOTATIONS")
         obj.annotations = []
-        container = ARObject._find_child_element(element, "ANNOTATIONS")
+        container = SerializationHelper.find_child_element(element, "ANNOTATIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.annotations.append(child_value)
 
         # Parse desc
-        child = ARObject._find_child_element(element, "DESC")
+        child = SerializationHelper.find_child_element(element, "DESC")
         if child is not None:
-            desc_value = ARObject._deserialize_with_type(child, "MultiLanguageOverviewParagraph")
+            desc_value = SerializationHelper.deserialize_with_type(child, "MultiLanguageOverviewParagraph")
             obj.desc = desc_value
 
         # Parse category
-        child = ARObject._find_child_element(element, "CATEGORY")
+        child = SerializationHelper.find_child_element(element, "CATEGORY")
         if child is not None:
             category_value = child.text
             obj.category = category_value
 
         # Parse introduction
-        child = ARObject._find_child_element(element, "INTRODUCTION")
+        child = SerializationHelper.find_child_element(element, "INTRODUCTION")
         if child is not None:
-            introduction_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            introduction_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
             obj.introduction = introduction_value
 
         # Parse uuid
-        child = ARObject._find_child_element(element, "UUID")
+        child = SerializationHelper.find_child_element(element, "UUID")
         if child is not None:
             uuid_value = child.text
             obj.uuid = uuid_value

@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
@@ -46,14 +47,14 @@ class IncludedModeDeclarationGroupSet(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize mode_refs (list to container "MODE-REFS")
         if self.mode_refs:
             wrapper = ET.Element("MODE-REFS")
             for item in self.mode_refs:
-                serialized = ARObject._serialize_item(item, "ModeDeclarationGroup")
+                serialized = SerializationHelper.serialize_item(item, "ModeDeclarationGroup")
                 if serialized is not None:
                     child_elem = ET.Element("MODE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -68,7 +69,7 @@ class IncludedModeDeclarationGroupSet(ARObject):
 
         # Serialize prefix
         if self.prefix is not None:
-            serialized = ARObject._serialize_item(self.prefix, "Identifier")
+            serialized = SerializationHelper.serialize_item(self.prefix, "Identifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PREFIX")
@@ -98,24 +99,24 @@ class IncludedModeDeclarationGroupSet(ARObject):
 
         # Parse mode_refs (list from container "MODE-REFS")
         obj.mode_refs = []
-        container = ARObject._find_child_element(element, "MODE-REFS")
+        container = SerializationHelper.find_child_element(element, "MODE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.mode_refs.append(child_value)
 
         # Parse prefix
-        child = ARObject._find_child_element(element, "PREFIX")
+        child = SerializationHelper.find_child_element(element, "PREFIX")
         if child is not None:
-            prefix_value = ARObject._deserialize_by_tag(child, "Identifier")
+            prefix_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
             obj.prefix = prefix_value
 
         return obj

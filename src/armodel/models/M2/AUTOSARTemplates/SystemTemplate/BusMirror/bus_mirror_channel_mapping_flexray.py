@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.BusMirror.bus_mirror_chan
     BusMirrorChannelMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
 )
@@ -43,7 +44,7 @@ class BusMirrorChannelMappingFlexray(BusMirrorChannelMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class BusMirrorChannelMappingFlexray(BusMirrorChannelMapping):
 
         # Serialize transmission
         if self.transmission is not None:
-            serialized = ARObject._serialize_item(self.transmission, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.transmission, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TRANSMISSION")
@@ -90,7 +91,7 @@ class BusMirrorChannelMappingFlexray(BusMirrorChannelMapping):
         obj = super(BusMirrorChannelMappingFlexray, cls).deserialize(element)
 
         # Parse transmission
-        child = ARObject._find_child_element(element, "TRANSMISSION")
+        child = SerializationHelper.find_child_element(element, "TRANSMISSION")
         if child is not None:
             transmission_value = child.text
             obj.transmission = transmission_value

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_interface import (
     ClientServerInterface,
@@ -54,7 +55,7 @@ class ClientServerInterfaceToBswModuleEntryBlueprintMapping(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -73,7 +74,7 @@ class ClientServerInterfaceToBswModuleEntryBlueprintMapping(ARElement):
 
         # Serialize client_server_ref
         if self.client_server_ref is not None:
-            serialized = ARObject._serialize_item(self.client_server_ref, "ClientServerInterface")
+            serialized = SerializationHelper.serialize_item(self.client_server_ref, "ClientServerInterface")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CLIENT-SERVER-REF")
@@ -87,7 +88,7 @@ class ClientServerInterfaceToBswModuleEntryBlueprintMapping(ARElement):
 
         # Serialize operation
         if self.operation is not None:
-            serialized = ARObject._serialize_item(self.operation, "ClientServerOperation")
+            serialized = SerializationHelper.serialize_item(self.operation, "ClientServerOperation")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("OPERATION")
@@ -103,7 +104,7 @@ class ClientServerInterfaceToBswModuleEntryBlueprintMapping(ARElement):
         if self.port_defined_arguments:
             wrapper = ET.Element("PORT-DEFINED-ARGUMENTS")
             for item in self.port_defined_arguments:
-                serialized = ARObject._serialize_item(item, "PortDefinedArgumentValue")
+                serialized = SerializationHelper.serialize_item(item, "PortDefinedArgumentValue")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -125,24 +126,24 @@ class ClientServerInterfaceToBswModuleEntryBlueprintMapping(ARElement):
         obj = super(ClientServerInterfaceToBswModuleEntryBlueprintMapping, cls).deserialize(element)
 
         # Parse client_server_ref
-        child = ARObject._find_child_element(element, "CLIENT-SERVER-REF")
+        child = SerializationHelper.find_child_element(element, "CLIENT-SERVER-REF")
         if child is not None:
             client_server_ref_value = ARRef.deserialize(child)
             obj.client_server_ref = client_server_ref_value
 
         # Parse operation
-        child = ARObject._find_child_element(element, "OPERATION")
+        child = SerializationHelper.find_child_element(element, "OPERATION")
         if child is not None:
-            operation_value = ARObject._deserialize_by_tag(child, "ClientServerOperation")
+            operation_value = SerializationHelper.deserialize_by_tag(child, "ClientServerOperation")
             obj.operation = operation_value
 
         # Parse port_defined_arguments (list from container "PORT-DEFINED-ARGUMENTS")
         obj.port_defined_arguments = []
-        container = ARObject._find_child_element(element, "PORT-DEFINED-ARGUMENTS")
+        container = SerializationHelper.find_child_element(element, "PORT-DEFINED-ARGUMENTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.port_defined_arguments.append(child_value)
 

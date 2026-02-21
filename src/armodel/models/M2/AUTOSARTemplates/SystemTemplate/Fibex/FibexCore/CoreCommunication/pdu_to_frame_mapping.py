@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     ByteOrderEnum,
@@ -53,12 +54,12 @@ class PduToFrameMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize packing_byte
         if self.packing_byte is not None:
-            serialized = ARObject._serialize_item(self.packing_byte, "ByteOrderEnum")
+            serialized = SerializationHelper.serialize_item(self.packing_byte, "ByteOrderEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PACKING-BYTE")
@@ -72,7 +73,7 @@ class PduToFrameMapping(ARObject):
 
         # Serialize pdu_ref
         if self.pdu_ref is not None:
-            serialized = ARObject._serialize_item(self.pdu_ref, "Pdu")
+            serialized = SerializationHelper.serialize_item(self.pdu_ref, "Pdu")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PDU-REF")
@@ -86,7 +87,7 @@ class PduToFrameMapping(ARObject):
 
         # Serialize start_position
         if self.start_position is not None:
-            serialized = ARObject._serialize_item(self.start_position, "Integer")
+            serialized = SerializationHelper.serialize_item(self.start_position, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("START-POSITION")
@@ -100,7 +101,7 @@ class PduToFrameMapping(ARObject):
 
         # Serialize update
         if self.update is not None:
-            serialized = ARObject._serialize_item(self.update, "Integer")
+            serialized = SerializationHelper.serialize_item(self.update, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("UPDATE")
@@ -129,25 +130,25 @@ class PduToFrameMapping(ARObject):
         obj.__init__()
 
         # Parse packing_byte
-        child = ARObject._find_child_element(element, "PACKING-BYTE")
+        child = SerializationHelper.find_child_element(element, "PACKING-BYTE")
         if child is not None:
             packing_byte_value = ByteOrderEnum.deserialize(child)
             obj.packing_byte = packing_byte_value
 
         # Parse pdu_ref
-        child = ARObject._find_child_element(element, "PDU-REF")
+        child = SerializationHelper.find_child_element(element, "PDU-REF")
         if child is not None:
             pdu_ref_value = ARRef.deserialize(child)
             obj.pdu_ref = pdu_ref_value
 
         # Parse start_position
-        child = ARObject._find_child_element(element, "START-POSITION")
+        child = SerializationHelper.find_child_element(element, "START-POSITION")
         if child is not None:
             start_position_value = child.text
             obj.start_position = start_position_value
 
         # Parse update
-        child = ARObject._find_child_element(element, "UPDATE")
+        child = SerializationHelper.find_child_element(element, "UPDATE")
         if child is not None:
             update_value = child.text
             obj.update = update_value

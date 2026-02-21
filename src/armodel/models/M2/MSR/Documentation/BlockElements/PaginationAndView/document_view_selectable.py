@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     NameTokens,
 )
@@ -46,12 +47,12 @@ class DocumentViewSelectable(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize si
         if self.si is not None:
-            serialized = ARObject._serialize_item(self.si, "NameTokens")
+            serialized = SerializationHelper.serialize_item(self.si, "NameTokens")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SI")
@@ -65,7 +66,7 @@ class DocumentViewSelectable(ARObject, ABC):
 
         # Serialize view
         if self.view is not None:
-            serialized = ARObject._serialize_item(self.view, "ViewTokens")
+            serialized = SerializationHelper.serialize_item(self.view, "ViewTokens")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VIEW")
@@ -94,13 +95,13 @@ class DocumentViewSelectable(ARObject, ABC):
         obj.__init__()
 
         # Parse si
-        child = ARObject._find_child_element(element, "SI")
+        child = SerializationHelper.find_child_element(element, "SI")
         if child is not None:
             si_value = child.text
             obj.si = si_value
 
         # Parse view
-        child = ARObject._find_child_element(element, "VIEW")
+        child = SerializationHelper.find_child_element(element, "VIEW")
         if child is not None:
             view_value = child.text
             obj.view = view_value

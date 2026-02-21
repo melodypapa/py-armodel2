@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.executable_entity import (
     ExecutableEntity,
@@ -46,7 +47,7 @@ class AbstractEvent(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class AbstractEvent(Identifiable, ABC):
 
         # Serialize activation_ref
         if self.activation_ref is not None:
-            serialized = ARObject._serialize_item(self.activation_ref, "ExecutableEntity")
+            serialized = SerializationHelper.serialize_item(self.activation_ref, "ExecutableEntity")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ACTIVATION-REF")
@@ -93,7 +94,7 @@ class AbstractEvent(Identifiable, ABC):
         obj = super(AbstractEvent, cls).deserialize(element)
 
         # Parse activation_ref
-        child = ARObject._find_child_element(element, "ACTIVATION-REF")
+        child = SerializationHelper.find_child_element(element, "ACTIVATION-REF")
         if child is not None:
             activation_ref_value = ARRef.deserialize(child)
             obj.activation_ref = activation_ref_value

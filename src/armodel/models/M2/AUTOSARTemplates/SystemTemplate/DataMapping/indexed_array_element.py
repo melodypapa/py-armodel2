@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
@@ -45,12 +46,12 @@ class IndexedArrayElement(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize application_array_ref
         if self.application_array_ref is not None:
-            serialized = ARObject._serialize_item(self.application_array_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.application_array_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("APPLICATION-ARRAY-REF")
@@ -64,7 +65,7 @@ class IndexedArrayElement(ARObject):
 
         # Serialize implementation_ref
         if self.implementation_ref is not None:
-            serialized = ARObject._serialize_item(self.implementation_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.implementation_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IMPLEMENTATION-REF")
@@ -78,7 +79,7 @@ class IndexedArrayElement(ARObject):
 
         # Serialize index
         if self.index is not None:
-            serialized = ARObject._serialize_item(self.index, "Integer")
+            serialized = SerializationHelper.serialize_item(self.index, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INDEX")
@@ -107,19 +108,19 @@ class IndexedArrayElement(ARObject):
         obj.__init__()
 
         # Parse application_array_ref
-        child = ARObject._find_child_element(element, "APPLICATION-ARRAY-REF")
+        child = SerializationHelper.find_child_element(element, "APPLICATION-ARRAY-REF")
         if child is not None:
             application_array_ref_value = ARRef.deserialize(child)
             obj.application_array_ref = application_array_ref_value
 
         # Parse implementation_ref
-        child = ARObject._find_child_element(element, "IMPLEMENTATION-REF")
+        child = SerializationHelper.find_child_element(element, "IMPLEMENTATION-REF")
         if child is not None:
             implementation_ref_value = ARRef.deserialize(child)
             obj.implementation_ref = implementation_ref_value
 
         # Parse index
-        child = ARObject._find_child_element(element, "INDEX")
+        child = SerializationHelper.find_child_element(element, "INDEX")
         if child is not None:
             index_value = child.text
             obj.index = index_value

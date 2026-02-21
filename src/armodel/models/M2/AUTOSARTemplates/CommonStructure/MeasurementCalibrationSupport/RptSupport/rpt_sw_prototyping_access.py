@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.RptSupport import (
     RptAccessEnum,
 )
@@ -45,12 +46,12 @@ class RptSwPrototypingAccess(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize rpt_hook_access
         if self.rpt_hook_access is not None:
-            serialized = ARObject._serialize_item(self.rpt_hook_access, "RptAccessEnum")
+            serialized = SerializationHelper.serialize_item(self.rpt_hook_access, "RptAccessEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RPT-HOOK-ACCESS")
@@ -64,7 +65,7 @@ class RptSwPrototypingAccess(ARObject):
 
         # Serialize rpt_read_access
         if self.rpt_read_access is not None:
-            serialized = ARObject._serialize_item(self.rpt_read_access, "RptAccessEnum")
+            serialized = SerializationHelper.serialize_item(self.rpt_read_access, "RptAccessEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RPT-READ-ACCESS")
@@ -78,7 +79,7 @@ class RptSwPrototypingAccess(ARObject):
 
         # Serialize rpt_write_access
         if self.rpt_write_access is not None:
-            serialized = ARObject._serialize_item(self.rpt_write_access, "RptAccessEnum")
+            serialized = SerializationHelper.serialize_item(self.rpt_write_access, "RptAccessEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RPT-WRITE-ACCESS")
@@ -107,19 +108,19 @@ class RptSwPrototypingAccess(ARObject):
         obj.__init__()
 
         # Parse rpt_hook_access
-        child = ARObject._find_child_element(element, "RPT-HOOK-ACCESS")
+        child = SerializationHelper.find_child_element(element, "RPT-HOOK-ACCESS")
         if child is not None:
             rpt_hook_access_value = RptAccessEnum.deserialize(child)
             obj.rpt_hook_access = rpt_hook_access_value
 
         # Parse rpt_read_access
-        child = ARObject._find_child_element(element, "RPT-READ-ACCESS")
+        child = SerializationHelper.find_child_element(element, "RPT-READ-ACCESS")
         if child is not None:
             rpt_read_access_value = RptAccessEnum.deserialize(child)
             obj.rpt_read_access = rpt_read_access_value
 
         # Parse rpt_write_access
-        child = ARObject._find_child_element(element, "RPT-WRITE-ACCESS")
+        child = SerializationHelper.find_child_element(element, "RPT-WRITE-ACCESS")
         if child is not None:
             rpt_write_access_value = RptAccessEnum.deserialize(child)
             obj.rpt_write_access = rpt_write_access_value

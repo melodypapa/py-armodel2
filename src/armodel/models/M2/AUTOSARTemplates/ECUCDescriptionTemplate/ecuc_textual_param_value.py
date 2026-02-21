@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_parameter_v
     EcucParameterValue,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     VerbatimString,
 )
@@ -45,7 +46,7 @@ class EcucTextualParamValue(EcucParameterValue):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class EcucTextualParamValue(EcucParameterValue):
 
         # Serialize value
         if self.value is not None:
-            serialized = ARObject._serialize_item(self.value, "VerbatimString")
+            serialized = SerializationHelper.serialize_item(self.value, "VerbatimString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VALUE")
@@ -92,9 +93,9 @@ class EcucTextualParamValue(EcucParameterValue):
         obj = super(EcucTextualParamValue, cls).deserialize(element)
 
         # Parse value
-        child = ARObject._find_child_element(element, "VALUE")
+        child = SerializationHelper.find_child_element(element, "VALUE")
         if child is not None:
-            value_value = ARObject._deserialize_by_tag(child, "VerbatimString")
+            value_value = SerializationHelper.deserialize_by_tag(child, "VerbatimString")
             obj.value = value_value
 
         return obj

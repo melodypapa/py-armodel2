@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.RPTScenario.mode_access_point_ident import (
     ModeAccessPointIdent,
@@ -47,12 +48,12 @@ class ModeAccessPoint(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize ident
         if self.ident is not None:
-            serialized = ARObject._serialize_item(self.ident, "ModeAccessPointIdent")
+            serialized = SerializationHelper.serialize_item(self.ident, "ModeAccessPointIdent")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IDENT")
@@ -66,7 +67,7 @@ class ModeAccessPoint(ARObject):
 
         # Serialize mode_group_instance_ref
         if self.mode_group_instance_ref is not None:
-            serialized = ARObject._serialize_item(self.mode_group_instance_ref, "ModeDeclarationGroup")
+            serialized = SerializationHelper.serialize_item(self.mode_group_instance_ref, "ModeDeclarationGroup")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MODE-GROUP-INSTANCE-REF-REF")
@@ -95,13 +96,13 @@ class ModeAccessPoint(ARObject):
         obj.__init__()
 
         # Parse ident
-        child = ARObject._find_child_element(element, "IDENT")
+        child = SerializationHelper.find_child_element(element, "IDENT")
         if child is not None:
-            ident_value = ARObject._deserialize_by_tag(child, "ModeAccessPointIdent")
+            ident_value = SerializationHelper.deserialize_by_tag(child, "ModeAccessPointIdent")
             obj.ident = ident_value
 
         # Parse mode_group_instance_ref
-        child = ARObject._find_child_element(element, "MODE-GROUP-INSTANCE-REF-REF")
+        child = SerializationHelper.find_child_element(element, "MODE-GROUP-INSTANCE-REF-REF")
         if child is not None:
             mode_group_instance_ref_value = ARRef.deserialize(child)
             obj.mode_group_instance_ref = mode_group_instance_ref_value

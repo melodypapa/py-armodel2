@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from abc import ABC, abstractmethod
 
@@ -42,7 +43,7 @@ class EOCExecutableEntityRefAbstract(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -63,7 +64,7 @@ class EOCExecutableEntityRefAbstract(Identifiable, ABC):
         if self.direct_successor_refs:
             wrapper = ET.Element("DIRECT-SUCCESSOR-REFS")
             for item in self.direct_successor_refs:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     child_elem = ET.Element("DIRECT-SUCCESSOR-REF")
                     if hasattr(serialized, 'attrib'):
@@ -93,17 +94,17 @@ class EOCExecutableEntityRefAbstract(Identifiable, ABC):
 
         # Parse direct_successor_refs (list from container "DIRECT-SUCCESSOR-REFS")
         obj.direct_successor_refs = []
-        container = ARObject._find_child_element(element, "DIRECT-SUCCESSOR-REFS")
+        container = SerializationHelper.find_child_element(element, "DIRECT-SUCCESSOR-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.direct_successor_refs.append(child_value)
 

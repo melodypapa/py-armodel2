@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.r_port
     RPortComSpec,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
     VariableDataPrototype,
@@ -52,7 +53,7 @@ class NvRequireComSpec(RPortComSpec):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -71,7 +72,7 @@ class NvRequireComSpec(RPortComSpec):
 
         # Serialize init_value
         if self.init_value is not None:
-            serialized = ARObject._serialize_item(self.init_value, "ValueSpecification")
+            serialized = SerializationHelper.serialize_item(self.init_value, "ValueSpecification")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INIT-VALUE")
@@ -85,7 +86,7 @@ class NvRequireComSpec(RPortComSpec):
 
         # Serialize variable_ref
         if self.variable_ref is not None:
-            serialized = ARObject._serialize_item(self.variable_ref, "VariableDataPrototype")
+            serialized = SerializationHelper.serialize_item(self.variable_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VARIABLE-REF")
@@ -113,13 +114,13 @@ class NvRequireComSpec(RPortComSpec):
         obj = super(NvRequireComSpec, cls).deserialize(element)
 
         # Parse init_value
-        child = ARObject._find_child_element(element, "INIT-VALUE")
+        child = SerializationHelper.find_child_element(element, "INIT-VALUE")
         if child is not None:
-            init_value_value = ARObject._deserialize_by_tag(child, "ValueSpecification")
+            init_value_value = SerializationHelper.deserialize_by_tag(child, "ValueSpecification")
             obj.init_value = init_value_value
 
         # Parse variable_ref
-        child = ARObject._find_child_element(element, "VARIABLE-REF")
+        child = SerializationHelper.find_child_element(element, "VARIABLE-REF")
         if child is not None:
             variable_ref_value = ARRef.deserialize(child)
             obj.variable_ref = variable_ref_value

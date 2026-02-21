@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.InstanceR
     TriggerInAtomicSwcInstanceRef,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.abstract_required_port_prototype import (
     AbstractRequiredPortPrototype,
@@ -49,7 +50,7 @@ class RTriggerInAtomicSwcInstanceRef(TriggerInAtomicSwcInstanceRef):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -68,7 +69,7 @@ class RTriggerInAtomicSwcInstanceRef(TriggerInAtomicSwcInstanceRef):
 
         # Serialize context_r_port_prototype_ref
         if self.context_r_port_prototype_ref is not None:
-            serialized = ARObject._serialize_item(self.context_r_port_prototype_ref, "AbstractRequiredPortPrototype")
+            serialized = SerializationHelper.serialize_item(self.context_r_port_prototype_ref, "AbstractRequiredPortPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONTEXT-R-PORT-PROTOTYPE-REF")
@@ -82,7 +83,7 @@ class RTriggerInAtomicSwcInstanceRef(TriggerInAtomicSwcInstanceRef):
 
         # Serialize target_trigger_ref
         if self.target_trigger_ref is not None:
-            serialized = ARObject._serialize_item(self.target_trigger_ref, "Trigger")
+            serialized = SerializationHelper.serialize_item(self.target_trigger_ref, "Trigger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TARGET-TRIGGER-REF")
@@ -110,13 +111,13 @@ class RTriggerInAtomicSwcInstanceRef(TriggerInAtomicSwcInstanceRef):
         obj = super(RTriggerInAtomicSwcInstanceRef, cls).deserialize(element)
 
         # Parse context_r_port_prototype_ref
-        child = ARObject._find_child_element(element, "CONTEXT-R-PORT-PROTOTYPE-REF")
+        child = SerializationHelper.find_child_element(element, "CONTEXT-R-PORT-PROTOTYPE-REF")
         if child is not None:
             context_r_port_prototype_ref_value = ARRef.deserialize(child)
             obj.context_r_port_prototype_ref = context_r_port_prototype_ref_value
 
         # Parse target_trigger_ref
-        child = ARObject._find_child_element(element, "TARGET-TRIGGER-REF")
+        child = SerializationHelper.find_child_element(element, "TARGET-TRIGGER-REF")
         if child is not None:
             target_trigger_ref_value = ARRef.deserialize(child)
             obj.target_trigger_ref = target_trigger_ref_value

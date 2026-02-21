@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_
     DiagnosticCapabilityElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
     DiagnosticMonitorUpdateKindEnum,
@@ -60,7 +61,7 @@ class ObdMonitorServiceNeeds(DiagnosticCapabilityElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -79,7 +80,7 @@ class ObdMonitorServiceNeeds(DiagnosticCapabilityElement):
 
         # Serialize application_data_ref
         if self.application_data_ref is not None:
-            serialized = ARObject._serialize_item(self.application_data_ref, "ApplicationDataType")
+            serialized = SerializationHelper.serialize_item(self.application_data_ref, "ApplicationDataType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("APPLICATION-DATA-REF")
@@ -93,7 +94,7 @@ class ObdMonitorServiceNeeds(DiagnosticCapabilityElement):
 
         # Serialize event_needs_ref
         if self.event_needs_ref is not None:
-            serialized = ARObject._serialize_item(self.event_needs_ref, "DiagnosticEventNeeds")
+            serialized = SerializationHelper.serialize_item(self.event_needs_ref, "DiagnosticEventNeeds")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("EVENT-NEEDS-REF")
@@ -107,7 +108,7 @@ class ObdMonitorServiceNeeds(DiagnosticCapabilityElement):
 
         # Serialize unit_and_scaling_id
         if self.unit_and_scaling_id is not None:
-            serialized = ARObject._serialize_item(self.unit_and_scaling_id, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.unit_and_scaling_id, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("UNIT-AND-SCALING-ID")
@@ -121,7 +122,7 @@ class ObdMonitorServiceNeeds(DiagnosticCapabilityElement):
 
         # Serialize update_kind
         if self.update_kind is not None:
-            serialized = ARObject._serialize_item(self.update_kind, "DiagnosticMonitorUpdateKindEnum")
+            serialized = SerializationHelper.serialize_item(self.update_kind, "DiagnosticMonitorUpdateKindEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("UPDATE-KIND")
@@ -149,25 +150,25 @@ class ObdMonitorServiceNeeds(DiagnosticCapabilityElement):
         obj = super(ObdMonitorServiceNeeds, cls).deserialize(element)
 
         # Parse application_data_ref
-        child = ARObject._find_child_element(element, "APPLICATION-DATA-REF")
+        child = SerializationHelper.find_child_element(element, "APPLICATION-DATA-REF")
         if child is not None:
             application_data_ref_value = ARRef.deserialize(child)
             obj.application_data_ref = application_data_ref_value
 
         # Parse event_needs_ref
-        child = ARObject._find_child_element(element, "EVENT-NEEDS-REF")
+        child = SerializationHelper.find_child_element(element, "EVENT-NEEDS-REF")
         if child is not None:
             event_needs_ref_value = ARRef.deserialize(child)
             obj.event_needs_ref = event_needs_ref_value
 
         # Parse unit_and_scaling_id
-        child = ARObject._find_child_element(element, "UNIT-AND-SCALING-ID")
+        child = SerializationHelper.find_child_element(element, "UNIT-AND-SCALING-ID")
         if child is not None:
             unit_and_scaling_id_value = child.text
             obj.unit_and_scaling_id = unit_and_scaling_id_value
 
         # Parse update_kind
-        child = ARObject._find_child_element(element, "UPDATE-KIND")
+        child = SerializationHelper.find_child_element(element, "UPDATE-KIND")
         if child is not None:
             update_kind_value = DiagnosticMonitorUpdateKindEnum.deserialize(child)
             obj.update_kind = update_kind_value

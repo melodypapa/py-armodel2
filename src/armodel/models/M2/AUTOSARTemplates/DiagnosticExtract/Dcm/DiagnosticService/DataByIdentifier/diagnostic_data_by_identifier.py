@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_abstract_data_identifier import (
     DiagnosticAbstractDataIdentifier,
@@ -45,7 +46,7 @@ class DiagnosticDataByIdentifier(DiagnosticServiceInstance, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class DiagnosticDataByIdentifier(DiagnosticServiceInstance, ABC):
 
         # Serialize data_identifier_ref
         if self.data_identifier_ref is not None:
-            serialized = ARObject._serialize_item(self.data_identifier_ref, "DiagnosticAbstractDataIdentifier")
+            serialized = SerializationHelper.serialize_item(self.data_identifier_ref, "DiagnosticAbstractDataIdentifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-IDENTIFIER-REF")
@@ -92,7 +93,7 @@ class DiagnosticDataByIdentifier(DiagnosticServiceInstance, ABC):
         obj = super(DiagnosticDataByIdentifier, cls).deserialize(element)
 
         # Parse data_identifier_ref
-        child = ARObject._find_child_element(element, "DATA-IDENTIFIER-REF")
+        child = SerializationHelper.find_child_element(element, "DATA-IDENTIFIER-REF")
         if child is not None:
             data_identifier_ref_value = ARRef.deserialize(child)
             obj.data_identifier_ref = data_identifier_ref_value

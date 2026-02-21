@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Dds import (
     DdsHistoryKindEnum,
 )
@@ -45,12 +46,12 @@ class DdsHistory(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize history_kind
         if self.history_kind is not None:
-            serialized = ARObject._serialize_item(self.history_kind, "DdsHistoryKindEnum")
+            serialized = SerializationHelper.serialize_item(self.history_kind, "DdsHistoryKindEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HISTORY-KIND")
@@ -64,7 +65,7 @@ class DdsHistory(ARObject):
 
         # Serialize history_order
         if self.history_order is not None:
-            serialized = ARObject._serialize_item(self.history_order, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.history_order, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HISTORY-ORDER")
@@ -93,13 +94,13 @@ class DdsHistory(ARObject):
         obj.__init__()
 
         # Parse history_kind
-        child = ARObject._find_child_element(element, "HISTORY-KIND")
+        child = SerializationHelper.find_child_element(element, "HISTORY-KIND")
         if child is not None:
             history_kind_value = DdsHistoryKindEnum.deserialize(child)
             obj.history_kind = history_kind_value
 
         # Parse history_order
-        child = ARObject._find_child_element(element, "HISTORY-ORDER")
+        child = SerializationHelper.find_child_element(element, "HISTORY-ORDER")
         if child is not None:
             history_order_value = child.text
             obj.history_order = history_order_value

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.Exec
     ExecutionTime,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -48,7 +49,7 @@ class RoughEstimateOfExecutionTime(ExecutionTime):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -67,7 +68,7 @@ class RoughEstimateOfExecutionTime(ExecutionTime):
 
         # Serialize additional
         if self.additional is not None:
-            serialized = ARObject._serialize_item(self.additional, "String")
+            serialized = SerializationHelper.serialize_item(self.additional, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ADDITIONAL")
@@ -81,7 +82,7 @@ class RoughEstimateOfExecutionTime(ExecutionTime):
 
         # Serialize estimated_execution_time
         if self.estimated_execution_time is not None:
-            serialized = ARObject._serialize_item(self.estimated_execution_time, "MultidimensionalTime")
+            serialized = SerializationHelper.serialize_item(self.estimated_execution_time, "MultidimensionalTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ESTIMATED-EXECUTION-TIME")
@@ -109,15 +110,15 @@ class RoughEstimateOfExecutionTime(ExecutionTime):
         obj = super(RoughEstimateOfExecutionTime, cls).deserialize(element)
 
         # Parse additional
-        child = ARObject._find_child_element(element, "ADDITIONAL")
+        child = SerializationHelper.find_child_element(element, "ADDITIONAL")
         if child is not None:
             additional_value = child.text
             obj.additional = additional_value
 
         # Parse estimated_execution_time
-        child = ARObject._find_child_element(element, "ESTIMATED-EXECUTION-TIME")
+        child = SerializationHelper.find_child_element(element, "ESTIMATED-EXECUTION-TIME")
         if child is not None:
-            estimated_execution_time_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            estimated_execution_time_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
             obj.estimated_execution_time = estimated_execution_time_value
 
         return obj

@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     UriString,
 )
@@ -44,7 +45,7 @@ class AclRole(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -63,7 +64,7 @@ class AclRole(ARElement):
 
         # Serialize ldap_url
         if self.ldap_url is not None:
-            serialized = ARObject._serialize_item(self.ldap_url, "UriString")
+            serialized = SerializationHelper.serialize_item(self.ldap_url, "UriString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LDAP-URL")
@@ -91,7 +92,7 @@ class AclRole(ARElement):
         obj = super(AclRole, cls).deserialize(element)
 
         # Parse ldap_url
-        child = ARObject._find_child_element(element, "LDAP-URL")
+        child = SerializationHelper.find_child_element(element, "LDAP-URL")
         if child is not None:
             ldap_url_value = child.text
             obj.ldap_url = ldap_url_value

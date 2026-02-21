@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -66,7 +67,7 @@ class EcucModuleConfigurationValues(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -87,7 +88,7 @@ class EcucModuleConfigurationValues(ARElement):
         if self.containers:
             wrapper = ET.Element("CONTAINERS")
             for item in self.containers:
-                serialized = ARObject._serialize_item(item, "EcucContainerValue")
+                serialized = SerializationHelper.serialize_item(item, "EcucContainerValue")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -95,7 +96,7 @@ class EcucModuleConfigurationValues(ARElement):
 
         # Serialize definition_ref
         if self.definition_ref is not None:
-            serialized = ARObject._serialize_item(self.definition_ref, "EcucModuleDef")
+            serialized = SerializationHelper.serialize_item(self.definition_ref, "EcucModuleDef")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DEFINITION-REF")
@@ -109,7 +110,7 @@ class EcucModuleConfigurationValues(ARElement):
 
         # Serialize ecuc_def_edition
         if self.ecuc_def_edition is not None:
-            serialized = ARObject._serialize_item(self.ecuc_def_edition, "RevisionLabelString")
+            serialized = SerializationHelper.serialize_item(self.ecuc_def_edition, "RevisionLabelString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ECUC-DEF-EDITION")
@@ -123,7 +124,7 @@ class EcucModuleConfigurationValues(ARElement):
 
         # Serialize implementation
         if self.implementation is not None:
-            serialized = ARObject._serialize_item(self.implementation, "Any")
+            serialized = SerializationHelper.serialize_item(self.implementation, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IMPLEMENTATION")
@@ -137,7 +138,7 @@ class EcucModuleConfigurationValues(ARElement):
 
         # Serialize module_ref
         if self.module_ref is not None:
-            serialized = ARObject._serialize_item(self.module_ref, "BswImplementation")
+            serialized = SerializationHelper.serialize_item(self.module_ref, "BswImplementation")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MODULE-REF")
@@ -151,7 +152,7 @@ class EcucModuleConfigurationValues(ARElement):
 
         # Serialize post_build_variant
         if self.post_build_variant is not None:
-            serialized = ARObject._serialize_item(self.post_build_variant, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.post_build_variant, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("POST-BUILD-VARIANT")
@@ -180,40 +181,40 @@ class EcucModuleConfigurationValues(ARElement):
 
         # Parse containers (list from container "CONTAINERS")
         obj.containers = []
-        container = ARObject._find_child_element(element, "CONTAINERS")
+        container = SerializationHelper.find_child_element(element, "CONTAINERS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.containers.append(child_value)
 
         # Parse definition_ref
-        child = ARObject._find_child_element(element, "DEFINITION-REF")
+        child = SerializationHelper.find_child_element(element, "DEFINITION-REF")
         if child is not None:
             definition_ref_value = ARRef.deserialize(child)
             obj.definition_ref = definition_ref_value
 
         # Parse ecuc_def_edition
-        child = ARObject._find_child_element(element, "ECUC-DEF-EDITION")
+        child = SerializationHelper.find_child_element(element, "ECUC-DEF-EDITION")
         if child is not None:
             ecuc_def_edition_value = child.text
             obj.ecuc_def_edition = ecuc_def_edition_value
 
         # Parse implementation
-        child = ARObject._find_child_element(element, "IMPLEMENTATION")
+        child = SerializationHelper.find_child_element(element, "IMPLEMENTATION")
         if child is not None:
             implementation_value = child.text
             obj.implementation = implementation_value
 
         # Parse module_ref
-        child = ARObject._find_child_element(element, "MODULE-REF")
+        child = SerializationHelper.find_child_element(element, "MODULE-REF")
         if child is not None:
             module_ref_value = ARRef.deserialize(child)
             obj.module_ref = module_ref_value
 
         # Parse post_build_variant
-        child = ARObject._find_child_element(element, "POST-BUILD-VARIANT")
+        child = SerializationHelper.find_child_element(element, "POST-BUILD-VARIANT")
         if child is not None:
             post_build_variant_value = child.text
             obj.post_build_variant = post_build_variant_value

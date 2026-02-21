@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement.busspec
     BusspecificNmEcu,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -45,7 +46,7 @@ class FlexrayNmEcu(BusspecificNmEcu):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class FlexrayNmEcu(BusspecificNmEcu):
 
         # Serialize nm_hw_vote
         if self.nm_hw_vote is not None:
-            serialized = ARObject._serialize_item(self.nm_hw_vote, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.nm_hw_vote, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM-HW-VOTE")
@@ -78,7 +79,7 @@ class FlexrayNmEcu(BusspecificNmEcu):
 
         # Serialize nm_main
         if self.nm_main is not None:
-            serialized = ARObject._serialize_item(self.nm_main, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.nm_main, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM-MAIN")
@@ -106,13 +107,13 @@ class FlexrayNmEcu(BusspecificNmEcu):
         obj = super(FlexrayNmEcu, cls).deserialize(element)
 
         # Parse nm_hw_vote
-        child = ARObject._find_child_element(element, "NM-HW-VOTE")
+        child = SerializationHelper.find_child_element(element, "NM-HW-VOTE")
         if child is not None:
             nm_hw_vote_value = child.text
             obj.nm_hw_vote = nm_hw_vote_value
 
         # Parse nm_main
-        child = ARObject._find_child_element(element, "NM-MAIN")
+        child = SerializationHelper.find_child_element(element, "NM-MAIN")
         if child is not None:
             nm_main_value = child.text
             obj.nm_main = nm_main_value

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE17
     IEEE1722TpConnection,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     TimeValue,
@@ -51,7 +52,7 @@ class IEEE1722TpAcfConnection(IEEE1722TpConnection):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -72,7 +73,7 @@ class IEEE1722TpAcfConnection(IEEE1722TpConnection):
         if self.acf_transporteds:
             wrapper = ET.Element("ACF-TRANSPORTEDS")
             for item in self.acf_transporteds:
-                serialized = ARObject._serialize_item(item, "IEEE1722TpAcfBus")
+                serialized = SerializationHelper.serialize_item(item, "IEEE1722TpAcfBus")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -80,7 +81,7 @@ class IEEE1722TpAcfConnection(IEEE1722TpConnection):
 
         # Serialize collection
         if self.collection is not None:
-            serialized = ARObject._serialize_item(self.collection, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.collection, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COLLECTION")
@@ -94,7 +95,7 @@ class IEEE1722TpAcfConnection(IEEE1722TpConnection):
 
         # Serialize mixed_bus_type
         if self.mixed_bus_type is not None:
-            serialized = ARObject._serialize_item(self.mixed_bus_type, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.mixed_bus_type, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MIXED-BUS-TYPE")
@@ -123,22 +124,22 @@ class IEEE1722TpAcfConnection(IEEE1722TpConnection):
 
         # Parse acf_transporteds (list from container "ACF-TRANSPORTEDS")
         obj.acf_transporteds = []
-        container = ARObject._find_child_element(element, "ACF-TRANSPORTEDS")
+        container = SerializationHelper.find_child_element(element, "ACF-TRANSPORTEDS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.acf_transporteds.append(child_value)
 
         # Parse collection
-        child = ARObject._find_child_element(element, "COLLECTION")
+        child = SerializationHelper.find_child_element(element, "COLLECTION")
         if child is not None:
             collection_value = child.text
             obj.collection = collection_value
 
         # Parse mixed_bus_type
-        child = ARObject._find_child_element(element, "MIXED-BUS-TYPE")
+        child = SerializationHelper.find_child_element(element, "MIXED-BUS-TYPE")
         if child is not None:
             mixed_bus_type_value = child.text
             obj.mixed_bus_type = mixed_bus_type_value

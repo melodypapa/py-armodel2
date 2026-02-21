@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_entry_relationship import (
     BswEntryRelationship,
 )
@@ -44,7 +45,7 @@ class BswEntryRelationshipSet(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class BswEntryRelationshipSet(ARElement):
         if self.bsw_entry_relationships:
             wrapper = ET.Element("BSW-ENTRY-RELATIONSHIPS")
             for item in self.bsw_entry_relationships:
-                serialized = ARObject._serialize_item(item, "BswEntryRelationship")
+                serialized = SerializationHelper.serialize_item(item, "BswEntryRelationship")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -88,11 +89,11 @@ class BswEntryRelationshipSet(ARElement):
 
         # Parse bsw_entry_relationships (list from container "BSW-ENTRY-RELATIONSHIPS")
         obj.bsw_entry_relationships = []
-        container = ARObject._find_child_element(element, "BSW-ENTRY-RELATIONSHIPS")
+        container = SerializationHelper.find_child_element(element, "BSW-ENTRY-RELATIONSHIPS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.bsw_entry_relationships.append(child_value)
 

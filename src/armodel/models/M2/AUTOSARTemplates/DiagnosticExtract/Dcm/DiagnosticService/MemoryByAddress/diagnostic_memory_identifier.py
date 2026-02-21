@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -54,7 +55,7 @@ class DiagnosticMemoryIdentifier(DiagnosticCommonElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -73,7 +74,7 @@ class DiagnosticMemoryIdentifier(DiagnosticCommonElement):
 
         # Serialize access_ref
         if self.access_ref is not None:
-            serialized = ARObject._serialize_item(self.access_ref, "DiagnosticAccessPermission")
+            serialized = SerializationHelper.serialize_item(self.access_ref, "DiagnosticAccessPermission")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ACCESS-REF")
@@ -87,7 +88,7 @@ class DiagnosticMemoryIdentifier(DiagnosticCommonElement):
 
         # Serialize id
         if self.id is not None:
-            serialized = ARObject._serialize_item(self.id, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.id, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ID")
@@ -101,7 +102,7 @@ class DiagnosticMemoryIdentifier(DiagnosticCommonElement):
 
         # Serialize memory_high
         if self.memory_high is not None:
-            serialized = ARObject._serialize_item(self.memory_high, "String")
+            serialized = SerializationHelper.serialize_item(self.memory_high, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MEMORY-HIGH")
@@ -115,7 +116,7 @@ class DiagnosticMemoryIdentifier(DiagnosticCommonElement):
 
         # Serialize memory_low
         if self.memory_low is not None:
-            serialized = ARObject._serialize_item(self.memory_low, "String")
+            serialized = SerializationHelper.serialize_item(self.memory_low, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MEMORY-LOW")
@@ -143,25 +144,25 @@ class DiagnosticMemoryIdentifier(DiagnosticCommonElement):
         obj = super(DiagnosticMemoryIdentifier, cls).deserialize(element)
 
         # Parse access_ref
-        child = ARObject._find_child_element(element, "ACCESS-REF")
+        child = SerializationHelper.find_child_element(element, "ACCESS-REF")
         if child is not None:
             access_ref_value = ARRef.deserialize(child)
             obj.access_ref = access_ref_value
 
         # Parse id
-        child = ARObject._find_child_element(element, "ID")
+        child = SerializationHelper.find_child_element(element, "ID")
         if child is not None:
             id_value = child.text
             obj.id = id_value
 
         # Parse memory_high
-        child = ARObject._find_child_element(element, "MEMORY-HIGH")
+        child = SerializationHelper.find_child_element(element, "MEMORY-HIGH")
         if child is not None:
             memory_high_value = child.text
             obj.memory_high = memory_high_value
 
         # Parse memory_low
-        child = ARObject._find_child_element(element, "MEMORY-LOW")
+        child = SerializationHelper.find_child_element(element, "MEMORY-LOW")
         if child is not None:
             memory_low_value = child.text
             obj.memory_low = memory_low_value

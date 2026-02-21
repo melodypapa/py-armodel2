@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -44,7 +45,7 @@ class E2EProfileCompatibilityProps(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -63,7 +64,7 @@ class E2EProfileCompatibilityProps(ARElement):
 
         # Serialize transit_to_invalid
         if self.transit_to_invalid is not None:
-            serialized = ARObject._serialize_item(self.transit_to_invalid, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.transit_to_invalid, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TRANSIT-TO-INVALID")
@@ -91,7 +92,7 @@ class E2EProfileCompatibilityProps(ARElement):
         obj = super(E2EProfileCompatibilityProps, cls).deserialize(element)
 
         # Parse transit_to_invalid
-        child = ARObject._find_child_element(element, "TRANSIT-TO-INVALID")
+        child = SerializationHelper.find_child_element(element, "TRANSIT-TO-INVALID")
         if child is not None:
             transit_to_invalid_value = child.text
             obj.transit_to_invalid = transit_to_invalid_value

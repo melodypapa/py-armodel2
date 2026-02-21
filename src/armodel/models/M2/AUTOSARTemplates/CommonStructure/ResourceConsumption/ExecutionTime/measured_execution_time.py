@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ResourceConsumption.Exec
     ExecutionTime,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
     MultidimensionalTime,
 )
@@ -47,7 +48,7 @@ class MeasuredExecutionTime(ExecutionTime):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -66,7 +67,7 @@ class MeasuredExecutionTime(ExecutionTime):
 
         # Serialize maximum_execution_time
         if self.maximum_execution_time is not None:
-            serialized = ARObject._serialize_item(self.maximum_execution_time, "MultidimensionalTime")
+            serialized = SerializationHelper.serialize_item(self.maximum_execution_time, "MultidimensionalTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAXIMUM-EXECUTION-TIME")
@@ -80,7 +81,7 @@ class MeasuredExecutionTime(ExecutionTime):
 
         # Serialize minimum_execution_time
         if self.minimum_execution_time is not None:
-            serialized = ARObject._serialize_item(self.minimum_execution_time, "MultidimensionalTime")
+            serialized = SerializationHelper.serialize_item(self.minimum_execution_time, "MultidimensionalTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MINIMUM-EXECUTION-TIME")
@@ -94,7 +95,7 @@ class MeasuredExecutionTime(ExecutionTime):
 
         # Serialize nominal_execution_time
         if self.nominal_execution_time is not None:
-            serialized = ARObject._serialize_item(self.nominal_execution_time, "MultidimensionalTime")
+            serialized = SerializationHelper.serialize_item(self.nominal_execution_time, "MultidimensionalTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NOMINAL-EXECUTION-TIME")
@@ -122,21 +123,21 @@ class MeasuredExecutionTime(ExecutionTime):
         obj = super(MeasuredExecutionTime, cls).deserialize(element)
 
         # Parse maximum_execution_time
-        child = ARObject._find_child_element(element, "MAXIMUM-EXECUTION-TIME")
+        child = SerializationHelper.find_child_element(element, "MAXIMUM-EXECUTION-TIME")
         if child is not None:
-            maximum_execution_time_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            maximum_execution_time_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
             obj.maximum_execution_time = maximum_execution_time_value
 
         # Parse minimum_execution_time
-        child = ARObject._find_child_element(element, "MINIMUM-EXECUTION-TIME")
+        child = SerializationHelper.find_child_element(element, "MINIMUM-EXECUTION-TIME")
         if child is not None:
-            minimum_execution_time_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            minimum_execution_time_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
             obj.minimum_execution_time = minimum_execution_time_value
 
         # Parse nominal_execution_time
-        child = ARObject._find_child_element(element, "NOMINAL-EXECUTION-TIME")
+        child = SerializationHelper.find_child_element(element, "NOMINAL-EXECUTION-TIME")
         if child is not None:
-            nominal_execution_time_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            nominal_execution_time_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
             obj.nominal_execution_time = nominal_execution_time_value
 
         return obj

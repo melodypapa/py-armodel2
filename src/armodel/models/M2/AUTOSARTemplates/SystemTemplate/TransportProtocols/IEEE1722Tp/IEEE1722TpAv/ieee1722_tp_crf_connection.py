@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE17
     IEEE1722TpAvConnection,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE1722Tp.IEEE1722TpAv import (
     IEEE1722TpCrfPullEnum,
     IEEE1722TpCrfTypeEnum,
@@ -56,7 +57,7 @@ class IEEE1722TpCrfConnection(IEEE1722TpAvConnection):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -75,7 +76,7 @@ class IEEE1722TpCrfConnection(IEEE1722TpAvConnection):
 
         # Serialize base_frequency
         if self.base_frequency is not None:
-            serialized = ARObject._serialize_item(self.base_frequency, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.base_frequency, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BASE-FREQUENCY")
@@ -89,7 +90,7 @@ class IEEE1722TpCrfConnection(IEEE1722TpAvConnection):
 
         # Serialize crf_pull_enum
         if self.crf_pull_enum is not None:
-            serialized = ARObject._serialize_item(self.crf_pull_enum, "IEEE1722TpCrfPullEnum")
+            serialized = SerializationHelper.serialize_item(self.crf_pull_enum, "IEEE1722TpCrfPullEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CRF-PULL-ENUM")
@@ -103,7 +104,7 @@ class IEEE1722TpCrfConnection(IEEE1722TpAvConnection):
 
         # Serialize crf_type_enum
         if self.crf_type_enum is not None:
-            serialized = ARObject._serialize_item(self.crf_type_enum, "IEEE1722TpCrfTypeEnum")
+            serialized = SerializationHelper.serialize_item(self.crf_type_enum, "IEEE1722TpCrfTypeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CRF-TYPE-ENUM")
@@ -117,7 +118,7 @@ class IEEE1722TpCrfConnection(IEEE1722TpAvConnection):
 
         # Serialize frame_sync
         if self.frame_sync is not None:
-            serialized = ARObject._serialize_item(self.frame_sync, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.frame_sync, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FRAME-SYNC")
@@ -131,7 +132,7 @@ class IEEE1722TpCrfConnection(IEEE1722TpAvConnection):
 
         # Serialize timestamp
         if self.timestamp is not None:
-            serialized = ARObject._serialize_item(self.timestamp, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.timestamp, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIMESTAMP")
@@ -159,31 +160,31 @@ class IEEE1722TpCrfConnection(IEEE1722TpAvConnection):
         obj = super(IEEE1722TpCrfConnection, cls).deserialize(element)
 
         # Parse base_frequency
-        child = ARObject._find_child_element(element, "BASE-FREQUENCY")
+        child = SerializationHelper.find_child_element(element, "BASE-FREQUENCY")
         if child is not None:
             base_frequency_value = child.text
             obj.base_frequency = base_frequency_value
 
         # Parse crf_pull_enum
-        child = ARObject._find_child_element(element, "CRF-PULL-ENUM")
+        child = SerializationHelper.find_child_element(element, "CRF-PULL-ENUM")
         if child is not None:
             crf_pull_enum_value = IEEE1722TpCrfPullEnum.deserialize(child)
             obj.crf_pull_enum = crf_pull_enum_value
 
         # Parse crf_type_enum
-        child = ARObject._find_child_element(element, "CRF-TYPE-ENUM")
+        child = SerializationHelper.find_child_element(element, "CRF-TYPE-ENUM")
         if child is not None:
             crf_type_enum_value = IEEE1722TpCrfTypeEnum.deserialize(child)
             obj.crf_type_enum = crf_type_enum_value
 
         # Parse frame_sync
-        child = ARObject._find_child_element(element, "FRAME-SYNC")
+        child = SerializationHelper.find_child_element(element, "FRAME-SYNC")
         if child is not None:
             frame_sync_value = child.text
             obj.frame_sync = frame_sync_value
 
         # Parse timestamp
-        child = ARObject._find_child_element(element, "TIMESTAMP")
+        child = SerializationHelper.find_child_element(element, "TIMESTAMP")
         if child is not None:
             timestamp_value = child.text
             obj.timestamp = timestamp_value

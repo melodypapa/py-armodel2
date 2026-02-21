@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Limit,
     PositiveInteger,
@@ -52,12 +53,12 @@ class AbstractValueRestriction(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize max
         if self.max is not None:
-            serialized = ARObject._serialize_item(self.max, "Limit")
+            serialized = SerializationHelper.serialize_item(self.max, "Limit")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX")
@@ -71,7 +72,7 @@ class AbstractValueRestriction(ARObject, ABC):
 
         # Serialize max_length
         if self.max_length is not None:
-            serialized = ARObject._serialize_item(self.max_length, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.max_length, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-LENGTH")
@@ -85,7 +86,7 @@ class AbstractValueRestriction(ARObject, ABC):
 
         # Serialize min
         if self.min is not None:
-            serialized = ARObject._serialize_item(self.min, "Limit")
+            serialized = SerializationHelper.serialize_item(self.min, "Limit")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MIN")
@@ -99,7 +100,7 @@ class AbstractValueRestriction(ARObject, ABC):
 
         # Serialize min_length
         if self.min_length is not None:
-            serialized = ARObject._serialize_item(self.min_length, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.min_length, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MIN-LENGTH")
@@ -113,7 +114,7 @@ class AbstractValueRestriction(ARObject, ABC):
 
         # Serialize pattern
         if self.pattern is not None:
-            serialized = ARObject._serialize_item(self.pattern, "RegularExpression")
+            serialized = SerializationHelper.serialize_item(self.pattern, "RegularExpression")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PATTERN")
@@ -142,31 +143,31 @@ class AbstractValueRestriction(ARObject, ABC):
         obj.__init__()
 
         # Parse max
-        child = ARObject._find_child_element(element, "MAX")
+        child = SerializationHelper.find_child_element(element, "MAX")
         if child is not None:
-            max_value = ARObject._deserialize_by_tag(child, "Limit")
+            max_value = SerializationHelper.deserialize_by_tag(child, "Limit")
             obj.max = max_value
 
         # Parse max_length
-        child = ARObject._find_child_element(element, "MAX-LENGTH")
+        child = SerializationHelper.find_child_element(element, "MAX-LENGTH")
         if child is not None:
             max_length_value = child.text
             obj.max_length = max_length_value
 
         # Parse min
-        child = ARObject._find_child_element(element, "MIN")
+        child = SerializationHelper.find_child_element(element, "MIN")
         if child is not None:
-            min_value = ARObject._deserialize_by_tag(child, "Limit")
+            min_value = SerializationHelper.deserialize_by_tag(child, "Limit")
             obj.min = min_value
 
         # Parse min_length
-        child = ARObject._find_child_element(element, "MIN-LENGTH")
+        child = SerializationHelper.find_child_element(element, "MIN-LENGTH")
         if child is not None:
             min_length_value = child.text
             obj.min_length = min_length_value
 
         # Parse pattern
-        child = ARObject._find_child_element(element, "PATTERN")
+        child = SerializationHelper.find_child_element(element, "PATTERN")
         if child is not None:
             pattern_value = child.text
             obj.pattern = pattern_value

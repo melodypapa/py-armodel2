@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.port_i
     PortInterfaceMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.client_server_application_error_mapping import (
     ClientServerApplicationErrorMapping,
 )
@@ -48,7 +49,7 @@ class ClientServerInterfaceMapping(PortInterfaceMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -69,7 +70,7 @@ class ClientServerInterfaceMapping(PortInterfaceMapping):
         if self.error_mappings:
             wrapper = ET.Element("ERROR-MAPPINGS")
             for item in self.error_mappings:
-                serialized = ARObject._serialize_item(item, "ClientServerApplicationErrorMapping")
+                serialized = SerializationHelper.serialize_item(item, "ClientServerApplicationErrorMapping")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -79,7 +80,7 @@ class ClientServerInterfaceMapping(PortInterfaceMapping):
         if self.operations:
             wrapper = ET.Element("OPERATIONS")
             for item in self.operations:
-                serialized = ARObject._serialize_item(item, "ClientServerOperation")
+                serialized = SerializationHelper.serialize_item(item, "ClientServerOperation")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -102,21 +103,21 @@ class ClientServerInterfaceMapping(PortInterfaceMapping):
 
         # Parse error_mappings (list from container "ERROR-MAPPINGS")
         obj.error_mappings = []
-        container = ARObject._find_child_element(element, "ERROR-MAPPINGS")
+        container = SerializationHelper.find_child_element(element, "ERROR-MAPPINGS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.error_mappings.append(child_value)
 
         # Parse operations (list from container "OPERATIONS")
         obj.operations = []
-        container = ARObject._find_child_element(element, "OPERATIONS")
+        container = SerializationHelper.find_child_element(element, "OPERATIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.operations.append(child_value)
 

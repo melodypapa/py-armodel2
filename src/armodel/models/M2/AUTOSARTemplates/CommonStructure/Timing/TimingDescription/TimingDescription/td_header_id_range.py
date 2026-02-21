@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
 )
@@ -42,12 +43,12 @@ class TDHeaderIdRange(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize max_header_id
         if self.max_header_id is not None:
-            serialized = ARObject._serialize_item(self.max_header_id, "Integer")
+            serialized = SerializationHelper.serialize_item(self.max_header_id, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-HEADER-ID")
@@ -61,7 +62,7 @@ class TDHeaderIdRange(ARObject):
 
         # Serialize min_header_id
         if self.min_header_id is not None:
-            serialized = ARObject._serialize_item(self.min_header_id, "Integer")
+            serialized = SerializationHelper.serialize_item(self.min_header_id, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MIN-HEADER-ID")
@@ -90,13 +91,13 @@ class TDHeaderIdRange(ARObject):
         obj.__init__()
 
         # Parse max_header_id
-        child = ARObject._find_child_element(element, "MAX-HEADER-ID")
+        child = SerializationHelper.find_child_element(element, "MAX-HEADER-ID")
         if child is not None:
             max_header_id_value = child.text
             obj.max_header_id = max_header_id_value
 
         # Parse min_header_id
-        child = ARObject._find_child_element(element, "MIN-HEADER-ID")
+        child = SerializationHelper.find_child_element(element, "MIN-HEADER-ID")
         if child is not None:
             min_header_id_value = child.text
             obj.min_header_id = min_header_id_value

@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Float,
 )
@@ -47,12 +48,12 @@ class ConfidenceInterval(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize lower_bound
         if self.lower_bound is not None:
-            serialized = ARObject._serialize_item(self.lower_bound, "MultidimensionalTime")
+            serialized = SerializationHelper.serialize_item(self.lower_bound, "MultidimensionalTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LOWER-BOUND")
@@ -66,7 +67,7 @@ class ConfidenceInterval(ARObject):
 
         # Serialize propability
         if self.propability is not None:
-            serialized = ARObject._serialize_item(self.propability, "Float")
+            serialized = SerializationHelper.serialize_item(self.propability, "Float")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PROPABILITY")
@@ -80,7 +81,7 @@ class ConfidenceInterval(ARObject):
 
         # Serialize upper_bound
         if self.upper_bound is not None:
-            serialized = ARObject._serialize_item(self.upper_bound, "MultidimensionalTime")
+            serialized = SerializationHelper.serialize_item(self.upper_bound, "MultidimensionalTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("UPPER-BOUND")
@@ -109,21 +110,21 @@ class ConfidenceInterval(ARObject):
         obj.__init__()
 
         # Parse lower_bound
-        child = ARObject._find_child_element(element, "LOWER-BOUND")
+        child = SerializationHelper.find_child_element(element, "LOWER-BOUND")
         if child is not None:
-            lower_bound_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            lower_bound_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
             obj.lower_bound = lower_bound_value
 
         # Parse propability
-        child = ARObject._find_child_element(element, "PROPABILITY")
+        child = SerializationHelper.find_child_element(element, "PROPABILITY")
         if child is not None:
             propability_value = child.text
             obj.propability = propability_value
 
         # Parse upper_bound
-        child = ARObject._find_child_element(element, "UPPER-BOUND")
+        child = SerializationHelper.find_child_element(element, "UPPER-BOUND")
         if child is not None:
-            upper_bound_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            upper_bound_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
             obj.upper_bound = upper_bound_value
 
         return obj

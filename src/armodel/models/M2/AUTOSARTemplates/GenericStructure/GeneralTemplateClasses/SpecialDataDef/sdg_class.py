@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     SdgElementWithGid,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -58,7 +59,7 @@ class SdgClass(SdgElementWithGid):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -79,7 +80,7 @@ class SdgClass(SdgElementWithGid):
         if self.attributes:
             wrapper = ET.Element("ATTRIBUTES")
             for item in self.attributes:
-                serialized = ARObject._serialize_item(item, "SdgAttribute")
+                serialized = SerializationHelper.serialize_item(item, "SdgAttribute")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -87,7 +88,7 @@ class SdgClass(SdgElementWithGid):
 
         # Serialize caption
         if self.caption is not None:
-            serialized = ARObject._serialize_item(self.caption, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.caption, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CAPTION")
@@ -101,7 +102,7 @@ class SdgClass(SdgElementWithGid):
 
         # Serialize extends_meta
         if self.extends_meta is not None:
-            serialized = ARObject._serialize_item(self.extends_meta, "MetaClassName")
+            serialized = SerializationHelper.serialize_item(self.extends_meta, "MetaClassName")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("EXTENDS-META")
@@ -117,7 +118,7 @@ class SdgClass(SdgElementWithGid):
         if self.sdg_constraint_refs:
             wrapper = ET.Element("SDG-CONSTRAINT-REFS")
             for item in self.sdg_constraint_refs:
-                serialized = ARObject._serialize_item(item, "TraceableText")
+                serialized = SerializationHelper.serialize_item(item, "TraceableText")
                 if serialized is not None:
                     child_elem = ET.Element("SDG-CONSTRAINT-REF")
                     if hasattr(serialized, 'attrib'):
@@ -147,39 +148,39 @@ class SdgClass(SdgElementWithGid):
 
         # Parse attributes (list from container "ATTRIBUTES")
         obj.attributes = []
-        container = ARObject._find_child_element(element, "ATTRIBUTES")
+        container = SerializationHelper.find_child_element(element, "ATTRIBUTES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.attributes.append(child_value)
 
         # Parse caption
-        child = ARObject._find_child_element(element, "CAPTION")
+        child = SerializationHelper.find_child_element(element, "CAPTION")
         if child is not None:
             caption_value = child.text
             obj.caption = caption_value
 
         # Parse extends_meta
-        child = ARObject._find_child_element(element, "EXTENDS-META")
+        child = SerializationHelper.find_child_element(element, "EXTENDS-META")
         if child is not None:
             extends_meta_value = child.text
             obj.extends_meta = extends_meta_value
 
         # Parse sdg_constraint_refs (list from container "SDG-CONSTRAINT-REFS")
         obj.sdg_constraint_refs = []
-        container = ARObject._find_child_element(element, "SDG-CONSTRAINT-REFS")
+        container = SerializationHelper.find_child_element(element, "SDG-CONSTRAINT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.sdg_constraint_refs.append(child_value)
 

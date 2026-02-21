@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.atomic_sw
     AtomicSwComponentType,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.EcuResourceTemplate.hw_description_entity import (
     HwDescriptionEntity,
@@ -46,7 +47,7 @@ class SensorActuatorSwComponentType(AtomicSwComponentType):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class SensorActuatorSwComponentType(AtomicSwComponentType):
 
         # Serialize sensor_actuator_ref
         if self.sensor_actuator_ref is not None:
-            serialized = ARObject._serialize_item(self.sensor_actuator_ref, "HwDescriptionEntity")
+            serialized = SerializationHelper.serialize_item(self.sensor_actuator_ref, "HwDescriptionEntity")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SENSOR-ACTUATOR-REF")
@@ -93,7 +94,7 @@ class SensorActuatorSwComponentType(AtomicSwComponentType):
         obj = super(SensorActuatorSwComponentType, cls).deserialize(element)
 
         # Parse sensor_actuator_ref
-        child = ARObject._find_child_element(element, "SENSOR-ACTUATOR-REF")
+        child = SerializationHelper.find_child_element(element, "SENSOR-ACTUATOR-REF")
         if child is not None:
             sensor_actuator_ref_value = ARRef.deserialize(child)
             obj.sensor_actuator_ref = sensor_actuator_ref_value

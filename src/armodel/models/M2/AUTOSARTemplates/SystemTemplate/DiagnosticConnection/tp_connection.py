@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DiagnosticConnection.tp_connection_ident import (
     TpConnectionIdent,
 )
@@ -41,12 +42,12 @@ class TpConnection(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize ident
         if self.ident is not None:
-            serialized = ARObject._serialize_item(self.ident, "TpConnectionIdent")
+            serialized = SerializationHelper.serialize_item(self.ident, "TpConnectionIdent")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IDENT")
@@ -75,9 +76,9 @@ class TpConnection(ARObject, ABC):
         obj.__init__()
 
         # Parse ident
-        child = ARObject._find_child_element(element, "IDENT")
+        child = SerializationHelper.find_child_element(element, "IDENT")
         if child is not None:
-            ident_value = ARObject._deserialize_by_tag(child, "TpConnectionIdent")
+            ident_value = SerializationHelper.deserialize_by_tag(child, "TpConnectionIdent")
             obj.ident = ident_value
 
         return obj

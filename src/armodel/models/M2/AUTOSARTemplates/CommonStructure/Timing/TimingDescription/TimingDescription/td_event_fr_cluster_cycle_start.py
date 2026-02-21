@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
     TDEventCycleStart,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Flexray.FlexrayTopology.flexray_cluster import (
     FlexrayCluster,
@@ -44,7 +45,7 @@ class TDEventFrClusterCycleStart(TDEventCycleStart):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -63,7 +64,7 @@ class TDEventFrClusterCycleStart(TDEventCycleStart):
 
         # Serialize fr_cluster_ref
         if self.fr_cluster_ref is not None:
-            serialized = ARObject._serialize_item(self.fr_cluster_ref, "FlexrayCluster")
+            serialized = SerializationHelper.serialize_item(self.fr_cluster_ref, "FlexrayCluster")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FR-CLUSTER-REF")
@@ -91,7 +92,7 @@ class TDEventFrClusterCycleStart(TDEventCycleStart):
         obj = super(TDEventFrClusterCycleStart, cls).deserialize(element)
 
         # Parse fr_cluster_ref
-        child = ARObject._find_child_element(element, "FR-CLUSTER-REF")
+        child = SerializationHelper.find_child_element(element, "FR-CLUSTER-REF")
         if child is not None:
             fr_cluster_ref_value = ARRef.deserialize(child)
             obj.fr_cluster_ref = fr_cluster_ref_value

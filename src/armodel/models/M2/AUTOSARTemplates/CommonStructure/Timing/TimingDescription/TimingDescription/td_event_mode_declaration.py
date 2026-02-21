@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
     TDEventVfbPort,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
     ModeDeclaration,
@@ -53,7 +54,7 @@ class TDEventModeDeclaration(TDEventVfbPort):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -72,7 +73,7 @@ class TDEventModeDeclaration(TDEventVfbPort):
 
         # Serialize entry_mode_ref
         if self.entry_mode_ref is not None:
-            serialized = ARObject._serialize_item(self.entry_mode_ref, "ModeDeclaration")
+            serialized = SerializationHelper.serialize_item(self.entry_mode_ref, "ModeDeclaration")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ENTRY-MODE-REF")
@@ -86,7 +87,7 @@ class TDEventModeDeclaration(TDEventVfbPort):
 
         # Serialize exit_mode_ref
         if self.exit_mode_ref is not None:
-            serialized = ARObject._serialize_item(self.exit_mode_ref, "ModeDeclaration")
+            serialized = SerializationHelper.serialize_item(self.exit_mode_ref, "ModeDeclaration")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("EXIT-MODE-REF")
@@ -100,7 +101,7 @@ class TDEventModeDeclaration(TDEventVfbPort):
 
         # Serialize mode_ref
         if self.mode_ref is not None:
-            serialized = ARObject._serialize_item(self.mode_ref, "ModeDeclarationGroup")
+            serialized = SerializationHelper.serialize_item(self.mode_ref, "ModeDeclarationGroup")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MODE-REF")
@@ -114,7 +115,7 @@ class TDEventModeDeclaration(TDEventVfbPort):
 
         # Serialize td_event_mode
         if self.td_event_mode is not None:
-            serialized = ARObject._serialize_item(self.td_event_mode, "Any")
+            serialized = SerializationHelper.serialize_item(self.td_event_mode, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TD-EVENT-MODE")
@@ -142,25 +143,25 @@ class TDEventModeDeclaration(TDEventVfbPort):
         obj = super(TDEventModeDeclaration, cls).deserialize(element)
 
         # Parse entry_mode_ref
-        child = ARObject._find_child_element(element, "ENTRY-MODE-REF")
+        child = SerializationHelper.find_child_element(element, "ENTRY-MODE-REF")
         if child is not None:
             entry_mode_ref_value = ARRef.deserialize(child)
             obj.entry_mode_ref = entry_mode_ref_value
 
         # Parse exit_mode_ref
-        child = ARObject._find_child_element(element, "EXIT-MODE-REF")
+        child = SerializationHelper.find_child_element(element, "EXIT-MODE-REF")
         if child is not None:
             exit_mode_ref_value = ARRef.deserialize(child)
             obj.exit_mode_ref = exit_mode_ref_value
 
         # Parse mode_ref
-        child = ARObject._find_child_element(element, "MODE-REF")
+        child = SerializationHelper.find_child_element(element, "MODE-REF")
         if child is not None:
             mode_ref_value = ARRef.deserialize(child)
             obj.mode_ref = mode_ref_value
 
         # Parse td_event_mode
-        child = ARObject._find_child_element(element, "TD-EVENT-MODE")
+        child = SerializationHelper.find_child_element(element, "TD-EVENT-MODE")
         if child is not None:
             td_event_mode_value = child.text
             obj.td_event_mode = td_event_mode_value

@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -61,12 +62,12 @@ class ReferenceBase(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize short_label
         if self.short_label is not None:
-            serialized = ARObject._serialize_item(self.short_label, "Identifier")
+            serialized = SerializationHelper.serialize_item(self.short_label, "Identifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SHORT-LABEL")
@@ -80,7 +81,7 @@ class ReferenceBase(ARObject):
 
         # Serialize is_default
         if self.is_default is not None:
-            serialized = ARObject._serialize_item(self.is_default, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.is_default, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IS-DEFAULT")
@@ -94,7 +95,7 @@ class ReferenceBase(ARObject):
 
         # Serialize is_global
         if self.is_global is not None:
-            serialized = ARObject._serialize_item(self.is_global, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.is_global, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IS-GLOBAL")
@@ -108,7 +109,7 @@ class ReferenceBase(ARObject):
 
         # Serialize base_is_this_package
         if self.base_is_this_package is not None:
-            serialized = ARObject._serialize_item(self.base_is_this_package, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.base_is_this_package, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BASE-IS-THIS-PACKAGE")
@@ -122,7 +123,7 @@ class ReferenceBase(ARObject):
 
         # Serialize package_ref
         if self.package_ref is not None:
-            serialized = ARObject._serialize_item(self.package_ref, "ARPackage")
+            serialized = SerializationHelper.serialize_item(self.package_ref, "ARPackage")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PACKAGE-REF")
@@ -138,7 +139,7 @@ class ReferenceBase(ARObject):
         if self.global_element_refs:
             wrapper = ET.Element("GLOBAL-ELEMENT-REFS")
             for item in self.global_element_refs:
-                serialized = ARObject._serialize_item(item, "ReferrableSubtypesEnum")
+                serialized = SerializationHelper.serialize_item(item, "ReferrableSubtypesEnum")
                 if serialized is not None:
                     child_elem = ET.Element("GLOBAL-ELEMENT-REF")
                     if hasattr(serialized, 'attrib'):
@@ -155,7 +156,7 @@ class ReferenceBase(ARObject):
         if self.global_in_package_refs:
             wrapper = ET.Element("GLOBAL-IN-PACKAGE-REFS")
             for item in self.global_in_package_refs:
-                serialized = ARObject._serialize_item(item, "ARPackage")
+                serialized = SerializationHelper.serialize_item(item, "ARPackage")
                 if serialized is not None:
                     child_elem = ET.Element("GLOBAL-IN-PACKAGE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -185,64 +186,64 @@ class ReferenceBase(ARObject):
         obj.__init__()
 
         # Parse short_label
-        child = ARObject._find_child_element(element, "SHORT-LABEL")
+        child = SerializationHelper.find_child_element(element, "SHORT-LABEL")
         if child is not None:
-            short_label_value = ARObject._deserialize_by_tag(child, "Identifier")
+            short_label_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
             obj.short_label = short_label_value
 
         # Parse is_default
-        child = ARObject._find_child_element(element, "IS-DEFAULT")
+        child = SerializationHelper.find_child_element(element, "IS-DEFAULT")
         if child is not None:
             is_default_value = child.text
             obj.is_default = is_default_value
 
         # Parse is_global
-        child = ARObject._find_child_element(element, "IS-GLOBAL")
+        child = SerializationHelper.find_child_element(element, "IS-GLOBAL")
         if child is not None:
             is_global_value = child.text
             obj.is_global = is_global_value
 
         # Parse base_is_this_package
-        child = ARObject._find_child_element(element, "BASE-IS-THIS-PACKAGE")
+        child = SerializationHelper.find_child_element(element, "BASE-IS-THIS-PACKAGE")
         if child is not None:
             base_is_this_package_value = child.text
             obj.base_is_this_package = base_is_this_package_value
 
         # Parse package_ref
-        child = ARObject._find_child_element(element, "PACKAGE-REF")
+        child = SerializationHelper.find_child_element(element, "PACKAGE-REF")
         if child is not None:
             package_ref_value = ARRef.deserialize(child)
             obj.package_ref = package_ref_value
 
         # Parse global_element_refs (list from container "GLOBAL-ELEMENT-REFS")
         obj.global_element_refs = []
-        container = ARObject._find_child_element(element, "GLOBAL-ELEMENT-REFS")
+        container = SerializationHelper.find_child_element(element, "GLOBAL-ELEMENT-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.global_element_refs.append(child_value)
 
         # Parse global_in_package_refs (list from container "GLOBAL-IN-PACKAGE-REFS")
         obj.global_in_package_refs = []
-        container = ARObject._find_child_element(element, "GLOBAL-IN-PACKAGE-REFS")
+        container = SerializationHelper.find_child_element(element, "GLOBAL-IN-PACKAGE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.global_in_package_refs.append(child_value)
 

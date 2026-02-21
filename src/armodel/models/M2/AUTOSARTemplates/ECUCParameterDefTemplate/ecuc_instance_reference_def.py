@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_abstract_e
     EcucAbstractExternalReferenceDef,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -45,7 +46,7 @@ class EcucInstanceReferenceDef(EcucAbstractExternalReferenceDef):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class EcucInstanceReferenceDef(EcucAbstractExternalReferenceDef):
 
         # Serialize destination
         if self.destination is not None:
-            serialized = ARObject._serialize_item(self.destination, "String")
+            serialized = SerializationHelper.serialize_item(self.destination, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DESTINATION")
@@ -78,7 +79,7 @@ class EcucInstanceReferenceDef(EcucAbstractExternalReferenceDef):
 
         # Serialize destination_type
         if self.destination_type is not None:
-            serialized = ARObject._serialize_item(self.destination_type, "String")
+            serialized = SerializationHelper.serialize_item(self.destination_type, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DESTINATION-TYPE")
@@ -106,13 +107,13 @@ class EcucInstanceReferenceDef(EcucAbstractExternalReferenceDef):
         obj = super(EcucInstanceReferenceDef, cls).deserialize(element)
 
         # Parse destination
-        child = ARObject._find_child_element(element, "DESTINATION")
+        child = SerializationHelper.find_child_element(element, "DESTINATION")
         if child is not None:
             destination_value = child.text
             obj.destination = destination_value
 
         # Parse destination_type
-        child = ARObject._find_child_element(element, "DESTINATION-TYPE")
+        child = SerializationHelper.find_child_element(element, "DESTINATION-TYPE")
         if child is not None:
             destination_type_value = child.text
             obj.destination_type = destination_type_value

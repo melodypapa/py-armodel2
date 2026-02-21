@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -51,7 +52,7 @@ class BinaryManifestItemDefinition(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -72,7 +73,7 @@ class BinaryManifestItemDefinition(Identifiable):
         if self.auxiliary_fields:
             wrapper = ET.Element("AUXILIARY-FIELDS")
             for item in self.auxiliary_fields:
-                serialized = ARObject._serialize_item(item, "BinaryManifestItem")
+                serialized = SerializationHelper.serialize_item(item, "BinaryManifestItem")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -80,7 +81,7 @@ class BinaryManifestItemDefinition(Identifiable):
 
         # Serialize is_optional
         if self.is_optional is not None:
-            serialized = ARObject._serialize_item(self.is_optional, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.is_optional, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IS-OPTIONAL")
@@ -94,7 +95,7 @@ class BinaryManifestItemDefinition(Identifiable):
 
         # Serialize size
         if self.size is not None:
-            serialized = ARObject._serialize_item(self.size, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.size, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SIZE")
@@ -123,22 +124,22 @@ class BinaryManifestItemDefinition(Identifiable):
 
         # Parse auxiliary_fields (list from container "AUXILIARY-FIELDS")
         obj.auxiliary_fields = []
-        container = ARObject._find_child_element(element, "AUXILIARY-FIELDS")
+        container = SerializationHelper.find_child_element(element, "AUXILIARY-FIELDS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.auxiliary_fields.append(child_value)
 
         # Parse is_optional
-        child = ARObject._find_child_element(element, "IS-OPTIONAL")
+        child = SerializationHelper.find_child_element(element, "IS-OPTIONAL")
         if child is not None:
             is_optional_value = child.text
             obj.is_optional = is_optional_value
 
         # Parse size
-        child = ARObject._find_child_element(element, "SIZE")
+        child = SerializationHelper.find_child_element(element, "SIZE")
         if child is not None:
             size_value = child.text
             obj.size = size_value

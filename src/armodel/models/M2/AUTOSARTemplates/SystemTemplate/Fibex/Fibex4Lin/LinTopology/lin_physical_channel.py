@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
     PhysicalChannel,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
 )
@@ -48,7 +49,7 @@ class LinPhysicalChannel(PhysicalChannel):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -67,7 +68,7 @@ class LinPhysicalChannel(PhysicalChannel):
 
         # Serialize bus_idle_timeout
         if self.bus_idle_timeout is not None:
-            serialized = ARObject._serialize_item(self.bus_idle_timeout, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.bus_idle_timeout, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BUS-IDLE-TIMEOUT")
@@ -83,7 +84,7 @@ class LinPhysicalChannel(PhysicalChannel):
         if self.schedule_tables:
             wrapper = ET.Element("SCHEDULE-TABLES")
             for item in self.schedule_tables:
-                serialized = ARObject._serialize_item(item, "LinScheduleTable")
+                serialized = SerializationHelper.serialize_item(item, "LinScheduleTable")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -105,18 +106,18 @@ class LinPhysicalChannel(PhysicalChannel):
         obj = super(LinPhysicalChannel, cls).deserialize(element)
 
         # Parse bus_idle_timeout
-        child = ARObject._find_child_element(element, "BUS-IDLE-TIMEOUT")
+        child = SerializationHelper.find_child_element(element, "BUS-IDLE-TIMEOUT")
         if child is not None:
             bus_idle_timeout_value = child.text
             obj.bus_idle_timeout = bus_idle_timeout_value
 
         # Parse schedule_tables (list from container "SCHEDULE-TABLES")
         obj.schedule_tables = []
-        container = ARObject._find_child_element(element, "SCHEDULE-TABLES")
+        container = SerializationHelper.find_child_element(element, "SCHEDULE-TABLES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.schedule_tables.append(child_value)
 

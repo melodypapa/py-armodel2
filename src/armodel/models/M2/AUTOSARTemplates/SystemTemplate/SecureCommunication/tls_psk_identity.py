@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
@@ -48,12 +49,12 @@ class TlsPskIdentity(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize pre_shared_key_ref
         if self.pre_shared_key_ref is not None:
-            serialized = ARObject._serialize_item(self.pre_shared_key_ref, "CryptoServiceKey")
+            serialized = SerializationHelper.serialize_item(self.pre_shared_key_ref, "CryptoServiceKey")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PRE-SHARED-KEY-REF")
@@ -67,7 +68,7 @@ class TlsPskIdentity(ARObject):
 
         # Serialize psk_identity
         if self.psk_identity is not None:
-            serialized = ARObject._serialize_item(self.psk_identity, "String")
+            serialized = SerializationHelper.serialize_item(self.psk_identity, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PSK-IDENTITY")
@@ -81,7 +82,7 @@ class TlsPskIdentity(ARObject):
 
         # Serialize psk_identity_hint
         if self.psk_identity_hint is not None:
-            serialized = ARObject._serialize_item(self.psk_identity_hint, "String")
+            serialized = SerializationHelper.serialize_item(self.psk_identity_hint, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PSK-IDENTITY-HINT")
@@ -110,19 +111,19 @@ class TlsPskIdentity(ARObject):
         obj.__init__()
 
         # Parse pre_shared_key_ref
-        child = ARObject._find_child_element(element, "PRE-SHARED-KEY-REF")
+        child = SerializationHelper.find_child_element(element, "PRE-SHARED-KEY-REF")
         if child is not None:
             pre_shared_key_ref_value = ARRef.deserialize(child)
             obj.pre_shared_key_ref = pre_shared_key_ref_value
 
         # Parse psk_identity
-        child = ARObject._find_child_element(element, "PSK-IDENTITY")
+        child = SerializationHelper.find_child_element(element, "PSK-IDENTITY")
         if child is not None:
             psk_identity_value = child.text
             obj.psk_identity = psk_identity_value
 
         # Parse psk_identity_hint
-        child = ARObject._find_child_element(element, "PSK-IDENTITY-HINT")
+        child = SerializationHelper.find_child_element(element, "PSK-IDENTITY-HINT")
         if child is not None:
             psk_identity_hint_value = child.text
             obj.psk_identity_hint = psk_identity_hint_value

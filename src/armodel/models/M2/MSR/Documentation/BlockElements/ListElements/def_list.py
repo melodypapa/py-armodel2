@@ -13,6 +13,7 @@ from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginat
     Paginateable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 if TYPE_CHECKING:
     from armodel.models.M2.MSR.Documentation.BlockElements.ListElements.def_item import (
@@ -46,7 +47,7 @@ class DefList(Paginateable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class DefList(Paginateable):
 
         # Serialize def_item
         if self.def_item is not None:
-            serialized = ARObject._serialize_item(self.def_item, "DefItem")
+            serialized = SerializationHelper.serialize_item(self.def_item, "DefItem")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DEF-ITEM")
@@ -93,9 +94,9 @@ class DefList(Paginateable):
         obj = super(DefList, cls).deserialize(element)
 
         # Parse def_item
-        child = ARObject._find_child_element(element, "DEF-ITEM")
+        child = SerializationHelper.find_child_element(element, "DEF-ITEM")
         if child is not None:
-            def_item_value = ARObject._deserialize_by_tag(child, "DefItem")
+            def_item_value = SerializationHelper.deserialize_by_tag(child, "DefItem")
             obj.def_item = def_item_value
 
         return obj

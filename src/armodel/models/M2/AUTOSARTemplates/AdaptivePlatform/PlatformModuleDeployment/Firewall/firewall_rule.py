@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -61,7 +62,7 @@ class FirewallRule(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -80,7 +81,7 @@ class FirewallRule(ARElement):
 
         # Serialize bucket_size
         if self.bucket_size is not None:
-            serialized = ARObject._serialize_item(self.bucket_size, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.bucket_size, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BUCKET-SIZE")
@@ -94,7 +95,7 @@ class FirewallRule(ARElement):
 
         # Serialize data_link_layer_rule
         if self.data_link_layer_rule is not None:
-            serialized = ARObject._serialize_item(self.data_link_layer_rule, "Any")
+            serialized = SerializationHelper.serialize_item(self.data_link_layer_rule, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-LINK-LAYER-RULE")
@@ -108,7 +109,7 @@ class FirewallRule(ARElement):
 
         # Serialize dds_rule
         if self.dds_rule is not None:
-            serialized = ARObject._serialize_item(self.dds_rule, "Any")
+            serialized = SerializationHelper.serialize_item(self.dds_rule, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DDS-RULE")
@@ -122,7 +123,7 @@ class FirewallRule(ARElement):
 
         # Serialize do_ip_rule
         if self.do_ip_rule is not None:
-            serialized = ARObject._serialize_item(self.do_ip_rule, "Any")
+            serialized = SerializationHelper.serialize_item(self.do_ip_rule, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DO-IP-RULE")
@@ -136,7 +137,7 @@ class FirewallRule(ARElement):
 
         # Serialize network_layer_rule
         if self.network_layer_rule is not None:
-            serialized = ARObject._serialize_item(self.network_layer_rule, "Any")
+            serialized = SerializationHelper.serialize_item(self.network_layer_rule, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NETWORK-LAYER-RULE")
@@ -152,7 +153,7 @@ class FirewallRule(ARElement):
         if self.payload_byte_patterns:
             wrapper = ET.Element("PAYLOAD-BYTE-PATTERNS")
             for item in self.payload_byte_patterns:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -160,7 +161,7 @@ class FirewallRule(ARElement):
 
         # Serialize refill_amount
         if self.refill_amount is not None:
-            serialized = ARObject._serialize_item(self.refill_amount, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.refill_amount, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REFILL-AMOUNT")
@@ -174,7 +175,7 @@ class FirewallRule(ARElement):
 
         # Serialize someip_rule
         if self.someip_rule is not None:
-            serialized = ARObject._serialize_item(self.someip_rule, "Any")
+            serialized = SerializationHelper.serialize_item(self.someip_rule, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SOMEIP-RULE")
@@ -188,7 +189,7 @@ class FirewallRule(ARElement):
 
         # Serialize someip_sd_rule
         if self.someip_sd_rule is not None:
-            serialized = ARObject._serialize_item(self.someip_sd_rule, "Any")
+            serialized = SerializationHelper.serialize_item(self.someip_sd_rule, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SOMEIP-SD-RULE")
@@ -202,7 +203,7 @@ class FirewallRule(ARElement):
 
         # Serialize transport_layer_rule
         if self.transport_layer_rule is not None:
-            serialized = ARObject._serialize_item(self.transport_layer_rule, "Any")
+            serialized = SerializationHelper.serialize_item(self.transport_layer_rule, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TRANSPORT-LAYER-RULE")
@@ -230,65 +231,65 @@ class FirewallRule(ARElement):
         obj = super(FirewallRule, cls).deserialize(element)
 
         # Parse bucket_size
-        child = ARObject._find_child_element(element, "BUCKET-SIZE")
+        child = SerializationHelper.find_child_element(element, "BUCKET-SIZE")
         if child is not None:
             bucket_size_value = child.text
             obj.bucket_size = bucket_size_value
 
         # Parse data_link_layer_rule
-        child = ARObject._find_child_element(element, "DATA-LINK-LAYER-RULE")
+        child = SerializationHelper.find_child_element(element, "DATA-LINK-LAYER-RULE")
         if child is not None:
             data_link_layer_rule_value = child.text
             obj.data_link_layer_rule = data_link_layer_rule_value
 
         # Parse dds_rule
-        child = ARObject._find_child_element(element, "DDS-RULE")
+        child = SerializationHelper.find_child_element(element, "DDS-RULE")
         if child is not None:
             dds_rule_value = child.text
             obj.dds_rule = dds_rule_value
 
         # Parse do_ip_rule
-        child = ARObject._find_child_element(element, "DO-IP-RULE")
+        child = SerializationHelper.find_child_element(element, "DO-IP-RULE")
         if child is not None:
             do_ip_rule_value = child.text
             obj.do_ip_rule = do_ip_rule_value
 
         # Parse network_layer_rule
-        child = ARObject._find_child_element(element, "NETWORK-LAYER-RULE")
+        child = SerializationHelper.find_child_element(element, "NETWORK-LAYER-RULE")
         if child is not None:
             network_layer_rule_value = child.text
             obj.network_layer_rule = network_layer_rule_value
 
         # Parse payload_byte_patterns (list from container "PAYLOAD-BYTE-PATTERNS")
         obj.payload_byte_patterns = []
-        container = ARObject._find_child_element(element, "PAYLOAD-BYTE-PATTERNS")
+        container = SerializationHelper.find_child_element(element, "PAYLOAD-BYTE-PATTERNS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.payload_byte_patterns.append(child_value)
 
         # Parse refill_amount
-        child = ARObject._find_child_element(element, "REFILL-AMOUNT")
+        child = SerializationHelper.find_child_element(element, "REFILL-AMOUNT")
         if child is not None:
             refill_amount_value = child.text
             obj.refill_amount = refill_amount_value
 
         # Parse someip_rule
-        child = ARObject._find_child_element(element, "SOMEIP-RULE")
+        child = SerializationHelper.find_child_element(element, "SOMEIP-RULE")
         if child is not None:
             someip_rule_value = child.text
             obj.someip_rule = someip_rule_value
 
         # Parse someip_sd_rule
-        child = ARObject._find_child_element(element, "SOMEIP-SD-RULE")
+        child = SerializationHelper.find_child_element(element, "SOMEIP-SD-RULE")
         if child is not None:
             someip_sd_rule_value = child.text
             obj.someip_sd_rule = someip_sd_rule_value
 
         # Parse transport_layer_rule
-        child = ARObject._find_child_element(element, "TRANSPORT-LAYER-RULE")
+        child = SerializationHelper.find_child_element(element, "TRANSPORT-LAYER-RULE")
         if child is not None:
             transport_layer_rule_value = child.text
             obj.transport_layer_rule = transport_layer_rule_value

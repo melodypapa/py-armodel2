@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -48,12 +49,12 @@ class DiagnosticComControlSpecificChannel(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize specific_channel_ref
         if self.specific_channel_ref is not None:
-            serialized = ARObject._serialize_item(self.specific_channel_ref, "CommunicationCluster")
+            serialized = SerializationHelper.serialize_item(self.specific_channel_ref, "CommunicationCluster")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SPECIFIC-CHANNEL-REF")
@@ -67,7 +68,7 @@ class DiagnosticComControlSpecificChannel(ARObject):
 
         # Serialize specific_physical_ref
         if self.specific_physical_ref is not None:
-            serialized = ARObject._serialize_item(self.specific_physical_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.specific_physical_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SPECIFIC-PHYSICAL-REF")
@@ -81,7 +82,7 @@ class DiagnosticComControlSpecificChannel(ARObject):
 
         # Serialize subnet_number
         if self.subnet_number is not None:
-            serialized = ARObject._serialize_item(self.subnet_number, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.subnet_number, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SUBNET-NUMBER")
@@ -110,19 +111,19 @@ class DiagnosticComControlSpecificChannel(ARObject):
         obj.__init__()
 
         # Parse specific_channel_ref
-        child = ARObject._find_child_element(element, "SPECIFIC-CHANNEL-REF")
+        child = SerializationHelper.find_child_element(element, "SPECIFIC-CHANNEL-REF")
         if child is not None:
             specific_channel_ref_value = ARRef.deserialize(child)
             obj.specific_channel_ref = specific_channel_ref_value
 
         # Parse specific_physical_ref
-        child = ARObject._find_child_element(element, "SPECIFIC-PHYSICAL-REF")
+        child = SerializationHelper.find_child_element(element, "SPECIFIC-PHYSICAL-REF")
         if child is not None:
             specific_physical_ref_value = ARRef.deserialize(child)
             obj.specific_physical_ref = specific_physical_ref_value
 
         # Parse subnet_number
-        child = ARObject._find_child_element(element, "SUBNET-NUMBER")
+        child = SerializationHelper.find_child_element(element, "SUBNET-NUMBER")
         if child is not None:
             subnet_number_value = child.text
             obj.subnet_number = subnet_number_value

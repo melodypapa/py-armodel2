@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.ethernet_cluster import (
     EthernetCluster,
@@ -49,7 +50,7 @@ class MacSecParticipantSet(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -68,7 +69,7 @@ class MacSecParticipantSet(ARElement):
 
         # Serialize ethernet_cluster_ref
         if self.ethernet_cluster_ref is not None:
-            serialized = ARObject._serialize_item(self.ethernet_cluster_ref, "EthernetCluster")
+            serialized = SerializationHelper.serialize_item(self.ethernet_cluster_ref, "EthernetCluster")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ETHERNET-CLUSTER-REF")
@@ -84,7 +85,7 @@ class MacSecParticipantSet(ARElement):
         if self.mka_participants:
             wrapper = ET.Element("MKA-PARTICIPANTS")
             for item in self.mka_participants:
-                serialized = ARObject._serialize_item(item, "MacSecKayParticipant")
+                serialized = SerializationHelper.serialize_item(item, "MacSecKayParticipant")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -106,18 +107,18 @@ class MacSecParticipantSet(ARElement):
         obj = super(MacSecParticipantSet, cls).deserialize(element)
 
         # Parse ethernet_cluster_ref
-        child = ARObject._find_child_element(element, "ETHERNET-CLUSTER-REF")
+        child = SerializationHelper.find_child_element(element, "ETHERNET-CLUSTER-REF")
         if child is not None:
             ethernet_cluster_ref_value = ARRef.deserialize(child)
             obj.ethernet_cluster_ref = ethernet_cluster_ref_value
 
         # Parse mka_participants (list from container "MKA-PARTICIPANTS")
         obj.mka_participants = []
-        container = ARObject._find_child_element(element, "MKA-PARTICIPANTS")
+        container = SerializationHelper.find_child_element(element, "MKA-PARTICIPANTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.mka_participants.append(child_value)
 

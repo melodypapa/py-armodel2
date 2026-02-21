@@ -24,6 +24,7 @@ import xml.etree.ElementTree as ET
 
 from armodel.serialization.name_converter import NameConverter
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_package import (
     ARPackage,
 )
@@ -77,7 +78,7 @@ class AUTOSAR(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Add AUTOSAR namespace attributes if this is an AUTOSAR instance (root element only)
@@ -140,21 +141,21 @@ class AUTOSAR(ARObject):
             obj.schema_location = schema_loc
 
         # Parse admin_data
-        child = ARObject._find_child_element(element, "ADMIN-DATA")
+        child = SerializationHelper.find_child_element(element, "ADMIN-DATA")
         if child is not None:
             from armodel.models.M2.MSR.AsamHdo.AdminData.admin_data import AdminData
             admin_data_value = AdminData.deserialize(child)
             obj.admin_data = admin_data_value
 
         # Parse file_info_comment
-        child = ARObject._find_child_element(element, "FILE-INFO-COMMENT")
+        child = SerializationHelper.find_child_element(element, "FILE-INFO-COMMENT")
         if child is not None:
             from armodel.models.M2.AUTOSARTemplates.AutosarTopLevelStructure.file_info_comment import FileInfoComment
             file_info_comment_value = FileInfoComment.deserialize(child)
             obj.file_info_comment = file_info_comment_value
 
         # Parse introduction
-        child = ARObject._find_child_element(element, "INTRODUCTION")
+        child = SerializationHelper.find_child_element(element, "INTRODUCTION")
         if child is not None:
             from armodel.models.M2.MSR.Documentation.BlockElements.documentation_block import DocumentationBlock
             introduction_value = DocumentationBlock.deserialize(child)
@@ -162,13 +163,13 @@ class AUTOSAR(ARObject):
 
         # Parse ar_packages (list from container "AR-PACKAGES")
         obj.ar_packages = []
-        container = ARObject._find_child_element(element, "AR-PACKAGES")
+        container = SerializationHelper.find_child_element(element, "AR-PACKAGES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 from armodel.serialization.model_factory import ModelFactory
                 factory = ModelFactory()
-                tag = ARObject._strip_namespace(child.tag)
+                tag = SerializationHelper.strip_namespace(child.tag)
                 child_class = factory.get_class(tag)
                 if child_class is not None:
                     child_value = child_class.deserialize(child)

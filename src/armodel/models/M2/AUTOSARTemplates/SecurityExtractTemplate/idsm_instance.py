@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.ids_common_eleme
     IdsCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -74,7 +75,7 @@ class IdsmInstance(IdsCommonElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -95,7 +96,7 @@ class IdsmInstance(IdsCommonElement):
         if self.block_states:
             wrapper = ET.Element("BLOCK-STATES")
             for item in self.block_states:
-                serialized = ARObject._serialize_item(item, "BlockState")
+                serialized = SerializationHelper.serialize_item(item, "BlockState")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -103,7 +104,7 @@ class IdsmInstance(IdsCommonElement):
 
         # Serialize ecu_instance_ref
         if self.ecu_instance_ref is not None:
-            serialized = ARObject._serialize_item(self.ecu_instance_ref, "EcuInstance")
+            serialized = SerializationHelper.serialize_item(self.ecu_instance_ref, "EcuInstance")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ECU-INSTANCE-REF")
@@ -117,7 +118,7 @@ class IdsmInstance(IdsCommonElement):
 
         # Serialize idsm_instance_id
         if self.idsm_instance_id is not None:
-            serialized = ARObject._serialize_item(self.idsm_instance_id, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.idsm_instance_id, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IDSM-INSTANCE-ID")
@@ -131,7 +132,7 @@ class IdsmInstance(IdsCommonElement):
 
         # Serialize idsm_module_ref
         if self.idsm_module_ref is not None:
-            serialized = ARObject._serialize_item(self.idsm_module_ref, "IdsmModuleInstantiation")
+            serialized = SerializationHelper.serialize_item(self.idsm_module_ref, "IdsmModuleInstantiation")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IDSM-MODULE-REF")
@@ -145,7 +146,7 @@ class IdsmInstance(IdsCommonElement):
 
         # Serialize rate_limitation_ref
         if self.rate_limitation_ref is not None:
-            serialized = ARObject._serialize_item(self.rate_limitation_ref, "IdsmRateLimitation")
+            serialized = SerializationHelper.serialize_item(self.rate_limitation_ref, "IdsmRateLimitation")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RATE-LIMITATION-REF")
@@ -159,7 +160,7 @@ class IdsmInstance(IdsCommonElement):
 
         # Serialize signature
         if self.signature is not None:
-            serialized = ARObject._serialize_item(self.signature, "Any")
+            serialized = SerializationHelper.serialize_item(self.signature, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SIGNATURE")
@@ -173,7 +174,7 @@ class IdsmInstance(IdsCommonElement):
 
         # Serialize timestamp
         if self.timestamp is not None:
-            serialized = ARObject._serialize_item(self.timestamp, "String")
+            serialized = SerializationHelper.serialize_item(self.timestamp, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIMESTAMP")
@@ -187,7 +188,7 @@ class IdsmInstance(IdsCommonElement):
 
         # Serialize traffic_limitation_ref
         if self.traffic_limitation_ref is not None:
-            serialized = ARObject._serialize_item(self.traffic_limitation_ref, "IdsmTrafficLimitation")
+            serialized = SerializationHelper.serialize_item(self.traffic_limitation_ref, "IdsmTrafficLimitation")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TRAFFIC-LIMITATION-REF")
@@ -216,52 +217,52 @@ class IdsmInstance(IdsCommonElement):
 
         # Parse block_states (list from container "BLOCK-STATES")
         obj.block_states = []
-        container = ARObject._find_child_element(element, "BLOCK-STATES")
+        container = SerializationHelper.find_child_element(element, "BLOCK-STATES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.block_states.append(child_value)
 
         # Parse ecu_instance_ref
-        child = ARObject._find_child_element(element, "ECU-INSTANCE-REF")
+        child = SerializationHelper.find_child_element(element, "ECU-INSTANCE-REF")
         if child is not None:
             ecu_instance_ref_value = ARRef.deserialize(child)
             obj.ecu_instance_ref = ecu_instance_ref_value
 
         # Parse idsm_instance_id
-        child = ARObject._find_child_element(element, "IDSM-INSTANCE-ID")
+        child = SerializationHelper.find_child_element(element, "IDSM-INSTANCE-ID")
         if child is not None:
             idsm_instance_id_value = child.text
             obj.idsm_instance_id = idsm_instance_id_value
 
         # Parse idsm_module_ref
-        child = ARObject._find_child_element(element, "IDSM-MODULE-REF")
+        child = SerializationHelper.find_child_element(element, "IDSM-MODULE-REF")
         if child is not None:
             idsm_module_ref_value = ARRef.deserialize(child)
             obj.idsm_module_ref = idsm_module_ref_value
 
         # Parse rate_limitation_ref
-        child = ARObject._find_child_element(element, "RATE-LIMITATION-REF")
+        child = SerializationHelper.find_child_element(element, "RATE-LIMITATION-REF")
         if child is not None:
             rate_limitation_ref_value = ARRef.deserialize(child)
             obj.rate_limitation_ref = rate_limitation_ref_value
 
         # Parse signature
-        child = ARObject._find_child_element(element, "SIGNATURE")
+        child = SerializationHelper.find_child_element(element, "SIGNATURE")
         if child is not None:
             signature_value = child.text
             obj.signature = signature_value
 
         # Parse timestamp
-        child = ARObject._find_child_element(element, "TIMESTAMP")
+        child = SerializationHelper.find_child_element(element, "TIMESTAMP")
         if child is not None:
             timestamp_value = child.text
             obj.timestamp = timestamp_value
 
         # Parse traffic_limitation_ref
-        child = ARObject._find_child_element(element, "TRAFFIC-LIMITATION-REF")
+        child = SerializationHelper.find_child_element(element, "TRAFFIC-LIMITATION-REF")
         if child is not None:
             traffic_limitation_ref_value = ARRef.deserialize(child)
             obj.traffic_limitation_ref = traffic_limitation_ref_value

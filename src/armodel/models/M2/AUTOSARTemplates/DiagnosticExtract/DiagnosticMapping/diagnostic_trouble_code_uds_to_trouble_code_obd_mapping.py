@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
     DiagnosticMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTroubleCode.diagnostic_trouble_code import (
     DiagnosticTroubleCode,
@@ -46,7 +47,7 @@ class DiagnosticTroubleCodeUdsToTroubleCodeObdMapping(DiagnosticMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class DiagnosticTroubleCodeUdsToTroubleCodeObdMapping(DiagnosticMapping):
 
         # Serialize trouble_code_ref
         if self.trouble_code_ref is not None:
-            serialized = ARObject._serialize_item(self.trouble_code_ref, "DiagnosticTroubleCode")
+            serialized = SerializationHelper.serialize_item(self.trouble_code_ref, "DiagnosticTroubleCode")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TROUBLE-CODE-REF")
@@ -79,7 +80,7 @@ class DiagnosticTroubleCodeUdsToTroubleCodeObdMapping(DiagnosticMapping):
 
         # Serialize trouble_code_uds_ref
         if self.trouble_code_uds_ref is not None:
-            serialized = ARObject._serialize_item(self.trouble_code_uds_ref, "DiagnosticTroubleCode")
+            serialized = SerializationHelper.serialize_item(self.trouble_code_uds_ref, "DiagnosticTroubleCode")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TROUBLE-CODE-UDS-REF")
@@ -107,13 +108,13 @@ class DiagnosticTroubleCodeUdsToTroubleCodeObdMapping(DiagnosticMapping):
         obj = super(DiagnosticTroubleCodeUdsToTroubleCodeObdMapping, cls).deserialize(element)
 
         # Parse trouble_code_ref
-        child = ARObject._find_child_element(element, "TROUBLE-CODE-REF")
+        child = SerializationHelper.find_child_element(element, "TROUBLE-CODE-REF")
         if child is not None:
             trouble_code_ref_value = ARRef.deserialize(child)
             obj.trouble_code_ref = trouble_code_ref_value
 
         # Parse trouble_code_uds_ref
-        child = ARObject._find_child_element(element, "TROUBLE-CODE-UDS-REF")
+        child = SerializationHelper.find_child_element(element, "TROUBLE-CODE-UDS-REF")
         if child is not None:
             trouble_code_uds_ref_value = ARRef.deserialize(child)
             obj.trouble_code_uds_ref = trouble_code_uds_ref_value

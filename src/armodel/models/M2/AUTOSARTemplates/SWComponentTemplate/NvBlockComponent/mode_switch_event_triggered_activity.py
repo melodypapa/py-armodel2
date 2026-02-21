@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
@@ -46,12 +47,12 @@ class ModeSwitchEventTriggeredActivity(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize role
         if self.role is not None:
-            serialized = ARObject._serialize_item(self.role, "Identifier")
+            serialized = SerializationHelper.serialize_item(self.role, "Identifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ROLE")
@@ -65,7 +66,7 @@ class ModeSwitchEventTriggeredActivity(ARObject):
 
         # Serialize swc_mode_switch_event_ref
         if self.swc_mode_switch_event_ref is not None:
-            serialized = ARObject._serialize_item(self.swc_mode_switch_event_ref, "SwcModeSwitchEvent")
+            serialized = SerializationHelper.serialize_item(self.swc_mode_switch_event_ref, "SwcModeSwitchEvent")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SWC-MODE-SWITCH-EVENT-REF")
@@ -94,13 +95,13 @@ class ModeSwitchEventTriggeredActivity(ARObject):
         obj.__init__()
 
         # Parse role
-        child = ARObject._find_child_element(element, "ROLE")
+        child = SerializationHelper.find_child_element(element, "ROLE")
         if child is not None:
-            role_value = ARObject._deserialize_by_tag(child, "Identifier")
+            role_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
             obj.role = role_value
 
         # Parse swc_mode_switch_event_ref
-        child = ARObject._find_child_element(element, "SWC-MODE-SWITCH-EVENT-REF")
+        child = SerializationHelper.find_child_element(element, "SWC-MODE-SWITCH-EVENT-REF")
         if child is not None:
             swc_mode_switch_event_ref_value = ARRef.deserialize(child)
             obj.swc_mode_switch_event_ref = swc_mode_switch_event_ref_value

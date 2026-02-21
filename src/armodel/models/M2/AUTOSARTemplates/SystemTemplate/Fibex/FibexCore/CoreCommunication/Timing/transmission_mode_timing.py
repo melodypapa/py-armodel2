@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.Timing.cyclic_timing import (
     CyclicTiming,
 )
@@ -45,12 +46,12 @@ class TransmissionModeTiming(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize cyclic_timing
         if self.cyclic_timing is not None:
-            serialized = ARObject._serialize_item(self.cyclic_timing, "CyclicTiming")
+            serialized = SerializationHelper.serialize_item(self.cyclic_timing, "CyclicTiming")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CYCLIC-TIMING")
@@ -64,7 +65,7 @@ class TransmissionModeTiming(ARObject):
 
         # Serialize event_controlled_timing_timing
         if self.event_controlled_timing_timing is not None:
-            serialized = ARObject._serialize_item(self.event_controlled_timing_timing, "EventControlledTiming")
+            serialized = SerializationHelper.serialize_item(self.event_controlled_timing_timing, "EventControlledTiming")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("EVENT-CONTROLLED-TIMING-TIMING")
@@ -93,15 +94,15 @@ class TransmissionModeTiming(ARObject):
         obj.__init__()
 
         # Parse cyclic_timing
-        child = ARObject._find_child_element(element, "CYCLIC-TIMING")
+        child = SerializationHelper.find_child_element(element, "CYCLIC-TIMING")
         if child is not None:
-            cyclic_timing_value = ARObject._deserialize_by_tag(child, "CyclicTiming")
+            cyclic_timing_value = SerializationHelper.deserialize_by_tag(child, "CyclicTiming")
             obj.cyclic_timing = cyclic_timing_value
 
         # Parse event_controlled_timing_timing
-        child = ARObject._find_child_element(element, "EVENT-CONTROLLED-TIMING-TIMING")
+        child = SerializationHelper.find_child_element(element, "EVENT-CONTROLLED-TIMING-TIMING")
         if child is not None:
-            event_controlled_timing_timing_value = ARObject._deserialize_by_tag(child, "EventControlledTiming")
+            event_controlled_timing_timing_value = SerializationHelper.deserialize_by_tag(child, "EventControlledTiming")
             obj.event_controlled_timing_timing = event_controlled_timing_timing_value
 
         return obj

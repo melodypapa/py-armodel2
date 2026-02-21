@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -42,12 +43,12 @@ class StreamFilterPortRange(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize max
         if self.max is not None:
-            serialized = ARObject._serialize_item(self.max, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.max, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX")
@@ -61,7 +62,7 @@ class StreamFilterPortRange(ARObject):
 
         # Serialize min
         if self.min is not None:
-            serialized = ARObject._serialize_item(self.min, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.min, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MIN")
@@ -90,13 +91,13 @@ class StreamFilterPortRange(ARObject):
         obj.__init__()
 
         # Parse max
-        child = ARObject._find_child_element(element, "MAX")
+        child = SerializationHelper.find_child_element(element, "MAX")
         if child is not None:
             max_value = child.text
             obj.max = max_value
 
         # Parse min
-        child = ARObject._find_child_element(element, "MIN")
+        child = SerializationHelper.find_child_element(element, "MIN")
         if child is not None:
             min_value = child.text
             obj.min = min_value

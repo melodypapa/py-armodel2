@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_nee
     ServiceNeeds,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -43,7 +44,7 @@ class IdsMgrNeeds(ServiceNeeds):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class IdsMgrNeeds(ServiceNeeds):
 
         # Serialize use_smart
         if self.use_smart is not None:
-            serialized = ARObject._serialize_item(self.use_smart, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.use_smart, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("USE-SMART")
@@ -90,7 +91,7 @@ class IdsMgrNeeds(ServiceNeeds):
         obj = super(IdsMgrNeeds, cls).deserialize(element)
 
         # Parse use_smart
-        child = ARObject._find_child_element(element, "USE-SMART")
+        child = SerializationHelper.find_child_element(element, "USE-SMART")
         if child is not None:
             use_smart_value = child.text
             obj.use_smart = use_smart_value

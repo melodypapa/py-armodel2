@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.DataDictionary.AuxillaryObjects import (
     MemoryAllocationKeywordPolicyType,
     MemorySectionType,
@@ -56,7 +57,7 @@ class SwAddrMethod(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -75,7 +76,7 @@ class SwAddrMethod(ARElement):
 
         # Serialize memory
         if self.memory is not None:
-            serialized = ARObject._serialize_item(self.memory, "MemoryAllocationKeywordPolicyType")
+            serialized = SerializationHelper.serialize_item(self.memory, "MemoryAllocationKeywordPolicyType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MEMORY")
@@ -91,7 +92,7 @@ class SwAddrMethod(ARElement):
         if self.options:
             wrapper = ET.Element("OPTIONS")
             for item in self.options:
-                serialized = ARObject._serialize_item(item, "Identifier")
+                serialized = SerializationHelper.serialize_item(item, "Identifier")
                 if serialized is not None:
                     child_elem = ET.Element("OPTION")
                     if hasattr(serialized, 'attrib'):
@@ -106,7 +107,7 @@ class SwAddrMethod(ARElement):
 
         # Serialize section
         if self.section is not None:
-            serialized = ARObject._serialize_item(self.section, "SectionInitializationPolicyType")
+            serialized = SerializationHelper.serialize_item(self.section, "SectionInitializationPolicyType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SECTION")
@@ -120,7 +121,7 @@ class SwAddrMethod(ARElement):
 
         # Serialize section_type
         if self.section_type is not None:
-            serialized = ARObject._serialize_item(self.section_type, "MemorySectionType")
+            serialized = SerializationHelper.serialize_item(self.section_type, "MemorySectionType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SECTION-TYPE")
@@ -148,14 +149,14 @@ class SwAddrMethod(ARElement):
         obj = super(SwAddrMethod, cls).deserialize(element)
 
         # Parse memory
-        child = ARObject._find_child_element(element, "MEMORY")
+        child = SerializationHelper.find_child_element(element, "MEMORY")
         if child is not None:
             memory_value = MemoryAllocationKeywordPolicyType.deserialize(child)
             obj.memory = memory_value
 
         # Parse options (list from container "OPTIONS")
         obj.options = []
-        container = ARObject._find_child_element(element, "OPTIONS")
+        container = SerializationHelper.find_child_element(element, "OPTIONS")
         if container is not None:
             for child in container:
                 # Extract primitive value (Identifier) as text
@@ -164,13 +165,13 @@ class SwAddrMethod(ARElement):
                     obj.options.append(child_value)
 
         # Parse section
-        child = ARObject._find_child_element(element, "SECTION")
+        child = SerializationHelper.find_child_element(element, "SECTION")
         if child is not None:
             section_value = child.text
             obj.section = section_value
 
         # Parse section_type
-        child = ARObject._find_child_element(element, "SECTION-TYPE")
+        child = SerializationHelper.find_child_element(element, "SECTION-TYPE")
         if child is not None:
             section_type_value = MemorySectionType.deserialize(child)
             obj.section_type = section_type_value

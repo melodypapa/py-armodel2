@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_internal_behavior import (
     BswInternalBehavior,
@@ -58,7 +59,7 @@ class SwcBswMapping(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -77,7 +78,7 @@ class SwcBswMapping(ARElement):
 
         # Serialize bsw_behavior_ref
         if self.bsw_behavior_ref is not None:
-            serialized = ARObject._serialize_item(self.bsw_behavior_ref, "BswInternalBehavior")
+            serialized = SerializationHelper.serialize_item(self.bsw_behavior_ref, "BswInternalBehavior")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BSW-BEHAVIOR-REF")
@@ -93,7 +94,7 @@ class SwcBswMapping(ARElement):
         if self.runnable_mapping_refs:
             wrapper = ET.Element("RUNNABLE-MAPPING-REFS")
             for item in self.runnable_mapping_refs:
-                serialized = ARObject._serialize_item(item, "SwcBswRunnableMapping")
+                serialized = SerializationHelper.serialize_item(item, "SwcBswRunnableMapping")
                 if serialized is not None:
                     child_elem = ET.Element("RUNNABLE-MAPPING-REF")
                     if hasattr(serialized, 'attrib'):
@@ -108,7 +109,7 @@ class SwcBswMapping(ARElement):
 
         # Serialize swc_behavior_ref
         if self.swc_behavior_ref is not None:
-            serialized = ARObject._serialize_item(self.swc_behavior_ref, "SwcInternalBehavior")
+            serialized = SerializationHelper.serialize_item(self.swc_behavior_ref, "SwcInternalBehavior")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SWC-BEHAVIOR-REF")
@@ -124,7 +125,7 @@ class SwcBswMapping(ARElement):
         if self.synchronizeds:
             wrapper = ET.Element("SYNCHRONIZEDS")
             for item in self.synchronizeds:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -146,40 +147,40 @@ class SwcBswMapping(ARElement):
         obj = super(SwcBswMapping, cls).deserialize(element)
 
         # Parse bsw_behavior_ref
-        child = ARObject._find_child_element(element, "BSW-BEHAVIOR-REF")
+        child = SerializationHelper.find_child_element(element, "BSW-BEHAVIOR-REF")
         if child is not None:
             bsw_behavior_ref_value = ARRef.deserialize(child)
             obj.bsw_behavior_ref = bsw_behavior_ref_value
 
         # Parse runnable_mapping_refs (list from container "RUNNABLE-MAPPING-REFS")
         obj.runnable_mapping_refs = []
-        container = ARObject._find_child_element(element, "RUNNABLE-MAPPING-REFS")
+        container = SerializationHelper.find_child_element(element, "RUNNABLE-MAPPING-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.runnable_mapping_refs.append(child_value)
 
         # Parse swc_behavior_ref
-        child = ARObject._find_child_element(element, "SWC-BEHAVIOR-REF")
+        child = SerializationHelper.find_child_element(element, "SWC-BEHAVIOR-REF")
         if child is not None:
             swc_behavior_ref_value = ARRef.deserialize(child)
             obj.swc_behavior_ref = swc_behavior_ref_value
 
         # Parse synchronizeds (list from container "SYNCHRONIZEDS")
         obj.synchronizeds = []
-        container = ARObject._find_child_element(element, "SYNCHRONIZEDS")
+        container = SerializationHelper.find_child_element(element, "SYNCHRONIZEDS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.synchronizeds.append(child_value)
 

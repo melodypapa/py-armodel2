@@ -14,6 +14,7 @@ from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginat
     Paginateable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -60,7 +61,7 @@ class MultiLanguageParagraph(Paginateable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -79,7 +80,7 @@ class MultiLanguageParagraph(Paginateable):
 
         # Serialize help_entry
         if self.help_entry is not None:
-            serialized = ARObject._serialize_item(self.help_entry, "String")
+            serialized = SerializationHelper.serialize_item(self.help_entry, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HELP-ENTRY")
@@ -93,7 +94,7 @@ class MultiLanguageParagraph(Paginateable):
 
         # Serialize l1 (list with l_prefix "L-1")
         for item in self.l1:
-            serialized = ARObject._serialize_item(item, "LParagraph")
+            serialized = SerializationHelper.serialize_item(item, "LParagraph")
             if serialized is not None:
                 # For l_prefix lists, wrap each item in the l_prefix tag
                 wrapped = ET.Element("L-1")
@@ -121,15 +122,15 @@ class MultiLanguageParagraph(Paginateable):
         obj = super(MultiLanguageParagraph, cls).deserialize(element)
 
         # Parse help_entry
-        child = ARObject._find_child_element(element, "HELP-ENTRY")
+        child = SerializationHelper.find_child_element(element, "HELP-ENTRY")
         if child is not None:
             help_entry_value = child.text
             obj.help_entry = help_entry_value
 
         # Parse l1 (list with l_prefix "L-1")
         obj.l1 = []
-        for child in ARObject._find_all_child_elements(element, "L-1"):
-            l1_value = ARObject._deserialize_by_tag(child, "LParagraph")
+        for child in SerializationHelper.find_all_child_elements(element, "L-1"):
+            l1_value = SerializationHelper.deserialize_by_tag(child, "LParagraph")
             obj.l1.append(l1_value)
 
         return obj

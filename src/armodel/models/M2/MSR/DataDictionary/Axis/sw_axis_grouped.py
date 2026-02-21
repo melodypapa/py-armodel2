@@ -13,6 +13,7 @@ from armodel.models.M2.MSR.DataDictionary.CalibrationParameter.sw_calprm_axis_ty
     SwCalprmAxisTypeProps,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.DataDictionary.RecordLayout import (
     AxisIndexType,
@@ -57,7 +58,7 @@ class SwAxisGrouped(SwCalprmAxisTypeProps):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -76,7 +77,7 @@ class SwAxisGrouped(SwCalprmAxisTypeProps):
 
         # Serialize shared_axis_type_ref
         if self.shared_axis_type_ref is not None:
-            serialized = ARObject._serialize_item(self.shared_axis_type_ref, "ApplicationPrimitiveDataType")
+            serialized = SerializationHelper.serialize_item(self.shared_axis_type_ref, "ApplicationPrimitiveDataType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SHARED-AXIS-TYPE-REF")
@@ -90,7 +91,7 @@ class SwAxisGrouped(SwCalprmAxisTypeProps):
 
         # Serialize sw_axis_index
         if self.sw_axis_index is not None:
-            serialized = ARObject._serialize_item(self.sw_axis_index, "AxisIndexType")
+            serialized = SerializationHelper.serialize_item(self.sw_axis_index, "AxisIndexType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-AXIS-INDEX")
@@ -104,7 +105,7 @@ class SwAxisGrouped(SwCalprmAxisTypeProps):
 
         # Serialize sw_calprm_ref_proxy_ref
         if self.sw_calprm_ref_proxy_ref is not None:
-            serialized = ARObject._serialize_item(self.sw_calprm_ref_proxy_ref, "SwCalprmRefProxy")
+            serialized = SerializationHelper.serialize_item(self.sw_calprm_ref_proxy_ref, "SwCalprmRefProxy")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-CALPRM-REF-PROXY-REF")
@@ -132,19 +133,19 @@ class SwAxisGrouped(SwCalprmAxisTypeProps):
         obj = super(SwAxisGrouped, cls).deserialize(element)
 
         # Parse shared_axis_type_ref
-        child = ARObject._find_child_element(element, "SHARED-AXIS-TYPE-REF")
+        child = SerializationHelper.find_child_element(element, "SHARED-AXIS-TYPE-REF")
         if child is not None:
             shared_axis_type_ref_value = ARRef.deserialize(child)
             obj.shared_axis_type_ref = shared_axis_type_ref_value
 
         # Parse sw_axis_index
-        child = ARObject._find_child_element(element, "SW-AXIS-INDEX")
+        child = SerializationHelper.find_child_element(element, "SW-AXIS-INDEX")
         if child is not None:
             sw_axis_index_value = child.text
             obj.sw_axis_index = sw_axis_index_value
 
         # Parse sw_calprm_ref_proxy_ref
-        child = ARObject._find_child_element(element, "SW-CALPRM-REF-PROXY-REF")
+        child = SerializationHelper.find_child_element(element, "SW-CALPRM-REF-PROXY-REF")
         if child is not None:
             sw_calprm_ref_proxy_ref_value = ARRef.deserialize(child)
             obj.sw_calprm_ref_proxy_ref = sw_calprm_ref_proxy_ref_value

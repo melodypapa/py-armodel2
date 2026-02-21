@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.
     TimingConstraint,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.ExecutionTimeConstraint import (
     ExecutionTimeTypeEnum,
@@ -58,7 +59,7 @@ class ExecutionTimeConstraint(TimingConstraint):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -77,7 +78,7 @@ class ExecutionTimeConstraint(TimingConstraint):
 
         # Serialize component
         if self.component is not None:
-            serialized = ARObject._serialize_item(self.component, "Any")
+            serialized = SerializationHelper.serialize_item(self.component, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COMPONENT")
@@ -91,7 +92,7 @@ class ExecutionTimeConstraint(TimingConstraint):
 
         # Serialize executable_entity_ref
         if self.executable_entity_ref is not None:
-            serialized = ARObject._serialize_item(self.executable_entity_ref, "ExecutableEntity")
+            serialized = SerializationHelper.serialize_item(self.executable_entity_ref, "ExecutableEntity")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("EXECUTABLE-ENTITY-REF")
@@ -105,7 +106,7 @@ class ExecutionTimeConstraint(TimingConstraint):
 
         # Serialize execution_time
         if self.execution_time is not None:
-            serialized = ARObject._serialize_item(self.execution_time, "ExecutionTimeTypeEnum")
+            serialized = SerializationHelper.serialize_item(self.execution_time, "ExecutionTimeTypeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("EXECUTION-TIME")
@@ -119,7 +120,7 @@ class ExecutionTimeConstraint(TimingConstraint):
 
         # Serialize maximum
         if self.maximum is not None:
-            serialized = ARObject._serialize_item(self.maximum, "MultidimensionalTime")
+            serialized = SerializationHelper.serialize_item(self.maximum, "MultidimensionalTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAXIMUM")
@@ -133,7 +134,7 @@ class ExecutionTimeConstraint(TimingConstraint):
 
         # Serialize minimum
         if self.minimum is not None:
-            serialized = ARObject._serialize_item(self.minimum, "MultidimensionalTime")
+            serialized = SerializationHelper.serialize_item(self.minimum, "MultidimensionalTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MINIMUM")
@@ -161,33 +162,33 @@ class ExecutionTimeConstraint(TimingConstraint):
         obj = super(ExecutionTimeConstraint, cls).deserialize(element)
 
         # Parse component
-        child = ARObject._find_child_element(element, "COMPONENT")
+        child = SerializationHelper.find_child_element(element, "COMPONENT")
         if child is not None:
             component_value = child.text
             obj.component = component_value
 
         # Parse executable_entity_ref
-        child = ARObject._find_child_element(element, "EXECUTABLE-ENTITY-REF")
+        child = SerializationHelper.find_child_element(element, "EXECUTABLE-ENTITY-REF")
         if child is not None:
             executable_entity_ref_value = ARRef.deserialize(child)
             obj.executable_entity_ref = executable_entity_ref_value
 
         # Parse execution_time
-        child = ARObject._find_child_element(element, "EXECUTION-TIME")
+        child = SerializationHelper.find_child_element(element, "EXECUTION-TIME")
         if child is not None:
             execution_time_value = ExecutionTimeTypeEnum.deserialize(child)
             obj.execution_time = execution_time_value
 
         # Parse maximum
-        child = ARObject._find_child_element(element, "MAXIMUM")
+        child = SerializationHelper.find_child_element(element, "MAXIMUM")
         if child is not None:
-            maximum_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            maximum_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
             obj.maximum = maximum_value
 
         # Parse minimum
-        child = ARObject._find_child_element(element, "MINIMUM")
+        child = SerializationHelper.find_child_element(element, "MINIMUM")
         if child is not None:
-            minimum_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            minimum_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
             obj.minimum = minimum_value
 
         return obj

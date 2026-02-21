@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
 )
@@ -40,12 +41,12 @@ class AbsoluteTolerance(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize absolute
         if self.absolute is not None:
-            serialized = ARObject._serialize_item(self.absolute, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.absolute, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ABSOLUTE")
@@ -74,7 +75,7 @@ class AbsoluteTolerance(ARObject):
         obj.__init__()
 
         # Parse absolute
-        child = ARObject._find_child_element(element, "ABSOLUTE")
+        child = SerializationHelper.find_child_element(element, "ABSOLUTE")
         if child is not None:
             absolute_value = child.text
             obj.absolute = absolute_value

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.abstract_securit
     AbstractSecurityEventFilter,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
     TimeValue,
@@ -46,7 +47,7 @@ class SecurityEventThresholdFilter(AbstractSecurityEventFilter):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class SecurityEventThresholdFilter(AbstractSecurityEventFilter):
 
         # Serialize interval_length
         if self.interval_length is not None:
-            serialized = ARObject._serialize_item(self.interval_length, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.interval_length, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INTERVAL-LENGTH")
@@ -79,7 +80,7 @@ class SecurityEventThresholdFilter(AbstractSecurityEventFilter):
 
         # Serialize threshold
         if self.threshold is not None:
-            serialized = ARObject._serialize_item(self.threshold, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.threshold, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("THRESHOLD")
@@ -107,13 +108,13 @@ class SecurityEventThresholdFilter(AbstractSecurityEventFilter):
         obj = super(SecurityEventThresholdFilter, cls).deserialize(element)
 
         # Parse interval_length
-        child = ARObject._find_child_element(element, "INTERVAL-LENGTH")
+        child = SerializationHelper.find_child_element(element, "INTERVAL-LENGTH")
         if child is not None:
             interval_length_value = child.text
             obj.interval_length = interval_length_value
 
         # Parse threshold
-        child = ARObject._find_child_element(element, "THRESHOLD")
+        child = SerializationHelper.find_child_element(element, "THRESHOLD")
         if child is not None:
             threshold_value = child.text
             obj.threshold = threshold_value

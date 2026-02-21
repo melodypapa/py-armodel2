@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
     CommunicationConnector,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     Float,
@@ -46,7 +47,7 @@ class FlexrayCommunicationConnector(CommunicationConnector):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class FlexrayCommunicationConnector(CommunicationConnector):
 
         # Serialize nm_ready_sleep
         if self.nm_ready_sleep is not None:
-            serialized = ARObject._serialize_item(self.nm_ready_sleep, "Float")
+            serialized = SerializationHelper.serialize_item(self.nm_ready_sleep, "Float")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NM-READY-SLEEP")
@@ -79,7 +80,7 @@ class FlexrayCommunicationConnector(CommunicationConnector):
 
         # Serialize wake_up
         if self.wake_up is not None:
-            serialized = ARObject._serialize_item(self.wake_up, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.wake_up, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("WAKE-UP")
@@ -107,13 +108,13 @@ class FlexrayCommunicationConnector(CommunicationConnector):
         obj = super(FlexrayCommunicationConnector, cls).deserialize(element)
 
         # Parse nm_ready_sleep
-        child = ARObject._find_child_element(element, "NM-READY-SLEEP")
+        child = SerializationHelper.find_child_element(element, "NM-READY-SLEEP")
         if child is not None:
             nm_ready_sleep_value = child.text
             obj.nm_ready_sleep = nm_ready_sleep_value
 
         # Parse wake_up
-        child = ARObject._find_child_element(element, "WAKE-UP")
+        child = SerializationHelper.find_child_element(element, "WAKE-UP")
         if child is not None:
             wake_up_value = child.text
             obj.wake_up = wake_up_value

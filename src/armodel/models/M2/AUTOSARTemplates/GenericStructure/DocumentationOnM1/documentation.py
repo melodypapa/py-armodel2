@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.DocumentationOnM1.documentation_context import (
     DocumentationContext,
 )
@@ -50,7 +51,7 @@ class Documentation(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -71,7 +72,7 @@ class Documentation(ARElement):
         if self.contexts:
             wrapper = ET.Element("CONTEXTS")
             for item in self.contexts:
-                serialized = ARObject._serialize_item(item, "DocumentationContext")
+                serialized = SerializationHelper.serialize_item(item, "DocumentationContext")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -79,7 +80,7 @@ class Documentation(ARElement):
 
         # Serialize documentation
         if self.documentation is not None:
-            serialized = ARObject._serialize_item(self.documentation, "PredefinedChapter")
+            serialized = SerializationHelper.serialize_item(self.documentation, "PredefinedChapter")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DOCUMENTATION")
@@ -108,18 +109,18 @@ class Documentation(ARElement):
 
         # Parse contexts (list from container "CONTEXTS")
         obj.contexts = []
-        container = ARObject._find_child_element(element, "CONTEXTS")
+        container = SerializationHelper.find_child_element(element, "CONTEXTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.contexts.append(child_value)
 
         # Parse documentation
-        child = ARObject._find_child_element(element, "DOCUMENTATION")
+        child = SerializationHelper.find_child_element(element, "DOCUMENTATION")
         if child is not None:
-            documentation_value = ARObject._deserialize_by_tag(child, "PredefinedChapter")
+            documentation_value = SerializationHelper.deserialize_by_tag(child, "PredefinedChapter")
             obj.documentation = documentation_value
 
         return obj

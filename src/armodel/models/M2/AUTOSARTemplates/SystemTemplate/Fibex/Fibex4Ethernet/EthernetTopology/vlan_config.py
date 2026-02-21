@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -43,7 +44,7 @@ class VlanConfig(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class VlanConfig(Identifiable):
 
         # Serialize vlan_identifier
         if self.vlan_identifier is not None:
-            serialized = ARObject._serialize_item(self.vlan_identifier, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.vlan_identifier, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VLAN-IDENTIFIER")
@@ -90,7 +91,7 @@ class VlanConfig(Identifiable):
         obj = super(VlanConfig, cls).deserialize(element)
 
         # Parse vlan_identifier
-        child = ARObject._find_child_element(element, "VLAN-IDENTIFIER")
+        child = SerializationHelper.find_child_element(element, "VLAN-IDENTIFIER")
         if child is not None:
             vlan_identifier_value = child.text
             obj.vlan_identifier = vlan_identifier_value

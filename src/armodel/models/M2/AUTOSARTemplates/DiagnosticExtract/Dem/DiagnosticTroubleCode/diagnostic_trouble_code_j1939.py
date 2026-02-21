@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTroubleC
     DiagnosticTroubleCode,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -58,7 +59,7 @@ class DiagnosticTroubleCodeJ1939(DiagnosticTroubleCode):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -77,7 +78,7 @@ class DiagnosticTroubleCodeJ1939(DiagnosticTroubleCode):
 
         # Serialize dtc_props_props_ref
         if self.dtc_props_props_ref is not None:
-            serialized = ARObject._serialize_item(self.dtc_props_props_ref, "DiagnosticTroubleCode")
+            serialized = SerializationHelper.serialize_item(self.dtc_props_props_ref, "DiagnosticTroubleCode")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DTC-PROPS-PROPS-REF")
@@ -91,7 +92,7 @@ class DiagnosticTroubleCodeJ1939(DiagnosticTroubleCode):
 
         # Serialize fmi
         if self.fmi is not None:
-            serialized = ARObject._serialize_item(self.fmi, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.fmi, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FMI")
@@ -105,7 +106,7 @@ class DiagnosticTroubleCodeJ1939(DiagnosticTroubleCode):
 
         # Serialize kind
         if self.kind is not None:
-            serialized = ARObject._serialize_item(self.kind, "DiagnosticTroubleCode")
+            serialized = SerializationHelper.serialize_item(self.kind, "DiagnosticTroubleCode")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("KIND")
@@ -119,7 +120,7 @@ class DiagnosticTroubleCodeJ1939(DiagnosticTroubleCode):
 
         # Serialize node_ref
         if self.node_ref is not None:
-            serialized = ARObject._serialize_item(self.node_ref, "DiagnosticJ1939Node")
+            serialized = SerializationHelper.serialize_item(self.node_ref, "DiagnosticJ1939Node")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NODE-REF")
@@ -133,7 +134,7 @@ class DiagnosticTroubleCodeJ1939(DiagnosticTroubleCode):
 
         # Serialize spn_ref
         if self.spn_ref is not None:
-            serialized = ARObject._serialize_item(self.spn_ref, "DiagnosticJ1939Spn")
+            serialized = SerializationHelper.serialize_item(self.spn_ref, "DiagnosticJ1939Spn")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SPN-REF")
@@ -161,31 +162,31 @@ class DiagnosticTroubleCodeJ1939(DiagnosticTroubleCode):
         obj = super(DiagnosticTroubleCodeJ1939, cls).deserialize(element)
 
         # Parse dtc_props_props_ref
-        child = ARObject._find_child_element(element, "DTC-PROPS-PROPS-REF")
+        child = SerializationHelper.find_child_element(element, "DTC-PROPS-PROPS-REF")
         if child is not None:
             dtc_props_props_ref_value = ARRef.deserialize(child)
             obj.dtc_props_props_ref = dtc_props_props_ref_value
 
         # Parse fmi
-        child = ARObject._find_child_element(element, "FMI")
+        child = SerializationHelper.find_child_element(element, "FMI")
         if child is not None:
             fmi_value = child.text
             obj.fmi = fmi_value
 
         # Parse kind
-        child = ARObject._find_child_element(element, "KIND")
+        child = SerializationHelper.find_child_element(element, "KIND")
         if child is not None:
-            kind_value = ARObject._deserialize_by_tag(child, "DiagnosticTroubleCode")
+            kind_value = SerializationHelper.deserialize_by_tag(child, "DiagnosticTroubleCode")
             obj.kind = kind_value
 
         # Parse node_ref
-        child = ARObject._find_child_element(element, "NODE-REF")
+        child = SerializationHelper.find_child_element(element, "NODE-REF")
         if child is not None:
             node_ref_value = ARRef.deserialize(child)
             obj.node_ref = node_ref_value
 
         # Parse spn_ref
-        child = ARObject._find_child_element(element, "SPN-REF")
+        child = SerializationHelper.find_child_element(element, "SPN-REF")
         if child is not None:
             spn_ref_value = ARRef.deserialize(child)
             obj.spn_ref = spn_ref_value

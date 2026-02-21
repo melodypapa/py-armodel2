@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
     CpSoftwareCluster,
@@ -49,7 +50,7 @@ class TDCpSoftwareClusterResourceMapping(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -68,7 +69,7 @@ class TDCpSoftwareClusterResourceMapping(Identifiable):
 
         # Serialize resource_ref
         if self.resource_ref is not None:
-            serialized = ARObject._serialize_item(self.resource_ref, "CpSoftwareCluster")
+            serialized = SerializationHelper.serialize_item(self.resource_ref, "CpSoftwareCluster")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RESOURCE-REF")
@@ -82,7 +83,7 @@ class TDCpSoftwareClusterResourceMapping(Identifiable):
 
         # Serialize timing_ref
         if self.timing_ref is not None:
-            serialized = ARObject._serialize_item(self.timing_ref, "TimingDescription")
+            serialized = SerializationHelper.serialize_item(self.timing_ref, "TimingDescription")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIMING-REF")
@@ -110,13 +111,13 @@ class TDCpSoftwareClusterResourceMapping(Identifiable):
         obj = super(TDCpSoftwareClusterResourceMapping, cls).deserialize(element)
 
         # Parse resource_ref
-        child = ARObject._find_child_element(element, "RESOURCE-REF")
+        child = SerializationHelper.find_child_element(element, "RESOURCE-REF")
         if child is not None:
             resource_ref_value = ARRef.deserialize(child)
             obj.resource_ref = resource_ref_value
 
         # Parse timing_ref
-        child = ARObject._find_child_element(element, "TIMING-REF")
+        child = SerializationHelper.find_child_element(element, "TIMING-REF")
         if child is not None:
             timing_ref_value = ARRef.deserialize(child)
             obj.timing_ref = timing_ref_value

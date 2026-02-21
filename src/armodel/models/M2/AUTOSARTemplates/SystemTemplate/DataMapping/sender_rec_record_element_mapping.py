@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DataMapping.sender_rec_composite_type_mapping import (
     SenderRecCompositeTypeMapping,
@@ -57,12 +58,12 @@ class SenderRecRecordElementMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize application_record_ref
         if self.application_record_ref is not None:
-            serialized = ARObject._serialize_item(self.application_record_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.application_record_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("APPLICATION-RECORD-REF")
@@ -76,7 +77,7 @@ class SenderRecRecordElementMapping(ARObject):
 
         # Serialize complex_type
         if self.complex_type is not None:
-            serialized = ARObject._serialize_item(self.complex_type, "SenderRecCompositeTypeMapping")
+            serialized = SerializationHelper.serialize_item(self.complex_type, "SenderRecCompositeTypeMapping")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COMPLEX-TYPE")
@@ -90,7 +91,7 @@ class SenderRecRecordElementMapping(ARObject):
 
         # Serialize implementation_ref
         if self.implementation_ref is not None:
-            serialized = ARObject._serialize_item(self.implementation_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.implementation_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IMPLEMENTATION-REF")
@@ -104,7 +105,7 @@ class SenderRecRecordElementMapping(ARObject):
 
         # Serialize sender_to_signal_ref
         if self.sender_to_signal_ref is not None:
-            serialized = ARObject._serialize_item(self.sender_to_signal_ref, "TextTableMapping")
+            serialized = SerializationHelper.serialize_item(self.sender_to_signal_ref, "TextTableMapping")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SENDER-TO-SIGNAL-REF")
@@ -118,7 +119,7 @@ class SenderRecRecordElementMapping(ARObject):
 
         # Serialize signal_to_ref
         if self.signal_to_ref is not None:
-            serialized = ARObject._serialize_item(self.signal_to_ref, "TextTableMapping")
+            serialized = SerializationHelper.serialize_item(self.signal_to_ref, "TextTableMapping")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SIGNAL-TO-REF")
@@ -132,7 +133,7 @@ class SenderRecRecordElementMapping(ARObject):
 
         # Serialize system_signal_ref
         if self.system_signal_ref is not None:
-            serialized = ARObject._serialize_item(self.system_signal_ref, "SystemSignal")
+            serialized = SerializationHelper.serialize_item(self.system_signal_ref, "SystemSignal")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SYSTEM-SIGNAL-REF")
@@ -161,37 +162,37 @@ class SenderRecRecordElementMapping(ARObject):
         obj.__init__()
 
         # Parse application_record_ref
-        child = ARObject._find_child_element(element, "APPLICATION-RECORD-REF")
+        child = SerializationHelper.find_child_element(element, "APPLICATION-RECORD-REF")
         if child is not None:
             application_record_ref_value = ARRef.deserialize(child)
             obj.application_record_ref = application_record_ref_value
 
         # Parse complex_type
-        child = ARObject._find_child_element(element, "COMPLEX-TYPE")
+        child = SerializationHelper.find_child_element(element, "COMPLEX-TYPE")
         if child is not None:
-            complex_type_value = ARObject._deserialize_by_tag(child, "SenderRecCompositeTypeMapping")
+            complex_type_value = SerializationHelper.deserialize_by_tag(child, "SenderRecCompositeTypeMapping")
             obj.complex_type = complex_type_value
 
         # Parse implementation_ref
-        child = ARObject._find_child_element(element, "IMPLEMENTATION-REF")
+        child = SerializationHelper.find_child_element(element, "IMPLEMENTATION-REF")
         if child is not None:
             implementation_ref_value = ARRef.deserialize(child)
             obj.implementation_ref = implementation_ref_value
 
         # Parse sender_to_signal_ref
-        child = ARObject._find_child_element(element, "SENDER-TO-SIGNAL-REF")
+        child = SerializationHelper.find_child_element(element, "SENDER-TO-SIGNAL-REF")
         if child is not None:
             sender_to_signal_ref_value = ARRef.deserialize(child)
             obj.sender_to_signal_ref = sender_to_signal_ref_value
 
         # Parse signal_to_ref
-        child = ARObject._find_child_element(element, "SIGNAL-TO-REF")
+        child = SerializationHelper.find_child_element(element, "SIGNAL-TO-REF")
         if child is not None:
             signal_to_ref_value = ARRef.deserialize(child)
             obj.signal_to_ref = signal_to_ref_value
 
         # Parse system_signal_ref
-        child = ARObject._find_child_element(element, "SYSTEM-SIGNAL-REF")
+        child = SerializationHelper.find_child_element(element, "SYSTEM-SIGNAL-REF")
         if child is not None:
             system_signal_ref_value = ARRef.deserialize(child)
             obj.system_signal_ref = system_signal_ref_value

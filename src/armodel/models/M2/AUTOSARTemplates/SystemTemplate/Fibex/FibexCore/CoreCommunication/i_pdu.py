@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
     Pdu,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.contained_i_pdu_props import (
     ContainedIPduProps,
 )
@@ -45,7 +46,7 @@ class IPdu(Pdu, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class IPdu(Pdu, ABC):
 
         # Serialize contained_i_pdu_props
         if self.contained_i_pdu_props is not None:
-            serialized = ARObject._serialize_item(self.contained_i_pdu_props, "ContainedIPduProps")
+            serialized = SerializationHelper.serialize_item(self.contained_i_pdu_props, "ContainedIPduProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONTAINED-I-PDU-PROPS")
@@ -92,9 +93,9 @@ class IPdu(Pdu, ABC):
         obj = super(IPdu, cls).deserialize(element)
 
         # Parse contained_i_pdu_props
-        child = ARObject._find_child_element(element, "CONTAINED-I-PDU-PROPS")
+        child = SerializationHelper.find_child_element(element, "CONTAINED-I-PDU-PROPS")
         if child is not None:
-            contained_i_pdu_props_value = ARObject._deserialize_by_tag(child, "ContainedIPduProps")
+            contained_i_pdu_props_value = SerializationHelper.deserialize_by_tag(child, "ContainedIPduProps")
             obj.contained_i_pdu_props = contained_i_pdu_props_value
 
         return obj

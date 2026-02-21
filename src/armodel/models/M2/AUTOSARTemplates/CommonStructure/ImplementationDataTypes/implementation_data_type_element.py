@@ -16,6 +16,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes.
     AbstractImplementationDataTypeElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes import (
     ArrayImplPolicyEnum,
     ArraySizeSemanticsEnum,
@@ -69,7 +70,7 @@ class ImplementationDataTypeElement(AbstractImplementationDataTypeElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -88,7 +89,7 @@ class ImplementationDataTypeElement(AbstractImplementationDataTypeElement):
 
         # Serialize array_impl_policy_enum
         if self.array_impl_policy_enum is not None:
-            serialized = ARObject._serialize_item(self.array_impl_policy_enum, "ArrayImplPolicyEnum")
+            serialized = SerializationHelper.serialize_item(self.array_impl_policy_enum, "ArrayImplPolicyEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ARRAY-IMPL-POLICY-ENUM")
@@ -102,7 +103,7 @@ class ImplementationDataTypeElement(AbstractImplementationDataTypeElement):
 
         # Serialize array_size
         if self.array_size is not None:
-            serialized = ARObject._serialize_item(self.array_size, "ArraySizeSemanticsEnum")
+            serialized = SerializationHelper.serialize_item(self.array_size, "ArraySizeSemanticsEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ARRAY-SIZE")
@@ -116,7 +117,7 @@ class ImplementationDataTypeElement(AbstractImplementationDataTypeElement):
 
         # Serialize array_size_handling
         if self.array_size_handling is not None:
-            serialized = ARObject._serialize_item(self.array_size_handling, "ArraySizeHandlingEnum")
+            serialized = SerializationHelper.serialize_item(self.array_size_handling, "ArraySizeHandlingEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ARRAY-SIZE-HANDLING")
@@ -130,7 +131,7 @@ class ImplementationDataTypeElement(AbstractImplementationDataTypeElement):
 
         # Serialize is_optional
         if self.is_optional is not None:
-            serialized = ARObject._serialize_item(self.is_optional, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.is_optional, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IS-OPTIONAL")
@@ -146,7 +147,7 @@ class ImplementationDataTypeElement(AbstractImplementationDataTypeElement):
         if self.sub_elements:
             wrapper = ET.Element("SUB-ELEMENTS")
             for item in self.sub_elements:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -154,7 +155,7 @@ class ImplementationDataTypeElement(AbstractImplementationDataTypeElement):
 
         # Serialize sw_data_def
         if self.sw_data_def is not None:
-            serialized = ARObject._serialize_item(self.sw_data_def, "SwDataDefProps")
+            serialized = SerializationHelper.serialize_item(self.sw_data_def, "SwDataDefProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-DATA-DEF")
@@ -182,43 +183,43 @@ class ImplementationDataTypeElement(AbstractImplementationDataTypeElement):
         obj = super(ImplementationDataTypeElement, cls).deserialize(element)
 
         # Parse array_impl_policy_enum
-        child = ARObject._find_child_element(element, "ARRAY-IMPL-POLICY-ENUM")
+        child = SerializationHelper.find_child_element(element, "ARRAY-IMPL-POLICY-ENUM")
         if child is not None:
             array_impl_policy_enum_value = ArrayImplPolicyEnum.deserialize(child)
             obj.array_impl_policy_enum = array_impl_policy_enum_value
 
         # Parse array_size
-        child = ARObject._find_child_element(element, "ARRAY-SIZE")
+        child = SerializationHelper.find_child_element(element, "ARRAY-SIZE")
         if child is not None:
             array_size_value = ArraySizeSemanticsEnum.deserialize(child)
             obj.array_size = array_size_value
 
         # Parse array_size_handling
-        child = ARObject._find_child_element(element, "ARRAY-SIZE-HANDLING")
+        child = SerializationHelper.find_child_element(element, "ARRAY-SIZE-HANDLING")
         if child is not None:
             array_size_handling_value = ArraySizeHandlingEnum.deserialize(child)
             obj.array_size_handling = array_size_handling_value
 
         # Parse is_optional
-        child = ARObject._find_child_element(element, "IS-OPTIONAL")
+        child = SerializationHelper.find_child_element(element, "IS-OPTIONAL")
         if child is not None:
             is_optional_value = child.text
             obj.is_optional = is_optional_value
 
         # Parse sub_elements (list from container "SUB-ELEMENTS")
         obj.sub_elements = []
-        container = ARObject._find_child_element(element, "SUB-ELEMENTS")
+        container = SerializationHelper.find_child_element(element, "SUB-ELEMENTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.sub_elements.append(child_value)
 
         # Parse sw_data_def
-        child = ARObject._find_child_element(element, "SW-DATA-DEF")
+        child = SerializationHelper.find_child_element(element, "SW-DATA-DEF")
         if child is not None:
-            sw_data_def_value = ARObject._deserialize_by_tag(child, "SwDataDefProps")
+            sw_data_def_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
             obj.sw_data_def = sw_data_def_value
 
         return obj

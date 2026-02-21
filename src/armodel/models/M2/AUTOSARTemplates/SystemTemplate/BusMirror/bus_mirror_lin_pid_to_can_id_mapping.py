@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -46,12 +47,12 @@ class BusMirrorLinPidToCanIdMapping(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize remapped_can_id
         if self.remapped_can_id is not None:
-            serialized = ARObject._serialize_item(self.remapped_can_id, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.remapped_can_id, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REMAPPED-CAN-ID")
@@ -65,7 +66,7 @@ class BusMirrorLinPidToCanIdMapping(ARObject):
 
         # Serialize source_lin_pid_ref
         if self.source_lin_pid_ref is not None:
-            serialized = ARObject._serialize_item(self.source_lin_pid_ref, "LinFrameTriggering")
+            serialized = SerializationHelper.serialize_item(self.source_lin_pid_ref, "LinFrameTriggering")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SOURCE-LIN-PID-REF")
@@ -94,13 +95,13 @@ class BusMirrorLinPidToCanIdMapping(ARObject):
         obj.__init__()
 
         # Parse remapped_can_id
-        child = ARObject._find_child_element(element, "REMAPPED-CAN-ID")
+        child = SerializationHelper.find_child_element(element, "REMAPPED-CAN-ID")
         if child is not None:
             remapped_can_id_value = child.text
             obj.remapped_can_id = remapped_can_id_value
 
         # Parse source_lin_pid_ref
-        child = ARObject._find_child_element(element, "SOURCE-LIN-PID-REF")
+        child = SerializationHelper.find_child_element(element, "SOURCE-LIN-PID-REF")
         if child is not None:
             source_lin_pid_ref_value = ARRef.deserialize(child)
             obj.source_lin_pid_ref = source_lin_pid_ref_value

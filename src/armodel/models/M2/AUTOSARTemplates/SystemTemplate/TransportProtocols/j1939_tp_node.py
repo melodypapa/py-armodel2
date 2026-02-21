@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.tp_address import (
     TpAddress,
@@ -46,7 +47,7 @@ class J1939TpNode(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class J1939TpNode(Identifiable):
 
         # Serialize connector_ref
         if self.connector_ref is not None:
-            serialized = ARObject._serialize_item(self.connector_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.connector_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONNECTOR-REF")
@@ -79,7 +80,7 @@ class J1939TpNode(Identifiable):
 
         # Serialize tp_address_ref
         if self.tp_address_ref is not None:
-            serialized = ARObject._serialize_item(self.tp_address_ref, "TpAddress")
+            serialized = SerializationHelper.serialize_item(self.tp_address_ref, "TpAddress")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TP-ADDRESS-REF")
@@ -107,13 +108,13 @@ class J1939TpNode(Identifiable):
         obj = super(J1939TpNode, cls).deserialize(element)
 
         # Parse connector_ref
-        child = ARObject._find_child_element(element, "CONNECTOR-REF")
+        child = SerializationHelper.find_child_element(element, "CONNECTOR-REF")
         if child is not None:
             connector_ref_value = ARRef.deserialize(child)
             obj.connector_ref = connector_ref_value
 
         # Parse tp_address_ref
-        child = ARObject._find_child_element(element, "TP-ADDRESS-REF")
+        child = SerializationHelper.find_child_element(element, "TP-ADDRESS-REF")
         if child is not None:
             tp_address_ref_value = ARRef.deserialize(child)
             obj.tp_address_ref = tp_address_ref_value

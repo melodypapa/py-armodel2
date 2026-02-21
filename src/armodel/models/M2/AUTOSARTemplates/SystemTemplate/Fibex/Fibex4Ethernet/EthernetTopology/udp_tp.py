@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Ethe
     TcpUdpConfig,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.tp_port import (
     TpPort,
 )
@@ -43,7 +44,7 @@ class UdpTp(TcpUdpConfig):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class UdpTp(TcpUdpConfig):
 
         # Serialize udp_tp_port
         if self.udp_tp_port is not None:
-            serialized = ARObject._serialize_item(self.udp_tp_port, "TpPort")
+            serialized = SerializationHelper.serialize_item(self.udp_tp_port, "TpPort")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("UDP-TP-PORT")
@@ -90,9 +91,9 @@ class UdpTp(TcpUdpConfig):
         obj = super(UdpTp, cls).deserialize(element)
 
         # Parse udp_tp_port
-        child = ARObject._find_child_element(element, "UDP-TP-PORT")
+        child = SerializationHelper.find_child_element(element, "UDP-TP-PORT")
         if child is not None:
-            udp_tp_port_value = ARObject._deserialize_by_tag(child, "TpPort")
+            udp_tp_port_value = SerializationHelper.deserialize_by_tag(child, "TpPort")
             obj.udp_tp_port = udp_tp_port_value
 
         return obj

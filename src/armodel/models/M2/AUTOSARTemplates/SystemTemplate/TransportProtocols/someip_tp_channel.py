@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
     TimeValue,
@@ -48,7 +49,7 @@ class SomeipTpChannel(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -67,7 +68,7 @@ class SomeipTpChannel(Identifiable):
 
         # Serialize burst_size
         if self.burst_size is not None:
-            serialized = ARObject._serialize_item(self.burst_size, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.burst_size, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BURST-SIZE")
@@ -81,7 +82,7 @@ class SomeipTpChannel(Identifiable):
 
         # Serialize rx_timeout_time
         if self.rx_timeout_time is not None:
-            serialized = ARObject._serialize_item(self.rx_timeout_time, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.rx_timeout_time, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RX-TIMEOUT-TIME")
@@ -95,7 +96,7 @@ class SomeipTpChannel(Identifiable):
 
         # Serialize separation_time
         if self.separation_time is not None:
-            serialized = ARObject._serialize_item(self.separation_time, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.separation_time, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SEPARATION-TIME")
@@ -123,19 +124,19 @@ class SomeipTpChannel(Identifiable):
         obj = super(SomeipTpChannel, cls).deserialize(element)
 
         # Parse burst_size
-        child = ARObject._find_child_element(element, "BURST-SIZE")
+        child = SerializationHelper.find_child_element(element, "BURST-SIZE")
         if child is not None:
             burst_size_value = child.text
             obj.burst_size = burst_size_value
 
         # Parse rx_timeout_time
-        child = ARObject._find_child_element(element, "RX-TIMEOUT-TIME")
+        child = SerializationHelper.find_child_element(element, "RX-TIMEOUT-TIME")
         if child is not None:
             rx_timeout_time_value = child.text
             obj.rx_timeout_time = rx_timeout_time_value
 
         # Parse separation_time
-        child = ARObject._find_child_element(element, "SEPARATION-TIME")
+        child = SerializationHelper.find_child_element(element, "SEPARATION-TIME")
         if child is not None:
             separation_time_value = child.text
             obj.separation_time = separation_time_value

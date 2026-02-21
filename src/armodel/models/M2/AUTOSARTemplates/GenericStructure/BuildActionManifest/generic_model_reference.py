@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     NameToken,
@@ -46,12 +47,12 @@ class GenericModelReference(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize base
         if self.base is not None:
-            serialized = ARObject._serialize_item(self.base, "NameToken")
+            serialized = SerializationHelper.serialize_item(self.base, "NameToken")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BASE")
@@ -65,7 +66,7 @@ class GenericModelReference(ARObject):
 
         # Serialize dest
         if self.dest is not None:
-            serialized = ARObject._serialize_item(self.dest, "NameToken")
+            serialized = SerializationHelper.serialize_item(self.dest, "NameToken")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DEST")
@@ -79,7 +80,7 @@ class GenericModelReference(ARObject):
 
         # Serialize ref_ref
         if self.ref_ref is not None:
-            serialized = ARObject._serialize_item(self.ref_ref, "Ref")
+            serialized = SerializationHelper.serialize_item(self.ref_ref, "Ref")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REF-REF")
@@ -108,19 +109,19 @@ class GenericModelReference(ARObject):
         obj.__init__()
 
         # Parse base
-        child = ARObject._find_child_element(element, "BASE")
+        child = SerializationHelper.find_child_element(element, "BASE")
         if child is not None:
             base_value = child.text
             obj.base = base_value
 
         # Parse dest
-        child = ARObject._find_child_element(element, "DEST")
+        child = SerializationHelper.find_child_element(element, "DEST")
         if child is not None:
             dest_value = child.text
             obj.dest = dest_value
 
         # Parse ref_ref
-        child = ARObject._find_child_element(element, "REF-REF")
+        child = SerializationHelper.find_child_element(element, "REF-REF")
         if child is not None:
             ref_ref_value = ARRef.deserialize(child)
             obj.ref_ref = ref_ref_value

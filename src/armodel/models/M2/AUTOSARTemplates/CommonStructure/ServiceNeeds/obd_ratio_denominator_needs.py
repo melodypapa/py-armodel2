@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_
     DiagnosticCapabilityElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
     DiagnosticDenominatorConditionEnum,
 )
@@ -43,7 +44,7 @@ class ObdRatioDenominatorNeeds(DiagnosticCapabilityElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class ObdRatioDenominatorNeeds(DiagnosticCapabilityElement):
 
         # Serialize denominator
         if self.denominator is not None:
-            serialized = ARObject._serialize_item(self.denominator, "DiagnosticDenominatorConditionEnum")
+            serialized = SerializationHelper.serialize_item(self.denominator, "DiagnosticDenominatorConditionEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DENOMINATOR")
@@ -90,7 +91,7 @@ class ObdRatioDenominatorNeeds(DiagnosticCapabilityElement):
         obj = super(ObdRatioDenominatorNeeds, cls).deserialize(element)
 
         # Parse denominator
-        child = ARObject._find_child_element(element, "DENOMINATOR")
+        child = SerializationHelper.find_child_element(element, "DENOMINATOR")
         if child is not None:
             denominator_value = DiagnosticDenominatorConditionEnum.deserialize(child)
             obj.denominator = denominator_value

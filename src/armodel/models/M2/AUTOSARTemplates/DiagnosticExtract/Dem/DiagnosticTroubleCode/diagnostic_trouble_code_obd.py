@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticTroubleC
     DiagnosticTroubleCode,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -54,7 +55,7 @@ class DiagnosticTroubleCodeObd(DiagnosticTroubleCode):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -73,7 +74,7 @@ class DiagnosticTroubleCodeObd(DiagnosticTroubleCode):
 
         # Serialize consider_pto
         if self.consider_pto is not None:
-            serialized = ARObject._serialize_item(self.consider_pto, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.consider_pto, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONSIDER-PTO")
@@ -87,7 +88,7 @@ class DiagnosticTroubleCodeObd(DiagnosticTroubleCode):
 
         # Serialize dtc_props_props_ref
         if self.dtc_props_props_ref is not None:
-            serialized = ARObject._serialize_item(self.dtc_props_props_ref, "DiagnosticTroubleCode")
+            serialized = SerializationHelper.serialize_item(self.dtc_props_props_ref, "DiagnosticTroubleCode")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DTC-PROPS-PROPS-REF")
@@ -101,7 +102,7 @@ class DiagnosticTroubleCodeObd(DiagnosticTroubleCode):
 
         # Serialize event_readiness
         if self.event_readiness is not None:
-            serialized = ARObject._serialize_item(self.event_readiness, "EventObdReadinessGroup")
+            serialized = SerializationHelper.serialize_item(self.event_readiness, "EventObdReadinessGroup")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("EVENT-READINESS")
@@ -115,7 +116,7 @@ class DiagnosticTroubleCodeObd(DiagnosticTroubleCode):
 
         # Serialize obd_dtc_value
         if self.obd_dtc_value is not None:
-            serialized = ARObject._serialize_item(self.obd_dtc_value, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.obd_dtc_value, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("OBD-DTC-VALUE")
@@ -143,25 +144,25 @@ class DiagnosticTroubleCodeObd(DiagnosticTroubleCode):
         obj = super(DiagnosticTroubleCodeObd, cls).deserialize(element)
 
         # Parse consider_pto
-        child = ARObject._find_child_element(element, "CONSIDER-PTO")
+        child = SerializationHelper.find_child_element(element, "CONSIDER-PTO")
         if child is not None:
             consider_pto_value = child.text
             obj.consider_pto = consider_pto_value
 
         # Parse dtc_props_props_ref
-        child = ARObject._find_child_element(element, "DTC-PROPS-PROPS-REF")
+        child = SerializationHelper.find_child_element(element, "DTC-PROPS-PROPS-REF")
         if child is not None:
             dtc_props_props_ref_value = ARRef.deserialize(child)
             obj.dtc_props_props_ref = dtc_props_props_ref_value
 
         # Parse event_readiness
-        child = ARObject._find_child_element(element, "EVENT-READINESS")
+        child = SerializationHelper.find_child_element(element, "EVENT-READINESS")
         if child is not None:
-            event_readiness_value = ARObject._deserialize_by_tag(child, "EventObdReadinessGroup")
+            event_readiness_value = SerializationHelper.deserialize_by_tag(child, "EventObdReadinessGroup")
             obj.event_readiness = event_readiness_value
 
         # Parse obd_dtc_value
-        child = ARObject._find_child_element(element, "OBD-DTC-VALUE")
+        child = SerializationHelper.find_child_element(element, "OBD-DTC-VALUE")
         if child is not None:
             obd_dtc_value_value = child.text
             obj.obd_dtc_value = obd_dtc_value_value

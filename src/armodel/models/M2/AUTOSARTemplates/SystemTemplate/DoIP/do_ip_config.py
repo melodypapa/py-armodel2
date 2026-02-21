@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DoIP.do_ip_interface import (
     DoIpInterface,
 )
@@ -45,14 +46,14 @@ class DoIpConfig(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize doip_interfaces (list to container "DOIP-INTERFACES")
         if self.doip_interfaces:
             wrapper = ET.Element("DOIP-INTERFACES")
             for item in self.doip_interfaces:
-                serialized = ARObject._serialize_item(item, "DoIpInterface")
+                serialized = SerializationHelper.serialize_item(item, "DoIpInterface")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -60,7 +61,7 @@ class DoIpConfig(ARObject):
 
         # Serialize logic_address
         if self.logic_address is not None:
-            serialized = ARObject._serialize_item(self.logic_address, "DoIpLogicAddress")
+            serialized = SerializationHelper.serialize_item(self.logic_address, "DoIpLogicAddress")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LOGIC-ADDRESS")
@@ -90,18 +91,18 @@ class DoIpConfig(ARObject):
 
         # Parse doip_interfaces (list from container "DOIP-INTERFACES")
         obj.doip_interfaces = []
-        container = ARObject._find_child_element(element, "DOIP-INTERFACES")
+        container = SerializationHelper.find_child_element(element, "DOIP-INTERFACES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.doip_interfaces.append(child_value)
 
         # Parse logic_address
-        child = ARObject._find_child_element(element, "LOGIC-ADDRESS")
+        child = SerializationHelper.find_child_element(element, "LOGIC-ADDRESS")
         if child is not None:
-            logic_address_value = ARObject._deserialize_by_tag(child, "DoIpLogicAddress")
+            logic_address_value = SerializationHelper.deserialize_by_tag(child, "DoIpLogicAddress")
             obj.logic_address = logic_address_value
 
         return obj

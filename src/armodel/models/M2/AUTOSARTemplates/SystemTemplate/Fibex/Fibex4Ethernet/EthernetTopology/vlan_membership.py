@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -47,12 +48,12 @@ class VlanMembership(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize default_priority
         if self.default_priority is not None:
-            serialized = ARObject._serialize_item(self.default_priority, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.default_priority, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DEFAULT-PRIORITY")
@@ -66,7 +67,7 @@ class VlanMembership(ARObject):
 
         # Serialize dhcp_address
         if self.dhcp_address is not None:
-            serialized = ARObject._serialize_item(self.dhcp_address, "Any")
+            serialized = SerializationHelper.serialize_item(self.dhcp_address, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DHCP-ADDRESS")
@@ -80,7 +81,7 @@ class VlanMembership(ARObject):
 
         # Serialize send_activity
         if self.send_activity is not None:
-            serialized = ARObject._serialize_item(self.send_activity, "Any")
+            serialized = SerializationHelper.serialize_item(self.send_activity, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SEND-ACTIVITY")
@@ -94,7 +95,7 @@ class VlanMembership(ARObject):
 
         # Serialize vlan_ref
         if self.vlan_ref is not None:
-            serialized = ARObject._serialize_item(self.vlan_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.vlan_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VLAN-REF")
@@ -123,25 +124,25 @@ class VlanMembership(ARObject):
         obj.__init__()
 
         # Parse default_priority
-        child = ARObject._find_child_element(element, "DEFAULT-PRIORITY")
+        child = SerializationHelper.find_child_element(element, "DEFAULT-PRIORITY")
         if child is not None:
             default_priority_value = child.text
             obj.default_priority = default_priority_value
 
         # Parse dhcp_address
-        child = ARObject._find_child_element(element, "DHCP-ADDRESS")
+        child = SerializationHelper.find_child_element(element, "DHCP-ADDRESS")
         if child is not None:
             dhcp_address_value = child.text
             obj.dhcp_address = dhcp_address_value
 
         # Parse send_activity
-        child = ARObject._find_child_element(element, "SEND-ACTIVITY")
+        child = SerializationHelper.find_child_element(element, "SEND-ACTIVITY")
         if child is not None:
             send_activity_value = child.text
             obj.send_activity = send_activity_value
 
         # Parse vlan_ref
-        child = ARObject._find_child_element(element, "VLAN-REF")
+        child = SerializationHelper.find_child_element(element, "VLAN-REF")
         if child is not None:
             vlan_ref_value = ARRef.deserialize(child)
             obj.vlan_ref = vlan_ref_value

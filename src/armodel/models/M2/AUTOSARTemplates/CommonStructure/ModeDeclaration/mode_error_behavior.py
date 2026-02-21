@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration import (
     ModeErrorReactionPolicyEnum,
@@ -47,12 +48,12 @@ class ModeErrorBehavior(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize default_mode_ref
         if self.default_mode_ref is not None:
-            serialized = ARObject._serialize_item(self.default_mode_ref, "ModeDeclaration")
+            serialized = SerializationHelper.serialize_item(self.default_mode_ref, "ModeDeclaration")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DEFAULT-MODE-REF")
@@ -66,7 +67,7 @@ class ModeErrorBehavior(ARObject):
 
         # Serialize error_reaction
         if self.error_reaction is not None:
-            serialized = ARObject._serialize_item(self.error_reaction, "ModeErrorReactionPolicyEnum")
+            serialized = SerializationHelper.serialize_item(self.error_reaction, "ModeErrorReactionPolicyEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ERROR-REACTION")
@@ -95,13 +96,13 @@ class ModeErrorBehavior(ARObject):
         obj.__init__()
 
         # Parse default_mode_ref
-        child = ARObject._find_child_element(element, "DEFAULT-MODE-REF")
+        child = SerializationHelper.find_child_element(element, "DEFAULT-MODE-REF")
         if child is not None:
             default_mode_ref_value = ARRef.deserialize(child)
             obj.default_mode_ref = default_mode_ref_value
 
         # Parse error_reaction
-        child = ARObject._find_child_element(element, "ERROR-REACTION")
+        child = SerializationHelper.find_child_element(element, "ERROR-REACTION")
         if child is not None:
             error_reaction_value = ModeErrorReactionPolicyEnum.deserialize(child)
             obj.error_reaction = error_reaction_value

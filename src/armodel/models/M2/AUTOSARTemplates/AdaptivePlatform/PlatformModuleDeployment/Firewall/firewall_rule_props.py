@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.AdaptivePlatform.PlatformModuleDeployment.Firewall.firewall_rule import (
     FirewallRule,
@@ -45,12 +46,12 @@ class FirewallRuleProps(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize action
         if self.action is not None:
-            serialized = ARObject._serialize_item(self.action, "Any")
+            serialized = SerializationHelper.serialize_item(self.action, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ACTION")
@@ -66,7 +67,7 @@ class FirewallRuleProps(ARObject):
         if self.matching_egresse_refs:
             wrapper = ET.Element("MATCHING-EGRESSE-REFS")
             for item in self.matching_egresse_refs:
-                serialized = ARObject._serialize_item(item, "FirewallRule")
+                serialized = SerializationHelper.serialize_item(item, "FirewallRule")
                 if serialized is not None:
                     child_elem = ET.Element("MATCHING-EGRESSE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -83,7 +84,7 @@ class FirewallRuleProps(ARObject):
         if self.matching_refs:
             wrapper = ET.Element("MATCHING-REFS")
             for item in self.matching_refs:
-                serialized = ARObject._serialize_item(item, "FirewallRule")
+                serialized = SerializationHelper.serialize_item(item, "FirewallRule")
                 if serialized is not None:
                     child_elem = ET.Element("MATCHING-REF")
                     if hasattr(serialized, 'attrib'):
@@ -113,40 +114,40 @@ class FirewallRuleProps(ARObject):
         obj.__init__()
 
         # Parse action
-        child = ARObject._find_child_element(element, "ACTION")
+        child = SerializationHelper.find_child_element(element, "ACTION")
         if child is not None:
             action_value = child.text
             obj.action = action_value
 
         # Parse matching_egresse_refs (list from container "MATCHING-EGRESSE-REFS")
         obj.matching_egresse_refs = []
-        container = ARObject._find_child_element(element, "MATCHING-EGRESSE-REFS")
+        container = SerializationHelper.find_child_element(element, "MATCHING-EGRESSE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.matching_egresse_refs.append(child_value)
 
         # Parse matching_refs (list from container "MATCHING-REFS")
         obj.matching_refs = []
-        container = ARObject._find_child_element(element, "MATCHING-REFS")
+        container = SerializationHelper.find_child_element(element, "MATCHING-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.matching_refs.append(child_value)
 

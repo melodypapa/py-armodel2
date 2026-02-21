@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology import (
     FlowMeteringColorModeEnum,
 )
@@ -57,7 +58,7 @@ class SwitchFlowMeteringEntry(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -76,7 +77,7 @@ class SwitchFlowMeteringEntry(Identifiable):
 
         # Serialize color_mode
         if self.color_mode is not None:
-            serialized = ARObject._serialize_item(self.color_mode, "FlowMeteringColorModeEnum")
+            serialized = SerializationHelper.serialize_item(self.color_mode, "FlowMeteringColorModeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COLOR-MODE")
@@ -90,7 +91,7 @@ class SwitchFlowMeteringEntry(Identifiable):
 
         # Serialize committed_burst
         if self.committed_burst is not None:
-            serialized = ARObject._serialize_item(self.committed_burst, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.committed_burst, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COMMITTED-BURST")
@@ -104,7 +105,7 @@ class SwitchFlowMeteringEntry(Identifiable):
 
         # Serialize committed
         if self.committed is not None:
-            serialized = ARObject._serialize_item(self.committed, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.committed, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COMMITTED")
@@ -118,7 +119,7 @@ class SwitchFlowMeteringEntry(Identifiable):
 
         # Serialize coupling_flag
         if self.coupling_flag is not None:
-            serialized = ARObject._serialize_item(self.coupling_flag, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.coupling_flag, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COUPLING-FLAG")
@@ -132,7 +133,7 @@ class SwitchFlowMeteringEntry(Identifiable):
 
         # Serialize excess_burst
         if self.excess_burst is not None:
-            serialized = ARObject._serialize_item(self.excess_burst, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.excess_burst, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("EXCESS-BURST")
@@ -146,7 +147,7 @@ class SwitchFlowMeteringEntry(Identifiable):
 
         # Serialize excess
         if self.excess is not None:
-            serialized = ARObject._serialize_item(self.excess, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.excess, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("EXCESS")
@@ -174,37 +175,37 @@ class SwitchFlowMeteringEntry(Identifiable):
         obj = super(SwitchFlowMeteringEntry, cls).deserialize(element)
 
         # Parse color_mode
-        child = ARObject._find_child_element(element, "COLOR-MODE")
+        child = SerializationHelper.find_child_element(element, "COLOR-MODE")
         if child is not None:
             color_mode_value = FlowMeteringColorModeEnum.deserialize(child)
             obj.color_mode = color_mode_value
 
         # Parse committed_burst
-        child = ARObject._find_child_element(element, "COMMITTED-BURST")
+        child = SerializationHelper.find_child_element(element, "COMMITTED-BURST")
         if child is not None:
             committed_burst_value = child.text
             obj.committed_burst = committed_burst_value
 
         # Parse committed
-        child = ARObject._find_child_element(element, "COMMITTED")
+        child = SerializationHelper.find_child_element(element, "COMMITTED")
         if child is not None:
             committed_value = child.text
             obj.committed = committed_value
 
         # Parse coupling_flag
-        child = ARObject._find_child_element(element, "COUPLING-FLAG")
+        child = SerializationHelper.find_child_element(element, "COUPLING-FLAG")
         if child is not None:
             coupling_flag_value = child.text
             obj.coupling_flag = coupling_flag_value
 
         # Parse excess_burst
-        child = ARObject._find_child_element(element, "EXCESS-BURST")
+        child = SerializationHelper.find_child_element(element, "EXCESS-BURST")
         if child is not None:
             excess_burst_value = child.text
             obj.excess_burst = excess_burst_value
 
         # Parse excess
-        child = ARObject._find_child_element(element, "EXCESS")
+        child = SerializationHelper.find_child_element(element, "EXCESS")
         if child is not None:
             excess_value = child.text
             obj.excess = excess_value

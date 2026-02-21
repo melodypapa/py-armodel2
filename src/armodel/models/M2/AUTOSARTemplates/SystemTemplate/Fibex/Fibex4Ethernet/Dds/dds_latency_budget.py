@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Float,
 )
@@ -40,12 +41,12 @@ class DdsLatencyBudget(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize latency_budget
         if self.latency_budget is not None:
-            serialized = ARObject._serialize_item(self.latency_budget, "Float")
+            serialized = SerializationHelper.serialize_item(self.latency_budget, "Float")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LATENCY-BUDGET")
@@ -74,7 +75,7 @@ class DdsLatencyBudget(ARObject):
         obj.__init__()
 
         # Parse latency_budget
-        child = ARObject._find_child_element(element, "LATENCY-BUDGET")
+        child = SerializationHelper.find_child_element(element, "LATENCY-BUDGET")
         if child is not None:
             latency_budget_value = child.text
             obj.latency_budget = latency_budget_value

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
@@ -49,7 +50,7 @@ class DdsCpTopic(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -68,7 +69,7 @@ class DdsCpTopic(Identifiable):
 
         # Serialize dds_partition_ref
         if self.dds_partition_ref is not None:
-            serialized = ARObject._serialize_item(self.dds_partition_ref, "DdsCpPartition")
+            serialized = SerializationHelper.serialize_item(self.dds_partition_ref, "DdsCpPartition")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DDS-PARTITION-REF")
@@ -82,7 +83,7 @@ class DdsCpTopic(Identifiable):
 
         # Serialize topic_name
         if self.topic_name is not None:
-            serialized = ARObject._serialize_item(self.topic_name, "String")
+            serialized = SerializationHelper.serialize_item(self.topic_name, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TOPIC-NAME")
@@ -110,13 +111,13 @@ class DdsCpTopic(Identifiable):
         obj = super(DdsCpTopic, cls).deserialize(element)
 
         # Parse dds_partition_ref
-        child = ARObject._find_child_element(element, "DDS-PARTITION-REF")
+        child = SerializationHelper.find_child_element(element, "DDS-PARTITION-REF")
         if child is not None:
             dds_partition_ref_value = ARRef.deserialize(child)
             obj.dds_partition_ref = dds_partition_ref_value
 
         # Parse topic_name
-        child = ARObject._find_child_element(element, "TOPIC-NAME")
+        child = SerializationHelper.find_child_element(element, "TOPIC-NAME")
         if child is not None:
             topic_name_value = child.text
             obj.topic_name = topic_name_value

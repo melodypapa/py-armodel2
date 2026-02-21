@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
@@ -45,12 +46,12 @@ class AbstractEnumerationValueVariationPoint(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize base
         if self.base is not None:
-            serialized = ARObject._serialize_item(self.base, "Identifier")
+            serialized = SerializationHelper.serialize_item(self.base, "Identifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BASE")
@@ -64,7 +65,7 @@ class AbstractEnumerationValueVariationPoint(ARObject, ABC):
 
         # Serialize enum_table_ref
         if self.enum_table_ref is not None:
-            serialized = ARObject._serialize_item(self.enum_table_ref, "Ref")
+            serialized = SerializationHelper.serialize_item(self.enum_table_ref, "Ref")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ENUM-TABLE-REF")
@@ -93,13 +94,13 @@ class AbstractEnumerationValueVariationPoint(ARObject, ABC):
         obj.__init__()
 
         # Parse base
-        child = ARObject._find_child_element(element, "BASE")
+        child = SerializationHelper.find_child_element(element, "BASE")
         if child is not None:
-            base_value = ARObject._deserialize_by_tag(child, "Identifier")
+            base_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
             obj.base = base_value
 
         # Parse enum_table_ref
-        child = ARObject._find_child_element(element, "ENUM-TABLE-REF")
+        child = SerializationHelper.find_child_element(element, "ENUM-TABLE-REF")
         if child is not None:
             enum_table_ref_value = ARRef.deserialize(child)
             obj.enum_table_ref = enum_table_ref_value

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
     DiagnosticMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Fim.diagnostic_fim_event_group import (
     DiagnosticFimEventGroup,
@@ -46,7 +47,7 @@ class DiagnosticFimAliasEventGroupMapping(DiagnosticMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class DiagnosticFimAliasEventGroupMapping(DiagnosticMapping):
 
         # Serialize actual_event_ref
         if self.actual_event_ref is not None:
-            serialized = ARObject._serialize_item(self.actual_event_ref, "DiagnosticFimEventGroup")
+            serialized = SerializationHelper.serialize_item(self.actual_event_ref, "DiagnosticFimEventGroup")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ACTUAL-EVENT-REF")
@@ -79,7 +80,7 @@ class DiagnosticFimAliasEventGroupMapping(DiagnosticMapping):
 
         # Serialize alias_event_ref
         if self.alias_event_ref is not None:
-            serialized = ARObject._serialize_item(self.alias_event_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.alias_event_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ALIAS-EVENT-REF")
@@ -107,13 +108,13 @@ class DiagnosticFimAliasEventGroupMapping(DiagnosticMapping):
         obj = super(DiagnosticFimAliasEventGroupMapping, cls).deserialize(element)
 
         # Parse actual_event_ref
-        child = ARObject._find_child_element(element, "ACTUAL-EVENT-REF")
+        child = SerializationHelper.find_child_element(element, "ACTUAL-EVENT-REF")
         if child is not None:
             actual_event_ref_value = ARRef.deserialize(child)
             obj.actual_event_ref = actual_event_ref_value
 
         # Parse alias_event_ref
-        child = ARObject._find_child_element(element, "ALIAS-EVENT-REF")
+        child = SerializationHelper.find_child_element(element, "ALIAS-EVENT-REF")
         if child is not None:
             alias_event_ref_value = ARRef.deserialize(child)
             obj.alias_event_ref = alias_event_ref_value

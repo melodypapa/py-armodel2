@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommunication import (
     ResumePosition,
     RunMode,
@@ -51,7 +52,7 @@ class LinScheduleTable(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -70,7 +71,7 @@ class LinScheduleTable(Identifiable):
 
         # Serialize resume_position
         if self.resume_position is not None:
-            serialized = ARObject._serialize_item(self.resume_position, "ResumePosition")
+            serialized = SerializationHelper.serialize_item(self.resume_position, "ResumePosition")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RESUME-POSITION")
@@ -84,7 +85,7 @@ class LinScheduleTable(Identifiable):
 
         # Serialize run_mode
         if self.run_mode is not None:
-            serialized = ARObject._serialize_item(self.run_mode, "RunMode")
+            serialized = SerializationHelper.serialize_item(self.run_mode, "RunMode")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RUN-MODE")
@@ -100,7 +101,7 @@ class LinScheduleTable(Identifiable):
         if self.table_entries:
             wrapper = ET.Element("TABLE-ENTRIES")
             for item in self.table_entries:
-                serialized = ARObject._serialize_item(item, "ScheduleTableEntry")
+                serialized = SerializationHelper.serialize_item(item, "ScheduleTableEntry")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -122,24 +123,24 @@ class LinScheduleTable(Identifiable):
         obj = super(LinScheduleTable, cls).deserialize(element)
 
         # Parse resume_position
-        child = ARObject._find_child_element(element, "RESUME-POSITION")
+        child = SerializationHelper.find_child_element(element, "RESUME-POSITION")
         if child is not None:
             resume_position_value = ResumePosition.deserialize(child)
             obj.resume_position = resume_position_value
 
         # Parse run_mode
-        child = ARObject._find_child_element(element, "RUN-MODE")
+        child = SerializationHelper.find_child_element(element, "RUN-MODE")
         if child is not None:
             run_mode_value = RunMode.deserialize(child)
             obj.run_mode = run_mode_value
 
         # Parse table_entries (list from container "TABLE-ENTRIES")
         obj.table_entries = []
-        container = ARObject._find_child_element(element, "TABLE-ENTRIES")
+        container = SerializationHelper.find_child_element(element, "TABLE-ENTRIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.table_entries.append(child_value)
 

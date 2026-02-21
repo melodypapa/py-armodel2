@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
     IPdu,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -46,7 +47,7 @@ class J1939DcmIPdu(IPdu):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class J1939DcmIPdu(IPdu):
 
         # Serialize diagnostic
         if self.diagnostic is not None:
-            serialized = ARObject._serialize_item(self.diagnostic, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.diagnostic, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DIAGNOSTIC")
@@ -79,7 +80,7 @@ class J1939DcmIPdu(IPdu):
 
         # Serialize message_type
         if self.message_type is not None:
-            serialized = ARObject._serialize_item(self.message_type, "Any")
+            serialized = SerializationHelper.serialize_item(self.message_type, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MESSAGE-TYPE")
@@ -107,13 +108,13 @@ class J1939DcmIPdu(IPdu):
         obj = super(J1939DcmIPdu, cls).deserialize(element)
 
         # Parse diagnostic
-        child = ARObject._find_child_element(element, "DIAGNOSTIC")
+        child = SerializationHelper.find_child_element(element, "DIAGNOSTIC")
         if child is not None:
             diagnostic_value = child.text
             obj.diagnostic = diagnostic_value
 
         # Parse message_type
-        child = ARObject._find_child_element(element, "MESSAGE-TYPE")
+        child = SerializationHelper.find_child_element(element, "MESSAGE-TYPE")
         if child is not None:
             message_type_value = child.text
             obj.message_type = message_type_value

@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveUnlimitedInteger,
 )
@@ -40,12 +41,12 @@ class StreamFilterIEEE1722Tp(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize stream_id
         if self.stream_id is not None:
-            serialized = ARObject._serialize_item(self.stream_id, "PositiveUnlimitedInteger")
+            serialized = SerializationHelper.serialize_item(self.stream_id, "PositiveUnlimitedInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("STREAM-ID")
@@ -74,7 +75,7 @@ class StreamFilterIEEE1722Tp(ARObject):
         obj.__init__()
 
         # Parse stream_id
-        child = ARObject._find_child_element(element, "STREAM-ID")
+        child = SerializationHelper.find_child_element(element, "STREAM-ID")
         if child is not None:
             stream_id_value = child.text
             obj.stream_id = stream_id_value

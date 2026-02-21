@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dem.DiagnosticEvent.diagnostic_event import (
     DiagnosticEvent,
@@ -54,7 +55,7 @@ class DiagnosticTestResult(DiagnosticCommonElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -73,7 +74,7 @@ class DiagnosticTestResult(DiagnosticCommonElement):
 
         # Serialize diagnostic_event_ref
         if self.diagnostic_event_ref is not None:
-            serialized = ARObject._serialize_item(self.diagnostic_event_ref, "DiagnosticEvent")
+            serialized = SerializationHelper.serialize_item(self.diagnostic_event_ref, "DiagnosticEvent")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DIAGNOSTIC-EVENT-REF")
@@ -87,7 +88,7 @@ class DiagnosticTestResult(DiagnosticCommonElement):
 
         # Serialize monitored_ref
         if self.monitored_ref is not None:
-            serialized = ARObject._serialize_item(self.monitored_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.monitored_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MONITORED-REF")
@@ -101,7 +102,7 @@ class DiagnosticTestResult(DiagnosticCommonElement):
 
         # Serialize test_identifier
         if self.test_identifier is not None:
-            serialized = ARObject._serialize_item(self.test_identifier, "DiagnosticTestIdentifier")
+            serialized = SerializationHelper.serialize_item(self.test_identifier, "DiagnosticTestIdentifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TEST-IDENTIFIER")
@@ -115,7 +116,7 @@ class DiagnosticTestResult(DiagnosticCommonElement):
 
         # Serialize update_kind
         if self.update_kind is not None:
-            serialized = ARObject._serialize_item(self.update_kind, "DiagnosticTestResult")
+            serialized = SerializationHelper.serialize_item(self.update_kind, "DiagnosticTestResult")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("UPDATE-KIND")
@@ -143,27 +144,27 @@ class DiagnosticTestResult(DiagnosticCommonElement):
         obj = super(DiagnosticTestResult, cls).deserialize(element)
 
         # Parse diagnostic_event_ref
-        child = ARObject._find_child_element(element, "DIAGNOSTIC-EVENT-REF")
+        child = SerializationHelper.find_child_element(element, "DIAGNOSTIC-EVENT-REF")
         if child is not None:
             diagnostic_event_ref_value = ARRef.deserialize(child)
             obj.diagnostic_event_ref = diagnostic_event_ref_value
 
         # Parse monitored_ref
-        child = ARObject._find_child_element(element, "MONITORED-REF")
+        child = SerializationHelper.find_child_element(element, "MONITORED-REF")
         if child is not None:
             monitored_ref_value = ARRef.deserialize(child)
             obj.monitored_ref = monitored_ref_value
 
         # Parse test_identifier
-        child = ARObject._find_child_element(element, "TEST-IDENTIFIER")
+        child = SerializationHelper.find_child_element(element, "TEST-IDENTIFIER")
         if child is not None:
-            test_identifier_value = ARObject._deserialize_by_tag(child, "DiagnosticTestIdentifier")
+            test_identifier_value = SerializationHelper.deserialize_by_tag(child, "DiagnosticTestIdentifier")
             obj.test_identifier = test_identifier_value
 
         # Parse update_kind
-        child = ARObject._find_child_element(element, "UPDATE-KIND")
+        child = SerializationHelper.find_child_element(element, "UPDATE-KIND")
         if child is not None:
-            update_kind_value = ARObject._deserialize_by_tag(child, "DiagnosticTestResult")
+            update_kind_value = SerializationHelper.deserialize_by_tag(child, "DiagnosticTestResult")
             obj.update_kind = update_kind_value
 
         return obj

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.abstract_globa
     AbstractGlobalTimeDomainProps,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -45,7 +46,7 @@ class FrGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class FrGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
 
         # Serialize ofs_data_id_list
         if self.ofs_data_id_list is not None:
-            serialized = ARObject._serialize_item(self.ofs_data_id_list, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.ofs_data_id_list, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("OFS-DATA-ID-LIST")
@@ -78,7 +79,7 @@ class FrGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
 
         # Serialize sync_data_id_list
         if self.sync_data_id_list is not None:
-            serialized = ARObject._serialize_item(self.sync_data_id_list, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.sync_data_id_list, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SYNC-DATA-ID-LIST")
@@ -106,13 +107,13 @@ class FrGlobalTimeDomainProps(AbstractGlobalTimeDomainProps):
         obj = super(FrGlobalTimeDomainProps, cls).deserialize(element)
 
         # Parse ofs_data_id_list
-        child = ARObject._find_child_element(element, "OFS-DATA-ID-LIST")
+        child = SerializationHelper.find_child_element(element, "OFS-DATA-ID-LIST")
         if child is not None:
             ofs_data_id_list_value = child.text
             obj.ofs_data_id_list = ofs_data_id_list_value
 
         # Parse sync_data_id_list
-        child = ARObject._find_child_element(element, "SYNC-DATA-ID-LIST")
+        child = SerializationHelper.find_child_element(element, "SYNC-DATA-ID-LIST")
         if child is not None:
             sync_data_id_list_value = child.text
             obj.sync_data_id_list = sync_data_id_list_value

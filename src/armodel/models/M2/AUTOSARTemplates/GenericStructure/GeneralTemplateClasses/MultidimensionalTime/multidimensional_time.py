@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     CseCodeType,
     Integer,
@@ -45,12 +46,12 @@ class MultidimensionalTime(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize cse_code
         if self.cse_code is not None:
-            serialized = ARObject._serialize_item(self.cse_code, "CseCodeType")
+            serialized = SerializationHelper.serialize_item(self.cse_code, "CseCodeType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CSE-CODE")
@@ -64,7 +65,7 @@ class MultidimensionalTime(ARObject):
 
         # Serialize cse_code_factor
         if self.cse_code_factor is not None:
-            serialized = ARObject._serialize_item(self.cse_code_factor, "Integer")
+            serialized = SerializationHelper.serialize_item(self.cse_code_factor, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CSE-CODE-FACTOR")
@@ -93,13 +94,13 @@ class MultidimensionalTime(ARObject):
         obj.__init__()
 
         # Parse cse_code
-        child = ARObject._find_child_element(element, "CSE-CODE")
+        child = SerializationHelper.find_child_element(element, "CSE-CODE")
         if child is not None:
             cse_code_value = child.text
             obj.cse_code = cse_code_value
 
         # Parse cse_code_factor
-        child = ARObject._find_child_element(element, "CSE-CODE-FACTOR")
+        child = SerializationHelper.find_child_element(element, "CSE-CODE-FACTOR")
         if child is not None:
             cse_code_factor_value = child.text
             obj.cse_code_factor = cse_code_factor_value

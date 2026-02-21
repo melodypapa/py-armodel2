@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.do_ip_entity import (
     DoIpEntity,
 )
@@ -45,12 +46,12 @@ class InfrastructureServices(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize do_ip_entity
         if self.do_ip_entity is not None:
-            serialized = ARObject._serialize_item(self.do_ip_entity, "DoIpEntity")
+            serialized = SerializationHelper.serialize_item(self.do_ip_entity, "DoIpEntity")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DO-IP-ENTITY")
@@ -64,7 +65,7 @@ class InfrastructureServices(ARObject):
 
         # Serialize time
         if self.time is not None:
-            serialized = ARObject._serialize_item(self.time, "TimeSynchronization")
+            serialized = SerializationHelper.serialize_item(self.time, "TimeSynchronization")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIME")
@@ -93,15 +94,15 @@ class InfrastructureServices(ARObject):
         obj.__init__()
 
         # Parse do_ip_entity
-        child = ARObject._find_child_element(element, "DO-IP-ENTITY")
+        child = SerializationHelper.find_child_element(element, "DO-IP-ENTITY")
         if child is not None:
-            do_ip_entity_value = ARObject._deserialize_by_tag(child, "DoIpEntity")
+            do_ip_entity_value = SerializationHelper.deserialize_by_tag(child, "DoIpEntity")
             obj.do_ip_entity = do_ip_entity_value
 
         # Parse time
-        child = ARObject._find_child_element(element, "TIME")
+        child = SerializationHelper.find_child_element(element, "TIME")
         if child is not None:
-            time_value = ARObject._deserialize_by_tag(child, "TimeSynchronization")
+            time_value = SerializationHelper.deserialize_by_tag(child, "TimeSynchronization")
             obj.time = time_value
 
         return obj

@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.Documentation.MsrQuery.msr_query_p1 import (
     MsrQueryP1,
 )
@@ -45,12 +46,12 @@ class TopicContentOrMsrQuery(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize msr_query_p1
         if self.msr_query_p1 is not None:
-            serialized = ARObject._serialize_item(self.msr_query_p1, "MsrQueryP1")
+            serialized = SerializationHelper.serialize_item(self.msr_query_p1, "MsrQueryP1")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MSR-QUERY-P1")
@@ -64,7 +65,7 @@ class TopicContentOrMsrQuery(ARObject):
 
         # Serialize topic_content
         if self.topic_content is not None:
-            serialized = ARObject._serialize_item(self.topic_content, "TopicContent")
+            serialized = SerializationHelper.serialize_item(self.topic_content, "TopicContent")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TOPIC-CONTENT")
@@ -93,15 +94,15 @@ class TopicContentOrMsrQuery(ARObject):
         obj.__init__()
 
         # Parse msr_query_p1
-        child = ARObject._find_child_element(element, "MSR-QUERY-P1")
+        child = SerializationHelper.find_child_element(element, "MSR-QUERY-P1")
         if child is not None:
-            msr_query_p1_value = ARObject._deserialize_by_tag(child, "MsrQueryP1")
+            msr_query_p1_value = SerializationHelper.deserialize_by_tag(child, "MsrQueryP1")
             obj.msr_query_p1 = msr_query_p1_value
 
         # Parse topic_content
-        child = ARObject._find_child_element(element, "TOPIC-CONTENT")
+        child = SerializationHelper.find_child_element(element, "TOPIC-CONTENT")
         if child is not None:
-            topic_content_value = ARObject._deserialize_by_tag(child, "TopicContent")
+            topic_content_value = SerializationHelper.deserialize_by_tag(child, "TopicContent")
             obj.topic_content = topic_content_value
 
         return obj

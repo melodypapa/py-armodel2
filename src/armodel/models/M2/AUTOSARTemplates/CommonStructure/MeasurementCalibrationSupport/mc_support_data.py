@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.MeasurementCalibrationSupport.mc_data_instance import (
     McDataInstance,
@@ -59,14 +60,14 @@ class McSupportData(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize emulations (list to container "EMULATIONS")
         if self.emulations:
             wrapper = ET.Element("EMULATIONS")
             for item in self.emulations:
-                serialized = ARObject._serialize_item(item, "McSwEmulationMethodSupport")
+                serialized = SerializationHelper.serialize_item(item, "McSwEmulationMethodSupport")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -76,7 +77,7 @@ class McSupportData(ARObject):
         if self.mc_parameters:
             wrapper = ET.Element("MC-PARAMETERS")
             for item in self.mc_parameters:
-                serialized = ARObject._serialize_item(item, "McDataInstance")
+                serialized = SerializationHelper.serialize_item(item, "McDataInstance")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -86,7 +87,7 @@ class McSupportData(ARObject):
         if self.mc_variables:
             wrapper = ET.Element("MC-VARIABLES")
             for item in self.mc_variables:
-                serialized = ARObject._serialize_item(item, "McDataInstance")
+                serialized = SerializationHelper.serialize_item(item, "McDataInstance")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -96,7 +97,7 @@ class McSupportData(ARObject):
         if self.measurable_refs:
             wrapper = ET.Element("MEASURABLE-REFS")
             for item in self.measurable_refs:
-                serialized = ARObject._serialize_item(item, "SwSystemconstantValueSet")
+                serialized = SerializationHelper.serialize_item(item, "SwSystemconstantValueSet")
                 if serialized is not None:
                     child_elem = ET.Element("MEASURABLE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -111,7 +112,7 @@ class McSupportData(ARObject):
 
         # Serialize rpt_support_data
         if self.rpt_support_data is not None:
-            serialized = ARObject._serialize_item(self.rpt_support_data, "RptSupportData")
+            serialized = SerializationHelper.serialize_item(self.rpt_support_data, "RptSupportData")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RPT-SUPPORT-DATA")
@@ -141,54 +142,54 @@ class McSupportData(ARObject):
 
         # Parse emulations (list from container "EMULATIONS")
         obj.emulations = []
-        container = ARObject._find_child_element(element, "EMULATIONS")
+        container = SerializationHelper.find_child_element(element, "EMULATIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.emulations.append(child_value)
 
         # Parse mc_parameters (list from container "MC-PARAMETERS")
         obj.mc_parameters = []
-        container = ARObject._find_child_element(element, "MC-PARAMETERS")
+        container = SerializationHelper.find_child_element(element, "MC-PARAMETERS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.mc_parameters.append(child_value)
 
         # Parse mc_variables (list from container "MC-VARIABLES")
         obj.mc_variables = []
-        container = ARObject._find_child_element(element, "MC-VARIABLES")
+        container = SerializationHelper.find_child_element(element, "MC-VARIABLES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.mc_variables.append(child_value)
 
         # Parse measurable_refs (list from container "MEASURABLE-REFS")
         obj.measurable_refs = []
-        container = ARObject._find_child_element(element, "MEASURABLE-REFS")
+        container = SerializationHelper.find_child_element(element, "MEASURABLE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.measurable_refs.append(child_value)
 
         # Parse rpt_support_data
-        child = ARObject._find_child_element(element, "RPT-SUPPORT-DATA")
+        child = SerializationHelper.find_child_element(element, "RPT-SUPPORT-DATA")
         if child is not None:
-            rpt_support_data_value = ARObject._deserialize_by_tag(child, "RptSupportData")
+            rpt_support_data_value = SerializationHelper.deserialize_by_tag(child, "RptSupportData")
             obj.rpt_support_data = rpt_support_data_value
 
         return obj

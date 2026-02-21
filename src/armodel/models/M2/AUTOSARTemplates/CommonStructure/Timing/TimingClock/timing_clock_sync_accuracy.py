@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
     MultidimensionalTime,
@@ -51,7 +52,7 @@ class TimingClockSyncAccuracy(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -70,7 +71,7 @@ class TimingClockSyncAccuracy(Identifiable):
 
         # Serialize accuracy
         if self.accuracy is not None:
-            serialized = ARObject._serialize_item(self.accuracy, "MultidimensionalTime")
+            serialized = SerializationHelper.serialize_item(self.accuracy, "MultidimensionalTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ACCURACY")
@@ -84,7 +85,7 @@ class TimingClockSyncAccuracy(Identifiable):
 
         # Serialize lower_ref
         if self.lower_ref is not None:
-            serialized = ARObject._serialize_item(self.lower_ref, "TimingClock")
+            serialized = SerializationHelper.serialize_item(self.lower_ref, "TimingClock")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LOWER-REF")
@@ -98,7 +99,7 @@ class TimingClockSyncAccuracy(Identifiable):
 
         # Serialize upper_ref
         if self.upper_ref is not None:
-            serialized = ARObject._serialize_item(self.upper_ref, "TimingClock")
+            serialized = SerializationHelper.serialize_item(self.upper_ref, "TimingClock")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("UPPER-REF")
@@ -126,19 +127,19 @@ class TimingClockSyncAccuracy(Identifiable):
         obj = super(TimingClockSyncAccuracy, cls).deserialize(element)
 
         # Parse accuracy
-        child = ARObject._find_child_element(element, "ACCURACY")
+        child = SerializationHelper.find_child_element(element, "ACCURACY")
         if child is not None:
-            accuracy_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            accuracy_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
             obj.accuracy = accuracy_value
 
         # Parse lower_ref
-        child = ARObject._find_child_element(element, "LOWER-REF")
+        child = SerializationHelper.find_child_element(element, "LOWER-REF")
         if child is not None:
             lower_ref_value = ARRef.deserialize(child)
             obj.lower_ref = lower_ref_value
 
         # Parse upper_ref
-        child = ARObject._find_child_element(element, "UPPER-REF")
+        child = SerializationHelper.find_child_element(element, "UPPER-REF")
         if child is not None:
             upper_ref_value = ARRef.deserialize(child)
             obj.upper_ref = upper_ref_value

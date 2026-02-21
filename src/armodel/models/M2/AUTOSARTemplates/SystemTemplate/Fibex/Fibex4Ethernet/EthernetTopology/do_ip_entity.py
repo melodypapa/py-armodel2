@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology import (
     DoIpEntityRoleEnum,
 )
@@ -40,12 +41,12 @@ class DoIpEntity(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize do_ip_entity_role_enum
         if self.do_ip_entity_role_enum is not None:
-            serialized = ARObject._serialize_item(self.do_ip_entity_role_enum, "DoIpEntityRoleEnum")
+            serialized = SerializationHelper.serialize_item(self.do_ip_entity_role_enum, "DoIpEntityRoleEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DO-IP-ENTITY-ROLE-ENUM")
@@ -74,7 +75,7 @@ class DoIpEntity(ARObject):
         obj.__init__()
 
         # Parse do_ip_entity_role_enum
-        child = ARObject._find_child_element(element, "DO-IP-ENTITY-ROLE-ENUM")
+        child = SerializationHelper.find_child_element(element, "DO-IP-ENTITY-ROLE-ENUM")
         if child is not None:
             do_ip_entity_role_enum_value = DoIpEntityRoleEnum.deserialize(child)
             obj.do_ip_entity_role_enum = do_ip_entity_role_enum_value

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -43,7 +44,7 @@ class DiagnosticMeasurementIdentifier(DiagnosticCommonElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class DiagnosticMeasurementIdentifier(DiagnosticCommonElement):
 
         # Serialize obd_mid
         if self.obd_mid is not None:
-            serialized = ARObject._serialize_item(self.obd_mid, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.obd_mid, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("OBD-MID")
@@ -90,7 +91,7 @@ class DiagnosticMeasurementIdentifier(DiagnosticCommonElement):
         obj = super(DiagnosticMeasurementIdentifier, cls).deserialize(element)
 
         # Parse obd_mid
-        child = ARObject._find_child_element(element, "OBD-MID")
+        child = SerializationHelper.find_child_element(element, "OBD-MID")
         if child is not None:
             obd_mid_value = child.text
             obj.obd_mid = obd_mid_value

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_event 
     BswEvent,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_module_client_server_entry import (
     BswModuleClientServerEntry,
@@ -44,7 +45,7 @@ class BswOperationInvokedEvent(BswEvent):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -63,7 +64,7 @@ class BswOperationInvokedEvent(BswEvent):
 
         # Serialize entry_ref
         if self.entry_ref is not None:
-            serialized = ARObject._serialize_item(self.entry_ref, "BswModuleClientServerEntry")
+            serialized = SerializationHelper.serialize_item(self.entry_ref, "BswModuleClientServerEntry")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ENTRY-REF")
@@ -91,7 +92,7 @@ class BswOperationInvokedEvent(BswEvent):
         obj = super(BswOperationInvokedEvent, cls).deserialize(element)
 
         # Parse entry_ref
-        child = ARObject._find_child_element(element, "ENTRY-REF")
+        child = SerializationHelper.find_child_element(element, "ENTRY-REF")
         if child is not None:
             entry_ref_value = ARRef.deserialize(child)
             obj.entry_ref = entry_ref_value

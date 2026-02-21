@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 if TYPE_CHECKING:
     from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
@@ -47,7 +48,7 @@ class ConstantSpecification(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -66,7 +67,7 @@ class ConstantSpecification(ARElement):
 
         # Serialize value_spec
         if self.value_spec is not None:
-            serialized = ARObject._serialize_item(self.value_spec, "ValueSpecification")
+            serialized = SerializationHelper.serialize_item(self.value_spec, "ValueSpecification")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VALUE-SPEC")
@@ -94,9 +95,9 @@ class ConstantSpecification(ARElement):
         obj = super(ConstantSpecification, cls).deserialize(element)
 
         # Parse value_spec
-        child = ARObject._find_child_element(element, "VALUE-SPEC")
+        child = SerializationHelper.find_child_element(element, "VALUE-SPEC")
         if child is not None:
-            value_spec_value = ARObject._deserialize_by_tag(child, "ValueSpecification")
+            value_spec_value = SerializationHelper.deserialize_by_tag(child, "ValueSpecification")
             obj.value_spec = value_spec_value
 
         return obj

@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.Documentation.TextModel.InlineAttributeEnums import (
     EEnum,
     EEnumFont,
@@ -60,12 +61,12 @@ class EmphasisText(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize color
         if self.color is not None:
-            serialized = ARObject._serialize_item(self.color, "String")
+            serialized = SerializationHelper.serialize_item(self.color, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COLOR")
@@ -79,7 +80,7 @@ class EmphasisText(ARObject):
 
         # Serialize font
         if self.font is not None:
-            serialized = ARObject._serialize_item(self.font, "EEnumFont")
+            serialized = SerializationHelper.serialize_item(self.font, "EEnumFont")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FONT")
@@ -93,7 +94,7 @@ class EmphasisText(ARObject):
 
         # Serialize sub
         if self.sub is not None:
-            serialized = ARObject._serialize_item(self.sub, "Superscript")
+            serialized = SerializationHelper.serialize_item(self.sub, "Superscript")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SUB")
@@ -107,7 +108,7 @@ class EmphasisText(ARObject):
 
         # Serialize sup
         if self.sup is not None:
-            serialized = ARObject._serialize_item(self.sup, "Superscript")
+            serialized = SerializationHelper.serialize_item(self.sup, "Superscript")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SUP")
@@ -121,7 +122,7 @@ class EmphasisText(ARObject):
 
         # Serialize tt
         if self.tt is not None:
-            serialized = ARObject._serialize_item(self.tt, "Tt")
+            serialized = SerializationHelper.serialize_item(self.tt, "Tt")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TT")
@@ -135,7 +136,7 @@ class EmphasisText(ARObject):
 
         # Serialize type
         if self.type is not None:
-            serialized = ARObject._serialize_item(self.type, "EEnum")
+            serialized = SerializationHelper.serialize_item(self.type, "EEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TYPE")
@@ -164,37 +165,37 @@ class EmphasisText(ARObject):
         obj.__init__()
 
         # Parse color
-        child = ARObject._find_child_element(element, "COLOR")
+        child = SerializationHelper.find_child_element(element, "COLOR")
         if child is not None:
             color_value = child.text
             obj.color = color_value
 
         # Parse font
-        child = ARObject._find_child_element(element, "FONT")
+        child = SerializationHelper.find_child_element(element, "FONT")
         if child is not None:
             font_value = EEnumFont.deserialize(child)
             obj.font = font_value
 
         # Parse sub
-        child = ARObject._find_child_element(element, "SUB")
+        child = SerializationHelper.find_child_element(element, "SUB")
         if child is not None:
             sub_value = child.text
             obj.sub = sub_value
 
         # Parse sup
-        child = ARObject._find_child_element(element, "SUP")
+        child = SerializationHelper.find_child_element(element, "SUP")
         if child is not None:
             sup_value = child.text
             obj.sup = sup_value
 
         # Parse tt
-        child = ARObject._find_child_element(element, "TT")
+        child = SerializationHelper.find_child_element(element, "TT")
         if child is not None:
-            tt_value = ARObject._deserialize_by_tag(child, "Tt")
+            tt_value = SerializationHelper.deserialize_by_tag(child, "Tt")
             obj.tt = tt_value
 
         # Parse type
-        child = ARObject._find_child_element(element, "TYPE")
+        child = SerializationHelper.find_child_element(element, "TYPE")
         if child is not None:
             type_value = EEnum.deserialize(child)
             obj.type = type_value

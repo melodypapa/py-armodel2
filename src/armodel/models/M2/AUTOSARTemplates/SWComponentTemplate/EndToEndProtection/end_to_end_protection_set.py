@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.EndToEndProtection.end_to_end_protection import (
     EndToEndProtection,
 )
@@ -44,7 +45,7 @@ class EndToEndProtectionSet(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class EndToEndProtectionSet(ARElement):
         if self.end_to_ends:
             wrapper = ET.Element("END-TO-ENDS")
             for item in self.end_to_ends:
-                serialized = ARObject._serialize_item(item, "EndToEndProtection")
+                serialized = SerializationHelper.serialize_item(item, "EndToEndProtection")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -88,11 +89,11 @@ class EndToEndProtectionSet(ARElement):
 
         # Parse end_to_ends (list from container "END-TO-ENDS")
         obj.end_to_ends = []
-        container = ARObject._find_child_element(element, "END-TO-ENDS")
+        container = SerializationHelper.find_child_element(element, "END-TO-ENDS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.end_to_ends.append(child_value)
 

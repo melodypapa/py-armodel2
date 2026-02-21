@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -51,7 +52,7 @@ class Compiler(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -70,7 +71,7 @@ class Compiler(Identifiable):
 
         # Serialize name
         if self.name is not None:
-            serialized = ARObject._serialize_item(self.name, "String")
+            serialized = SerializationHelper.serialize_item(self.name, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NAME")
@@ -84,7 +85,7 @@ class Compiler(Identifiable):
 
         # Serialize options
         if self.options is not None:
-            serialized = ARObject._serialize_item(self.options, "String")
+            serialized = SerializationHelper.serialize_item(self.options, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("OPTIONS")
@@ -98,7 +99,7 @@ class Compiler(Identifiable):
 
         # Serialize vendor
         if self.vendor is not None:
-            serialized = ARObject._serialize_item(self.vendor, "String")
+            serialized = SerializationHelper.serialize_item(self.vendor, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VENDOR")
@@ -112,7 +113,7 @@ class Compiler(Identifiable):
 
         # Serialize version
         if self.version is not None:
-            serialized = ARObject._serialize_item(self.version, "String")
+            serialized = SerializationHelper.serialize_item(self.version, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VERSION")
@@ -140,25 +141,25 @@ class Compiler(Identifiable):
         obj = super(Compiler, cls).deserialize(element)
 
         # Parse name
-        child = ARObject._find_child_element(element, "NAME")
+        child = SerializationHelper.find_child_element(element, "NAME")
         if child is not None:
             name_value = child.text
             obj.name = name_value
 
         # Parse options
-        child = ARObject._find_child_element(element, "OPTIONS")
+        child = SerializationHelper.find_child_element(element, "OPTIONS")
         if child is not None:
             options_value = child.text
             obj.options = options_value
 
         # Parse vendor
-        child = ARObject._find_child_element(element, "VENDOR")
+        child = SerializationHelper.find_child_element(element, "VENDOR")
         if child is not None:
             vendor_value = child.text
             obj.vendor = vendor_value
 
         # Parse version
-        child = ARObject._find_child_element(element, "VERSION")
+        child = SerializationHelper.find_child_element(element, "VERSION")
         if child is not None:
             version_value = child.text
             obj.version = version_value

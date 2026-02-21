@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration import (
     ModeDeclaration,
@@ -47,7 +48,7 @@ class ModeTransition(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -66,7 +67,7 @@ class ModeTransition(Identifiable):
 
         # Serialize entered_mode_ref
         if self.entered_mode_ref is not None:
-            serialized = ARObject._serialize_item(self.entered_mode_ref, "ModeDeclaration")
+            serialized = SerializationHelper.serialize_item(self.entered_mode_ref, "ModeDeclaration")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ENTERED-MODE-REF")
@@ -80,7 +81,7 @@ class ModeTransition(Identifiable):
 
         # Serialize exited_mode_ref
         if self.exited_mode_ref is not None:
-            serialized = ARObject._serialize_item(self.exited_mode_ref, "ModeDeclaration")
+            serialized = SerializationHelper.serialize_item(self.exited_mode_ref, "ModeDeclaration")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("EXITED-MODE-REF")
@@ -108,13 +109,13 @@ class ModeTransition(Identifiable):
         obj = super(ModeTransition, cls).deserialize(element)
 
         # Parse entered_mode_ref
-        child = ARObject._find_child_element(element, "ENTERED-MODE-REF")
+        child = SerializationHelper.find_child_element(element, "ENTERED-MODE-REF")
         if child is not None:
             entered_mode_ref_value = ARRef.deserialize(child)
             obj.entered_mode_ref = entered_mode_ref_value
 
         # Parse exited_mode_ref
-        child = ARObject._find_child_element(element, "EXITED-MODE-REF")
+        child = SerializationHelper.find_child_element(element, "EXITED-MODE-REF")
         if child is not None:
             exited_mode_ref_value = ARRef.deserialize(child)
             obj.exited_mode_ref = exited_mode_ref_value

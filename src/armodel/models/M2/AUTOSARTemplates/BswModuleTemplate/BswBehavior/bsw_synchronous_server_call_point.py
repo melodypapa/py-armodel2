@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_module
     BswModuleCallPoint,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswInterfaces.bsw_module_client_server_entry import (
     BswModuleClientServerEntry,
@@ -49,7 +50,7 @@ class BswSynchronousServerCallPoint(BswModuleCallPoint):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -68,7 +69,7 @@ class BswSynchronousServerCallPoint(BswModuleCallPoint):
 
         # Serialize called_entry_entry_ref
         if self.called_entry_entry_ref is not None:
-            serialized = ARObject._serialize_item(self.called_entry_entry_ref, "BswModuleClientServerEntry")
+            serialized = SerializationHelper.serialize_item(self.called_entry_entry_ref, "BswModuleClientServerEntry")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CALLED-ENTRY-ENTRY-REF")
@@ -82,7 +83,7 @@ class BswSynchronousServerCallPoint(BswModuleCallPoint):
 
         # Serialize called_from_ref
         if self.called_from_ref is not None:
-            serialized = ARObject._serialize_item(self.called_from_ref, "ExclusiveAreaNestingOrder")
+            serialized = SerializationHelper.serialize_item(self.called_from_ref, "ExclusiveAreaNestingOrder")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CALLED-FROM-REF")
@@ -110,13 +111,13 @@ class BswSynchronousServerCallPoint(BswModuleCallPoint):
         obj = super(BswSynchronousServerCallPoint, cls).deserialize(element)
 
         # Parse called_entry_entry_ref
-        child = ARObject._find_child_element(element, "CALLED-ENTRY-ENTRY-REF")
+        child = SerializationHelper.find_child_element(element, "CALLED-ENTRY-ENTRY-REF")
         if child is not None:
             called_entry_entry_ref_value = ARRef.deserialize(child)
             obj.called_entry_entry_ref = called_entry_entry_ref_value
 
         # Parse called_from_ref
-        child = ARObject._find_child_element(element, "CALLED-FROM-REF")
+        child = SerializationHelper.find_child_element(element, "CALLED-FROM-REF")
         if child is not None:
             called_from_ref_value = ARRef.deserialize(child)
             obj.called_from_ref = called_from_ref_value

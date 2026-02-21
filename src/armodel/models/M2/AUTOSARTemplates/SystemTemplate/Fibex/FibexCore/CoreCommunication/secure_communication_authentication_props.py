@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -43,7 +44,7 @@ class SecureCommunicationAuthenticationProps(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class SecureCommunicationAuthenticationProps(Identifiable):
 
         # Serialize auth_info_tx
         if self.auth_info_tx is not None:
-            serialized = ARObject._serialize_item(self.auth_info_tx, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.auth_info_tx, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("AUTH-INFO-TX")
@@ -90,7 +91,7 @@ class SecureCommunicationAuthenticationProps(Identifiable):
         obj = super(SecureCommunicationAuthenticationProps, cls).deserialize(element)
 
         # Parse auth_info_tx
-        child = ARObject._find_child_element(element, "AUTH-INFO-TX")
+        child = SerializationHelper.find_child_element(element, "AUTH-INFO-TX")
         if child is not None:
             auth_info_tx_value = child.text
             obj.auth_info_tx = auth_info_tx_value

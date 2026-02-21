@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.RteEventToOsTaskMapping.app_os_task_proxy_to_ecu_task_proxy_mapping import (
     AppOsTaskProxyToEcuTaskProxyMapping,
@@ -142,7 +143,7 @@ class SystemMapping(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -163,7 +164,7 @@ class SystemMapping(Identifiable):
         if self.applications:
             wrapper = ET.Element("APPLICATIONS")
             for item in self.applications:
-                serialized = ARObject._serialize_item(item, "ApplicationPartitionToEcuPartitionMapping")
+                serialized = SerializationHelper.serialize_item(item, "ApplicationPartitionToEcuPartitionMapping")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -173,7 +174,7 @@ class SystemMapping(Identifiable):
         if self.app_os_tasks:
             wrapper = ET.Element("APP-OS-TASKS")
             for item in self.app_os_tasks:
-                serialized = ARObject._serialize_item(item, "AppOsTaskProxyToEcuTaskProxyMapping")
+                serialized = SerializationHelper.serialize_item(item, "AppOsTaskProxyToEcuTaskProxyMapping")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -183,7 +184,7 @@ class SystemMapping(Identifiable):
         if self.coms:
             wrapper = ET.Element("COMS")
             for item in self.coms:
-                serialized = ARObject._serialize_item(item, "ComManagementMapping")
+                serialized = SerializationHelper.serialize_item(item, "ComManagementMapping")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -193,7 +194,7 @@ class SystemMapping(Identifiable):
         if self.crypto_service_refs:
             wrapper = ET.Element("CRYPTO-SERVICE-REFS")
             for item in self.crypto_service_refs:
-                serialized = ARObject._serialize_item(item, "CryptoServiceMapping")
+                serialized = SerializationHelper.serialize_item(item, "CryptoServiceMapping")
                 if serialized is not None:
                     child_elem = ET.Element("CRYPTO-SERVICE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -210,7 +211,7 @@ class SystemMapping(Identifiable):
         if self.data_mapping_refs:
             wrapper = ET.Element("DATA-MAPPING-REFS")
             for item in self.data_mapping_refs:
-                serialized = ARObject._serialize_item(item, "DataMapping")
+                serialized = SerializationHelper.serialize_item(item, "DataMapping")
                 if serialized is not None:
                     child_elem = ET.Element("DATA-MAPPING-REF")
                     if hasattr(serialized, 'attrib'):
@@ -227,7 +228,7 @@ class SystemMapping(Identifiable):
         if self.dds_i_signal_tos:
             wrapper = ET.Element("DDS-I-SIGNAL-TOS")
             for item in self.dds_i_signal_tos:
-                serialized = ARObject._serialize_item(item, "DdsCpISignalToDdsTopicMapping")
+                serialized = SerializationHelper.serialize_item(item, "DdsCpISignalToDdsTopicMapping")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -237,7 +238,7 @@ class SystemMapping(Identifiable):
         if self.ecu_resource_refs:
             wrapper = ET.Element("ECU-RESOURCE-REFS")
             for item in self.ecu_resource_refs:
-                serialized = ARObject._serialize_item(item, "ECUMapping")
+                serialized = SerializationHelper.serialize_item(item, "ECUMapping")
                 if serialized is not None:
                     child_elem = ET.Element("ECU-RESOURCE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -254,7 +255,7 @@ class SystemMapping(Identifiable):
         if self.j1939_controllers:
             wrapper = ET.Element("J1939-CONTROLLERS")
             for item in self.j1939_controllers:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -264,7 +265,7 @@ class SystemMapping(Identifiable):
         if self.mapping_refs:
             wrapper = ET.Element("MAPPING-REFS")
             for item in self.mapping_refs:
-                serialized = ARObject._serialize_item(item, "MappingConstraint")
+                serialized = SerializationHelper.serialize_item(item, "MappingConstraint")
                 if serialized is not None:
                     child_elem = ET.Element("MAPPING-REF")
                     if hasattr(serialized, 'attrib'):
@@ -281,7 +282,7 @@ class SystemMapping(Identifiable):
         if self.pnc_mapping_refs:
             wrapper = ET.Element("PNC-MAPPING-REFS")
             for item in self.pnc_mapping_refs:
-                serialized = ARObject._serialize_item(item, "PncMapping")
+                serialized = SerializationHelper.serialize_item(item, "PncMapping")
                 if serialized is not None:
                     child_elem = ET.Element("PNC-MAPPING-REF")
                     if hasattr(serialized, 'attrib'):
@@ -298,7 +299,7 @@ class SystemMapping(Identifiable):
         if self.port_element_tos:
             wrapper = ET.Element("PORT-ELEMENT-TOS")
             for item in self.port_element_tos:
-                serialized = ARObject._serialize_item(item, "PortElementToCommunicationResourceMapping")
+                serialized = SerializationHelper.serialize_item(item, "PortElementToCommunicationResourceMapping")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -308,7 +309,7 @@ class SystemMapping(Identifiable):
         if self.resources:
             wrapper = ET.Element("RESOURCES")
             for item in self.resources:
-                serialized = ARObject._serialize_item(item, "EcuResourceEstimation")
+                serialized = SerializationHelper.serialize_item(item, "EcuResourceEstimation")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -318,7 +319,7 @@ class SystemMapping(Identifiable):
         if self.resource_tos:
             wrapper = ET.Element("RESOURCE-TOS")
             for item in self.resource_tos:
-                serialized = ARObject._serialize_item(item, "CpSoftwareCluster")
+                serialized = SerializationHelper.serialize_item(item, "CpSoftwareCluster")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -328,7 +329,7 @@ class SystemMapping(Identifiable):
         if self.rte_event_in_systems:
             wrapper = ET.Element("RTE-EVENT-IN-SYSTEMS")
             for item in self.rte_event_in_systems:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -338,7 +339,7 @@ class SystemMapping(Identifiable):
         if self.rte_event_to_oses:
             wrapper = ET.Element("RTE-EVENT-TO-OSES")
             for item in self.rte_event_to_oses:
-                serialized = ARObject._serialize_item(item, "RteEventInSystemToOsTaskProxyMapping")
+                serialized = SerializationHelper.serialize_item(item, "RteEventInSystemToOsTaskProxyMapping")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -348,7 +349,7 @@ class SystemMapping(Identifiable):
         if self.signal_paths:
             wrapper = ET.Element("SIGNAL-PATHS")
             for item in self.signal_paths:
-                serialized = ARObject._serialize_item(item, "SignalPathConstraint")
+                serialized = SerializationHelper.serialize_item(item, "SignalPathConstraint")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -358,7 +359,7 @@ class SystemMapping(Identifiable):
         if self.software_clusters:
             wrapper = ET.Element("SOFTWARE-CLUSTERS")
             for item in self.software_clusters:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -368,7 +369,7 @@ class SystemMapping(Identifiable):
         if self.sw_clusters:
             wrapper = ET.Element("SW-CLUSTERS")
             for item in self.sw_clusters:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -378,7 +379,7 @@ class SystemMapping(Identifiable):
         if self.swc_tos:
             wrapper = ET.Element("SWC-TOS")
             for item in self.swc_tos:
-                serialized = ARObject._serialize_item(item, "SwcToApplicationPartitionMapping")
+                serialized = SerializationHelper.serialize_item(item, "SwcToApplicationPartitionMapping")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -388,7 +389,7 @@ class SystemMapping(Identifiable):
         if self.sw_impl_mapping_refs:
             wrapper = ET.Element("SW-IMPL-MAPPING-REFS")
             for item in self.sw_impl_mapping_refs:
-                serialized = ARObject._serialize_item(item, "SwcToImplMapping")
+                serialized = SerializationHelper.serialize_item(item, "SwcToImplMapping")
                 if serialized is not None:
                     child_elem = ET.Element("SW-IMPL-MAPPING-REF")
                     if hasattr(serialized, 'attrib'):
@@ -405,7 +406,7 @@ class SystemMapping(Identifiable):
         if self.sw_mapping_refs:
             wrapper = ET.Element("SW-MAPPING-REFS")
             for item in self.sw_mapping_refs:
-                serialized = ARObject._serialize_item(item, "SwcToEcuMapping")
+                serialized = SerializationHelper.serialize_item(item, "SwcToEcuMapping")
                 if serialized is not None:
                     child_elem = ET.Element("SW-MAPPING-REF")
                     if hasattr(serialized, 'attrib'):
@@ -422,7 +423,7 @@ class SystemMapping(Identifiable):
         if self.system_signal_group_to_refs:
             wrapper = ET.Element("SYSTEM-SIGNAL-GROUP-TO-REFS")
             for item in self.system_signal_group_to_refs:
-                serialized = ARObject._serialize_item(item, "SystemSignalGroupToCommunicationResourceMapping")
+                serialized = SerializationHelper.serialize_item(item, "SystemSignalGroupToCommunicationResourceMapping")
                 if serialized is not None:
                     child_elem = ET.Element("SYSTEM-SIGNAL-GROUP-TO-REF")
                     if hasattr(serialized, 'attrib'):
@@ -439,7 +440,7 @@ class SystemMapping(Identifiable):
         if self.system_signal_tos:
             wrapper = ET.Element("SYSTEM-SIGNAL-TOS")
             for item in self.system_signal_tos:
-                serialized = ARObject._serialize_item(item, "SystemSignalToCommunicationResourceMapping")
+                serialized = SerializationHelper.serialize_item(item, "SystemSignalToCommunicationResourceMapping")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -462,279 +463,279 @@ class SystemMapping(Identifiable):
 
         # Parse applications (list from container "APPLICATIONS")
         obj.applications = []
-        container = ARObject._find_child_element(element, "APPLICATIONS")
+        container = SerializationHelper.find_child_element(element, "APPLICATIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.applications.append(child_value)
 
         # Parse app_os_tasks (list from container "APP-OS-TASKS")
         obj.app_os_tasks = []
-        container = ARObject._find_child_element(element, "APP-OS-TASKS")
+        container = SerializationHelper.find_child_element(element, "APP-OS-TASKS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.app_os_tasks.append(child_value)
 
         # Parse coms (list from container "COMS")
         obj.coms = []
-        container = ARObject._find_child_element(element, "COMS")
+        container = SerializationHelper.find_child_element(element, "COMS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.coms.append(child_value)
 
         # Parse crypto_service_refs (list from container "CRYPTO-SERVICE-REFS")
         obj.crypto_service_refs = []
-        container = ARObject._find_child_element(element, "CRYPTO-SERVICE-REFS")
+        container = SerializationHelper.find_child_element(element, "CRYPTO-SERVICE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.crypto_service_refs.append(child_value)
 
         # Parse data_mapping_refs (list from container "DATA-MAPPING-REFS")
         obj.data_mapping_refs = []
-        container = ARObject._find_child_element(element, "DATA-MAPPING-REFS")
+        container = SerializationHelper.find_child_element(element, "DATA-MAPPING-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.data_mapping_refs.append(child_value)
 
         # Parse dds_i_signal_tos (list from container "DDS-I-SIGNAL-TOS")
         obj.dds_i_signal_tos = []
-        container = ARObject._find_child_element(element, "DDS-I-SIGNAL-TOS")
+        container = SerializationHelper.find_child_element(element, "DDS-I-SIGNAL-TOS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.dds_i_signal_tos.append(child_value)
 
         # Parse ecu_resource_refs (list from container "ECU-RESOURCE-REFS")
         obj.ecu_resource_refs = []
-        container = ARObject._find_child_element(element, "ECU-RESOURCE-REFS")
+        container = SerializationHelper.find_child_element(element, "ECU-RESOURCE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.ecu_resource_refs.append(child_value)
 
         # Parse j1939_controllers (list from container "J1939-CONTROLLERS")
         obj.j1939_controllers = []
-        container = ARObject._find_child_element(element, "J1939-CONTROLLERS")
+        container = SerializationHelper.find_child_element(element, "J1939-CONTROLLERS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.j1939_controllers.append(child_value)
 
         # Parse mapping_refs (list from container "MAPPING-REFS")
         obj.mapping_refs = []
-        container = ARObject._find_child_element(element, "MAPPING-REFS")
+        container = SerializationHelper.find_child_element(element, "MAPPING-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.mapping_refs.append(child_value)
 
         # Parse pnc_mapping_refs (list from container "PNC-MAPPING-REFS")
         obj.pnc_mapping_refs = []
-        container = ARObject._find_child_element(element, "PNC-MAPPING-REFS")
+        container = SerializationHelper.find_child_element(element, "PNC-MAPPING-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.pnc_mapping_refs.append(child_value)
 
         # Parse port_element_tos (list from container "PORT-ELEMENT-TOS")
         obj.port_element_tos = []
-        container = ARObject._find_child_element(element, "PORT-ELEMENT-TOS")
+        container = SerializationHelper.find_child_element(element, "PORT-ELEMENT-TOS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.port_element_tos.append(child_value)
 
         # Parse resources (list from container "RESOURCES")
         obj.resources = []
-        container = ARObject._find_child_element(element, "RESOURCES")
+        container = SerializationHelper.find_child_element(element, "RESOURCES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.resources.append(child_value)
 
         # Parse resource_tos (list from container "RESOURCE-TOS")
         obj.resource_tos = []
-        container = ARObject._find_child_element(element, "RESOURCE-TOS")
+        container = SerializationHelper.find_child_element(element, "RESOURCE-TOS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.resource_tos.append(child_value)
 
         # Parse rte_event_in_systems (list from container "RTE-EVENT-IN-SYSTEMS")
         obj.rte_event_in_systems = []
-        container = ARObject._find_child_element(element, "RTE-EVENT-IN-SYSTEMS")
+        container = SerializationHelper.find_child_element(element, "RTE-EVENT-IN-SYSTEMS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.rte_event_in_systems.append(child_value)
 
         # Parse rte_event_to_oses (list from container "RTE-EVENT-TO-OSES")
         obj.rte_event_to_oses = []
-        container = ARObject._find_child_element(element, "RTE-EVENT-TO-OSES")
+        container = SerializationHelper.find_child_element(element, "RTE-EVENT-TO-OSES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.rte_event_to_oses.append(child_value)
 
         # Parse signal_paths (list from container "SIGNAL-PATHS")
         obj.signal_paths = []
-        container = ARObject._find_child_element(element, "SIGNAL-PATHS")
+        container = SerializationHelper.find_child_element(element, "SIGNAL-PATHS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.signal_paths.append(child_value)
 
         # Parse software_clusters (list from container "SOFTWARE-CLUSTERS")
         obj.software_clusters = []
-        container = ARObject._find_child_element(element, "SOFTWARE-CLUSTERS")
+        container = SerializationHelper.find_child_element(element, "SOFTWARE-CLUSTERS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.software_clusters.append(child_value)
 
         # Parse sw_clusters (list from container "SW-CLUSTERS")
         obj.sw_clusters = []
-        container = ARObject._find_child_element(element, "SW-CLUSTERS")
+        container = SerializationHelper.find_child_element(element, "SW-CLUSTERS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.sw_clusters.append(child_value)
 
         # Parse swc_tos (list from container "SWC-TOS")
         obj.swc_tos = []
-        container = ARObject._find_child_element(element, "SWC-TOS")
+        container = SerializationHelper.find_child_element(element, "SWC-TOS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.swc_tos.append(child_value)
 
         # Parse sw_impl_mapping_refs (list from container "SW-IMPL-MAPPING-REFS")
         obj.sw_impl_mapping_refs = []
-        container = ARObject._find_child_element(element, "SW-IMPL-MAPPING-REFS")
+        container = SerializationHelper.find_child_element(element, "SW-IMPL-MAPPING-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.sw_impl_mapping_refs.append(child_value)
 
         # Parse sw_mapping_refs (list from container "SW-MAPPING-REFS")
         obj.sw_mapping_refs = []
-        container = ARObject._find_child_element(element, "SW-MAPPING-REFS")
+        container = SerializationHelper.find_child_element(element, "SW-MAPPING-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.sw_mapping_refs.append(child_value)
 
         # Parse system_signal_group_to_refs (list from container "SYSTEM-SIGNAL-GROUP-TO-REFS")
         obj.system_signal_group_to_refs = []
-        container = ARObject._find_child_element(element, "SYSTEM-SIGNAL-GROUP-TO-REFS")
+        container = SerializationHelper.find_child_element(element, "SYSTEM-SIGNAL-GROUP-TO-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.system_signal_group_to_refs.append(child_value)
 
         # Parse system_signal_tos (list from container "SYSTEM-SIGNAL-TOS")
         obj.system_signal_tos = []
-        container = ARObject._find_child_element(element, "SYSTEM-SIGNAL-TOS")
+        container = SerializationHelper.find_child_element(element, "SYSTEM-SIGNAL-TOS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.system_signal_tos.append(child_value)
 

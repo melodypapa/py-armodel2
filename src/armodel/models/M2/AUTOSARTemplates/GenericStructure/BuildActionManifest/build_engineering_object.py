@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     EngineeringObject,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     NameToken,
     RegularExpression,
@@ -49,7 +50,7 @@ class BuildEngineeringObject(EngineeringObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -68,7 +69,7 @@ class BuildEngineeringObject(EngineeringObject):
 
         # Serialize file_type
         if self.file_type is not None:
-            serialized = ARObject._serialize_item(self.file_type, "NameToken")
+            serialized = SerializationHelper.serialize_item(self.file_type, "NameToken")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FILE-TYPE")
@@ -82,7 +83,7 @@ class BuildEngineeringObject(EngineeringObject):
 
         # Serialize file_type_pattern
         if self.file_type_pattern is not None:
-            serialized = ARObject._serialize_item(self.file_type_pattern, "RegularExpression")
+            serialized = SerializationHelper.serialize_item(self.file_type_pattern, "RegularExpression")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FILE-TYPE-PATTERN")
@@ -96,7 +97,7 @@ class BuildEngineeringObject(EngineeringObject):
 
         # Serialize intended
         if self.intended is not None:
-            serialized = ARObject._serialize_item(self.intended, "UriString")
+            serialized = SerializationHelper.serialize_item(self.intended, "UriString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INTENDED")
@@ -124,19 +125,19 @@ class BuildEngineeringObject(EngineeringObject):
         obj = super(BuildEngineeringObject, cls).deserialize(element)
 
         # Parse file_type
-        child = ARObject._find_child_element(element, "FILE-TYPE")
+        child = SerializationHelper.find_child_element(element, "FILE-TYPE")
         if child is not None:
             file_type_value = child.text
             obj.file_type = file_type_value
 
         # Parse file_type_pattern
-        child = ARObject._find_child_element(element, "FILE-TYPE-PATTERN")
+        child = SerializationHelper.find_child_element(element, "FILE-TYPE-PATTERN")
         if child is not None:
             file_type_pattern_value = child.text
             obj.file_type_pattern = file_type_pattern_value
 
         # Parse intended
-        child = ARObject._find_child_element(element, "INTENDED")
+        child = SerializationHelper.find_child_element(element, "INTENDED")
         if child is not None:
             intended_value = child.text
             obj.intended = intended_value

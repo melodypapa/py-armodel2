@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 if TYPE_CHECKING:
     from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.value_specification import (
@@ -47,12 +48,12 @@ class PortDefinedArgumentValue(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize value
         if self.value is not None:
-            serialized = ARObject._serialize_item(self.value, "ValueSpecification")
+            serialized = SerializationHelper.serialize_item(self.value, "ValueSpecification")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VALUE")
@@ -66,7 +67,7 @@ class PortDefinedArgumentValue(ARObject):
 
         # Serialize value_type
         if self.value_type is not None:
-            serialized = ARObject._serialize_item(self.value_type, "Any")
+            serialized = SerializationHelper.serialize_item(self.value_type, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VALUE-TYPE")
@@ -95,13 +96,13 @@ class PortDefinedArgumentValue(ARObject):
         obj.__init__()
 
         # Parse value
-        child = ARObject._find_child_element(element, "VALUE")
+        child = SerializationHelper.find_child_element(element, "VALUE")
         if child is not None:
-            value_value = ARObject._deserialize_by_tag(child, "ValueSpecification")
+            value_value = SerializationHelper.deserialize_by_tag(child, "ValueSpecification")
             obj.value = value_value
 
         # Parse value_type
-        child = ARObject._find_child_element(element, "VALUE-TYPE")
+        child = SerializationHelper.find_child_element(element, "VALUE-TYPE")
         if child is not None:
             value_type_value = child.text
             obj.value_type = value_type_value

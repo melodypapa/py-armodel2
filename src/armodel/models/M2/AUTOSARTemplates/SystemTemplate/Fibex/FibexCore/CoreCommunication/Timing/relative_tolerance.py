@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
 )
@@ -40,12 +41,12 @@ class RelativeTolerance(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize relative
         if self.relative is not None:
-            serialized = ARObject._serialize_item(self.relative, "Integer")
+            serialized = SerializationHelper.serialize_item(self.relative, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RELATIVE")
@@ -74,7 +75,7 @@ class RelativeTolerance(ARObject):
         obj.__init__()
 
         # Parse relative
-        child = ARObject._find_child_element(element, "RELATIVE")
+        child = SerializationHelper.find_child_element(element, "RELATIVE")
         if child is not None:
             relative_value = child.text
             obj.relative = relative_value

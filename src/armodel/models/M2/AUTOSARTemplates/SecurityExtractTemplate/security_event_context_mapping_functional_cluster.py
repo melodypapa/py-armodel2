@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SecurityExtractTemplate.security_event_c
     SecurityEventContextMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -43,7 +44,7 @@ class SecurityEventContextMappingFunctionalCluster(SecurityEventContextMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class SecurityEventContextMappingFunctionalCluster(SecurityEventContextMapping):
 
         # Serialize affected
         if self.affected is not None:
-            serialized = ARObject._serialize_item(self.affected, "String")
+            serialized = SerializationHelper.serialize_item(self.affected, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("AFFECTED")
@@ -90,7 +91,7 @@ class SecurityEventContextMappingFunctionalCluster(SecurityEventContextMapping):
         obj = super(SecurityEventContextMappingFunctionalCluster, cls).deserialize(element)
 
         # Parse affected
-        child = ARObject._find_child_element(element, "AFFECTED")
+        child = SerializationHelper.find_child_element(element, "AFFECTED")
         if child is not None:
             affected_value = child.text
             obj.affected = affected_value

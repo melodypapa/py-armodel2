@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
     PhysicalChannel,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Flexray.FlexrayTopology import (
     FlexrayChannelName,
 )
@@ -43,7 +44,7 @@ class FlexrayPhysicalChannel(PhysicalChannel):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class FlexrayPhysicalChannel(PhysicalChannel):
 
         # Serialize channel_name
         if self.channel_name is not None:
-            serialized = ARObject._serialize_item(self.channel_name, "FlexrayChannelName")
+            serialized = SerializationHelper.serialize_item(self.channel_name, "FlexrayChannelName")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CHANNEL-NAME")
@@ -90,7 +91,7 @@ class FlexrayPhysicalChannel(PhysicalChannel):
         obj = super(FlexrayPhysicalChannel, cls).deserialize(element)
 
         # Parse channel_name
-        child = ARObject._find_child_element(element, "CHANNEL-NAME")
+        child = SerializationHelper.find_child_element(element, "CHANNEL-NAME")
         if child is not None:
             channel_name_value = FlexrayChannelName.deserialize(child)
             obj.channel_name = channel_name_value

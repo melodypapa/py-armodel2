@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Referrable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.exclusive_area import (
     ExclusiveArea,
@@ -45,7 +46,7 @@ class ExclusiveAreaNestingOrder(Referrable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -66,7 +67,7 @@ class ExclusiveAreaNestingOrder(Referrable):
         if self.exclusive_area_refs:
             wrapper = ET.Element("EXCLUSIVE-AREA-REFS")
             for item in self.exclusive_area_refs:
-                serialized = ARObject._serialize_item(item, "ExclusiveArea")
+                serialized = SerializationHelper.serialize_item(item, "ExclusiveArea")
                 if serialized is not None:
                     child_elem = ET.Element("EXCLUSIVE-AREA-REF")
                     if hasattr(serialized, 'attrib'):
@@ -96,17 +97,17 @@ class ExclusiveAreaNestingOrder(Referrable):
 
         # Parse exclusive_area_refs (list from container "EXCLUSIVE-AREA-REFS")
         obj.exclusive_area_refs = []
-        container = ARObject._find_child_element(element, "EXCLUSIVE-AREA-REFS")
+        container = SerializationHelper.find_child_element(element, "EXCLUSIVE-AREA-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.exclusive_area_refs.append(child_value)
 

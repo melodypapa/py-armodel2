@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Dlt import (
     DltDefaultTraceStateEnum,
@@ -74,7 +75,7 @@ class DltLogChannel(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -95,7 +96,7 @@ class DltLogChannel(Identifiable):
         if self.application_refs:
             wrapper = ET.Element("APPLICATION-REFS")
             for item in self.application_refs:
-                serialized = ARObject._serialize_item(item, "DltContext")
+                serialized = SerializationHelper.serialize_item(item, "DltContext")
                 if serialized is not None:
                     child_elem = ET.Element("APPLICATION-REF")
                     if hasattr(serialized, 'attrib'):
@@ -110,7 +111,7 @@ class DltLogChannel(Identifiable):
 
         # Serialize default_trace
         if self.default_trace is not None:
-            serialized = ARObject._serialize_item(self.default_trace, "DltDefaultTraceStateEnum")
+            serialized = SerializationHelper.serialize_item(self.default_trace, "DltDefaultTraceStateEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DEFAULT-TRACE")
@@ -126,7 +127,7 @@ class DltLogChannel(Identifiable):
         if self.dlt_message_refs:
             wrapper = ET.Element("DLT-MESSAGE-REFS")
             for item in self.dlt_message_refs:
-                serialized = ARObject._serialize_item(item, "DltMessage")
+                serialized = SerializationHelper.serialize_item(item, "DltMessage")
                 if serialized is not None:
                     child_elem = ET.Element("DLT-MESSAGE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -141,7 +142,7 @@ class DltLogChannel(Identifiable):
 
         # Serialize log_channel_id
         if self.log_channel_id is not None:
-            serialized = ARObject._serialize_item(self.log_channel_id, "String")
+            serialized = SerializationHelper.serialize_item(self.log_channel_id, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LOG-CHANNEL-ID")
@@ -155,7 +156,7 @@ class DltLogChannel(Identifiable):
 
         # Serialize log_trace_default_log
         if self.log_trace_default_log is not None:
-            serialized = ARObject._serialize_item(self.log_trace_default_log, "LogTraceDefaultLogLevelEnum")
+            serialized = SerializationHelper.serialize_item(self.log_trace_default_log, "LogTraceDefaultLogLevelEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LOG-TRACE-DEFAULT-LOG")
@@ -169,7 +170,7 @@ class DltLogChannel(Identifiable):
 
         # Serialize non_verbose
         if self.non_verbose is not None:
-            serialized = ARObject._serialize_item(self.non_verbose, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.non_verbose, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NON-VERBOSE")
@@ -183,7 +184,7 @@ class DltLogChannel(Identifiable):
 
         # Serialize rx_pdu_triggering_channel_ref
         if self.rx_pdu_triggering_channel_ref is not None:
-            serialized = ARObject._serialize_item(self.rx_pdu_triggering_channel_ref, "PduTriggering")
+            serialized = SerializationHelper.serialize_item(self.rx_pdu_triggering_channel_ref, "PduTriggering")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RX-PDU-TRIGGERING-CHANNEL-REF")
@@ -197,7 +198,7 @@ class DltLogChannel(Identifiable):
 
         # Serialize segmentation
         if self.segmentation is not None:
-            serialized = ARObject._serialize_item(self.segmentation, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.segmentation, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SEGMENTATION")
@@ -211,7 +212,7 @@ class DltLogChannel(Identifiable):
 
         # Serialize tx_pdu_triggering_ref
         if self.tx_pdu_triggering_ref is not None:
-            serialized = ARObject._serialize_item(self.tx_pdu_triggering_ref, "PduTriggering")
+            serialized = SerializationHelper.serialize_item(self.tx_pdu_triggering_ref, "PduTriggering")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TX-PDU-TRIGGERING-REF")
@@ -240,74 +241,74 @@ class DltLogChannel(Identifiable):
 
         # Parse application_refs (list from container "APPLICATION-REFS")
         obj.application_refs = []
-        container = ARObject._find_child_element(element, "APPLICATION-REFS")
+        container = SerializationHelper.find_child_element(element, "APPLICATION-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.application_refs.append(child_value)
 
         # Parse default_trace
-        child = ARObject._find_child_element(element, "DEFAULT-TRACE")
+        child = SerializationHelper.find_child_element(element, "DEFAULT-TRACE")
         if child is not None:
             default_trace_value = DltDefaultTraceStateEnum.deserialize(child)
             obj.default_trace = default_trace_value
 
         # Parse dlt_message_refs (list from container "DLT-MESSAGE-REFS")
         obj.dlt_message_refs = []
-        container = ARObject._find_child_element(element, "DLT-MESSAGE-REFS")
+        container = SerializationHelper.find_child_element(element, "DLT-MESSAGE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.dlt_message_refs.append(child_value)
 
         # Parse log_channel_id
-        child = ARObject._find_child_element(element, "LOG-CHANNEL-ID")
+        child = SerializationHelper.find_child_element(element, "LOG-CHANNEL-ID")
         if child is not None:
             log_channel_id_value = child.text
             obj.log_channel_id = log_channel_id_value
 
         # Parse log_trace_default_log
-        child = ARObject._find_child_element(element, "LOG-TRACE-DEFAULT-LOG")
+        child = SerializationHelper.find_child_element(element, "LOG-TRACE-DEFAULT-LOG")
         if child is not None:
             log_trace_default_log_value = LogTraceDefaultLogLevelEnum.deserialize(child)
             obj.log_trace_default_log = log_trace_default_log_value
 
         # Parse non_verbose
-        child = ARObject._find_child_element(element, "NON-VERBOSE")
+        child = SerializationHelper.find_child_element(element, "NON-VERBOSE")
         if child is not None:
             non_verbose_value = child.text
             obj.non_verbose = non_verbose_value
 
         # Parse rx_pdu_triggering_channel_ref
-        child = ARObject._find_child_element(element, "RX-PDU-TRIGGERING-CHANNEL-REF")
+        child = SerializationHelper.find_child_element(element, "RX-PDU-TRIGGERING-CHANNEL-REF")
         if child is not None:
             rx_pdu_triggering_channel_ref_value = ARRef.deserialize(child)
             obj.rx_pdu_triggering_channel_ref = rx_pdu_triggering_channel_ref_value
 
         # Parse segmentation
-        child = ARObject._find_child_element(element, "SEGMENTATION")
+        child = SerializationHelper.find_child_element(element, "SEGMENTATION")
         if child is not None:
             segmentation_value = child.text
             obj.segmentation = segmentation_value
 
         # Parse tx_pdu_triggering_ref
-        child = ARObject._find_child_element(element, "TX-PDU-TRIGGERING-REF")
+        child = SerializationHelper.find_child_element(element, "TX-PDU-TRIGGERING-REF")
         if child is not None:
             tx_pdu_triggering_ref_value = ARRef.deserialize(child)
             obj.tx_pdu_triggering_ref = tx_pdu_triggering_ref_value

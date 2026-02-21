@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     PositiveInteger,
@@ -43,12 +44,12 @@ class TpPort(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize dynamically
         if self.dynamically is not None:
-            serialized = ARObject._serialize_item(self.dynamically, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.dynamically, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DYNAMICALLY")
@@ -62,7 +63,7 @@ class TpPort(ARObject):
 
         # Serialize port_number
         if self.port_number is not None:
-            serialized = ARObject._serialize_item(self.port_number, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.port_number, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PORT-NUMBER")
@@ -91,13 +92,13 @@ class TpPort(ARObject):
         obj.__init__()
 
         # Parse dynamically
-        child = ARObject._find_child_element(element, "DYNAMICALLY")
+        child = SerializationHelper.find_child_element(element, "DYNAMICALLY")
         if child is not None:
             dynamically_value = child.text
             obj.dynamically = dynamically_value
 
         # Parse port_number
-        child = ARObject._find_child_element(element, "PORT-NUMBER")
+        child = SerializationHelper.find_child_element(element, "PORT-NUMBER")
         if child is not None:
             port_number_value = child.text
             obj.port_number = port_number_value

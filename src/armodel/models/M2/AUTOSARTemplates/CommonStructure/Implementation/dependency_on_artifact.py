@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation import (
     DependencyUsageEnum,
@@ -50,7 +51,7 @@ class DependencyOnArtifact(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -69,7 +70,7 @@ class DependencyOnArtifact(Identifiable):
 
         # Serialize artifact
         if self.artifact is not None:
-            serialized = ARObject._serialize_item(self.artifact, "AutosarEngineeringObject")
+            serialized = SerializationHelper.serialize_item(self.artifact, "AutosarEngineeringObject")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ARTIFACT")
@@ -85,7 +86,7 @@ class DependencyOnArtifact(Identifiable):
         if self.usage_refs:
             wrapper = ET.Element("USAGE-REFS")
             for item in self.usage_refs:
-                serialized = ARObject._serialize_item(item, "DependencyUsageEnum")
+                serialized = SerializationHelper.serialize_item(item, "DependencyUsageEnum")
                 if serialized is not None:
                     child_elem = ET.Element("USAGE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -114,24 +115,24 @@ class DependencyOnArtifact(Identifiable):
         obj = super(DependencyOnArtifact, cls).deserialize(element)
 
         # Parse artifact
-        child = ARObject._find_child_element(element, "ARTIFACT")
+        child = SerializationHelper.find_child_element(element, "ARTIFACT")
         if child is not None:
-            artifact_value = ARObject._deserialize_by_tag(child, "AutosarEngineeringObject")
+            artifact_value = SerializationHelper.deserialize_by_tag(child, "AutosarEngineeringObject")
             obj.artifact = artifact_value
 
         # Parse usage_refs (list from container "USAGE-REFS")
         obj.usage_refs = []
-        container = ARObject._find_child_element(element, "USAGE-REFS")
+        container = SerializationHelper.find_child_element(element, "USAGE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.usage_refs.append(child_value)
 

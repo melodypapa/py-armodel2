@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -50,7 +51,7 @@ class BinaryManifestResource(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -69,7 +70,7 @@ class BinaryManifestResource(Identifiable, ABC):
 
         # Serialize global_resource
         if self.global_resource is not None:
-            serialized = ARObject._serialize_item(self.global_resource, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.global_resource, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("GLOBAL-RESOURCE")
@@ -83,7 +84,7 @@ class BinaryManifestResource(Identifiable, ABC):
 
         # Serialize resource_ref
         if self.resource_ref is not None:
-            serialized = ARObject._serialize_item(self.resource_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.resource_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RESOURCE-REF")
@@ -97,7 +98,7 @@ class BinaryManifestResource(Identifiable, ABC):
 
         # Serialize resource_guard
         if self.resource_guard is not None:
-            serialized = ARObject._serialize_item(self.resource_guard, "String")
+            serialized = SerializationHelper.serialize_item(self.resource_guard, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RESOURCE-GUARD")
@@ -125,19 +126,19 @@ class BinaryManifestResource(Identifiable, ABC):
         obj = super(BinaryManifestResource, cls).deserialize(element)
 
         # Parse global_resource
-        child = ARObject._find_child_element(element, "GLOBAL-RESOURCE")
+        child = SerializationHelper.find_child_element(element, "GLOBAL-RESOURCE")
         if child is not None:
             global_resource_value = child.text
             obj.global_resource = global_resource_value
 
         # Parse resource_ref
-        child = ARObject._find_child_element(element, "RESOURCE-REF")
+        child = SerializationHelper.find_child_element(element, "RESOURCE-REF")
         if child is not None:
             resource_ref_value = ARRef.deserialize(child)
             obj.resource_ref = resource_ref_value
 
         # Parse resource_guard
-        child = ARObject._find_child_element(element, "RESOURCE-GUARD")
+        child = SerializationHelper.find_child_element(element, "RESOURCE-GUARD")
         if child is not None:
             resource_guard_value = child.text
             obj.resource_guard = resource_guard_value

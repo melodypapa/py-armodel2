@@ -23,6 +23,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Identifier,
 )
@@ -59,12 +60,26 @@ class Referrable(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
+
+        # First, call parent's serialize to handle inherited attributes (checksum, timestamp)
+        parent_elem = super(Referrable, self).serialize()
+
+        # Copy all attributes from parent element
+        elem.attrib.update(parent_elem.attrib)
+
+        # Copy text from parent element
+        if parent_elem.text:
+            elem.text = parent_elem.text
+
+        # Copy all children from parent element
+        for child in parent_elem:
+            elem.append(child)
 
         # Serialize short_name
         if self.short_name is not None:
-            serialized = ARObject._serialize_item(self.short_name, "Identifier")
+            serialized = SerializationHelper.serialize_item(self.short_name, "Identifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SHORT-NAME")
@@ -80,7 +95,7 @@ class Referrable(ARObject, ABC):
         if self.short_name_fragments:
             wrapper = ET.Element("SHORT-NAME-FRAGMENTS")
             for item in self.short_name_fragments:
-                serialized = ARObject._serialize_item(item, "ShortNameFragment")
+                serialized = SerializationHelper.serialize_item(item, "ShortNameFragment")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -98,23 +113,22 @@ class Referrable(ARObject, ABC):
         Returns:
             Deserialized Referrable object
         """
-        # Create instance and initialize with default values
-        obj = cls.__new__(cls)
-        obj.__init__()
+        # First, call parent's deserialize to handle inherited attributes (checksum, timestamp)
+        obj = super(Referrable, cls).deserialize(element)
 
         # Parse short_name
-        child = ARObject._find_child_element(element, "SHORT-NAME")
+        child = SerializationHelper.find_child_element(element, "SHORT-NAME")
         if child is not None:
-            short_name_value = ARObject._deserialize_by_tag(child, "Identifier")
+            short_name_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
             obj.short_name = short_name_value
 
         # Parse short_name_fragments (list from container "SHORT-NAME-FRAGMENTS")
         obj.short_name_fragments = []
-        container = ARObject._find_child_element(element, "SHORT-NAME-FRAGMENTS")
+        container = SerializationHelper.find_child_element(element, "SHORT-NAME-FRAGMENTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.short_name_fragments.append(child_value)
 

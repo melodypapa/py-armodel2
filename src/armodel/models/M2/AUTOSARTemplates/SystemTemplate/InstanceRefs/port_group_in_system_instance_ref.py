@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.port_group import (
     PortGroup,
@@ -51,12 +52,12 @@ class PortGroupInSystemInstanceRef(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize base_ref
         if self.base_ref is not None:
-            serialized = ARObject._serialize_item(self.base_ref, "System")
+            serialized = SerializationHelper.serialize_item(self.base_ref, "System")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BASE-REF")
@@ -70,7 +71,7 @@ class PortGroupInSystemInstanceRef(ARObject):
 
         # Serialize context_ref
         if self.context_ref is not None:
-            serialized = ARObject._serialize_item(self.context_ref, "RootSwCompositionPrototype")
+            serialized = SerializationHelper.serialize_item(self.context_ref, "RootSwCompositionPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONTEXT-REF")
@@ -84,7 +85,7 @@ class PortGroupInSystemInstanceRef(ARObject):
 
         # Serialize target_ref
         if self.target_ref is not None:
-            serialized = ARObject._serialize_item(self.target_ref, "PortGroup")
+            serialized = SerializationHelper.serialize_item(self.target_ref, "PortGroup")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TARGET-REF")
@@ -113,19 +114,19 @@ class PortGroupInSystemInstanceRef(ARObject):
         obj.__init__()
 
         # Parse base_ref
-        child = ARObject._find_child_element(element, "BASE-REF")
+        child = SerializationHelper.find_child_element(element, "BASE-REF")
         if child is not None:
             base_ref_value = ARRef.deserialize(child)
             obj.base_ref = base_ref_value
 
         # Parse context_ref
-        child = ARObject._find_child_element(element, "CONTEXT-REF")
+        child = SerializationHelper.find_child_element(element, "CONTEXT-REF")
         if child is not None:
             context_ref_value = ARRef.deserialize(child)
             obj.context_ref = context_ref_value
 
         # Parse target_ref
-        child = ARObject._find_child_element(element, "TARGET-REF")
+        child = SerializationHelper.find_child_element(element, "TARGET-REF")
         if child is not None:
             target_ref_value = ARRef.deserialize(child)
             obj.target_ref = target_ref_value

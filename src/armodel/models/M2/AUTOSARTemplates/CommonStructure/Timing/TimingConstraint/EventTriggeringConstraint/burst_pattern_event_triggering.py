@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.
     EventTriggeringConstraint,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -56,7 +57,7 @@ class BurstPatternEventTriggering(EventTriggeringConstraint):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -75,7 +76,7 @@ class BurstPatternEventTriggering(EventTriggeringConstraint):
 
         # Serialize max_number_of
         if self.max_number_of is not None:
-            serialized = ARObject._serialize_item(self.max_number_of, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.max_number_of, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-NUMBER-OF")
@@ -89,7 +90,7 @@ class BurstPatternEventTriggering(EventTriggeringConstraint):
 
         # Serialize minimum_inter
         if self.minimum_inter is not None:
-            serialized = ARObject._serialize_item(self.minimum_inter, "MultidimensionalTime")
+            serialized = SerializationHelper.serialize_item(self.minimum_inter, "MultidimensionalTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MINIMUM-INTER")
@@ -103,7 +104,7 @@ class BurstPatternEventTriggering(EventTriggeringConstraint):
 
         # Serialize min_number_of
         if self.min_number_of is not None:
-            serialized = ARObject._serialize_item(self.min_number_of, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.min_number_of, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MIN-NUMBER-OF")
@@ -117,7 +118,7 @@ class BurstPatternEventTriggering(EventTriggeringConstraint):
 
         # Serialize pattern_jitter
         if self.pattern_jitter is not None:
-            serialized = ARObject._serialize_item(self.pattern_jitter, "MultidimensionalTime")
+            serialized = SerializationHelper.serialize_item(self.pattern_jitter, "MultidimensionalTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PATTERN-JITTER")
@@ -131,7 +132,7 @@ class BurstPatternEventTriggering(EventTriggeringConstraint):
 
         # Serialize pattern_length
         if self.pattern_length is not None:
-            serialized = ARObject._serialize_item(self.pattern_length, "MultidimensionalTime")
+            serialized = SerializationHelper.serialize_item(self.pattern_length, "MultidimensionalTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PATTERN-LENGTH")
@@ -145,7 +146,7 @@ class BurstPatternEventTriggering(EventTriggeringConstraint):
 
         # Serialize pattern_period
         if self.pattern_period is not None:
-            serialized = ARObject._serialize_item(self.pattern_period, "MultidimensionalTime")
+            serialized = SerializationHelper.serialize_item(self.pattern_period, "MultidimensionalTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PATTERN-PERIOD")
@@ -173,39 +174,39 @@ class BurstPatternEventTriggering(EventTriggeringConstraint):
         obj = super(BurstPatternEventTriggering, cls).deserialize(element)
 
         # Parse max_number_of
-        child = ARObject._find_child_element(element, "MAX-NUMBER-OF")
+        child = SerializationHelper.find_child_element(element, "MAX-NUMBER-OF")
         if child is not None:
             max_number_of_value = child.text
             obj.max_number_of = max_number_of_value
 
         # Parse minimum_inter
-        child = ARObject._find_child_element(element, "MINIMUM-INTER")
+        child = SerializationHelper.find_child_element(element, "MINIMUM-INTER")
         if child is not None:
-            minimum_inter_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            minimum_inter_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
             obj.minimum_inter = minimum_inter_value
 
         # Parse min_number_of
-        child = ARObject._find_child_element(element, "MIN-NUMBER-OF")
+        child = SerializationHelper.find_child_element(element, "MIN-NUMBER-OF")
         if child is not None:
             min_number_of_value = child.text
             obj.min_number_of = min_number_of_value
 
         # Parse pattern_jitter
-        child = ARObject._find_child_element(element, "PATTERN-JITTER")
+        child = SerializationHelper.find_child_element(element, "PATTERN-JITTER")
         if child is not None:
-            pattern_jitter_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            pattern_jitter_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
             obj.pattern_jitter = pattern_jitter_value
 
         # Parse pattern_length
-        child = ARObject._find_child_element(element, "PATTERN-LENGTH")
+        child = SerializationHelper.find_child_element(element, "PATTERN-LENGTH")
         if child is not None:
-            pattern_length_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            pattern_length_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
             obj.pattern_length = pattern_length_value
 
         # Parse pattern_period
-        child = ARObject._find_child_element(element, "PATTERN-PERIOD")
+        child = SerializationHelper.find_child_element(element, "PATTERN-PERIOD")
         if child is not None:
-            pattern_period_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            pattern_period_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
             obj.pattern_period = pattern_period_value
 
         return obj

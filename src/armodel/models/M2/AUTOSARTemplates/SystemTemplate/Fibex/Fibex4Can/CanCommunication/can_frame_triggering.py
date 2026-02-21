@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
     FrameTriggering,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Can.CanCommunication import (
     CanAddressingModeType,
@@ -78,7 +79,7 @@ class CanFrameTriggering(FrameTriggering):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -99,7 +100,7 @@ class CanFrameTriggering(FrameTriggering):
         if self.absolutelies:
             wrapper = ET.Element("ABSOLUTELIES")
             for item in self.absolutelies:
-                serialized = ARObject._serialize_item(item, "TtcanAbsolutelyScheduledTiming")
+                serialized = SerializationHelper.serialize_item(item, "TtcanAbsolutelyScheduledTiming")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -107,7 +108,7 @@ class CanFrameTriggering(FrameTriggering):
 
         # Serialize can_addressing
         if self.can_addressing is not None:
-            serialized = ARObject._serialize_item(self.can_addressing, "CanAddressingModeType")
+            serialized = SerializationHelper.serialize_item(self.can_addressing, "CanAddressingModeType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CAN-ADDRESSING")
@@ -121,7 +122,7 @@ class CanFrameTriggering(FrameTriggering):
 
         # Serialize can_frame_rx_behavior
         if self.can_frame_rx_behavior is not None:
-            serialized = ARObject._serialize_item(self.can_frame_rx_behavior, "CanFrameRxBehaviorEnum")
+            serialized = SerializationHelper.serialize_item(self.can_frame_rx_behavior, "CanFrameRxBehaviorEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CAN-FRAME-RX-BEHAVIOR")
@@ -135,7 +136,7 @@ class CanFrameTriggering(FrameTriggering):
 
         # Serialize can_frame_tx_behavior
         if self.can_frame_tx_behavior is not None:
-            serialized = ARObject._serialize_item(self.can_frame_tx_behavior, "CanFrameTxBehaviorEnum")
+            serialized = SerializationHelper.serialize_item(self.can_frame_tx_behavior, "CanFrameTxBehaviorEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CAN-FRAME-TX-BEHAVIOR")
@@ -149,7 +150,7 @@ class CanFrameTriggering(FrameTriggering):
 
         # Serialize can_xl_frame_ref
         if self.can_xl_frame_ref is not None:
-            serialized = ARObject._serialize_item(self.can_xl_frame_ref, "CanXlFrameTriggeringProps")
+            serialized = SerializationHelper.serialize_item(self.can_xl_frame_ref, "CanXlFrameTriggeringProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CAN-XL-FRAME-REF")
@@ -163,7 +164,7 @@ class CanFrameTriggering(FrameTriggering):
 
         # Serialize identifier
         if self.identifier is not None:
-            serialized = ARObject._serialize_item(self.identifier, "Integer")
+            serialized = SerializationHelper.serialize_item(self.identifier, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IDENTIFIER")
@@ -177,7 +178,7 @@ class CanFrameTriggering(FrameTriggering):
 
         # Serialize j1939requestable
         if self.j1939requestable is not None:
-            serialized = ARObject._serialize_item(self.j1939requestable, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.j1939requestable, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("J1939REQUESTABLE")
@@ -191,7 +192,7 @@ class CanFrameTriggering(FrameTriggering):
 
         # Serialize rx_identifier_range_range
         if self.rx_identifier_range_range is not None:
-            serialized = ARObject._serialize_item(self.rx_identifier_range_range, "RxIdentifierRange")
+            serialized = SerializationHelper.serialize_item(self.rx_identifier_range_range, "RxIdentifierRange")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RX-IDENTIFIER-RANGE-RANGE")
@@ -205,7 +206,7 @@ class CanFrameTriggering(FrameTriggering):
 
         # Serialize rx_mask
         if self.rx_mask is not None:
-            serialized = ARObject._serialize_item(self.rx_mask, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.rx_mask, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RX-MASK")
@@ -219,7 +220,7 @@ class CanFrameTriggering(FrameTriggering):
 
         # Serialize tx_mask
         if self.tx_mask is not None:
-            serialized = ARObject._serialize_item(self.tx_mask, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.tx_mask, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TX-MASK")
@@ -248,64 +249,64 @@ class CanFrameTriggering(FrameTriggering):
 
         # Parse absolutelies (list from container "ABSOLUTELIES")
         obj.absolutelies = []
-        container = ARObject._find_child_element(element, "ABSOLUTELIES")
+        container = SerializationHelper.find_child_element(element, "ABSOLUTELIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.absolutelies.append(child_value)
 
         # Parse can_addressing
-        child = ARObject._find_child_element(element, "CAN-ADDRESSING")
+        child = SerializationHelper.find_child_element(element, "CAN-ADDRESSING")
         if child is not None:
             can_addressing_value = CanAddressingModeType.deserialize(child)
             obj.can_addressing = can_addressing_value
 
         # Parse can_frame_rx_behavior
-        child = ARObject._find_child_element(element, "CAN-FRAME-RX-BEHAVIOR")
+        child = SerializationHelper.find_child_element(element, "CAN-FRAME-RX-BEHAVIOR")
         if child is not None:
             can_frame_rx_behavior_value = CanFrameRxBehaviorEnum.deserialize(child)
             obj.can_frame_rx_behavior = can_frame_rx_behavior_value
 
         # Parse can_frame_tx_behavior
-        child = ARObject._find_child_element(element, "CAN-FRAME-TX-BEHAVIOR")
+        child = SerializationHelper.find_child_element(element, "CAN-FRAME-TX-BEHAVIOR")
         if child is not None:
             can_frame_tx_behavior_value = CanFrameTxBehaviorEnum.deserialize(child)
             obj.can_frame_tx_behavior = can_frame_tx_behavior_value
 
         # Parse can_xl_frame_ref
-        child = ARObject._find_child_element(element, "CAN-XL-FRAME-REF")
+        child = SerializationHelper.find_child_element(element, "CAN-XL-FRAME-REF")
         if child is not None:
             can_xl_frame_ref_value = ARRef.deserialize(child)
             obj.can_xl_frame_ref = can_xl_frame_ref_value
 
         # Parse identifier
-        child = ARObject._find_child_element(element, "IDENTIFIER")
+        child = SerializationHelper.find_child_element(element, "IDENTIFIER")
         if child is not None:
             identifier_value = child.text
             obj.identifier = identifier_value
 
         # Parse j1939requestable
-        child = ARObject._find_child_element(element, "J1939REQUESTABLE")
+        child = SerializationHelper.find_child_element(element, "J1939REQUESTABLE")
         if child is not None:
             j1939requestable_value = child.text
             obj.j1939requestable = j1939requestable_value
 
         # Parse rx_identifier_range_range
-        child = ARObject._find_child_element(element, "RX-IDENTIFIER-RANGE-RANGE")
+        child = SerializationHelper.find_child_element(element, "RX-IDENTIFIER-RANGE-RANGE")
         if child is not None:
-            rx_identifier_range_range_value = ARObject._deserialize_by_tag(child, "RxIdentifierRange")
+            rx_identifier_range_range_value = SerializationHelper.deserialize_by_tag(child, "RxIdentifierRange")
             obj.rx_identifier_range_range = rx_identifier_range_range_value
 
         # Parse rx_mask
-        child = ARObject._find_child_element(element, "RX-MASK")
+        child = SerializationHelper.find_child_element(element, "RX-MASK")
         if child is not None:
             rx_mask_value = child.text
             obj.rx_mask = rx_mask_value
 
         # Parse tx_mask
-        child = ARObject._find_child_element(element, "TX-MASK")
+        child = SerializationHelper.find_child_element(element, "TX-MASK")
         if child is not None:
             tx_mask_value = child.text
             obj.tx_mask = tx_mask_value

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
     IPdu,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication import (
     DiagPduType,
 )
@@ -43,7 +44,7 @@ class DcmIPdu(IPdu):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class DcmIPdu(IPdu):
 
         # Serialize diag_pdu_type
         if self.diag_pdu_type is not None:
-            serialized = ARObject._serialize_item(self.diag_pdu_type, "DiagPduType")
+            serialized = SerializationHelper.serialize_item(self.diag_pdu_type, "DiagPduType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DIAG-PDU-TYPE")
@@ -90,7 +91,7 @@ class DcmIPdu(IPdu):
         obj = super(DcmIPdu, cls).deserialize(element)
 
         # Parse diag_pdu_type
-        child = ARObject._find_child_element(element, "DIAG-PDU-TYPE")
+        child = SerializationHelper.find_child_element(element, "DIAG-PDU-TYPE")
         if child is not None:
             diag_pdu_type_value = DiagPduType.deserialize(child)
             obj.diag_pdu_type = diag_pdu_type_value

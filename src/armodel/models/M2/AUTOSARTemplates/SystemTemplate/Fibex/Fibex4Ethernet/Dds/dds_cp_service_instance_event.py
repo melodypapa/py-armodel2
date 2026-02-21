@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.Dds.dds_cp_qos_profile import (
     DdsCpQosProfile,
@@ -51,12 +52,12 @@ class DdsCpServiceInstanceEvent(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize dds_event_ref
         if self.dds_event_ref is not None:
-            serialized = ARObject._serialize_item(self.dds_event_ref, "PduTriggering")
+            serialized = SerializationHelper.serialize_item(self.dds_event_ref, "PduTriggering")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DDS-EVENT-REF")
@@ -70,7 +71,7 @@ class DdsCpServiceInstanceEvent(ARObject):
 
         # Serialize dds_event_qos_ref
         if self.dds_event_qos_ref is not None:
-            serialized = ARObject._serialize_item(self.dds_event_qos_ref, "DdsCpQosProfile")
+            serialized = SerializationHelper.serialize_item(self.dds_event_qos_ref, "DdsCpQosProfile")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DDS-EVENT-QOS-REF")
@@ -84,7 +85,7 @@ class DdsCpServiceInstanceEvent(ARObject):
 
         # Serialize dds_event_topic_ref
         if self.dds_event_topic_ref is not None:
-            serialized = ARObject._serialize_item(self.dds_event_topic_ref, "DdsCpTopic")
+            serialized = SerializationHelper.serialize_item(self.dds_event_topic_ref, "DdsCpTopic")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DDS-EVENT-TOPIC-REF")
@@ -113,19 +114,19 @@ class DdsCpServiceInstanceEvent(ARObject):
         obj.__init__()
 
         # Parse dds_event_ref
-        child = ARObject._find_child_element(element, "DDS-EVENT-REF")
+        child = SerializationHelper.find_child_element(element, "DDS-EVENT-REF")
         if child is not None:
             dds_event_ref_value = ARRef.deserialize(child)
             obj.dds_event_ref = dds_event_ref_value
 
         # Parse dds_event_qos_ref
-        child = ARObject._find_child_element(element, "DDS-EVENT-QOS-REF")
+        child = SerializationHelper.find_child_element(element, "DDS-EVENT-QOS-REF")
         if child is not None:
             dds_event_qos_ref_value = ARRef.deserialize(child)
             obj.dds_event_qos_ref = dds_event_qos_ref_value
 
         # Parse dds_event_topic_ref
-        child = ARObject._find_child_element(element, "DDS-EVENT-TOPIC-REF")
+        child = SerializationHelper.find_child_element(element, "DDS-EVENT-TOPIC-REF")
         if child is not None:
             dds_event_topic_ref_value = ARRef.deserialize(child)
             obj.dds_event_topic_ref = dds_event_topic_ref_value

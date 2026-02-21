@@ -20,6 +20,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ImplementationDataTypes.
     AbstractImplementationDataType,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     NameToken,
@@ -66,7 +67,7 @@ class ImplementationDataType(AbstractImplementationDataType):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -85,7 +86,7 @@ class ImplementationDataType(AbstractImplementationDataType):
 
         # Serialize dynamic_array_size_profile
         if self.dynamic_array_size_profile is not None:
-            serialized = ARObject._serialize_item(self.dynamic_array_size_profile, "String")
+            serialized = SerializationHelper.serialize_item(self.dynamic_array_size_profile, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DYNAMIC-ARRAY-SIZE-PROFILE")
@@ -99,7 +100,7 @@ class ImplementationDataType(AbstractImplementationDataType):
 
         # Serialize is_struct_with_optional_element
         if self.is_struct_with_optional_element is not None:
-            serialized = ARObject._serialize_item(self.is_struct_with_optional_element, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.is_struct_with_optional_element, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("IS-STRUCT-WITH-OPTIONAL-ELEMENT")
@@ -115,7 +116,7 @@ class ImplementationDataType(AbstractImplementationDataType):
         if self.sub_elements:
             wrapper = ET.Element("SUB-ELEMENTS")
             for item in self.sub_elements:
-                serialized = ARObject._serialize_item(item, "ImplementationDataTypeElement")
+                serialized = SerializationHelper.serialize_item(item, "ImplementationDataTypeElement")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -123,7 +124,7 @@ class ImplementationDataType(AbstractImplementationDataType):
 
         # Serialize symbol_props
         if self.symbol_props is not None:
-            serialized = ARObject._serialize_item(self.symbol_props, "SymbolProps")
+            serialized = SerializationHelper.serialize_item(self.symbol_props, "SymbolProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SYMBOL-PROPS")
@@ -137,7 +138,7 @@ class ImplementationDataType(AbstractImplementationDataType):
 
         # Serialize type_emitter
         if self.type_emitter is not None:
-            serialized = ARObject._serialize_item(self.type_emitter, "NameToken")
+            serialized = SerializationHelper.serialize_item(self.type_emitter, "NameToken")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TYPE-EMITTER")
@@ -165,35 +166,35 @@ class ImplementationDataType(AbstractImplementationDataType):
         obj = super(ImplementationDataType, cls).deserialize(element)
 
         # Parse dynamic_array_size_profile
-        child = ARObject._find_child_element(element, "DYNAMIC-ARRAY-SIZE-PROFILE")
+        child = SerializationHelper.find_child_element(element, "DYNAMIC-ARRAY-SIZE-PROFILE")
         if child is not None:
             dynamic_array_size_profile_value = child.text
             obj.dynamic_array_size_profile = dynamic_array_size_profile_value
 
         # Parse is_struct_with_optional_element
-        child = ARObject._find_child_element(element, "IS-STRUCT-WITH-OPTIONAL-ELEMENT")
+        child = SerializationHelper.find_child_element(element, "IS-STRUCT-WITH-OPTIONAL-ELEMENT")
         if child is not None:
             is_struct_with_optional_element_value = child.text
             obj.is_struct_with_optional_element = is_struct_with_optional_element_value
 
         # Parse sub_elements (list from container "SUB-ELEMENTS")
         obj.sub_elements = []
-        container = ARObject._find_child_element(element, "SUB-ELEMENTS")
+        container = SerializationHelper.find_child_element(element, "SUB-ELEMENTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.sub_elements.append(child_value)
 
         # Parse symbol_props
-        child = ARObject._find_child_element(element, "SYMBOL-PROPS")
+        child = SerializationHelper.find_child_element(element, "SYMBOL-PROPS")
         if child is not None:
-            symbol_props_value = ARObject._deserialize_by_tag(child, "SymbolProps")
+            symbol_props_value = SerializationHelper.deserialize_by_tag(child, "SymbolProps")
             obj.symbol_props = symbol_props_value
 
         # Parse type_emitter
-        child = ARObject._find_child_element(element, "TYPE-EMITTER")
+        child = SerializationHelper.find_child_element(element, "TYPE-EMITTER")
         if child is not None:
             type_emitter_value = child.text
             obj.type_emitter = type_emitter_value

@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
     ModeDeclarationGroup,
@@ -43,12 +44,12 @@ class SwcBswSynchronizedModeGroupPrototype(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize bsw_mode_group_prototype_ref
         if self.bsw_mode_group_prototype_ref is not None:
-            serialized = ARObject._serialize_item(self.bsw_mode_group_prototype_ref, "ModeDeclarationGroup")
+            serialized = SerializationHelper.serialize_item(self.bsw_mode_group_prototype_ref, "ModeDeclarationGroup")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BSW-MODE-GROUP-PROTOTYPE-REF")
@@ -62,7 +63,7 @@ class SwcBswSynchronizedModeGroupPrototype(ARObject):
 
         # Serialize swc_mode_group_swc_instance_ref
         if self.swc_mode_group_swc_instance_ref is not None:
-            serialized = ARObject._serialize_item(self.swc_mode_group_swc_instance_ref, "ModeDeclarationGroup")
+            serialized = SerializationHelper.serialize_item(self.swc_mode_group_swc_instance_ref, "ModeDeclarationGroup")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SWC-MODE-GROUP-SWC-INSTANCE-REF-REF")
@@ -91,13 +92,13 @@ class SwcBswSynchronizedModeGroupPrototype(ARObject):
         obj.__init__()
 
         # Parse bsw_mode_group_prototype_ref
-        child = ARObject._find_child_element(element, "BSW-MODE-GROUP-PROTOTYPE-REF")
+        child = SerializationHelper.find_child_element(element, "BSW-MODE-GROUP-PROTOTYPE-REF")
         if child is not None:
             bsw_mode_group_prototype_ref_value = ARRef.deserialize(child)
             obj.bsw_mode_group_prototype_ref = bsw_mode_group_prototype_ref_value
 
         # Parse swc_mode_group_swc_instance_ref
-        child = ARObject._find_child_element(element, "SWC-MODE-GROUP-SWC-INSTANCE-REF-REF")
+        child = SerializationHelper.find_child_element(element, "SWC-MODE-GROUP-SWC-INSTANCE-REF-REF")
         if child is not None:
             swc_mode_group_swc_instance_ref_value = ARRef.deserialize(child)
             obj.swc_mode_group_swc_instance_ref = swc_mode_group_swc_instance_ref_value

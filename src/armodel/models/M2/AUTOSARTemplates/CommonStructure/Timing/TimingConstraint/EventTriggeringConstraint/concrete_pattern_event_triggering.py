@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.
     EventTriggeringConstraint,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
     MultidimensionalTime,
 )
@@ -49,7 +50,7 @@ class ConcretePatternEventTriggering(EventTriggeringConstraint):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -70,7 +71,7 @@ class ConcretePatternEventTriggering(EventTriggeringConstraint):
         if self.offsets:
             wrapper = ET.Element("OFFSETS")
             for item in self.offsets:
-                serialized = ARObject._serialize_item(item, "MultidimensionalTime")
+                serialized = SerializationHelper.serialize_item(item, "MultidimensionalTime")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -78,7 +79,7 @@ class ConcretePatternEventTriggering(EventTriggeringConstraint):
 
         # Serialize pattern_jitter
         if self.pattern_jitter is not None:
-            serialized = ARObject._serialize_item(self.pattern_jitter, "MultidimensionalTime")
+            serialized = SerializationHelper.serialize_item(self.pattern_jitter, "MultidimensionalTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PATTERN-JITTER")
@@ -92,7 +93,7 @@ class ConcretePatternEventTriggering(EventTriggeringConstraint):
 
         # Serialize pattern_length
         if self.pattern_length is not None:
-            serialized = ARObject._serialize_item(self.pattern_length, "MultidimensionalTime")
+            serialized = SerializationHelper.serialize_item(self.pattern_length, "MultidimensionalTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PATTERN-LENGTH")
@@ -106,7 +107,7 @@ class ConcretePatternEventTriggering(EventTriggeringConstraint):
 
         # Serialize pattern_period
         if self.pattern_period is not None:
-            serialized = ARObject._serialize_item(self.pattern_period, "MultidimensionalTime")
+            serialized = SerializationHelper.serialize_item(self.pattern_period, "MultidimensionalTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PATTERN-PERIOD")
@@ -135,30 +136,30 @@ class ConcretePatternEventTriggering(EventTriggeringConstraint):
 
         # Parse offsets (list from container "OFFSETS")
         obj.offsets = []
-        container = ARObject._find_child_element(element, "OFFSETS")
+        container = SerializationHelper.find_child_element(element, "OFFSETS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.offsets.append(child_value)
 
         # Parse pattern_jitter
-        child = ARObject._find_child_element(element, "PATTERN-JITTER")
+        child = SerializationHelper.find_child_element(element, "PATTERN-JITTER")
         if child is not None:
-            pattern_jitter_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            pattern_jitter_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
             obj.pattern_jitter = pattern_jitter_value
 
         # Parse pattern_length
-        child = ARObject._find_child_element(element, "PATTERN-LENGTH")
+        child = SerializationHelper.find_child_element(element, "PATTERN-LENGTH")
         if child is not None:
-            pattern_length_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            pattern_length_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
             obj.pattern_length = pattern_length_value
 
         # Parse pattern_period
-        child = ARObject._find_child_element(element, "PATTERN-PERIOD")
+        child = SerializationHelper.find_child_element(element, "PATTERN-PERIOD")
         if child is not None:
-            pattern_period_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            pattern_period_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
             obj.pattern_period = pattern_period_value
 
         return obj

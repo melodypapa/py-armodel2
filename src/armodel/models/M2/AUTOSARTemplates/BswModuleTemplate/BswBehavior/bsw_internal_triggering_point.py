@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.DataDictionary.DataDefProperties import (
     SwImplPolicyEnum,
 )
@@ -43,7 +44,7 @@ class BswInternalTriggeringPoint(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class BswInternalTriggeringPoint(Identifiable):
 
         # Serialize sw_impl_policy_enum
         if self.sw_impl_policy_enum is not None:
-            serialized = ARObject._serialize_item(self.sw_impl_policy_enum, "SwImplPolicyEnum")
+            serialized = SerializationHelper.serialize_item(self.sw_impl_policy_enum, "SwImplPolicyEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-IMPL-POLICY-ENUM")
@@ -90,7 +91,7 @@ class BswInternalTriggeringPoint(Identifiable):
         obj = super(BswInternalTriggeringPoint, cls).deserialize(element)
 
         # Parse sw_impl_policy_enum
-        child = ARObject._find_child_element(element, "SW-IMPL-POLICY-ENUM")
+        child = SerializationHelper.find_child_element(element, "SW-IMPL-POLICY-ENUM")
         if child is not None:
             sw_impl_policy_enum_value = SwImplPolicyEnum.deserialize(child)
             obj.sw_impl_policy_enum = sw_impl_policy_enum_value

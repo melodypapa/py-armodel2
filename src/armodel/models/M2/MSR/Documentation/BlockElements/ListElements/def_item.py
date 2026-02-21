@@ -13,6 +13,7 @@ from armodel.models.M2.MSR.Documentation.BlockElements.PaginationAndView.paginat
     Paginateable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     String,
 )
@@ -51,7 +52,7 @@ class DefItem(Paginateable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -70,7 +71,7 @@ class DefItem(Paginateable):
 
         # Serialize def_
         if self.def_ is not None:
-            serialized = ARObject._serialize_item(self.def_, "DocumentationBlock")
+            serialized = SerializationHelper.serialize_item(self.def_, "DocumentationBlock")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DEF")
@@ -84,7 +85,7 @@ class DefItem(Paginateable):
 
         # Serialize help_entry
         if self.help_entry is not None:
-            serialized = ARObject._serialize_item(self.help_entry, "String")
+            serialized = SerializationHelper.serialize_item(self.help_entry, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HELP-ENTRY")
@@ -112,13 +113,13 @@ class DefItem(Paginateable):
         obj = super(DefItem, cls).deserialize(element)
 
         # Parse def_
-        child = ARObject._find_child_element(element, "DEF")
+        child = SerializationHelper.find_child_element(element, "DEF")
         if child is not None:
-            def__value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            def__value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
             obj.def_ = def__value
 
         # Parse help_entry
-        child = ARObject._find_child_element(element, "HELP-ENTRY")
+        child = SerializationHelper.find_child_element(element, "HELP-ENTRY")
         if child is not None:
             help_entry_value = child.text
             obj.help_entry = help_entry_value

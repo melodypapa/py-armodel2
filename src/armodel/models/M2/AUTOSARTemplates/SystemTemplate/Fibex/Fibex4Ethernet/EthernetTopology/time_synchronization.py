@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.time_sync_client_configuration import (
     TimeSyncClientConfiguration,
 )
@@ -45,12 +46,12 @@ class TimeSynchronization(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize time_sync_client_configuration
         if self.time_sync_client_configuration is not None:
-            serialized = ARObject._serialize_item(self.time_sync_client_configuration, "TimeSyncClientConfiguration")
+            serialized = SerializationHelper.serialize_item(self.time_sync_client_configuration, "TimeSyncClientConfiguration")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIME-SYNC-CLIENT-CONFIGURATION")
@@ -64,7 +65,7 @@ class TimeSynchronization(ARObject):
 
         # Serialize time_sync_server_configuration
         if self.time_sync_server_configuration is not None:
-            serialized = ARObject._serialize_item(self.time_sync_server_configuration, "TimeSyncServerConfiguration")
+            serialized = SerializationHelper.serialize_item(self.time_sync_server_configuration, "TimeSyncServerConfiguration")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIME-SYNC-SERVER-CONFIGURATION")
@@ -93,15 +94,15 @@ class TimeSynchronization(ARObject):
         obj.__init__()
 
         # Parse time_sync_client_configuration
-        child = ARObject._find_child_element(element, "TIME-SYNC-CLIENT-CONFIGURATION")
+        child = SerializationHelper.find_child_element(element, "TIME-SYNC-CLIENT-CONFIGURATION")
         if child is not None:
-            time_sync_client_configuration_value = ARObject._deserialize_by_tag(child, "TimeSyncClientConfiguration")
+            time_sync_client_configuration_value = SerializationHelper.deserialize_by_tag(child, "TimeSyncClientConfiguration")
             obj.time_sync_client_configuration = time_sync_client_configuration_value
 
         # Parse time_sync_server_configuration
-        child = ARObject._find_child_element(element, "TIME-SYNC-SERVER-CONFIGURATION")
+        child = SerializationHelper.find_child_element(element, "TIME-SYNC-SERVER-CONFIGURATION")
         if child is not None:
-            time_sync_server_configuration_value = ARObject._deserialize_by_tag(child, "TimeSyncServerConfiguration")
+            time_sync_server_configuration_value = SerializationHelper.deserialize_by_tag(child, "TimeSyncServerConfiguration")
             obj.time_sync_server_configuration = time_sync_server_configuration_value
 
         return obj

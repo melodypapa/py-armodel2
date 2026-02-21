@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Numerical,
 )
@@ -55,7 +56,7 @@ class PhysicalDimension(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -74,7 +75,7 @@ class PhysicalDimension(ARElement):
 
         # Serialize current_exp
         if self.current_exp is not None:
-            serialized = ARObject._serialize_item(self.current_exp, "Numerical")
+            serialized = SerializationHelper.serialize_item(self.current_exp, "Numerical")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CURRENT-EXP")
@@ -88,7 +89,7 @@ class PhysicalDimension(ARElement):
 
         # Serialize length_exp
         if self.length_exp is not None:
-            serialized = ARObject._serialize_item(self.length_exp, "Numerical")
+            serialized = SerializationHelper.serialize_item(self.length_exp, "Numerical")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LENGTH-EXP")
@@ -102,7 +103,7 @@ class PhysicalDimension(ARElement):
 
         # Serialize luminous_intensity_exp
         if self.luminous_intensity_exp is not None:
-            serialized = ARObject._serialize_item(self.luminous_intensity_exp, "Numerical")
+            serialized = SerializationHelper.serialize_item(self.luminous_intensity_exp, "Numerical")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LUMINOUS-INTENSITY-EXP")
@@ -116,7 +117,7 @@ class PhysicalDimension(ARElement):
 
         # Serialize mass_exp
         if self.mass_exp is not None:
-            serialized = ARObject._serialize_item(self.mass_exp, "Numerical")
+            serialized = SerializationHelper.serialize_item(self.mass_exp, "Numerical")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MASS-EXP")
@@ -130,7 +131,7 @@ class PhysicalDimension(ARElement):
 
         # Serialize molar_amount_exp
         if self.molar_amount_exp is not None:
-            serialized = ARObject._serialize_item(self.molar_amount_exp, "Numerical")
+            serialized = SerializationHelper.serialize_item(self.molar_amount_exp, "Numerical")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MOLAR-AMOUNT-EXP")
@@ -144,7 +145,7 @@ class PhysicalDimension(ARElement):
 
         # Serialize temperature_exp
         if self.temperature_exp is not None:
-            serialized = ARObject._serialize_item(self.temperature_exp, "Numerical")
+            serialized = SerializationHelper.serialize_item(self.temperature_exp, "Numerical")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TEMPERATURE-EXP")
@@ -158,7 +159,7 @@ class PhysicalDimension(ARElement):
 
         # Serialize time_exp
         if self.time_exp is not None:
-            serialized = ARObject._serialize_item(self.time_exp, "Numerical")
+            serialized = SerializationHelper.serialize_item(self.time_exp, "Numerical")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIME-EXP")
@@ -186,43 +187,43 @@ class PhysicalDimension(ARElement):
         obj = super(PhysicalDimension, cls).deserialize(element)
 
         # Parse current_exp
-        child = ARObject._find_child_element(element, "CURRENT-EXP")
+        child = SerializationHelper.find_child_element(element, "CURRENT-EXP")
         if child is not None:
             current_exp_value = child.text
             obj.current_exp = current_exp_value
 
         # Parse length_exp
-        child = ARObject._find_child_element(element, "LENGTH-EXP")
+        child = SerializationHelper.find_child_element(element, "LENGTH-EXP")
         if child is not None:
             length_exp_value = child.text
             obj.length_exp = length_exp_value
 
         # Parse luminous_intensity_exp
-        child = ARObject._find_child_element(element, "LUMINOUS-INTENSITY-EXP")
+        child = SerializationHelper.find_child_element(element, "LUMINOUS-INTENSITY-EXP")
         if child is not None:
             luminous_intensity_exp_value = child.text
             obj.luminous_intensity_exp = luminous_intensity_exp_value
 
         # Parse mass_exp
-        child = ARObject._find_child_element(element, "MASS-EXP")
+        child = SerializationHelper.find_child_element(element, "MASS-EXP")
         if child is not None:
             mass_exp_value = child.text
             obj.mass_exp = mass_exp_value
 
         # Parse molar_amount_exp
-        child = ARObject._find_child_element(element, "MOLAR-AMOUNT-EXP")
+        child = SerializationHelper.find_child_element(element, "MOLAR-AMOUNT-EXP")
         if child is not None:
             molar_amount_exp_value = child.text
             obj.molar_amount_exp = molar_amount_exp_value
 
         # Parse temperature_exp
-        child = ARObject._find_child_element(element, "TEMPERATURE-EXP")
+        child = SerializationHelper.find_child_element(element, "TEMPERATURE-EXP")
         if child is not None:
             temperature_exp_value = child.text
             obj.temperature_exp = temperature_exp_value
 
         # Parse time_exp
-        child = ARObject._find_child_element(element, "TIME-EXP")
+        child = SerializationHelper.find_child_element(element, "TIME-EXP")
         if child is not None:
             time_exp_value = child.text
             obj.time_exp = time_exp_value

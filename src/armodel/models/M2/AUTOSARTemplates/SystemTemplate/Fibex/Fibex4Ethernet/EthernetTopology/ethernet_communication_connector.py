@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
     CommunicationConnector,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -57,7 +58,7 @@ class EthernetCommunicationConnector(CommunicationConnector):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -76,7 +77,7 @@ class EthernetCommunicationConnector(CommunicationConnector):
 
         # Serialize eth_ip_props_ref
         if self.eth_ip_props_ref is not None:
-            serialized = ARObject._serialize_item(self.eth_ip_props_ref, "EthIpProps")
+            serialized = SerializationHelper.serialize_item(self.eth_ip_props_ref, "EthIpProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ETH-IP-PROPS-REF")
@@ -90,7 +91,7 @@ class EthernetCommunicationConnector(CommunicationConnector):
 
         # Serialize maximum
         if self.maximum is not None:
-            serialized = ARObject._serialize_item(self.maximum, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.maximum, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAXIMUM")
@@ -104,7 +105,7 @@ class EthernetCommunicationConnector(CommunicationConnector):
 
         # Serialize neighbor_cache
         if self.neighbor_cache is not None:
-            serialized = ARObject._serialize_item(self.neighbor_cache, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.neighbor_cache, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NEIGHBOR-CACHE")
@@ -118,7 +119,7 @@ class EthernetCommunicationConnector(CommunicationConnector):
 
         # Serialize path_mtu
         if self.path_mtu is not None:
-            serialized = ARObject._serialize_item(self.path_mtu, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.path_mtu, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PATH-MTU")
@@ -132,7 +133,7 @@ class EthernetCommunicationConnector(CommunicationConnector):
 
         # Serialize path_mtu_timeout
         if self.path_mtu_timeout is not None:
-            serialized = ARObject._serialize_item(self.path_mtu_timeout, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.path_mtu_timeout, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PATH-MTU-TIMEOUT")
@@ -160,31 +161,31 @@ class EthernetCommunicationConnector(CommunicationConnector):
         obj = super(EthernetCommunicationConnector, cls).deserialize(element)
 
         # Parse eth_ip_props_ref
-        child = ARObject._find_child_element(element, "ETH-IP-PROPS-REF")
+        child = SerializationHelper.find_child_element(element, "ETH-IP-PROPS-REF")
         if child is not None:
             eth_ip_props_ref_value = ARRef.deserialize(child)
             obj.eth_ip_props_ref = eth_ip_props_ref_value
 
         # Parse maximum
-        child = ARObject._find_child_element(element, "MAXIMUM")
+        child = SerializationHelper.find_child_element(element, "MAXIMUM")
         if child is not None:
             maximum_value = child.text
             obj.maximum = maximum_value
 
         # Parse neighbor_cache
-        child = ARObject._find_child_element(element, "NEIGHBOR-CACHE")
+        child = SerializationHelper.find_child_element(element, "NEIGHBOR-CACHE")
         if child is not None:
             neighbor_cache_value = child.text
             obj.neighbor_cache = neighbor_cache_value
 
         # Parse path_mtu
-        child = ARObject._find_child_element(element, "PATH-MTU")
+        child = SerializationHelper.find_child_element(element, "PATH-MTU")
         if child is not None:
             path_mtu_value = child.text
             obj.path_mtu = path_mtu_value
 
         # Parse path_mtu_timeout
-        child = ARObject._find_child_element(element, "PATH-MTU-TIMEOUT")
+        child = SerializationHelper.find_child_element(element, "PATH-MTU-TIMEOUT")
         if child is not None:
             path_mtu_timeout_value = child.text
             obj.path_mtu_timeout = path_mtu_timeout_value

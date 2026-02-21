@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommun
     LinConfigurationEntry,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
 )
@@ -48,7 +49,7 @@ class AssignFrameIdRange(LinConfigurationEntry):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -67,7 +68,7 @@ class AssignFrameIdRange(LinConfigurationEntry):
 
         # Serialize frame_pid
         if self.frame_pid is not None:
-            serialized = ARObject._serialize_item(self.frame_pid, "FramePid")
+            serialized = SerializationHelper.serialize_item(self.frame_pid, "FramePid")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FRAME-PID")
@@ -81,7 +82,7 @@ class AssignFrameIdRange(LinConfigurationEntry):
 
         # Serialize start_index
         if self.start_index is not None:
-            serialized = ARObject._serialize_item(self.start_index, "Integer")
+            serialized = SerializationHelper.serialize_item(self.start_index, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("START-INDEX")
@@ -109,13 +110,13 @@ class AssignFrameIdRange(LinConfigurationEntry):
         obj = super(AssignFrameIdRange, cls).deserialize(element)
 
         # Parse frame_pid
-        child = ARObject._find_child_element(element, "FRAME-PID")
+        child = SerializationHelper.find_child_element(element, "FRAME-PID")
         if child is not None:
-            frame_pid_value = ARObject._deserialize_by_tag(child, "FramePid")
+            frame_pid_value = SerializationHelper.deserialize_by_tag(child, "FramePid")
             obj.frame_pid = frame_pid_value
 
         # Parse start_index
-        child = ARObject._find_child_element(element, "START-INDEX")
+        child = SerializationHelper.find_child_element(element, "START-INDEX")
         if child is not None:
             start_index_value = child.text
             obj.start_index = start_index_value

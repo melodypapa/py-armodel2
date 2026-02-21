@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_definition
     EcucDefinitionElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
     String,
@@ -59,7 +60,7 @@ class EcucCommonAttributes(EcucDefinitionElement, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -80,7 +81,7 @@ class EcucCommonAttributes(EcucDefinitionElement, ABC):
         if self.multiplicities:
             wrapper = ET.Element("MULTIPLICITIES")
             for item in self.multiplicities:
-                serialized = ARObject._serialize_item(item, "EcucMultiplicityConfigurationClass")
+                serialized = SerializationHelper.serialize_item(item, "EcucMultiplicityConfigurationClass")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -88,7 +89,7 @@ class EcucCommonAttributes(EcucDefinitionElement, ABC):
 
         # Serialize origin
         if self.origin is not None:
-            serialized = ARObject._serialize_item(self.origin, "String")
+            serialized = SerializationHelper.serialize_item(self.origin, "String")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ORIGIN")
@@ -102,7 +103,7 @@ class EcucCommonAttributes(EcucDefinitionElement, ABC):
 
         # Serialize post_build_variant
         if self.post_build_variant is not None:
-            serialized = ARObject._serialize_item(self.post_build_variant, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.post_build_variant, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("POST-BUILD-VARIANT")
@@ -116,7 +117,7 @@ class EcucCommonAttributes(EcucDefinitionElement, ABC):
 
         # Serialize requires_index
         if self.requires_index is not None:
-            serialized = ARObject._serialize_item(self.requires_index, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.requires_index, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REQUIRES-INDEX")
@@ -132,7 +133,7 @@ class EcucCommonAttributes(EcucDefinitionElement, ABC):
         if self.value_configs:
             wrapper = ET.Element("VALUE-CONFIGS")
             for item in self.value_configs:
-                serialized = ARObject._serialize_item(item, "EcucValueConfigurationClass")
+                serialized = SerializationHelper.serialize_item(item, "EcucValueConfigurationClass")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -155,39 +156,39 @@ class EcucCommonAttributes(EcucDefinitionElement, ABC):
 
         # Parse multiplicities (list from container "MULTIPLICITIES")
         obj.multiplicities = []
-        container = ARObject._find_child_element(element, "MULTIPLICITIES")
+        container = SerializationHelper.find_child_element(element, "MULTIPLICITIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.multiplicities.append(child_value)
 
         # Parse origin
-        child = ARObject._find_child_element(element, "ORIGIN")
+        child = SerializationHelper.find_child_element(element, "ORIGIN")
         if child is not None:
             origin_value = child.text
             obj.origin = origin_value
 
         # Parse post_build_variant
-        child = ARObject._find_child_element(element, "POST-BUILD-VARIANT")
+        child = SerializationHelper.find_child_element(element, "POST-BUILD-VARIANT")
         if child is not None:
             post_build_variant_value = child.text
             obj.post_build_variant = post_build_variant_value
 
         # Parse requires_index
-        child = ARObject._find_child_element(element, "REQUIRES-INDEX")
+        child = SerializationHelper.find_child_element(element, "REQUIRES-INDEX")
         if child is not None:
             requires_index_value = child.text
             obj.requires_index = requires_index_value
 
         # Parse value_configs (list from container "VALUE-CONFIGS")
         obj.value_configs = []
-        container = ARObject._find_child_element(element, "VALUE-CONFIGS")
+        container = SerializationHelper.find_child_element(element, "VALUE-CONFIGS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.value_configs.append(child_value)
 

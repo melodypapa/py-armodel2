@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.Documentation.MsrQuery.msr_query_props import (
     MsrQueryProps,
 )
@@ -48,12 +49,12 @@ class MsrQueryP2(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize msr_query_props
         if self.msr_query_props is not None:
-            serialized = ARObject._serialize_item(self.msr_query_props, "MsrQueryProps")
+            serialized = SerializationHelper.serialize_item(self.msr_query_props, "MsrQueryProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MSR-QUERY-PROPS")
@@ -67,7 +68,7 @@ class MsrQueryP2(ARObject):
 
         # Serialize msr_query_result
         if self.msr_query_result is not None:
-            serialized = ARObject._serialize_item(self.msr_query_result, "DocumentationBlock")
+            serialized = SerializationHelper.serialize_item(self.msr_query_result, "DocumentationBlock")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MSR-QUERY-RESULT")
@@ -96,15 +97,15 @@ class MsrQueryP2(ARObject):
         obj.__init__()
 
         # Parse msr_query_props
-        child = ARObject._find_child_element(element, "MSR-QUERY-PROPS")
+        child = SerializationHelper.find_child_element(element, "MSR-QUERY-PROPS")
         if child is not None:
-            msr_query_props_value = ARObject._deserialize_by_tag(child, "MsrQueryProps")
+            msr_query_props_value = SerializationHelper.deserialize_by_tag(child, "MsrQueryProps")
             obj.msr_query_props = msr_query_props_value
 
         # Parse msr_query_result
-        child = ARObject._find_child_element(element, "MSR-QUERY-RESULT")
+        child = SerializationHelper.find_child_element(element, "MSR-QUERY-RESULT")
         if child is not None:
-            msr_query_result_value = ARObject._deserialize_by_tag(child, "DocumentationBlock")
+            msr_query_result_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
             obj.msr_query_result = msr_query_result_value
 
         return obj

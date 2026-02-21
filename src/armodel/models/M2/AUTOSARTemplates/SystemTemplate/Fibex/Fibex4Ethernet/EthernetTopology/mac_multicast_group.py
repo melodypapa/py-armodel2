@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     MacAddressString,
 )
@@ -43,7 +44,7 @@ class MacMulticastGroup(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class MacMulticastGroup(Identifiable):
 
         # Serialize mac_multicast
         if self.mac_multicast is not None:
-            serialized = ARObject._serialize_item(self.mac_multicast, "MacAddressString")
+            serialized = SerializationHelper.serialize_item(self.mac_multicast, "MacAddressString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAC-MULTICAST")
@@ -90,7 +91,7 @@ class MacMulticastGroup(Identifiable):
         obj = super(MacMulticastGroup, cls).deserialize(element)
 
         # Parse mac_multicast
-        child = ARObject._find_child_element(element, "MAC-MULTICAST")
+        child = SerializationHelper.find_child_element(element, "MAC-MULTICAST")
         if child is not None:
             mac_multicast_value = child.text
             obj.mac_multicast = mac_multicast_value

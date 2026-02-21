@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
     CpSoftwareCluster,
@@ -49,7 +50,7 @@ class CpSoftwareClusterResourcePool(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -70,7 +71,7 @@ class CpSoftwareClusterResourcePool(ARElement):
         if self.ecu_scope_refs:
             wrapper = ET.Element("ECU-SCOPE-REFS")
             for item in self.ecu_scope_refs:
-                serialized = ARObject._serialize_item(item, "EcuInstance")
+                serialized = SerializationHelper.serialize_item(item, "EcuInstance")
                 if serialized is not None:
                     child_elem = ET.Element("ECU-SCOPE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -87,7 +88,7 @@ class CpSoftwareClusterResourcePool(ARElement):
         if self.resources:
             wrapper = ET.Element("RESOURCES")
             for item in self.resources:
-                serialized = ARObject._serialize_item(item, "CpSoftwareCluster")
+                serialized = SerializationHelper.serialize_item(item, "CpSoftwareCluster")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -110,27 +111,27 @@ class CpSoftwareClusterResourcePool(ARElement):
 
         # Parse ecu_scope_refs (list from container "ECU-SCOPE-REFS")
         obj.ecu_scope_refs = []
-        container = ARObject._find_child_element(element, "ECU-SCOPE-REFS")
+        container = SerializationHelper.find_child_element(element, "ECU-SCOPE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.ecu_scope_refs.append(child_value)
 
         # Parse resources (list from container "RESOURCES")
         obj.resources = []
-        container = ARObject._find_child_element(element, "RESOURCES")
+        container = SerializationHelper.find_child_element(element, "RESOURCES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.resources.append(child_value)
 

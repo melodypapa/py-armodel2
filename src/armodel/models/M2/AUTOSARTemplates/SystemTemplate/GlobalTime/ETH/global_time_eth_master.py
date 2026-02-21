@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.global_time_ma
     GlobalTimeMaster,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime import (
     GlobalTimeCrcSupportEnum,
 )
@@ -53,7 +54,7 @@ class GlobalTimeEthMaster(GlobalTimeMaster):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -72,7 +73,7 @@ class GlobalTimeEthMaster(GlobalTimeMaster):
 
         # Serialize crc_secured
         if self.crc_secured is not None:
-            serialized = ARObject._serialize_item(self.crc_secured, "GlobalTimeCrcSupportEnum")
+            serialized = SerializationHelper.serialize_item(self.crc_secured, "GlobalTimeCrcSupportEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CRC-SECURED")
@@ -86,7 +87,7 @@ class GlobalTimeEthMaster(GlobalTimeMaster):
 
         # Serialize hold_over_time
         if self.hold_over_time is not None:
-            serialized = ARObject._serialize_item(self.hold_over_time, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.hold_over_time, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HOLD-OVER-TIME")
@@ -100,7 +101,7 @@ class GlobalTimeEthMaster(GlobalTimeMaster):
 
         # Serialize sub_tlv_config
         if self.sub_tlv_config is not None:
-            serialized = ARObject._serialize_item(self.sub_tlv_config, "EthTSynSubTlvConfig")
+            serialized = SerializationHelper.serialize_item(self.sub_tlv_config, "EthTSynSubTlvConfig")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SUB-TLV-CONFIG")
@@ -128,21 +129,21 @@ class GlobalTimeEthMaster(GlobalTimeMaster):
         obj = super(GlobalTimeEthMaster, cls).deserialize(element)
 
         # Parse crc_secured
-        child = ARObject._find_child_element(element, "CRC-SECURED")
+        child = SerializationHelper.find_child_element(element, "CRC-SECURED")
         if child is not None:
             crc_secured_value = GlobalTimeCrcSupportEnum.deserialize(child)
             obj.crc_secured = crc_secured_value
 
         # Parse hold_over_time
-        child = ARObject._find_child_element(element, "HOLD-OVER-TIME")
+        child = SerializationHelper.find_child_element(element, "HOLD-OVER-TIME")
         if child is not None:
             hold_over_time_value = child.text
             obj.hold_over_time = hold_over_time_value
 
         # Parse sub_tlv_config
-        child = ARObject._find_child_element(element, "SUB-TLV-CONFIG")
+        child = SerializationHelper.find_child_element(element, "SUB-TLV-CONFIG")
         if child is not None:
-            sub_tlv_config_value = ARObject._deserialize_by_tag(child, "EthTSynSubTlvConfig")
+            sub_tlv_config_value = SerializationHelper.deserialize_by_tag(child, "EthTSynSubTlvConfig")
             obj.sub_tlv_config = sub_tlv_config_value
 
         return obj

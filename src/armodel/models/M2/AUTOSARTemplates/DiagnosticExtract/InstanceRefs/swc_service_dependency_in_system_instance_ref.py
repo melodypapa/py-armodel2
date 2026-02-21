@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.root_sw_composition_prototype import (
     RootSwCompositionPrototype,
@@ -45,12 +46,12 @@ class SwcServiceDependencyInSystemInstanceRef(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize context_root_sw_ref
         if self.context_root_sw_ref is not None:
-            serialized = ARObject._serialize_item(self.context_root_sw_ref, "RootSwCompositionPrototype")
+            serialized = SerializationHelper.serialize_item(self.context_root_sw_ref, "RootSwCompositionPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CONTEXT-ROOT-SW-REF")
@@ -66,7 +67,7 @@ class SwcServiceDependencyInSystemInstanceRef(ARObject):
         if self.context_sw_prototype_refs:
             wrapper = ET.Element("CONTEXT-SW-PROTOTYPE-REFS")
             for item in self.context_sw_prototype_refs:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     child_elem = ET.Element("CONTEXT-SW-PROTOTYPE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -81,7 +82,7 @@ class SwcServiceDependencyInSystemInstanceRef(ARObject):
 
         # Serialize target_swc_ref
         if self.target_swc_ref is not None:
-            serialized = ARObject._serialize_item(self.target_swc_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.target_swc_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TARGET-SWC-REF")
@@ -110,29 +111,29 @@ class SwcServiceDependencyInSystemInstanceRef(ARObject):
         obj.__init__()
 
         # Parse context_root_sw_ref
-        child = ARObject._find_child_element(element, "CONTEXT-ROOT-SW-REF")
+        child = SerializationHelper.find_child_element(element, "CONTEXT-ROOT-SW-REF")
         if child is not None:
             context_root_sw_ref_value = ARRef.deserialize(child)
             obj.context_root_sw_ref = context_root_sw_ref_value
 
         # Parse context_sw_prototype_refs (list from container "CONTEXT-SW-PROTOTYPE-REFS")
         obj.context_sw_prototype_refs = []
-        container = ARObject._find_child_element(element, "CONTEXT-SW-PROTOTYPE-REFS")
+        container = SerializationHelper.find_child_element(element, "CONTEXT-SW-PROTOTYPE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.context_sw_prototype_refs.append(child_value)
 
         # Parse target_swc_ref
-        child = ARObject._find_child_element(element, "TARGET-SWC-REF")
+        child = SerializationHelper.find_child_element(element, "TARGET-SWC-REF")
         if child is not None:
             target_swc_ref_value = ARRef.deserialize(child)
             obj.target_swc_ref = target_swc_ref_value

@@ -16,6 +16,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.composition_sw_component_type import (
     CompositionSwComponentType,
@@ -54,7 +55,7 @@ class RootSwCompositionPrototype(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -75,7 +76,7 @@ class RootSwCompositionPrototype(Identifiable):
         if self.calibration_refs:
             wrapper = ET.Element("CALIBRATION-REFS")
             for item in self.calibration_refs:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     child_elem = ET.Element("CALIBRATION-REF")
                     if hasattr(serialized, 'attrib'):
@@ -90,7 +91,7 @@ class RootSwCompositionPrototype(Identifiable):
 
         # Serialize flat_map_ref
         if self.flat_map_ref is not None:
-            serialized = ARObject._serialize_item(self.flat_map_ref, "FlatMap")
+            serialized = SerializationHelper.serialize_item(self.flat_map_ref, "FlatMap")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("FLAT-MAP-REF")
@@ -104,7 +105,7 @@ class RootSwCompositionPrototype(Identifiable):
 
         # Serialize software
         if self.software is not None:
-            serialized = ARObject._serialize_item(self.software, "CompositionSwComponentType")
+            serialized = SerializationHelper.serialize_item(self.software, "CompositionSwComponentType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SOFTWARE")
@@ -133,30 +134,30 @@ class RootSwCompositionPrototype(Identifiable):
 
         # Parse calibration_refs (list from container "CALIBRATION-REFS")
         obj.calibration_refs = []
-        container = ARObject._find_child_element(element, "CALIBRATION-REFS")
+        container = SerializationHelper.find_child_element(element, "CALIBRATION-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.calibration_refs.append(child_value)
 
         # Parse flat_map_ref
-        child = ARObject._find_child_element(element, "FLAT-MAP-REF")
+        child = SerializationHelper.find_child_element(element, "FLAT-MAP-REF")
         if child is not None:
             flat_map_ref_value = ARRef.deserialize(child)
             obj.flat_map_ref = flat_map_ref_value
 
         # Parse software
-        child = ARObject._find_child_element(element, "SOFTWARE")
+        child = SerializationHelper.find_child_element(element, "SOFTWARE")
         if child is not None:
-            software_value = ARObject._deserialize_by_tag(child, "CompositionSwComponentType")
+            software_value = SerializationHelper.deserialize_by_tag(child, "CompositionSwComponentType")
             obj.software = software_value
 
         return obj

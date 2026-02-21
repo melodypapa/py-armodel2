@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
     CpSoftwareCluster,
@@ -49,7 +50,7 @@ class SystemSignalToCommunicationResourceMapping(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -68,7 +69,7 @@ class SystemSignalToCommunicationResourceMapping(Identifiable):
 
         # Serialize software_cluster_ref
         if self.software_cluster_ref is not None:
-            serialized = ARObject._serialize_item(self.software_cluster_ref, "CpSoftwareCluster")
+            serialized = SerializationHelper.serialize_item(self.software_cluster_ref, "CpSoftwareCluster")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SOFTWARE-CLUSTER-REF")
@@ -82,7 +83,7 @@ class SystemSignalToCommunicationResourceMapping(Identifiable):
 
         # Serialize system_signal_ref
         if self.system_signal_ref is not None:
-            serialized = ARObject._serialize_item(self.system_signal_ref, "SystemSignal")
+            serialized = SerializationHelper.serialize_item(self.system_signal_ref, "SystemSignal")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SYSTEM-SIGNAL-REF")
@@ -110,13 +111,13 @@ class SystemSignalToCommunicationResourceMapping(Identifiable):
         obj = super(SystemSignalToCommunicationResourceMapping, cls).deserialize(element)
 
         # Parse software_cluster_ref
-        child = ARObject._find_child_element(element, "SOFTWARE-CLUSTER-REF")
+        child = SerializationHelper.find_child_element(element, "SOFTWARE-CLUSTER-REF")
         if child is not None:
             software_cluster_ref_value = ARRef.deserialize(child)
             obj.software_cluster_ref = software_cluster_ref_value
 
         # Parse system_signal_ref
-        child = ARObject._find_child_element(element, "SYSTEM-SIGNAL-REF")
+        child = SerializationHelper.find_child_element(element, "SYSTEM-SIGNAL-REF")
         if child is not None:
             system_signal_ref_value = ARRef.deserialize(child)
             obj.system_signal_ref = system_signal_ref_value

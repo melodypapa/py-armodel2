@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.MSR.Documentation.TextModel.LanguageDataModel import (
     LEnum,
 )
+from armodel.serialization import SerializationHelper
 from abc import ABC, abstractmethod
 
 
@@ -42,7 +43,7 @@ class LanguageSpecific(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize l as XML attribute (not child element)

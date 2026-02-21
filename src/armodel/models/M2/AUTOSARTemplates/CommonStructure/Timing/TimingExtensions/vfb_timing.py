@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingExtensions.
     TimingExtension,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Components.sw_component_type import (
     SwComponentType,
@@ -45,7 +46,7 @@ class VfbTiming(TimingExtension):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class VfbTiming(TimingExtension):
 
         # Serialize component_ref
         if self.component_ref is not None:
-            serialized = ARObject._serialize_item(self.component_ref, "SwComponentType")
+            serialized = SerializationHelper.serialize_item(self.component_ref, "SwComponentType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COMPONENT-REF")
@@ -92,7 +93,7 @@ class VfbTiming(TimingExtension):
         obj = super(VfbTiming, cls).deserialize(element)
 
         # Parse component_ref
-        child = ARObject._find_child_element(element, "COMPONENT-REF")
+        child = SerializationHelper.find_child_element(element, "COMPONENT-REF")
         if child is not None:
             component_ref_value = ARRef.deserialize(child)
             obj.component_ref = component_ref_value

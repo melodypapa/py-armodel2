@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -41,12 +42,12 @@ class DataPrototypeReference(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize tag_id
         if self.tag_id is not None:
-            serialized = ARObject._serialize_item(self.tag_id, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.tag_id, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TAG-ID")
@@ -75,7 +76,7 @@ class DataPrototypeReference(ARObject, ABC):
         obj.__init__()
 
         # Parse tag_id
-        child = ARObject._find_child_element(element, "TAG-ID")
+        child = SerializationHelper.find_child_element(element, "TAG-ID")
         if child is not None:
             tag_id_value = child.text
             obj.tag_id = tag_id_value

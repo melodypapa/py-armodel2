@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Ethernet.EthernetTopology.tcp_ip_icmpv4_props import (
     TcpIpIcmpv4Props,
 )
@@ -48,7 +49,7 @@ class EthTcpIpIcmpProps(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -67,7 +68,7 @@ class EthTcpIpIcmpProps(ARElement):
 
         # Serialize icmp_v4_props
         if self.icmp_v4_props is not None:
-            serialized = ARObject._serialize_item(self.icmp_v4_props, "TcpIpIcmpv4Props")
+            serialized = SerializationHelper.serialize_item(self.icmp_v4_props, "TcpIpIcmpv4Props")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ICMP-V4-PROPS")
@@ -81,7 +82,7 @@ class EthTcpIpIcmpProps(ARElement):
 
         # Serialize icmp_v6_props
         if self.icmp_v6_props is not None:
-            serialized = ARObject._serialize_item(self.icmp_v6_props, "TcpIpIcmpv6Props")
+            serialized = SerializationHelper.serialize_item(self.icmp_v6_props, "TcpIpIcmpv6Props")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ICMP-V6-PROPS")
@@ -109,15 +110,15 @@ class EthTcpIpIcmpProps(ARElement):
         obj = super(EthTcpIpIcmpProps, cls).deserialize(element)
 
         # Parse icmp_v4_props
-        child = ARObject._find_child_element(element, "ICMP-V4-PROPS")
+        child = SerializationHelper.find_child_element(element, "ICMP-V4-PROPS")
         if child is not None:
-            icmp_v4_props_value = ARObject._deserialize_by_tag(child, "TcpIpIcmpv4Props")
+            icmp_v4_props_value = SerializationHelper.deserialize_by_tag(child, "TcpIpIcmpv4Props")
             obj.icmp_v4_props = icmp_v4_props_value
 
         # Parse icmp_v6_props
-        child = ARObject._find_child_element(element, "ICMP-V6-PROPS")
+        child = SerializationHelper.find_child_element(element, "ICMP-V6-PROPS")
         if child is not None:
-            icmp_v6_props_value = ARObject._deserialize_by_tag(child, "TcpIpIcmpv6Props")
+            icmp_v6_props_value = SerializationHelper.deserialize_by_tag(child, "TcpIpIcmpv6Props")
             obj.icmp_v6_props = icmp_v6_props_value
 
         return obj

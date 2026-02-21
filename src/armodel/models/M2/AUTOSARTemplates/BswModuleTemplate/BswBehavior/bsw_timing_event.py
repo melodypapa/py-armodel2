@@ -14,6 +14,7 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_schedu
     BswScheduleEvent,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
 )
@@ -44,7 +45,7 @@ class BswTimingEvent(BswScheduleEvent):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -63,7 +64,7 @@ class BswTimingEvent(BswScheduleEvent):
 
         # Serialize period
         if self.period is not None:
-            serialized = ARObject._serialize_item(self.period, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.period, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PERIOD")
@@ -91,7 +92,7 @@ class BswTimingEvent(BswScheduleEvent):
         obj = super(BswTimingEvent, cls).deserialize(element)
 
         # Parse period
-        child = ARObject._find_child_element(element, "PERIOD")
+        child = SerializationHelper.find_child_element(element, "PERIOD")
         if child is not None:
             period_value = child.text
             obj.period = period_value

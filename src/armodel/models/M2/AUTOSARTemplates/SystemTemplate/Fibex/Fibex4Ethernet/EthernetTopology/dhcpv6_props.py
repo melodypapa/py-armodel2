@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     TimeValue,
 )
@@ -44,12 +45,12 @@ class Dhcpv6Props(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize tcp_ip_dhcp
         if self.tcp_ip_dhcp is not None:
-            serialized = ARObject._serialize_item(self.tcp_ip_dhcp, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.tcp_ip_dhcp, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TCP-IP-DHCP")
@@ -63,7 +64,7 @@ class Dhcpv6Props(ARObject):
 
         # Serialize tcp_ip_dhcp_v6_inf
         if self.tcp_ip_dhcp_v6_inf is not None:
-            serialized = ARObject._serialize_item(self.tcp_ip_dhcp_v6_inf, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.tcp_ip_dhcp_v6_inf, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TCP-IP-DHCP-V6-INF")
@@ -77,7 +78,7 @@ class Dhcpv6Props(ARObject):
 
         # Serialize tcp_ip_dhcp_v6_sol
         if self.tcp_ip_dhcp_v6_sol is not None:
-            serialized = ARObject._serialize_item(self.tcp_ip_dhcp_v6_sol, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.tcp_ip_dhcp_v6_sol, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TCP-IP-DHCP-V6-SOL")
@@ -106,19 +107,19 @@ class Dhcpv6Props(ARObject):
         obj.__init__()
 
         # Parse tcp_ip_dhcp
-        child = ARObject._find_child_element(element, "TCP-IP-DHCP")
+        child = SerializationHelper.find_child_element(element, "TCP-IP-DHCP")
         if child is not None:
             tcp_ip_dhcp_value = child.text
             obj.tcp_ip_dhcp = tcp_ip_dhcp_value
 
         # Parse tcp_ip_dhcp_v6_inf
-        child = ARObject._find_child_element(element, "TCP-IP-DHCP-V6-INF")
+        child = SerializationHelper.find_child_element(element, "TCP-IP-DHCP-V6-INF")
         if child is not None:
             tcp_ip_dhcp_v6_inf_value = child.text
             obj.tcp_ip_dhcp_v6_inf = tcp_ip_dhcp_v6_inf_value
 
         # Parse tcp_ip_dhcp_v6_sol
-        child = ARObject._find_child_element(element, "TCP-IP-DHCP-V6-SOL")
+        child = SerializationHelper.find_child_element(element, "TCP-IP-DHCP-V6-SOL")
         if child is not None:
             tcp_ip_dhcp_v6_sol_value = child.text
             obj.tcp_ip_dhcp_v6_sol = tcp_ip_dhcp_v6_sol_value

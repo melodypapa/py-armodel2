@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinCommun
     ScheduleTableEntry,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.Fibex4Lin.LinTopology.lin_slave import (
     LinSlave,
@@ -50,7 +51,7 @@ class LinConfigurationEntry(ScheduleTableEntry, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -69,7 +70,7 @@ class LinConfigurationEntry(ScheduleTableEntry, ABC):
 
         # Serialize assigned_ref
         if self.assigned_ref is not None:
-            serialized = ARObject._serialize_item(self.assigned_ref, "LinSlave")
+            serialized = SerializationHelper.serialize_item(self.assigned_ref, "LinSlave")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ASSIGNED-REF")
@@ -83,7 +84,7 @@ class LinConfigurationEntry(ScheduleTableEntry, ABC):
 
         # Serialize assigned_lin_ref
         if self.assigned_lin_ref is not None:
-            serialized = ARObject._serialize_item(self.assigned_lin_ref, "LinSlaveConfigIdent")
+            serialized = SerializationHelper.serialize_item(self.assigned_lin_ref, "LinSlaveConfigIdent")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ASSIGNED-LIN-REF")
@@ -111,13 +112,13 @@ class LinConfigurationEntry(ScheduleTableEntry, ABC):
         obj = super(LinConfigurationEntry, cls).deserialize(element)
 
         # Parse assigned_ref
-        child = ARObject._find_child_element(element, "ASSIGNED-REF")
+        child = SerializationHelper.find_child_element(element, "ASSIGNED-REF")
         if child is not None:
             assigned_ref_value = ARRef.deserialize(child)
             obj.assigned_ref = assigned_ref_value
 
         # Parse assigned_lin_ref
-        child = ARObject._find_child_element(element, "ASSIGNED-LIN-REF")
+        child = SerializationHelper.find_child_element(element, "ASSIGNED-LIN-REF")
         if child is not None:
             assigned_lin_ref_value = ARRef.deserialize(child)
             obj.assigned_lin_ref = assigned_lin_ref_value

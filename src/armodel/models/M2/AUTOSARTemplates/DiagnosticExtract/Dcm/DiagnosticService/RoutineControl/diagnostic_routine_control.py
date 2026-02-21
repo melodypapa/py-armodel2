@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.
     DiagnosticServiceInstance,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diagnostic_routine import (
     DiagnosticRoutine,
@@ -46,7 +47,7 @@ class DiagnosticRoutineControl(DiagnosticServiceInstance):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class DiagnosticRoutineControl(DiagnosticServiceInstance):
 
         # Serialize routine_ref
         if self.routine_ref is not None:
-            serialized = ARObject._serialize_item(self.routine_ref, "DiagnosticRoutine")
+            serialized = SerializationHelper.serialize_item(self.routine_ref, "DiagnosticRoutine")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ROUTINE-REF")
@@ -79,7 +80,7 @@ class DiagnosticRoutineControl(DiagnosticServiceInstance):
 
         # Serialize routine_control_ref
         if self.routine_control_ref is not None:
-            serialized = ARObject._serialize_item(self.routine_control_ref, "DiagnosticRoutine")
+            serialized = SerializationHelper.serialize_item(self.routine_control_ref, "DiagnosticRoutine")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ROUTINE-CONTROL-REF")
@@ -107,13 +108,13 @@ class DiagnosticRoutineControl(DiagnosticServiceInstance):
         obj = super(DiagnosticRoutineControl, cls).deserialize(element)
 
         # Parse routine_ref
-        child = ARObject._find_child_element(element, "ROUTINE-REF")
+        child = SerializationHelper.find_child_element(element, "ROUTINE-REF")
         if child is not None:
             routine_ref_value = ARRef.deserialize(child)
             obj.routine_ref = routine_ref_value
 
         # Parse routine_control_ref
-        child = ARObject._find_child_element(element, "ROUTINE-CONTROL-REF")
+        child = SerializationHelper.find_child_element(element, "ROUTINE-CONTROL-REF")
         if child is not None:
             routine_control_ref_value = ARRef.deserialize(child)
             obj.routine_control_ref = routine_control_ref_value

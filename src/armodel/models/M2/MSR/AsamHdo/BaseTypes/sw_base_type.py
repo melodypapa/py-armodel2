@@ -18,6 +18,7 @@ from armodel.models.M2.MSR.AsamHdo.BaseTypes.base_type import (
     BaseType,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class SwBaseType(BaseType):
@@ -43,7 +44,7 @@ class SwBaseType(BaseType):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes

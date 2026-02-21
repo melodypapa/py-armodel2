@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Integer,
@@ -50,14 +51,14 @@ class PostBuildVariantCriterionValue(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize annotations (list to container "ANNOTATIONS")
         if self.annotations:
             wrapper = ET.Element("ANNOTATIONS")
             for item in self.annotations:
-                serialized = ARObject._serialize_item(item, "Annotation")
+                serialized = SerializationHelper.serialize_item(item, "Annotation")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -65,7 +66,7 @@ class PostBuildVariantCriterionValue(ARObject):
 
         # Serialize value
         if self.value is not None:
-            serialized = ARObject._serialize_item(self.value, "Integer")
+            serialized = SerializationHelper.serialize_item(self.value, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VALUE")
@@ -79,7 +80,7 @@ class PostBuildVariantCriterionValue(ARObject):
 
         # Serialize variant_criterion_ref
         if self.variant_criterion_ref is not None:
-            serialized = ARObject._serialize_item(self.variant_criterion_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.variant_criterion_ref, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VARIANT-CRITERION-REF")
@@ -109,22 +110,22 @@ class PostBuildVariantCriterionValue(ARObject):
 
         # Parse annotations (list from container "ANNOTATIONS")
         obj.annotations = []
-        container = ARObject._find_child_element(element, "ANNOTATIONS")
+        container = SerializationHelper.find_child_element(element, "ANNOTATIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.annotations.append(child_value)
 
         # Parse value
-        child = ARObject._find_child_element(element, "VALUE")
+        child = SerializationHelper.find_child_element(element, "VALUE")
         if child is not None:
             value_value = child.text
             obj.value = value_value
 
         # Parse variant_criterion_ref
-        child = ARObject._find_child_element(element, "VARIANT-CRITERION-REF")
+        child = SerializationHelper.find_child_element(element, "VARIANT-CRITERION-REF")
         if child is not None:
             variant_criterion_ref_value = ARRef.deserialize(child)
             obj.variant_criterion_ref = variant_criterion_ref_value

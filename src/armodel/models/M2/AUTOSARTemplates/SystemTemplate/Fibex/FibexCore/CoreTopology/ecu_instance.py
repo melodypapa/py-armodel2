@@ -16,6 +16,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_ele
     FibexElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -127,7 +128,7 @@ class EcuInstance(FibexElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -148,7 +149,7 @@ class EcuInstance(FibexElement):
         if self.associated_com_refs:
             wrapper = ET.Element("ASSOCIATED-COM-REFS")
             for item in self.associated_com_refs:
-                serialized = ARObject._serialize_item(item, "ISignalIPduGroup")
+                serialized = SerializationHelper.serialize_item(item, "ISignalIPduGroup")
                 if serialized is not None:
                     child_elem = ET.Element("ASSOCIATED-COM-REF")
                     if hasattr(serialized, 'attrib'):
@@ -165,7 +166,7 @@ class EcuInstance(FibexElement):
         if self.associated_refs:
             wrapper = ET.Element("ASSOCIATED-REFS")
             for item in self.associated_refs:
-                serialized = ARObject._serialize_item(item, "ConsumedProvidedServiceInstanceGroup")
+                serialized = SerializationHelper.serialize_item(item, "ConsumedProvidedServiceInstanceGroup")
                 if serialized is not None:
                     child_elem = ET.Element("ASSOCIATED-REF")
                     if hasattr(serialized, 'attrib'):
@@ -182,7 +183,7 @@ class EcuInstance(FibexElement):
         if self.associated_pdur_refs:
             wrapper = ET.Element("ASSOCIATED-PDUR-REFS")
             for item in self.associated_pdur_refs:
-                serialized = ARObject._serialize_item(item, "PdurIPduGroup")
+                serialized = SerializationHelper.serialize_item(item, "PdurIPduGroup")
                 if serialized is not None:
                     child_elem = ET.Element("ASSOCIATED-PDUR-REF")
                     if hasattr(serialized, 'attrib'):
@@ -197,7 +198,7 @@ class EcuInstance(FibexElement):
 
         # Serialize channel
         if self.channel is not None:
-            serialized = ARObject._serialize_item(self.channel, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.channel, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CHANNEL")
@@ -211,7 +212,7 @@ class EcuInstance(FibexElement):
 
         # Serialize client_id_range
         if self.client_id_range is not None:
-            serialized = ARObject._serialize_item(self.client_id_range, "ClientIdRange")
+            serialized = SerializationHelper.serialize_item(self.client_id_range, "ClientIdRange")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CLIENT-ID-RANGE")
@@ -225,7 +226,7 @@ class EcuInstance(FibexElement):
 
         # Serialize com
         if self.com is not None:
-            serialized = ARObject._serialize_item(self.com, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.com, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COM")
@@ -239,7 +240,7 @@ class EcuInstance(FibexElement):
 
         # Serialize com_enable
         if self.com_enable is not None:
-            serialized = ARObject._serialize_item(self.com_enable, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.com_enable, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COM-ENABLE")
@@ -255,7 +256,7 @@ class EcuInstance(FibexElement):
         if self.comm_controllers:
             wrapper = ET.Element("COMM-CONTROLLERS")
             for item in self.comm_controllers:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -265,7 +266,7 @@ class EcuInstance(FibexElement):
         if self.connectors:
             wrapper = ET.Element("CONNECTORS")
             for item in self.connectors:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -273,7 +274,7 @@ class EcuInstance(FibexElement):
 
         # Serialize dlt_config
         if self.dlt_config is not None:
-            serialized = ARObject._serialize_item(self.dlt_config, "DltConfig")
+            serialized = SerializationHelper.serialize_item(self.dlt_config, "DltConfig")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DLT-CONFIG")
@@ -287,7 +288,7 @@ class EcuInstance(FibexElement):
 
         # Serialize do_ip_config
         if self.do_ip_config is not None:
-            serialized = ARObject._serialize_item(self.do_ip_config, "DoIpConfig")
+            serialized = SerializationHelper.serialize_item(self.do_ip_config, "DoIpConfig")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DO-IP-CONFIG")
@@ -303,7 +304,7 @@ class EcuInstance(FibexElement):
         if self.ecu_task_proxie_refs:
             wrapper = ET.Element("ECU-TASK-PROXIE-REFS")
             for item in self.ecu_task_proxie_refs:
-                serialized = ARObject._serialize_item(item, "OsTaskProxy")
+                serialized = SerializationHelper.serialize_item(item, "OsTaskProxy")
                 if serialized is not None:
                     child_elem = ET.Element("ECU-TASK-PROXIE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -318,7 +319,7 @@ class EcuInstance(FibexElement):
 
         # Serialize eth_switch_port
         if self.eth_switch_port is not None:
-            serialized = ARObject._serialize_item(self.eth_switch_port, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.eth_switch_port, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ETH-SWITCH-PORT")
@@ -334,7 +335,7 @@ class EcuInstance(FibexElement):
         if self.firewall_rule_refs:
             wrapper = ET.Element("FIREWALL-RULE-REFS")
             for item in self.firewall_rule_refs:
-                serialized = ARObject._serialize_item(item, "StateDependentFirewall")
+                serialized = SerializationHelper.serialize_item(item, "StateDependentFirewall")
                 if serialized is not None:
                     child_elem = ET.Element("FIREWALL-RULE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -351,7 +352,7 @@ class EcuInstance(FibexElement):
         if self.partitions:
             wrapper = ET.Element("PARTITIONS")
             for item in self.partitions:
-                serialized = ARObject._serialize_item(item, "EcuPartition")
+                serialized = SerializationHelper.serialize_item(item, "EcuPartition")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -359,7 +360,7 @@ class EcuInstance(FibexElement):
 
         # Serialize pnc_nm_request
         if self.pnc_nm_request is not None:
-            serialized = ARObject._serialize_item(self.pnc_nm_request, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.pnc_nm_request, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PNC-NM-REQUEST")
@@ -373,7 +374,7 @@ class EcuInstance(FibexElement):
 
         # Serialize pnc_prepare
         if self.pnc_prepare is not None:
-            serialized = ARObject._serialize_item(self.pnc_prepare, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.pnc_prepare, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PNC-PREPARE")
@@ -387,7 +388,7 @@ class EcuInstance(FibexElement):
 
         # Serialize pnc
         if self.pnc is not None:
-            serialized = ARObject._serialize_item(self.pnc, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.pnc, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PNC")
@@ -401,7 +402,7 @@ class EcuInstance(FibexElement):
 
         # Serialize pn_reset_time
         if self.pn_reset_time is not None:
-            serialized = ARObject._serialize_item(self.pn_reset_time, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.pn_reset_time, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PN-RESET-TIME")
@@ -415,7 +416,7 @@ class EcuInstance(FibexElement):
 
         # Serialize sleep_mode
         if self.sleep_mode is not None:
-            serialized = ARObject._serialize_item(self.sleep_mode, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.sleep_mode, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SLEEP-MODE")
@@ -429,7 +430,7 @@ class EcuInstance(FibexElement):
 
         # Serialize tcp_ip_icmp_props_ref
         if self.tcp_ip_icmp_props_ref is not None:
-            serialized = ARObject._serialize_item(self.tcp_ip_icmp_props_ref, "EthTcpIpIcmpProps")
+            serialized = SerializationHelper.serialize_item(self.tcp_ip_icmp_props_ref, "EthTcpIpIcmpProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TCP-IP-ICMP-PROPS-REF")
@@ -443,7 +444,7 @@ class EcuInstance(FibexElement):
 
         # Serialize tcp_ip_props_ref
         if self.tcp_ip_props_ref is not None:
-            serialized = ARObject._serialize_item(self.tcp_ip_props_ref, "EthTcpIpProps")
+            serialized = SerializationHelper.serialize_item(self.tcp_ip_props_ref, "EthTcpIpProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TCP-IP-PROPS-REF")
@@ -457,7 +458,7 @@ class EcuInstance(FibexElement):
 
         # Serialize v2x_supported
         if self.v2x_supported is not None:
-            serialized = ARObject._serialize_item(self.v2x_supported, "Any")
+            serialized = SerializationHelper.serialize_item(self.v2x_supported, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("V2X-SUPPORTED")
@@ -471,7 +472,7 @@ class EcuInstance(FibexElement):
 
         # Serialize wake_up_over_bus_supported
         if self.wake_up_over_bus_supported is not None:
-            serialized = ARObject._serialize_item(self.wake_up_over_bus_supported, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.wake_up_over_bus_supported, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("WAKE-UP-OVER-BUS-SUPPORTED")
@@ -500,206 +501,206 @@ class EcuInstance(FibexElement):
 
         # Parse associated_com_refs (list from container "ASSOCIATED-COM-REFS")
         obj.associated_com_refs = []
-        container = ARObject._find_child_element(element, "ASSOCIATED-COM-REFS")
+        container = SerializationHelper.find_child_element(element, "ASSOCIATED-COM-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.associated_com_refs.append(child_value)
 
         # Parse associated_refs (list from container "ASSOCIATED-REFS")
         obj.associated_refs = []
-        container = ARObject._find_child_element(element, "ASSOCIATED-REFS")
+        container = SerializationHelper.find_child_element(element, "ASSOCIATED-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.associated_refs.append(child_value)
 
         # Parse associated_pdur_refs (list from container "ASSOCIATED-PDUR-REFS")
         obj.associated_pdur_refs = []
-        container = ARObject._find_child_element(element, "ASSOCIATED-PDUR-REFS")
+        container = SerializationHelper.find_child_element(element, "ASSOCIATED-PDUR-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.associated_pdur_refs.append(child_value)
 
         # Parse channel
-        child = ARObject._find_child_element(element, "CHANNEL")
+        child = SerializationHelper.find_child_element(element, "CHANNEL")
         if child is not None:
             channel_value = child.text
             obj.channel = channel_value
 
         # Parse client_id_range
-        child = ARObject._find_child_element(element, "CLIENT-ID-RANGE")
+        child = SerializationHelper.find_child_element(element, "CLIENT-ID-RANGE")
         if child is not None:
-            client_id_range_value = ARObject._deserialize_by_tag(child, "ClientIdRange")
+            client_id_range_value = SerializationHelper.deserialize_by_tag(child, "ClientIdRange")
             obj.client_id_range = client_id_range_value
 
         # Parse com
-        child = ARObject._find_child_element(element, "COM")
+        child = SerializationHelper.find_child_element(element, "COM")
         if child is not None:
             com_value = child.text
             obj.com = com_value
 
         # Parse com_enable
-        child = ARObject._find_child_element(element, "COM-ENABLE")
+        child = SerializationHelper.find_child_element(element, "COM-ENABLE")
         if child is not None:
             com_enable_value = child.text
             obj.com_enable = com_enable_value
 
         # Parse comm_controllers (list from container "COMM-CONTROLLERS")
         obj.comm_controllers = []
-        container = ARObject._find_child_element(element, "COMM-CONTROLLERS")
+        container = SerializationHelper.find_child_element(element, "COMM-CONTROLLERS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.comm_controllers.append(child_value)
 
         # Parse connectors (list from container "CONNECTORS")
         obj.connectors = []
-        container = ARObject._find_child_element(element, "CONNECTORS")
+        container = SerializationHelper.find_child_element(element, "CONNECTORS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.connectors.append(child_value)
 
         # Parse dlt_config
-        child = ARObject._find_child_element(element, "DLT-CONFIG")
+        child = SerializationHelper.find_child_element(element, "DLT-CONFIG")
         if child is not None:
-            dlt_config_value = ARObject._deserialize_by_tag(child, "DltConfig")
+            dlt_config_value = SerializationHelper.deserialize_by_tag(child, "DltConfig")
             obj.dlt_config = dlt_config_value
 
         # Parse do_ip_config
-        child = ARObject._find_child_element(element, "DO-IP-CONFIG")
+        child = SerializationHelper.find_child_element(element, "DO-IP-CONFIG")
         if child is not None:
-            do_ip_config_value = ARObject._deserialize_by_tag(child, "DoIpConfig")
+            do_ip_config_value = SerializationHelper.deserialize_by_tag(child, "DoIpConfig")
             obj.do_ip_config = do_ip_config_value
 
         # Parse ecu_task_proxie_refs (list from container "ECU-TASK-PROXIE-REFS")
         obj.ecu_task_proxie_refs = []
-        container = ARObject._find_child_element(element, "ECU-TASK-PROXIE-REFS")
+        container = SerializationHelper.find_child_element(element, "ECU-TASK-PROXIE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.ecu_task_proxie_refs.append(child_value)
 
         # Parse eth_switch_port
-        child = ARObject._find_child_element(element, "ETH-SWITCH-PORT")
+        child = SerializationHelper.find_child_element(element, "ETH-SWITCH-PORT")
         if child is not None:
             eth_switch_port_value = child.text
             obj.eth_switch_port = eth_switch_port_value
 
         # Parse firewall_rule_refs (list from container "FIREWALL-RULE-REFS")
         obj.firewall_rule_refs = []
-        container = ARObject._find_child_element(element, "FIREWALL-RULE-REFS")
+        container = SerializationHelper.find_child_element(element, "FIREWALL-RULE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.firewall_rule_refs.append(child_value)
 
         # Parse partitions (list from container "PARTITIONS")
         obj.partitions = []
-        container = ARObject._find_child_element(element, "PARTITIONS")
+        container = SerializationHelper.find_child_element(element, "PARTITIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.partitions.append(child_value)
 
         # Parse pnc_nm_request
-        child = ARObject._find_child_element(element, "PNC-NM-REQUEST")
+        child = SerializationHelper.find_child_element(element, "PNC-NM-REQUEST")
         if child is not None:
             pnc_nm_request_value = child.text
             obj.pnc_nm_request = pnc_nm_request_value
 
         # Parse pnc_prepare
-        child = ARObject._find_child_element(element, "PNC-PREPARE")
+        child = SerializationHelper.find_child_element(element, "PNC-PREPARE")
         if child is not None:
             pnc_prepare_value = child.text
             obj.pnc_prepare = pnc_prepare_value
 
         # Parse pnc
-        child = ARObject._find_child_element(element, "PNC")
+        child = SerializationHelper.find_child_element(element, "PNC")
         if child is not None:
             pnc_value = child.text
             obj.pnc = pnc_value
 
         # Parse pn_reset_time
-        child = ARObject._find_child_element(element, "PN-RESET-TIME")
+        child = SerializationHelper.find_child_element(element, "PN-RESET-TIME")
         if child is not None:
             pn_reset_time_value = child.text
             obj.pn_reset_time = pn_reset_time_value
 
         # Parse sleep_mode
-        child = ARObject._find_child_element(element, "SLEEP-MODE")
+        child = SerializationHelper.find_child_element(element, "SLEEP-MODE")
         if child is not None:
             sleep_mode_value = child.text
             obj.sleep_mode = sleep_mode_value
 
         # Parse tcp_ip_icmp_props_ref
-        child = ARObject._find_child_element(element, "TCP-IP-ICMP-PROPS-REF")
+        child = SerializationHelper.find_child_element(element, "TCP-IP-ICMP-PROPS-REF")
         if child is not None:
             tcp_ip_icmp_props_ref_value = ARRef.deserialize(child)
             obj.tcp_ip_icmp_props_ref = tcp_ip_icmp_props_ref_value
 
         # Parse tcp_ip_props_ref
-        child = ARObject._find_child_element(element, "TCP-IP-PROPS-REF")
+        child = SerializationHelper.find_child_element(element, "TCP-IP-PROPS-REF")
         if child is not None:
             tcp_ip_props_ref_value = ARRef.deserialize(child)
             obj.tcp_ip_props_ref = tcp_ip_props_ref_value
 
         # Parse v2x_supported
-        child = ARObject._find_child_element(element, "V2X-SUPPORTED")
+        child = SerializationHelper.find_child_element(element, "V2X-SUPPORTED")
         if child is not None:
             v2x_supported_value = child.text
             obj.v2x_supported = v2x_supported_value
 
         # Parse wake_up_over_bus_supported
-        child = ARObject._find_child_element(element, "WAKE-UP-OVER-BUS-SUPPORTED")
+        child = SerializationHelper.find_child_element(element, "WAKE-UP-OVER-BUS-SUPPORTED")
         if child is not None:
             wake_up_over_bus_supported_value = child.text
             obj.wake_up_over_bus_supported = wake_up_over_bus_supported_value

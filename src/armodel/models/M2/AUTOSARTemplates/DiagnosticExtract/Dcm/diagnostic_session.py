@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.CommonDiagnostics.diag
     DiagnosticCommonElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm import (
     DiagnosticJumpToBootLoaderEnum,
 )
@@ -53,7 +54,7 @@ class DiagnosticSession(DiagnosticCommonElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -72,7 +73,7 @@ class DiagnosticSession(DiagnosticCommonElement):
 
         # Serialize id
         if self.id is not None:
-            serialized = ARObject._serialize_item(self.id, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.id, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ID")
@@ -86,7 +87,7 @@ class DiagnosticSession(DiagnosticCommonElement):
 
         # Serialize jump_to_boot
         if self.jump_to_boot is not None:
-            serialized = ARObject._serialize_item(self.jump_to_boot, "DiagnosticJumpToBootLoaderEnum")
+            serialized = SerializationHelper.serialize_item(self.jump_to_boot, "DiagnosticJumpToBootLoaderEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("JUMP-TO-BOOT")
@@ -100,7 +101,7 @@ class DiagnosticSession(DiagnosticCommonElement):
 
         # Serialize p2_server_max
         if self.p2_server_max is not None:
-            serialized = ARObject._serialize_item(self.p2_server_max, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.p2_server_max, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("P2-SERVER-MAX")
@@ -114,7 +115,7 @@ class DiagnosticSession(DiagnosticCommonElement):
 
         # Serialize p2_star_server
         if self.p2_star_server is not None:
-            serialized = ARObject._serialize_item(self.p2_star_server, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.p2_star_server, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("P2-STAR-SERVER")
@@ -142,25 +143,25 @@ class DiagnosticSession(DiagnosticCommonElement):
         obj = super(DiagnosticSession, cls).deserialize(element)
 
         # Parse id
-        child = ARObject._find_child_element(element, "ID")
+        child = SerializationHelper.find_child_element(element, "ID")
         if child is not None:
             id_value = child.text
             obj.id = id_value
 
         # Parse jump_to_boot
-        child = ARObject._find_child_element(element, "JUMP-TO-BOOT")
+        child = SerializationHelper.find_child_element(element, "JUMP-TO-BOOT")
         if child is not None:
             jump_to_boot_value = DiagnosticJumpToBootLoaderEnum.deserialize(child)
             obj.jump_to_boot = jump_to_boot_value
 
         # Parse p2_server_max
-        child = ARObject._find_child_element(element, "P2-SERVER-MAX")
+        child = SerializationHelper.find_child_element(element, "P2-SERVER-MAX")
         if child is not None:
             p2_server_max_value = child.text
             obj.p2_server_max = p2_server_max_value
 
         # Parse p2_star_server
-        child = ARObject._find_child_element(element, "P2-STAR-SERVER")
+        child = SerializationHelper.find_child_element(element, "P2-STAR-SERVER")
         if child is not None:
             p2_star_server_value = child.text
             obj.p2_star_server = p2_star_server_value

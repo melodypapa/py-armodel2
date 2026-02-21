@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Describable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Ip4AddressString,
     TimeValue,
@@ -52,7 +53,7 @@ class Ipv4DhcpServerConfiguration(Describable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -71,7 +72,7 @@ class Ipv4DhcpServerConfiguration(Describable):
 
         # Serialize address_range
         if self.address_range is not None:
-            serialized = ARObject._serialize_item(self.address_range, "Ip4AddressString")
+            serialized = SerializationHelper.serialize_item(self.address_range, "Ip4AddressString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ADDRESS-RANGE")
@@ -85,7 +86,7 @@ class Ipv4DhcpServerConfiguration(Describable):
 
         # Serialize default_gateway
         if self.default_gateway is not None:
-            serialized = ARObject._serialize_item(self.default_gateway, "Ip4AddressString")
+            serialized = SerializationHelper.serialize_item(self.default_gateway, "Ip4AddressString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DEFAULT-GATEWAY")
@@ -99,7 +100,7 @@ class Ipv4DhcpServerConfiguration(Describable):
 
         # Serialize default_lease
         if self.default_lease is not None:
-            serialized = ARObject._serialize_item(self.default_lease, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.default_lease, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DEFAULT-LEASE")
@@ -115,7 +116,7 @@ class Ipv4DhcpServerConfiguration(Describable):
         if self.dns_servers:
             wrapper = ET.Element("DNS-SERVERS")
             for item in self.dns_servers:
-                serialized = ARObject._serialize_item(item, "Ip4AddressString")
+                serialized = SerializationHelper.serialize_item(item, "Ip4AddressString")
                 if serialized is not None:
                     child_elem = ET.Element("DNS-SERVER")
                     if hasattr(serialized, 'attrib'):
@@ -130,7 +131,7 @@ class Ipv4DhcpServerConfiguration(Describable):
 
         # Serialize network_mask
         if self.network_mask is not None:
-            serialized = ARObject._serialize_item(self.network_mask, "Ip4AddressString")
+            serialized = SerializationHelper.serialize_item(self.network_mask, "Ip4AddressString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NETWORK-MASK")
@@ -158,26 +159,26 @@ class Ipv4DhcpServerConfiguration(Describable):
         obj = super(Ipv4DhcpServerConfiguration, cls).deserialize(element)
 
         # Parse address_range
-        child = ARObject._find_child_element(element, "ADDRESS-RANGE")
+        child = SerializationHelper.find_child_element(element, "ADDRESS-RANGE")
         if child is not None:
             address_range_value = child.text
             obj.address_range = address_range_value
 
         # Parse default_gateway
-        child = ARObject._find_child_element(element, "DEFAULT-GATEWAY")
+        child = SerializationHelper.find_child_element(element, "DEFAULT-GATEWAY")
         if child is not None:
             default_gateway_value = child.text
             obj.default_gateway = default_gateway_value
 
         # Parse default_lease
-        child = ARObject._find_child_element(element, "DEFAULT-LEASE")
+        child = SerializationHelper.find_child_element(element, "DEFAULT-LEASE")
         if child is not None:
             default_lease_value = child.text
             obj.default_lease = default_lease_value
 
         # Parse dns_servers (list from container "DNS-SERVERS")
         obj.dns_servers = []
-        container = ARObject._find_child_element(element, "DNS-SERVERS")
+        container = SerializationHelper.find_child_element(element, "DNS-SERVERS")
         if container is not None:
             for child in container:
                 # Extract primitive value (Ip4AddressString) as text
@@ -186,7 +187,7 @@ class Ipv4DhcpServerConfiguration(Describable):
                     obj.dns_servers.append(child_value)
 
         # Parse network_mask
-        child = ARObject._find_child_element(element, "NETWORK-MASK")
+        child = SerializationHelper.find_child_element(element, "NETWORK-MASK")
         if child is not None:
             network_mask_value = child.text
             obj.network_mask = network_mask_value

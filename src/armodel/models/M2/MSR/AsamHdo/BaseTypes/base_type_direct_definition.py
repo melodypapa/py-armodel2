@@ -16,6 +16,7 @@ from armodel.models.M2.MSR.AsamHdo.BaseTypes.base_type_definition import (
     BaseTypeDefinition,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     ByteOrderEnum,
 )
@@ -61,7 +62,7 @@ class BaseTypeDirectDefinition(BaseTypeDefinition):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -80,7 +81,7 @@ class BaseTypeDirectDefinition(BaseTypeDefinition):
 
         # Serialize base_type_encoding
         if self.base_type_encoding is not None:
-            serialized = ARObject._serialize_item(self.base_type_encoding, "BaseTypeEncodingString")
+            serialized = SerializationHelper.serialize_item(self.base_type_encoding, "BaseTypeEncodingString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BASE-TYPE-ENCODING")
@@ -94,7 +95,7 @@ class BaseTypeDirectDefinition(BaseTypeDefinition):
 
         # Serialize base_type_size
         if self.base_type_size is not None:
-            serialized = ARObject._serialize_item(self.base_type_size, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.base_type_size, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BASE-TYPE-SIZE")
@@ -108,7 +109,7 @@ class BaseTypeDirectDefinition(BaseTypeDefinition):
 
         # Serialize byte_order
         if self.byte_order is not None:
-            serialized = ARObject._serialize_item(self.byte_order, "ByteOrderEnum")
+            serialized = SerializationHelper.serialize_item(self.byte_order, "ByteOrderEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("BYTE-ORDER")
@@ -122,7 +123,7 @@ class BaseTypeDirectDefinition(BaseTypeDefinition):
 
         # Serialize mem_alignment
         if self.mem_alignment is not None:
-            serialized = ARObject._serialize_item(self.mem_alignment, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.mem_alignment, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MEM-ALIGNMENT")
@@ -136,7 +137,7 @@ class BaseTypeDirectDefinition(BaseTypeDefinition):
 
         # Serialize native
         if self.native is not None:
-            serialized = ARObject._serialize_item(self.native, "NativeDeclarationString")
+            serialized = SerializationHelper.serialize_item(self.native, "NativeDeclarationString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NATIVE")
@@ -164,31 +165,31 @@ class BaseTypeDirectDefinition(BaseTypeDefinition):
         obj = super(BaseTypeDirectDefinition, cls).deserialize(element)
 
         # Parse base_type_encoding
-        child = ARObject._find_child_element(element, "BASE-TYPE-ENCODING")
+        child = SerializationHelper.find_child_element(element, "BASE-TYPE-ENCODING")
         if child is not None:
             base_type_encoding_value = child.text
             obj.base_type_encoding = base_type_encoding_value
 
         # Parse base_type_size
-        child = ARObject._find_child_element(element, "BASE-TYPE-SIZE")
+        child = SerializationHelper.find_child_element(element, "BASE-TYPE-SIZE")
         if child is not None:
             base_type_size_value = child.text
             obj.base_type_size = base_type_size_value
 
         # Parse byte_order
-        child = ARObject._find_child_element(element, "BYTE-ORDER")
+        child = SerializationHelper.find_child_element(element, "BYTE-ORDER")
         if child is not None:
             byte_order_value = ByteOrderEnum.deserialize(child)
             obj.byte_order = byte_order_value
 
         # Parse mem_alignment
-        child = ARObject._find_child_element(element, "MEM-ALIGNMENT")
+        child = SerializationHelper.find_child_element(element, "MEM-ALIGNMENT")
         if child is not None:
             mem_alignment_value = child.text
             obj.mem_alignment = mem_alignment_value
 
         # Parse native
-        child = ARObject._find_child_element(element, "NATIVE")
+        child = SerializationHelper.find_child_element(element, "NATIVE")
         if child is not None:
             native_value = child.text
             obj.native = native_value

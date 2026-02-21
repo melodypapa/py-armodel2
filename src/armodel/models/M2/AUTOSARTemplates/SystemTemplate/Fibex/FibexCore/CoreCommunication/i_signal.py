@@ -16,6 +16,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_ele
     FibexElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.DataMapping import (
     DataTypePolicyEnum,
@@ -89,7 +90,7 @@ class ISignal(FibexElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -108,7 +109,7 @@ class ISignal(FibexElement):
 
         # Serialize data_ref
         if self.data_ref is not None:
-            serialized = ARObject._serialize_item(self.data_ref, "DataTransformation")
+            serialized = SerializationHelper.serialize_item(self.data_ref, "DataTransformation")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-REF")
@@ -122,7 +123,7 @@ class ISignal(FibexElement):
 
         # Serialize data_type_policy_enum
         if self.data_type_policy_enum is not None:
-            serialized = ARObject._serialize_item(self.data_type_policy_enum, "DataTypePolicyEnum")
+            serialized = SerializationHelper.serialize_item(self.data_type_policy_enum, "DataTypePolicyEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-TYPE-POLICY-ENUM")
@@ -136,7 +137,7 @@ class ISignal(FibexElement):
 
         # Serialize init_value
         if self.init_value is not None:
-            serialized = ARObject._serialize_item(self.init_value, "ValueSpecification")
+            serialized = SerializationHelper.serialize_item(self.init_value, "ValueSpecification")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INIT-VALUE")
@@ -150,7 +151,7 @@ class ISignal(FibexElement):
 
         # Serialize i_signal_props
         if self.i_signal_props is not None:
-            serialized = ARObject._serialize_item(self.i_signal_props, "ISignalProps")
+            serialized = SerializationHelper.serialize_item(self.i_signal_props, "ISignalProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("I-SIGNAL-PROPS")
@@ -164,7 +165,7 @@ class ISignal(FibexElement):
 
         # Serialize i_signal_type_enum
         if self.i_signal_type_enum is not None:
-            serialized = ARObject._serialize_item(self.i_signal_type_enum, "ISignalTypeEnum")
+            serialized = SerializationHelper.serialize_item(self.i_signal_type_enum, "ISignalTypeEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("I-SIGNAL-TYPE-ENUM")
@@ -178,7 +179,7 @@ class ISignal(FibexElement):
 
         # Serialize length
         if self.length is not None:
-            serialized = ARObject._serialize_item(self.length, "UnlimitedInteger")
+            serialized = SerializationHelper.serialize_item(self.length, "UnlimitedInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LENGTH")
@@ -192,7 +193,7 @@ class ISignal(FibexElement):
 
         # Serialize network
         if self.network is not None:
-            serialized = ARObject._serialize_item(self.network, "SwDataDefProps")
+            serialized = SerializationHelper.serialize_item(self.network, "SwDataDefProps")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("NETWORK")
@@ -206,7 +207,7 @@ class ISignal(FibexElement):
 
         # Serialize system_signal_ref
         if self.system_signal_ref is not None:
-            serialized = ARObject._serialize_item(self.system_signal_ref, "SystemSignal")
+            serialized = SerializationHelper.serialize_item(self.system_signal_ref, "SystemSignal")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SYSTEM-SIGNAL-REF")
@@ -220,7 +221,7 @@ class ISignal(FibexElement):
 
         # Serialize timeout
         if self.timeout is not None:
-            serialized = ARObject._serialize_item(self.timeout, "ValueSpecification")
+            serialized = SerializationHelper.serialize_item(self.timeout, "ValueSpecification")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIMEOUT")
@@ -236,7 +237,7 @@ class ISignal(FibexElement):
         if self.transformation_i_signals:
             wrapper = ET.Element("TRANSFORMATION-I-SIGNALS")
             for item in self.transformation_i_signals:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -258,66 +259,66 @@ class ISignal(FibexElement):
         obj = super(ISignal, cls).deserialize(element)
 
         # Parse data_ref
-        child = ARObject._find_child_element(element, "DATA-REF")
+        child = SerializationHelper.find_child_element(element, "DATA-REF")
         if child is not None:
             data_ref_value = ARRef.deserialize(child)
             obj.data_ref = data_ref_value
 
         # Parse data_type_policy_enum
-        child = ARObject._find_child_element(element, "DATA-TYPE-POLICY-ENUM")
+        child = SerializationHelper.find_child_element(element, "DATA-TYPE-POLICY-ENUM")
         if child is not None:
             data_type_policy_enum_value = DataTypePolicyEnum.deserialize(child)
             obj.data_type_policy_enum = data_type_policy_enum_value
 
         # Parse init_value
-        child = ARObject._find_child_element(element, "INIT-VALUE")
+        child = SerializationHelper.find_child_element(element, "INIT-VALUE")
         if child is not None:
-            init_value_value = ARObject._deserialize_by_tag(child, "ValueSpecification")
+            init_value_value = SerializationHelper.deserialize_by_tag(child, "ValueSpecification")
             obj.init_value = init_value_value
 
         # Parse i_signal_props
-        child = ARObject._find_child_element(element, "I-SIGNAL-PROPS")
+        child = SerializationHelper.find_child_element(element, "I-SIGNAL-PROPS")
         if child is not None:
-            i_signal_props_value = ARObject._deserialize_by_tag(child, "ISignalProps")
+            i_signal_props_value = SerializationHelper.deserialize_by_tag(child, "ISignalProps")
             obj.i_signal_props = i_signal_props_value
 
         # Parse i_signal_type_enum
-        child = ARObject._find_child_element(element, "I-SIGNAL-TYPE-ENUM")
+        child = SerializationHelper.find_child_element(element, "I-SIGNAL-TYPE-ENUM")
         if child is not None:
             i_signal_type_enum_value = ISignalTypeEnum.deserialize(child)
             obj.i_signal_type_enum = i_signal_type_enum_value
 
         # Parse length
-        child = ARObject._find_child_element(element, "LENGTH")
+        child = SerializationHelper.find_child_element(element, "LENGTH")
         if child is not None:
             length_value = child.text
             obj.length = length_value
 
         # Parse network
-        child = ARObject._find_child_element(element, "NETWORK")
+        child = SerializationHelper.find_child_element(element, "NETWORK")
         if child is not None:
-            network_value = ARObject._deserialize_by_tag(child, "SwDataDefProps")
+            network_value = SerializationHelper.deserialize_by_tag(child, "SwDataDefProps")
             obj.network = network_value
 
         # Parse system_signal_ref
-        child = ARObject._find_child_element(element, "SYSTEM-SIGNAL-REF")
+        child = SerializationHelper.find_child_element(element, "SYSTEM-SIGNAL-REF")
         if child is not None:
             system_signal_ref_value = ARRef.deserialize(child)
             obj.system_signal_ref = system_signal_ref_value
 
         # Parse timeout
-        child = ARObject._find_child_element(element, "TIMEOUT")
+        child = SerializationHelper.find_child_element(element, "TIMEOUT")
         if child is not None:
-            timeout_value = ARObject._deserialize_by_tag(child, "ValueSpecification")
+            timeout_value = SerializationHelper.deserialize_by_tag(child, "ValueSpecification")
             obj.timeout = timeout_value
 
         # Parse transformation_i_signals (list from container "TRANSFORMATION-I-SIGNALS")
         obj.transformation_i_signals = []
-        container = ARObject._find_child_element(element, "TRANSFORMATION-I-SIGNALS")
+        container = SerializationHelper.find_child_element(element, "TRANSFORMATION-I-SIGNALS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.transformation_i_signals.append(child_value)
 

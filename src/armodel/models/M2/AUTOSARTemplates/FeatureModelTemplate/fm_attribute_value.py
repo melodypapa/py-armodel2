@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Numerical,
@@ -46,12 +47,12 @@ class FMAttributeValue(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize definition_ref
         if self.definition_ref is not None:
-            serialized = ARObject._serialize_item(self.definition_ref, "FMAttributeDef")
+            serialized = SerializationHelper.serialize_item(self.definition_ref, "FMAttributeDef")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DEFINITION-REF")
@@ -65,7 +66,7 @@ class FMAttributeValue(ARObject):
 
         # Serialize value
         if self.value is not None:
-            serialized = ARObject._serialize_item(self.value, "Numerical")
+            serialized = SerializationHelper.serialize_item(self.value, "Numerical")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("VALUE")
@@ -94,13 +95,13 @@ class FMAttributeValue(ARObject):
         obj.__init__()
 
         # Parse definition_ref
-        child = ARObject._find_child_element(element, "DEFINITION-REF")
+        child = SerializationHelper.find_child_element(element, "DEFINITION-REF")
         if child is not None:
             definition_ref_value = ARRef.deserialize(child)
             obj.definition_ref = definition_ref_value
 
         # Parse value
-        child = ARObject._find_child_element(element, "VALUE")
+        child = SerializationHelper.find_child_element(element, "VALUE")
         if child is not None:
             value_value = child.text
             obj.value = value_value

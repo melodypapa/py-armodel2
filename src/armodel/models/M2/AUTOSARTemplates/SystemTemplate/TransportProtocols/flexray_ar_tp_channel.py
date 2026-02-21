@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols import (
     FrArTpAckType,
@@ -90,12 +91,12 @@ class FlexrayArTpChannel(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize ack_type
         if self.ack_type is not None:
-            serialized = ARObject._serialize_item(self.ack_type, "FrArTpAckType")
+            serialized = SerializationHelper.serialize_item(self.ack_type, "FrArTpAckType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ACK-TYPE")
@@ -109,7 +110,7 @@ class FlexrayArTpChannel(ARObject):
 
         # Serialize cancellation
         if self.cancellation is not None:
-            serialized = ARObject._serialize_item(self.cancellation, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.cancellation, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CANCELLATION")
@@ -123,7 +124,7 @@ class FlexrayArTpChannel(ARObject):
 
         # Serialize extended
         if self.extended is not None:
-            serialized = ARObject._serialize_item(self.extended, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.extended, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("EXTENDED")
@@ -137,7 +138,7 @@ class FlexrayArTpChannel(ARObject):
 
         # Serialize max_ar
         if self.max_ar is not None:
-            serialized = ARObject._serialize_item(self.max_ar, "Integer")
+            serialized = SerializationHelper.serialize_item(self.max_ar, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-AR")
@@ -151,7 +152,7 @@ class FlexrayArTpChannel(ARObject):
 
         # Serialize max_as
         if self.max_as is not None:
-            serialized = ARObject._serialize_item(self.max_as, "Integer")
+            serialized = SerializationHelper.serialize_item(self.max_as, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-AS")
@@ -165,7 +166,7 @@ class FlexrayArTpChannel(ARObject):
 
         # Serialize max_bs
         if self.max_bs is not None:
-            serialized = ARObject._serialize_item(self.max_bs, "Integer")
+            serialized = SerializationHelper.serialize_item(self.max_bs, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-BS")
@@ -179,7 +180,7 @@ class FlexrayArTpChannel(ARObject):
 
         # Serialize max_fc_wait
         if self.max_fc_wait is not None:
-            serialized = ARObject._serialize_item(self.max_fc_wait, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.max_fc_wait, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-FC-WAIT")
@@ -193,7 +194,7 @@ class FlexrayArTpChannel(ARObject):
 
         # Serialize maximum_message
         if self.maximum_message is not None:
-            serialized = ARObject._serialize_item(self.maximum_message, "MaximumMessageLengthType")
+            serialized = SerializationHelper.serialize_item(self.maximum_message, "MaximumMessageLengthType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAXIMUM-MESSAGE")
@@ -207,7 +208,7 @@ class FlexrayArTpChannel(ARObject):
 
         # Serialize max_retries
         if self.max_retries is not None:
-            serialized = ARObject._serialize_item(self.max_retries, "Integer")
+            serialized = SerializationHelper.serialize_item(self.max_retries, "Integer")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAX-RETRIES")
@@ -221,7 +222,7 @@ class FlexrayArTpChannel(ARObject):
 
         # Serialize minimum
         if self.minimum is not None:
-            serialized = ARObject._serialize_item(self.minimum, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.minimum, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MINIMUM")
@@ -235,7 +236,7 @@ class FlexrayArTpChannel(ARObject):
 
         # Serialize multicast
         if self.multicast is not None:
-            serialized = ARObject._serialize_item(self.multicast, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.multicast, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MULTICAST")
@@ -251,7 +252,7 @@ class FlexrayArTpChannel(ARObject):
         if self.n_pdu_refs:
             wrapper = ET.Element("N-PDU-REFS")
             for item in self.n_pdu_refs:
-                serialized = ARObject._serialize_item(item, "NPdu")
+                serialized = SerializationHelper.serialize_item(item, "NPdu")
                 if serialized is not None:
                     child_elem = ET.Element("N-PDU-REF")
                     if hasattr(serialized, 'attrib'):
@@ -266,7 +267,7 @@ class FlexrayArTpChannel(ARObject):
 
         # Serialize time_br
         if self.time_br is not None:
-            serialized = ARObject._serialize_item(self.time_br, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.time_br, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIME-BR")
@@ -280,7 +281,7 @@ class FlexrayArTpChannel(ARObject):
 
         # Serialize time_cs
         if self.time_cs is not None:
-            serialized = ARObject._serialize_item(self.time_cs, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.time_cs, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIME-CS")
@@ -294,7 +295,7 @@ class FlexrayArTpChannel(ARObject):
 
         # Serialize timeout_ar
         if self.timeout_ar is not None:
-            serialized = ARObject._serialize_item(self.timeout_ar, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.timeout_ar, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIMEOUT-AR")
@@ -308,7 +309,7 @@ class FlexrayArTpChannel(ARObject):
 
         # Serialize timeout_as
         if self.timeout_as is not None:
-            serialized = ARObject._serialize_item(self.timeout_as, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.timeout_as, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIMEOUT-AS")
@@ -322,7 +323,7 @@ class FlexrayArTpChannel(ARObject):
 
         # Serialize timeout_bs
         if self.timeout_bs is not None:
-            serialized = ARObject._serialize_item(self.timeout_bs, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.timeout_bs, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIMEOUT-BS")
@@ -336,7 +337,7 @@ class FlexrayArTpChannel(ARObject):
 
         # Serialize timeout_cr
         if self.timeout_cr is not None:
-            serialized = ARObject._serialize_item(self.timeout_cr, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.timeout_cr, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIMEOUT-CR")
@@ -352,7 +353,7 @@ class FlexrayArTpChannel(ARObject):
         if self.tp_connections:
             wrapper = ET.Element("TP-CONNECTIONS")
             for item in self.tp_connections:
-                serialized = ARObject._serialize_item(item, "FlexrayArTpConnection")
+                serialized = SerializationHelper.serialize_item(item, "FlexrayArTpConnection")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -375,130 +376,130 @@ class FlexrayArTpChannel(ARObject):
         obj.__init__()
 
         # Parse ack_type
-        child = ARObject._find_child_element(element, "ACK-TYPE")
+        child = SerializationHelper.find_child_element(element, "ACK-TYPE")
         if child is not None:
             ack_type_value = FrArTpAckType.deserialize(child)
             obj.ack_type = ack_type_value
 
         # Parse cancellation
-        child = ARObject._find_child_element(element, "CANCELLATION")
+        child = SerializationHelper.find_child_element(element, "CANCELLATION")
         if child is not None:
             cancellation_value = child.text
             obj.cancellation = cancellation_value
 
         # Parse extended
-        child = ARObject._find_child_element(element, "EXTENDED")
+        child = SerializationHelper.find_child_element(element, "EXTENDED")
         if child is not None:
             extended_value = child.text
             obj.extended = extended_value
 
         # Parse max_ar
-        child = ARObject._find_child_element(element, "MAX-AR")
+        child = SerializationHelper.find_child_element(element, "MAX-AR")
         if child is not None:
             max_ar_value = child.text
             obj.max_ar = max_ar_value
 
         # Parse max_as
-        child = ARObject._find_child_element(element, "MAX-AS")
+        child = SerializationHelper.find_child_element(element, "MAX-AS")
         if child is not None:
             max_as_value = child.text
             obj.max_as = max_as_value
 
         # Parse max_bs
-        child = ARObject._find_child_element(element, "MAX-BS")
+        child = SerializationHelper.find_child_element(element, "MAX-BS")
         if child is not None:
             max_bs_value = child.text
             obj.max_bs = max_bs_value
 
         # Parse max_fc_wait
-        child = ARObject._find_child_element(element, "MAX-FC-WAIT")
+        child = SerializationHelper.find_child_element(element, "MAX-FC-WAIT")
         if child is not None:
             max_fc_wait_value = child.text
             obj.max_fc_wait = max_fc_wait_value
 
         # Parse maximum_message
-        child = ARObject._find_child_element(element, "MAXIMUM-MESSAGE")
+        child = SerializationHelper.find_child_element(element, "MAXIMUM-MESSAGE")
         if child is not None:
             maximum_message_value = MaximumMessageLengthType.deserialize(child)
             obj.maximum_message = maximum_message_value
 
         # Parse max_retries
-        child = ARObject._find_child_element(element, "MAX-RETRIES")
+        child = SerializationHelper.find_child_element(element, "MAX-RETRIES")
         if child is not None:
             max_retries_value = child.text
             obj.max_retries = max_retries_value
 
         # Parse minimum
-        child = ARObject._find_child_element(element, "MINIMUM")
+        child = SerializationHelper.find_child_element(element, "MINIMUM")
         if child is not None:
             minimum_value = child.text
             obj.minimum = minimum_value
 
         # Parse multicast
-        child = ARObject._find_child_element(element, "MULTICAST")
+        child = SerializationHelper.find_child_element(element, "MULTICAST")
         if child is not None:
             multicast_value = child.text
             obj.multicast = multicast_value
 
         # Parse n_pdu_refs (list from container "N-PDU-REFS")
         obj.n_pdu_refs = []
-        container = ARObject._find_child_element(element, "N-PDU-REFS")
+        container = SerializationHelper.find_child_element(element, "N-PDU-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.n_pdu_refs.append(child_value)
 
         # Parse time_br
-        child = ARObject._find_child_element(element, "TIME-BR")
+        child = SerializationHelper.find_child_element(element, "TIME-BR")
         if child is not None:
             time_br_value = child.text
             obj.time_br = time_br_value
 
         # Parse time_cs
-        child = ARObject._find_child_element(element, "TIME-CS")
+        child = SerializationHelper.find_child_element(element, "TIME-CS")
         if child is not None:
             time_cs_value = child.text
             obj.time_cs = time_cs_value
 
         # Parse timeout_ar
-        child = ARObject._find_child_element(element, "TIMEOUT-AR")
+        child = SerializationHelper.find_child_element(element, "TIMEOUT-AR")
         if child is not None:
             timeout_ar_value = child.text
             obj.timeout_ar = timeout_ar_value
 
         # Parse timeout_as
-        child = ARObject._find_child_element(element, "TIMEOUT-AS")
+        child = SerializationHelper.find_child_element(element, "TIMEOUT-AS")
         if child is not None:
             timeout_as_value = child.text
             obj.timeout_as = timeout_as_value
 
         # Parse timeout_bs
-        child = ARObject._find_child_element(element, "TIMEOUT-BS")
+        child = SerializationHelper.find_child_element(element, "TIMEOUT-BS")
         if child is not None:
             timeout_bs_value = child.text
             obj.timeout_bs = timeout_bs_value
 
         # Parse timeout_cr
-        child = ARObject._find_child_element(element, "TIMEOUT-CR")
+        child = SerializationHelper.find_child_element(element, "TIMEOUT-CR")
         if child is not None:
             timeout_cr_value = child.text
             obj.timeout_cr = timeout_cr_value
 
         # Parse tp_connections (list from container "TP-CONNECTIONS")
         obj.tp_connections = []
-        container = ARObject._find_child_element(element, "TP-CONNECTIONS")
+        container = SerializationHelper.find_child_element(element, "TP-CONNECTIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.tp_connections.append(child_value)
 

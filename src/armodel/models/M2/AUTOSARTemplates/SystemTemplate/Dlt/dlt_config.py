@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -53,12 +54,12 @@ class DltConfig(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize dlt_ecu_ref
         if self.dlt_ecu_ref is not None:
-            serialized = ARObject._serialize_item(self.dlt_ecu_ref, "DltEcu")
+            serialized = SerializationHelper.serialize_item(self.dlt_ecu_ref, "DltEcu")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DLT-ECU-REF")
@@ -74,7 +75,7 @@ class DltConfig(ARObject):
         if self.dlt_log_channels:
             wrapper = ET.Element("DLT-LOG-CHANNELS")
             for item in self.dlt_log_channels:
-                serialized = ARObject._serialize_item(item, "DltLogChannel")
+                serialized = SerializationHelper.serialize_item(item, "DltLogChannel")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -82,7 +83,7 @@ class DltConfig(ARObject):
 
         # Serialize session_id
         if self.session_id is not None:
-            serialized = ARObject._serialize_item(self.session_id, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.session_id, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SESSION-ID")
@@ -96,7 +97,7 @@ class DltConfig(ARObject):
 
         # Serialize timestamp
         if self.timestamp is not None:
-            serialized = ARObject._serialize_item(self.timestamp, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.timestamp, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIMESTAMP")
@@ -125,29 +126,29 @@ class DltConfig(ARObject):
         obj.__init__()
 
         # Parse dlt_ecu_ref
-        child = ARObject._find_child_element(element, "DLT-ECU-REF")
+        child = SerializationHelper.find_child_element(element, "DLT-ECU-REF")
         if child is not None:
             dlt_ecu_ref_value = ARRef.deserialize(child)
             obj.dlt_ecu_ref = dlt_ecu_ref_value
 
         # Parse dlt_log_channels (list from container "DLT-LOG-CHANNELS")
         obj.dlt_log_channels = []
-        container = ARObject._find_child_element(element, "DLT-LOG-CHANNELS")
+        container = SerializationHelper.find_child_element(element, "DLT-LOG-CHANNELS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.dlt_log_channels.append(child_value)
 
         # Parse session_id
-        child = ARObject._find_child_element(element, "SESSION-ID")
+        child = SerializationHelper.find_child_element(element, "SESSION-ID")
         if child is not None:
             session_id_value = child.text
             obj.session_id = session_id_value
 
         # Parse timestamp
-        child = ARObject._find_child_element(element, "TIMESTAMP")
+        child = SerializationHelper.find_child_element(element, "TIMESTAMP")
         if child is not None:
             timestamp_value = child.text
             obj.timestamp = timestamp_value

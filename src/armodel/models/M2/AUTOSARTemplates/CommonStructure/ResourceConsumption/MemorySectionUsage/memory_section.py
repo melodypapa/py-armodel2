@@ -15,6 +15,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     AlignmentType,
@@ -69,7 +70,7 @@ class MemorySection(Identifiable):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -88,7 +89,7 @@ class MemorySection(Identifiable):
 
         # Serialize alignment
         if self.alignment is not None:
-            serialized = ARObject._serialize_item(self.alignment, "AlignmentType")
+            serialized = SerializationHelper.serialize_item(self.alignment, "AlignmentType")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ALIGNMENT")
@@ -104,7 +105,7 @@ class MemorySection(Identifiable):
         if self.executable_entitie_refs:
             wrapper = ET.Element("EXECUTABLE-ENTITIE-REFS")
             for item in self.executable_entitie_refs:
-                serialized = ARObject._serialize_item(item, "ExecutableEntity")
+                serialized = SerializationHelper.serialize_item(item, "ExecutableEntity")
                 if serialized is not None:
                     child_elem = ET.Element("EXECUTABLE-ENTITIE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -121,7 +122,7 @@ class MemorySection(Identifiable):
         if self.options:
             wrapper = ET.Element("OPTIONS")
             for item in self.options:
-                serialized = ARObject._serialize_item(item, "Identifier")
+                serialized = SerializationHelper.serialize_item(item, "Identifier")
                 if serialized is not None:
                     child_elem = ET.Element("OPTION")
                     if hasattr(serialized, 'attrib'):
@@ -136,7 +137,7 @@ class MemorySection(Identifiable):
 
         # Serialize prefix_ref
         if self.prefix_ref is not None:
-            serialized = ARObject._serialize_item(self.prefix_ref, "SectionNamePrefix")
+            serialized = SerializationHelper.serialize_item(self.prefix_ref, "SectionNamePrefix")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("PREFIX-REF")
@@ -150,7 +151,7 @@ class MemorySection(Identifiable):
 
         # Serialize size
         if self.size is not None:
-            serialized = ARObject._serialize_item(self.size, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.size, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SIZE")
@@ -164,7 +165,7 @@ class MemorySection(Identifiable):
 
         # Serialize sw_addrmethod_ref
         if self.sw_addrmethod_ref is not None:
-            serialized = ARObject._serialize_item(self.sw_addrmethod_ref, "SwAddrMethod")
+            serialized = SerializationHelper.serialize_item(self.sw_addrmethod_ref, "SwAddrMethod")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-ADDRMETHOD-REF")
@@ -178,7 +179,7 @@ class MemorySection(Identifiable):
 
         # Serialize symbol
         if self.symbol is not None:
-            serialized = ARObject._serialize_item(self.symbol, "Identifier")
+            serialized = SerializationHelper.serialize_item(self.symbol, "Identifier")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SYMBOL")
@@ -206,30 +207,30 @@ class MemorySection(Identifiable):
         obj = super(MemorySection, cls).deserialize(element)
 
         # Parse alignment
-        child = ARObject._find_child_element(element, "ALIGNMENT")
+        child = SerializationHelper.find_child_element(element, "ALIGNMENT")
         if child is not None:
             alignment_value = child.text
             obj.alignment = alignment_value
 
         # Parse executable_entitie_refs (list from container "EXECUTABLE-ENTITIE-REFS")
         obj.executable_entitie_refs = []
-        container = ARObject._find_child_element(element, "EXECUTABLE-ENTITIE-REFS")
+        container = SerializationHelper.find_child_element(element, "EXECUTABLE-ENTITIE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.executable_entitie_refs.append(child_value)
 
         # Parse options (list from container "OPTIONS")
         obj.options = []
-        container = ARObject._find_child_element(element, "OPTIONS")
+        container = SerializationHelper.find_child_element(element, "OPTIONS")
         if container is not None:
             for child in container:
                 # Extract primitive value (Identifier) as text
@@ -238,27 +239,27 @@ class MemorySection(Identifiable):
                     obj.options.append(child_value)
 
         # Parse prefix_ref
-        child = ARObject._find_child_element(element, "PREFIX-REF")
+        child = SerializationHelper.find_child_element(element, "PREFIX-REF")
         if child is not None:
             prefix_ref_value = ARRef.deserialize(child)
             obj.prefix_ref = prefix_ref_value
 
         # Parse size
-        child = ARObject._find_child_element(element, "SIZE")
+        child = SerializationHelper.find_child_element(element, "SIZE")
         if child is not None:
             size_value = child.text
             obj.size = size_value
 
         # Parse sw_addrmethod_ref
-        child = ARObject._find_child_element(element, "SW-ADDRMETHOD-REF")
+        child = SerializationHelper.find_child_element(element, "SW-ADDRMETHOD-REF")
         if child is not None:
             sw_addrmethod_ref_value = ARRef.deserialize(child)
             obj.sw_addrmethod_ref = sw_addrmethod_ref_value
 
         # Parse symbol
-        child = ARObject._find_child_element(element, "SYMBOL")
+        child = SerializationHelper.find_child_element(element, "SYMBOL")
         if child is not None:
-            symbol_value = ARObject._deserialize_by_tag(child, "Identifier")
+            symbol_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
             obj.symbol = symbol_value
 
         return obj

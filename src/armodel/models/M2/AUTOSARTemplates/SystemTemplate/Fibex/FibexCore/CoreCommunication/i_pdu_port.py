@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopol
     CommConnectorPort,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication import (
     IPduSignalProcessingEnum,
 )
@@ -53,7 +54,7 @@ class IPduPort(CommConnectorPort):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -72,7 +73,7 @@ class IPduPort(CommConnectorPort):
 
         # Serialize i_pdu_signal
         if self.i_pdu_signal is not None:
-            serialized = ARObject._serialize_item(self.i_pdu_signal, "IPduSignalProcessingEnum")
+            serialized = SerializationHelper.serialize_item(self.i_pdu_signal, "IPduSignalProcessingEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("I-PDU-SIGNAL")
@@ -86,7 +87,7 @@ class IPduPort(CommConnectorPort):
 
         # Serialize rx_security
         if self.rx_security is not None:
-            serialized = ARObject._serialize_item(self.rx_security, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.rx_security, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("RX-SECURITY")
@@ -100,7 +101,7 @@ class IPduPort(CommConnectorPort):
 
         # Serialize timestamp_rx
         if self.timestamp_rx is not None:
-            serialized = ARObject._serialize_item(self.timestamp_rx, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.timestamp_rx, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TIMESTAMP-RX")
@@ -114,7 +115,7 @@ class IPduPort(CommConnectorPort):
 
         # Serialize use_auth_data
         if self.use_auth_data is not None:
-            serialized = ARObject._serialize_item(self.use_auth_data, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.use_auth_data, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("USE-AUTH-DATA")
@@ -142,25 +143,25 @@ class IPduPort(CommConnectorPort):
         obj = super(IPduPort, cls).deserialize(element)
 
         # Parse i_pdu_signal
-        child = ARObject._find_child_element(element, "I-PDU-SIGNAL")
+        child = SerializationHelper.find_child_element(element, "I-PDU-SIGNAL")
         if child is not None:
             i_pdu_signal_value = IPduSignalProcessingEnum.deserialize(child)
             obj.i_pdu_signal = i_pdu_signal_value
 
         # Parse rx_security
-        child = ARObject._find_child_element(element, "RX-SECURITY")
+        child = SerializationHelper.find_child_element(element, "RX-SECURITY")
         if child is not None:
             rx_security_value = child.text
             obj.rx_security = rx_security_value
 
         # Parse timestamp_rx
-        child = ARObject._find_child_element(element, "TIMESTAMP-RX")
+        child = SerializationHelper.find_child_element(element, "TIMESTAMP-RX")
         if child is not None:
             timestamp_rx_value = child.text
             obj.timestamp_rx = timestamp_rx_value
 
         # Parse use_auth_data
-        child = ARObject._find_child_element(element, "USE-AUTH-DATA")
+        child = SerializationHelper.find_child_element(element, "USE-AUTH-DATA")
         if child is not None:
             use_auth_data_value = child.text
             obj.use_auth_data = use_auth_data_value

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.PortInterface.sub_el
     SubElementRef,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class ApplicationCompositeDataTypeSubElementRef(SubElementRef):
@@ -40,7 +41,7 @@ class ApplicationCompositeDataTypeSubElementRef(SubElementRef):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -59,7 +60,7 @@ class ApplicationCompositeDataTypeSubElementRef(SubElementRef):
 
         # Serialize application
         if self.application is not None:
-            serialized = ARObject._serialize_item(self.application, "Any")
+            serialized = SerializationHelper.serialize_item(self.application, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("APPLICATION")
@@ -87,7 +88,7 @@ class ApplicationCompositeDataTypeSubElementRef(SubElementRef):
         obj = super(ApplicationCompositeDataTypeSubElementRef, cls).deserialize(element)
 
         # Parse application
-        child = ARObject._find_child_element(element, "APPLICATION")
+        child = SerializationHelper.find_child_element(element, "APPLICATION")
         if child is not None:
             application_value = child.text
             obj.application = application_value

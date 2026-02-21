@@ -16,6 +16,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Identifiable,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior import (
     ReentrancyLevelEnum,
@@ -72,7 +73,7 @@ class ExecutableEntity(Identifiable, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -93,7 +94,7 @@ class ExecutableEntity(Identifiable, ABC):
         if self.activations:
             wrapper = ET.Element("ACTIVATIONS")
             for item in self.activations:
-                serialized = ARObject._serialize_item(item, "ExecutableEntity")
+                serialized = SerializationHelper.serialize_item(item, "ExecutableEntity")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -103,7 +104,7 @@ class ExecutableEntity(Identifiable, ABC):
         if self.can_enter_refs:
             wrapper = ET.Element("CAN-ENTER-REFS")
             for item in self.can_enter_refs:
-                serialized = ARObject._serialize_item(item, "ExclusiveArea")
+                serialized = SerializationHelper.serialize_item(item, "ExclusiveArea")
                 if serialized is not None:
                     child_elem = ET.Element("CAN-ENTER-REF")
                     if hasattr(serialized, 'attrib'):
@@ -120,7 +121,7 @@ class ExecutableEntity(Identifiable, ABC):
         if self.exclusive_area_nesting_refs:
             wrapper = ET.Element("EXCLUSIVE-AREA-NESTING-REFS")
             for item in self.exclusive_area_nesting_refs:
-                serialized = ARObject._serialize_item(item, "ExclusiveAreaNestingOrder")
+                serialized = SerializationHelper.serialize_item(item, "ExclusiveAreaNestingOrder")
                 if serialized is not None:
                     child_elem = ET.Element("EXCLUSIVE-AREA-NESTING-REF")
                     if hasattr(serialized, 'attrib'):
@@ -135,7 +136,7 @@ class ExecutableEntity(Identifiable, ABC):
 
         # Serialize minimum_start
         if self.minimum_start is not None:
-            serialized = ARObject._serialize_item(self.minimum_start, "TimeValue")
+            serialized = SerializationHelper.serialize_item(self.minimum_start, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MINIMUM-START")
@@ -149,7 +150,7 @@ class ExecutableEntity(Identifiable, ABC):
 
         # Serialize reentrancy_level_enum
         if self.reentrancy_level_enum is not None:
-            serialized = ARObject._serialize_item(self.reentrancy_level_enum, "ReentrancyLevelEnum")
+            serialized = SerializationHelper.serialize_item(self.reentrancy_level_enum, "ReentrancyLevelEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("REENTRANCY-LEVEL-ENUM")
@@ -165,7 +166,7 @@ class ExecutableEntity(Identifiable, ABC):
         if self.runs_inside_refs:
             wrapper = ET.Element("RUNS-INSIDE-REFS")
             for item in self.runs_inside_refs:
-                serialized = ARObject._serialize_item(item, "ExclusiveArea")
+                serialized = SerializationHelper.serialize_item(item, "ExclusiveArea")
                 if serialized is not None:
                     child_elem = ET.Element("RUNS-INSIDE-REF")
                     if hasattr(serialized, 'attrib'):
@@ -180,7 +181,7 @@ class ExecutableEntity(Identifiable, ABC):
 
         # Serialize sw_addr_method_ref
         if self.sw_addr_method_ref is not None:
-            serialized = ARObject._serialize_item(self.sw_addr_method_ref, "SwAddrMethod")
+            serialized = SerializationHelper.serialize_item(self.sw_addr_method_ref, "SwAddrMethod")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SW-ADDR-METHOD-REF")
@@ -209,76 +210,76 @@ class ExecutableEntity(Identifiable, ABC):
 
         # Parse activations (list from container "ACTIVATIONS")
         obj.activations = []
-        container = ARObject._find_child_element(element, "ACTIVATIONS")
+        container = SerializationHelper.find_child_element(element, "ACTIVATIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.activations.append(child_value)
 
         # Parse can_enter_refs (list from container "CAN-ENTER-REFS")
         obj.can_enter_refs = []
-        container = ARObject._find_child_element(element, "CAN-ENTER-REFS")
+        container = SerializationHelper.find_child_element(element, "CAN-ENTER-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.can_enter_refs.append(child_value)
 
         # Parse exclusive_area_nesting_refs (list from container "EXCLUSIVE-AREA-NESTING-REFS")
         obj.exclusive_area_nesting_refs = []
-        container = ARObject._find_child_element(element, "EXCLUSIVE-AREA-NESTING-REFS")
+        container = SerializationHelper.find_child_element(element, "EXCLUSIVE-AREA-NESTING-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.exclusive_area_nesting_refs.append(child_value)
 
         # Parse minimum_start
-        child = ARObject._find_child_element(element, "MINIMUM-START")
+        child = SerializationHelper.find_child_element(element, "MINIMUM-START")
         if child is not None:
             minimum_start_value = child.text
             obj.minimum_start = minimum_start_value
 
         # Parse reentrancy_level_enum
-        child = ARObject._find_child_element(element, "REENTRANCY-LEVEL-ENUM")
+        child = SerializationHelper.find_child_element(element, "REENTRANCY-LEVEL-ENUM")
         if child is not None:
             reentrancy_level_enum_value = ReentrancyLevelEnum.deserialize(child)
             obj.reentrancy_level_enum = reentrancy_level_enum_value
 
         # Parse runs_inside_refs (list from container "RUNS-INSIDE-REFS")
         obj.runs_inside_refs = []
-        container = ARObject._find_child_element(element, "RUNS-INSIDE-REFS")
+        container = SerializationHelper.find_child_element(element, "RUNS-INSIDE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = ARObject._strip_namespace(child.tag)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
                     # Deserialize each child element dynamically based on its tag
-                    child_value = ARObject._deserialize_by_tag(child, None)
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.runs_inside_refs.append(child_value)
 
         # Parse sw_addr_method_ref
-        child = ARObject._find_child_element(element, "SW-ADDR-METHOD-REF")
+        child = SerializationHelper.find_child_element(element, "SW-ADDR-METHOD-REF")
         if child is not None:
             sw_addr_method_ref_value = ARRef.deserialize(child)
             obj.sw_addr_method_ref = sw_addr_method_ref_value

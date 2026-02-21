@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
     TDEventVfbPort,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototypes.variable_data_prototype import (
     VariableDataPrototype,
@@ -46,7 +47,7 @@ class TDEventVariableDataPrototype(TDEventVfbPort):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class TDEventVariableDataPrototype(TDEventVfbPort):
 
         # Serialize data_element_ref
         if self.data_element_ref is not None:
-            serialized = ARObject._serialize_item(self.data_element_ref, "VariableDataPrototype")
+            serialized = SerializationHelper.serialize_item(self.data_element_ref, "VariableDataPrototype")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DATA-ELEMENT-REF")
@@ -79,7 +80,7 @@ class TDEventVariableDataPrototype(TDEventVfbPort):
 
         # Serialize td_event_variable_type
         if self.td_event_variable_type is not None:
-            serialized = ARObject._serialize_item(self.td_event_variable_type, "Any")
+            serialized = SerializationHelper.serialize_item(self.td_event_variable_type, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TD-EVENT-VARIABLE-TYPE")
@@ -107,13 +108,13 @@ class TDEventVariableDataPrototype(TDEventVfbPort):
         obj = super(TDEventVariableDataPrototype, cls).deserialize(element)
 
         # Parse data_element_ref
-        child = ARObject._find_child_element(element, "DATA-ELEMENT-REF")
+        child = SerializationHelper.find_child_element(element, "DATA-ELEMENT-REF")
         if child is not None:
             data_element_ref_value = ARRef.deserialize(child)
             obj.data_element_ref = data_element_ref_value
 
         # Parse td_event_variable_type
-        child = ARObject._find_child_element(element, "TD-EVENT-VARIABLE-TYPE")
+        child = SerializationHelper.find_child_element(element, "TD-EVENT-VARIABLE-TYPE")
         if child is not None:
             td_event_variable_type_value = child.text
             obj.td_event_variable_type = td_event_variable_type_value

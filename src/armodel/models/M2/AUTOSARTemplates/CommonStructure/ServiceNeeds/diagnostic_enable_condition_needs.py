@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.diagnostic_
     DiagnosticCapabilityElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds import (
     EventAcceptanceStatusEnum,
 )
@@ -43,7 +44,7 @@ class DiagnosticEnableConditionNeeds(DiagnosticCapabilityElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -62,7 +63,7 @@ class DiagnosticEnableConditionNeeds(DiagnosticCapabilityElement):
 
         # Serialize initial_status
         if self.initial_status is not None:
-            serialized = ARObject._serialize_item(self.initial_status, "EventAcceptanceStatusEnum")
+            serialized = SerializationHelper.serialize_item(self.initial_status, "EventAcceptanceStatusEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("INITIAL-STATUS")
@@ -90,7 +91,7 @@ class DiagnosticEnableConditionNeeds(DiagnosticCapabilityElement):
         obj = super(DiagnosticEnableConditionNeeds, cls).deserialize(element)
 
         # Parse initial_status
-        child = ARObject._find_child_element(element, "INITIAL-STATUS")
+        child = SerializationHelper.find_child_element(element, "INITIAL-STATUS")
         if child is not None:
             initial_status_value = EventAcceptanceStatusEnum.deserialize(child)
             obj.initial_status = initial_status_value

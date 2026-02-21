@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.DiagnosticMapping.diag
     DiagnosticMapping,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.cp_software_cluster import (
     CpSoftwareCluster,
@@ -49,7 +50,7 @@ class CpSwClusterResourceToDiagDataElemMapping(DiagnosticMapping):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -68,7 +69,7 @@ class CpSwClusterResourceToDiagDataElemMapping(DiagnosticMapping):
 
         # Serialize cp_software_cluster_ref
         if self.cp_software_cluster_ref is not None:
-            serialized = ARObject._serialize_item(self.cp_software_cluster_ref, "CpSoftwareCluster")
+            serialized = SerializationHelper.serialize_item(self.cp_software_cluster_ref, "CpSoftwareCluster")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CP-SOFTWARE-CLUSTER-REF")
@@ -82,7 +83,7 @@ class CpSwClusterResourceToDiagDataElemMapping(DiagnosticMapping):
 
         # Serialize diagnostic_data_ref
         if self.diagnostic_data_ref is not None:
-            serialized = ARObject._serialize_item(self.diagnostic_data_ref, "DiagnosticDataElement")
+            serialized = SerializationHelper.serialize_item(self.diagnostic_data_ref, "DiagnosticDataElement")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("DIAGNOSTIC-DATA-REF")
@@ -110,13 +111,13 @@ class CpSwClusterResourceToDiagDataElemMapping(DiagnosticMapping):
         obj = super(CpSwClusterResourceToDiagDataElemMapping, cls).deserialize(element)
 
         # Parse cp_software_cluster_ref
-        child = ARObject._find_child_element(element, "CP-SOFTWARE-CLUSTER-REF")
+        child = SerializationHelper.find_child_element(element, "CP-SOFTWARE-CLUSTER-REF")
         if child is not None:
             cp_software_cluster_ref_value = ARRef.deserialize(child)
             obj.cp_software_cluster_ref = cp_software_cluster_ref_value
 
         # Parse diagnostic_data_ref
-        child = ARObject._find_child_element(element, "DIAGNOSTIC-DATA-REF")
+        child = SerializationHelper.find_child_element(element, "DIAGNOSTIC-DATA-REF")
         if child is not None:
             diagnostic_data_ref_value = ARRef.deserialize(child)
             obj.diagnostic_data_ref = diagnostic_data_ref_value

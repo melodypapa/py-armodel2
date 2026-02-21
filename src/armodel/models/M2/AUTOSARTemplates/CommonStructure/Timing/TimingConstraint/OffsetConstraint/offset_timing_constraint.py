@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingConstraint.
     TimingConstraint,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.MultidimensionalTime.multidimensional_time import (
     MultidimensionalTime,
@@ -53,7 +54,7 @@ class OffsetTimingConstraint(TimingConstraint):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -72,7 +73,7 @@ class OffsetTimingConstraint(TimingConstraint):
 
         # Serialize maximum
         if self.maximum is not None:
-            serialized = ARObject._serialize_item(self.maximum, "MultidimensionalTime")
+            serialized = SerializationHelper.serialize_item(self.maximum, "MultidimensionalTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MAXIMUM")
@@ -86,7 +87,7 @@ class OffsetTimingConstraint(TimingConstraint):
 
         # Serialize minimum
         if self.minimum is not None:
-            serialized = ARObject._serialize_item(self.minimum, "MultidimensionalTime")
+            serialized = SerializationHelper.serialize_item(self.minimum, "MultidimensionalTime")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("MINIMUM")
@@ -100,7 +101,7 @@ class OffsetTimingConstraint(TimingConstraint):
 
         # Serialize source_ref
         if self.source_ref is not None:
-            serialized = ARObject._serialize_item(self.source_ref, "TimingDescriptionEvent")
+            serialized = SerializationHelper.serialize_item(self.source_ref, "TimingDescriptionEvent")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SOURCE-REF")
@@ -114,7 +115,7 @@ class OffsetTimingConstraint(TimingConstraint):
 
         # Serialize target_ref
         if self.target_ref is not None:
-            serialized = ARObject._serialize_item(self.target_ref, "TimingDescriptionEvent")
+            serialized = SerializationHelper.serialize_item(self.target_ref, "TimingDescriptionEvent")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("TARGET-REF")
@@ -142,25 +143,25 @@ class OffsetTimingConstraint(TimingConstraint):
         obj = super(OffsetTimingConstraint, cls).deserialize(element)
 
         # Parse maximum
-        child = ARObject._find_child_element(element, "MAXIMUM")
+        child = SerializationHelper.find_child_element(element, "MAXIMUM")
         if child is not None:
-            maximum_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            maximum_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
             obj.maximum = maximum_value
 
         # Parse minimum
-        child = ARObject._find_child_element(element, "MINIMUM")
+        child = SerializationHelper.find_child_element(element, "MINIMUM")
         if child is not None:
-            minimum_value = ARObject._deserialize_by_tag(child, "MultidimensionalTime")
+            minimum_value = SerializationHelper.deserialize_by_tag(child, "MultidimensionalTime")
             obj.minimum = minimum_value
 
         # Parse source_ref
-        child = ARObject._find_child_element(element, "SOURCE-REF")
+        child = SerializationHelper.find_child_element(element, "SOURCE-REF")
         if child is not None:
             source_ref_value = ARRef.deserialize(child)
             obj.source_ref = source_ref_value
 
         # Parse target_ref
-        child = ARObject._find_child_element(element, "TARGET-REF")
+        child = SerializationHelper.find_child_element(element, "TARGET-REF")
         if child is not None:
             target_ref_value = ARRef.deserialize(child)
             obj.target_ref = target_ref_value

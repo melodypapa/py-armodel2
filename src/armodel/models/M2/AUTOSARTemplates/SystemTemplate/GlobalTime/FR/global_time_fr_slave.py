@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.GlobalTime.global_time_sl
     GlobalTimeSlave,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
@@ -45,7 +46,7 @@ class GlobalTimeFrSlave(GlobalTimeSlave):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -64,7 +65,7 @@ class GlobalTimeFrSlave(GlobalTimeSlave):
 
         # Serialize crc_validated
         if self.crc_validated is not None:
-            serialized = ARObject._serialize_item(self.crc_validated, "Any")
+            serialized = SerializationHelper.serialize_item(self.crc_validated, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CRC-VALIDATED")
@@ -78,7 +79,7 @@ class GlobalTimeFrSlave(GlobalTimeSlave):
 
         # Serialize sequence
         if self.sequence is not None:
-            serialized = ARObject._serialize_item(self.sequence, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.sequence, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SEQUENCE")
@@ -106,13 +107,13 @@ class GlobalTimeFrSlave(GlobalTimeSlave):
         obj = super(GlobalTimeFrSlave, cls).deserialize(element)
 
         # Parse crc_validated
-        child = ARObject._find_child_element(element, "CRC-VALIDATED")
+        child = SerializationHelper.find_child_element(element, "CRC-VALIDATED")
         if child is not None:
             crc_validated_value = child.text
             obj.crc_validated = crc_validated_value
 
         # Parse sequence
-        child = ARObject._find_child_element(element, "SEQUENCE")
+        child = SerializationHelper.find_child_element(element, "SEQUENCE")
         if child is not None:
             sequence_value = child.text
             obj.sequence = sequence_value

@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
     AutosarDataPrototype,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
@@ -47,7 +48,7 @@ class Field(AutosarDataPrototype):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -66,7 +67,7 @@ class Field(AutosarDataPrototype):
 
         # Serialize has_getter
         if self.has_getter is not None:
-            serialized = ARObject._serialize_item(self.has_getter, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.has_getter, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HAS-GETTER")
@@ -80,7 +81,7 @@ class Field(AutosarDataPrototype):
 
         # Serialize has_notifier
         if self.has_notifier is not None:
-            serialized = ARObject._serialize_item(self.has_notifier, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.has_notifier, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HAS-NOTIFIER")
@@ -94,7 +95,7 @@ class Field(AutosarDataPrototype):
 
         # Serialize has_setter
         if self.has_setter is not None:
-            serialized = ARObject._serialize_item(self.has_setter, "Boolean")
+            serialized = SerializationHelper.serialize_item(self.has_setter, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("HAS-SETTER")
@@ -122,19 +123,19 @@ class Field(AutosarDataPrototype):
         obj = super(Field, cls).deserialize(element)
 
         # Parse has_getter
-        child = ARObject._find_child_element(element, "HAS-GETTER")
+        child = SerializationHelper.find_child_element(element, "HAS-GETTER")
         if child is not None:
             has_getter_value = child.text
             obj.has_getter = has_getter_value
 
         # Parse has_notifier
-        child = ARObject._find_child_element(element, "HAS-NOTIFIER")
+        child = SerializationHelper.find_child_element(element, "HAS-NOTIFIER")
         if child is not None:
             has_notifier_value = child.text
             obj.has_notifier = has_notifier_value
 
         # Parse has_setter
-        child = ARObject._find_child_element(element, "HAS-SETTER")
+        child = SerializationHelper.find_child_element(element, "HAS-SETTER")
         if child is not None:
             has_setter_value = child.text
             obj.has_setter = has_setter_value

@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.MSR.Documentation.BlockElements.ListElements import (
     ItemLabelPosEnum,
 )
@@ -45,12 +46,12 @@ class IndentSample(ARObject):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize item_label_pos_enum
         if self.item_label_pos_enum is not None:
-            serialized = ARObject._serialize_item(self.item_label_pos_enum, "ItemLabelPosEnum")
+            serialized = SerializationHelper.serialize_item(self.item_label_pos_enum, "ItemLabelPosEnum")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ITEM-LABEL-POS-ENUM")
@@ -64,7 +65,7 @@ class IndentSample(ARObject):
 
         # Serialize l2
         if self.l2 is not None:
-            serialized = ARObject._serialize_item(self.l2, "LOverviewParagraph")
+            serialized = SerializationHelper.serialize_item(self.l2, "LOverviewParagraph")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("L2")
@@ -93,15 +94,15 @@ class IndentSample(ARObject):
         obj.__init__()
 
         # Parse item_label_pos_enum
-        child = ARObject._find_child_element(element, "ITEM-LABEL-POS-ENUM")
+        child = SerializationHelper.find_child_element(element, "ITEM-LABEL-POS-ENUM")
         if child is not None:
             item_label_pos_enum_value = ItemLabelPosEnum.deserialize(child)
             obj.item_label_pos_enum = item_label_pos_enum_value
 
         # Parse l2
-        child = ARObject._find_child_element(element, "L2")
+        child = SerializationHelper.find_child_element(element, "L2")
         if child is not None:
-            l2_value = ARObject._deserialize_by_tag(child, "LOverviewParagraph")
+            l2_value = SerializationHelper.deserialize_by_tag(child, "LOverviewParagraph")
             obj.l2 = l2_value
 
         return obj

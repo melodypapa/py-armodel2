@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingDescription
     TimingDescription,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Timing.TimingClock.timing_clock import (
     TimingClock,
@@ -47,7 +48,7 @@ class TimingDescriptionEvent(TimingDescription, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -66,7 +67,7 @@ class TimingDescriptionEvent(TimingDescription, ABC):
 
         # Serialize clock_reference_ref
         if self.clock_reference_ref is not None:
-            serialized = ARObject._serialize_item(self.clock_reference_ref, "TimingClock")
+            serialized = SerializationHelper.serialize_item(self.clock_reference_ref, "TimingClock")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CLOCK-REFERENCE-REF")
@@ -80,7 +81,7 @@ class TimingDescriptionEvent(TimingDescription, ABC):
 
         # Serialize occurrence
         if self.occurrence is not None:
-            serialized = ARObject._serialize_item(self.occurrence, "Any")
+            serialized = SerializationHelper.serialize_item(self.occurrence, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("OCCURRENCE")
@@ -108,13 +109,13 @@ class TimingDescriptionEvent(TimingDescription, ABC):
         obj = super(TimingDescriptionEvent, cls).deserialize(element)
 
         # Parse clock_reference_ref
-        child = ARObject._find_child_element(element, "CLOCK-REFERENCE-REF")
+        child = SerializationHelper.find_child_element(element, "CLOCK-REFERENCE-REF")
         if child is not None:
             clock_reference_ref_value = ARRef.deserialize(child)
             obj.clock_reference_ref = clock_reference_ref_value
 
         # Parse occurrence
-        child = ARObject._find_child_element(element, "OCCURRENCE")
+        child = SerializationHelper.find_child_element(element, "OCCURRENCE")
         if child is not None:
             occurrence_value = child.text
             obj.occurrence = occurrence_value

@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from abc import ABC, abstractmethod
 
 
@@ -40,12 +41,12 @@ class AbstractCanCommunicationControllerAttributes(ARObject, ABC):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # Serialize can_controller_fd
         if self.can_controller_fd is not None:
-            serialized = ARObject._serialize_item(self.can_controller_fd, "Any")
+            serialized = SerializationHelper.serialize_item(self.can_controller_fd, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CAN-CONTROLLER-FD")
@@ -59,7 +60,7 @@ class AbstractCanCommunicationControllerAttributes(ARObject, ABC):
 
         # Serialize can_controller_xl
         if self.can_controller_xl is not None:
-            serialized = ARObject._serialize_item(self.can_controller_xl, "Any")
+            serialized = SerializationHelper.serialize_item(self.can_controller_xl, "Any")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("CAN-CONTROLLER-XL")
@@ -88,13 +89,13 @@ class AbstractCanCommunicationControllerAttributes(ARObject, ABC):
         obj.__init__()
 
         # Parse can_controller_fd
-        child = ARObject._find_child_element(element, "CAN-CONTROLLER-FD")
+        child = SerializationHelper.find_child_element(element, "CAN-CONTROLLER-FD")
         if child is not None:
             can_controller_fd_value = child.text
             obj.can_controller_fd = can_controller_fd_value
 
         # Parse can_controller_xl
-        child = ARObject._find_child_element(element, "CAN-CONTROLLER-XL")
+        child = SerializationHelper.find_child_element(element, "CAN-CONTROLLER-XL")
         if child is not None:
             can_controller_xl_value = child.text
             obj.can_controller_xl = can_controller_xl_value

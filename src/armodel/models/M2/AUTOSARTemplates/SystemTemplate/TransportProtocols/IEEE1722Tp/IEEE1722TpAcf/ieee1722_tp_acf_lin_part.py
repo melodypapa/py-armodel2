@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.TransportProtocols.IEEE17
     IEEE1722TpAcfBusPart,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -49,7 +50,7 @@ class IEEE1722TpAcfLinPart(IEEE1722TpAcfBusPart):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -68,7 +69,7 @@ class IEEE1722TpAcfLinPart(IEEE1722TpAcfBusPart):
 
         # Serialize lin_identifier
         if self.lin_identifier is not None:
-            serialized = ARObject._serialize_item(self.lin_identifier, "PositiveInteger")
+            serialized = SerializationHelper.serialize_item(self.lin_identifier, "PositiveInteger")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("LIN-IDENTIFIER")
@@ -82,7 +83,7 @@ class IEEE1722TpAcfLinPart(IEEE1722TpAcfBusPart):
 
         # Serialize sdu_ref
         if self.sdu_ref is not None:
-            serialized = ARObject._serialize_item(self.sdu_ref, "PduTriggering")
+            serialized = SerializationHelper.serialize_item(self.sdu_ref, "PduTriggering")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SDU-REF")
@@ -110,13 +111,13 @@ class IEEE1722TpAcfLinPart(IEEE1722TpAcfBusPart):
         obj = super(IEEE1722TpAcfLinPart, cls).deserialize(element)
 
         # Parse lin_identifier
-        child = ARObject._find_child_element(element, "LIN-IDENTIFIER")
+        child = SerializationHelper.find_child_element(element, "LIN-IDENTIFIER")
         if child is not None:
             lin_identifier_value = child.text
             obj.lin_identifier = lin_identifier_value
 
         # Parse sdu_ref
-        child = ARObject._find_child_element(element, "SDU-REF")
+        child = SerializationHelper.find_child_element(element, "SDU-REF")
         if child is not None:
             sdu_ref_value = ARRef.deserialize(child)
             obj.sdu_ref = sdu_ref_value

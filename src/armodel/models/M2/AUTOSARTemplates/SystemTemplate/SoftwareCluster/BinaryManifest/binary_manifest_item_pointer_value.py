@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.SoftwareCluster.BinaryMan
     BinaryManifestItemValue,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Address,
     SymbolString,
@@ -46,7 +47,7 @@ class BinaryManifestItemPointerValue(BinaryManifestItemValue):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -65,7 +66,7 @@ class BinaryManifestItemPointerValue(BinaryManifestItemValue):
 
         # Serialize address
         if self.address is not None:
-            serialized = ARObject._serialize_item(self.address, "Address")
+            serialized = SerializationHelper.serialize_item(self.address, "Address")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("ADDRESS")
@@ -79,7 +80,7 @@ class BinaryManifestItemPointerValue(BinaryManifestItemValue):
 
         # Serialize symbol
         if self.symbol is not None:
-            serialized = ARObject._serialize_item(self.symbol, "SymbolString")
+            serialized = SerializationHelper.serialize_item(self.symbol, "SymbolString")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("SYMBOL")
@@ -107,15 +108,15 @@ class BinaryManifestItemPointerValue(BinaryManifestItemValue):
         obj = super(BinaryManifestItemPointerValue, cls).deserialize(element)
 
         # Parse address
-        child = ARObject._find_child_element(element, "ADDRESS")
+        child = SerializationHelper.find_child_element(element, "ADDRESS")
         if child is not None:
             address_value = child.text
             obj.address = address_value
 
         # Parse symbol
-        child = ARObject._find_child_element(element, "SYMBOL")
+        child = SerializationHelper.find_child_element(element, "SYMBOL")
         if child is not None:
-            symbol_value = ARObject._deserialize_by_tag(child, "SymbolString")
+            symbol_value = SerializationHelper.deserialize_by_tag(child, "SymbolString")
             obj.symbol = symbol_value
 
         return obj

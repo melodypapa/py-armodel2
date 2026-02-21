@@ -13,6 +13,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARElement,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class SignalServiceTranslationPropsSet(ARElement):
@@ -40,7 +41,7 @@ class SignalServiceTranslationPropsSet(ARElement):
             xml.etree.ElementTree.Element representing this object
         """
         # Get XML tag name for this class
-        tag = self._get_xml_tag()
+        tag = SerializationHelper.get_xml_tag(self.__class__)
         elem = ET.Element(tag)
 
         # First, call parent's serialize to handle inherited attributes
@@ -61,7 +62,7 @@ class SignalServiceTranslationPropsSet(ARElement):
         if self.signal_service_propses:
             wrapper = ET.Element("SIGNAL-SERVICE-PROPSES")
             for item in self.signal_service_propses:
-                serialized = ARObject._serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -84,11 +85,11 @@ class SignalServiceTranslationPropsSet(ARElement):
 
         # Parse signal_service_propses (list from container "SIGNAL-SERVICE-PROPSES")
         obj.signal_service_propses = []
-        container = ARObject._find_child_element(element, "SIGNAL-SERVICE-PROPSES")
+        container = SerializationHelper.find_child_element(element, "SIGNAL-SERVICE-PROPSES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
-                child_value = ARObject._deserialize_by_tag(child, None)
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
                     obj.signal_service_propses.append(child_value)
 
