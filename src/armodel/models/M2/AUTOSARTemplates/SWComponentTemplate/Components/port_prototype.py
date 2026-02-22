@@ -305,18 +305,3 @@ class PortPrototype(Identifiable, ABC):
 
 
 
-class PortPrototypeBuilder:
-    """Builder for PortPrototype."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: PortPrototype = PortPrototype()
-
-    def build(self) -> PortPrototype:
-        """Build and return PortPrototype object.
-
-        Returns:
-            PortPrototype instance
-        """
-        # TODO: Add validation
-        return self._obj

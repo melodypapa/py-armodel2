@@ -135,18 +135,3 @@ class RTEEvent(AbstractEvent, ABC):
 
 
 
-class RTEEventBuilder:
-    """Builder for RTEEvent."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: RTEEvent = RTEEvent()
-
-    def build(self) -> RTEEvent:
-        """Build and return RTEEvent object.
-
-        Returns:
-            RTEEvent instance
-        """
-        # TODO: Add validation
-        return self._obj

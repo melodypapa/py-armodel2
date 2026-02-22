@@ -74,18 +74,3 @@ class DiagnosticAbstractAliasEvent(DiagnosticCommonElement, ABC):
 
 
 
-class DiagnosticAbstractAliasEventBuilder:
-    """Builder for DiagnosticAbstractAliasEvent."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: DiagnosticAbstractAliasEvent = DiagnosticAbstractAliasEvent()
-
-    def build(self) -> DiagnosticAbstractAliasEvent:
-        """Build and return DiagnosticAbstractAliasEvent object.
-
-        Returns:
-            DiagnosticAbstractAliasEvent instance
-        """
-        # TODO: Add validation
-        return self._obj

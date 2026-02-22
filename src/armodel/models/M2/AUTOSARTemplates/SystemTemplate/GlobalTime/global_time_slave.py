@@ -216,18 +216,3 @@ class GlobalTimeSlave(Identifiable, ABC):
 
 
 
-class GlobalTimeSlaveBuilder:
-    """Builder for GlobalTimeSlave."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: GlobalTimeSlave = GlobalTimeSlave()
-
-    def build(self) -> GlobalTimeSlave:
-        """Build and return GlobalTimeSlave object.
-
-        Returns:
-            GlobalTimeSlave instance
-        """
-        # TODO: Add validation
-        return self._obj

@@ -153,18 +153,3 @@ class TDEventVfbPort(TDEventVfb, ABC):
 
 
 
-class TDEventVfbPortBuilder:
-    """Builder for TDEventVfbPort."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: TDEventVfbPort = TDEventVfbPort()
-
-    def build(self) -> TDEventVfbPort:
-        """Build and return TDEventVfbPort object.
-
-        Returns:
-            TDEventVfbPort instance
-        """
-        # TODO: Add validation
-        return self._obj

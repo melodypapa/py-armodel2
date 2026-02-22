@@ -266,18 +266,3 @@ class PhysicalChannel(Identifiable, ABC):
 
 
 
-class PhysicalChannelBuilder:
-    """Builder for PhysicalChannel."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: PhysicalChannel = PhysicalChannel()
-
-    def build(self) -> PhysicalChannel:
-        """Build and return PhysicalChannel object.
-
-        Returns:
-            PhysicalChannel instance
-        """
-        # TODO: Add validation
-        return self._obj

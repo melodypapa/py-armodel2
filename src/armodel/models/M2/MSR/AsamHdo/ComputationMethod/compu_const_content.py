@@ -71,18 +71,3 @@ class CompuConstContent(ARObject, ABC):
 
 
 
-class CompuConstContentBuilder:
-    """Builder for CompuConstContent."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: CompuConstContent = CompuConstContent()
-
-    def build(self) -> CompuConstContent:
-        """Build and return CompuConstContent object.
-
-        Returns:
-            CompuConstContent instance
-        """
-        # TODO: Add validation
-        return self._obj

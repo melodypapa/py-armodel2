@@ -76,18 +76,3 @@ class ApplicationCompositeDataType(ApplicationDataType, ABC):
 
 
 
-class ApplicationCompositeDataTypeBuilder:
-    """Builder for ApplicationCompositeDataType."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: ApplicationCompositeDataType = ApplicationCompositeDataType()
-
-    def build(self) -> ApplicationCompositeDataType:
-        """Build and return ApplicationCompositeDataType object.
-
-        Returns:
-            ApplicationCompositeDataType instance
-        """
-        # TODO: Add validation
-        return self._obj

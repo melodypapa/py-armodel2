@@ -122,18 +122,3 @@ class AbstractMultiplicityRestriction(ARObject, ABC):
 
 
 
-class AbstractMultiplicityRestrictionBuilder:
-    """Builder for AbstractMultiplicityRestriction."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AbstractMultiplicityRestriction = AbstractMultiplicityRestriction()
-
-    def build(self) -> AbstractMultiplicityRestriction:
-        """Build and return AbstractMultiplicityRestriction object.
-
-        Returns:
-            AbstractMultiplicityRestriction instance
-        """
-        # TODO: Add validation
-        return self._obj

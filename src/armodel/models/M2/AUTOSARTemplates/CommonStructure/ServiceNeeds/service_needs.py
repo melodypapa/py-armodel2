@@ -78,18 +78,3 @@ class ServiceNeeds(Identifiable, ABC):
 
 
 
-class ServiceNeedsBuilder:
-    """Builder for ServiceNeeds."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: ServiceNeeds = ServiceNeeds()
-
-    def build(self) -> ServiceNeeds:
-        """Build and return ServiceNeeds object.
-
-        Returns:
-            ServiceNeeds instance
-        """
-        # TODO: Add validation
-        return self._obj

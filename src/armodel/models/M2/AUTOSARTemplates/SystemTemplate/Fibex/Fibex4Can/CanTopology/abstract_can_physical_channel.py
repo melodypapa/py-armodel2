@@ -74,18 +74,3 @@ class AbstractCanPhysicalChannel(PhysicalChannel, ABC):
 
 
 
-class AbstractCanPhysicalChannelBuilder:
-    """Builder for AbstractCanPhysicalChannel."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AbstractCanPhysicalChannel = AbstractCanPhysicalChannel()
-
-    def build(self) -> AbstractCanPhysicalChannel:
-        """Build and return AbstractCanPhysicalChannel object.
-
-        Returns:
-            AbstractCanPhysicalChannel instance
-        """
-        # TODO: Add validation
-        return self._obj

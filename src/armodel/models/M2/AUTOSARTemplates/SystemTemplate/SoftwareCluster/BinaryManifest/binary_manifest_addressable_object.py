@@ -124,18 +124,3 @@ class BinaryManifestAddressableObject(Identifiable, ABC):
 
 
 
-class BinaryManifestAddressableObjectBuilder:
-    """Builder for BinaryManifestAddressableObject."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: BinaryManifestAddressableObject = BinaryManifestAddressableObject()
-
-    def build(self) -> BinaryManifestAddressableObject:
-        """Build and return BinaryManifestAddressableObject object.
-
-        Returns:
-            BinaryManifestAddressableObject instance
-        """
-        # TODO: Add validation
-        return self._obj

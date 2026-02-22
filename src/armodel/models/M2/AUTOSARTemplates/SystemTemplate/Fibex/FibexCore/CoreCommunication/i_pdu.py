@@ -102,18 +102,3 @@ class IPdu(Pdu, ABC):
 
 
 
-class IPduBuilder:
-    """Builder for IPdu."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: IPdu = IPdu()
-
-    def build(self) -> IPdu:
-        """Build and return IPdu object.
-
-        Returns:
-            IPdu instance
-        """
-        # TODO: Add validation
-        return self._obj

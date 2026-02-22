@@ -112,18 +112,3 @@ class EOCExecutableEntityRefAbstract(Identifiable, ABC):
 
 
 
-class EOCExecutableEntityRefAbstractBuilder:
-    """Builder for EOCExecutableEntityRefAbstract."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: EOCExecutableEntityRefAbstract = EOCExecutableEntityRefAbstract()
-
-    def build(self) -> EOCExecutableEntityRefAbstract:
-        """Build and return EOCExecutableEntityRefAbstract object.
-
-        Returns:
-            EOCExecutableEntityRefAbstract instance
-        """
-        # TODO: Add validation
-        return self._obj

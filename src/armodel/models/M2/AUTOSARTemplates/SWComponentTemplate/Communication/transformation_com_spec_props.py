@@ -75,18 +75,3 @@ class TransformationComSpecProps(Describable, ABC):
 
 
 
-class TransformationComSpecPropsBuilder:
-    """Builder for TransformationComSpecProps."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: TransformationComSpecProps = TransformationComSpecProps()
-
-    def build(self) -> TransformationComSpecProps:
-        """Build and return TransformationComSpecProps object.
-
-        Returns:
-            TransformationComSpecProps instance
-        """
-        # TODO: Add validation
-        return self._obj

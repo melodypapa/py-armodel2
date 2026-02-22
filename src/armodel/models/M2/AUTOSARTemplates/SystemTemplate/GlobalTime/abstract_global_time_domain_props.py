@@ -71,18 +71,3 @@ class AbstractGlobalTimeDomainProps(ARObject, ABC):
 
 
 
-class AbstractGlobalTimeDomainPropsBuilder:
-    """Builder for AbstractGlobalTimeDomainProps."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AbstractGlobalTimeDomainProps = AbstractGlobalTimeDomainProps()
-
-    def build(self) -> AbstractGlobalTimeDomainProps:
-        """Build and return AbstractGlobalTimeDomainProps object.
-
-        Returns:
-            AbstractGlobalTimeDomainProps instance
-        """
-        # TODO: Add validation
-        return self._obj

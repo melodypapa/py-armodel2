@@ -76,18 +76,3 @@ class PortInterfaceMapping(Identifiable, ABC):
 
 
 
-class PortInterfaceMappingBuilder:
-    """Builder for PortInterfaceMapping."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: PortInterfaceMapping = PortInterfaceMapping()
-
-    def build(self) -> PortInterfaceMapping:
-        """Build and return PortInterfaceMapping object.
-
-        Returns:
-            PortInterfaceMapping instance
-        """
-        # TODO: Add validation
-        return self._obj

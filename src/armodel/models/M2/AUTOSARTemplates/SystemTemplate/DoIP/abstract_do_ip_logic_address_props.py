@@ -74,18 +74,3 @@ class AbstractDoIpLogicAddressProps(Identifiable, ABC):
 
 
 
-class AbstractDoIpLogicAddressPropsBuilder:
-    """Builder for AbstractDoIpLogicAddressProps."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AbstractDoIpLogicAddressProps = AbstractDoIpLogicAddressProps()
-
-    def build(self) -> AbstractDoIpLogicAddressProps:
-        """Build and return AbstractDoIpLogicAddressProps object.
-
-        Returns:
-            AbstractDoIpLogicAddressProps instance
-        """
-        # TODO: Add validation
-        return self._obj

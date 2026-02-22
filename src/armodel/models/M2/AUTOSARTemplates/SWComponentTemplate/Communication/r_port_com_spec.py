@@ -72,18 +72,3 @@ class RPortComSpec(ARObject, ABC):
 
 
 
-class RPortComSpecBuilder:
-    """Builder for RPortComSpec."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: RPortComSpec = RPortComSpec()
-
-    def build(self) -> RPortComSpec:
-        """Build and return RPortComSpec object.
-
-        Returns:
-            RPortComSpec instance
-        """
-        # TODO: Add validation
-        return self._obj

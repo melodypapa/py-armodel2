@@ -71,18 +71,3 @@ class BinaryManifestItemValue(ARObject, ABC):
 
 
 
-class BinaryManifestItemValueBuilder:
-    """Builder for BinaryManifestItemValue."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: BinaryManifestItemValue = BinaryManifestItemValue()
-
-    def build(self) -> BinaryManifestItemValue:
-        """Build and return BinaryManifestItemValue object.
-
-        Returns:
-            BinaryManifestItemValue instance
-        """
-        # TODO: Add validation
-        return self._obj

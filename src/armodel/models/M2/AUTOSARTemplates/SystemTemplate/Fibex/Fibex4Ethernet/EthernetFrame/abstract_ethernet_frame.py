@@ -74,18 +74,3 @@ class AbstractEthernetFrame(Frame, ABC):
 
 
 
-class AbstractEthernetFrameBuilder:
-    """Builder for AbstractEthernetFrame."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AbstractEthernetFrame = AbstractEthernetFrame()
-
-    def build(self) -> AbstractEthernetFrame:
-        """Build and return AbstractEthernetFrame object.
-
-        Returns:
-            AbstractEthernetFrame instance
-        """
-        # TODO: Add validation
-        return self._obj

@@ -74,18 +74,3 @@ class TimingDescription(Identifiable, ABC):
 
 
 
-class TimingDescriptionBuilder:
-    """Builder for TimingDescription."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: TimingDescription = TimingDescription()
-
-    def build(self) -> TimingDescription:
-        """Build and return TimingDescription object.
-
-        Returns:
-            TimingDescription instance
-        """
-        # TODO: Add validation
-        return self._obj

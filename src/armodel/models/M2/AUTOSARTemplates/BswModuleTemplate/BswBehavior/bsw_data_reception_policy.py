@@ -99,18 +99,3 @@ class BswDataReceptionPolicy(ARObject, ABC):
 
 
 
-class BswDataReceptionPolicyBuilder:
-    """Builder for BswDataReceptionPolicy."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: BswDataReceptionPolicy = BswDataReceptionPolicy()
-
-    def build(self) -> BswDataReceptionPolicy:
-        """Build and return BswDataReceptionPolicy object.
-
-        Returns:
-            BswDataReceptionPolicy instance
-        """
-        # TODO: Add validation
-        return self._obj

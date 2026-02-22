@@ -101,18 +101,3 @@ class EcucAbstractReferenceDef(EcucCommonAttributes, ABC):
 
 
 
-class EcucAbstractReferenceDefBuilder:
-    """Builder for EcucAbstractReferenceDef."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: EcucAbstractReferenceDef = EcucAbstractReferenceDef()
-
-    def build(self) -> EcucAbstractReferenceDef:
-        """Build and return EcucAbstractReferenceDef object.
-
-        Returns:
-            EcucAbstractReferenceDef instance
-        """
-        # TODO: Add validation
-        return self._obj

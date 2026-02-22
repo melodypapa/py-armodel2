@@ -71,18 +71,3 @@ class MixedContentForPlainText(ARObject, ABC):
 
 
 
-class MixedContentForPlainTextBuilder:
-    """Builder for MixedContentForPlainText."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: MixedContentForPlainText = MixedContentForPlainText()
-
-    def build(self) -> MixedContentForPlainText:
-        """Build and return MixedContentForPlainText object.
-
-        Returns:
-            MixedContentForPlainText instance
-        """
-        # TODO: Add validation
-        return self._obj

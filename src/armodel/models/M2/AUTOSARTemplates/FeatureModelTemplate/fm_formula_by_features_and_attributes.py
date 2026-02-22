@@ -124,18 +124,3 @@ class FMFormulaByFeaturesAndAttributes(ARObject, ABC):
 
 
 
-class FMFormulaByFeaturesAndAttributesBuilder:
-    """Builder for FMFormulaByFeaturesAndAttributes."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: FMFormulaByFeaturesAndAttributes = FMFormulaByFeaturesAndAttributes()
-
-    def build(self) -> FMFormulaByFeaturesAndAttributes:
-        """Build and return FMFormulaByFeaturesAndAttributes object.
-
-        Returns:
-            FMFormulaByFeaturesAndAttributes instance
-        """
-        # TODO: Add validation
-        return self._obj

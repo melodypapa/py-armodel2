@@ -74,18 +74,3 @@ class AbstractSecurityEventFilter(Identifiable, ABC):
 
 
 
-class AbstractSecurityEventFilterBuilder:
-    """Builder for AbstractSecurityEventFilter."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AbstractSecurityEventFilter = AbstractSecurityEventFilter()
-
-    def build(self) -> AbstractSecurityEventFilter:
-        """Build and return AbstractSecurityEventFilter object.
-
-        Returns:
-            AbstractSecurityEventFilter instance
-        """
-        # TODO: Add validation
-        return self._obj

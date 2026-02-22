@@ -219,18 +219,3 @@ class DdsCpServiceInstance(AbstractServiceInstance, ABC):
 
 
 
-class DdsCpServiceInstanceBuilder:
-    """Builder for DdsCpServiceInstance."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: DdsCpServiceInstance = DdsCpServiceInstance()
-
-    def build(self) -> DdsCpServiceInstance:
-        """Build and return DdsCpServiceInstance object.
-
-        Returns:
-            DdsCpServiceInstance instance
-        """
-        # TODO: Add validation
-        return self._obj

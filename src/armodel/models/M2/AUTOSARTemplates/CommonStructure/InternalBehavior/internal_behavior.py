@@ -271,18 +271,3 @@ class InternalBehavior(Identifiable, ABC):
 
 
 
-class InternalBehaviorBuilder:
-    """Builder for InternalBehavior."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: InternalBehavior = InternalBehavior()
-
-    def build(self) -> InternalBehavior:
-        """Build and return InternalBehavior object.
-
-        Returns:
-            InternalBehavior instance
-        """
-        # TODO: Add validation
-        return self._obj

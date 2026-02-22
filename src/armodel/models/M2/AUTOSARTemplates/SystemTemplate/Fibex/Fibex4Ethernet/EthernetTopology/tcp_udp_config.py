@@ -74,18 +74,3 @@ class TcpUdpConfig(TransportProtocolConfiguration, ABC):
 
 
 
-class TcpUdpConfigBuilder:
-    """Builder for TcpUdpConfig."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: TcpUdpConfig = TcpUdpConfig()
-
-    def build(self) -> TcpUdpConfig:
-        """Build and return TcpUdpConfig object.
-
-        Returns:
-            TcpUdpConfig instance
-        """
-        # TODO: Add validation
-        return self._obj

@@ -227,18 +227,3 @@ class CommunicationConnector(Identifiable, ABC):
 
 
 
-class CommunicationConnectorBuilder:
-    """Builder for CommunicationConnector."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: CommunicationConnector = CommunicationConnector()
-
-    def build(self) -> CommunicationConnector:
-        """Build and return CommunicationConnector object.
-
-        Returns:
-            CommunicationConnector instance
-        """
-        # TODO: Add validation
-        return self._obj

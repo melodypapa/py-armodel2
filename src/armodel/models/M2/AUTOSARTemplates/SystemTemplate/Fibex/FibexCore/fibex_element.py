@@ -75,18 +75,3 @@ class FibexElement(PackageableElement, ABC):
 
 
 
-class FibexElementBuilder:
-    """Builder for FibexElement."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: FibexElement = FibexElement()
-
-    def build(self) -> FibexElement:
-        """Build and return FibexElement object.
-
-        Returns:
-            FibexElement instance
-        """
-        # TODO: Add validation
-        return self._obj

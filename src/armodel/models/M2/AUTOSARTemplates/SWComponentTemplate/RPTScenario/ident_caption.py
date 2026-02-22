@@ -75,18 +75,3 @@ class IdentCaption(Identifiable, ABC):
 
 
 
-class IdentCaptionBuilder:
-    """Builder for IdentCaption."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: IdentCaption = IdentCaption()
-
-    def build(self) -> IdentCaption:
-        """Build and return IdentCaption object.
-
-        Returns:
-            IdentCaption instance
-        """
-        # TODO: Add validation
-        return self._obj

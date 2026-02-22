@@ -74,18 +74,3 @@ class AbstractImplementationDataTypeElement(Identifiable, ABC):
 
 
 
-class AbstractImplementationDataTypeElementBuilder:
-    """Builder for AbstractImplementationDataTypeElement."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AbstractImplementationDataTypeElement = AbstractImplementationDataTypeElement()
-
-    def build(self) -> AbstractImplementationDataTypeElement:
-        """Build and return AbstractImplementationDataTypeElement object.
-
-        Returns:
-            AbstractImplementationDataTypeElement instance
-        """
-        # TODO: Add validation
-        return self._obj

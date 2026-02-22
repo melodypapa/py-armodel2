@@ -149,18 +149,3 @@ class TriggerInAtomicSwcInstanceRef(ARObject, ABC):
 
 
 
-class TriggerInAtomicSwcInstanceRefBuilder:
-    """Builder for TriggerInAtomicSwcInstanceRef."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: TriggerInAtomicSwcInstanceRef = TriggerInAtomicSwcInstanceRef()
-
-    def build(self) -> TriggerInAtomicSwcInstanceRef:
-        """Build and return TriggerInAtomicSwcInstanceRef object.
-
-        Returns:
-            TriggerInAtomicSwcInstanceRef instance
-        """
-        # TODO: Add validation
-        return self._obj

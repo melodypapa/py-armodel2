@@ -75,18 +75,3 @@ class AbstractImplementationDataType(AutosarDataType, ABC):
 
 
 
-class AbstractImplementationDataTypeBuilder:
-    """Builder for AbstractImplementationDataType."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AbstractImplementationDataType = AbstractImplementationDataType()
-
-    def build(self) -> AbstractImplementationDataType:
-        """Build and return AbstractImplementationDataType object.
-
-        Returns:
-            AbstractImplementationDataType instance
-        """
-        # TODO: Add validation
-        return self._obj

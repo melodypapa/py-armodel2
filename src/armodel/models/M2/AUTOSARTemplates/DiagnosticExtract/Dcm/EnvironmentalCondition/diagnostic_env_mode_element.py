@@ -74,18 +74,3 @@ class DiagnosticEnvModeElement(Referrable, ABC):
 
 
 
-class DiagnosticEnvModeElementBuilder:
-    """Builder for DiagnosticEnvModeElement."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: DiagnosticEnvModeElement = DiagnosticEnvModeElement()
-
-    def build(self) -> DiagnosticEnvModeElement:
-        """Build and return DiagnosticEnvModeElement object.
-
-        Returns:
-            DiagnosticEnvModeElement instance
-        """
-        # TODO: Add validation
-        return self._obj

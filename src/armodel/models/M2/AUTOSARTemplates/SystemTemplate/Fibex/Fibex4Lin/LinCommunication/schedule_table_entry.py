@@ -146,18 +146,3 @@ class ScheduleTableEntry(ARObject, ABC):
 
 
 
-class ScheduleTableEntryBuilder:
-    """Builder for ScheduleTableEntry."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: ScheduleTableEntry = ScheduleTableEntry()
-
-    def build(self) -> ScheduleTableEntry:
-        """Build and return ScheduleTableEntry object.
-
-        Returns:
-            ScheduleTableEntry instance
-        """
-        # TODO: Add validation
-        return self._obj

@@ -83,18 +83,3 @@ class ARElement(PackageableElement, ABC):
 
 
 
-class ARElementBuilder:
-    """Builder for ARElement."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: ARElement = ARElement()
-
-    def build(self) -> ARElement:
-        """Build and return ARElement object.
-
-        Returns:
-            ARElement instance
-        """
-        # TODO: Add validation
-        return self._obj

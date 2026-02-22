@@ -497,18 +497,3 @@ class Implementation(ARElement, ABC):
 
 
 
-class ImplementationBuilder:
-    """Builder for Implementation."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: Implementation = Implementation()
-
-    def build(self) -> Implementation:
-        """Build and return Implementation object.
-
-        Returns:
-            Implementation instance
-        """
-        # TODO: Add validation
-        return self._obj

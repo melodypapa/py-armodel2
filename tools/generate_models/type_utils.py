@@ -1,6 +1,6 @@
 """Type-related functions for code generation."""
 
-from typing import Any, Dict, Set, List, cast
+from typing import Any, Dict, Set, List, Optional, cast
 
 from ._common import to_snake_case
 
@@ -330,3 +330,220 @@ def find_all_cycles_in_graph(
     cycles.sort(key=lambda c: c[0] if c else "")
 
     return cycles
+
+
+def get_type_coercion_function(target_type: str) -> Optional[str]:
+    """Get the type coercion function name for a target type.
+
+    Args:
+        target_type: Target type name (e.g., "int", "float", "bool", "str")
+
+    Returns:
+        Function name or None if no coercion is available.
+    """
+    coercion_map = {
+        "int": "_coerce_to_int",
+        "float": "_coerce_to_float",
+        "bool": "_coerce_to_bool",
+        "str": "_coerce_to_str",
+    }
+    return coercion_map.get(target_type)
+
+
+def generate_type_coercion_helper() -> str:
+    """Generate type coercion helper methods for Builder class.
+
+    Returns:
+        String containing static methods for type coercion.
+    """
+    return '''
+    @staticmethod
+    def _coerce_to_int(value: Any) -> int:
+        """Coerce value to int.
+
+        Args:
+            value: Value to coerce
+
+        Returns:
+            Integer value
+
+        Raises:
+            ValueError: If value cannot be coerced to int
+        """
+        if isinstance(value, int):
+            return value
+        if isinstance(value, str) and value.isdigit():
+            return int(value)
+        if isinstance(value, float):
+            return int(value)
+        if isinstance(value, bool):
+            return int(value)
+        raise ValueError(f"Cannot coerce {type(value).__name__} to int: {value}")
+
+    @staticmethod
+    def _coerce_to_float(value: Any) -> float:
+        """Coerce value to float.
+
+        Args:
+            value: Value to coerce
+
+        Returns:
+            Float value
+
+        Raises:
+            ValueError: If value cannot be coerced to float
+        """
+        if isinstance(value, float):
+            return value
+        if isinstance(value, int):
+            return float(value)
+        if isinstance(value, str):
+            try:
+                return float(value)
+            except ValueError:
+                pass
+        raise ValueError(f"Cannot coerce {type(value).__name__} to float: {value}")
+
+    @staticmethod
+    def _coerce_to_bool(value: Any) -> bool:
+        """Coerce value to bool.
+
+        Args:
+            value: Value to coerce
+
+        Returns:
+            Boolean value
+
+        Raises:
+            ValueError: If value cannot be coerced to bool
+        """
+        if isinstance(value, bool):
+            return value
+        if isinstance(value, int):
+            return bool(value)
+        if isinstance(value, str):
+            if value.lower() in ("true", "1", "yes"):
+                return True
+            if value.lower() in ("false", "0", "no"):
+                return False
+        raise ValueError(f"Cannot coerce {type(value).__name__} to bool: {value}")
+
+    @staticmethod
+    def _coerce_to_str(value: Any) -> str:
+        """Coerce value to str.
+
+        Args:
+            value: Value to coerce
+
+        Returns:
+            String value
+        """
+        return str(value)
+
+
+    @staticmethod
+    def _coerce_to_list(value: Any, item_type: str) -> list:
+        """Coerce value to list.
+
+        Args:
+            value: Value to coerce
+            item_type: Expected item type (for error messages)
+
+        Returns:
+            List value
+
+        Raises:
+            ValueError: If value cannot be coerced to list
+        """
+        if isinstance(value, list):
+            return value
+        if isinstance(value, tuple):
+            return list(value)
+        raise ValueError(f"Cannot coerce {type(value).__name__} to list[{item_type}]: {value}")
+'''
+
+
+def should_apply_type_coercion(target_type: str) -> bool:
+    """Check if type coercion should be applied for a target type.
+
+    Args:
+        target_type: Target type name
+
+    Returns:
+        True if coercion should be applied, False otherwise
+    """
+    coercible_types = {"int", "float", "bool", "str", "list"}
+    return target_type in coercible_types
+
+
+def extract_base_type(type_str: str) -> str:
+    """Extract base type from complex type hints.
+
+    Examples:
+        "Optional[str]" -> "str"
+        "list[int]" -> "int"
+        "List[SomeClass]" -> "SomeClass"
+        "str" -> "str"
+
+    Args:
+        type_str: Type hint string
+
+    Returns:
+        Base type string
+    """
+    # Remove outer wrapper
+    if type_str.startswith("Optional[") or type_str.startswith("List[") or type_str.startswith("list["):
+        inner = type_str[type_str.index("[") + 1 : type_str.rindex("]")]
+        return extract_base_type(inner)
+
+    # Handle Union types
+    if type_str.startswith("Union["):
+        # Return first non-None type
+        types = type_str[type_str.index("[") + 1 : type_str.rindex("]")].split(",")
+        for t in types:
+            t = t.strip()
+            if t != "None":
+                return extract_base_type(t)
+        return "Any"
+
+    return type_str.strip()
+
+
+def extract_attribute_metadata(
+    class_name: str,
+    attributes: Dict[str, Dict[str, Any]],
+) -> List[Dict[str, Any]]:
+    """Extract enhanced metadata for builder generation.
+
+    Args:
+        class_name: Name of the model class
+        attributes: Raw attribute dict from mapping
+
+    Returns:
+        Enhanced attribute metadata with is_list, is_optional flags
+    """
+    enhanced_attrs = []
+
+    for attr_name, attr_info in attributes.items():
+        attr_type = attr_info["type"]
+        multiplicity = attr_info.get("multiplicity", "1")
+
+        # Determine if attribute is a list
+        is_list = multiplicity in ("*", "0..*") or attr_type.startswith("list[") or attr_type.startswith("List[")
+
+        # Determine if attribute is optional
+        is_optional = multiplicity == "0..1" or attr_type.startswith("Optional[") or attr_type.startswith("Union[")
+
+        # Extract base type for lists and optional types
+        base_type = extract_base_type(attr_type)
+
+        enhanced_attrs.append({
+            "name": attr_name,
+            "type": attr_type,
+            "base_type": base_type,
+            "is_list": is_list,
+            "is_optional": is_optional,
+            "multiplicity": multiplicity,
+        })
+
+    return enhanced_attrs

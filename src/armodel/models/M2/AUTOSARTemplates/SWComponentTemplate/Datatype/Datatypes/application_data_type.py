@@ -79,18 +79,3 @@ class ApplicationDataType(AutosarDataType, ABC):
 
 
 
-class ApplicationDataTypeBuilder:
-    """Builder for ApplicationDataType."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: ApplicationDataType = ApplicationDataType()
-
-    def build(self) -> ApplicationDataType:
-        """Build and return ApplicationDataType object.
-
-        Returns:
-            ApplicationDataType instance
-        """
-        # TODO: Add validation
-        return self._obj

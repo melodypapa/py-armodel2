@@ -181,18 +181,3 @@ class TransformationISignalProps(ARObject, ABC):
 
 
 
-class TransformationISignalPropsBuilder:
-    """Builder for TransformationISignalProps."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: TransformationISignalProps = TransformationISignalProps()
-
-    def build(self) -> TransformationISignalProps:
-        """Build and return TransformationISignalProps object.
-
-        Returns:
-            TransformationISignalProps instance
-        """
-        # TODO: Add validation
-        return self._obj

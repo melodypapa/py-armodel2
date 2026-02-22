@@ -150,18 +150,3 @@ class CpSoftwareClusterResource(Identifiable, ABC):
 
 
 
-class CpSoftwareClusterResourceBuilder:
-    """Builder for CpSoftwareClusterResource."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: CpSoftwareClusterResource = CpSoftwareClusterResource()
-
-    def build(self) -> CpSoftwareClusterResource:
-        """Build and return CpSoftwareClusterResource object.
-
-        Returns:
-            CpSoftwareClusterResource instance
-        """
-        # TODO: Add validation
-        return self._obj

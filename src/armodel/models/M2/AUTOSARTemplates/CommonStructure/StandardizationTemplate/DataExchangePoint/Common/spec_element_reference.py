@@ -101,18 +101,3 @@ class SpecElementReference(Identifiable, ABC):
 
 
 
-class SpecElementReferenceBuilder:
-    """Builder for SpecElementReference."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: SpecElementReference = SpecElementReference()
-
-    def build(self) -> SpecElementReference:
-        """Build and return SpecElementReference object.
-
-        Returns:
-            SpecElementReference instance
-        """
-        # TODO: Add validation
-        return self._obj

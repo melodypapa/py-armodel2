@@ -68,7 +68,23 @@ def test_generate_builder_code():
         "package_path": "M2::Test"
     }
 
-    code = generate_builder_code(type_def)
+    # Provide required arguments for generate_builder_code
+    hierarchy_info = {
+        "TestInterface": {
+            "base_classes": [],
+            "children": []
+        }
+    }
+    
+    package_data = {
+        "M2::Test": {
+            "classes": ["TestInterface"],
+            "enums": [],
+            "primitives": []
+        }
+    }
+
+    code = generate_builder_code(type_def, hierarchy_info, package_data)
 
     # Check that builder is generated
     assert "class TestInterfaceBuilder:" in code

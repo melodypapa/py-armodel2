@@ -195,18 +195,3 @@ class MixedContentForLongName(ARObject, ABC):
 
 
 
-class MixedContentForLongNameBuilder:
-    """Builder for MixedContentForLongName."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: MixedContentForLongName = MixedContentForLongName()
-
-    def build(self) -> MixedContentForLongName:
-        """Build and return MixedContentForLongName object.
-
-        Returns:
-            MixedContentForLongName instance
-        """
-        # TODO: Add validation
-        return self._obj

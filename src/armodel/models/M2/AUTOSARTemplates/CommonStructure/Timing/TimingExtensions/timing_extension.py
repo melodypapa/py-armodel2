@@ -198,18 +198,3 @@ class TimingExtension(ARElement, ABC):
 
 
 
-class TimingExtensionBuilder:
-    """Builder for TimingExtension."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: TimingExtension = TimingExtension()
-
-    def build(self) -> TimingExtension:
-        """Build and return TimingExtension object.
-
-        Returns:
-            TimingExtension instance
-        """
-        # TODO: Add validation
-        return self._obj

@@ -266,18 +266,3 @@ class ExecutionTime(Identifiable, ABC):
 
 
 
-class ExecutionTimeBuilder:
-    """Builder for ExecutionTime."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: ExecutionTime = ExecutionTime()
-
-    def build(self) -> ExecutionTime:
-        """Build and return ExecutionTime object.
-
-        Returns:
-            ExecutionTime instance
-        """
-        # TODO: Add validation
-        return self._obj

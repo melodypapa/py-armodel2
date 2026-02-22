@@ -71,18 +71,3 @@ class NmClusterCoupling(ARObject, ABC):
 
 
 
-class NmClusterCouplingBuilder:
-    """Builder for NmClusterCoupling."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: NmClusterCoupling = NmClusterCoupling()
-
-    def build(self) -> NmClusterCoupling:
-        """Build and return NmClusterCoupling object.
-
-        Returns:
-            NmClusterCoupling instance
-        """
-        # TODO: Add validation
-        return self._obj

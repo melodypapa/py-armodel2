@@ -114,25 +114,57 @@ class AUTOSAR(ARObject):
 | `*`                  | `list[Type]`     | `[]`                            |
 | `0..*`               | `list[Type]`     | `[]`                            |
 
-### 3. Builder Pattern
+### 3. Builder Pattern (Fluent API)
 
-Every model class includes a builder for fluent construction:
+Every concrete model class includes a builder with fluent API for object construction:
 
 ```python
-class MyClassBuilder:
-    def with_short_name(self, value: str) -> "MyClassBuilder":
-        self._short_name = value
-        return self
+# Create object with fluent API
+data_type = (
+    ImplementationDataTypeBuilder()
+    .with_short_name("MyType")
+    .with_category("VALUE")
+    .with_type_emitter("BSW")
+    .build()
+)
 
-    def with_category(self, value: str) -> "MyClassBuilder":
-        self._category = value
-        return self
+# List-specific methods
+elem1 = ImplementationDataTypeBuilder().with_short_name("Elem1").build()
+elem2 = ImplementationDataTypeBuilder().with_short_name("Elem2").build()
 
-    def build(self) -> MyClass:
-        obj = MyClass()
-        obj.short_name = self._short_name
-        obj.category = self._category
-        return obj
+data_type = (
+    ImplementationDataTypeBuilder()
+    .with_short_name("MyType")
+    .with_sub_elements([elem1, elem2])  # Set list
+    .add_sub_element(elem3)              # Add to list
+    .clear_sub_elements()                # Clear list
+    .build()
+)
+
+# Type coercion (automatic conversion)
+data_type = (
+    ImplementationDataTypeBuilder()
+    .with_short_name("MyType")
+    .with_category("VALUE")
+    .with_type_emitter(123)  # int -> str automatic conversion
+    .build()
+)
+```
+
+**Key Features:**
+- **Method chaining**: All `with_*` methods return the builder for chaining
+- **Inherited attributes**: Child builders include `with_*` methods for parent class attributes
+- **List methods**: `with_items()`, `add_item()`, `clear_items()` for list attributes
+- **Type coercion**: Automatic conversion for compatible types (str↔int, str↔float, bool↔int)
+- **Configurable validation**: STRICT, LENIENT, or DISABLED validation via GlobalSettingsManager
+- **Abstract classes**: No Builders generated for abstract classes (cannot be instantiated)
+
+**Configuration:**
+```python
+from armodel.core import GlobalSettingsManager, BuilderValidationMode
+
+settings = GlobalSettingsManager()
+settings.builder_validation = BuilderValidationMode.STRICT  # or LENIENT, DISABLED
 ```
 
 ### 4. Serialization/Deserialization

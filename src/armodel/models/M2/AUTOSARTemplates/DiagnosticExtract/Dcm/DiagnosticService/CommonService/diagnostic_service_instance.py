@@ -127,18 +127,3 @@ class DiagnosticServiceInstance(DiagnosticCommonElement, ABC):
 
 
 
-class DiagnosticServiceInstanceBuilder:
-    """Builder for DiagnosticServiceInstance."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: DiagnosticServiceInstance = DiagnosticServiceInstance()
-
-    def build(self) -> DiagnosticServiceInstance:
-        """Build and return DiagnosticServiceInstance object.
-
-        Returns:
-            DiagnosticServiceInstance instance
-        """
-        # TODO: Add validation
-        return self._obj

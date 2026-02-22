@@ -102,18 +102,3 @@ class AtpPrototype(Identifiable, ABC):
 
 
 
-class AtpPrototypeBuilder:
-    """Builder for AtpPrototype."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AtpPrototype = AtpPrototype()
-
-    def build(self) -> AtpPrototype:
-        """Build and return AtpPrototype object.
-
-        Returns:
-            AtpPrototype instance
-        """
-        # TODO: Add validation
-        return self._obj

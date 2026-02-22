@@ -127,18 +127,3 @@ class LinConfigurationEntry(ScheduleTableEntry, ABC):
 
 
 
-class LinConfigurationEntryBuilder:
-    """Builder for LinConfigurationEntry."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: LinConfigurationEntry = LinConfigurationEntry()
-
-    def build(self) -> LinConfigurationEntry:
-        """Build and return LinConfigurationEntry object.
-
-        Returns:
-            LinConfigurationEntry instance
-        """
-        # TODO: Add validation
-        return self._obj

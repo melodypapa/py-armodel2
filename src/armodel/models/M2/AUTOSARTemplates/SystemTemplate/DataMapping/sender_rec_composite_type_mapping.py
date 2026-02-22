@@ -71,18 +71,3 @@ class SenderRecCompositeTypeMapping(ARObject, ABC):
 
 
 
-class SenderRecCompositeTypeMappingBuilder:
-    """Builder for SenderRecCompositeTypeMapping."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: SenderRecCompositeTypeMapping = SenderRecCompositeTypeMapping()
-
-    def build(self) -> SenderRecCompositeTypeMapping:
-        """Build and return SenderRecCompositeTypeMapping object.
-
-        Returns:
-            SenderRecCompositeTypeMapping instance
-        """
-        # TODO: Add validation
-        return self._obj

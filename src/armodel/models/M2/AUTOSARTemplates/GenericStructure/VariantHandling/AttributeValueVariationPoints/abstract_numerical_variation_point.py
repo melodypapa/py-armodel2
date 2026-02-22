@@ -72,18 +72,3 @@ class AbstractNumericalVariationPoint(ARObject, ABC):
 
 
 
-class AbstractNumericalVariationPointBuilder:
-    """Builder for AbstractNumericalVariationPoint."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AbstractNumericalVariationPoint = AbstractNumericalVariationPoint()
-
-    def build(self) -> AbstractNumericalVariationPoint:
-        """Build and return AbstractNumericalVariationPoint object.
-
-        Returns:
-            AbstractNumericalVariationPoint instance
-        """
-        # TODO: Add validation
-        return self._obj

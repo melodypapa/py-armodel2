@@ -74,18 +74,3 @@ class AtpType(Identifiable, ABC):
 
 
 
-class AtpTypeBuilder:
-    """Builder for AtpType."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AtpType = AtpType()
-
-    def build(self) -> AtpType:
-        """Build and return AtpType object.
-
-        Returns:
-            AtpType instance
-        """
-        # TODO: Add validation
-        return self._obj

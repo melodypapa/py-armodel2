@@ -104,18 +104,3 @@ class SwConnector(Identifiable, ABC):
 
 
 
-class SwConnectorBuilder:
-    """Builder for SwConnector."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: SwConnector = SwConnector()
-
-    def build(self) -> SwConnector:
-        """Build and return SwConnector object.
-
-        Returns:
-            SwConnector instance
-        """
-        # TODO: Add validation
-        return self._obj

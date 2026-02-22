@@ -242,18 +242,3 @@ class ReceiverComSpec(RPortComSpec, ABC):
 
 
 
-class ReceiverComSpecBuilder:
-    """Builder for ReceiverComSpec."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: ReceiverComSpec = ReceiverComSpec()
-
-    def build(self) -> ReceiverComSpec:
-        """Build and return ReceiverComSpec object.
-
-        Returns:
-            ReceiverComSpec instance
-        """
-        # TODO: Add validation
-        return self._obj

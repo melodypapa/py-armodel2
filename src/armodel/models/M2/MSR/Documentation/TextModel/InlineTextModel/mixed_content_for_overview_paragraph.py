@@ -321,18 +321,3 @@ class MixedContentForOverviewParagraph(ARObject, ABC):
 
 
 
-class MixedContentForOverviewParagraphBuilder:
-    """Builder for MixedContentForOverviewParagraph."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: MixedContentForOverviewParagraph = MixedContentForOverviewParagraph()
-
-    def build(self) -> MixedContentForOverviewParagraph:
-        """Build and return MixedContentForOverviewParagraph object.
-
-        Returns:
-            MixedContentForOverviewParagraph instance
-        """
-        # TODO: Add validation
-        return self._obj

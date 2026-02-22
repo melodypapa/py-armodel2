@@ -187,18 +187,3 @@ class BusMirrorChannelMapping(FibexElement, ABC):
 
 
 
-class BusMirrorChannelMappingBuilder:
-    """Builder for BusMirrorChannelMapping."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: BusMirrorChannelMapping = BusMirrorChannelMapping()
-
-    def build(self) -> BusMirrorChannelMapping:
-        """Build and return BusMirrorChannelMapping object.
-
-        Returns:
-            BusMirrorChannelMapping instance
-        """
-        # TODO: Add validation
-        return self._obj

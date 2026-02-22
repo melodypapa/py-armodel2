@@ -74,18 +74,3 @@ class AtpStructureElement(Identifiable, ABC):
 
 
 
-class AtpStructureElementBuilder:
-    """Builder for AtpStructureElement."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AtpStructureElement = AtpStructureElement()
-
-    def build(self) -> AtpStructureElement:
-        """Build and return AtpStructureElement object.
-
-        Returns:
-            AtpStructureElement instance
-        """
-        # TODO: Add validation
-        return self._obj

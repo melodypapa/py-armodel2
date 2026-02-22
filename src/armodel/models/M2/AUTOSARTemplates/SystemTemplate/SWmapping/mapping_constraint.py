@@ -98,18 +98,3 @@ class MappingConstraint(ARObject, ABC):
 
 
 
-class MappingConstraintBuilder:
-    """Builder for MappingConstraint."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: MappingConstraint = MappingConstraint()
-
-    def build(self) -> MappingConstraint:
-        """Build and return MappingConstraint object.
-
-        Returns:
-            MappingConstraint instance
-        """
-        # TODO: Add validation
-        return self._obj

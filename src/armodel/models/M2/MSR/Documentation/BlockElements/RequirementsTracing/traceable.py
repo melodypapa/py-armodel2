@@ -113,18 +113,3 @@ class Traceable(MultilanguageReferrable, ABC):
 
 
 
-class TraceableBuilder:
-    """Builder for Traceable."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: Traceable = Traceable()
-
-    def build(self) -> Traceable:
-        """Build and return Traceable object.
-
-        Returns:
-            Traceable instance
-        """
-        # TODO: Add validation
-        return self._obj

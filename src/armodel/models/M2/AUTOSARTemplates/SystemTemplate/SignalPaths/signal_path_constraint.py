@@ -98,18 +98,3 @@ class SignalPathConstraint(ARObject, ABC):
 
 
 
-class SignalPathConstraintBuilder:
-    """Builder for SignalPathConstraint."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: SignalPathConstraint = SignalPathConstraint()
-
-    def build(self) -> SignalPathConstraint:
-        """Build and return SignalPathConstraint object.
-
-        Returns:
-            SignalPathConstraint instance
-        """
-        # TODO: Add validation
-        return self._obj

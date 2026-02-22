@@ -99,18 +99,3 @@ class DataMapping(ARObject, ABC):
 
 
 
-class DataMappingBuilder:
-    """Builder for DataMapping."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: DataMapping = DataMapping()
-
-    def build(self) -> DataMapping:
-        """Build and return DataMapping object.
-
-        Returns:
-            DataMapping instance
-        """
-        # TODO: Add validation
-        return self._obj

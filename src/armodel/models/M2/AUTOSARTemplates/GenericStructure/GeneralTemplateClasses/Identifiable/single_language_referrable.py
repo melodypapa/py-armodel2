@@ -101,18 +101,3 @@ class SingleLanguageReferrable(Referrable, ABC):
 
 
 
-class SingleLanguageReferrableBuilder:
-    """Builder for SingleLanguageReferrable."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: SingleLanguageReferrable = SingleLanguageReferrable()
-
-    def build(self) -> SingleLanguageReferrable:
-        """Build and return SingleLanguageReferrable object.
-
-        Returns:
-            SingleLanguageReferrable instance
-        """
-        # TODO: Add validation
-        return self._obj

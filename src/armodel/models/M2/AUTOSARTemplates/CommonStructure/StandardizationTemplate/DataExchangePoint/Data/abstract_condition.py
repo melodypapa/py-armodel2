@@ -71,18 +71,3 @@ class AbstractCondition(ARObject, ABC):
 
 
 
-class AbstractConditionBuilder:
-    """Builder for AbstractCondition."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AbstractCondition = AbstractCondition()
-
-    def build(self) -> AbstractCondition:
-        """Build and return AbstractCondition object.
-
-        Returns:
-            AbstractCondition instance
-        """
-        # TODO: Add validation
-        return self._obj

@@ -1,8 +1,8 @@
 """Example: Using Builder Classes to Create AUTOSAR Data Types.
 
-This example demonstrates how to use the Builder classes to create AUTOSAR data types.
-The Builder classes provide a clean pattern for object creation, even though they're
-currently simple (they create instances without fluent method chaining).
+This example demonstrates how to use the Builder classes with fluent API to create
+AUTOSAR data types. The Builder classes provide a clean pattern for object creation
+with method chaining.
 
 The example creates:
 - Base Types (float32, float64, sint16, sint32, sint8, uint16, uint32, uint8, void)
@@ -11,17 +11,17 @@ The example creates:
 - Implementation Data Types
 
 Note:
-- Builder classes in py-armodel2 are currently simple - they create instances and return them.
-- Attributes still need to be set directly on the objects after creation.
-- Builder classes provide a clean separation of object creation logic.
+- Builder classes use fluent API with method chaining
+- All with_* methods return the builder for chaining
+- List attributes have with_items(), add_item(), and clear_items() methods
+- Type coercion is automatic for compatible types
+- Abstract classes do not have Builders
 """
 
 from armodel.models import (
     # AUTOSAR Core
     AUTOSAR,
-    AUTOSARBuilder,
     ARPackage,
-    ARPackageBuilder,
     ARRef,
     ImplementationDataType,
     ImplementationDataTypeBuilder,
@@ -51,6 +51,7 @@ from armodel.models import (
     DataConstrRule,
     # MSR - Data Dictionary
     SwDataDefProps,
+    SwDataDefPropsBuilder,
     # Primitive Types
     Limit,
     IntervalTypeEnum,
@@ -65,7 +66,7 @@ from armodel.writer import ARXMLWriter
 # ============================================================================
 
 def create_base_type(name: str, size: int, encoding: str, mem_align: int = None, native: str = None) -> SwBaseType:
-    """Create a base type using Builder pattern.
+    """Create a base type using Builder pattern with fluent API.
 
     Args:
         name: Short name for the base type
@@ -77,22 +78,26 @@ def create_base_type(name: str, size: int, encoding: str, mem_align: int = None,
     Returns:
         SwBaseType instance
     """
-    builder = SwBaseTypeBuilder()
-    base_type = builder.build()
-    base_type.short_name = name
-    base_type.category = "FIXED_LENGTH"
-    base_type.base_type_definition = BaseTypeDirectDefinition()
-    base_type.base_type_definition.base_type_size = size
-    base_type.base_type_definition.base_type_encoding = encoding
+    builder = (SwBaseTypeBuilder()
+               .with_short_name(name)
+               .with_category("FIXED_LENGTH"))
+
+    # Create base_type_definition
+    base_type_def = BaseTypeDirectDefinition()
+    base_type_def.base_type_size = size
+    base_type_def.base_type_encoding = encoding
     if mem_align is not None:
-        base_type.base_type_definition.mem_alignment = mem_align
+        base_type_def.mem_alignment = mem_align
     if native is not None:
-        base_type.base_type_definition.native = native
+        base_type_def.native = native
+
+    base_type = builder.build()
+    base_type.base_type_definition = base_type_def
     return base_type
 
 
 def create_compu_scale_with_const(value: str, text_value: str) -> CompuScale:
-    """Create a CompuScale with CompuConst using Builders.
+    """Create a CompuScale with CompuConst using Builders with fluent API.
 
     Args:
         value: The numeric value for the scale
@@ -101,32 +106,33 @@ def create_compu_scale_with_const(value: str, text_value: str) -> CompuScale:
     Returns:
         CompuScale instance
     """
-    scale_builder = CompuScaleBuilder()
-    scale = scale_builder.build()
-    scale.lower_limit = Limit(value=value, interval_type=IntervalTypeEnum.CLOSED)
-    scale.upper_limit = Limit(value=value, interval_type=IntervalTypeEnum.CLOSED)
+    # Create CompuConstTextContent using Builder
+    compu_const_text = (CompuConstTextContentBuilder()
+                        .with_vt(VerbatimString(value=text_value))
+                        .build())
 
     # Create CompuConst using Builder
-    compu_const_builder = CompuConstBuilder()
-    compu_const = compu_const_builder.build()
-
-    # Create CompuConstTextContent using Builder
-    compu_const_text_builder = CompuConstTextContentBuilder()
-    compu_const_text = compu_const_text_builder.build()
-    compu_const_text.vt = VerbatimString(value=text_value)
-    compu_const.compu_const_content_type = compu_const_text
+    compu_const = (CompuConstBuilder()
+                   .with_compu_const_content_type(compu_const_text)
+                   .build())
 
     # Create CompuScaleConstantContents using Builder
-    scale_contents_builder = CompuScaleConstantContentsBuilder()
-    scale_contents = scale_contents_builder.build()
-    scale_contents.compu_const = compu_const
+    scale_contents = (CompuScaleConstantContentsBuilder()
+                      .with_compu_const(compu_const)
+                      .build())
 
-    scale.compu_scale_contents = scale_contents
+    # Create CompuScale using Builder
+    scale = (CompuScaleBuilder()
+             .with_lower_limit(Limit(value=value, interval_type=IntervalTypeEnum.CLOSED))
+             .with_upper_limit(Limit(value=value, interval_type=IntervalTypeEnum.CLOSED))
+             .with_compu_scale_contents(scale_contents)
+             .build())
+
     return scale
 
 
 def create_data_constr_with_builder(name: str, lower: int, upper: int) -> DataConstr:
-    """Create a data constraint using Builder pattern.
+    """Create a data constraint using Builder pattern with fluent API.
 
     Args:
         name: Short name for the data constraint
@@ -136,10 +142,6 @@ def create_data_constr_with_builder(name: str, lower: int, upper: int) -> DataCo
     Returns:
         DataConstr instance
     """
-    data_constr_builder = DataConstrBuilder()
-    data_constr = data_constr_builder.build()
-    data_constr.short_name = name
-
     # Create InternalConstrs
     internal_constrs = InternalConstrs()
     internal_constrs.lower_limit = Limit(value=str(lower), interval_type=IntervalTypeEnum.CLOSED)
@@ -149,7 +151,12 @@ def create_data_constr_with_builder(name: str, lower: int, upper: int) -> DataCo
     data_constr_rule = DataConstrRule()
     data_constr_rule.internal_constrs = internal_constrs
 
-    data_constr.data_constr_rules = [data_constr_rule]
+    # Create DataConstr using Builder
+    data_constr = (DataConstrBuilder()
+                   .with_short_name(name)
+                   .with_data_constr_rules([data_constr_rule])
+                   .build())
+
     return data_constr
 
 
@@ -158,7 +165,7 @@ def create_value_impl_data_type_with_builder(
     base_type_ref_path: str,
     data_constr_ref_path: str = None,
 ) -> ImplementationDataType:
-    """Create an implementation data type with VALUE category using Builder.
+    """Create an implementation data type with VALUE category using Builder with fluent API.
 
     Args:
         name: Short name for the implementation data type
@@ -168,12 +175,6 @@ def create_value_impl_data_type_with_builder(
     Returns:
         ImplementationDataType instance
     """
-    builder = ImplementationDataTypeBuilder()
-    impl_data_type = builder.build()
-    impl_data_type.short_name = name
-    impl_data_type.category = "VALUE"
-    impl_data_type.type_emitter = "BSW"
-
     # Create sw_data_def_props
     sw_data_def_props = SwDataDefProps()
 
@@ -192,7 +193,14 @@ def create_value_impl_data_type_with_builder(
         )
         sw_data_def_props.data_constr_ref = data_constr_ref
 
-    impl_data_type.sw_data_def_props = sw_data_def_props
+    # Create ImplementationDataType using Builder with fluent API
+    impl_data_type = (ImplementationDataTypeBuilder()
+                      .with_short_name(name)
+                      .with_category("VALUE")
+                      .with_type_emitter("BSW")
+                      .with_sw_data_def_props(sw_data_def_props)
+                      .build())
+
     return impl_data_type
 
 
@@ -200,7 +208,7 @@ def create_type_ref_impl_data_type_with_builder(
     name: str,
     impl_data_type_ref_path: str,
 ) -> ImplementationDataType:
-    """Create an implementation data type with TYPE_REFERENCE category using Builder.
+    """Create an implementation data type with TYPE_REFERENCE category using Builder with fluent API.
 
     Args:
         name: Short name for the implementation data type
@@ -209,12 +217,6 @@ def create_type_ref_impl_data_type_with_builder(
     Returns:
         ImplementationDataType instance
     """
-    builder = ImplementationDataTypeBuilder()
-    impl_data_type = builder.build()
-    impl_data_type.short_name = name
-    impl_data_type.category = "TYPE_REFERENCE"
-    impl_data_type.type_emitter = "BSW"
-
     # Create sw_data_def_props
     sw_data_def_props = SwDataDefProps()
 
@@ -225,33 +227,37 @@ def create_type_ref_impl_data_type_with_builder(
     )
     sw_data_def_props.implementation_data_type_ref = impl_data_type_ref
 
-    impl_data_type.sw_data_def_props = sw_data_def_props
+    # Create ImplementationDataType using Builder with fluent API
+    impl_data_type = (ImplementationDataTypeBuilder()
+                      .with_short_name(name)
+                      .with_category("TYPE_REFERENCE")
+                      .with_type_emitter("BSW")
+                      .with_sw_data_def_props(sw_data_def_props)
+                      .build())
+
     return impl_data_type
 
 
 def create_autosar_datatypes_with_builders() -> AUTOSAR:
-    """Create AUTOSAR data types using Builder classes.
+    """Create AUTOSAR data types using Builder classes with fluent API.
 
     Returns:
         AUTOSAR instance with platform data types
     """
-    # Create AUTOSAR using Builder
-    autosar_builder = AUTOSARBuilder()
-    autosar = autosar_builder.build()
+    # Get AUTOSAR singleton and clear
+    autosar = AUTOSAR()
     autosar.clear()
 
     # ========================================================================
     # Root Package: AUTOSAR_Platform
     # ========================================================================
-    root_pkg_builder = ARPackageBuilder()
-    root_pkg = root_pkg_builder.build()
+    root_pkg = ARPackage()
     root_pkg.short_name = "AUTOSAR_Platform"
 
     # ========================================================================
     # Sub-package: BaseTypes
     # ========================================================================
-    base_types_pkg_builder = ARPackageBuilder()
-    base_types_pkg = base_types_pkg_builder.build()
+    base_types_pkg = ARPackage()
     base_types_pkg.short_name = "BaseTypes"
     base_types_pkg.category = "STANDARD"
 
@@ -277,42 +283,38 @@ def create_autosar_datatypes_with_builders() -> AUTOSAR:
     # ========================================================================
     # Sub-package: CompuMethods
     # ========================================================================
-    compu_methods_pkg_builder = ARPackageBuilder()
-    compu_methods_pkg = compu_methods_pkg_builder.build()
+    compu_methods_pkg = ARPackage()
     compu_methods_pkg.short_name = "CompuMethods"
     compu_methods_pkg.category = "STANDARD"
 
-    # Create boolean_Literals CompuMethod using Builders
-    boolean_literals_builder = CompuMethodBuilder()
-    boolean_literals = boolean_literals_builder.build()
-    boolean_literals.short_name = "boolean_Literals"
-    boolean_literals.category = "TEXTTABLE"
-
     # Create compu_internal_to_phys using Builder
-    compu_builder = CompuBuilder()
-    compu_internal_to_phys = compu_builder.build()
+    compu_internal_to_phys = (CompuBuilder()
+                              .with_compu_content(None)
+                              .build())
 
     # Create compu_scales using Builder
-    compu_scales_builder = CompuScalesBuilder()
-    compu_scales = compu_scales_builder.build()
+    compu_scales = (CompuScalesBuilder()
+                    .with_compu_scales([
+                        create_compu_scale_with_const("0", "FALSE"),
+                        create_compu_scale_with_const("1", "TRUE"),
+                    ])
+                    .build())
 
-    # Create scales for FALSE and TRUE
-    compu_scales.compu_scales = [
-        create_compu_scale_with_const("0", "FALSE"),
-        create_compu_scale_with_const("1", "TRUE"),
-    ]
-
-    # Assemble CompuMethod
+    # Assemble CompuMethod using Builder
     compu_internal_to_phys.compu_content = compu_scales
-    boolean_literals.compu_internal_to_phys = compu_internal_to_phys
+
+    boolean_literals = (CompuMethodBuilder()
+                        .with_short_name("boolean_Literals")
+                        .with_category("TEXTTABLE")
+                        .with_compu_internal_to_phys(compu_internal_to_phys)
+                        .build())
 
     compu_methods_pkg.elements.append(boolean_literals)
 
     # ========================================================================
     # Sub-package: DataConstrs
     # ========================================================================
-    data_constrs_pkg_builder = ARPackageBuilder()
-    data_constrs_pkg = data_constrs_pkg_builder.build()
+    data_constrs_pkg = ARPackage()
     data_constrs_pkg.short_name = "DataConstrs"
     data_constrs_pkg.category = "STANDARD"
 
@@ -335,8 +337,7 @@ def create_autosar_datatypes_with_builders() -> AUTOSAR:
     # ========================================================================
     # Sub-package: ImplementationDataTypes
     # ========================================================================
-    impl_data_types_pkg_builder = ARPackageBuilder()
-    impl_data_types_pkg = impl_data_types_pkg_builder.build()
+    impl_data_types_pkg = ARPackage()
     impl_data_types_pkg.short_name = "ImplementationDataTypes"
     impl_data_types_pkg.category = "STANDARD"
 
@@ -437,11 +438,11 @@ def create_autosar_datatypes_with_builders() -> AUTOSAR:
 
 
 def main():
-    """Main function to create and save AUTOSAR data types using Builders."""
-    print("=== Creating AUTOSAR Data Types using Builder Classes ===")
+    """Main function to create and save AUTOSAR data types using Builders with fluent API."""
+    print("=== Creating AUTOSAR Data Types using Builder Classes (Fluent API) ===")
     print()
 
-    # Create AUTOSAR data types programmatically using Builders
+    # Create AUTOSAR data types programmatically using Builders with fluent API
     autosar = create_autosar_datatypes_with_builders()
 
     print("✓ Created AUTOSAR structure:")

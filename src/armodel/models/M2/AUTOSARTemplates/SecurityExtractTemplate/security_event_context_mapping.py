@@ -146,18 +146,3 @@ class SecurityEventContextMapping(IdsMapping, ABC):
 
 
 
-class SecurityEventContextMappingBuilder:
-    """Builder for SecurityEventContextMapping."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: SecurityEventContextMapping = SecurityEventContextMapping()
-
-    def build(self) -> SecurityEventContextMapping:
-        """Build and return SecurityEventContextMapping object.
-
-        Returns:
-            SecurityEventContextMapping instance
-        """
-        # TODO: Add validation
-        return self._obj

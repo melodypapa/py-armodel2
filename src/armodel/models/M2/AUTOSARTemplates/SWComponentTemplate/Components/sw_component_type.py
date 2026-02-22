@@ -256,18 +256,3 @@ class SwComponentType(ARElement, ABC):
 
 
 
-class SwComponentTypeBuilder:
-    """Builder for SwComponentType."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: SwComponentType = SwComponentType()
-
-    def build(self) -> SwComponentType:
-        """Build and return SwComponentType object.
-
-        Returns:
-            SwComponentType instance
-        """
-        # TODO: Add validation
-        return self._obj

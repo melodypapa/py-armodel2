@@ -109,18 +109,3 @@ class DataPrototype(Identifiable, ABC):
 
 
 
-class DataPrototypeBuilder:
-    """Builder for DataPrototype."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: DataPrototype = DataPrototype()
-
-    def build(self) -> DataPrototype:
-        """Build and return DataPrototype object.
-
-        Returns:
-            DataPrototype instance
-        """
-        # TODO: Add validation
-        return self._obj

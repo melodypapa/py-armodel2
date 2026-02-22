@@ -71,18 +71,3 @@ class BaseTypeDefinition(ARObject, ABC):
 
 
 
-class BaseTypeDefinitionBuilder:
-    """Builder for BaseTypeDefinition."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: BaseTypeDefinition = BaseTypeDefinition()
-
-    def build(self) -> BaseTypeDefinition:
-        """Build and return BaseTypeDefinition object.
-
-        Returns:
-            BaseTypeDefinition instance
-        """
-        # TODO: Add validation
-        return self._obj

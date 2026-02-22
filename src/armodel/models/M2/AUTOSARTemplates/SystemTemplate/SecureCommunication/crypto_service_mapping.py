@@ -74,18 +74,3 @@ class CryptoServiceMapping(Identifiable, ABC):
 
 
 
-class CryptoServiceMappingBuilder:
-    """Builder for CryptoServiceMapping."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: CryptoServiceMapping = CryptoServiceMapping()
-
-    def build(self) -> CryptoServiceMapping:
-        """Build and return CryptoServiceMapping object.
-
-        Returns:
-            CryptoServiceMapping instance
-        """
-        # TODO: Add validation
-        return self._obj

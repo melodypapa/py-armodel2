@@ -98,18 +98,3 @@ class MultiplexedPart(ARObject, ABC):
 
 
 
-class MultiplexedPartBuilder:
-    """Builder for MultiplexedPart."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: MultiplexedPart = MultiplexedPart()
-
-    def build(self) -> MultiplexedPart:
-        """Build and return MultiplexedPart object.
-
-        Returns:
-            MultiplexedPart instance
-        """
-        # TODO: Add validation
-        return self._obj

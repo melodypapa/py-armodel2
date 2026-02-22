@@ -177,18 +177,3 @@ class EcucAbstractStringParamDef(ARObject, ABC):
 
 
 
-class EcucAbstractStringParamDefBuilder:
-    """Builder for EcucAbstractStringParamDef."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: EcucAbstractStringParamDef = EcucAbstractStringParamDef()
-
-    def build(self) -> EcucAbstractStringParamDef:
-        """Build and return EcucAbstractStringParamDef object.
-
-        Returns:
-            EcucAbstractStringParamDef instance
-        """
-        # TODO: Add validation
-        return self._obj

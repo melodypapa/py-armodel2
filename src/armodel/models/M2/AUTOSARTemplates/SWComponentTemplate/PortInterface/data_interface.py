@@ -75,18 +75,3 @@ class DataInterface(PortInterface, ABC):
 
 
 
-class DataInterfaceBuilder:
-    """Builder for DataInterface."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: DataInterface = DataInterface()
-
-    def build(self) -> DataInterface:
-        """Build and return DataInterface object.
-
-        Returns:
-            DataInterface instance
-        """
-        # TODO: Add validation
-        return self._obj

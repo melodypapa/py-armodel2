@@ -203,18 +203,3 @@ class CommunicationCluster(ARObject, ABC):
 
 
 
-class CommunicationClusterBuilder:
-    """Builder for CommunicationCluster."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: CommunicationCluster = CommunicationCluster()
-
-    def build(self) -> CommunicationCluster:
-        """Build and return CommunicationCluster object.
-
-        Returns:
-            CommunicationCluster instance
-        """
-        # TODO: Add validation
-        return self._obj

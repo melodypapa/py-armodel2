@@ -98,18 +98,3 @@ class TDEventVfb(TimingDescriptionEvent, ABC):
 
 
 
-class TDEventVfbBuilder:
-    """Builder for TDEventVfb."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: TDEventVfb = TDEventVfb()
-
-    def build(self) -> TDEventVfb:
-        """Build and return TDEventVfb object.
-
-        Returns:
-            TDEventVfb instance
-        """
-        # TODO: Add validation
-        return self._obj

@@ -98,18 +98,3 @@ class SdgElementWithGid(ARObject, ABC):
 
 
 
-class SdgElementWithGidBuilder:
-    """Builder for SdgElementWithGid."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: SdgElementWithGid = SdgElementWithGid()
-
-    def build(self) -> SdgElementWithGid:
-        """Build and return SdgElementWithGid object.
-
-        Returns:
-            SdgElementWithGid instance
-        """
-        # TODO: Add validation
-        return self._obj

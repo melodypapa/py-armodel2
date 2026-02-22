@@ -123,18 +123,3 @@ class SwSystemconstDependentFormula(ARObject, ABC):
 
 
 
-class SwSystemconstDependentFormulaBuilder:
-    """Builder for SwSystemconstDependentFormula."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: SwSystemconstDependentFormula = SwSystemconstDependentFormula()
-
-    def build(self) -> SwSystemconstDependentFormula:
-        """Build and return SwSystemconstDependentFormula object.
-
-        Returns:
-            SwSystemconstDependentFormula instance
-        """
-        # TODO: Add validation
-        return self._obj

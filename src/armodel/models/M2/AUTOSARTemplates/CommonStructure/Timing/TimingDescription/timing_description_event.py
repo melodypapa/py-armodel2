@@ -124,18 +124,3 @@ class TimingDescriptionEvent(TimingDescription, ABC):
 
 
 
-class TimingDescriptionEventBuilder:
-    """Builder for TimingDescriptionEvent."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: TimingDescriptionEvent = TimingDescriptionEvent()
-
-    def build(self) -> TimingDescriptionEvent:
-        """Build and return TimingDescriptionEvent object.
-
-        Returns:
-            TimingDescriptionEvent instance
-        """
-        # TODO: Add validation
-        return self._obj

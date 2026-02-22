@@ -196,18 +196,3 @@ class EcucCommonAttributes(EcucDefinitionElement, ABC):
 
 
 
-class EcucCommonAttributesBuilder:
-    """Builder for EcucCommonAttributes."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: EcucCommonAttributes = EcucCommonAttributes()
-
-    def build(self) -> EcucCommonAttributes:
-        """Build and return EcucCommonAttributes object.
-
-        Returns:
-            EcucCommonAttributes instance
-        """
-        # TODO: Add validation
-        return self._obj

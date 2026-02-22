@@ -181,17 +181,310 @@ class EcucDestinationUriPolicy(ARObject):
 
 
 class EcucDestinationUriPolicyBuilder:
-    """Builder for EcucDestinationUriPolicy."""
+    """Builder for EcucDestinationUriPolicy with fluent API."""
 
     def __init__(self) -> None:
-        """Initialize builder."""
+        """Initialize builder with defaults."""
+        pass
         self._obj: EcucDestinationUriPolicy = EcucDestinationUriPolicy()
 
-    def build(self) -> EcucDestinationUriPolicy:
-        """Build and return EcucDestinationUriPolicy object.
+
+    def with_containers(self, items: list[EcucContainerDef]) -> "EcucDestinationUriPolicyBuilder":
+        """Set containers list attribute.
+
+        Args:
+            items: List of items to set
 
         Returns:
-            EcucDestinationUriPolicy instance
+            self for method chaining
         """
-        # TODO: Add validation
+        self._obj.containers = list(items) if items else []
+        return self
+
+    def with_destination_uri(self, value: Optional[any (EcucDestinationUri)]) -> "EcucDestinationUriPolicyBuilder":
+        """Set destination_uri attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.destination_uri = value
+        return self
+
+    def with_parameters(self, items: list[EcucParameterDef]) -> "EcucDestinationUriPolicyBuilder":
+        """Set parameters list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.parameters = list(items) if items else []
+        return self
+
+    def with_references(self, items: list[any (EcucAbstractReference)]) -> "EcucDestinationUriPolicyBuilder":
+        """Set references list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.references = list(items) if items else []
+        return self
+
+
+    def add_container(self, item: EcucContainerDef) -> "EcucDestinationUriPolicyBuilder":
+        """Add a single item to containers list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.containers.append(item)
+        return self
+
+    def clear_containers(self) -> "EcucDestinationUriPolicyBuilder":
+        """Clear all items from containers list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.containers = []
+        return self
+
+    def add_parameter(self, item: EcucParameterDef) -> "EcucDestinationUriPolicyBuilder":
+        """Add a single item to parameters list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.parameters.append(item)
+        return self
+
+    def clear_parameters(self) -> "EcucDestinationUriPolicyBuilder":
+        """Clear all items from parameters list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.parameters = []
+        return self
+
+    def add_reference(self, item: any (EcucAbstractReference)) -> "EcucDestinationUriPolicyBuilder":
+        """Add a single item to references list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.references.append(item)
+        return self
+
+    def clear_references(self) -> "EcucDestinationUriPolicyBuilder":
+        """Clear all items from references list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.references = []
+        return self
+
+
+    @staticmethod
+    def _coerce_to_int(value: Any) -> int:
+        """Coerce value to int.
+
+        Args:
+            value: Value to coerce
+
+        Returns:
+            Integer value
+
+        Raises:
+            ValueError: If value cannot be coerced to int
+        """
+        if isinstance(value, int):
+            return value
+        if isinstance(value, str) and value.isdigit():
+            return int(value)
+        if isinstance(value, float):
+            return int(value)
+        if isinstance(value, bool):
+            return int(value)
+        raise ValueError(f"Cannot coerce {type(value).__name__} to int: {value}")
+
+    @staticmethod
+    def _coerce_to_float(value: Any) -> float:
+        """Coerce value to float.
+
+        Args:
+            value: Value to coerce
+
+        Returns:
+            Float value
+
+        Raises:
+            ValueError: If value cannot be coerced to float
+        """
+        if isinstance(value, float):
+            return value
+        if isinstance(value, int):
+            return float(value)
+        if isinstance(value, str):
+            try:
+                return float(value)
+            except ValueError:
+                pass
+        raise ValueError(f"Cannot coerce {type(value).__name__} to float: {value}")
+
+    @staticmethod
+    def _coerce_to_bool(value: Any) -> bool:
+        """Coerce value to bool.
+
+        Args:
+            value: Value to coerce
+
+        Returns:
+            Boolean value
+
+        Raises:
+            ValueError: If value cannot be coerced to bool
+        """
+        if isinstance(value, bool):
+            return value
+        if isinstance(value, int):
+            return bool(value)
+        if isinstance(value, str):
+            if value.lower() in ("true", "1", "yes"):
+                return True
+            if value.lower() in ("false", "0", "no"):
+                return False
+        raise ValueError(f"Cannot coerce {type(value).__name__} to bool: {value}")
+
+    @staticmethod
+    def _coerce_to_str(value: Any) -> str:
+        """Coerce value to str.
+
+        Args:
+            value: Value to coerce
+
+        Returns:
+            String value
+        """
+        return str(value)
+
+
+    @staticmethod
+    def _coerce_to_list(value: Any, item_type: str) -> list:
+        """Coerce value to list.
+
+        Args:
+            value: Value to coerce
+            item_type: Expected item type (for error messages)
+
+        Returns:
+            List value
+
+        Raises:
+            ValueError: If value cannot be coerced to list
+        """
+        if isinstance(value, list):
+            return value
+        if isinstance(value, tuple):
+            return list(value)
+        raise ValueError(f"Cannot coerce {type(value).__name__} to list[{item_type}]: {value}")
+
+
+    def _validate_instance(self) -> None:
+        """Validate the built instance based on settings."""
+        from typing import get_type_hints
+        from armodel.core import GlobalSettingsManager, BuilderValidationMode
+
+        settings = GlobalSettingsManager()
+        mode = settings.builder_validation
+
+        if mode == BuilderValidationMode.DISABLED:
+            return
+
+        # Get type hints for the class
+        try:
+            type_hints_dict = get_type_hints(type(self._obj))
+        except Exception:
+            # Cannot resolve type hints (e.g., forward references), skip validation
+            return
+
+        for attr_name, attr_type in type_hints_dict.items():
+            if attr_name.startswith("_"):
+                continue
+
+            value = getattr(self._obj, attr_name)
+
+            # Check required fields (not Optional)
+            if value is None and not self._is_optional_type(attr_type):
+                if mode == BuilderValidationMode.STRICT:
+                    raise ValueError(
+                        f"Required attribute '{attr_name}' is None"
+                    )
+                elif mode == BuilderValidationMode.LENIENT:
+                    import warnings
+                    warnings.warn(
+                        f"Required attribute '{attr_name}' is None",
+                        UserWarning
+                    )
+
+    @staticmethod
+    def _is_optional_type(type_hint: Any) -> bool:
+        """Check if a type hint is Optional.
+
+        Args:
+            type_hint: Type hint to check
+
+        Returns:
+            True if type is Optional, False otherwise
+        """
+        origin = getattr(type_hint, "__origin__", None)
+        return origin is Union
+
+    @staticmethod
+    def _get_expected_type(type_hint: Any) -> type:
+        """Extract expected type from type hint.
+
+        Args:
+            type_hint: Type hint to extract from
+
+        Returns:
+            Expected type
+        """
+        if isinstance(type_hint, str):
+            return object
+        origin = getattr(type_hint, "__origin__", None)
+        if origin is Union:
+            args = getattr(type_hint, "__args__", [])
+            for arg in args:
+                if arg is not type(None):
+                    return arg
+        elif origin is list:
+            args = getattr(type_hint, "__args__", [object])
+            return args[0] if args else object
+        return type_hint if isinstance(type_hint, type) else object
+
+
+    def build(self) -> EcucDestinationUriPolicy:
+        """Build and return the EcucDestinationUriPolicy instance with validation."""
+        self._validate_instance()
+        pass
         return self._obj

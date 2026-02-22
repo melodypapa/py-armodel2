@@ -74,18 +74,3 @@ class AbstractClassTailoring(DataFormatElementReference, ABC):
 
 
 
-class AbstractClassTailoringBuilder:
-    """Builder for AbstractClassTailoring."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AbstractClassTailoring = AbstractClassTailoring()
-
-    def build(self) -> AbstractClassTailoring:
-        """Build and return AbstractClassTailoring object.
-
-        Returns:
-            AbstractClassTailoring instance
-        """
-        # TODO: Add validation
-        return self._obj

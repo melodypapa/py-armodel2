@@ -121,7 +121,12 @@ def generate_all_models(
                 dependency_graph,
                 force_type_checking_imports,
             )
-            builder_code = generate_builder_code(type_def)
+            builder_code = generate_builder_code(
+                type_def,
+                hierarchy_info,
+                package_data,
+                include_members,
+            )
 
             # Write to file
             full_code = class_code + "\n\n" + builder_code

@@ -147,18 +147,3 @@ class BinaryManifestResource(Identifiable, ABC):
 
 
 
-class BinaryManifestResourceBuilder:
-    """Builder for BinaryManifestResource."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: BinaryManifestResource = BinaryManifestResource()
-
-    def build(self) -> BinaryManifestResource:
-        """Build and return BinaryManifestResource object.
-
-        Returns:
-            BinaryManifestResource instance
-        """
-        # TODO: Add validation
-        return self._obj

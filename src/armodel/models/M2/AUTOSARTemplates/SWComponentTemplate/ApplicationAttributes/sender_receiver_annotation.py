@@ -175,18 +175,3 @@ class SenderReceiverAnnotation(GeneralAnnotation, ABC):
 
 
 
-class SenderReceiverAnnotationBuilder:
-    """Builder for SenderReceiverAnnotation."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: SenderReceiverAnnotation = SenderReceiverAnnotation()
-
-    def build(self) -> SenderReceiverAnnotation:
-        """Build and return SenderReceiverAnnotation object.
-
-        Returns:
-            SenderReceiverAnnotation instance
-        """
-        # TODO: Add validation
-        return self._obj

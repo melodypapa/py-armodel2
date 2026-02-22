@@ -74,18 +74,3 @@ class DiagnosticTroubleCode(DiagnosticCommonElement, ABC):
 
 
 
-class DiagnosticTroubleCodeBuilder:
-    """Builder for DiagnosticTroubleCode."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: DiagnosticTroubleCode = DiagnosticTroubleCode()
-
-    def build(self) -> DiagnosticTroubleCode:
-        """Build and return DiagnosticTroubleCode object.
-
-        Returns:
-            DiagnosticTroubleCode instance
-        """
-        # TODO: Add validation
-        return self._obj

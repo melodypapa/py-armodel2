@@ -154,18 +154,3 @@ class EcucParameterValue(EcucIndexableValue, ABC):
 
 
 
-class EcucParameterValueBuilder:
-    """Builder for EcucParameterValue."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: EcucParameterValue = EcucParameterValue()
-
-    def build(self) -> EcucParameterValue:
-        """Build and return EcucParameterValue object.
-
-        Returns:
-            EcucParameterValue instance
-        """
-        # TODO: Add validation
-        return self._obj

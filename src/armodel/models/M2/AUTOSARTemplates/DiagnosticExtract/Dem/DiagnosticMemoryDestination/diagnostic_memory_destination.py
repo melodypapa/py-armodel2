@@ -262,18 +262,3 @@ class DiagnosticMemoryDestination(DiagnosticCommonElement, ABC):
 
 
 
-class DiagnosticMemoryDestinationBuilder:
-    """Builder for DiagnosticMemoryDestination."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: DiagnosticMemoryDestination = DiagnosticMemoryDestination()
-
-    def build(self) -> DiagnosticMemoryDestination:
-        """Build and return DiagnosticMemoryDestination object.
-
-        Returns:
-            DiagnosticMemoryDestination instance
-        """
-        # TODO: Add validation
-        return self._obj

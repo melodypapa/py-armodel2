@@ -74,18 +74,3 @@ class AtpDefinition(Referrable, ABC):
 
 
 
-class AtpDefinitionBuilder:
-    """Builder for AtpDefinition."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AtpDefinition = AtpDefinition()
-
-    def build(self) -> AtpDefinition:
-        """Build and return AtpDefinition object.
-
-        Returns:
-            AtpDefinition instance
-        """
-        # TODO: Add validation
-        return self._obj

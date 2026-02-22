@@ -131,18 +131,3 @@ class PortInterface(ARElement, ABC):
 
 
 
-class PortInterfaceBuilder:
-    """Builder for PortInterface."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: PortInterface = PortInterface()
-
-    def build(self) -> PortInterface:
-        """Build and return PortInterface object.
-
-        Returns:
-            PortInterface instance
-        """
-        # TODO: Add validation
-        return self._obj

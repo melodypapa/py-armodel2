@@ -74,18 +74,3 @@ class AtpFeature(Identifiable, ABC):
 
 
 
-class AtpFeatureBuilder:
-    """Builder for AtpFeature."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AtpFeature = AtpFeature()
-
-    def build(self) -> AtpFeature:
-        """Build and return AtpFeature object.
-
-        Returns:
-            AtpFeature instance
-        """
-        # TODO: Add validation
-        return self._obj

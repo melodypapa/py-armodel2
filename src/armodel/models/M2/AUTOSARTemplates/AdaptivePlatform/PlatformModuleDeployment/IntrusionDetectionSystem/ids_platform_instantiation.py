@@ -137,18 +137,3 @@ class IdsPlatformInstantiation(Identifiable, ABC):
 
 
 
-class IdsPlatformInstantiationBuilder:
-    """Builder for IdsPlatformInstantiation."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: IdsPlatformInstantiation = IdsPlatformInstantiation()
-
-    def build(self) -> IdsPlatformInstantiation:
-        """Build and return IdsPlatformInstantiation object.
-
-        Returns:
-            IdsPlatformInstantiation instance
-        """
-        # TODO: Add validation
-        return self._obj

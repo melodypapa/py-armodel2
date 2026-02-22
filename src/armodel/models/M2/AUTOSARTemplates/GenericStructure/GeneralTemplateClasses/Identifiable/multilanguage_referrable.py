@@ -107,18 +107,3 @@ class MultilanguageReferrable(Referrable, ABC):
 
 
 
-class MultilanguageReferrableBuilder:
-    """Builder for MultilanguageReferrable."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: MultilanguageReferrable = MultilanguageReferrable()
-
-    def build(self) -> MultilanguageReferrable:
-        """Build and return MultilanguageReferrable object.
-
-        Returns:
-            MultilanguageReferrable instance
-        """
-        # TODO: Add validation
-        return self._obj

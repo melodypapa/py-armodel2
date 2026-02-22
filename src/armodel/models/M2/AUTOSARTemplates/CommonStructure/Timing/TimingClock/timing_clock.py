@@ -102,18 +102,3 @@ class TimingClock(Identifiable, ABC):
 
 
 
-class TimingClockBuilder:
-    """Builder for TimingClock."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: TimingClock = TimingClock()
-
-    def build(self) -> TimingClock:
-        """Build and return TimingClock object.
-
-        Returns:
-            TimingClock instance
-        """
-        # TODO: Add validation
-        return self._obj

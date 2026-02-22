@@ -74,18 +74,3 @@ class TransformationProps(Identifiable, ABC):
 
 
 
-class TransformationPropsBuilder:
-    """Builder for TransformationProps."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: TransformationProps = TransformationProps()
-
-    def build(self) -> TransformationProps:
-        """Build and return TransformationProps object.
-
-        Returns:
-            TransformationProps instance
-        """
-        # TODO: Add validation
-        return self._obj

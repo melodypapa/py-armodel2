@@ -350,18 +350,3 @@ class BswModuleEntity(ExecutableEntity, ABC):
 
 
 
-class BswModuleEntityBuilder:
-    """Builder for BswModuleEntity."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: BswModuleEntity = BswModuleEntity()
-
-    def build(self) -> BswModuleEntity:
-        """Build and return BswModuleEntity object.
-
-        Returns:
-            BswModuleEntity instance
-        """
-        # TODO: Add validation
-        return self._obj

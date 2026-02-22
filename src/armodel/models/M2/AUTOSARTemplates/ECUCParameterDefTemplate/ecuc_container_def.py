@@ -212,18 +212,3 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
 
 
 
-class EcucContainerDefBuilder:
-    """Builder for EcucContainerDef."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: EcucContainerDef = EcucContainerDef()
-
-    def build(self) -> EcucContainerDef:
-        """Build and return EcucContainerDef object.
-
-        Returns:
-            EcucContainerDef instance
-        """
-        # TODO: Add validation
-        return self._obj

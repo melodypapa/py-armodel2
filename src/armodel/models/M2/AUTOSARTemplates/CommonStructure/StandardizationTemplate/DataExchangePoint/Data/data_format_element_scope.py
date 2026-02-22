@@ -74,18 +74,3 @@ class DataFormatElementScope(SpecElementScope, ABC):
 
 
 
-class DataFormatElementScopeBuilder:
-    """Builder for DataFormatElementScope."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: DataFormatElementScope = DataFormatElementScope()
-
-    def build(self) -> DataFormatElementScope:
-        """Build and return DataFormatElementScope object.
-
-        Returns:
-            DataFormatElementScope instance
-        """
-        # TODO: Add validation
-        return self._obj

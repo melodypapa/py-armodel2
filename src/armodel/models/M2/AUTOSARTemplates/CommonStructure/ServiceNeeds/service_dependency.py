@@ -149,18 +149,3 @@ class ServiceDependency(ARObject, ABC):
 
 
 
-class ServiceDependencyBuilder:
-    """Builder for ServiceDependency."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: ServiceDependency = ServiceDependency()
-
-    def build(self) -> ServiceDependency:
-        """Build and return ServiceDependency object.
-
-        Returns:
-            ServiceDependency instance
-        """
-        # TODO: Add validation
-        return self._obj

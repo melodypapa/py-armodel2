@@ -465,17 +465,676 @@ class System(ARElement):
 
 
 class SystemBuilder:
-    """Builder for System."""
+    """Builder for System with fluent API."""
 
     def __init__(self) -> None:
-        """Initialize builder."""
+        """Initialize builder with defaults."""
+        pass
         self._obj: System = System()
 
-    def build(self) -> System:
-        """Build and return System object.
+
+    def with_short_name(self, value: Identifier) -> "SystemBuilder":
+        """Set short_name attribute.
+
+        Args:
+            value: Value to set
 
         Returns:
-            System instance
+            self for method chaining
         """
-        # TODO: Add validation
+        if value is None and not False:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.short_name = value
+        return self
+
+    def with_short_name_fragments(self, items: list[ShortNameFragment]) -> "SystemBuilder":
+        """Set short_name_fragments list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.short_name_fragments = list(items) if items else []
+        return self
+
+    def with_long_name(self, value: Optional[MultilanguageLongName]) -> "SystemBuilder":
+        """Set long_name attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.long_name = value
+        return self
+
+    def with_admin_data(self, value: Optional[AdminData]) -> "SystemBuilder":
+        """Set admin_data attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.admin_data = value
+        return self
+
+    def with_annotations(self, items: list[Annotation]) -> "SystemBuilder":
+        """Set annotations list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.annotations = list(items) if items else []
+        return self
+
+    def with_desc(self, value: Optional[MultiLanguageOverviewParagraph]) -> "SystemBuilder":
+        """Set desc attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.desc = value
+        return self
+
+    def with_category(self, value: Optional[CategoryString]) -> "SystemBuilder":
+        """Set category attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.category = value
+        return self
+
+    def with_introduction(self, value: Optional[DocumentationBlock]) -> "SystemBuilder":
+        """Set introduction attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.introduction = value
+        return self
+
+    def with_uuid(self, value: Optional[String]) -> "SystemBuilder":
+        """Set uuid attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.uuid = value
+        return self
+
+    def with_client_id_definition_sets(self, items: list[ClientIdDefinitionSet]) -> "SystemBuilder":
+        """Set client_id_definition_sets list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.client_id_definition_sets = list(items) if items else []
+        return self
+
+    def with_container_i_pdu_header_byte_order(self, value: Optional[ByteOrderEnum]) -> "SystemBuilder":
+        """Set container_i_pdu_header_byte_order attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.container_i_pdu_header_byte_order = value
+        return self
+
+    def with_ecu_extract_version(self, value: Optional[RevisionLabelString]) -> "SystemBuilder":
+        """Set ecu_extract_version attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.ecu_extract_version = value
+        return self
+
+    def with_fibex_elements(self, items: list[FibexElement]) -> "SystemBuilder":
+        """Set fibex_elements list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.fibex_elements = list(items) if items else []
+        return self
+
+    def with_interpolation_routine_mapping_sets(self, items: list[InterpolationRoutineMappingSet]) -> "SystemBuilder":
+        """Set interpolation_routine_mapping_sets list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.interpolation_routine_mapping_sets = list(items) if items else []
+        return self
+
+    def with_j1939_shared_address_clusters(self, items: list[J1939SharedAddressCluster]) -> "SystemBuilder":
+        """Set j1939_shared_address_clusters list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.j1939_shared_address_clusters = list(items) if items else []
+        return self
+
+    def with_mappings(self, items: list[SystemMapping]) -> "SystemBuilder":
+        """Set mappings list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.mappings = list(items) if items else []
+        return self
+
+    def with_pnc_vector_length(self, value: Optional[PositiveInteger]) -> "SystemBuilder":
+        """Set pnc_vector_length attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.pnc_vector_length = value
+        return self
+
+    def with_pnc_vector_offset(self, value: Optional[PositiveInteger]) -> "SystemBuilder":
+        """Set pnc_vector_offset attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.pnc_vector_offset = value
+        return self
+
+    def with_root_software_composition(self, value: Optional[RootSwCompositionPrototype]) -> "SystemBuilder":
+        """Set root_software_composition attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.root_software_composition = value
+        return self
+
+    def with_sw_clusters(self, items: list[CpSoftwareCluster]) -> "SystemBuilder":
+        """Set sw_clusters list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.sw_clusters = list(items) if items else []
+        return self
+
+    def with_system_documentations(self, items: list[Chapter]) -> "SystemBuilder":
+        """Set system_documentations list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.system_documentations = list(items) if items else []
+        return self
+
+    def with_system_version(self, value: Optional[RevisionLabelString]) -> "SystemBuilder":
+        """Set system_version attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.system_version = value
+        return self
+
+
+    def add_short_name_fragment(self, item: ShortNameFragment) -> "SystemBuilder":
+        """Add a single item to short_name_fragments list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.short_name_fragments.append(item)
+        return self
+
+    def clear_short_name_fragments(self) -> "SystemBuilder":
+        """Clear all items from short_name_fragments list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.short_name_fragments = []
+        return self
+
+    def add_annotation(self, item: Annotation) -> "SystemBuilder":
+        """Add a single item to annotations list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.annotations.append(item)
+        return self
+
+    def clear_annotations(self) -> "SystemBuilder":
+        """Clear all items from annotations list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.annotations = []
+        return self
+
+    def add_client_id_definition_set(self, item: ClientIdDefinitionSet) -> "SystemBuilder":
+        """Add a single item to client_id_definition_sets list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.client_id_definition_sets.append(item)
+        return self
+
+    def clear_client_id_definition_sets(self) -> "SystemBuilder":
+        """Clear all items from client_id_definition_sets list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.client_id_definition_sets = []
+        return self
+
+    def add_fibex_element(self, item: FibexElement) -> "SystemBuilder":
+        """Add a single item to fibex_elements list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.fibex_elements.append(item)
+        return self
+
+    def clear_fibex_elements(self) -> "SystemBuilder":
+        """Clear all items from fibex_elements list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.fibex_elements = []
+        return self
+
+    def add_interpolation_routine_mapping_set(self, item: InterpolationRoutineMappingSet) -> "SystemBuilder":
+        """Add a single item to interpolation_routine_mapping_sets list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.interpolation_routine_mapping_sets.append(item)
+        return self
+
+    def clear_interpolation_routine_mapping_sets(self) -> "SystemBuilder":
+        """Clear all items from interpolation_routine_mapping_sets list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.interpolation_routine_mapping_sets = []
+        return self
+
+    def add_j1939_shared_address_cluster(self, item: J1939SharedAddressCluster) -> "SystemBuilder":
+        """Add a single item to j1939_shared_address_clusters list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.j1939_shared_address_clusters.append(item)
+        return self
+
+    def clear_j1939_shared_address_clusters(self) -> "SystemBuilder":
+        """Clear all items from j1939_shared_address_clusters list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.j1939_shared_address_clusters = []
+        return self
+
+    def add_mapping(self, item: SystemMapping) -> "SystemBuilder":
+        """Add a single item to mappings list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.mappings.append(item)
+        return self
+
+    def clear_mappings(self) -> "SystemBuilder":
+        """Clear all items from mappings list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.mappings = []
+        return self
+
+    def add_sw_cluster(self, item: CpSoftwareCluster) -> "SystemBuilder":
+        """Add a single item to sw_clusters list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.sw_clusters.append(item)
+        return self
+
+    def clear_sw_clusters(self) -> "SystemBuilder":
+        """Clear all items from sw_clusters list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.sw_clusters = []
+        return self
+
+    def add_system_documentation(self, item: Chapter) -> "SystemBuilder":
+        """Add a single item to system_documentations list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.system_documentations.append(item)
+        return self
+
+    def clear_system_documentations(self) -> "SystemBuilder":
+        """Clear all items from system_documentations list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.system_documentations = []
+        return self
+
+
+    @staticmethod
+    def _coerce_to_int(value: Any) -> int:
+        """Coerce value to int.
+
+        Args:
+            value: Value to coerce
+
+        Returns:
+            Integer value
+
+        Raises:
+            ValueError: If value cannot be coerced to int
+        """
+        if isinstance(value, int):
+            return value
+        if isinstance(value, str) and value.isdigit():
+            return int(value)
+        if isinstance(value, float):
+            return int(value)
+        if isinstance(value, bool):
+            return int(value)
+        raise ValueError(f"Cannot coerce {type(value).__name__} to int: {value}")
+
+    @staticmethod
+    def _coerce_to_float(value: Any) -> float:
+        """Coerce value to float.
+
+        Args:
+            value: Value to coerce
+
+        Returns:
+            Float value
+
+        Raises:
+            ValueError: If value cannot be coerced to float
+        """
+        if isinstance(value, float):
+            return value
+        if isinstance(value, int):
+            return float(value)
+        if isinstance(value, str):
+            try:
+                return float(value)
+            except ValueError:
+                pass
+        raise ValueError(f"Cannot coerce {type(value).__name__} to float: {value}")
+
+    @staticmethod
+    def _coerce_to_bool(value: Any) -> bool:
+        """Coerce value to bool.
+
+        Args:
+            value: Value to coerce
+
+        Returns:
+            Boolean value
+
+        Raises:
+            ValueError: If value cannot be coerced to bool
+        """
+        if isinstance(value, bool):
+            return value
+        if isinstance(value, int):
+            return bool(value)
+        if isinstance(value, str):
+            if value.lower() in ("true", "1", "yes"):
+                return True
+            if value.lower() in ("false", "0", "no"):
+                return False
+        raise ValueError(f"Cannot coerce {type(value).__name__} to bool: {value}")
+
+    @staticmethod
+    def _coerce_to_str(value: Any) -> str:
+        """Coerce value to str.
+
+        Args:
+            value: Value to coerce
+
+        Returns:
+            String value
+        """
+        return str(value)
+
+
+    @staticmethod
+    def _coerce_to_list(value: Any, item_type: str) -> list:
+        """Coerce value to list.
+
+        Args:
+            value: Value to coerce
+            item_type: Expected item type (for error messages)
+
+        Returns:
+            List value
+
+        Raises:
+            ValueError: If value cannot be coerced to list
+        """
+        if isinstance(value, list):
+            return value
+        if isinstance(value, tuple):
+            return list(value)
+        raise ValueError(f"Cannot coerce {type(value).__name__} to list[{item_type}]: {value}")
+
+
+    def _validate_instance(self) -> None:
+        """Validate the built instance based on settings."""
+        from typing import get_type_hints
+        from armodel.core import GlobalSettingsManager, BuilderValidationMode
+
+        settings = GlobalSettingsManager()
+        mode = settings.builder_validation
+
+        if mode == BuilderValidationMode.DISABLED:
+            return
+
+        # Get type hints for the class
+        try:
+            type_hints_dict = get_type_hints(type(self._obj))
+        except Exception:
+            # Cannot resolve type hints (e.g., forward references), skip validation
+            return
+
+        for attr_name, attr_type in type_hints_dict.items():
+            if attr_name.startswith("_"):
+                continue
+
+            value = getattr(self._obj, attr_name)
+
+            # Check required fields (not Optional)
+            if value is None and not self._is_optional_type(attr_type):
+                if mode == BuilderValidationMode.STRICT:
+                    raise ValueError(
+                        f"Required attribute '{attr_name}' is None"
+                    )
+                elif mode == BuilderValidationMode.LENIENT:
+                    import warnings
+                    warnings.warn(
+                        f"Required attribute '{attr_name}' is None",
+                        UserWarning
+                    )
+
+    @staticmethod
+    def _is_optional_type(type_hint: Any) -> bool:
+        """Check if a type hint is Optional.
+
+        Args:
+            type_hint: Type hint to check
+
+        Returns:
+            True if type is Optional, False otherwise
+        """
+        origin = getattr(type_hint, "__origin__", None)
+        return origin is Union
+
+    @staticmethod
+    def _get_expected_type(type_hint: Any) -> type:
+        """Extract expected type from type hint.
+
+        Args:
+            type_hint: Type hint to extract from
+
+        Returns:
+            Expected type
+        """
+        if isinstance(type_hint, str):
+            return object
+        origin = getattr(type_hint, "__origin__", None)
+        if origin is Union:
+            args = getattr(type_hint, "__args__", [])
+            for arg in args:
+                if arg is not type(None):
+                    return arg
+        elif origin is list:
+            args = getattr(type_hint, "__args__", [object])
+            return args[0] if args else object
+        return type_hint if isinstance(type_hint, type) else object
+
+
+    def build(self) -> System:
+        """Build and return the System instance with validation."""
+        self._validate_instance()
+        pass
         return self._obj

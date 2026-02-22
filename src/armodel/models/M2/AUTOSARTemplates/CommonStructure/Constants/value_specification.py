@@ -100,18 +100,3 @@ class ValueSpecification(ARObject, ABC):
 
 
 
-class ValueSpecificationBuilder:
-    """Builder for ValueSpecification."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: ValueSpecification = ValueSpecification()
-
-    def build(self) -> ValueSpecification:
-        """Build and return ValueSpecification object.
-
-        Returns:
-            ValueSpecification instance
-        """
-        # TODO: Add validation
-        return self._obj

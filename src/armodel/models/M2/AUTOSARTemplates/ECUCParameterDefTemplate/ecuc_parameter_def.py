@@ -149,18 +149,3 @@ class EcucParameterDef(EcucCommonAttributes, ABC):
 
 
 
-class EcucParameterDefBuilder:
-    """Builder for EcucParameterDef."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: EcucParameterDef = EcucParameterDef()
-
-    def build(self) -> EcucParameterDef:
-        """Build and return EcucParameterDef object.
-
-        Returns:
-            EcucParameterDef instance
-        """
-        # TODO: Add validation
-        return self._obj

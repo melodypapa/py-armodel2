@@ -95,18 +95,3 @@ class WhitespaceControlled(ARObject, ABC):
 
 
 
-class WhitespaceControlledBuilder:
-    """Builder for WhitespaceControlled."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: WhitespaceControlled = WhitespaceControlled()
-
-    def build(self) -> WhitespaceControlled:
-        """Build and return WhitespaceControlled object.
-
-        Returns:
-            WhitespaceControlled instance
-        """
-        # TODO: Add validation
-        return self._obj

@@ -74,18 +74,3 @@ class CompositeValueSpecification(ValueSpecification, ABC):
 
 
 
-class CompositeValueSpecificationBuilder:
-    """Builder for CompositeValueSpecification."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: CompositeValueSpecification = CompositeValueSpecification()
-
-    def build(self) -> CompositeValueSpecification:
-        """Build and return CompositeValueSpecification object.
-
-        Returns:
-            CompositeValueSpecification instance
-        """
-        # TODO: Add validation
-        return self._obj

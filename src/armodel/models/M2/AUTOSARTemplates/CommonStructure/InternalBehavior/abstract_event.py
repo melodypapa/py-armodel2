@@ -103,18 +103,3 @@ class AbstractEvent(Identifiable, ABC):
 
 
 
-class AbstractEventBuilder:
-    """Builder for AbstractEvent."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AbstractEvent = AbstractEvent()
-
-    def build(self) -> AbstractEvent:
-        """Build and return AbstractEvent object.
-
-        Returns:
-            AbstractEvent instance
-        """
-        # TODO: Add validation
-        return self._obj

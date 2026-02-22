@@ -74,18 +74,3 @@ class AttributeCondition(AbstractMultiplicityRestriction, ABC):
 
 
 
-class AttributeConditionBuilder:
-    """Builder for AttributeCondition."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AttributeCondition = AttributeCondition()
-
-    def build(self) -> AttributeCondition:
-        """Build and return AttributeCondition object.
-
-        Returns:
-            AttributeCondition instance
-        """
-        # TODO: Add validation
-        return self._obj

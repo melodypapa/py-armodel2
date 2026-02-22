@@ -149,18 +149,3 @@ class PortInCompositionTypeInstanceRef(ARObject, ABC):
 
 
 
-class PortInCompositionTypeInstanceRefBuilder:
-    """Builder for PortInCompositionTypeInstanceRef."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: PortInCompositionTypeInstanceRef = PortInCompositionTypeInstanceRef()
-
-    def build(self) -> PortInCompositionTypeInstanceRef:
-        """Build and return PortInCompositionTypeInstanceRef object.
-
-        Returns:
-            PortInCompositionTypeInstanceRef instance
-        """
-        # TODO: Add validation
-        return self._obj

@@ -112,18 +112,3 @@ class DiagnosticMemoryAddressableRangeAccess(DiagnosticMemoryByAddress, ABC):
 
 
 
-class DiagnosticMemoryAddressableRangeAccessBuilder:
-    """Builder for DiagnosticMemoryAddressableRangeAccess."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: DiagnosticMemoryAddressableRangeAccess = DiagnosticMemoryAddressableRangeAccess()
-
-    def build(self) -> DiagnosticMemoryAddressableRangeAccess:
-        """Build and return DiagnosticMemoryAddressableRangeAccess object.
-
-        Returns:
-            DiagnosticMemoryAddressableRangeAccess instance
-        """
-        # TODO: Add validation
-        return self._obj

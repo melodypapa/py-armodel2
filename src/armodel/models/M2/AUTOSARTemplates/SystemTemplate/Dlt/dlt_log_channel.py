@@ -318,17 +318,525 @@ class DltLogChannel(Identifiable):
 
 
 class DltLogChannelBuilder:
-    """Builder for DltLogChannel."""
+    """Builder for DltLogChannel with fluent API."""
 
     def __init__(self) -> None:
-        """Initialize builder."""
+        """Initialize builder with defaults."""
+        pass
         self._obj: DltLogChannel = DltLogChannel()
 
-    def build(self) -> DltLogChannel:
-        """Build and return DltLogChannel object.
+
+    def with_short_name(self, value: Identifier) -> "DltLogChannelBuilder":
+        """Set short_name attribute.
+
+        Args:
+            value: Value to set
 
         Returns:
-            DltLogChannel instance
+            self for method chaining
         """
-        # TODO: Add validation
+        if value is None and not False:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.short_name = value
+        return self
+
+    def with_short_name_fragments(self, items: list[ShortNameFragment]) -> "DltLogChannelBuilder":
+        """Set short_name_fragments list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.short_name_fragments = list(items) if items else []
+        return self
+
+    def with_long_name(self, value: Optional[MultilanguageLongName]) -> "DltLogChannelBuilder":
+        """Set long_name attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.long_name = value
+        return self
+
+    def with_admin_data(self, value: Optional[AdminData]) -> "DltLogChannelBuilder":
+        """Set admin_data attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.admin_data = value
+        return self
+
+    def with_annotations(self, items: list[Annotation]) -> "DltLogChannelBuilder":
+        """Set annotations list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.annotations = list(items) if items else []
+        return self
+
+    def with_desc(self, value: Optional[MultiLanguageOverviewParagraph]) -> "DltLogChannelBuilder":
+        """Set desc attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.desc = value
+        return self
+
+    def with_category(self, value: Optional[CategoryString]) -> "DltLogChannelBuilder":
+        """Set category attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.category = value
+        return self
+
+    def with_introduction(self, value: Optional[DocumentationBlock]) -> "DltLogChannelBuilder":
+        """Set introduction attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.introduction = value
+        return self
+
+    def with_uuid(self, value: Optional[String]) -> "DltLogChannelBuilder":
+        """Set uuid attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.uuid = value
+        return self
+
+    def with_applications(self, items: list[DltContext]) -> "DltLogChannelBuilder":
+        """Set applications list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.applications = list(items) if items else []
+        return self
+
+    def with_default_trace(self, value: Optional[DltDefaultTraceStateEnum]) -> "DltLogChannelBuilder":
+        """Set default_trace attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.default_trace = value
+        return self
+
+    def with_dlt_messages(self, items: list[DltMessage]) -> "DltLogChannelBuilder":
+        """Set dlt_messages list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.dlt_messages = list(items) if items else []
+        return self
+
+    def with_log_channel_id(self, value: Optional[String]) -> "DltLogChannelBuilder":
+        """Set log_channel_id attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.log_channel_id = value
+        return self
+
+    def with_log_trace_default_log(self, value: Optional[LogTraceDefaultLogLevelEnum]) -> "DltLogChannelBuilder":
+        """Set log_trace_default_log attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.log_trace_default_log = value
+        return self
+
+    def with_non_verbose(self, value: Optional[Boolean]) -> "DltLogChannelBuilder":
+        """Set non_verbose attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.non_verbose = value
+        return self
+
+    def with_rx_pdu_triggering_channel(self, value: Optional[PduTriggering]) -> "DltLogChannelBuilder":
+        """Set rx_pdu_triggering_channel attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.rx_pdu_triggering_channel = value
+        return self
+
+    def with_segmentation(self, value: Optional[Boolean]) -> "DltLogChannelBuilder":
+        """Set segmentation attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.segmentation = value
+        return self
+
+    def with_tx_pdu_triggering(self, value: Optional[PduTriggering]) -> "DltLogChannelBuilder":
+        """Set tx_pdu_triggering attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.tx_pdu_triggering = value
+        return self
+
+
+    def add_short_name_fragment(self, item: ShortNameFragment) -> "DltLogChannelBuilder":
+        """Add a single item to short_name_fragments list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.short_name_fragments.append(item)
+        return self
+
+    def clear_short_name_fragments(self) -> "DltLogChannelBuilder":
+        """Clear all items from short_name_fragments list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.short_name_fragments = []
+        return self
+
+    def add_annotation(self, item: Annotation) -> "DltLogChannelBuilder":
+        """Add a single item to annotations list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.annotations.append(item)
+        return self
+
+    def clear_annotations(self) -> "DltLogChannelBuilder":
+        """Clear all items from annotations list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.annotations = []
+        return self
+
+    def add_application(self, item: DltContext) -> "DltLogChannelBuilder":
+        """Add a single item to applications list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.applications.append(item)
+        return self
+
+    def clear_applications(self) -> "DltLogChannelBuilder":
+        """Clear all items from applications list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.applications = []
+        return self
+
+    def add_dlt_message(self, item: DltMessage) -> "DltLogChannelBuilder":
+        """Add a single item to dlt_messages list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.dlt_messages.append(item)
+        return self
+
+    def clear_dlt_messages(self) -> "DltLogChannelBuilder":
+        """Clear all items from dlt_messages list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.dlt_messages = []
+        return self
+
+
+    @staticmethod
+    def _coerce_to_int(value: Any) -> int:
+        """Coerce value to int.
+
+        Args:
+            value: Value to coerce
+
+        Returns:
+            Integer value
+
+        Raises:
+            ValueError: If value cannot be coerced to int
+        """
+        if isinstance(value, int):
+            return value
+        if isinstance(value, str) and value.isdigit():
+            return int(value)
+        if isinstance(value, float):
+            return int(value)
+        if isinstance(value, bool):
+            return int(value)
+        raise ValueError(f"Cannot coerce {type(value).__name__} to int: {value}")
+
+    @staticmethod
+    def _coerce_to_float(value: Any) -> float:
+        """Coerce value to float.
+
+        Args:
+            value: Value to coerce
+
+        Returns:
+            Float value
+
+        Raises:
+            ValueError: If value cannot be coerced to float
+        """
+        if isinstance(value, float):
+            return value
+        if isinstance(value, int):
+            return float(value)
+        if isinstance(value, str):
+            try:
+                return float(value)
+            except ValueError:
+                pass
+        raise ValueError(f"Cannot coerce {type(value).__name__} to float: {value}")
+
+    @staticmethod
+    def _coerce_to_bool(value: Any) -> bool:
+        """Coerce value to bool.
+
+        Args:
+            value: Value to coerce
+
+        Returns:
+            Boolean value
+
+        Raises:
+            ValueError: If value cannot be coerced to bool
+        """
+        if isinstance(value, bool):
+            return value
+        if isinstance(value, int):
+            return bool(value)
+        if isinstance(value, str):
+            if value.lower() in ("true", "1", "yes"):
+                return True
+            if value.lower() in ("false", "0", "no"):
+                return False
+        raise ValueError(f"Cannot coerce {type(value).__name__} to bool: {value}")
+
+    @staticmethod
+    def _coerce_to_str(value: Any) -> str:
+        """Coerce value to str.
+
+        Args:
+            value: Value to coerce
+
+        Returns:
+            String value
+        """
+        return str(value)
+
+
+    @staticmethod
+    def _coerce_to_list(value: Any, item_type: str) -> list:
+        """Coerce value to list.
+
+        Args:
+            value: Value to coerce
+            item_type: Expected item type (for error messages)
+
+        Returns:
+            List value
+
+        Raises:
+            ValueError: If value cannot be coerced to list
+        """
+        if isinstance(value, list):
+            return value
+        if isinstance(value, tuple):
+            return list(value)
+        raise ValueError(f"Cannot coerce {type(value).__name__} to list[{item_type}]: {value}")
+
+
+    def _validate_instance(self) -> None:
+        """Validate the built instance based on settings."""
+        from typing import get_type_hints
+        from armodel.core import GlobalSettingsManager, BuilderValidationMode
+
+        settings = GlobalSettingsManager()
+        mode = settings.builder_validation
+
+        if mode == BuilderValidationMode.DISABLED:
+            return
+
+        # Get type hints for the class
+        try:
+            type_hints_dict = get_type_hints(type(self._obj))
+        except Exception:
+            # Cannot resolve type hints (e.g., forward references), skip validation
+            return
+
+        for attr_name, attr_type in type_hints_dict.items():
+            if attr_name.startswith("_"):
+                continue
+
+            value = getattr(self._obj, attr_name)
+
+            # Check required fields (not Optional)
+            if value is None and not self._is_optional_type(attr_type):
+                if mode == BuilderValidationMode.STRICT:
+                    raise ValueError(
+                        f"Required attribute '{attr_name}' is None"
+                    )
+                elif mode == BuilderValidationMode.LENIENT:
+                    import warnings
+                    warnings.warn(
+                        f"Required attribute '{attr_name}' is None",
+                        UserWarning
+                    )
+
+    @staticmethod
+    def _is_optional_type(type_hint: Any) -> bool:
+        """Check if a type hint is Optional.
+
+        Args:
+            type_hint: Type hint to check
+
+        Returns:
+            True if type is Optional, False otherwise
+        """
+        origin = getattr(type_hint, "__origin__", None)
+        return origin is Union
+
+    @staticmethod
+    def _get_expected_type(type_hint: Any) -> type:
+        """Extract expected type from type hint.
+
+        Args:
+            type_hint: Type hint to extract from
+
+        Returns:
+            Expected type
+        """
+        if isinstance(type_hint, str):
+            return object
+        origin = getattr(type_hint, "__origin__", None)
+        if origin is Union:
+            args = getattr(type_hint, "__args__", [])
+            for arg in args:
+                if arg is not type(None):
+                    return arg
+        elif origin is list:
+            args = getattr(type_hint, "__args__", [object])
+            return args[0] if args else object
+        return type_hint if isinstance(type_hint, type) else object
+
+
+    def build(self) -> DltLogChannel:
+        """Build and return the DltLogChannel instance with validation."""
+        self._validate_instance()
+        pass
         return self._obj

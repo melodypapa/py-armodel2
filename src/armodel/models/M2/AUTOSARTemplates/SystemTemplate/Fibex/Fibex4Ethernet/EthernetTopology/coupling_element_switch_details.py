@@ -198,17 +198,526 @@ class CouplingElementSwitchDetails(CouplingElementAbstractDetails):
 
 
 class CouplingElementSwitchDetailsBuilder:
-    """Builder for CouplingElementSwitchDetails."""
+    """Builder for CouplingElementSwitchDetails with fluent API."""
 
     def __init__(self) -> None:
-        """Initialize builder."""
+        """Initialize builder with defaults."""
+        pass
         self._obj: CouplingElementSwitchDetails = CouplingElementSwitchDetails()
 
-    def build(self) -> CouplingElementSwitchDetails:
-        """Build and return CouplingElementSwitchDetails object.
+
+    def with_short_name(self, value: Identifier) -> "CouplingElementSwitchDetailsBuilder":
+        """Set short_name attribute.
+
+        Args:
+            value: Value to set
 
         Returns:
-            CouplingElementSwitchDetails instance
+            self for method chaining
         """
-        # TODO: Add validation
+        if value is None and not False:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.short_name = value
+        return self
+
+    def with_short_name_fragments(self, items: list[ShortNameFragment]) -> "CouplingElementSwitchDetailsBuilder":
+        """Set short_name_fragments list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.short_name_fragments = list(items) if items else []
+        return self
+
+    def with_long_name(self, value: Optional[MultilanguageLongName]) -> "CouplingElementSwitchDetailsBuilder":
+        """Set long_name attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.long_name = value
+        return self
+
+    def with_admin_data(self, value: Optional[AdminData]) -> "CouplingElementSwitchDetailsBuilder":
+        """Set admin_data attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.admin_data = value
+        return self
+
+    def with_annotations(self, items: list[Annotation]) -> "CouplingElementSwitchDetailsBuilder":
+        """Set annotations list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.annotations = list(items) if items else []
+        return self
+
+    def with_desc(self, value: Optional[MultiLanguageOverviewParagraph]) -> "CouplingElementSwitchDetailsBuilder":
+        """Set desc attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.desc = value
+        return self
+
+    def with_category(self, value: Optional[CategoryString]) -> "CouplingElementSwitchDetailsBuilder":
+        """Set category attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.category = value
+        return self
+
+    def with_introduction(self, value: Optional[DocumentationBlock]) -> "CouplingElementSwitchDetailsBuilder":
+        """Set introduction attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.introduction = value
+        return self
+
+    def with_uuid(self, value: Optional[String]) -> "CouplingElementSwitchDetailsBuilder":
+        """Set uuid attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.uuid = value
+        return self
+
+    def with_flow_meterings(self, items: list[SwitchFlowMeteringEntry]) -> "CouplingElementSwitchDetailsBuilder":
+        """Set flow_meterings list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.flow_meterings = list(items) if items else []
+        return self
+
+    def with_stream_filters(self, items: list[SwitchStreamFilterEntry]) -> "CouplingElementSwitchDetailsBuilder":
+        """Set stream_filters list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.stream_filters = list(items) if items else []
+        return self
+
+    def with_stream_gates(self, items: list[SwitchStreamGateEntry]) -> "CouplingElementSwitchDetailsBuilder":
+        """Set stream_gates list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.stream_gates = list(items) if items else []
+        return self
+
+    def with_switch_streams(self, items: list[any (SwitchStream)]) -> "CouplingElementSwitchDetailsBuilder":
+        """Set switch_streams list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.switch_streams = list(items) if items else []
+        return self
+
+    def with_traffic_shapers(self, items: list[SwitchAsynchronousTrafficShaperGroupEntry]) -> "CouplingElementSwitchDetailsBuilder":
+        """Set traffic_shapers list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.traffic_shapers = list(items) if items else []
+        return self
+
+
+    def add_short_name_fragment(self, item: ShortNameFragment) -> "CouplingElementSwitchDetailsBuilder":
+        """Add a single item to short_name_fragments list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.short_name_fragments.append(item)
+        return self
+
+    def clear_short_name_fragments(self) -> "CouplingElementSwitchDetailsBuilder":
+        """Clear all items from short_name_fragments list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.short_name_fragments = []
+        return self
+
+    def add_annotation(self, item: Annotation) -> "CouplingElementSwitchDetailsBuilder":
+        """Add a single item to annotations list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.annotations.append(item)
+        return self
+
+    def clear_annotations(self) -> "CouplingElementSwitchDetailsBuilder":
+        """Clear all items from annotations list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.annotations = []
+        return self
+
+    def add_flow_metering(self, item: SwitchFlowMeteringEntry) -> "CouplingElementSwitchDetailsBuilder":
+        """Add a single item to flow_meterings list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.flow_meterings.append(item)
+        return self
+
+    def clear_flow_meterings(self) -> "CouplingElementSwitchDetailsBuilder":
+        """Clear all items from flow_meterings list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.flow_meterings = []
+        return self
+
+    def add_stream_filter(self, item: SwitchStreamFilterEntry) -> "CouplingElementSwitchDetailsBuilder":
+        """Add a single item to stream_filters list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.stream_filters.append(item)
+        return self
+
+    def clear_stream_filters(self) -> "CouplingElementSwitchDetailsBuilder":
+        """Clear all items from stream_filters list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.stream_filters = []
+        return self
+
+    def add_stream_gate(self, item: SwitchStreamGateEntry) -> "CouplingElementSwitchDetailsBuilder":
+        """Add a single item to stream_gates list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.stream_gates.append(item)
+        return self
+
+    def clear_stream_gates(self) -> "CouplingElementSwitchDetailsBuilder":
+        """Clear all items from stream_gates list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.stream_gates = []
+        return self
+
+    def add_switch_stream(self, item: any (SwitchStream)) -> "CouplingElementSwitchDetailsBuilder":
+        """Add a single item to switch_streams list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.switch_streams.append(item)
+        return self
+
+    def clear_switch_streams(self) -> "CouplingElementSwitchDetailsBuilder":
+        """Clear all items from switch_streams list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.switch_streams = []
+        return self
+
+    def add_traffic_shaper(self, item: SwitchAsynchronousTrafficShaperGroupEntry) -> "CouplingElementSwitchDetailsBuilder":
+        """Add a single item to traffic_shapers list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.traffic_shapers.append(item)
+        return self
+
+    def clear_traffic_shapers(self) -> "CouplingElementSwitchDetailsBuilder":
+        """Clear all items from traffic_shapers list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.traffic_shapers = []
+        return self
+
+
+    @staticmethod
+    def _coerce_to_int(value: Any) -> int:
+        """Coerce value to int.
+
+        Args:
+            value: Value to coerce
+
+        Returns:
+            Integer value
+
+        Raises:
+            ValueError: If value cannot be coerced to int
+        """
+        if isinstance(value, int):
+            return value
+        if isinstance(value, str) and value.isdigit():
+            return int(value)
+        if isinstance(value, float):
+            return int(value)
+        if isinstance(value, bool):
+            return int(value)
+        raise ValueError(f"Cannot coerce {type(value).__name__} to int: {value}")
+
+    @staticmethod
+    def _coerce_to_float(value: Any) -> float:
+        """Coerce value to float.
+
+        Args:
+            value: Value to coerce
+
+        Returns:
+            Float value
+
+        Raises:
+            ValueError: If value cannot be coerced to float
+        """
+        if isinstance(value, float):
+            return value
+        if isinstance(value, int):
+            return float(value)
+        if isinstance(value, str):
+            try:
+                return float(value)
+            except ValueError:
+                pass
+        raise ValueError(f"Cannot coerce {type(value).__name__} to float: {value}")
+
+    @staticmethod
+    def _coerce_to_bool(value: Any) -> bool:
+        """Coerce value to bool.
+
+        Args:
+            value: Value to coerce
+
+        Returns:
+            Boolean value
+
+        Raises:
+            ValueError: If value cannot be coerced to bool
+        """
+        if isinstance(value, bool):
+            return value
+        if isinstance(value, int):
+            return bool(value)
+        if isinstance(value, str):
+            if value.lower() in ("true", "1", "yes"):
+                return True
+            if value.lower() in ("false", "0", "no"):
+                return False
+        raise ValueError(f"Cannot coerce {type(value).__name__} to bool: {value}")
+
+    @staticmethod
+    def _coerce_to_str(value: Any) -> str:
+        """Coerce value to str.
+
+        Args:
+            value: Value to coerce
+
+        Returns:
+            String value
+        """
+        return str(value)
+
+
+    @staticmethod
+    def _coerce_to_list(value: Any, item_type: str) -> list:
+        """Coerce value to list.
+
+        Args:
+            value: Value to coerce
+            item_type: Expected item type (for error messages)
+
+        Returns:
+            List value
+
+        Raises:
+            ValueError: If value cannot be coerced to list
+        """
+        if isinstance(value, list):
+            return value
+        if isinstance(value, tuple):
+            return list(value)
+        raise ValueError(f"Cannot coerce {type(value).__name__} to list[{item_type}]: {value}")
+
+
+    def _validate_instance(self) -> None:
+        """Validate the built instance based on settings."""
+        from typing import get_type_hints
+        from armodel.core import GlobalSettingsManager, BuilderValidationMode
+
+        settings = GlobalSettingsManager()
+        mode = settings.builder_validation
+
+        if mode == BuilderValidationMode.DISABLED:
+            return
+
+        # Get type hints for the class
+        try:
+            type_hints_dict = get_type_hints(type(self._obj))
+        except Exception:
+            # Cannot resolve type hints (e.g., forward references), skip validation
+            return
+
+        for attr_name, attr_type in type_hints_dict.items():
+            if attr_name.startswith("_"):
+                continue
+
+            value = getattr(self._obj, attr_name)
+
+            # Check required fields (not Optional)
+            if value is None and not self._is_optional_type(attr_type):
+                if mode == BuilderValidationMode.STRICT:
+                    raise ValueError(
+                        f"Required attribute '{attr_name}' is None"
+                    )
+                elif mode == BuilderValidationMode.LENIENT:
+                    import warnings
+                    warnings.warn(
+                        f"Required attribute '{attr_name}' is None",
+                        UserWarning
+                    )
+
+    @staticmethod
+    def _is_optional_type(type_hint: Any) -> bool:
+        """Check if a type hint is Optional.
+
+        Args:
+            type_hint: Type hint to check
+
+        Returns:
+            True if type is Optional, False otherwise
+        """
+        origin = getattr(type_hint, "__origin__", None)
+        return origin is Union
+
+    @staticmethod
+    def _get_expected_type(type_hint: Any) -> type:
+        """Extract expected type from type hint.
+
+        Args:
+            type_hint: Type hint to extract from
+
+        Returns:
+            Expected type
+        """
+        if isinstance(type_hint, str):
+            return object
+        origin = getattr(type_hint, "__origin__", None)
+        if origin is Union:
+            args = getattr(type_hint, "__args__", [])
+            for arg in args:
+                if arg is not type(None):
+                    return arg
+        elif origin is list:
+            args = getattr(type_hint, "__args__", [object])
+            return args[0] if args else object
+        return type_hint if isinstance(type_hint, type) else object
+
+
+    def build(self) -> CouplingElementSwitchDetails:
+        """Build and return the CouplingElementSwitchDetails instance with validation."""
+        self._validate_instance()
+        pass
         return self._obj

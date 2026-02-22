@@ -122,18 +122,3 @@ class AbstractEnumerationValueVariationPoint(ARObject, ABC):
 
 
 
-class AbstractEnumerationValueVariationPointBuilder:
-    """Builder for AbstractEnumerationValueVariationPoint."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AbstractEnumerationValueVariationPoint = AbstractEnumerationValueVariationPoint()
-
-    def build(self) -> AbstractEnumerationValueVariationPoint:
-        """Build and return AbstractEnumerationValueVariationPoint object.
-
-        Returns:
-            AbstractEnumerationValueVariationPoint instance
-        """
-        # TODO: Add validation
-        return self._obj

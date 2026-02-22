@@ -102,18 +102,3 @@ class IEEE1722TpAcfBusPart(Identifiable, ABC):
 
 
 
-class IEEE1722TpAcfBusPartBuilder:
-    """Builder for IEEE1722TpAcfBusPart."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: IEEE1722TpAcfBusPart = IEEE1722TpAcfBusPart()
-
-    def build(self) -> IEEE1722TpAcfBusPart:
-        """Build and return IEEE1722TpAcfBusPart object.
-
-        Returns:
-            IEEE1722TpAcfBusPart instance
-        """
-        # TODO: Add validation
-        return self._obj

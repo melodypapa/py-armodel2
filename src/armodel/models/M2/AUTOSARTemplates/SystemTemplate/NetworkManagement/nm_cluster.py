@@ -260,18 +260,3 @@ class NmCluster(Identifiable, ABC):
 
 
 
-class NmClusterBuilder:
-    """Builder for NmCluster."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: NmCluster = NmCluster()
-
-    def build(self) -> NmCluster:
-        """Build and return NmCluster object.
-
-        Returns:
-            NmCluster instance
-        """
-        # TODO: Add validation
-        return self._obj

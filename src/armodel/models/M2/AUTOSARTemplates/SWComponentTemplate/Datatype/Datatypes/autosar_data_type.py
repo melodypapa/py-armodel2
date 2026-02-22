@@ -110,18 +110,3 @@ class AutosarDataType(ARElement, ABC):
 
 
 
-class AutosarDataTypeBuilder:
-    """Builder for AutosarDataType."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AutosarDataType = AutosarDataType()
-
-    def build(self) -> AutosarDataType:
-        """Build and return AutosarDataType object.
-
-        Returns:
-            AutosarDataType instance
-        """
-        # TODO: Add validation
-        return self._obj

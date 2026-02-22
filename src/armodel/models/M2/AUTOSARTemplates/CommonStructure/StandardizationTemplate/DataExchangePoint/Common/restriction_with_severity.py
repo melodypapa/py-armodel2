@@ -98,18 +98,3 @@ class RestrictionWithSeverity(ARObject, ABC):
 
 
 
-class RestrictionWithSeverityBuilder:
-    """Builder for RestrictionWithSeverity."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: RestrictionWithSeverity = RestrictionWithSeverity()
-
-    def build(self) -> RestrictionWithSeverity:
-        """Build and return RestrictionWithSeverity object.
-
-        Returns:
-            RestrictionWithSeverity instance
-        """
-        # TODO: Add validation
-        return self._obj

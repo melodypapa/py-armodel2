@@ -74,18 +74,3 @@ class CouplingElementAbstractDetails(Identifiable, ABC):
 
 
 
-class CouplingElementAbstractDetailsBuilder:
-    """Builder for CouplingElementAbstractDetails."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: CouplingElementAbstractDetails = CouplingElementAbstractDetails()
-
-    def build(self) -> CouplingElementAbstractDetails:
-        """Build and return CouplingElementAbstractDetails object.
-
-        Returns:
-            CouplingElementAbstractDetails instance
-        """
-        # TODO: Add validation
-        return self._obj

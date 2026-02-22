@@ -149,18 +149,3 @@ class ModeGroupInAtomicSwcInstanceRef(ARObject, ABC):
 
 
 
-class ModeGroupInAtomicSwcInstanceRefBuilder:
-    """Builder for ModeGroupInAtomicSwcInstanceRef."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: ModeGroupInAtomicSwcInstanceRef = ModeGroupInAtomicSwcInstanceRef()
-
-    def build(self) -> ModeGroupInAtomicSwcInstanceRef:
-        """Build and return ModeGroupInAtomicSwcInstanceRef object.
-
-        Returns:
-            ModeGroupInAtomicSwcInstanceRef instance
-        """
-        # TODO: Add validation
-        return self._obj

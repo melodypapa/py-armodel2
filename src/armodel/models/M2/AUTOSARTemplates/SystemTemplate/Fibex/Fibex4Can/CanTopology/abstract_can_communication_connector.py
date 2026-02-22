@@ -74,18 +74,3 @@ class AbstractCanCommunicationConnector(CommunicationConnector, ABC):
 
 
 
-class AbstractCanCommunicationConnectorBuilder:
-    """Builder for AbstractCanCommunicationConnector."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AbstractCanCommunicationConnector = AbstractCanCommunicationConnector()
-
-    def build(self) -> AbstractCanCommunicationConnector:
-        """Build and return AbstractCanCommunicationConnector object.
-
-        Returns:
-            AbstractCanCommunicationConnector instance
-        """
-        # TODO: Add validation
-        return self._obj

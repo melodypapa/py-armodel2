@@ -71,18 +71,3 @@ class CpSoftwareClusterCommunicationResourceProps(ARObject, ABC):
 
 
 
-class CpSoftwareClusterCommunicationResourcePropsBuilder:
-    """Builder for CpSoftwareClusterCommunicationResourceProps."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: CpSoftwareClusterCommunicationResourceProps = CpSoftwareClusterCommunicationResourceProps()
-
-    def build(self) -> CpSoftwareClusterCommunicationResourceProps:
-        """Build and return CpSoftwareClusterCommunicationResourceProps object.
-
-        Returns:
-            CpSoftwareClusterCommunicationResourceProps instance
-        """
-        # TODO: Add validation
-        return self._obj

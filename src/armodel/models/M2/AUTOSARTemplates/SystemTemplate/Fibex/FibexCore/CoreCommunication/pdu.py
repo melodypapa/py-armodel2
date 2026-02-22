@@ -125,18 +125,3 @@ class Pdu(FibexElement, ABC):
 
 
 
-class PduBuilder:
-    """Builder for Pdu."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: Pdu = Pdu()
-
-    def build(self) -> Pdu:
-        """Build and return Pdu object.
-
-        Returns:
-            Pdu instance
-        """
-        # TODO: Add validation
-        return self._obj

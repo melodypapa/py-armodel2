@@ -149,18 +149,3 @@ class EcucAbstractReferenceValue(EcucIndexableValue, ABC):
 
 
 
-class EcucAbstractReferenceValueBuilder:
-    """Builder for EcucAbstractReferenceValue."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: EcucAbstractReferenceValue = EcucAbstractReferenceValue()
-
-    def build(self) -> EcucAbstractReferenceValue:
-        """Build and return EcucAbstractReferenceValue object.
-
-        Returns:
-            EcucAbstractReferenceValue instance
-        """
-        # TODO: Add validation
-        return self._obj

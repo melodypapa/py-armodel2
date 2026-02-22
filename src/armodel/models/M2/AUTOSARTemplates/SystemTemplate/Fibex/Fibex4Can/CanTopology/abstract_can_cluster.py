@@ -156,18 +156,3 @@ class AbstractCanCluster(ARObject, ABC):
 
 
 
-class AbstractCanClusterBuilder:
-    """Builder for AbstractCanCluster."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AbstractCanCluster = AbstractCanCluster()
-
-    def build(self) -> AbstractCanCluster:
-        """Build and return AbstractCanCluster object.
-
-        Returns:
-            AbstractCanCluster instance
-        """
-        # TODO: Add validation
-        return self._obj

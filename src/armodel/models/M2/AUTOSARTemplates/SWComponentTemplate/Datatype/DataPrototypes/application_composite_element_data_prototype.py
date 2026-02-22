@@ -103,18 +103,3 @@ class ApplicationCompositeElementDataPrototype(DataPrototype, ABC):
 
 
 
-class ApplicationCompositeElementDataPrototypeBuilder:
-    """Builder for ApplicationCompositeElementDataPrototype."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: ApplicationCompositeElementDataPrototype = ApplicationCompositeElementDataPrototype()
-
-    def build(self) -> ApplicationCompositeElementDataPrototype:
-        """Build and return ApplicationCompositeElementDataPrototype object.
-
-        Returns:
-            ApplicationCompositeElementDataPrototype instance
-        """
-        # TODO: Add validation
-        return self._obj

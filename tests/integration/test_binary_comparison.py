@@ -56,7 +56,10 @@ class TestIndividualFiles:
             writer: ARXML writer instance
             tmp_path: Pytest temporary directory
         """
+        # Check both demos/validated and demos/arxml for compatibility
         arxml_file = Path("demos/validated") / filename
+        if not arxml_file.exists():
+            arxml_file = Path("demos/arxml") / filename
 
         if not arxml_file.exists():
             pytest.skip(f"File not found: {arxml_file}")
@@ -495,7 +498,6 @@ class TestIndividualFiles:
             tmp_path
         )
 
-    @pytest.mark.xfail
     def test_bswm_mode_binary_comparison(
         self,
         reader: ARXMLReader,

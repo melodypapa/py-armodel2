@@ -118,17 +118,601 @@ class ComplexDeviceDriverSwComponentType(AtomicSwComponentType):
 
 
 class ComplexDeviceDriverSwComponentTypeBuilder:
-    """Builder for ComplexDeviceDriverSwComponentType."""
+    """Builder for ComplexDeviceDriverSwComponentType with fluent API."""
 
     def __init__(self) -> None:
-        """Initialize builder."""
+        """Initialize builder with defaults."""
+        pass
         self._obj: ComplexDeviceDriverSwComponentType = ComplexDeviceDriverSwComponentType()
 
-    def build(self) -> ComplexDeviceDriverSwComponentType:
-        """Build and return ComplexDeviceDriverSwComponentType object.
+
+    def with_short_name(self, value: Identifier) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Set short_name attribute.
+
+        Args:
+            value: Value to set
 
         Returns:
-            ComplexDeviceDriverSwComponentType instance
+            self for method chaining
         """
-        # TODO: Add validation
+        if value is None and not False:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.short_name = value
+        return self
+
+    def with_short_name_fragments(self, items: list[ShortNameFragment]) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Set short_name_fragments list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.short_name_fragments = list(items) if items else []
+        return self
+
+    def with_long_name(self, value: Optional[MultilanguageLongName]) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Set long_name attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.long_name = value
+        return self
+
+    def with_admin_data(self, value: Optional[AdminData]) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Set admin_data attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.admin_data = value
+        return self
+
+    def with_annotations(self, items: list[Annotation]) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Set annotations list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.annotations = list(items) if items else []
+        return self
+
+    def with_desc(self, value: Optional[MultiLanguageOverviewParagraph]) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Set desc attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.desc = value
+        return self
+
+    def with_category(self, value: Optional[CategoryString]) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Set category attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.category = value
+        return self
+
+    def with_introduction(self, value: Optional[DocumentationBlock]) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Set introduction attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.introduction = value
+        return self
+
+    def with_uuid(self, value: Optional[String]) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Set uuid attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.uuid = value
+        return self
+
+    def with_consistency_needses(self, items: list[ConsistencyNeeds]) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Set consistency_needses list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.consistency_needses = list(items) if items else []
+        return self
+
+    def with_ports(self, items: list[PortPrototype]) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Set ports list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.ports = list(items) if items else []
+        return self
+
+    def with_port_groups(self, items: list[PortGroup]) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Set port_groups list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.port_groups = list(items) if items else []
+        return self
+
+    def with_swc_mapping_constraints(self, items: list[SwComponentMappingConstraints]) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Set swc_mapping_constraints list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.swc_mapping_constraints = list(items) if items else []
+        return self
+
+    def with_sw_component_documentation(self, value: Optional[SwComponentDocumentation]) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Set sw_component_documentation attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.sw_component_documentation = value
+        return self
+
+    def with_unit_groups(self, items: list[UnitGroup]) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Set unit_groups list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.unit_groups = list(items) if items else []
+        return self
+
+    def with_internal_behavior(self, value: Optional[SwcInternalBehavior]) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Set internal_behavior attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.internal_behavior = value
+        return self
+
+    def with_symbol_props(self, value: Optional[SymbolProps]) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Set symbol_props attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.symbol_props = value
+        return self
+
+    def with_hardwares(self, items: list[HwDescriptionEntity]) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Set hardwares list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.hardwares = list(items) if items else []
+        return self
+
+
+    def add_short_name_fragment(self, item: ShortNameFragment) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Add a single item to short_name_fragments list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.short_name_fragments.append(item)
+        return self
+
+    def clear_short_name_fragments(self) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Clear all items from short_name_fragments list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.short_name_fragments = []
+        return self
+
+    def add_annotation(self, item: Annotation) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Add a single item to annotations list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.annotations.append(item)
+        return self
+
+    def clear_annotations(self) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Clear all items from annotations list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.annotations = []
+        return self
+
+    def add_consistency_needse(self, item: ConsistencyNeeds) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Add a single item to consistency_needses list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.consistency_needses.append(item)
+        return self
+
+    def clear_consistency_needses(self) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Clear all items from consistency_needses list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.consistency_needses = []
+        return self
+
+    def add_port(self, item: PortPrototype) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Add a single item to ports list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.ports.append(item)
+        return self
+
+    def clear_ports(self) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Clear all items from ports list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.ports = []
+        return self
+
+    def add_port_group(self, item: PortGroup) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Add a single item to port_groups list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.port_groups.append(item)
+        return self
+
+    def clear_port_groups(self) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Clear all items from port_groups list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.port_groups = []
+        return self
+
+    def add_swc_mapping_constraint(self, item: SwComponentMappingConstraints) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Add a single item to swc_mapping_constraints list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.swc_mapping_constraints.append(item)
+        return self
+
+    def clear_swc_mapping_constraints(self) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Clear all items from swc_mapping_constraints list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.swc_mapping_constraints = []
+        return self
+
+    def add_unit_group(self, item: UnitGroup) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Add a single item to unit_groups list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.unit_groups.append(item)
+        return self
+
+    def clear_unit_groups(self) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Clear all items from unit_groups list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.unit_groups = []
+        return self
+
+    def add_hardware(self, item: HwDescriptionEntity) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Add a single item to hardwares list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.hardwares.append(item)
+        return self
+
+    def clear_hardwares(self) -> "ComplexDeviceDriverSwComponentTypeBuilder":
+        """Clear all items from hardwares list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.hardwares = []
+        return self
+
+
+    @staticmethod
+    def _coerce_to_int(value: Any) -> int:
+        """Coerce value to int.
+
+        Args:
+            value: Value to coerce
+
+        Returns:
+            Integer value
+
+        Raises:
+            ValueError: If value cannot be coerced to int
+        """
+        if isinstance(value, int):
+            return value
+        if isinstance(value, str) and value.isdigit():
+            return int(value)
+        if isinstance(value, float):
+            return int(value)
+        if isinstance(value, bool):
+            return int(value)
+        raise ValueError(f"Cannot coerce {type(value).__name__} to int: {value}")
+
+    @staticmethod
+    def _coerce_to_float(value: Any) -> float:
+        """Coerce value to float.
+
+        Args:
+            value: Value to coerce
+
+        Returns:
+            Float value
+
+        Raises:
+            ValueError: If value cannot be coerced to float
+        """
+        if isinstance(value, float):
+            return value
+        if isinstance(value, int):
+            return float(value)
+        if isinstance(value, str):
+            try:
+                return float(value)
+            except ValueError:
+                pass
+        raise ValueError(f"Cannot coerce {type(value).__name__} to float: {value}")
+
+    @staticmethod
+    def _coerce_to_bool(value: Any) -> bool:
+        """Coerce value to bool.
+
+        Args:
+            value: Value to coerce
+
+        Returns:
+            Boolean value
+
+        Raises:
+            ValueError: If value cannot be coerced to bool
+        """
+        if isinstance(value, bool):
+            return value
+        if isinstance(value, int):
+            return bool(value)
+        if isinstance(value, str):
+            if value.lower() in ("true", "1", "yes"):
+                return True
+            if value.lower() in ("false", "0", "no"):
+                return False
+        raise ValueError(f"Cannot coerce {type(value).__name__} to bool: {value}")
+
+    @staticmethod
+    def _coerce_to_str(value: Any) -> str:
+        """Coerce value to str.
+
+        Args:
+            value: Value to coerce
+
+        Returns:
+            String value
+        """
+        return str(value)
+
+
+    @staticmethod
+    def _coerce_to_list(value: Any, item_type: str) -> list:
+        """Coerce value to list.
+
+        Args:
+            value: Value to coerce
+            item_type: Expected item type (for error messages)
+
+        Returns:
+            List value
+
+        Raises:
+            ValueError: If value cannot be coerced to list
+        """
+        if isinstance(value, list):
+            return value
+        if isinstance(value, tuple):
+            return list(value)
+        raise ValueError(f"Cannot coerce {type(value).__name__} to list[{item_type}]: {value}")
+
+
+    def _validate_instance(self) -> None:
+        """Validate the built instance based on settings."""
+        from typing import get_type_hints
+        from armodel.core import GlobalSettingsManager, BuilderValidationMode
+
+        settings = GlobalSettingsManager()
+        mode = settings.builder_validation
+
+        if mode == BuilderValidationMode.DISABLED:
+            return
+
+        # Get type hints for the class
+        try:
+            type_hints_dict = get_type_hints(type(self._obj))
+        except Exception:
+            # Cannot resolve type hints (e.g., forward references), skip validation
+            return
+
+        for attr_name, attr_type in type_hints_dict.items():
+            if attr_name.startswith("_"):
+                continue
+
+            value = getattr(self._obj, attr_name)
+
+            # Check required fields (not Optional)
+            if value is None and not self._is_optional_type(attr_type):
+                if mode == BuilderValidationMode.STRICT:
+                    raise ValueError(
+                        f"Required attribute '{attr_name}' is None"
+                    )
+                elif mode == BuilderValidationMode.LENIENT:
+                    import warnings
+                    warnings.warn(
+                        f"Required attribute '{attr_name}' is None",
+                        UserWarning
+                    )
+
+    @staticmethod
+    def _is_optional_type(type_hint: Any) -> bool:
+        """Check if a type hint is Optional.
+
+        Args:
+            type_hint: Type hint to check
+
+        Returns:
+            True if type is Optional, False otherwise
+        """
+        origin = getattr(type_hint, "__origin__", None)
+        return origin is Union
+
+    @staticmethod
+    def _get_expected_type(type_hint: Any) -> type:
+        """Extract expected type from type hint.
+
+        Args:
+            type_hint: Type hint to extract from
+
+        Returns:
+            Expected type
+        """
+        if isinstance(type_hint, str):
+            return object
+        origin = getattr(type_hint, "__origin__", None)
+        if origin is Union:
+            args = getattr(type_hint, "__args__", [])
+            for arg in args:
+                if arg is not type(None):
+                    return arg
+        elif origin is list:
+            args = getattr(type_hint, "__args__", [object])
+            return args[0] if args else object
+        return type_hint if isinstance(type_hint, type) else object
+
+
+    def build(self) -> ComplexDeviceDriverSwComponentType:
+        """Build and return the ComplexDeviceDriverSwComponentType instance with validation."""
+        self._validate_instance()
+        pass
         return self._obj

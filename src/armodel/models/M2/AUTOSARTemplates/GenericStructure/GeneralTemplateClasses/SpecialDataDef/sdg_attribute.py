@@ -74,18 +74,3 @@ class SdgAttribute(Identifiable, ABC):
 
 
 
-class SdgAttributeBuilder:
-    """Builder for SdgAttribute."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: SdgAttribute = SdgAttribute()
-
-    def build(self) -> SdgAttribute:
-        """Build and return SdgAttribute object.
-
-        Returns:
-            SdgAttribute instance
-        """
-        # TODO: Add validation
-        return self._obj

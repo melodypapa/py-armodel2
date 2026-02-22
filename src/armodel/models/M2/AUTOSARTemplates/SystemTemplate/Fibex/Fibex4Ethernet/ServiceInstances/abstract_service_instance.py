@@ -190,18 +190,3 @@ class AbstractServiceInstance(Identifiable, ABC):
 
 
 
-class AbstractServiceInstanceBuilder:
-    """Builder for AbstractServiceInstance."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AbstractServiceInstance = AbstractServiceInstance()
-
-    def build(self) -> AbstractServiceInstance:
-        """Build and return AbstractServiceInstance object.
-
-        Returns:
-            AbstractServiceInstance instance
-        """
-        # TODO: Add validation
-        return self._obj

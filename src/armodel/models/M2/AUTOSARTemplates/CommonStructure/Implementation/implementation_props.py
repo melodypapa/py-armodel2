@@ -103,18 +103,3 @@ class ImplementationProps(Referrable, ABC):
 
 
 
-class ImplementationPropsBuilder:
-    """Builder for ImplementationProps."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: ImplementationProps = ImplementationProps()
-
-    def build(self) -> ImplementationProps:
-        """Build and return ImplementationProps object.
-
-        Returns:
-            ImplementationProps instance
-        """
-        # TODO: Add validation
-        return self._obj

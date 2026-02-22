@@ -98,18 +98,3 @@ class BlueprintPolicy(ARObject, ABC):
 
 
 
-class BlueprintPolicyBuilder:
-    """Builder for BlueprintPolicy."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: BlueprintPolicy = BlueprintPolicy()
-
-    def build(self) -> BlueprintPolicy:
-        """Build and return BlueprintPolicy object.
-
-        Returns:
-            BlueprintPolicy instance
-        """
-        # TODO: Add validation
-        return self._obj

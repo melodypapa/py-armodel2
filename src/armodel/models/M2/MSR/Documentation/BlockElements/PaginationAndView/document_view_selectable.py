@@ -123,18 +123,3 @@ class DocumentViewSelectable(ARObject, ABC):
 
 
 
-class DocumentViewSelectableBuilder:
-    """Builder for DocumentViewSelectable."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: DocumentViewSelectable = DocumentViewSelectable()
-
-    def build(self) -> DocumentViewSelectable:
-        """Build and return DocumentViewSelectable object.
-
-        Returns:
-            DocumentViewSelectable instance
-        """
-        # TODO: Add validation
-        return self._obj

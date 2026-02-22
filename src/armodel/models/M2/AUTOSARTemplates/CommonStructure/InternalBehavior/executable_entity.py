@@ -288,18 +288,3 @@ class ExecutableEntity(Identifiable, ABC):
 
 
 
-class ExecutableEntityBuilder:
-    """Builder for ExecutableEntity."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: ExecutableEntity = ExecutableEntity()
-
-    def build(self) -> ExecutableEntity:
-        """Build and return ExecutableEntity object.
-
-        Returns:
-            ExecutableEntity instance
-        """
-        # TODO: Add validation
-        return self._obj

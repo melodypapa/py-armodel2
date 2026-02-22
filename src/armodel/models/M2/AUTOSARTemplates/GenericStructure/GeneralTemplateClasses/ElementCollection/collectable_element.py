@@ -74,18 +74,3 @@ class CollectableElement(Identifiable, ABC):
 
 
 
-class CollectableElementBuilder:
-    """Builder for CollectableElement."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: CollectableElement = CollectableElement()
-
-    def build(self) -> CollectableElement:
-        """Build and return CollectableElement object.
-
-        Returns:
-            CollectableElement instance
-        """
-        # TODO: Add validation
-        return self._obj
