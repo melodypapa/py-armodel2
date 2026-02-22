@@ -66,125 +66,22 @@ py-armodel2 uses a **reflection-based serialization framework** that automatical
 
 ## Decorators
 
-### 1. `@xml_attribute`
+py-armodel2 provides decorators for handling edge cases in XML serialization. These decorators are used sparingly - only when the XML structure differs from the default behavior of the reflection-based framework.
 
-**Purpose**: Mark a property/attribute to be serialized as an **XML attribute** instead of a child element.
+**Available Decorators**:
+- `@xml_attribute` - Mark property as XML attribute instead of element
+- `@atp_variant()` - Mark class as using AUTOSAR atpVariation pattern
+- `@l_prefix(tag)` - Mark attribute as using language-specific L-N pattern
+- `@language_abbr(attr)` - Mark attribute as language abbreviation XML attribute
+- `@xml_element_name(tag)` - Specify custom XML element name for attributes
 
-**When to use**:
-- When the XML schema requires data as an attribute (e.g., `<AUTOSAR schema-version="4.5.0">`)
-- For metadata like IDs, versions, UUIDs, etc.
+**See Also**: [XML Serialization Decorators](decorators.md) for complete documentation including:
+- Detailed usage examples for each decorator
+- Implementation details and best practices
+- Decorator detection and processing mechanisms
+- Testing guidelines and troubleshooting
 
-**Location**: `src/armodel/serialization/decorators.py:6-27`
-
-#### Usage Example
-
-```python
-from armodel.serialization.decorators import xml_attribute
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-
-class AUTOSAR(ARObject):
-    def __init__(self) -> None:
-        self._schema_version: str = "4.5.0"
-        self.ar_packages: list[ARPackage] = []
-
-    @xml_attribute
-    @property
-    def schema_version(self) -> str:
-        """Schema version serialized as XML attribute."""
-        return self._schema_version
-
-    @schema_version.setter
-    def schema_version(self, value: str) -> None:
-        self._schema_version = value
-
-# Results in:
-# <AUTOSAR SCHEMA-VERSION="4.5.0">
-#     <AR-PACKAGES>...</AR-PACKAGES>
-# </AUTOSAR>
-```
-
-**Without the decorator**, it would serialize as:
-```xml
-<AUTOSAR>
-    <SCHEMA-VERSION>4.5.0</SCHEMA-VERSION>
-</AUTOSAR>
-```
-
-#### Important Implementation Details
-
-1. **Decorator order**: `@xml_attribute` must come **before** `@property`
-2. **Property pattern**: Requires property getter/setter pattern
-3. **Private storage**: Use underscore-prefixed private attribute (e.g., `_schema_version`)
-
-#### Common Use Cases
-
-- `schema_version` - AUTOSAR schema version
-- `uuid` - Unique identifiers
-- `id` - Element IDs
-- `version` - Version attributes
-
----
-
-### 2. `@atp_variant()`
-
-**Purpose**: Mark a class as using the AUTOSAR **atpVariation** pattern.
-
-**When to use**:
-- When AUTOSAR schema defines elements with `<CLASS-TAG>-VARIANTS/<CLASS-TAG>-CONDITIONAL` wrapper structure
-- Automatically applied by code generator based on JSON mapping data
-
-**Location**: `src/armodel/serialization/decorators.py:30-55`
-
-#### Usage Example
-
-```python
-from armodel.serialization.decorators import atp_variant
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-
-@atp_variant()
-class SwDataDefProps(ARObject):
-    base_type_ref: Optional[ARRef] = None
-    sw_calibration_access: Optional[SwCalibrationAccessEnum] = None
-
-# Serializes as:
-# <SW-DATA-DEF-PROPS>
-#   <SW-DATA-DEF-PROPS-VARIANTS>
-#     <SW-DATA-DEF-PROPS-CONDITIONAL>
-#       <BASE-TYPE-REF>...</BASE-TYPE-REF>
-#       <SW-CALIBRATION-ACCESS>...</SW-CALIBRATION-ACCESS>
-#     </SW-DATA-DEF-PROPS-CONDITIONAL>
-#   </SW-DATA-DEF-PROPS-VARIANTS>
-# </SW-DATA-DEF-PROPS>
-```
-
-### 3. `@l_prefix(tag_name: str)`
-
-**Purpose**: Mark an attribute as using **language-specific L-N** naming pattern for multilanguage text.
-
-**When to use**:
-- For MultiLanguage* classes where content is wrapped in language tags (e.g., L-1, L-2, L-4, L-5, L-10)
-- Automatically applied by code generator based on JSON `kind: "l_prefix"` mapping
-
-**Location**: `src/armodel/serialization/decorators.py:58-80`
-
-#### Usage Example
-
-```python
-from armodel.serialization.decorators import l_prefix
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-
-class MultiLanguagePlainText(ARObject):
-    def __init__(self) -> None:
-        self._l10: LPlainText = None
-
-    @property
-    @l_prefix("L-10")
-    def l10(self) -> LPlainText:
-        return self._l10
-
-# Serializes as:
-# <L-10 L="EN">English text</L-10>
-```
+**Location**: `src/armodel/serialization/decorators.py`
 
 ## Name Conversion
 

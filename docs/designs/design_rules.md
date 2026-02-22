@@ -26,7 +26,7 @@ Design rules are categorized by their type and scope:
 - **DESIGN_RULE_013**: Use `get_type_hints()` for type-based deserialization
 - **DESIGN_RULE_014**: All class attributes must have type hints at class level (not just in `__init__`)
 - **DESIGN_RULE_015**: Use `NameConverter.to_xml_tag()` for snake_case → UPPER-CASE-WITH-HYPHENS conversion
-- **DESIGN_RULE_016**: Use `@xml_attribute` decorator for XML attributes (instead of elements)
+- **DESIGN_RULE_016**: Use `@xml_attribute` decorator for XML attributes (instead of elements) - see `docs/designs/decorators.md` for complete decorator documentation
 - **DESIGN_RULE_017**: XML tag names are automatically generated from class names
 - **DESIGN_RULE_018**: List attributes create wrapper elements (e.g., `ar_packages` → `<AR-PACKAGES>`)
 

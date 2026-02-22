@@ -115,3 +115,28 @@ def language_abbr(xml_attr_name: str) -> Callable[[Any], Any]:
         attr_or_func._xml_attr_name = xml_attr_name  # type: ignore[union-attr]
         return attr_or_func
     return decorator
+
+
+def xml_element_name(xml_tag: str) -> Callable[[Any], Any]:
+    """Decorator to specify custom XML element name for attributes.
+
+    This decorator is used when the XML element name differs from the
+    auto-generated name. For example, 'providedClientServerEntries' should
+    serialize to 'PROVIDED-ENTRYS' instead of 'PROVIDED-CLIENT-SERVER-ENTRIES'.
+
+    Usage:
+        class BswModuleDescription(ARElement):
+            @xml_element_name("PROVIDED-ENTRYS")
+            provided_client_server_entries: list[BswModuleClientServerEntry] = []
+
+    Args:
+        xml_tag: The exact XML element name to use (e.g., "PROVIDED-ENTRYS")
+
+    Returns:
+        Decorator that sets _xml_element_name marker on the attribute
+    """
+    def decorator(attr_or_func: Any) -> Any:
+        attr_or_func._xml_element_name = True  # type: ignore[union-attr]
+        attr_or_func._xml_tag = xml_tag  # type: ignore[union-attr]
+        return attr_or_func
+    return decorator

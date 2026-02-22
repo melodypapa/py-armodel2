@@ -6,6 +6,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **py-armodel2** is a Python library for processing AUTOSAR (Automotive Open System Architecture) ARXML models. The project uses a code generation architecture where AUTOSAR model classes (~2,200 files) are automatically generated and support full reading, parsing, writing, and serialization of ARXML files across multiple AUTOSAR schema versions.
 
+**Convenient Imports:** All model classes can be imported directly from `armodel.models`:
+```python
+from armodel.models import AUTOSAR, ARPackage, SwBaseType, ImplementationDataType
+```
+
+**Key Architecture:**
+- **Reflection-based serialization** - Zero boilerplate, uses Python's `vars()` and `get_type_hints()`
+- **Code generation** - All model classes auto-generated from AUTOSAR schema mappings
+- **Fluent API Builders** - Method chaining, inheritance support, type coercion, list methods
+- **Singleton pattern** - AUTOSAR, GlobalSettingsManager, SchemaVersionManager use singleton
+- **Multi-version support** - Handles AUTOSAR schemas 00042-00054 plus legacy 3.2.3
+- **Type-safe** - Strict type hints throughout with MyPy enforcement
+
 ## Development Commands
 
 ### Installation
@@ -35,10 +48,13 @@ PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest tests/integrati
 ### Code Generation
 ```bash
 # Regenerate all model classes (after generator or mapping changes)
-python -m tools.generate_models --members
+python -m tools.generate_models --members --classes --enums --primitives
 
-# Or from project root
-python -m tools.generate_models --members
+# Or use the generate_models script
+./scripts/generate_models.sh
+
+# Regenerate armodel/models/__init__.py (after adding new classes)
+python tools/generate_models_init.py
 ```
 
 ### Quality Checks
@@ -80,7 +96,11 @@ If you find bugs, issues, or needed improvements in files under `src/armodel/mod
 - **DO** fix the issue in `tools/generate_models/` (the generator)
 - **THEN** regenerate by running: `python -m tools.generate_models --members`
 
-**Exception**: Only classes listed in `tools/skip_classes.yaml` should be manually edited (AUTOSAR, ARObject, ARRef, ARPackage, CompuMethod*, Item, DocumentationBlock, LanguageSpecific*)
+**Exception**: Only classes listed in `tools/skip_classes.yaml` should be manually edited
+
+**Configuration**: `tools/skip_classes.yaml` defines:
+- `skip_classes` - Classes to skip during generation (manually maintained)
+- `force_type_checking_imports` - Types that must use TYPE_CHECKING to avoid circular imports
 
 **Manually Maintained Classes** (defined in `tools/skip_classes.yaml`):
 - `AUTOSAR` - Root element
@@ -93,6 +113,24 @@ If you find bugs, issues, or needed improvements in files under `src/armodel/mod
 - `LanguageSpecific*` - Language-specific classes (LLongName, LPlainText, LParagraph, LOverviewParagraph, LVerbatim, MixedContent)
 
 **Note**: These classes use `@language_abbr` decorator for proper XML attribute serialization (e.g., `L="EN"`)
+
+### GlobalSettingsManager
+
+The `GlobalSettingsManager` singleton manages application-wide settings:
+
+```python
+from armodel.core import GlobalSettingsManager, BuilderValidationMode
+
+settings = GlobalSettingsManager()
+
+# Validation settings
+settings.strict_validation = False      # Raise exception on unrecognized XML elements
+settings.warn_on_unrecognized = True    # Log warning for unrecognized XML elements
+
+# Builder settings
+settings.builder_validation = BuilderValidationMode.STRICT  # or LENIENT, DISABLED
+settings.builder_type_coercion = True   # Enable type coercion in builders
+```
 
 ### Reflection-Based Serialization Framework
 
@@ -167,14 +205,105 @@ def l(self) -> LEnum:
 
 **Decorator Implementation**: All decorators are in `src/armodel/serialization/decorators.py`
 
+### Fluent API Builder Pattern
+
+All concrete model classes include a Builder with fluent API for object construction:
+
+```python
+# Basic usage with method chaining
+data_type = (
+    ImplementationDataTypeBuilder()
+    .with_short_name("MyType")
+    .with_category("VALUE")
+    .with_type_emitter("BSW")
+    .build()
+)
+
+# List-specific methods
+elem1 = ImplementationDataTypeBuilder().with_short_name("Elem1").build()
+elem2 = ImplementationDataTypeBuilder().with_short_name("Elem2").build()
+
+data_type = (
+    ImplementationDataTypeBuilder()
+    .with_short_name("MyType")
+    .with_sub_elements([elem1, elem2])  # Set list
+    .add_sub_element(elem3)              # Add to list
+    .clear_sub_elements()                # Clear list
+    .build()
+)
+
+# Type coercion (automatic conversion)
+data_type = (
+    ImplementationDataTypeBuilder()
+    .with_short_name("MyType")
+    .with_category("VALUE")
+    .with_type_emitter(123)  # int -> str automatic conversion
+    .build()
+)
+
+# Inherited attributes available in child builders
+data_type = (
+    ImplementationDataTypeBuilder()
+    .with_short_name("MyType")       # Inherited from Referrable
+    .with_long_name("My Long Name")  # Inherited from MultilanguageReferrable
+    .with_category("VALUE")          # Own attribute
+    .build()
+)
+```
+
+**Builder Features:**
+- **Method chaining**: All `with_*()` methods return self for fluent API
+- **Inherited attributes**: Child builders include `with_*()` methods for parent class attributes
+- **List methods**: `with_items()`, `add_item()`, `clear_items()` for list attributes
+- **Type coercion**: Automatic conversion for compatible types (str↔int, str↔float, bool↔int)
+- **Configurable validation**: STRICT, LENIENT, or DISABLED via GlobalSettingsManager
+- **Abstract classes**: No Builders generated for abstract classes (cannot be instantiated)
+
+**Builder Validation Configuration:**
+```python
+from armodel.core import GlobalSettingsManager, BuilderValidationMode
+
+settings = GlobalSettingsManager()
+settings.builder_validation = BuilderValidationMode.STRICT  # or LENIENT, DISABLED
+```
+
 ### Class-Based Architecture
 
 Infrastructure modules use class-based design (not module-based functions):
 
-**Singletons** (shared state):
+**Singletons** (shared state, thread-safe with double-checked locking):
+- `AUTOSAR` (`src/armodel/models/M2/AUTOSARTemplates/autosar.py`) - Root AUTOSAR element with `clear()` and `reset()` methods
 - `SchemaVersionManager` (`src/armodel/core/version.py`) - Schema version detection and config
-- `AUTOSAR` (`src/armodel/models/M2/AUTOSARTemplates/autosar.py`) - Root AUTOSAR element
-- `GlobalSettingsManager` (`src/armodel/core/settings.py`) - Application-wide settings (strict_validation, warn_on_unrecognized)
+- `GlobalSettingsManager` (`src/armodel/core/settings.py`) - Application-wide settings (strict_validation, warn_on_unrecognized, builder_validation)
+
+**Singleton Pattern:**
+```python
+class SomeManager:
+    _instance: Optional["SomeManager"] = None
+    _initialized: bool = False
+    _lock: threading.Lock = threading.Lock()
+
+    def __new__(cls) -> "SomeManager":
+        if cls._instance is None:
+            with cls._lock:
+                if cls._instance is None:
+                    cls._instance = super().__new__(cls)
+                    cls._instance._initialized = False
+        return cls._instance
+
+    def __init__(self) -> None:
+        if self._initialized:
+            return
+        # Initialize instance
+        self._initialized = True
+
+    @classmethod
+    def reset(cls) -> None:
+        """Reset singleton for testing."""
+        with cls._lock:
+            cls._instance = None
+            cls._initialized = False
+```
 
 **Dependency Injection** (testable):
 - `ARXMLReader` (`src/armodel/reader/__init__.py`) - ARXML file loading and parsing
@@ -276,10 +405,38 @@ ref = ARRef(dest="SW-ADDR-METHOD", value="/Package/Element", base="DataTypes")
 ### Reader/Writer Architecture
 
 - **ARXMLReader**: Uses `lxml` for parsing, converts to `xml.etree.ElementTree` for model deserialization
+  - `load_arxml(autosar, path)` - Load file into provided AUTOSAR instance (or singleton)
+  - `load_arxml_with_clear(path)` - Load file into cleared singleton for fresh state (CLI uses this)
+  - `get_schema_version(path)` - Detect version without full file load
 - **ARXMLWriter**: Uses `xml.etree.ElementTree` for serialization (not lxml)
+  - `save_arxml(path, autosar)` - Save provided AUTOSAR instance (or singleton if not specified)
 - Both accept optional `SchemaVersionManager` injection for testability
-- `ARXMLReader.get_schema_version()` detects version without full file load
 - **Namespace handling**: All serialize() methods accept namespace parameter; deserialize() strips namespaces from tags
+
+**Singleton Usage:**
+```python
+from armodel.models import AUTOSAR
+from armodel.reader import ARXMLReader
+from armodel.writer import ARXMLWriter
+
+# Get singleton instance
+autosar = AUTOSAR()
+
+# Use singleton for multiple operations
+reader = ARXMLReader()
+reader.load_arxml(autosar, "file1.arxml")
+# ... process ...
+writer = ARXMLWriter()
+writer.save_arxml("output1.arxml", autosar)
+
+# Clear state for next operation
+autosar.clear()
+reader.load_arxml(autosar, "file2.arxml")
+writer.save_arxml("output2.arxml", autosar)
+
+# Reset singleton (primarily for testing)
+AUTOSAR.reset()
+```
 
 ### Type Checking
 
@@ -347,14 +504,17 @@ version = reader.get_schema_version('path/to/file.arxml')
 
 ### Create AUTOSAR objects
 ```python
-from armodel.models.M2.AUTOSARTemplates.autosar import AUTOSAR
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_package import ARPackageBuilder
+from armodel.models import AUTOSAR, ARPackage, ARPackageBuilder
 
+# Using singleton
 autosar = AUTOSAR()
+
+# Using fluent API builder
 pkg = (ARPackageBuilder()
        .with_short_name("MyPackage")
        .with_category("DataTypes")
        .build())
+
 autosar.ar_packages.append(pkg)
 ```
 
@@ -439,6 +599,25 @@ Key rules from `docs/designs/design_rules.md`:
 - **Decorators**: `src/armodel/serialization/decorators.py` - XML serialization decorators (@xml_attribute, @atp_variant, @l_prefix, @language_abbr)
 
 ## Recent Improvements (2026-02)
+
+### Fluent API Builder Pattern (PR #96)
+- Added fluent API with method chaining to all 1,600+ Builder classes
+- Type coercion for compatible types (str↔int, str↔float, bool↔int)
+- List management methods: `with_items()`, `add_item()`, `clear_items()`
+- Inheritance support: child builders include parent class attributes
+- Configurable validation modes: STRICT, LENIENT, DISABLED
+- Abstract classes no longer generate Builders
+
+### Convenient Model Imports (PR #94)
+- All 1,900+ model classes and 1,600+ builders can be imported directly from `armodel.models`
+- Auto-generated `__init__.py` via `tools/generate_models_init.py`
+- Simplified import paths improve developer experience
+
+### Singleton Pattern Implementation (PR #90, #91)
+- AUTOSAR class now implements singleton pattern with thread-safe double-checked locking
+- Added `clear()` method to reset state while keeping singleton alive
+- Added `reset()` class method to reset singleton (primarily for testing)
+- GlobalSettingsManager and SchemaVersionManager also use singleton pattern
 
 ### SerializationHelper Refactoring (PR #82)
 - Extracted 20+ helper methods from ARObject into `SerializationHelper` class

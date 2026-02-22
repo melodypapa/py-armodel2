@@ -35,13 +35,13 @@ class BswModuleClientServerEntry(Referrable):
         """
         return False
 
-    encapsulated_ref: Optional[ARRef]
+    encapsulated_entry_ref: Optional[ARRef]
     is_reentrant: Optional[Boolean]
     is_synchronous: Optional[Boolean]
     def __init__(self) -> None:
         """Initialize BswModuleClientServerEntry."""
         super().__init__()
-        self.encapsulated_ref: Optional[ARRef] = None
+        self.encapsulated_entry_ref: Optional[ARRef] = None
         self.is_reentrant: Optional[Boolean] = None
         self.is_synchronous: Optional[Boolean] = None
 
@@ -69,12 +69,12 @@ class BswModuleClientServerEntry(Referrable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize encapsulated_ref
-        if self.encapsulated_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.encapsulated_ref, "BswModuleEntry")
+        # Serialize encapsulated_entry_ref
+        if self.encapsulated_entry_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.encapsulated_entry_ref, "BswModuleEntry")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ENCAPSULATED-REF")
+                wrapped = ET.Element("ENCAPSULATED-ENTRY-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -126,11 +126,11 @@ class BswModuleClientServerEntry(Referrable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswModuleClientServerEntry, cls).deserialize(element)
 
-        # Parse encapsulated_ref
-        child = SerializationHelper.find_child_element(element, "ENCAPSULATED-REF")
+        # Parse encapsulated_entry_ref
+        child = SerializationHelper.find_child_element(element, "ENCAPSULATED-ENTRY-REF")
         if child is not None:
-            encapsulated_ref_value = ARRef.deserialize(child)
-            obj.encapsulated_ref = encapsulated_ref_value
+            encapsulated_entry_ref_value = ARRef.deserialize(child)
+            obj.encapsulated_entry_ref = encapsulated_entry_ref_value
 
         # Parse is_reentrant
         child = SerializationHelper.find_child_element(element, "IS-REENTRANT")
@@ -183,8 +183,8 @@ class BswModuleClientServerEntryBuilder:
         self._obj.short_name_fragments = list(items) if items else []
         return self
 
-    def with_encapsulated(self, value: Optional[BswModuleEntry]) -> "BswModuleClientServerEntryBuilder":
-        """Set encapsulated attribute.
+    def with_encapsulated_entry(self, value: Optional[BswModuleEntry]) -> "BswModuleClientServerEntryBuilder":
+        """Set encapsulated_entry attribute.
 
         Args:
             value: Value to set
@@ -194,7 +194,7 @@ class BswModuleClientServerEntryBuilder:
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.encapsulated = value
+        self._obj.encapsulated_entry = value
         return self
 
     def with_is_reentrant(self, value: Optional[Boolean]) -> "BswModuleClientServerEntryBuilder":

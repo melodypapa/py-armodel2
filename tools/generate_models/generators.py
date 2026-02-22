@@ -144,6 +144,17 @@ def generate_class_code(
                         }
                         if kind == "xml_attribute":
                             has_xml_attribute = True
+                        # Parse decorator field if present
+                        if "decorator" in attr_info:
+                            decorator_spec = attr_info["decorator"]
+                            # Parse format: "decorator_name:param1,param2,..."
+                            if ":" in decorator_spec:
+                                decorator_name, params = decorator_spec.split(":", 1)
+                                attribute_types[attr_name]["decorator_name"] = decorator_name
+                                attribute_types[attr_name]["decorator_params"] = params
+                            else:
+                                attribute_types[attr_name]["decorator_name"] = decorator_spec
+                                attribute_types[attr_name]["decorator_params"] = None
                     break
 
         # Auto-detect LanguageSpecific series classes and apply language_abbr to l attribute
@@ -178,6 +189,17 @@ def generate_class_code(
         decorator_import = ""
         if has_xml_attribute:
             decorator_import = "from armodel.serialization.decorators import xml_attribute\n"
+        
+        # Check if this class has xml_element_name decorators
+        has_xml_element_name = False
+        if attribute_types:
+            for attr_name, attr_info in attribute_types.items():
+                decorator_name = attr_info.get("decorator_name")
+                if decorator_name == "xml_element_name":
+                    has_xml_element_name = True
+                    break
+        if has_xml_element_name:
+            decorator_import += "from armodel.serialization.decorators import xml_element_name\n"
         
         # Check if this class uses atpVariation pattern
         atp_type = type_def.get("atp_type", None)
@@ -245,6 +267,17 @@ def generate_class_code(
                         "is_ref": is_ref,
                         "kind": kind,
                     }
+                    # Parse decorator field if present
+                    if "decorator" in attr_info:
+                        decorator_spec = attr_info["decorator"]
+                        # Parse format: "decorator_name:param1,param2,..."
+                        if ":" in decorator_spec:
+                            decorator_name, params = decorator_spec.split(":", 1)
+                            attribute_types[attr_name]["decorator_name"] = decorator_name
+                            attribute_types[attr_name]["decorator_params"] = params
+                        else:
+                            attribute_types[attr_name]["decorator_name"] = decorator_spec
+                            attribute_types[attr_name]["decorator_params"] = None
                 break
 
     # Add ARRef import if any attribute has is_ref=True
@@ -464,9 +497,12 @@ class {class_name}(ABC):
 
             # Get Python identifier with Ref suffix if needed
             python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity, kind)
+            
+            # Get decorator_name if present
+            decorator_name = attr_info.get("decorator_name")
 
-            # For xml_attribute, l_prefix, and language_abbr, use private field with property
-            if kind == "xml_attribute" or kind == "l_prefix" or kind == "language_abbr":
+            # For xml_attribute, l_prefix, language_abbr, and xml_element_name, use private field with property
+            if kind == "xml_attribute" or kind == "l_prefix" or kind == "language_abbr" or decorator_name == "xml_element_name":
                 private_name = f"_{python_name}"
                 code += f"    {private_name}: {python_type}\n"
             else:
@@ -506,8 +542,11 @@ class {class_name}(ABC):
             # Get Python identifier with Ref suffix if needed
             python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity, kind)
             
-            # For xml_attribute, l_prefix, and language_abbr, use private field
-            if kind == "xml_attribute" or kind == "l_prefix" or kind == "language_abbr":
+            # Get decorator_name if present
+            decorator_name = attr_info.get("decorator_name")
+            
+            # For xml_attribute, l_prefix, language_abbr, and xml_element_name, use private field
+            if kind == "xml_attribute" or kind == "l_prefix" or kind == "language_abbr" or decorator_name == "xml_element_name":
                 private_name = f"_{python_name}"
                 attr_code = f"        self.{private_name}: {python_type} = {initial_value}\n"
                 code += attr_code
@@ -522,6 +561,7 @@ class {class_name}(ABC):
             multiplicity = attr_info["multiplicity"]
             is_ref = attr_info.get("is_ref", False)
             kind = attr_info.get("kind", "attribute")
+            decorator_name = attr_info.get("decorator_name")
 
             if kind == "xml_attribute":
                 python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity, kind)
@@ -555,6 +595,25 @@ class {class_name}(ABC):
     @{python_name}.setter
     def {python_name}(self, value: {attr_type}) -> None:
         """Set {python_name} language abbreviation attribute."""
+        self.{private_name} = value
+
+'''
+            elif decorator_name == "xml_element_name":
+                python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity, kind)
+                private_name = f"_{python_name}"
+                params = attr_info.get("decorator_params", "")
+                # Determine Python type for this attribute
+                python_type = get_python_type(attr_type, multiplicity, package_data, is_ref, kind)
+                # Generate property with xml_element_name decorator
+                code += f'''    @property
+    @xml_element_name("{params}")
+    def {python_name}(self) -> {python_type}:
+        """Get {python_name} with custom XML element name."""
+        return self.{private_name}
+
+    @{python_name}.setter
+    def {python_name}(self, value: {python_type}) -> None:
+        """Set {python_name} with custom XML element name."""
         self.{private_name} = value
 
 '''
@@ -723,6 +782,9 @@ def _generate_deserialize_method(
             if attr_type.startswith("any ("):
                 effective_type = "Any"
 
+            # Get decorator_name if present
+            decorator_name = attr_info.get("decorator_name")
+
             # Handle xml_attribute - parse from XML attributes, not child elements
             if kind == "xml_attribute":
                 attribute_value = f'element.attrib["{xml_tag}"]'
@@ -784,15 +846,21 @@ def _generate_deserialize_method(
                 # Check if the XML tag ends with "S" (plural form like PACKAGES, ELEMENTS)
                 # If so, it's a container element and we need to iterate its children
                 if xml_tag.endswith("S"):
-                    # Container element (e.g., AR-PACKAGES, ELEMENTS, USE-INSTEAD-REFS)
-                    # For reference lists (is_ref=True), the container tag should be singular + -REFS
-                    # For non-reference lists, the container tag is the plural form (e.g., LIFE-CYCLE-INFOS)
-                    container_tag = xml_tag
-                    if is_ref:
-                        # For reference lists, the container tag is singular form + -REFS
-                        # e.g., USE-INSTEADS -> USE-INSTEAD-REFS
-                        singular = xml_tag[:-1]  # Remove trailing 'S'
-                        container_tag = f"{singular}-REFS"
+                    # Check if xml_element_name decorator is present
+                    decorator_name = attr_info.get("decorator_name")
+                    if decorator_name == "xml_element_name":
+                        # Use the explicitly specified container tag from decorator params
+                        container_tag = attr_info.get("decorator_params", xml_tag)
+                    else:
+                        # Container element (e.g., AR-PACKAGES, ELEMENTS, USE-INSTEAD-REFS)
+                        # For reference lists (is_ref=True), the container tag should be singular + -REFS
+                        # For non-reference lists, the container tag is the plural form (e.g., LIFE-CYCLE-INFOS)
+                        container_tag = xml_tag
+                        if is_ref:
+                            # For reference lists, the container tag is singular form + -REFS
+                            # e.g., USE-INSTEADS -> USE-INSTEAD-REFS
+                            singular = xml_tag[:-1]  # Remove trailing 'S'
+                            container_tag = f"{singular}-REFS"
                     
                     code += f'''        # Parse {python_name} (list from container "{container_tag}")
         obj.{python_name} = []
@@ -2195,6 +2263,9 @@ def _generate_serialize_method(
             if attr_type.startswith("any ("):
                 effective_type = "Any"
 
+            # Get decorator_name if present
+            decorator_name = attr_info.get("decorator_name")
+
             # Handle xml_attribute - serialize as XML attribute, not child element
             if kind == "xml_attribute":
                 code += f'''        # Serialize {python_name} as XML attribute
@@ -2286,16 +2357,22 @@ def _generate_serialize_method(
                 # Check if the XML tag ends with "S" (plural form like PACKAGES, ELEMENTS)
                 # If so, it's a container element and we need to create a wrapper
                 if xml_tag.endswith("S"):
-                    # Container element (e.g., AR-PACKAGES, ELEMENTS, USE-INSTEAD-REFS)
-                    # For reference lists (is_ref=True), the container tag should be singular + -REFS
-                    # For non-reference lists, the container tag is the plural form (e.g., LIFE-CYCLE-INFOS)
-                    container_tag = xml_tag
-                    if is_ref:
-                        # For reference lists, the container tag is singular form + -REFS
-                        # e.g., USE-INSTEADS -> USE-INSTEAD-REFS
-                        # Child tag is singular form + -REF
-                        singular = xml_tag[:-1]  # Remove trailing 'S'
-                        container_tag = f"{singular}-REFS"
+                    # Check if xml_element_name decorator is present
+                    decorator_name = attr_info.get("decorator_name")
+                    if decorator_name == "xml_element_name":
+                        # Use the explicitly specified container tag from decorator params
+                        container_tag = attr_info.get("decorator_params", xml_tag)
+                    else:
+                        # Container element (e.g., AR-PACKAGES, ELEMENTS, USE-INSTEAD-REFS)
+                        # For reference lists (is_ref=True), the container tag should be singular + -REFS
+                        # For non-reference lists, the container tag is the plural form (e.g., LIFE-CYCLE-INFOS)
+                        container_tag = xml_tag
+                        if is_ref:
+                            # For reference lists, the container tag is singular form + -REFS
+                            # e.g., USE-INSTEADS -> USE-INSTEAD-REFS
+                            # Child tag is singular form + -REF
+                            singular = xml_tag[:-1]  # Remove trailing 'S'
+                            container_tag = f"{singular}-REFS"
                     
                     code += f'''        # Serialize {python_name} (list to container "{container_tag}")
         if self.{python_name}:
@@ -2799,10 +2876,16 @@ def _generate_deserialize_method_for_atp_variant(
             elif multiplicity == "*":
                 # List type
                 if xml_tag.endswith("S"):
-                    container_tag = xml_tag
-                    if is_ref:
-                        singular = xml_tag[:-1]
-                        container_tag = f"{singular}-REFS"
+                    # Check if xml_element_name decorator is present
+                    decorator_name = attr_info.get("decorator_name")
+                    if decorator_name == "xml_element_name":
+                        # Use the explicitly specified container tag from decorator params
+                        container_tag = attr_info.get("decorator_params", xml_tag)
+                    else:
+                        container_tag = xml_tag
+                        if is_ref:
+                            singular = xml_tag[:-1]
+                            container_tag = f"{singular}-REFS"
 
                     code += f'''        # Parse {python_name} (list from container "{container_tag}")
         obj.{python_name} = []
