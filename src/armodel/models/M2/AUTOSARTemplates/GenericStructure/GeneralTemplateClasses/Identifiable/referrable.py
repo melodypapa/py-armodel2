@@ -136,18 +136,3 @@ class Referrable(ARObject, ABC):
 
 
 
-class ReferrableBuilder:
-    """Builder for Referrable."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: Referrable = Referrable()
-
-    def build(self) -> Referrable:
-        """Build and return Referrable object.
-
-        Returns:
-            Referrable instance
-        """
-        # TODO: Add validation
-        return self._obj

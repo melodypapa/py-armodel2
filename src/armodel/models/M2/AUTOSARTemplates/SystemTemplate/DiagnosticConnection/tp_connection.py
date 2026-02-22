@@ -98,18 +98,3 @@ class TpConnection(ARObject, ABC):
 
 
 
-class TpConnectionBuilder:
-    """Builder for TpConnection."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: TpConnection = TpConnection()
-
-    def build(self) -> TpConnection:
-        """Build and return TpConnection object.
-
-        Returns:
-            TpConnection instance
-        """
-        # TODO: Add validation
-        return self._obj

@@ -145,18 +145,3 @@ class DiagnosticAbstractParameter(ARObject, ABC):
 
 
 
-class DiagnosticAbstractParameterBuilder:
-    """Builder for DiagnosticAbstractParameter."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: DiagnosticAbstractParameter = DiagnosticAbstractParameter()
-
-    def build(self) -> DiagnosticAbstractParameter:
-        """Build and return DiagnosticAbstractParameter object.
-
-        Returns:
-            DiagnosticAbstractParameter instance
-        """
-        # TODO: Add validation
-        return self._obj

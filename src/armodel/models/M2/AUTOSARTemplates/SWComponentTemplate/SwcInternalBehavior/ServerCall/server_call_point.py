@@ -133,18 +133,3 @@ class ServerCallPoint(AbstractAccessPoint, ABC):
 
 
 
-class ServerCallPointBuilder:
-    """Builder for ServerCallPoint."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: ServerCallPoint = ServerCallPoint()
-
-    def build(self) -> ServerCallPoint:
-        """Build and return ServerCallPoint object.
-
-        Returns:
-            ServerCallPoint instance
-        """
-        # TODO: Add validation
-        return self._obj

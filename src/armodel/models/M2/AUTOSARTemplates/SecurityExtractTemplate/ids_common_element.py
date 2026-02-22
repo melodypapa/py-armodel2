@@ -74,18 +74,3 @@ class IdsCommonElement(ARElement, ABC):
 
 
 
-class IdsCommonElementBuilder:
-    """Builder for IdsCommonElement."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: IdsCommonElement = IdsCommonElement()
-
-    def build(self) -> IdsCommonElement:
-        """Build and return IdsCommonElement object.
-
-        Returns:
-            IdsCommonElement instance
-        """
-        # TODO: Add validation
-        return self._obj

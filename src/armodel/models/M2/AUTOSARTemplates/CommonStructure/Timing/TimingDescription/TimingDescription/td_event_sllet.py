@@ -74,18 +74,3 @@ class TDEventSLLET(TimingDescriptionEvent, ABC):
 
 
 
-class TDEventSLLETBuilder:
-    """Builder for TDEventSLLET."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: TDEventSLLET = TDEventSLLET()
-
-    def build(self) -> TDEventSLLET:
-        """Build and return TDEventSLLET object.
-
-        Returns:
-            TDEventSLLET instance
-        """
-        # TODO: Add validation
-        return self._obj

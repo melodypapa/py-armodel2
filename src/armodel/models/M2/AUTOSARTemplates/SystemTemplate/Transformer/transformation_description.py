@@ -75,18 +75,3 @@ class TransformationDescription(Describable, ABC):
 
 
 
-class TransformationDescriptionBuilder:
-    """Builder for TransformationDescription."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: TransformationDescription = TransformationDescription()
-
-    def build(self) -> TransformationDescription:
-        """Build and return TransformationDescription object.
-
-        Returns:
-            TransformationDescription instance
-        """
-        # TODO: Add validation
-        return self._obj

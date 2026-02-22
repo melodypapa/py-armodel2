@@ -71,18 +71,3 @@ class BusspecificNmEcu(ARObject, ABC):
 
 
 
-class BusspecificNmEcuBuilder:
-    """Builder for BusspecificNmEcu."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: BusspecificNmEcu = BusspecificNmEcu()
-
-    def build(self) -> BusspecificNmEcu:
-        """Build and return BusspecificNmEcu object.
-
-        Returns:
-            BusspecificNmEcu instance
-        """
-        # TODO: Add validation
-        return self._obj

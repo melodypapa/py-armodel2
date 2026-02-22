@@ -189,18 +189,3 @@ class AbstractValueRestriction(ARObject, ABC):
 
 
 
-class AbstractValueRestrictionBuilder:
-    """Builder for AbstractValueRestriction."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AbstractValueRestriction = AbstractValueRestriction()
-
-    def build(self) -> AbstractValueRestriction:
-        """Build and return AbstractValueRestriction object.
-
-        Returns:
-            AbstractValueRestriction instance
-        """
-        # TODO: Add validation
-        return self._obj

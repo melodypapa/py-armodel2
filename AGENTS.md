@@ -25,6 +25,7 @@ from armodel.models import AUTOSAR
 - **XSD-driven reader** - Performance-optimized XML parsing using lxml and XSD schemas
 - **Singleton pattern** - AUTOSAR and GlobalSettingsManager use singleton for global state management
 - **SerializationHelper** - Extracted utility methods for better code organization
+- **Fluent API Builders** - Method chaining, inheritance support, type coercion, list methods
 
 ## Development Commands
 
@@ -97,6 +98,94 @@ python tools/generate_models_init.py
 
 **Convenient Imports:**
 All model classes (1,900+ classes and 1,600+ builders) can be imported directly from `armodel.models`:
+
+```python
+from armodel.models import (
+    AUTOSAR,
+    AUTOSARBuilder,
+    ARPackage,
+    ARPackageBuilder,
+    ImplementationDataType,
+    ImplementationDataTypeBuilder,
+    # ... and many more
+)
+```
+
+This is enabled by `armodel/models/__init__.py`, which is generated automatically by `tools/generate_models_init.py` when models are regenerated.
+
+### Builder Pattern with Fluent API
+
+All concrete model classes include a builder with fluent API for object construction:
+
+```python
+# Basic usage with method chaining
+data_type = (
+    ImplementationDataTypeBuilder()
+    .with_short_name("MyType")
+    .with_category("VALUE")
+    .with_type_emitter("BSW")
+    .build()
+)
+
+# List-specific methods
+elem1 = ImplementationDataTypeBuilder().with_short_name("Elem1").build()
+elem2 = ImplementationDataTypeBuilder().with_short_name("Elem2").build()
+
+data_type = (
+    ImplementationDataTypeBuilder()
+    .with_short_name("MyType")
+    .with_sub_elements([elem1, elem2])  # Set list
+    .add_sub_element(elem3)              # Add to list
+    .clear_sub_elements()                # Clear list
+    .build()
+)
+
+# Type coercion (automatic conversion)
+data_type = (
+    ImplementationDataTypeBuilder()
+    .with_short_name("MyType")
+    .with_category("VALUE")
+    .with_type_emitter(123)  # int -> str automatic conversion
+    .build()
+)
+
+# Inherited attributes available in child builders
+data_type = (
+    ImplementationDataTypeBuilder()
+    .with_short_name("MyType")       # Inherited from Referrable
+    .with_long_name("My Long Name")  # Inherited from MultilanguageReferrable
+    .with_category("VALUE")          # Own attribute
+    .build()
+)
+```
+
+**Key Features:**
+- **Method chaining**: All `with_*` methods return the builder for chaining
+- **Inherited attributes**: Child builders include `with_*` methods for parent class attributes
+- **List methods**: `with_items()`, `add_item()`, `clear_items()` for list attributes
+- **Type coercion**: Automatic conversion for compatible types (str↔int, str↔float, bool↔int)
+- **Configurable validation**: STRICT, LENIENT, or DISABLED validation via GlobalSettingsManager
+- **Abstract classes**: No Builders generated for abstract classes (cannot be instantiated)
+
+**Builder Validation:**
+
+```python
+from armodel.core import GlobalSettingsManager, BuilderValidationMode
+
+settings = GlobalSettingsManager()
+settings.builder_validation = BuilderValidationMode.STRICT  # or LENIENT, DISABLED
+```
+
+- **STRICT**: Raise exceptions on type mismatches
+- **LENIENT**: Log warnings on type mismatches but continue
+- **DISABLED**: Skip all validation (default)
+
+**Builder Tests:**
+
+```bash
+# Run builder-specific tests
+PYTHONPATH=/Users/ray/Workspace/py-armodel2/src python -m pytest tests/unit/builder/ -v
+```
 
 ```python
 from armodel.models import (

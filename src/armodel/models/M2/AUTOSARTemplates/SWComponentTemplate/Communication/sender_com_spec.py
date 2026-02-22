@@ -252,18 +252,3 @@ class SenderComSpec(PPortComSpec, ABC):
 
 
 
-class SenderComSpecBuilder:
-    """Builder for SenderComSpec."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: SenderComSpec = SenderComSpec()
-
-    def build(self) -> SenderComSpec:
-        """Build and return SenderComSpec object.
-
-        Returns:
-            SenderComSpec instance
-        """
-        # TODO: Add validation
-        return self._obj

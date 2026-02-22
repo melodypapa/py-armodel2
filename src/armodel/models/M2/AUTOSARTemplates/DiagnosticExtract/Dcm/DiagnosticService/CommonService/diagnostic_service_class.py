@@ -74,18 +74,3 @@ class DiagnosticServiceClass(DiagnosticCommonElement, ABC):
 
 
 
-class DiagnosticServiceClassBuilder:
-    """Builder for DiagnosticServiceClass."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: DiagnosticServiceClass = DiagnosticServiceClass()
-
-    def build(self) -> DiagnosticServiceClass:
-        """Build and return DiagnosticServiceClass object.
-
-        Returns:
-            DiagnosticServiceClass instance
-        """
-        # TODO: Add validation
-        return self._obj

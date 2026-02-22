@@ -111,18 +111,3 @@ class LinCommunicationController(ARObject, ABC):
 
 
 
-class LinCommunicationControllerBuilder:
-    """Builder for LinCommunicationController."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: LinCommunicationController = LinCommunicationController()
-
-    def build(self) -> LinCommunicationController:
-        """Build and return LinCommunicationController object.
-
-        Returns:
-            LinCommunicationController instance
-        """
-        # TODO: Add validation
-        return self._obj

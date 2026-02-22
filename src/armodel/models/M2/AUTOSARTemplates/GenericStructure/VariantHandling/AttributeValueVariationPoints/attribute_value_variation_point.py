@@ -170,18 +170,3 @@ class AttributeValueVariationPoint(ARObject, ABC):
 
 
 
-class AttributeValueVariationPointBuilder:
-    """Builder for AttributeValueVariationPoint."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AttributeValueVariationPoint = AttributeValueVariationPoint()
-
-    def build(self) -> AttributeValueVariationPoint:
-        """Build and return AttributeValueVariationPoint object.
-
-        Returns:
-            AttributeValueVariationPoint instance
-        """
-        # TODO: Add validation
-        return self._obj

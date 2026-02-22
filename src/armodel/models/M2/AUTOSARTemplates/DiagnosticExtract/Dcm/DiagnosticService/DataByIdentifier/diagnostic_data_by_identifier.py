@@ -102,18 +102,3 @@ class DiagnosticDataByIdentifier(DiagnosticServiceInstance, ABC):
 
 
 
-class DiagnosticDataByIdentifierBuilder:
-    """Builder for DiagnosticDataByIdentifier."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: DiagnosticDataByIdentifier = DiagnosticDataByIdentifier()
-
-    def build(self) -> DiagnosticDataByIdentifier:
-        """Build and return DiagnosticDataByIdentifier object.
-
-        Returns:
-            DiagnosticDataByIdentifier instance
-        """
-        # TODO: Add validation
-        return self._obj

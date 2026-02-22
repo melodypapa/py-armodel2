@@ -103,18 +103,3 @@ class AtpBlueprint(Identifiable, ABC):
 
 
 
-class AtpBlueprintBuilder:
-    """Builder for AtpBlueprint."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AtpBlueprint = AtpBlueprint()
-
-    def build(self) -> AtpBlueprint:
-        """Build and return AtpBlueprint object.
-
-        Returns:
-            AtpBlueprint instance
-        """
-        # TODO: Add validation
-        return self._obj

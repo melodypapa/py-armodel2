@@ -101,18 +101,3 @@ class SdgAbstractForeignReference(SdgElementWithGid, ABC):
 
 
 
-class SdgAbstractForeignReferenceBuilder:
-    """Builder for SdgAbstractForeignReference."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: SdgAbstractForeignReference = SdgAbstractForeignReference()
-
-    def build(self) -> SdgAbstractForeignReference:
-        """Build and return SdgAbstractForeignReference object.
-
-        Returns:
-            SdgAbstractForeignReference instance
-        """
-        # TODO: Add validation
-        return self._obj

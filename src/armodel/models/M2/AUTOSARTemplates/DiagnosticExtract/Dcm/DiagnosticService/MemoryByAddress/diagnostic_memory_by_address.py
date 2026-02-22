@@ -74,18 +74,3 @@ class DiagnosticMemoryByAddress(DiagnosticServiceInstance, ABC):
 
 
 
-class DiagnosticMemoryByAddressBuilder:
-    """Builder for DiagnosticMemoryByAddress."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: DiagnosticMemoryByAddress = DiagnosticMemoryByAddress()
-
-    def build(self) -> DiagnosticMemoryByAddress:
-        """Build and return DiagnosticMemoryByAddress object.
-
-        Returns:
-            DiagnosticMemoryByAddress instance
-        """
-        # TODO: Add validation
-        return self._obj

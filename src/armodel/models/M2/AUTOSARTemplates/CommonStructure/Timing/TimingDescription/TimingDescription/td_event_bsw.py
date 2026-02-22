@@ -102,18 +102,3 @@ class TDEventBsw(TimingDescriptionEvent, ABC):
 
 
 
-class TDEventBswBuilder:
-    """Builder for TDEventBsw."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: TDEventBsw = TDEventBsw()
-
-    def build(self) -> TDEventBsw:
-        """Build and return TDEventBsw object.
-
-        Returns:
-            TDEventBsw instance
-        """
-        # TODO: Add validation
-        return self._obj

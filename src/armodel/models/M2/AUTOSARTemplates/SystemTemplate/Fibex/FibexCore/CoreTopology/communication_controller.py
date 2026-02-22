@@ -111,18 +111,3 @@ class CommunicationController(ARObject, ABC):
 
 
 
-class CommunicationControllerBuilder:
-    """Builder for CommunicationController."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: CommunicationController = CommunicationController()
-
-    def build(self) -> CommunicationController:
-        """Build and return CommunicationController object.
-
-        Returns:
-            CommunicationController instance
-        """
-        # TODO: Add validation
-        return self._obj

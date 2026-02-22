@@ -74,18 +74,3 @@ class AbstractRuleBasedValueSpecification(ValueSpecification, ABC):
 
 
 
-class AbstractRuleBasedValueSpecificationBuilder:
-    """Builder for AbstractRuleBasedValueSpecification."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AbstractRuleBasedValueSpecification = AbstractRuleBasedValueSpecification()
-
-    def build(self) -> AbstractRuleBasedValueSpecification:
-        """Build and return AbstractRuleBasedValueSpecification object.
-
-        Returns:
-            AbstractRuleBasedValueSpecification instance
-        """
-        # TODO: Add validation
-        return self._obj

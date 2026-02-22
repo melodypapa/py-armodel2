@@ -102,18 +102,3 @@ class EventTriggeringConstraint(TimingConstraint, ABC):
 
 
 
-class EventTriggeringConstraintBuilder:
-    """Builder for EventTriggeringConstraint."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: EventTriggeringConstraint = EventTriggeringConstraint()
-
-    def build(self) -> EventTriggeringConstraint:
-        """Build and return EventTriggeringConstraint object.
-
-        Returns:
-            EventTriggeringConstraint instance
-        """
-        # TODO: Add validation
-        return self._obj

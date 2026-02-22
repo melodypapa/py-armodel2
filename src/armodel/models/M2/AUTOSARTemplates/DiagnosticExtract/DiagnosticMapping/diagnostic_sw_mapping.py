@@ -74,18 +74,3 @@ class DiagnosticSwMapping(DiagnosticMapping, ABC):
 
 
 
-class DiagnosticSwMappingBuilder:
-    """Builder for DiagnosticSwMapping."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: DiagnosticSwMapping = DiagnosticSwMapping()
-
-    def build(self) -> DiagnosticSwMapping:
-        """Build and return DiagnosticSwMapping object.
-
-        Returns:
-            DiagnosticSwMapping instance
-        """
-        # TODO: Add validation
-        return self._obj

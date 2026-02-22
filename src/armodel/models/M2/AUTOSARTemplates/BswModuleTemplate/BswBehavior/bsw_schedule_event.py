@@ -74,18 +74,3 @@ class BswScheduleEvent(BswEvent, ABC):
 
 
 
-class BswScheduleEventBuilder:
-    """Builder for BswScheduleEvent."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: BswScheduleEvent = BswScheduleEvent()
-
-    def build(self) -> BswScheduleEvent:
-        """Build and return BswScheduleEvent object.
-
-        Returns:
-            BswScheduleEvent instance
-        """
-        # TODO: Add validation
-        return self._obj

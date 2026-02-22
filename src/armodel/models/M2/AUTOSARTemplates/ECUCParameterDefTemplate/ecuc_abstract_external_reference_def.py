@@ -74,18 +74,3 @@ class EcucAbstractExternalReferenceDef(EcucAbstractReferenceDef, ABC):
 
 
 
-class EcucAbstractExternalReferenceDefBuilder:
-    """Builder for EcucAbstractExternalReferenceDef."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: EcucAbstractExternalReferenceDef = EcucAbstractExternalReferenceDef()
-
-    def build(self) -> EcucAbstractExternalReferenceDef:
-        """Build and return EcucAbstractExternalReferenceDef object.
-
-        Returns:
-            EcucAbstractExternalReferenceDef instance
-        """
-        # TODO: Add validation
-        return self._obj

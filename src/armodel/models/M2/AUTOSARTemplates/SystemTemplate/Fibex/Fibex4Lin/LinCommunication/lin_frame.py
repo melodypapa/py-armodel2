@@ -74,18 +74,3 @@ class LinFrame(Frame, ABC):
 
 
 
-class LinFrameBuilder:
-    """Builder for LinFrame."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: LinFrame = LinFrame()
-
-    def build(self) -> LinFrame:
-        """Build and return LinFrame object.
-
-        Returns:
-            LinFrame instance
-        """
-        # TODO: Add validation
-        return self._obj

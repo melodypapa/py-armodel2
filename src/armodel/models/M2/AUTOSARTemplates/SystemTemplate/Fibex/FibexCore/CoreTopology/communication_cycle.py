@@ -71,18 +71,3 @@ class CommunicationCycle(ARObject, ABC):
 
 
 
-class CommunicationCycleBuilder:
-    """Builder for CommunicationCycle."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: CommunicationCycle = CommunicationCycle()
-
-    def build(self) -> CommunicationCycle:
-        """Build and return CommunicationCycle object.
-
-        Returns:
-            CommunicationCycle instance
-        """
-        # TODO: Add validation
-        return self._obj

@@ -173,18 +173,3 @@ class MixedContentForVerbatim(ARObject, ABC):
 
 
 
-class MixedContentForVerbatimBuilder:
-    """Builder for MixedContentForVerbatim."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: MixedContentForVerbatim = MixedContentForVerbatim()
-
-    def build(self) -> MixedContentForVerbatim:
-        """Build and return MixedContentForVerbatim object.
-
-        Returns:
-            MixedContentForVerbatim instance
-        """
-        # TODO: Add validation
-        return self._obj

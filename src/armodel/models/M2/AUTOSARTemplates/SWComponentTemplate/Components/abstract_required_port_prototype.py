@@ -103,18 +103,3 @@ class AbstractRequiredPortPrototype(PortPrototype, ABC):
 
 
 
-class AbstractRequiredPortPrototypeBuilder:
-    """Builder for AbstractRequiredPortPrototype."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AbstractRequiredPortPrototype = AbstractRequiredPortPrototype()
-
-    def build(self) -> AbstractRequiredPortPrototype:
-        """Build and return AbstractRequiredPortPrototype object.
-
-        Returns:
-            AbstractRequiredPortPrototype instance
-        """
-        # TODO: Add validation
-        return self._obj

@@ -101,18 +101,3 @@ class AtpClassifier(Identifiable, ABC):
 
 
 
-class AtpClassifierBuilder:
-    """Builder for AtpClassifier."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AtpClassifier = AtpClassifier()
-
-    def build(self) -> AtpClassifier:
-        """Build and return AtpClassifier object.
-
-        Returns:
-            AtpClassifier instance
-        """
-        # TODO: Add validation
-        return self._obj

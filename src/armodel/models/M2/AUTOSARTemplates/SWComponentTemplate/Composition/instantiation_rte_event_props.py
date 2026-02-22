@@ -123,18 +123,3 @@ class InstantiationRTEEventProps(ARObject, ABC):
 
 
 
-class InstantiationRTEEventPropsBuilder:
-    """Builder for InstantiationRTEEventProps."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: InstantiationRTEEventProps = InstantiationRTEEventProps()
-
-    def build(self) -> InstantiationRTEEventProps:
-        """Build and return InstantiationRTEEventProps object.
-
-        Returns:
-            InstantiationRTEEventProps instance
-        """
-        # TODO: Add validation
-        return self._obj

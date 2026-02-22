@@ -178,18 +178,3 @@ class Describable(ARObject, ABC):
 
 
 
-class DescribableBuilder:
-    """Builder for Describable."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: Describable = Describable()
-
-    def build(self) -> Describable:
-        """Build and return Describable object.
-
-        Returns:
-            Describable instance
-        """
-        # TODO: Add validation
-        return self._obj

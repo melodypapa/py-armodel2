@@ -102,18 +102,3 @@ class AbstractAccessPoint(Identifiable, ABC):
 
 
 
-class AbstractAccessPointBuilder:
-    """Builder for AbstractAccessPoint."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AbstractAccessPoint = AbstractAccessPoint()
-
-    def build(self) -> AbstractAccessPoint:
-        """Build and return AbstractAccessPoint object.
-
-        Returns:
-            AbstractAccessPoint instance
-        """
-        # TODO: Add validation
-        return self._obj

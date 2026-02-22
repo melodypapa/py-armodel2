@@ -236,18 +236,3 @@ class Identifiable(MultilanguageReferrable, ABC):
 
 
 
-class IdentifiableBuilder:
-    """Builder for Identifiable."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: Identifiable = Identifiable()
-
-    def build(self) -> Identifiable:
-        """Build and return Identifiable object.
-
-        Returns:
-            Identifiable instance
-        """
-        # TODO: Add validation
-        return self._obj

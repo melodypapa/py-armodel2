@@ -120,18 +120,3 @@ class EcucAbstractConfigurationClass(ARObject, ABC):
 
 
 
-class EcucAbstractConfigurationClassBuilder:
-    """Builder for EcucAbstractConfigurationClass."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: EcucAbstractConfigurationClass = EcucAbstractConfigurationClass()
-
-    def build(self) -> EcucAbstractConfigurationClass:
-        """Build and return EcucAbstractConfigurationClass object.
-
-        Returns:
-            EcucAbstractConfigurationClass instance
-        """
-        # TODO: Add validation
-        return self._obj

@@ -131,18 +131,3 @@ class AbstractVariationRestriction(ARObject, ABC):
 
 
 
-class AbstractVariationRestrictionBuilder:
-    """Builder for AbstractVariationRestriction."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AbstractVariationRestriction = AbstractVariationRestriction()
-
-    def build(self) -> AbstractVariationRestriction:
-        """Build and return AbstractVariationRestriction object.
-
-        Returns:
-            AbstractVariationRestriction instance
-        """
-        # TODO: Add validation
-        return self._obj

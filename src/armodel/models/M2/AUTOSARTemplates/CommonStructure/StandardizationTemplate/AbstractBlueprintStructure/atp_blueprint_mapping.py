@@ -124,18 +124,3 @@ class AtpBlueprintMapping(ARObject, ABC):
 
 
 
-class AtpBlueprintMappingBuilder:
-    """Builder for AtpBlueprintMapping."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AtpBlueprintMapping = AtpBlueprintMapping()
-
-    def build(self) -> AtpBlueprintMapping:
-        """Build and return AtpBlueprintMapping object.
-
-        Returns:
-            AtpBlueprintMapping instance
-        """
-        # TODO: Add validation
-        return self._obj

@@ -74,18 +74,3 @@ class DiagnosticCommonElement(ARElement, ABC):
 
 
 
-class DiagnosticCommonElementBuilder:
-    """Builder for DiagnosticCommonElement."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: DiagnosticCommonElement = DiagnosticCommonElement()
-
-    def build(self) -> DiagnosticCommonElement:
-        """Build and return DiagnosticCommonElement object.
-
-        Returns:
-            DiagnosticCommonElement instance
-        """
-        # TODO: Add validation
-        return self._obj

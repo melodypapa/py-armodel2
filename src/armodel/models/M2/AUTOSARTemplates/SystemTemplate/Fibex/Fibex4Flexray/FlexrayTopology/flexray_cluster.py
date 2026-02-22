@@ -788,17 +788,659 @@ class FlexrayCluster(ARObject):
 
 
 class FlexrayClusterBuilder:
-    """Builder for FlexrayCluster."""
+    """Builder for FlexrayCluster with fluent API."""
 
     def __init__(self) -> None:
-        """Initialize builder."""
+        """Initialize builder with defaults."""
+        pass
         self._obj: FlexrayCluster = FlexrayCluster()
 
-    def build(self) -> FlexrayCluster:
-        """Build and return FlexrayCluster object.
+
+    def with_action_point_offset(self, value: Optional[Integer]) -> "FlexrayClusterBuilder":
+        """Set action_point_offset attribute.
+
+        Args:
+            value: Value to set
 
         Returns:
-            FlexrayCluster instance
+            self for method chaining
         """
-        # TODO: Add validation
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.action_point_offset = value
+        return self
+
+    def with_bit(self, value: Optional[TimeValue]) -> "FlexrayClusterBuilder":
+        """Set bit attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.bit = value
+        return self
+
+    def with_cas_rx_low_max(self, value: Optional[Integer]) -> "FlexrayClusterBuilder":
+        """Set cas_rx_low_max attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.cas_rx_low_max = value
+        return self
+
+    def with_cold_start(self, value: Optional[Integer]) -> "FlexrayClusterBuilder":
+        """Set cold_start attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.cold_start = value
+        return self
+
+    def with_cycle(self, value: Optional[TimeValue]) -> "FlexrayClusterBuilder":
+        """Set cycle attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.cycle = value
+        return self
+
+    def with_cycle_count_max(self, value: Optional[Integer]) -> "FlexrayClusterBuilder":
+        """Set cycle_count_max attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.cycle_count_max = value
+        return self
+
+    def with_detect_nit_error(self, value: Optional[Boolean]) -> "FlexrayClusterBuilder":
+        """Set detect_nit_error attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.detect_nit_error = value
+        return self
+
+    def with_dynamic_slot_idle_phase(self, value: Optional[Integer]) -> "FlexrayClusterBuilder":
+        """Set dynamic_slot_idle_phase attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.dynamic_slot_idle_phase = value
+        return self
+
+    def with_ignore_after_tx(self, value: Optional[Integer]) -> "FlexrayClusterBuilder":
+        """Set ignore_after_tx attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.ignore_after_tx = value
+        return self
+
+    def with_listen_noise(self, value: Optional[Integer]) -> "FlexrayClusterBuilder":
+        """Set listen_noise attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.listen_noise = value
+        return self
+
+    def with_macro_per_cycle(self, value: Optional[Integer]) -> "FlexrayClusterBuilder":
+        """Set macro_per_cycle attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.macro_per_cycle = value
+        return self
+
+    def with_macrotick(self, value: Optional[TimeValue]) -> "FlexrayClusterBuilder":
+        """Set macrotick attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.macrotick = value
+        return self
+
+    def with_max_without(self, value: Optional[Integer]) -> "FlexrayClusterBuilder":
+        """Set max_without attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.max_without = value
+        return self
+
+    def with_minislot_action(self, value: Optional[Integer]) -> "FlexrayClusterBuilder":
+        """Set minislot_action attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.minislot_action = value
+        return self
+
+    def with_minislot_duration(self, value: Optional[Integer]) -> "FlexrayClusterBuilder":
+        """Set minislot_duration attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.minislot_duration = value
+        return self
+
+    def with_network_idle_time(self, value: Optional[Integer]) -> "FlexrayClusterBuilder":
+        """Set network_idle_time attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.network_idle_time = value
+        return self
+
+    def with_network(self, value: Optional[Integer]) -> "FlexrayClusterBuilder":
+        """Set network attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.network = value
+        return self
+
+    def with_number_of_minislots(self, value: Optional[Integer]) -> "FlexrayClusterBuilder":
+        """Set number_of_minislots attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.number_of_minislots = value
+        return self
+
+    def with_number_of_static_slots(self, value: Optional[Integer]) -> "FlexrayClusterBuilder":
+        """Set number_of_static_slots attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.number_of_static_slots = value
+        return self
+
+    def with_offset_correction(self, value: Optional[Integer]) -> "FlexrayClusterBuilder":
+        """Set offset_correction attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.offset_correction = value
+        return self
+
+    def with_payload_length(self, value: Optional[Integer]) -> "FlexrayClusterBuilder":
+        """Set payload_length attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.payload_length = value
+        return self
+
+    def with_safety_margin(self, value: Optional[Integer]) -> "FlexrayClusterBuilder":
+        """Set safety_margin attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.safety_margin = value
+        return self
+
+    def with_sample_clock_period(self, value: Optional[TimeValue]) -> "FlexrayClusterBuilder":
+        """Set sample_clock_period attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.sample_clock_period = value
+        return self
+
+    def with_static_slot(self, value: Optional[Integer]) -> "FlexrayClusterBuilder":
+        """Set static_slot attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.static_slot = value
+        return self
+
+    def with_symbol_window(self, value: Optional[Integer]) -> "FlexrayClusterBuilder":
+        """Set symbol_window attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.symbol_window = value
+        return self
+
+    def with_sync_frame_id(self, value: Optional[Integer]) -> "FlexrayClusterBuilder":
+        """Set sync_frame_id attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.sync_frame_id = value
+        return self
+
+    def with_tranceiver(self, value: Optional[Float]) -> "FlexrayClusterBuilder":
+        """Set tranceiver attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.tranceiver = value
+        return self
+
+    def with_transmission(self, value: Optional[Integer]) -> "FlexrayClusterBuilder":
+        """Set transmission attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.transmission = value
+        return self
+
+    def with_wakeup_rx_idle(self, value: Optional[Integer]) -> "FlexrayClusterBuilder":
+        """Set wakeup_rx_idle attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.wakeup_rx_idle = value
+        return self
+
+    def with_wakeup_rx_low(self, value: Optional[Integer]) -> "FlexrayClusterBuilder":
+        """Set wakeup_rx_low attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.wakeup_rx_low = value
+        return self
+
+    def with_wakeup_rx(self, value: Optional[Integer]) -> "FlexrayClusterBuilder":
+        """Set wakeup_rx attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.wakeup_rx = value
+        return self
+
+    def with_wakeup_tx_active(self, value: Optional[Integer]) -> "FlexrayClusterBuilder":
+        """Set wakeup_tx_active attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.wakeup_tx_active = value
+        return self
+
+    def with_wakeup_tx_idle(self, value: Optional[Integer]) -> "FlexrayClusterBuilder":
+        """Set wakeup_tx_idle attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.wakeup_tx_idle = value
+        return self
+
+
+
+    @staticmethod
+    def _coerce_to_int(value: Any) -> int:
+        """Coerce value to int.
+
+        Args:
+            value: Value to coerce
+
+        Returns:
+            Integer value
+
+        Raises:
+            ValueError: If value cannot be coerced to int
+        """
+        if isinstance(value, int):
+            return value
+        if isinstance(value, str) and value.isdigit():
+            return int(value)
+        if isinstance(value, float):
+            return int(value)
+        if isinstance(value, bool):
+            return int(value)
+        raise ValueError(f"Cannot coerce {type(value).__name__} to int: {value}")
+
+    @staticmethod
+    def _coerce_to_float(value: Any) -> float:
+        """Coerce value to float.
+
+        Args:
+            value: Value to coerce
+
+        Returns:
+            Float value
+
+        Raises:
+            ValueError: If value cannot be coerced to float
+        """
+        if isinstance(value, float):
+            return value
+        if isinstance(value, int):
+            return float(value)
+        if isinstance(value, str):
+            try:
+                return float(value)
+            except ValueError:
+                pass
+        raise ValueError(f"Cannot coerce {type(value).__name__} to float: {value}")
+
+    @staticmethod
+    def _coerce_to_bool(value: Any) -> bool:
+        """Coerce value to bool.
+
+        Args:
+            value: Value to coerce
+
+        Returns:
+            Boolean value
+
+        Raises:
+            ValueError: If value cannot be coerced to bool
+        """
+        if isinstance(value, bool):
+            return value
+        if isinstance(value, int):
+            return bool(value)
+        if isinstance(value, str):
+            if value.lower() in ("true", "1", "yes"):
+                return True
+            if value.lower() in ("false", "0", "no"):
+                return False
+        raise ValueError(f"Cannot coerce {type(value).__name__} to bool: {value}")
+
+    @staticmethod
+    def _coerce_to_str(value: Any) -> str:
+        """Coerce value to str.
+
+        Args:
+            value: Value to coerce
+
+        Returns:
+            String value
+        """
+        return str(value)
+
+
+    @staticmethod
+    def _coerce_to_list(value: Any, item_type: str) -> list:
+        """Coerce value to list.
+
+        Args:
+            value: Value to coerce
+            item_type: Expected item type (for error messages)
+
+        Returns:
+            List value
+
+        Raises:
+            ValueError: If value cannot be coerced to list
+        """
+        if isinstance(value, list):
+            return value
+        if isinstance(value, tuple):
+            return list(value)
+        raise ValueError(f"Cannot coerce {type(value).__name__} to list[{item_type}]: {value}")
+
+
+    def _validate_instance(self) -> None:
+        """Validate the built instance based on settings."""
+        from typing import get_type_hints
+        from armodel.core import GlobalSettingsManager, BuilderValidationMode
+
+        settings = GlobalSettingsManager()
+        mode = settings.builder_validation
+
+        if mode == BuilderValidationMode.DISABLED:
+            return
+
+        # Get type hints for the class
+        try:
+            type_hints_dict = get_type_hints(type(self._obj))
+        except Exception:
+            # Cannot resolve type hints (e.g., forward references), skip validation
+            return
+
+        for attr_name, attr_type in type_hints_dict.items():
+            if attr_name.startswith("_"):
+                continue
+
+            value = getattr(self._obj, attr_name)
+
+            # Check required fields (not Optional)
+            if value is None and not self._is_optional_type(attr_type):
+                if mode == BuilderValidationMode.STRICT:
+                    raise ValueError(
+                        f"Required attribute '{attr_name}' is None"
+                    )
+                elif mode == BuilderValidationMode.LENIENT:
+                    import warnings
+                    warnings.warn(
+                        f"Required attribute '{attr_name}' is None",
+                        UserWarning
+                    )
+
+    @staticmethod
+    def _is_optional_type(type_hint: Any) -> bool:
+        """Check if a type hint is Optional.
+
+        Args:
+            type_hint: Type hint to check
+
+        Returns:
+            True if type is Optional, False otherwise
+        """
+        origin = getattr(type_hint, "__origin__", None)
+        return origin is Union
+
+    @staticmethod
+    def _get_expected_type(type_hint: Any) -> type:
+        """Extract expected type from type hint.
+
+        Args:
+            type_hint: Type hint to extract from
+
+        Returns:
+            Expected type
+        """
+        if isinstance(type_hint, str):
+            return object
+        origin = getattr(type_hint, "__origin__", None)
+        if origin is Union:
+            args = getattr(type_hint, "__args__", [])
+            for arg in args:
+                if arg is not type(None):
+                    return arg
+        elif origin is list:
+            args = getattr(type_hint, "__args__", [object])
+            return args[0] if args else object
+        return type_hint if isinstance(type_hint, type) else object
+
+
+    def build(self) -> FlexrayCluster:
+        """Build and return the FlexrayCluster instance with validation."""
+        self._validate_instance()
+        pass
         return self._obj

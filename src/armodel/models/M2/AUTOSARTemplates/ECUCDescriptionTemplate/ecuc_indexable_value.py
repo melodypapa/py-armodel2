@@ -98,18 +98,3 @@ class EcucIndexableValue(ARObject, ABC):
 
 
 
-class EcucIndexableValueBuilder:
-    """Builder for EcucIndexableValue."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: EcucIndexableValue = EcucIndexableValue()
-
-    def build(self) -> EcucIndexableValue:
-        """Build and return EcucIndexableValue object.
-
-        Returns:
-            EcucIndexableValue instance
-        """
-        # TODO: Add validation
-        return self._obj

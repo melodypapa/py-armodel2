@@ -71,18 +71,3 @@ class CompuScaleContents(ARObject, ABC):
 
 
 
-class CompuScaleContentsBuilder:
-    """Builder for CompuScaleContents."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: CompuScaleContents = CompuScaleContents()
-
-    def build(self) -> CompuScaleContents:
-        """Build and return CompuScaleContents object.
-
-        Returns:
-            CompuScaleContents instance
-        """
-        # TODO: Add validation
-        return self._obj

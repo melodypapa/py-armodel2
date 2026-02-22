@@ -102,18 +102,3 @@ class TimingConstraint(Traceable, ABC):
 
 
 
-class TimingConstraintBuilder:
-    """Builder for TimingConstraint."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: TimingConstraint = TimingConstraint()
-
-    def build(self) -> TimingConstraint:
-        """Build and return TimingConstraint object.
-
-        Returns:
-            TimingConstraint instance
-        """
-        # TODO: Add validation
-        return self._obj

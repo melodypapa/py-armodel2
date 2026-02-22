@@ -74,18 +74,3 @@ class DiagnosticConditionGroup(DiagnosticCommonElement, ABC):
 
 
 
-class DiagnosticConditionGroupBuilder:
-    """Builder for DiagnosticConditionGroup."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: DiagnosticConditionGroup = DiagnosticConditionGroup()
-
-    def build(self) -> DiagnosticConditionGroup:
-        """Build and return DiagnosticConditionGroup object.
-
-        Returns:
-            DiagnosticConditionGroup instance
-        """
-        # TODO: Add validation
-        return self._obj

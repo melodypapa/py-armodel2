@@ -396,18 +396,3 @@ class MixedContentForParagraph(ARObject, ABC):
 
 
 
-class MixedContentForParagraphBuilder:
-    """Builder for MixedContentForParagraph."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: MixedContentForParagraph = MixedContentForParagraph()
-
-    def build(self) -> MixedContentForParagraph:
-        """Build and return MixedContentForParagraph object.
-
-        Returns:
-            MixedContentForParagraph instance
-        """
-        # TODO: Add validation
-        return self._obj

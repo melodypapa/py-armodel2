@@ -115,18 +115,3 @@ class BswModuleCallPoint(Referrable, ABC):
 
 
 
-class BswModuleCallPointBuilder:
-    """Builder for BswModuleCallPoint."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: BswModuleCallPoint = BswModuleCallPoint()
-
-    def build(self) -> BswModuleCallPoint:
-        """Build and return BswModuleCallPoint object.
-
-        Returns:
-            BswModuleCallPoint instance
-        """
-        # TODO: Add validation
-        return self._obj

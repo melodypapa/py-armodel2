@@ -71,18 +71,3 @@ class DiagnosticEnvConditionFormulaPart(ARObject, ABC):
 
 
 
-class DiagnosticEnvConditionFormulaPartBuilder:
-    """Builder for DiagnosticEnvConditionFormulaPart."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: DiagnosticEnvConditionFormulaPart = DiagnosticEnvConditionFormulaPart()
-
-    def build(self) -> DiagnosticEnvConditionFormulaPart:
-        """Build and return DiagnosticEnvConditionFormulaPart object.
-
-        Returns:
-            DiagnosticEnvConditionFormulaPart instance
-        """
-        # TODO: Add validation
-        return self._obj

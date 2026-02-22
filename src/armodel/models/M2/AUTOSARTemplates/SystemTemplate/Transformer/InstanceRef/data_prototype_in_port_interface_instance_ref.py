@@ -184,18 +184,3 @@ class DataPrototypeInPortInterfaceInstanceRef(ARObject, ABC):
 
 
 
-class DataPrototypeInPortInterfaceInstanceRefBuilder:
-    """Builder for DataPrototypeInPortInterfaceInstanceRef."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: DataPrototypeInPortInterfaceInstanceRef = DataPrototypeInPortInterfaceInstanceRef()
-
-    def build(self) -> DataPrototypeInPortInterfaceInstanceRef:
-        """Build and return DataPrototypeInPortInterfaceInstanceRef object.
-
-        Returns:
-            DataPrototypeInPortInterfaceInstanceRef instance
-        """
-        # TODO: Add validation
-        return self._obj

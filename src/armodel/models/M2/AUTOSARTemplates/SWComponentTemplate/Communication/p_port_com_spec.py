@@ -72,18 +72,3 @@ class PPortComSpec(ARObject, ABC):
 
 
 
-class PPortComSpecBuilder:
-    """Builder for PPortComSpec."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: PPortComSpec = PPortComSpec()
-
-    def build(self) -> PPortComSpec:
-        """Build and return PPortComSpec object.
-
-        Returns:
-            PPortComSpec instance
-        """
-        # TODO: Add validation
-        return self._obj

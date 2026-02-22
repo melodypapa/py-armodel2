@@ -123,18 +123,3 @@ class AttributeTailoring(DataFormatElementScope, ABC):
 
 
 
-class AttributeTailoringBuilder:
-    """Builder for AttributeTailoring."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AttributeTailoring = AttributeTailoring()
-
-    def build(self) -> AttributeTailoring:
-        """Build and return AttributeTailoring object.
-
-        Returns:
-            AttributeTailoring instance
-        """
-        # TODO: Add validation
-        return self._obj

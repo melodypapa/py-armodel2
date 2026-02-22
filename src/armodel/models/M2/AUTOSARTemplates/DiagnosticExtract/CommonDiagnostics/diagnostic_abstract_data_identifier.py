@@ -101,18 +101,3 @@ class DiagnosticAbstractDataIdentifier(DiagnosticCommonElement, ABC):
 
 
 
-class DiagnosticAbstractDataIdentifierBuilder:
-    """Builder for DiagnosticAbstractDataIdentifier."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: DiagnosticAbstractDataIdentifier = DiagnosticAbstractDataIdentifier()
-
-    def build(self) -> DiagnosticAbstractDataIdentifier:
-        """Build and return DiagnosticAbstractDataIdentifier object.
-
-        Returns:
-            DiagnosticAbstractDataIdentifier instance
-        """
-        # TODO: Add validation
-        return self._obj

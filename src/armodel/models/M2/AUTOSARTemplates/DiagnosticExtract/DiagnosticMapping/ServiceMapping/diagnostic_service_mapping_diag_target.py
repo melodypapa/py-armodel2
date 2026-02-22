@@ -71,18 +71,3 @@ class DiagnosticServiceMappingDiagTarget(ARObject, ABC):
 
 
 
-class DiagnosticServiceMappingDiagTargetBuilder:
-    """Builder for DiagnosticServiceMappingDiagTarget."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: DiagnosticServiceMappingDiagTarget = DiagnosticServiceMappingDiagTarget()
-
-    def build(self) -> DiagnosticServiceMappingDiagTarget:
-        """Build and return DiagnosticServiceMappingDiagTarget object.
-
-        Returns:
-            DiagnosticServiceMappingDiagTarget instance
-        """
-        # TODO: Add validation
-        return self._obj

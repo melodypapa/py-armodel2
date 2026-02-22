@@ -126,18 +126,3 @@ class BuildActionEntity(Identifiable, ABC):
 
 
 
-class BuildActionEntityBuilder:
-    """Builder for BuildActionEntity."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: BuildActionEntity = BuildActionEntity()
-
-    def build(self) -> BuildActionEntity:
-        """Build and return BuildActionEntity object.
-
-        Returns:
-            BuildActionEntity instance
-        """
-        # TODO: Add validation
-        return self._obj

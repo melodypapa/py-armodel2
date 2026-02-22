@@ -145,18 +145,3 @@ class ClassTailoring(ARObject, ABC):
 
 
 
-class ClassTailoringBuilder:
-    """Builder for ClassTailoring."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: ClassTailoring = ClassTailoring()
-
-    def build(self) -> ClassTailoring:
-        """Build and return ClassTailoring object.
-
-        Returns:
-            ClassTailoring instance
-        """
-        # TODO: Add validation
-        return self._obj

@@ -171,18 +171,3 @@ class HwDescriptionEntity(Referrable, ABC):
 
 
 
-class HwDescriptionEntityBuilder:
-    """Builder for HwDescriptionEntity."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: HwDescriptionEntity = HwDescriptionEntity()
-
-    def build(self) -> HwDescriptionEntity:
-        """Build and return HwDescriptionEntity object.
-
-        Returns:
-            HwDescriptionEntity instance
-        """
-        # TODO: Add validation
-        return self._obj

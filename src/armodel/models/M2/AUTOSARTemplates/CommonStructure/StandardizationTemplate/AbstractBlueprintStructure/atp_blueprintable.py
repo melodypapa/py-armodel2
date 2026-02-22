@@ -75,18 +75,3 @@ class AtpBlueprintable(Identifiable, ABC):
 
 
 
-class AtpBlueprintableBuilder:
-    """Builder for AtpBlueprintable."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AtpBlueprintable = AtpBlueprintable()
-
-    def build(self) -> AtpBlueprintable:
-        """Build and return AtpBlueprintable object.
-
-        Returns:
-            AtpBlueprintable instance
-        """
-        # TODO: Add validation
-        return self._obj

@@ -99,18 +99,3 @@ class FMFormulaByFeaturesAndSwSystemconsts(ARObject, ABC):
 
 
 
-class FMFormulaByFeaturesAndSwSystemconstsBuilder:
-    """Builder for FMFormulaByFeaturesAndSwSystemconsts."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: FMFormulaByFeaturesAndSwSystemconsts = FMFormulaByFeaturesAndSwSystemconsts()
-
-    def build(self) -> FMFormulaByFeaturesAndSwSystemconsts:
-        """Build and return FMFormulaByFeaturesAndSwSystemconsts object.
-
-        Returns:
-            FMFormulaByFeaturesAndSwSystemconsts instance
-        """
-        # TODO: Add validation
-        return self._obj

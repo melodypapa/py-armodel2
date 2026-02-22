@@ -178,18 +178,3 @@ class StackUsage(Identifiable, ABC):
 
 
 
-class StackUsageBuilder:
-    """Builder for StackUsage."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: StackUsage = StackUsage()
-
-    def build(self) -> StackUsage:
-        """Build and return StackUsage object.
-
-        Returns:
-            StackUsage instance
-        """
-        # TODO: Add validation
-        return self._obj

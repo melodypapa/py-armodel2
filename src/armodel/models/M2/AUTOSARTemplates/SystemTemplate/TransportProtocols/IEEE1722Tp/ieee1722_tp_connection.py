@@ -216,18 +216,3 @@ class IEEE1722TpConnection(ARElement, ABC):
 
 
 
-class IEEE1722TpConnectionBuilder:
-    """Builder for IEEE1722TpConnection."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: IEEE1722TpConnection = IEEE1722TpConnection()
-
-    def build(self) -> IEEE1722TpConnection:
-        """Build and return IEEE1722TpConnection object.
-
-        Returns:
-            IEEE1722TpConnection instance
-        """
-        # TODO: Add validation
-        return self._obj

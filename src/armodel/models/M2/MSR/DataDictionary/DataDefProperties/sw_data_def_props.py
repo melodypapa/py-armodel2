@@ -868,17 +868,674 @@ class SwDataDefProps(ARObject):
 
 
 class SwDataDefPropsBuilder:
-    """Builder for SwDataDefProps."""
+    """Builder for SwDataDefProps with fluent API."""
 
     def __init__(self) -> None:
-        """Initialize builder."""
+        """Initialize builder with defaults."""
+        pass
         self._obj: SwDataDefProps = SwDataDefProps()
 
-    def build(self) -> SwDataDefProps:
-        """Build and return SwDataDefProps object.
+
+    def with_additional_native_type_qualifier(self, value: Optional[NativeDeclarationString]) -> "SwDataDefPropsBuilder":
+        """Set additional_native_type_qualifier attribute.
+
+        Args:
+            value: Value to set
 
         Returns:
-            SwDataDefProps instance
+            self for method chaining
         """
-        # TODO: Add validation
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.additional_native_type_qualifier = value
+        return self
+
+    def with_annotations(self, items: list[Annotation]) -> "SwDataDefPropsBuilder":
+        """Set annotations list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.annotations = list(items) if items else []
+        return self
+
+    def with_base_type(self, value: Optional[SwBaseType]) -> "SwDataDefPropsBuilder":
+        """Set base_type attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.base_type = value
+        return self
+
+    def with_compu_method(self, value: Optional[CompuMethod]) -> "SwDataDefPropsBuilder":
+        """Set compu_method attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.compu_method = value
+        return self
+
+    def with_data_constr(self, value: Optional[DataConstr]) -> "SwDataDefPropsBuilder":
+        """Set data_constr attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.data_constr = value
+        return self
+
+    def with_display_format(self, value: Optional[DisplayFormatString]) -> "SwDataDefPropsBuilder":
+        """Set display_format attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.display_format = value
+        return self
+
+    def with_display_presentation(self, value: Optional[DisplayPresentationEnum]) -> "SwDataDefPropsBuilder":
+        """Set display_presentation attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.display_presentation = value
+        return self
+
+    def with_implementation_data_type(self, value: Optional[AbstractImplementationDataType]) -> "SwDataDefPropsBuilder":
+        """Set implementation_data_type attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.implementation_data_type = value
+        return self
+
+    def with_invalid_value(self, value: Optional[ValueSpecification]) -> "SwDataDefPropsBuilder":
+        """Set invalid_value attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.invalid_value = value
+        return self
+
+    def with_step_size(self, value: Optional[Float]) -> "SwDataDefPropsBuilder":
+        """Set step_size attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.step_size = value
+        return self
+
+    def with_sw_addr_method(self, value: Optional[SwAddrMethod]) -> "SwDataDefPropsBuilder":
+        """Set sw_addr_method attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.sw_addr_method = value
+        return self
+
+    def with_sw_alignment(self, value: Optional[AlignmentType]) -> "SwDataDefPropsBuilder":
+        """Set sw_alignment attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.sw_alignment = value
+        return self
+
+    def with_sw_bit_representation(self, value: Optional[SwBitRepresentation]) -> "SwDataDefPropsBuilder":
+        """Set sw_bit_representation attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.sw_bit_representation = value
+        return self
+
+    def with_sw_calibration_access(self, value: Optional[SwCalibrationAccessEnum]) -> "SwDataDefPropsBuilder":
+        """Set sw_calibration_access attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.sw_calibration_access = value
+        return self
+
+    def with_sw_calprm_axis_set(self, value: Optional[SwCalprmAxisSet]) -> "SwDataDefPropsBuilder":
+        """Set sw_calprm_axis_set attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.sw_calprm_axis_set = value
+        return self
+
+    def with_sw_comparison_variables(self, items: list[SwVariableRefProxy]) -> "SwDataDefPropsBuilder":
+        """Set sw_comparison_variables list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.sw_comparison_variables = list(items) if items else []
+        return self
+
+    def with_sw_data_dependency(self, value: Optional[SwDataDependency]) -> "SwDataDefPropsBuilder":
+        """Set sw_data_dependency attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.sw_data_dependency = value
+        return self
+
+    def with_sw_host_variable(self, value: Optional[SwVariableRefProxy]) -> "SwDataDefPropsBuilder":
+        """Set sw_host_variable attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.sw_host_variable = value
+        return self
+
+    def with_sw_impl_policy_enum(self, value: Optional[SwImplPolicyEnum]) -> "SwDataDefPropsBuilder":
+        """Set sw_impl_policy_enum attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.sw_impl_policy_enum = value
+        return self
+
+    def with_sw_intended_resolution(self, value: Optional[Numerical]) -> "SwDataDefPropsBuilder":
+        """Set sw_intended_resolution attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.sw_intended_resolution = value
+        return self
+
+    def with_sw_interpolation_method(self, value: Optional[Identifier]) -> "SwDataDefPropsBuilder":
+        """Set sw_interpolation_method attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.sw_interpolation_method = value
+        return self
+
+    def with_sw_is_virtual(self, value: Optional[Boolean]) -> "SwDataDefPropsBuilder":
+        """Set sw_is_virtual attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.sw_is_virtual = value
+        return self
+
+    def with_sw_pointer_target_props(self, value: Optional[SwPointerTargetProps]) -> "SwDataDefPropsBuilder":
+        """Set sw_pointer_target_props attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.sw_pointer_target_props = value
+        return self
+
+    def with_sw_record_layout(self, value: Optional[SwRecordLayout]) -> "SwDataDefPropsBuilder":
+        """Set sw_record_layout attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.sw_record_layout = value
+        return self
+
+    def with_sw_refresh_timing(self, value: Optional[MultidimensionalTime]) -> "SwDataDefPropsBuilder":
+        """Set sw_refresh_timing attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.sw_refresh_timing = value
+        return self
+
+    def with_sw_text_props(self, value: Optional[SwTextProps]) -> "SwDataDefPropsBuilder":
+        """Set sw_text_props attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.sw_text_props = value
+        return self
+
+    def with_sw_value_block_size(self, value: Optional[Numerical]) -> "SwDataDefPropsBuilder":
+        """Set sw_value_block_size attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.sw_value_block_size = value
+        return self
+
+    def with_sw_value_block_size_mults(self, items: list[Numerical]) -> "SwDataDefPropsBuilder":
+        """Set sw_value_block_size_mults list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.sw_value_block_size_mults = list(items) if items else []
+        return self
+
+    def with_unit(self, value: Optional[Unit]) -> "SwDataDefPropsBuilder":
+        """Set unit attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.unit = value
+        return self
+
+    def with_value_axis_data_type(self, value: Optional[ApplicationPrimitiveDataType]) -> "SwDataDefPropsBuilder":
+        """Set value_axis_data_type attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.value_axis_data_type = value
+        return self
+
+
+    def add_annotation(self, item: Annotation) -> "SwDataDefPropsBuilder":
+        """Add a single item to annotations list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.annotations.append(item)
+        return self
+
+    def clear_annotations(self) -> "SwDataDefPropsBuilder":
+        """Clear all items from annotations list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.annotations = []
+        return self
+
+    def add_sw_comparison_variable(self, item: SwVariableRefProxy) -> "SwDataDefPropsBuilder":
+        """Add a single item to sw_comparison_variables list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.sw_comparison_variables.append(item)
+        return self
+
+    def clear_sw_comparison_variables(self) -> "SwDataDefPropsBuilder":
+        """Clear all items from sw_comparison_variables list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.sw_comparison_variables = []
+        return self
+
+    def add_sw_value_block_size_mult(self, item: Numerical) -> "SwDataDefPropsBuilder":
+        """Add a single item to sw_value_block_size_mults list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.sw_value_block_size_mults.append(item)
+        return self
+
+    def clear_sw_value_block_size_mults(self) -> "SwDataDefPropsBuilder":
+        """Clear all items from sw_value_block_size_mults list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.sw_value_block_size_mults = []
+        return self
+
+
+    @staticmethod
+    def _coerce_to_int(value: Any) -> int:
+        """Coerce value to int.
+
+        Args:
+            value: Value to coerce
+
+        Returns:
+            Integer value
+
+        Raises:
+            ValueError: If value cannot be coerced to int
+        """
+        if isinstance(value, int):
+            return value
+        if isinstance(value, str) and value.isdigit():
+            return int(value)
+        if isinstance(value, float):
+            return int(value)
+        if isinstance(value, bool):
+            return int(value)
+        raise ValueError(f"Cannot coerce {type(value).__name__} to int: {value}")
+
+    @staticmethod
+    def _coerce_to_float(value: Any) -> float:
+        """Coerce value to float.
+
+        Args:
+            value: Value to coerce
+
+        Returns:
+            Float value
+
+        Raises:
+            ValueError: If value cannot be coerced to float
+        """
+        if isinstance(value, float):
+            return value
+        if isinstance(value, int):
+            return float(value)
+        if isinstance(value, str):
+            try:
+                return float(value)
+            except ValueError:
+                pass
+        raise ValueError(f"Cannot coerce {type(value).__name__} to float: {value}")
+
+    @staticmethod
+    def _coerce_to_bool(value: Any) -> bool:
+        """Coerce value to bool.
+
+        Args:
+            value: Value to coerce
+
+        Returns:
+            Boolean value
+
+        Raises:
+            ValueError: If value cannot be coerced to bool
+        """
+        if isinstance(value, bool):
+            return value
+        if isinstance(value, int):
+            return bool(value)
+        if isinstance(value, str):
+            if value.lower() in ("true", "1", "yes"):
+                return True
+            if value.lower() in ("false", "0", "no"):
+                return False
+        raise ValueError(f"Cannot coerce {type(value).__name__} to bool: {value}")
+
+    @staticmethod
+    def _coerce_to_str(value: Any) -> str:
+        """Coerce value to str.
+
+        Args:
+            value: Value to coerce
+
+        Returns:
+            String value
+        """
+        return str(value)
+
+
+    @staticmethod
+    def _coerce_to_list(value: Any, item_type: str) -> list:
+        """Coerce value to list.
+
+        Args:
+            value: Value to coerce
+            item_type: Expected item type (for error messages)
+
+        Returns:
+            List value
+
+        Raises:
+            ValueError: If value cannot be coerced to list
+        """
+        if isinstance(value, list):
+            return value
+        if isinstance(value, tuple):
+            return list(value)
+        raise ValueError(f"Cannot coerce {type(value).__name__} to list[{item_type}]: {value}")
+
+
+    def _validate_instance(self) -> None:
+        """Validate the built instance based on settings."""
+        from typing import get_type_hints
+        from armodel.core import GlobalSettingsManager, BuilderValidationMode
+
+        settings = GlobalSettingsManager()
+        mode = settings.builder_validation
+
+        if mode == BuilderValidationMode.DISABLED:
+            return
+
+        # Get type hints for the class
+        try:
+            type_hints_dict = get_type_hints(type(self._obj))
+        except Exception:
+            # Cannot resolve type hints (e.g., forward references), skip validation
+            return
+
+        for attr_name, attr_type in type_hints_dict.items():
+            if attr_name.startswith("_"):
+                continue
+
+            value = getattr(self._obj, attr_name)
+
+            # Check required fields (not Optional)
+            if value is None and not self._is_optional_type(attr_type):
+                if mode == BuilderValidationMode.STRICT:
+                    raise ValueError(
+                        f"Required attribute '{attr_name}' is None"
+                    )
+                elif mode == BuilderValidationMode.LENIENT:
+                    import warnings
+                    warnings.warn(
+                        f"Required attribute '{attr_name}' is None",
+                        UserWarning
+                    )
+
+    @staticmethod
+    def _is_optional_type(type_hint: Any) -> bool:
+        """Check if a type hint is Optional.
+
+        Args:
+            type_hint: Type hint to check
+
+        Returns:
+            True if type is Optional, False otherwise
+        """
+        origin = getattr(type_hint, "__origin__", None)
+        return origin is Union
+
+    @staticmethod
+    def _get_expected_type(type_hint: Any) -> type:
+        """Extract expected type from type hint.
+
+        Args:
+            type_hint: Type hint to extract from
+
+        Returns:
+            Expected type
+        """
+        if isinstance(type_hint, str):
+            return object
+        origin = getattr(type_hint, "__origin__", None)
+        if origin is Union:
+            args = getattr(type_hint, "__args__", [])
+            for arg in args:
+                if arg is not type(None):
+                    return arg
+        elif origin is list:
+            args = getattr(type_hint, "__args__", [object])
+            return args[0] if args else object
+        return type_hint if isinstance(type_hint, type) else object
+
+
+    def build(self) -> SwDataDefProps:
+        """Build and return the SwDataDefProps instance with validation."""
+        self._validate_instance()
+        pass
         return self._obj

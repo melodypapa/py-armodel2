@@ -110,18 +110,3 @@ class AutosarDataPrototype(DataPrototype, ABC):
 
 
 
-class AutosarDataPrototypeBuilder:
-    """Builder for AutosarDataPrototype."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AutosarDataPrototype = AutosarDataPrototype()
-
-    def build(self) -> AutosarDataPrototype:
-        """Build and return AutosarDataPrototype object.
-
-        Returns:
-            AutosarDataPrototype instance
-        """
-        # TODO: Add validation
-        return self._obj

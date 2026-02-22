@@ -101,18 +101,3 @@ class EcucAbstractInternalReferenceDef(EcucAbstractReferenceDef, ABC):
 
 
 
-class EcucAbstractInternalReferenceDefBuilder:
-    """Builder for EcucAbstractInternalReferenceDef."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: EcucAbstractInternalReferenceDef = EcucAbstractInternalReferenceDef()
-
-    def build(self) -> EcucAbstractInternalReferenceDef:
-        """Build and return EcucAbstractInternalReferenceDef object.
-
-        Returns:
-            EcucAbstractInternalReferenceDef instance
-        """
-        # TODO: Add validation
-        return self._obj

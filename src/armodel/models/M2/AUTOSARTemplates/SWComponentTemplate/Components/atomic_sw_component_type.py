@@ -132,18 +132,3 @@ class AtomicSwComponentType(SwComponentType, ABC):
 
 
 
-class AtomicSwComponentTypeBuilder:
-    """Builder for AtomicSwComponentType."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AtomicSwComponentType = AtomicSwComponentType()
-
-    def build(self) -> AtomicSwComponentType:
-        """Build and return AtomicSwComponentType object.
-
-        Returns:
-            AtomicSwComponentType instance
-        """
-        # TODO: Add validation
-        return self._obj

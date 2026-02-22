@@ -102,18 +102,3 @@ class DiagnosticRoutineSubfunction(Identifiable, ABC):
 
 
 
-class DiagnosticRoutineSubfunctionBuilder:
-    """Builder for DiagnosticRoutineSubfunction."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: DiagnosticRoutineSubfunction = DiagnosticRoutineSubfunction()
-
-    def build(self) -> DiagnosticRoutineSubfunction:
-        """Build and return DiagnosticRoutineSubfunction object.
-
-        Returns:
-            DiagnosticRoutineSubfunction instance
-        """
-        # TODO: Add validation
-        return self._obj

@@ -98,18 +98,3 @@ class CommConnectorPort(Identifiable, ABC):
 
 
 
-class CommConnectorPortBuilder:
-    """Builder for CommConnectorPort."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: CommConnectorPort = CommConnectorPort()
-
-    def build(self) -> CommConnectorPort:
-        """Build and return CommConnectorPort object.
-
-        Returns:
-            CommConnectorPort instance
-        """
-        # TODO: Add validation
-        return self._obj

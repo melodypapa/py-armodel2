@@ -197,18 +197,3 @@ class GlobalTimeMaster(Identifiable, ABC):
 
 
 
-class GlobalTimeMasterBuilder:
-    """Builder for GlobalTimeMaster."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: GlobalTimeMaster = GlobalTimeMaster()
-
-    def build(self) -> GlobalTimeMaster:
-        """Build and return GlobalTimeMaster object.
-
-        Returns:
-            GlobalTimeMaster instance
-        """
-        # TODO: Add validation
-        return self._obj

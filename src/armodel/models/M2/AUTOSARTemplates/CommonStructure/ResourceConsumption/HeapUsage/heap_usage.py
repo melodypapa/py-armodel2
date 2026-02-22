@@ -153,18 +153,3 @@ class HeapUsage(Identifiable, ABC):
 
 
 
-class HeapUsageBuilder:
-    """Builder for HeapUsage."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: HeapUsage = HeapUsage()
-
-    def build(self) -> HeapUsage:
-        """Build and return HeapUsage object.
-
-        Returns:
-            HeapUsage instance
-        """
-        # TODO: Add validation
-        return self._obj

@@ -71,18 +71,3 @@ class TransportProtocolConfiguration(ARObject, ABC):
 
 
 
-class TransportProtocolConfigurationBuilder:
-    """Builder for TransportProtocolConfiguration."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: TransportProtocolConfiguration = TransportProtocolConfiguration()
-
-    def build(self) -> TransportProtocolConfiguration:
-        """Build and return TransportProtocolConfiguration object.
-
-        Returns:
-            TransportProtocolConfiguration instance
-        """
-        # TODO: Add validation
-        return self._obj

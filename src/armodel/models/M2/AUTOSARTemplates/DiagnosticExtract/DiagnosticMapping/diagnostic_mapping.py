@@ -124,18 +124,3 @@ class DiagnosticMapping(DiagnosticCommonElement, ABC):
 
 
 
-class DiagnosticMappingBuilder:
-    """Builder for DiagnosticMapping."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: DiagnosticMapping = DiagnosticMapping()
-
-    def build(self) -> DiagnosticMapping:
-        """Build and return DiagnosticMapping object.
-
-        Returns:
-            DiagnosticMapping instance
-        """
-        # TODO: Add validation
-        return self._obj

@@ -71,18 +71,3 @@ class CompositeRuleBasedValueArgument(ARObject, ABC):
 
 
 
-class CompositeRuleBasedValueArgumentBuilder:
-    """Builder for CompositeRuleBasedValueArgument."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: CompositeRuleBasedValueArgument = CompositeRuleBasedValueArgument()
-
-    def build(self) -> CompositeRuleBasedValueArgument:
-        """Build and return CompositeRuleBasedValueArgument object.
-
-        Returns:
-            CompositeRuleBasedValueArgument instance
-        """
-        # TODO: Add validation
-        return self._obj

@@ -142,18 +142,3 @@ class Frame(FibexElement, ABC):
 
 
 
-class FrameBuilder:
-    """Builder for Frame."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: Frame = Frame()
-
-    def build(self) -> Frame:
-        """Build and return Frame object.
-
-        Returns:
-            Frame instance
-        """
-        # TODO: Add validation
-        return self._obj

@@ -166,18 +166,3 @@ class AtpInstanceRef(ARObject, ABC):
 
 
 
-class AtpInstanceRefBuilder:
-    """Builder for AtpInstanceRef."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AtpInstanceRef = AtpInstanceRef()
-
-    def build(self) -> AtpInstanceRef:
-        """Build and return AtpInstanceRef object.
-
-        Returns:
-            AtpInstanceRef instance
-        """
-        # TODO: Add validation
-        return self._obj

@@ -180,18 +180,3 @@ class FrameTriggering(Identifiable, ABC):
 
 
 
-class FrameTriggeringBuilder:
-    """Builder for FrameTriggering."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: FrameTriggering = FrameTriggering()
-
-    def build(self) -> FrameTriggering:
-        """Build and return FrameTriggering object.
-
-        Returns:
-            FrameTriggering instance
-        """
-        # TODO: Add validation
-        return self._obj

@@ -71,18 +71,3 @@ class SwcSupportedFeature(ARObject, ABC):
 
 
 
-class SwcSupportedFeatureBuilder:
-    """Builder for SwcSupportedFeature."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: SwcSupportedFeature = SwcSupportedFeature()
-
-    def build(self) -> SwcSupportedFeature:
-        """Build and return SwcSupportedFeature object.
-
-        Returns:
-            SwcSupportedFeature instance
-        """
-        # TODO: Add validation
-        return self._obj

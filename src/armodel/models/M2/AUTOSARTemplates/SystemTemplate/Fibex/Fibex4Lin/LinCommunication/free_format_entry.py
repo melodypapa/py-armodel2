@@ -74,18 +74,3 @@ class FreeFormatEntry(ScheduleTableEntry, ABC):
 
 
 
-class FreeFormatEntryBuilder:
-    """Builder for FreeFormatEntry."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: FreeFormatEntry = FreeFormatEntry()
-
-    def build(self) -> FreeFormatEntry:
-        """Build and return FreeFormatEntry object.
-
-        Returns:
-            FreeFormatEntry instance
-        """
-        # TODO: Add validation
-        return self._obj

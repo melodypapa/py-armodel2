@@ -10,6 +10,11 @@ from .type_utils import (
     get_type_package_path,
     is_primitive_type,
     is_enum_type,
+    extract_base_type,
+    extract_attribute_metadata,
+    get_type_coercion_function,
+    generate_type_coercion_helper,
+    should_apply_type_coercion,
 )
 
 
@@ -1405,17 +1410,369 @@ def _generate_ar_object_methods() -> str:
 '''
 
 
-def generate_builder_code(type_def: Dict[str, Any]) -> str:
+def _collect_all_attributes(
+    class_name: str,
+    hierarchy_info: Dict[str, Dict[str, Any]],
+    package_data: Dict[str, Dict[str, Any]],
+    package_path: str,
+) -> List[Dict[str, Any]]:
+    """Recursively collect all attributes from inheritance chain.
+
+    Args:
+        class_name: Name of the class to collect attributes for
+        hierarchy_info: Class hierarchy information
+        package_data: Package data containing class definitions
+        package_path: Path to the package (not used, searches all packages)
+
+    Returns:
+        List of all attributes (child first, then parents)
+    """
+    all_attributes = []
+
+    # Get parent class from hierarchy
+    parent_class = None
+    if class_name in hierarchy_info:
+        parent_class = hierarchy_info[class_name].get("parent")
+
+    # Recursively collect parent attributes first
+    if parent_class and parent_class != "ARObject":
+        parent_attrs = _collect_all_attributes(
+            parent_class, hierarchy_info, package_data, package_path
+        )
+        all_attributes.extend(parent_attrs)
+
+    # Search for current class in all packages
+    class_data = None
+    for pkg_path, pkg_data in package_data.items():
+        if "classes" in pkg_data:
+            for cls in pkg_data["classes"]:
+                if cls["name"] == class_name:
+                    class_data = cls
+                    break
+        if class_data:
+            break
+
+    # Add current class attributes
+    if class_data and "attributes" in class_data:
+        attrs = extract_attribute_metadata(class_name, class_data["attributes"])
+        all_attributes.extend(attrs)
+
+    return all_attributes
+
+
+def _get_builder_parent_class(
+    class_name: str,
+    hierarchy_info: Dict[str, Dict[str, Any]],
+) -> Optional[str]:
+    """Get the parent Builder class name.
+
+    Args:
+        class_name: Name of the class
+        hierarchy_info: Class hierarchy information
+
+    Returns:
+        Parent Builder class name or None
+    """
+    # Get parent class from hierarchy
+    parent_class = None
+    if class_name in hierarchy_info:
+        parent_class = hierarchy_info[class_name].get("parent")
+
+    # If parent is ARObject, no Builder inheritance needed
+    if not parent_class or parent_class == "ARObject":
+        return None
+
+    # Check if parent is abstract - if so, skip it and look further up
+    if parent_class in hierarchy_info and hierarchy_info[parent_class].get("is_abstract", False):
+        return _get_builder_parent_class(parent_class, hierarchy_info)
+
+    # Return parent Builder class name
+    return f"{parent_class}Builder"
+
+
+def _generate_with_method(
+    class_name: str,
+    attr_name: str,
+    attr_type: str,
+    is_optional: bool,
+) -> str:
+    """Generate a with_* method for a single attribute.
+
+    Args:
+        class_name: Name of the class
+        attr_name: Name of the attribute (camelCase from JSON)
+        attr_type: Type of the attribute
+        is_optional: Whether the attribute is optional
+
+    Returns:
+        Generated with_* method code
+    """
+    # Convert attribute name to snake_case for method name
+    snake_attr_name = to_snake_case(attr_name)
+    method_name = f"with_{snake_attr_name}"
+    param_type = f"Optional[{attr_type}]" if is_optional else attr_type
+
+    # Check if type coercion should be applied
+    base_type = extract_base_type(attr_type)
+    coerce_func = get_type_coercion_function(base_type)
+
+    # Build the assignment line - use setattr for Python keywords
+    python_keywords = {"class", "def", "return", "if", "else", "elif", "for", "while", "import", "from", "try", "except", "finally", "with", "lambda", "raise", "pass", "break", "continue", "and", "or", "not", "in", "is", "assert", "async", "await", "global", "nonlocal", "yield"}
+
+    if snake_attr_name in python_keywords:
+        # Use setattr for Python keywords
+        if coerce_func and should_apply_type_coercion(base_type):
+            assignment = f"setattr(self._obj, '{snake_attr_name}', self._{coerce_func}(value))"
+        else:
+            assignment = f"setattr(self._obj, '{snake_attr_name}', value)"
+    else:
+        # Direct assignment for non-keywords
+        if coerce_func and should_apply_type_coercion(base_type):
+            assignment = f"self._obj.{snake_attr_name} = self._{coerce_func}(value)"
+        else:
+            assignment = f"self._obj.{snake_attr_name} = value"
+
+    # Generate the method
+    code = f'''
+    def {method_name}(self, value: {param_type}) -> "{class_name}Builder":
+        """Set {snake_attr_name} attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not {is_optional}:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        {assignment}
+        return self
+'''
+
+    return code
+
+
+def _generate_with_items_method(
+    class_name: str,
+    attr_name: str,
+    item_type: str,
+) -> str:
+    """Generate with_items method for list attributes.
+
+    Args:
+        class_name: Name of the class
+        attr_name: Name of the list attribute (camelCase from JSON)
+        item_type: Type of items in the list
+
+    Returns:
+        Generated with_items method code
+    """
+    # Convert attribute name to snake_case
+    snake_attr_name = to_snake_case(attr_name)
+    method_name = f"with_{snake_attr_name}"
+
+    # Check if attribute name is a Python keyword
+    python_keywords = {"class", "def", "return", "if", "else", "elif", "for", "while", "import", "from", "try", "except", "finally", "with", "lambda", "raise", "pass", "break", "continue", "and", "or", "not", "in", "is", "assert", "async", "await", "global", "nonlocal", "yield"}
+
+    if snake_attr_name in python_keywords:
+        assignment = f"setattr(self._obj, '{snake_attr_name}', list(items) if items else [])"
+    else:
+        assignment = f"self._obj.{snake_attr_name} = list(items) if items else []"
+
+    code = f'''
+    def {method_name}(self, items: list[{item_type}]) -> "{class_name}Builder":
+        """Set {snake_attr_name} list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        {assignment}
+        return self
+'''
+
+    return code
+
+
+def _generate_list_methods(
+    class_name: str,
+    attr_name: str,
+    item_type: str,
+) -> List[str]:
+    """Generate add_item and clear_items methods for list attributes.
+
+    Args:
+        class_name: Name of the class
+        attr_name: Name of the list attribute (camelCase from JSON)
+        item_type: Type of items in the list
+
+    Returns:
+        List of generated method code
+    """
+    # Convert attribute name to snake_case
+    snake_attr_name = to_snake_case(attr_name)
+
+    # Generate singular name for add_* method
+    singular_name = snake_attr_name.rstrip("s") if snake_attr_name.endswith("s") else snake_attr_name[:-1]
+
+    # Check if attribute name is a Python keyword
+    python_keywords = {"class", "def", "return", "if", "else", "elif", "for", "while", "import", "from", "try", "except", "finally", "with", "lambda", "raise", "pass", "break", "continue", "and", "or", "not", "in", "is", "assert", "async", "await", "global", "nonlocal", "yield"}
+
+    if snake_attr_name in python_keywords:
+        append_line = f"getattr(self._obj, '{snake_attr_name}').append(item)"  # noqa: F841
+        clear_line = f"setattr(self._obj, '{snake_attr_name}', [])"  # noqa: F841
+    else:
+        append_line = f"self._obj.{snake_attr_name}.append(item)"  # noqa: F841
+        clear_line = f"self._obj.{snake_attr_name} = []"  # noqa: F841
+
+    # Add method
+    add_method = f'''
+    def add_{singular_name}(self, item: {item_type}) -> "{class_name}Builder":
+        """Add a single item to ''' + snake_attr_name + ''' list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        ''' + append_line + '''
+        return self
+'''
+
+    # Clear method
+    clear_method = f'''
+    def clear_{snake_attr_name}(self) -> "{class_name}Builder":
+        """Clear all items from ''' + snake_attr_name + ''' list.
+
+        Returns:
+            self for method chaining
+        """
+        ''' + clear_line + '''
+        return self
+'''
+
+    return [add_method, clear_method]
+
+
+def _generate_validation_helper() -> str:
+    """Generate validation helper method for Builder class.
+
+    Returns:
+        Generated validation helper code
+    """
+    return '''
+    def _validate_instance(self) -> None:
+        """Validate the built instance based on settings."""
+        from typing import get_type_hints
+        from armodel.core import GlobalSettingsManager, BuilderValidationMode
+
+        settings = GlobalSettingsManager()
+        mode = settings.builder_validation
+
+        if mode == BuilderValidationMode.DISABLED:
+            return
+
+        # Get type hints for the class
+        try:
+            type_hints_dict = get_type_hints(type(self._obj))
+        except Exception:
+            # Cannot resolve type hints (e.g., forward references), skip validation
+            return
+
+        for attr_name, attr_type in type_hints_dict.items():
+            if attr_name.startswith("_"):
+                continue
+
+            value = getattr(self._obj, attr_name)
+
+            # Check required fields (not Optional)
+            if value is None and not self._is_optional_type(attr_type):
+                if mode == BuilderValidationMode.STRICT:
+                    raise ValueError(
+                        f"Required attribute '{attr_name}' is None"
+                    )
+                elif mode == BuilderValidationMode.LENIENT:
+                    import warnings
+                    warnings.warn(
+                        f"Required attribute '{attr_name}' is None",
+                        UserWarning
+                    )
+
+    @staticmethod
+    def _is_optional_type(type_hint: Any) -> bool:
+        """Check if a type hint is Optional.
+
+        Args:
+            type_hint: Type hint to check
+
+        Returns:
+            True if type is Optional, False otherwise
+        """
+        origin = getattr(type_hint, "__origin__", None)
+        return origin is Union
+
+    @staticmethod
+    def _get_expected_type(type_hint: Any) -> type:
+        """Extract expected type from type hint.
+
+        Args:
+            type_hint: Type hint to extract from
+
+        Returns:
+            Expected type
+        """
+        if isinstance(type_hint, str):
+            return object
+        origin = getattr(type_hint, "__origin__", None)
+        if origin is Union:
+            args = getattr(type_hint, "__args__", [])
+            for arg in args:
+                if arg is not type(None):
+                    return arg
+        elif origin is list:
+            args = getattr(type_hint, "__args__", [object])
+            return args[0] if args else object
+        return type_hint if isinstance(type_hint, type) else object
+'''
+
+
+def generate_builder_code(
+    type_def: Dict[str, Any],
+    hierarchy_info: Dict[str, Dict[str, Any]],
+    package_data: Dict[str, Dict[str, Any]],
+    include_members: bool = False,
+) -> str:
     """Generate builder class code from type definition.
 
     Args:
         type_def: Type definition from mapping.json
+        hierarchy_info: Class hierarchy information
+        package_data: Package data containing class definitions
+        include_members: Whether to include member methods
 
     Returns:
-        Generated builder code as string
+        Generated builder code as string, or empty string if abstract class
     """
     class_name = type_def["name"]
+    is_abstract = type_def.get("is_abstract", False)
+
+    # Skip Builder generation for abstract classes
+    if is_abstract:
+        return ""
+
     builder_name = f"{class_name}Builder"
+
+    # Get parent Builder class
+    builder_parent = _get_builder_parent_class(class_name, hierarchy_info)
+
+    # Generate class definition with inheritance
+    if builder_parent:
+        class_def = f"class {builder_name}({builder_parent}):"
+    else:
+        class_def = f"class {builder_name}:"
 
     # ARObject is instantiated without parentheses
     if class_name == "ARObject":
@@ -1423,24 +1780,69 @@ def generate_builder_code(type_def: Dict[str, Any]) -> str:
     else:
         obj_init = f"{class_name}()"
 
-    code = f'''class {builder_name}:
-    """Builder for {class_name}."""
+    # Generate with_* methods for all attributes (inherited + current class)
+    with_methods = []
+    list_methods = []
 
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: {class_name} = {obj_init}
+    if include_members and "attributes" in type_def:
+        # Collect all attributes from inheritance chain
+        package_path = type_def.get("package", "")
+        all_attrs = _collect_all_attributes(class_name, hierarchy_info, package_data, package_path)
 
-    def build(self) -> {class_name}:
-        """Build and return {class_name} object.
+        # Track attributes we've already generated methods for (to avoid duplicates)
+        generated_attrs = set()
 
-        Returns:
-            {class_name} instance
-        """
-        # TODO: Add validation
-        return self._obj
-'''
+        for attr in all_attrs:
+            attr_name = attr["name"]
 
-    return code
+            # Skip if we've already generated a method for this attribute
+            if attr_name in generated_attrs:
+                continue
+
+            attr_type = attr["type"]
+            is_list = attr["is_list"]
+            is_optional = attr["is_optional"]
+
+            if is_list:
+                # Generate list-specific methods
+                item_type = attr["base_type"]
+                with_methods.append(_generate_with_items_method(class_name, attr_name, item_type))
+                list_methods.extend(_generate_list_methods(class_name, attr_name, item_type))
+            else:
+                # Generate standard with_* method
+                with_methods.append(_generate_with_method(class_name, attr_name, attr_type, is_optional))
+
+            generated_attrs.add(attr_name)
+
+    # Generate type coercion helpers
+    type_coercion_helpers = generate_type_coercion_helper()
+
+    # Generate validation helper
+    validation_helper = _generate_validation_helper()
+
+    # Build the Builder class
+    code_parts = [
+        class_def,
+        f'    """Builder for {class_name} with fluent API."""',
+        "",
+        "    def __init__(self) -> None:",
+        "        \"\"\"Initialize builder with defaults.\"\"\"",
+        f"        {'super().__init__()' if builder_parent else 'pass'}",
+        f"        self._obj: {class_name} = {obj_init}",
+        "",
+        "".join(with_methods),
+        "".join(list_methods),
+        type_coercion_helpers,
+        validation_helper,
+        "",
+        "    def build(self) -> " + class_name + ":",
+        "        \"\"\"Build and return the " + class_name + " instance with validation.\"\"\"",
+        "        self._validate_instance()",
+        f"        {'super().build()' if builder_parent else 'pass'}",
+        "        return self._obj",
+    ]
+
+    return "\n".join(code_parts)
 
 
 def generate_enum_code(enum_def: Dict[str, Any], json_file_path: str = "") -> str:

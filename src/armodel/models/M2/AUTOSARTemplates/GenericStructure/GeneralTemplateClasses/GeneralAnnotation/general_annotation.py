@@ -149,18 +149,3 @@ class GeneralAnnotation(ARObject, ABC):
 
 
 
-class GeneralAnnotationBuilder:
-    """Builder for GeneralAnnotation."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: GeneralAnnotation = GeneralAnnotation()
-
-    def build(self) -> GeneralAnnotation:
-        """Build and return GeneralAnnotation object.
-
-        Returns:
-            GeneralAnnotation instance
-        """
-        # TODO: Add validation
-        return self._obj

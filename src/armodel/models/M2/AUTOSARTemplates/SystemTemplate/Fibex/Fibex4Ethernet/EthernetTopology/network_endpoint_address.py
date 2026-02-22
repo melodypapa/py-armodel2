@@ -71,18 +71,3 @@ class NetworkEndpointAddress(ARObject, ABC):
 
 
 
-class NetworkEndpointAddressBuilder:
-    """Builder for NetworkEndpointAddress."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: NetworkEndpointAddress = NetworkEndpointAddress()
-
-    def build(self) -> NetworkEndpointAddress:
-        """Build and return NetworkEndpointAddress object.
-
-        Returns:
-            NetworkEndpointAddress instance
-        """
-        # TODO: Add validation
-        return self._obj

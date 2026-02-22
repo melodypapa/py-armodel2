@@ -117,18 +117,3 @@ class AbstractCanCommunicationControllerAttributes(ARObject, ABC):
 
 
 
-class AbstractCanCommunicationControllerAttributesBuilder:
-    """Builder for AbstractCanCommunicationControllerAttributes."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: AbstractCanCommunicationControllerAttributes = AbstractCanCommunicationControllerAttributes()
-
-    def build(self) -> AbstractCanCommunicationControllerAttributes:
-        """Build and return AbstractCanCommunicationControllerAttributes object.
-
-        Returns:
-            AbstractCanCommunicationControllerAttributes instance
-        """
-        # TODO: Add validation
-        return self._obj

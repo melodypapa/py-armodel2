@@ -166,18 +166,3 @@ class BswEvent(AbstractEvent, ABC):
 
 
 
-class BswEventBuilder:
-    """Builder for BswEvent."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: BswEvent = BswEvent()
-
-    def build(self) -> BswEvent:
-        """Build and return BswEvent object.
-
-        Returns:
-            BswEvent instance
-        """
-        # TODO: Add validation
-        return self._obj

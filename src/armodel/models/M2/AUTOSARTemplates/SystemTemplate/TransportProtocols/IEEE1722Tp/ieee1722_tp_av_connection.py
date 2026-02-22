@@ -140,18 +140,3 @@ class IEEE1722TpAvConnection(IEEE1722TpConnection, ABC):
 
 
 
-class IEEE1722TpAvConnectionBuilder:
-    """Builder for IEEE1722TpAvConnection."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: IEEE1722TpAvConnection = IEEE1722TpAvConnection()
-
-    def build(self) -> IEEE1722TpAvConnection:
-        """Build and return IEEE1722TpAvConnection object.
-
-        Returns:
-            IEEE1722TpAvConnection instance
-        """
-        # TODO: Add validation
-        return self._obj

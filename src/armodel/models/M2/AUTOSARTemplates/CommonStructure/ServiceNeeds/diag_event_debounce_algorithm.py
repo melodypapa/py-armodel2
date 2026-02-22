@@ -76,18 +76,3 @@ class DiagEventDebounceAlgorithm(Identifiable, ABC):
 
 
 
-class DiagEventDebounceAlgorithmBuilder:
-    """Builder for DiagEventDebounceAlgorithm."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: DiagEventDebounceAlgorithm = DiagEventDebounceAlgorithm()
-
-    def build(self) -> DiagEventDebounceAlgorithm:
-        """Build and return DiagEventDebounceAlgorithm object.
-
-        Returns:
-            DiagEventDebounceAlgorithm instance
-        """
-        # TODO: Add validation
-        return self._obj

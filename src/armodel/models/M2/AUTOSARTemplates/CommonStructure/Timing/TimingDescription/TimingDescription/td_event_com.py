@@ -102,18 +102,3 @@ class TDEventCom(TimingDescriptionEvent, ABC):
 
 
 
-class TDEventComBuilder:
-    """Builder for TDEventCom."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: TDEventCom = TDEventCom()
-
-    def build(self) -> TDEventCom:
-        """Build and return TDEventCom object.
-
-        Returns:
-            TDEventCom instance
-        """
-        # TODO: Add validation
-        return self._obj

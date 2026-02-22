@@ -149,18 +149,3 @@ class FormulaExpression(ARObject, ABC):
 
 
 
-class FormulaExpressionBuilder:
-    """Builder for FormulaExpression."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: FormulaExpression = FormulaExpression()
-
-    def build(self) -> FormulaExpression:
-        """Build and return FormulaExpression object.
-
-        Returns:
-            FormulaExpression instance
-        """
-        # TODO: Add validation
-        return self._obj

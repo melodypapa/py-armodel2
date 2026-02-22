@@ -123,18 +123,3 @@ class SwCalprmAxisTypeProps(ARObject, ABC):
 
 
 
-class SwCalprmAxisTypePropsBuilder:
-    """Builder for SwCalprmAxisTypeProps."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: SwCalprmAxisTypeProps = SwCalprmAxisTypeProps()
-
-    def build(self) -> SwCalprmAxisTypeProps:
-        """Build and return SwCalprmAxisTypeProps object.
-
-        Returns:
-            SwCalprmAxisTypeProps instance
-        """
-        # TODO: Add validation
-        return self._obj

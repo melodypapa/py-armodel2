@@ -76,18 +76,3 @@ class PackageableElement(CollectableElement, ABC):
 
 
 
-class PackageableElementBuilder:
-    """Builder for PackageableElement."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: PackageableElement = PackageableElement()
-
-    def build(self) -> PackageableElement:
-        """Build and return PackageableElement object.
-
-        Returns:
-            PackageableElement instance
-        """
-        # TODO: Add validation
-        return self._obj

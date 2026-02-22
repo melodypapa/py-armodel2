@@ -74,18 +74,3 @@ class DataFormatElementReference(SpecElementReference, ABC):
 
 
 
-class DataFormatElementReferenceBuilder:
-    """Builder for DataFormatElementReference."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: DataFormatElementReference = DataFormatElementReference()
-
-    def build(self) -> DataFormatElementReference:
-        """Build and return DataFormatElementReference object.
-
-        Returns:
-            DataFormatElementReference instance
-        """
-        # TODO: Add validation
-        return self._obj

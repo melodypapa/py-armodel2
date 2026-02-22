@@ -1,6 +1,19 @@
 """Global settings management for ARXML processing."""
 
+from enum import Enum
 from typing import Optional, Any, Dict
+
+
+class BuilderValidationMode(Enum):
+    """Builder validation modes.
+
+    STRICT: Validate all fields, raise on errors
+    LENIENT: Validate required fields, warn on optional
+    DISABLED: Skip validation
+    """
+    STRICT = "strict"
+    LENIENT = "lenient"
+    DISABLED = "disabled"
 
 
 class GlobalSettingsManager:
@@ -21,6 +34,8 @@ class GlobalSettingsManager:
     DEFAULTS: Dict[str, Any] = {
         "strict_validation": False,      # Raise exception on unrecognized XML elements
         "warn_on_unrecognized": True,    # Log warning for unrecognized XML elements
+        "builder_validation": BuilderValidationMode.STRICT,  # Builder validation mode
+        "builder_type_coercion": True,   # Enable type coercion in builders
     }
 
     def __new__(cls) -> "GlobalSettingsManager":
@@ -85,3 +100,31 @@ class GlobalSettingsManager:
     @warn_on_unrecognized.setter
     def warn_on_unrecognized(self, value: bool) -> None:
         self._settings["warn_on_unrecognized"] = value
+
+    @property
+    def builder_validation(self) -> BuilderValidationMode:
+        """Get builder validation mode."""
+        value = self._settings.get("builder_validation", BuilderValidationMode.STRICT)
+        # Handle both string and enum values
+        if isinstance(value, str):
+            try:
+                return BuilderValidationMode(value)
+            except ValueError:
+                return BuilderValidationMode.STRICT
+        if isinstance(value, BuilderValidationMode):
+            return value
+        return BuilderValidationMode.STRICT
+
+    @builder_validation.setter
+    def builder_validation(self, value: BuilderValidationMode) -> None:
+        self._settings["builder_validation"] = value
+
+    @property
+    def builder_type_coercion(self) -> bool:
+        """Get builder type coercion enabled flag."""
+        value = self._settings.get("builder_type_coercion", True)
+        return bool(value) if isinstance(value, (bool, int, str)) else True
+
+    @builder_type_coercion.setter
+    def builder_type_coercion(self, value: bool) -> None:
+        self._settings["builder_type_coercion"] = value

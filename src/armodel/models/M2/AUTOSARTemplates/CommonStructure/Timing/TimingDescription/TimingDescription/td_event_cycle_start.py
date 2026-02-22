@@ -101,18 +101,3 @@ class TDEventCycleStart(TDEventCom, ABC):
 
 
 
-class TDEventCycleStartBuilder:
-    """Builder for TDEventCycleStart."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: TDEventCycleStart = TDEventCycleStart()
-
-    def build(self) -> TDEventCycleStart:
-        """Build and return TDEventCycleStart object.
-
-        Returns:
-            TDEventCycleStart instance
-        """
-        # TODO: Add validation
-        return self._obj

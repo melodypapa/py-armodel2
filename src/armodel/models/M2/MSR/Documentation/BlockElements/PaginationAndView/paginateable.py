@@ -124,18 +124,3 @@ class Paginateable(DocumentViewSelectable, ABC):
 
 
 
-class PaginateableBuilder:
-    """Builder for Paginateable."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: Paginateable = Paginateable()
-
-    def build(self) -> Paginateable:
-        """Build and return Paginateable object.
-
-        Returns:
-            Paginateable instance
-        """
-        # TODO: Add validation
-        return self._obj

@@ -101,18 +101,3 @@ class DiagnosticEnvCompareCondition(DiagnosticEnvConditionFormulaPart, ABC):
 
 
 
-class DiagnosticEnvCompareConditionBuilder:
-    """Builder for DiagnosticEnvCompareCondition."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: DiagnosticEnvCompareCondition = DiagnosticEnvCompareCondition()
-
-    def build(self) -> DiagnosticEnvCompareCondition:
-        """Build and return DiagnosticEnvCompareCondition object.
-
-        Returns:
-            DiagnosticEnvCompareCondition instance
-        """
-        # TODO: Add validation
-        return self._obj

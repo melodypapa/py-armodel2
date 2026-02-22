@@ -74,18 +74,3 @@ class CouplingPortStructuralElement(Identifiable, ABC):
 
 
 
-class CouplingPortStructuralElementBuilder:
-    """Builder for CouplingPortStructuralElement."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: CouplingPortStructuralElement = CouplingPortStructuralElement()
-
-    def build(self) -> CouplingPortStructuralElement:
-        """Build and return CouplingPortStructuralElement object.
-
-        Returns:
-            CouplingPortStructuralElement instance
-        """
-        # TODO: Add validation
-        return self._obj

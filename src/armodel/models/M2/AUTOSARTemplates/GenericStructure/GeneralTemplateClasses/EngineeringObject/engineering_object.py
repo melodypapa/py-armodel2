@@ -173,18 +173,3 @@ class EngineeringObject(ARObject, ABC):
 
 
 
-class EngineeringObjectBuilder:
-    """Builder for EngineeringObject."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: EngineeringObject = EngineeringObject()
-
-    def build(self) -> EngineeringObject:
-        """Build and return EngineeringObject object.
-
-        Returns:
-            EngineeringObject instance
-        """
-        # TODO: Add validation
-        return self._obj

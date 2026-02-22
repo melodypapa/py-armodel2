@@ -102,18 +102,3 @@ class TpConfig(FibexElement, ABC):
 
 
 
-class TpConfigBuilder:
-    """Builder for TpConfig."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: TpConfig = TpConfig()
-
-    def build(self) -> TpConfig:
-        """Build and return TpConfig object.
-
-        Returns:
-            TpConfig instance
-        """
-        # TODO: Add validation
-        return self._obj

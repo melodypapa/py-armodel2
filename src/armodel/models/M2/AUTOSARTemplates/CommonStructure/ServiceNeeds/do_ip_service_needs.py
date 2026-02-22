@@ -76,18 +76,3 @@ class DoIpServiceNeeds(ServiceNeeds, ABC):
 
 
 
-class DoIpServiceNeedsBuilder:
-    """Builder for DoIpServiceNeeds."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: DoIpServiceNeeds = DoIpServiceNeeds()
-
-    def build(self) -> DoIpServiceNeeds:
-        """Build and return DoIpServiceNeeds object.
-
-        Returns:
-            DoIpServiceNeeds instance
-        """
-        # TODO: Add validation
-        return self._obj

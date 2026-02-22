@@ -157,18 +157,3 @@ class DiagnosticCapabilityElement(ServiceNeeds, ABC):
 
 
 
-class DiagnosticCapabilityElementBuilder:
-    """Builder for DiagnosticCapabilityElement."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: DiagnosticCapabilityElement = DiagnosticCapabilityElement()
-
-    def build(self) -> DiagnosticCapabilityElement:
-        """Build and return DiagnosticCapabilityElement object.
-
-        Returns:
-            DiagnosticCapabilityElement instance
-        """
-        # TODO: Add validation
-        return self._obj

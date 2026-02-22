@@ -101,18 +101,3 @@ class DiagnosticCondition(DiagnosticCommonElement, ABC):
 
 
 
-class DiagnosticConditionBuilder:
-    """Builder for DiagnosticCondition."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: DiagnosticCondition = DiagnosticCondition()
-
-    def build(self) -> DiagnosticCondition:
-        """Build and return DiagnosticCondition object.
-
-        Returns:
-            DiagnosticCondition instance
-        """
-        # TODO: Add validation
-        return self._obj

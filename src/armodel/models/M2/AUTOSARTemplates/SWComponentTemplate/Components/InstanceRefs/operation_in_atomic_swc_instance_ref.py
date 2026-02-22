@@ -149,18 +149,3 @@ class OperationInAtomicSwcInstanceRef(ARObject, ABC):
 
 
 
-class OperationInAtomicSwcInstanceRefBuilder:
-    """Builder for OperationInAtomicSwcInstanceRef."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: OperationInAtomicSwcInstanceRef = OperationInAtomicSwcInstanceRef()
-
-    def build(self) -> OperationInAtomicSwcInstanceRef:
-        """Build and return OperationInAtomicSwcInstanceRef object.
-
-        Returns:
-            OperationInAtomicSwcInstanceRef instance
-        """
-        # TODO: Add validation
-        return self._obj

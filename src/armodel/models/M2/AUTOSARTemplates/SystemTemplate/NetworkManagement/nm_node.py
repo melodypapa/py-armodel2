@@ -298,18 +298,3 @@ class NmNode(Identifiable, ABC):
 
 
 
-class NmNodeBuilder:
-    """Builder for NmNode."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: NmNode = NmNode()
-
-    def build(self) -> NmNode:
-        """Build and return NmNode object.
-
-        Returns:
-            NmNode instance
-        """
-        # TODO: Add validation
-        return self._obj

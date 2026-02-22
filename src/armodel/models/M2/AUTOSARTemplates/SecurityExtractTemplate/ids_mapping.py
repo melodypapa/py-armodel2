@@ -74,18 +74,3 @@ class IdsMapping(IdsCommonElement, ABC):
 
 
 
-class IdsMappingBuilder:
-    """Builder for IdsMapping."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: IdsMapping = IdsMapping()
-
-    def build(self) -> IdsMapping:
-        """Build and return IdsMapping object.
-
-        Returns:
-            IdsMapping instance
-        """
-        # TODO: Add validation
-        return self._obj

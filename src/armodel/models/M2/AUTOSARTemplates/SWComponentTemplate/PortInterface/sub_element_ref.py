@@ -71,18 +71,3 @@ class SubElementRef(ARObject, ABC):
 
 
 
-class SubElementRefBuilder:
-    """Builder for SubElementRef."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: SubElementRef = SubElementRef()
-
-    def build(self) -> SubElementRef:
-        """Build and return SubElementRef object.
-
-        Returns:
-            SubElementRef instance
-        """
-        # TODO: Add validation
-        return self._obj

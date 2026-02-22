@@ -101,18 +101,3 @@ class SpecElementScope(SpecElementReference, ABC):
 
 
 
-class SpecElementScopeBuilder:
-    """Builder for SpecElementScope."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: SpecElementScope = SpecElementScope()
-
-    def build(self) -> SpecElementScope:
-        """Build and return SpecElementScope object.
-
-        Returns:
-            SpecElementScope instance
-        """
-        # TODO: Add validation
-        return self._obj

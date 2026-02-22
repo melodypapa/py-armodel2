@@ -98,18 +98,3 @@ class DataPrototypeReference(ARObject, ABC):
 
 
 
-class DataPrototypeReferenceBuilder:
-    """Builder for DataPrototypeReference."""
-
-    def __init__(self) -> None:
-        """Initialize builder."""
-        self._obj: DataPrototypeReference = DataPrototypeReference()
-
-    def build(self) -> DataPrototypeReference:
-        """Build and return DataPrototypeReference object.
-
-        Returns:
-            DataPrototypeReference instance
-        """
-        # TODO: Add validation
-        return self._obj
