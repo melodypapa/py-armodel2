@@ -64,37 +64,39 @@ class BswModuleDescription(ARElement):
         """
         return False
 
-    bsw_module_refs: list[ARRef]
+    bsw_modules_dependency: list[BswModuleDependency]
     bsw_module_documentation: Optional[SwComponentDocumentation]
     expected_entrie_refs: list[ARRef]
-    implemented_refs: list[ARRef]
+    implemented_entrie_refs: list[ARRef]
+    provided_entrie_refs: list[ARRef]
     internal_behaviors: list[BswInternalBehavior]
     module_id: Optional[PositiveInteger]
-    provided_clients: list[BswModuleClientServerEntry]
-    provided_data_refs: list[ARRef]
-    provided_mode_refs: list[ARRef]
-    released_trigger_refs: list[ARRef]
-    required_clients: list[BswModuleClientServerEntry]
-    required_data_refs: list[ARRef]
-    required_mode_refs: list[ARRef]
-    required_trigger_refs: list[ARRef]
+    provided_client_server_entries: list[BswModuleClientServerEntry]
+    provided_datas: list[VariableDataPrototype]
+    provided_mode_groups: list[ModeDeclarationGroup]
+    released_triggers: list[Trigger]
+    required_client_server_entries: list[BswModuleClientServerEntry]
+    required_datas: list[VariableDataPrototype]
+    required_mode_groups: list[ModeDeclarationGroup]
+    required_triggers: list[Trigger]
     def __init__(self) -> None:
         """Initialize BswModuleDescription."""
         super().__init__()
-        self.bsw_module_refs: list[ARRef] = []
+        self.bsw_modules_dependency: list[BswModuleDependency] = []
         self.bsw_module_documentation: Optional[SwComponentDocumentation] = None
         self.expected_entrie_refs: list[ARRef] = []
-        self.implemented_refs: list[ARRef] = []
+        self.implemented_entrie_refs: list[ARRef] = []
+        self.provided_entrie_refs: list[ARRef] = []
         self.internal_behaviors: list[BswInternalBehavior] = []
         self.module_id: Optional[PositiveInteger] = None
-        self.provided_clients: list[BswModuleClientServerEntry] = []
-        self.provided_data_refs: list[ARRef] = []
-        self.provided_mode_refs: list[ARRef] = []
-        self.released_trigger_refs: list[ARRef] = []
-        self.required_clients: list[BswModuleClientServerEntry] = []
-        self.required_data_refs: list[ARRef] = []
-        self.required_mode_refs: list[ARRef] = []
-        self.required_trigger_refs: list[ARRef] = []
+        self.provided_client_server_entries: list[BswModuleClientServerEntry] = []
+        self.provided_datas: list[VariableDataPrototype] = []
+        self.provided_mode_groups: list[ModeDeclarationGroup] = []
+        self.released_triggers: list[Trigger] = []
+        self.required_client_server_entries: list[BswModuleClientServerEntry] = []
+        self.required_datas: list[VariableDataPrototype] = []
+        self.required_mode_groups: list[ModeDeclarationGroup] = []
+        self.required_triggers: list[Trigger] = []
 
     def serialize(self) -> ET.Element:
         """Serialize BswModuleDescription to XML element.
@@ -120,22 +122,19 @@ class BswModuleDescription(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize bsw_module_refs (list to container "BSW-MODULE-REFS")
-        if self.bsw_module_refs:
-            wrapper = ET.Element("BSW-MODULE-REFS")
-            for item in self.bsw_module_refs:
-                serialized = SerializationHelper.serialize_item(item, "BswModuleDependency")
-                if serialized is not None:
-                    child_elem = ET.Element("BSW-MODULE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
+        # Serialize bsw_modules_dependency (list)
+        for item in self.bsw_modules_dependency:
+            serialized = SerializationHelper.serialize_item(item, "BswModuleDependency")
+            if serialized is not None:
+                # For non-container lists, wrap with correct tag
+                wrapped = ET.Element("BSW-MODULES-DEPENDENCY")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
-            if len(wrapper) > 0:
-                elem.append(wrapper)
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
 
         # Serialize bsw_module_documentation
         if self.bsw_module_documentation is not None:
@@ -168,13 +167,30 @@ class BswModuleDescription(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize implemented_refs (list to container "IMPLEMENTED-REFS")
-        if self.implemented_refs:
-            wrapper = ET.Element("IMPLEMENTED-REFS")
-            for item in self.implemented_refs:
+        # Serialize implemented_entrie_refs (list to container "IMPLEMENTED-ENTRIE-REFS")
+        if self.implemented_entrie_refs:
+            wrapper = ET.Element("IMPLEMENTED-ENTRIE-REFS")
+            for item in self.implemented_entrie_refs:
                 serialized = SerializationHelper.serialize_item(item, "BswModuleEntry")
                 if serialized is not None:
-                    child_elem = ET.Element("IMPLEMENTED-REF")
+                    child_elem = ET.Element("IMPLEMENTED-ENTRIE-REF")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize provided_entrie_refs (list to container "PROVIDED-ENTRIE-REFS")
+        if self.provided_entrie_refs:
+            wrapper = ET.Element("PROVIDED-ENTRIE-REFS")
+            for item in self.provided_entrie_refs:
+                serialized = SerializationHelper.serialize_item(item, "BswModuleEntry")
+                if serialized is not None:
+                    child_elem = ET.Element("PROVIDED-ENTRIE-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -209,125 +225,83 @@ class BswModuleDescription(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize provided_clients (list to container "PROVIDED-CLIENTS")
-        if self.provided_clients:
-            wrapper = ET.Element("PROVIDED-CLIENTS")
-            for item in self.provided_clients:
+        # Serialize provided_client_server_entries (list to container "PROVIDED-CLIENT-SERVER-ENTRIES")
+        if self.provided_client_server_entries:
+            wrapper = ET.Element("PROVIDED-CLIENT-SERVER-ENTRIES")
+            for item in self.provided_client_server_entries:
                 serialized = SerializationHelper.serialize_item(item, "BswModuleClientServerEntry")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize provided_data_refs (list to container "PROVIDED-DATA-REFS")
-        if self.provided_data_refs:
-            wrapper = ET.Element("PROVIDED-DATA-REFS")
-            for item in self.provided_data_refs:
+        # Serialize provided_datas (list to container "PROVIDED-DATAS")
+        if self.provided_datas:
+            wrapper = ET.Element("PROVIDED-DATAS")
+            for item in self.provided_datas:
                 serialized = SerializationHelper.serialize_item(item, "VariableDataPrototype")
                 if serialized is not None:
-                    child_elem = ET.Element("PROVIDED-DATA-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize provided_mode_refs (list to container "PROVIDED-MODE-REFS")
-        if self.provided_mode_refs:
-            wrapper = ET.Element("PROVIDED-MODE-REFS")
-            for item in self.provided_mode_refs:
+        # Serialize provided_mode_groups (list to container "PROVIDED-MODE-GROUPS")
+        if self.provided_mode_groups:
+            wrapper = ET.Element("PROVIDED-MODE-GROUPS")
+            for item in self.provided_mode_groups:
                 serialized = SerializationHelper.serialize_item(item, "ModeDeclarationGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("PROVIDED-MODE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize released_trigger_refs (list to container "RELEASED-TRIGGER-REFS")
-        if self.released_trigger_refs:
-            wrapper = ET.Element("RELEASED-TRIGGER-REFS")
-            for item in self.released_trigger_refs:
+        # Serialize released_triggers (list to container "RELEASED-TRIGGERS")
+        if self.released_triggers:
+            wrapper = ET.Element("RELEASED-TRIGGERS")
+            for item in self.released_triggers:
                 serialized = SerializationHelper.serialize_item(item, "Trigger")
                 if serialized is not None:
-                    child_elem = ET.Element("RELEASED-TRIGGER-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize required_clients (list to container "REQUIRED-CLIENTS")
-        if self.required_clients:
-            wrapper = ET.Element("REQUIRED-CLIENTS")
-            for item in self.required_clients:
+        # Serialize required_client_server_entries (list to container "REQUIRED-CLIENT-SERVER-ENTRIES")
+        if self.required_client_server_entries:
+            wrapper = ET.Element("REQUIRED-CLIENT-SERVER-ENTRIES")
+            for item in self.required_client_server_entries:
                 serialized = SerializationHelper.serialize_item(item, "BswModuleClientServerEntry")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize required_data_refs (list to container "REQUIRED-DATA-REFS")
-        if self.required_data_refs:
-            wrapper = ET.Element("REQUIRED-DATA-REFS")
-            for item in self.required_data_refs:
+        # Serialize required_datas (list to container "REQUIRED-DATAS")
+        if self.required_datas:
+            wrapper = ET.Element("REQUIRED-DATAS")
+            for item in self.required_datas:
                 serialized = SerializationHelper.serialize_item(item, "VariableDataPrototype")
                 if serialized is not None:
-                    child_elem = ET.Element("REQUIRED-DATA-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize required_mode_refs (list to container "REQUIRED-MODE-REFS")
-        if self.required_mode_refs:
-            wrapper = ET.Element("REQUIRED-MODE-REFS")
-            for item in self.required_mode_refs:
+        # Serialize required_mode_groups (list to container "REQUIRED-MODE-GROUPS")
+        if self.required_mode_groups:
+            wrapper = ET.Element("REQUIRED-MODE-GROUPS")
+            for item in self.required_mode_groups:
                 serialized = SerializationHelper.serialize_item(item, "ModeDeclarationGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("REQUIRED-MODE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize required_trigger_refs (list to container "REQUIRED-TRIGGER-REFS")
-        if self.required_trigger_refs:
-            wrapper = ET.Element("REQUIRED-TRIGGER-REFS")
-            for item in self.required_trigger_refs:
+        # Serialize required_triggers (list to container "REQUIRED-TRIGGERS")
+        if self.required_triggers:
+            wrapper = ET.Element("REQUIRED-TRIGGERS")
+            for item in self.required_triggers:
                 serialized = SerializationHelper.serialize_item(item, "Trigger")
                 if serialized is not None:
-                    child_elem = ET.Element("REQUIRED-TRIGGER-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -346,21 +320,11 @@ class BswModuleDescription(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswModuleDescription, cls).deserialize(element)
 
-        # Parse bsw_module_refs (list from container "BSW-MODULE-REFS")
-        obj.bsw_module_refs = []
-        container = SerializationHelper.find_child_element(element, "BSW-MODULE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.bsw_module_refs.append(child_value)
+        # Parse bsw_modules_dependency (list)
+        obj.bsw_modules_dependency = []
+        for child in SerializationHelper.find_all_child_elements(element, "BSW-MODULES-DEPENDENCY"):
+            bsw_modules_dependency_value = SerializationHelper.deserialize_by_tag(child, "BswModuleDependency")
+            obj.bsw_modules_dependency.append(bsw_modules_dependency_value)
 
         # Parse bsw_module_documentation
         child = SerializationHelper.find_child_element(element, "BSW-MODULE-DOCUMENTATION")
@@ -384,9 +348,9 @@ class BswModuleDescription(ARElement):
                 if child_value is not None:
                     obj.expected_entrie_refs.append(child_value)
 
-        # Parse implemented_refs (list from container "IMPLEMENTED-REFS")
-        obj.implemented_refs = []
-        container = SerializationHelper.find_child_element(element, "IMPLEMENTED-REFS")
+        # Parse implemented_entrie_refs (list from container "IMPLEMENTED-ENTRIE-REFS")
+        obj.implemented_entrie_refs = []
+        container = SerializationHelper.find_child_element(element, "IMPLEMENTED-ENTRIE-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -398,7 +362,23 @@ class BswModuleDescription(ARElement):
                     # Deserialize each child element dynamically based on its tag
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.implemented_refs.append(child_value)
+                    obj.implemented_entrie_refs.append(child_value)
+
+        # Parse provided_entrie_refs (list from container "PROVIDED-ENTRIE-REFS")
+        obj.provided_entrie_refs = []
+        container = SerializationHelper.find_child_element(element, "PROVIDED-ENTRIE-REFS")
+        if container is not None:
+            for child in container:
+                # Check if child is a reference element (ends with -REF or -TREF)
+                child_tag = SerializationHelper.strip_namespace(child.tag)
+                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.provided_entrie_refs.append(child_value)
 
         # Parse internal_behaviors (list from container "INTERNAL-BEHAVIORS")
         obj.internal_behaviors = []
@@ -416,121 +396,85 @@ class BswModuleDescription(ARElement):
             module_id_value = child.text
             obj.module_id = module_id_value
 
-        # Parse provided_clients (list from container "PROVIDED-CLIENTS")
-        obj.provided_clients = []
-        container = SerializationHelper.find_child_element(element, "PROVIDED-CLIENTS")
+        # Parse provided_client_server_entries (list from container "PROVIDED-CLIENT-SERVER-ENTRIES")
+        obj.provided_client_server_entries = []
+        container = SerializationHelper.find_child_element(element, "PROVIDED-CLIENT-SERVER-ENTRIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.provided_clients.append(child_value)
+                    obj.provided_client_server_entries.append(child_value)
 
-        # Parse provided_data_refs (list from container "PROVIDED-DATA-REFS")
-        obj.provided_data_refs = []
-        container = SerializationHelper.find_child_element(element, "PROVIDED-DATA-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.provided_data_refs.append(child_value)
-
-        # Parse provided_mode_refs (list from container "PROVIDED-MODE-REFS")
-        obj.provided_mode_refs = []
-        container = SerializationHelper.find_child_element(element, "PROVIDED-MODE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.provided_mode_refs.append(child_value)
-
-        # Parse released_trigger_refs (list from container "RELEASED-TRIGGER-REFS")
-        obj.released_trigger_refs = []
-        container = SerializationHelper.find_child_element(element, "RELEASED-TRIGGER-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.released_trigger_refs.append(child_value)
-
-        # Parse required_clients (list from container "REQUIRED-CLIENTS")
-        obj.required_clients = []
-        container = SerializationHelper.find_child_element(element, "REQUIRED-CLIENTS")
+        # Parse provided_datas (list from container "PROVIDED-DATAS")
+        obj.provided_datas = []
+        container = SerializationHelper.find_child_element(element, "PROVIDED-DATAS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.required_clients.append(child_value)
+                    obj.provided_datas.append(child_value)
 
-        # Parse required_data_refs (list from container "REQUIRED-DATA-REFS")
-        obj.required_data_refs = []
-        container = SerializationHelper.find_child_element(element, "REQUIRED-DATA-REFS")
+        # Parse provided_mode_groups (list from container "PROVIDED-MODE-GROUPS")
+        obj.provided_mode_groups = []
+        container = SerializationHelper.find_child_element(element, "PROVIDED-MODE-GROUPS")
         if container is not None:
             for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.required_data_refs.append(child_value)
+                    obj.provided_mode_groups.append(child_value)
 
-        # Parse required_mode_refs (list from container "REQUIRED-MODE-REFS")
-        obj.required_mode_refs = []
-        container = SerializationHelper.find_child_element(element, "REQUIRED-MODE-REFS")
+        # Parse released_triggers (list from container "RELEASED-TRIGGERS")
+        obj.released_triggers = []
+        container = SerializationHelper.find_child_element(element, "RELEASED-TRIGGERS")
         if container is not None:
             for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.required_mode_refs.append(child_value)
+                    obj.released_triggers.append(child_value)
 
-        # Parse required_trigger_refs (list from container "REQUIRED-TRIGGER-REFS")
-        obj.required_trigger_refs = []
-        container = SerializationHelper.find_child_element(element, "REQUIRED-TRIGGER-REFS")
+        # Parse required_client_server_entries (list from container "REQUIRED-CLIENT-SERVER-ENTRIES")
+        obj.required_client_server_entries = []
+        container = SerializationHelper.find_child_element(element, "REQUIRED-CLIENT-SERVER-ENTRIES")
         if container is not None:
             for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.required_trigger_refs.append(child_value)
+                    obj.required_client_server_entries.append(child_value)
+
+        # Parse required_datas (list from container "REQUIRED-DATAS")
+        obj.required_datas = []
+        container = SerializationHelper.find_child_element(element, "REQUIRED-DATAS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.required_datas.append(child_value)
+
+        # Parse required_mode_groups (list from container "REQUIRED-MODE-GROUPS")
+        obj.required_mode_groups = []
+        container = SerializationHelper.find_child_element(element, "REQUIRED-MODE-GROUPS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.required_mode_groups.append(child_value)
+
+        # Parse required_triggers (list from container "REQUIRED-TRIGGERS")
+        obj.required_triggers = []
+        container = SerializationHelper.find_child_element(element, "REQUIRED-TRIGGERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.required_triggers.append(child_value)
 
         return obj
 
@@ -667,8 +611,8 @@ class BswModuleDescriptionBuilder:
         self._obj.uuid = value
         return self
 
-    def with_bsw_modules(self, items: list[BswModuleDependency]) -> "BswModuleDescriptionBuilder":
-        """Set bsw_modules list attribute.
+    def with_bsw_modules_dependency(self, items: list[BswModuleDependency]) -> "BswModuleDescriptionBuilder":
+        """Set bsw_modules_dependency list attribute.
 
         Args:
             items: List of items to set
@@ -676,7 +620,7 @@ class BswModuleDescriptionBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.bsw_modules = list(items) if items else []
+        self._obj.bsw_modules_dependency = list(items) if items else []
         return self
 
     def with_bsw_module_documentation(self, value: Optional[SwComponentDocumentation]) -> "BswModuleDescriptionBuilder":
@@ -705,8 +649,8 @@ class BswModuleDescriptionBuilder:
         self._obj.expected_entries = list(items) if items else []
         return self
 
-    def with_implementeds(self, items: list[BswModuleEntry]) -> "BswModuleDescriptionBuilder":
-        """Set implementeds list attribute.
+    def with_implemented_entries(self, items: list[BswModuleEntry]) -> "BswModuleDescriptionBuilder":
+        """Set implemented_entries list attribute.
 
         Args:
             items: List of items to set
@@ -714,7 +658,19 @@ class BswModuleDescriptionBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.implementeds = list(items) if items else []
+        self._obj.implemented_entries = list(items) if items else []
+        return self
+
+    def with_provided_entries(self, items: list[BswModuleEntry]) -> "BswModuleDescriptionBuilder":
+        """Set provided_entries list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.provided_entries = list(items) if items else []
         return self
 
     def with_internal_behaviors(self, items: list[BswInternalBehavior]) -> "BswModuleDescriptionBuilder":
@@ -743,8 +699,8 @@ class BswModuleDescriptionBuilder:
         self._obj.module_id = value
         return self
 
-    def with_provided_clients(self, items: list[BswModuleClientServerEntry]) -> "BswModuleDescriptionBuilder":
-        """Set provided_clients list attribute.
+    def with_provided_client_server_entries(self, items: list[BswModuleClientServerEntry]) -> "BswModuleDescriptionBuilder":
+        """Set provided_client_server_entries list attribute.
 
         Args:
             items: List of items to set
@@ -752,7 +708,7 @@ class BswModuleDescriptionBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.provided_clients = list(items) if items else []
+        self._obj.provided_client_server_entries = list(items) if items else []
         return self
 
     def with_provided_datas(self, items: list[VariableDataPrototype]) -> "BswModuleDescriptionBuilder":
@@ -767,8 +723,8 @@ class BswModuleDescriptionBuilder:
         self._obj.provided_datas = list(items) if items else []
         return self
 
-    def with_provided_modes(self, items: list[ModeDeclarationGroup]) -> "BswModuleDescriptionBuilder":
-        """Set provided_modes list attribute.
+    def with_provided_mode_groups(self, items: list[ModeDeclarationGroup]) -> "BswModuleDescriptionBuilder":
+        """Set provided_mode_groups list attribute.
 
         Args:
             items: List of items to set
@@ -776,7 +732,7 @@ class BswModuleDescriptionBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.provided_modes = list(items) if items else []
+        self._obj.provided_mode_groups = list(items) if items else []
         return self
 
     def with_released_triggers(self, items: list[Trigger]) -> "BswModuleDescriptionBuilder":
@@ -791,8 +747,8 @@ class BswModuleDescriptionBuilder:
         self._obj.released_triggers = list(items) if items else []
         return self
 
-    def with_required_clients(self, items: list[BswModuleClientServerEntry]) -> "BswModuleDescriptionBuilder":
-        """Set required_clients list attribute.
+    def with_required_client_server_entries(self, items: list[BswModuleClientServerEntry]) -> "BswModuleDescriptionBuilder":
+        """Set required_client_server_entries list attribute.
 
         Args:
             items: List of items to set
@@ -800,7 +756,7 @@ class BswModuleDescriptionBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.required_clients = list(items) if items else []
+        self._obj.required_client_server_entries = list(items) if items else []
         return self
 
     def with_required_datas(self, items: list[VariableDataPrototype]) -> "BswModuleDescriptionBuilder":
@@ -815,8 +771,8 @@ class BswModuleDescriptionBuilder:
         self._obj.required_datas = list(items) if items else []
         return self
 
-    def with_required_modes(self, items: list[ModeDeclarationGroup]) -> "BswModuleDescriptionBuilder":
-        """Set required_modes list attribute.
+    def with_required_mode_groups(self, items: list[ModeDeclarationGroup]) -> "BswModuleDescriptionBuilder":
+        """Set required_mode_groups list attribute.
 
         Args:
             items: List of items to set
@@ -824,7 +780,7 @@ class BswModuleDescriptionBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.required_modes = list(items) if items else []
+        self._obj.required_mode_groups = list(items) if items else []
         return self
 
     def with_required_triggers(self, items: list[Trigger]) -> "BswModuleDescriptionBuilder":
@@ -882,8 +838,8 @@ class BswModuleDescriptionBuilder:
         self._obj.annotations = []
         return self
 
-    def add_bsw_module(self, item: BswModuleDependency) -> "BswModuleDescriptionBuilder":
-        """Add a single item to bsw_modules list.
+    def add_bsw_modules_dependenc(self, item: BswModuleDependency) -> "BswModuleDescriptionBuilder":
+        """Add a single item to bsw_modules_dependency list.
 
         Args:
             item: Item to add
@@ -891,16 +847,16 @@ class BswModuleDescriptionBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.bsw_modules.append(item)
+        self._obj.bsw_modules_dependency.append(item)
         return self
 
-    def clear_bsw_modules(self) -> "BswModuleDescriptionBuilder":
-        """Clear all items from bsw_modules list.
+    def clear_bsw_modules_dependency(self) -> "BswModuleDescriptionBuilder":
+        """Clear all items from bsw_modules_dependency list.
 
         Returns:
             self for method chaining
         """
-        self._obj.bsw_modules = []
+        self._obj.bsw_modules_dependency = []
         return self
 
     def add_expected_entrie(self, item: BswModuleEntry) -> "BswModuleDescriptionBuilder":
@@ -924,8 +880,8 @@ class BswModuleDescriptionBuilder:
         self._obj.expected_entries = []
         return self
 
-    def add_implemented(self, item: BswModuleEntry) -> "BswModuleDescriptionBuilder":
-        """Add a single item to implementeds list.
+    def add_implemented_entrie(self, item: BswModuleEntry) -> "BswModuleDescriptionBuilder":
+        """Add a single item to implemented_entries list.
 
         Args:
             item: Item to add
@@ -933,16 +889,37 @@ class BswModuleDescriptionBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.implementeds.append(item)
+        self._obj.implemented_entries.append(item)
         return self
 
-    def clear_implementeds(self) -> "BswModuleDescriptionBuilder":
-        """Clear all items from implementeds list.
+    def clear_implemented_entries(self) -> "BswModuleDescriptionBuilder":
+        """Clear all items from implemented_entries list.
 
         Returns:
             self for method chaining
         """
-        self._obj.implementeds = []
+        self._obj.implemented_entries = []
+        return self
+
+    def add_provided_entrie(self, item: BswModuleEntry) -> "BswModuleDescriptionBuilder":
+        """Add a single item to provided_entries list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.provided_entries.append(item)
+        return self
+
+    def clear_provided_entries(self) -> "BswModuleDescriptionBuilder":
+        """Clear all items from provided_entries list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.provided_entries = []
         return self
 
     def add_internal_behavior(self, item: BswInternalBehavior) -> "BswModuleDescriptionBuilder":
@@ -966,8 +943,8 @@ class BswModuleDescriptionBuilder:
         self._obj.internal_behaviors = []
         return self
 
-    def add_provided_client(self, item: BswModuleClientServerEntry) -> "BswModuleDescriptionBuilder":
-        """Add a single item to provided_clients list.
+    def add_provided_client_server_entrie(self, item: BswModuleClientServerEntry) -> "BswModuleDescriptionBuilder":
+        """Add a single item to provided_client_server_entries list.
 
         Args:
             item: Item to add
@@ -975,16 +952,16 @@ class BswModuleDescriptionBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.provided_clients.append(item)
+        self._obj.provided_client_server_entries.append(item)
         return self
 
-    def clear_provided_clients(self) -> "BswModuleDescriptionBuilder":
-        """Clear all items from provided_clients list.
+    def clear_provided_client_server_entries(self) -> "BswModuleDescriptionBuilder":
+        """Clear all items from provided_client_server_entries list.
 
         Returns:
             self for method chaining
         """
-        self._obj.provided_clients = []
+        self._obj.provided_client_server_entries = []
         return self
 
     def add_provided_data(self, item: VariableDataPrototype) -> "BswModuleDescriptionBuilder":
@@ -1008,8 +985,8 @@ class BswModuleDescriptionBuilder:
         self._obj.provided_datas = []
         return self
 
-    def add_provided_mode(self, item: ModeDeclarationGroup) -> "BswModuleDescriptionBuilder":
-        """Add a single item to provided_modes list.
+    def add_provided_mode_group(self, item: ModeDeclarationGroup) -> "BswModuleDescriptionBuilder":
+        """Add a single item to provided_mode_groups list.
 
         Args:
             item: Item to add
@@ -1017,16 +994,16 @@ class BswModuleDescriptionBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.provided_modes.append(item)
+        self._obj.provided_mode_groups.append(item)
         return self
 
-    def clear_provided_modes(self) -> "BswModuleDescriptionBuilder":
-        """Clear all items from provided_modes list.
+    def clear_provided_mode_groups(self) -> "BswModuleDescriptionBuilder":
+        """Clear all items from provided_mode_groups list.
 
         Returns:
             self for method chaining
         """
-        self._obj.provided_modes = []
+        self._obj.provided_mode_groups = []
         return self
 
     def add_released_trigger(self, item: Trigger) -> "BswModuleDescriptionBuilder":
@@ -1050,8 +1027,8 @@ class BswModuleDescriptionBuilder:
         self._obj.released_triggers = []
         return self
 
-    def add_required_client(self, item: BswModuleClientServerEntry) -> "BswModuleDescriptionBuilder":
-        """Add a single item to required_clients list.
+    def add_required_client_server_entrie(self, item: BswModuleClientServerEntry) -> "BswModuleDescriptionBuilder":
+        """Add a single item to required_client_server_entries list.
 
         Args:
             item: Item to add
@@ -1059,16 +1036,16 @@ class BswModuleDescriptionBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.required_clients.append(item)
+        self._obj.required_client_server_entries.append(item)
         return self
 
-    def clear_required_clients(self) -> "BswModuleDescriptionBuilder":
-        """Clear all items from required_clients list.
+    def clear_required_client_server_entries(self) -> "BswModuleDescriptionBuilder":
+        """Clear all items from required_client_server_entries list.
 
         Returns:
             self for method chaining
         """
-        self._obj.required_clients = []
+        self._obj.required_client_server_entries = []
         return self
 
     def add_required_data(self, item: VariableDataPrototype) -> "BswModuleDescriptionBuilder":
@@ -1092,8 +1069,8 @@ class BswModuleDescriptionBuilder:
         self._obj.required_datas = []
         return self
 
-    def add_required_mode(self, item: ModeDeclarationGroup) -> "BswModuleDescriptionBuilder":
-        """Add a single item to required_modes list.
+    def add_required_mode_group(self, item: ModeDeclarationGroup) -> "BswModuleDescriptionBuilder":
+        """Add a single item to required_mode_groups list.
 
         Args:
             item: Item to add
@@ -1101,16 +1078,16 @@ class BswModuleDescriptionBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.required_modes.append(item)
+        self._obj.required_mode_groups.append(item)
         return self
 
-    def clear_required_modes(self) -> "BswModuleDescriptionBuilder":
-        """Clear all items from required_modes list.
+    def clear_required_mode_groups(self) -> "BswModuleDescriptionBuilder":
+        """Clear all items from required_mode_groups list.
 
         Returns:
             self for method chaining
         """
-        self._obj.required_modes = []
+        self._obj.required_mode_groups = []
         return self
 
     def add_required_trigger(self, item: Trigger) -> "BswModuleDescriptionBuilder":

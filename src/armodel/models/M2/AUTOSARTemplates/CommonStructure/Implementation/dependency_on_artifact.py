@@ -36,12 +36,12 @@ class DependencyOnArtifact(Identifiable):
         """
         return False
 
-    artifact: Optional[AutosarEngineeringObject]
+    artifact_descriptor: Optional[AutosarEngineeringObject]
     usage_refs: list[DependencyUsageEnum]
     def __init__(self) -> None:
         """Initialize DependencyOnArtifact."""
         super().__init__()
-        self.artifact: Optional[AutosarEngineeringObject] = None
+        self.artifact_descriptor: Optional[AutosarEngineeringObject] = None
         self.usage_refs: list[DependencyUsageEnum] = []
 
     def serialize(self) -> ET.Element:
@@ -68,12 +68,12 @@ class DependencyOnArtifact(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize artifact
-        if self.artifact is not None:
-            serialized = SerializationHelper.serialize_item(self.artifact, "AutosarEngineeringObject")
+        # Serialize artifact_descriptor
+        if self.artifact_descriptor is not None:
+            serialized = SerializationHelper.serialize_item(self.artifact_descriptor, "AutosarEngineeringObject")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("ARTIFACT")
+                wrapped = ET.Element("ARTIFACT-DESCRIPTOR")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -114,11 +114,11 @@ class DependencyOnArtifact(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(DependencyOnArtifact, cls).deserialize(element)
 
-        # Parse artifact
-        child = SerializationHelper.find_child_element(element, "ARTIFACT")
+        # Parse artifact_descriptor
+        child = SerializationHelper.find_child_element(element, "ARTIFACT-DESCRIPTOR")
         if child is not None:
-            artifact_value = SerializationHelper.deserialize_by_tag(child, "AutosarEngineeringObject")
-            obj.artifact = artifact_value
+            artifact_descriptor_value = SerializationHelper.deserialize_by_tag(child, "AutosarEngineeringObject")
+            obj.artifact_descriptor = artifact_descriptor_value
 
         # Parse usage_refs (list from container "USAGE-REFS")
         obj.usage_refs = []
@@ -271,8 +271,8 @@ class DependencyOnArtifactBuilder:
         self._obj.uuid = value
         return self
 
-    def with_artifact(self, value: Optional[AutosarEngineeringObject]) -> "DependencyOnArtifactBuilder":
-        """Set artifact attribute.
+    def with_artifact_descriptor(self, value: Optional[AutosarEngineeringObject]) -> "DependencyOnArtifactBuilder":
+        """Set artifact_descriptor attribute.
 
         Args:
             value: Value to set
@@ -282,7 +282,7 @@ class DependencyOnArtifactBuilder:
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.artifact = value
+        self._obj.artifact_descriptor = value
         return self
 
     def with_usages(self, items: list[DependencyUsageEnum]) -> "DependencyOnArtifactBuilder":

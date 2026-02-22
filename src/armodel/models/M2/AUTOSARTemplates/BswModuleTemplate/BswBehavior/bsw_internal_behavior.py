@@ -10,7 +10,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswBehavior.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.internal_behavior import (
@@ -18,7 +18,6 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.interna
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_data_reception_policy import (
     BswDataReceptionPolicy,
 )
@@ -45,6 +44,9 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_module
 )
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_scheduler_name_prefix import (
     BswSchedulerNamePrefix,
+)
+from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_service_dependency import (
+    BswServiceDependency,
 )
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_trigger_direct_implementation import (
     BswTriggerDirectImplementation,
@@ -78,50 +80,52 @@ class BswInternalBehavior(InternalBehavior):
         """
         return False
 
-    ar_typed_per_instance_memorie_refs: list[ARRef]
+    ar_typed_per_instance_memories: list[VariableDataPrototype]
     bsw_per_instance_memory_policies: list[BswPerInstanceMemoryPolicy]
     client_policies: list[BswClientPolicy]
-    distinguisheds: list[BswDistinguishedPartition]
+    distinguished_partitions: list[BswDistinguishedPartition]
     entities: list[BswModuleEntity]
     events: list[BswEvent]
     exclusive_areas: list[BswExclusiveAreaPolicy]
-    included_data_type_set_refs: list[ARRef]
-    included_modes: list[IncludedModeDeclarationGroupSet]
-    internal_refs: list[ARRef]
-    mode_receivers: list[BswModeReceiverPolicy]
-    mode_senders: list[BswModeSenderPolicy]
-    parameter_policies: list[Any]
-    per_instances: list[ParameterDataPrototype]
+    included_data_type_sets: list[IncludedDataTypeSet]
+    included_mode_declaration_group_sets: list[IncludedModeDeclarationGroupSet]
+    internal_triggering_points: list[BswInternalTriggeringPoint]
+    internal_triggering_point_policies: list[BswInternalTriggeringPointPolicy]
+    mode_receiver_policies: list[BswModeReceiverPolicy]
+    mode_sender_policies: list[BswModeSenderPolicy]
+    parameter_policies: list[BswParameterPolicy]
+    per_instance_parameters: list[ParameterDataPrototype]
     reception_policies: list[BswDataReceptionPolicy]
-    released_trigger_refs: list[Any]
-    scheduler_names: list[BswSchedulerNamePrefix]
-    send_policies: list[Any]
-    services: list[Any]
-    trigger_direct_refs: list[ARRef]
+    released_trigger_policies: list[BswReleasedTriggerPolicy]
+    scheduler_name_prefixs: list[BswSchedulerNamePrefix]
+    send_policies: list[BswDataSendPolicy]
+    service_dependencies: list[BswServiceDependency]
+    trigger_direct_implementations: list[BswTriggerDirectImplementation]
     variation_point_proxies: list[VariationPointProxy]
     def __init__(self) -> None:
         """Initialize BswInternalBehavior."""
         super().__init__()
-        self.ar_typed_per_instance_memorie_refs: list[ARRef] = []
+        self.ar_typed_per_instance_memories: list[VariableDataPrototype] = []
         self.bsw_per_instance_memory_policies: list[BswPerInstanceMemoryPolicy] = []
         self.client_policies: list[BswClientPolicy] = []
-        self.distinguisheds: list[BswDistinguishedPartition] = []
+        self.distinguished_partitions: list[BswDistinguishedPartition] = []
         self.entities: list[BswModuleEntity] = []
         self.events: list[BswEvent] = []
         self.exclusive_areas: list[BswExclusiveAreaPolicy] = []
-        self.included_data_type_set_refs: list[ARRef] = []
-        self.included_modes: list[IncludedModeDeclarationGroupSet] = []
-        self.internal_refs: list[ARRef] = []
-        self.mode_receivers: list[BswModeReceiverPolicy] = []
-        self.mode_senders: list[BswModeSenderPolicy] = []
-        self.parameter_policies: list[Any] = []
-        self.per_instances: list[ParameterDataPrototype] = []
+        self.included_data_type_sets: list[IncludedDataTypeSet] = []
+        self.included_mode_declaration_group_sets: list[IncludedModeDeclarationGroupSet] = []
+        self.internal_triggering_points: list[BswInternalTriggeringPoint] = []
+        self.internal_triggering_point_policies: list[BswInternalTriggeringPointPolicy] = []
+        self.mode_receiver_policies: list[BswModeReceiverPolicy] = []
+        self.mode_sender_policies: list[BswModeSenderPolicy] = []
+        self.parameter_policies: list[BswParameterPolicy] = []
+        self.per_instance_parameters: list[ParameterDataPrototype] = []
         self.reception_policies: list[BswDataReceptionPolicy] = []
-        self.released_trigger_refs: list[Any] = []
-        self.scheduler_names: list[BswSchedulerNamePrefix] = []
-        self.send_policies: list[Any] = []
-        self.services: list[Any] = []
-        self.trigger_direct_refs: list[ARRef] = []
+        self.released_trigger_policies: list[BswReleasedTriggerPolicy] = []
+        self.scheduler_name_prefixs: list[BswSchedulerNamePrefix] = []
+        self.send_policies: list[BswDataSendPolicy] = []
+        self.service_dependencies: list[BswServiceDependency] = []
+        self.trigger_direct_implementations: list[BswTriggerDirectImplementation] = []
         self.variation_point_proxies: list[VariationPointProxy] = []
 
     def serialize(self) -> ET.Element:
@@ -148,20 +152,13 @@ class BswInternalBehavior(InternalBehavior):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize ar_typed_per_instance_memorie_refs (list to container "AR-TYPED-PER-INSTANCE-MEMORIE-REFS")
-        if self.ar_typed_per_instance_memorie_refs:
-            wrapper = ET.Element("AR-TYPED-PER-INSTANCE-MEMORIE-REFS")
-            for item in self.ar_typed_per_instance_memorie_refs:
+        # Serialize ar_typed_per_instance_memories (list to container "AR-TYPED-PER-INSTANCE-MEMORIES")
+        if self.ar_typed_per_instance_memories:
+            wrapper = ET.Element("AR-TYPED-PER-INSTANCE-MEMORIES")
+            for item in self.ar_typed_per_instance_memories:
                 serialized = SerializationHelper.serialize_item(item, "VariableDataPrototype")
                 if serialized is not None:
-                    child_elem = ET.Element("AR-TYPED-PER-INSTANCE-MEMORIE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -185,10 +182,10 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize distinguisheds (list to container "DISTINGUISHEDS")
-        if self.distinguisheds:
-            wrapper = ET.Element("DISTINGUISHEDS")
-            for item in self.distinguisheds:
+        # Serialize distinguished_partitions (list to container "DISTINGUISHED-PARTITIONS")
+        if self.distinguished_partitions:
+            wrapper = ET.Element("DISTINGUISHED-PARTITIONS")
+            for item in self.distinguished_partitions:
                 serialized = SerializationHelper.serialize_item(item, "BswDistinguishedPartition")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -225,64 +222,60 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize included_data_type_set_refs (list to container "INCLUDED-DATA-TYPE-SET-REFS")
-        if self.included_data_type_set_refs:
-            wrapper = ET.Element("INCLUDED-DATA-TYPE-SET-REFS")
-            for item in self.included_data_type_set_refs:
+        # Serialize included_data_type_sets (list to container "INCLUDED-DATA-TYPE-SETS")
+        if self.included_data_type_sets:
+            wrapper = ET.Element("INCLUDED-DATA-TYPE-SETS")
+            for item in self.included_data_type_sets:
                 serialized = SerializationHelper.serialize_item(item, "IncludedDataTypeSet")
                 if serialized is not None:
-                    child_elem = ET.Element("INCLUDED-DATA-TYPE-SET-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize included_modes (list to container "INCLUDED-MODES")
-        if self.included_modes:
-            wrapper = ET.Element("INCLUDED-MODES")
-            for item in self.included_modes:
+        # Serialize included_mode_declaration_group_sets (list to container "INCLUDED-MODE-DECLARATION-GROUP-SETS")
+        if self.included_mode_declaration_group_sets:
+            wrapper = ET.Element("INCLUDED-MODE-DECLARATION-GROUP-SETS")
+            for item in self.included_mode_declaration_group_sets:
                 serialized = SerializationHelper.serialize_item(item, "IncludedModeDeclarationGroupSet")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize internal_refs (list to container "INTERNAL-REFS")
-        if self.internal_refs:
-            wrapper = ET.Element("INTERNAL-REFS")
-            for item in self.internal_refs:
+        # Serialize internal_triggering_points (list to container "INTERNAL-TRIGGERING-POINTS")
+        if self.internal_triggering_points:
+            wrapper = ET.Element("INTERNAL-TRIGGERING-POINTS")
+            for item in self.internal_triggering_points:
                 serialized = SerializationHelper.serialize_item(item, "BswInternalTriggeringPoint")
                 if serialized is not None:
-                    child_elem = ET.Element("INTERNAL-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize mode_receivers (list to container "MODE-RECEIVERS")
-        if self.mode_receivers:
-            wrapper = ET.Element("MODE-RECEIVERS")
-            for item in self.mode_receivers:
+        # Serialize internal_triggering_point_policies (list to container "INTERNAL-TRIGGERING-POINT-POLICIES")
+        if self.internal_triggering_point_policies:
+            wrapper = ET.Element("INTERNAL-TRIGGERING-POINT-POLICIES")
+            for item in self.internal_triggering_point_policies:
+                serialized = SerializationHelper.serialize_item(item, "BswInternalTriggeringPointPolicy")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize mode_receiver_policies (list to container "MODE-RECEIVER-POLICIES")
+        if self.mode_receiver_policies:
+            wrapper = ET.Element("MODE-RECEIVER-POLICIES")
+            for item in self.mode_receiver_policies:
                 serialized = SerializationHelper.serialize_item(item, "BswModeReceiverPolicy")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize mode_senders (list to container "MODE-SENDERS")
-        if self.mode_senders:
-            wrapper = ET.Element("MODE-SENDERS")
-            for item in self.mode_senders:
+        # Serialize mode_sender_policies (list to container "MODE-SENDER-POLICIES")
+        if self.mode_sender_policies:
+            wrapper = ET.Element("MODE-SENDER-POLICIES")
+            for item in self.mode_sender_policies:
                 serialized = SerializationHelper.serialize_item(item, "BswModeSenderPolicy")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -293,16 +286,16 @@ class BswInternalBehavior(InternalBehavior):
         if self.parameter_policies:
             wrapper = ET.Element("PARAMETER-POLICIES")
             for item in self.parameter_policies:
-                serialized = SerializationHelper.serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "BswParameterPolicy")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize per_instances (list to container "PER-INSTANCES")
-        if self.per_instances:
-            wrapper = ET.Element("PER-INSTANCES")
-            for item in self.per_instances:
+        # Serialize per_instance_parameters (list to container "PER-INSTANCE-PARAMETERS")
+        if self.per_instance_parameters:
+            wrapper = ET.Element("PER-INSTANCE-PARAMETERS")
+            for item in self.per_instance_parameters:
                 serialized = SerializationHelper.serialize_item(item, "ParameterDataPrototype")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -319,27 +312,20 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize released_trigger_refs (list to container "RELEASED-TRIGGER-REFS")
-        if self.released_trigger_refs:
-            wrapper = ET.Element("RELEASED-TRIGGER-REFS")
-            for item in self.released_trigger_refs:
-                serialized = SerializationHelper.serialize_item(item, "Any")
+        # Serialize released_trigger_policies (list to container "RELEASED-TRIGGER-POLICIES")
+        if self.released_trigger_policies:
+            wrapper = ET.Element("RELEASED-TRIGGER-POLICIES")
+            for item in self.released_trigger_policies:
+                serialized = SerializationHelper.serialize_item(item, "BswReleasedTriggerPolicy")
                 if serialized is not None:
-                    child_elem = ET.Element("RELEASED-TRIGGER-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize scheduler_names (list to container "SCHEDULER-NAMES")
-        if self.scheduler_names:
-            wrapper = ET.Element("SCHEDULER-NAMES")
-            for item in self.scheduler_names:
+        # Serialize scheduler_name_prefixs (list to container "SCHEDULER-NAME-PREFIXS")
+        if self.scheduler_name_prefixs:
+            wrapper = ET.Element("SCHEDULER-NAME-PREFIXS")
+            for item in self.scheduler_name_prefixs:
                 serialized = SerializationHelper.serialize_item(item, "BswSchedulerNamePrefix")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -350,36 +336,29 @@ class BswInternalBehavior(InternalBehavior):
         if self.send_policies:
             wrapper = ET.Element("SEND-POLICIES")
             for item in self.send_policies:
-                serialized = SerializationHelper.serialize_item(item, "Any")
+                serialized = SerializationHelper.serialize_item(item, "BswDataSendPolicy")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize services (list to container "SERVICES")
-        if self.services:
-            wrapper = ET.Element("SERVICES")
-            for item in self.services:
-                serialized = SerializationHelper.serialize_item(item, "Any")
+        # Serialize service_dependencies (list to container "SERVICE-DEPENDENCIES")
+        if self.service_dependencies:
+            wrapper = ET.Element("SERVICE-DEPENDENCIES")
+            for item in self.service_dependencies:
+                serialized = SerializationHelper.serialize_item(item, "BswServiceDependency")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize trigger_direct_refs (list to container "TRIGGER-DIRECT-REFS")
-        if self.trigger_direct_refs:
-            wrapper = ET.Element("TRIGGER-DIRECT-REFS")
-            for item in self.trigger_direct_refs:
+        # Serialize trigger_direct_implementations (list to container "TRIGGER-DIRECT-IMPLEMENTATIONS")
+        if self.trigger_direct_implementations:
+            wrapper = ET.Element("TRIGGER-DIRECT-IMPLEMENTATIONS")
+            for item in self.trigger_direct_implementations:
                 serialized = SerializationHelper.serialize_item(item, "BswTriggerDirectImplementation")
                 if serialized is not None:
-                    child_elem = ET.Element("TRIGGER-DIRECT-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -408,21 +387,15 @@ class BswInternalBehavior(InternalBehavior):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswInternalBehavior, cls).deserialize(element)
 
-        # Parse ar_typed_per_instance_memorie_refs (list from container "AR-TYPED-PER-INSTANCE-MEMORIE-REFS")
-        obj.ar_typed_per_instance_memorie_refs = []
-        container = SerializationHelper.find_child_element(element, "AR-TYPED-PER-INSTANCE-MEMORIE-REFS")
+        # Parse ar_typed_per_instance_memories (list from container "AR-TYPED-PER-INSTANCE-MEMORIES")
+        obj.ar_typed_per_instance_memories = []
+        container = SerializationHelper.find_child_element(element, "AR-TYPED-PER-INSTANCE-MEMORIES")
         if container is not None:
             for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.ar_typed_per_instance_memorie_refs.append(child_value)
+                    obj.ar_typed_per_instance_memories.append(child_value)
 
         # Parse bsw_per_instance_memory_policies (list from container "BSW-PER-INSTANCE-MEMORY-POLICIES")
         obj.bsw_per_instance_memory_policies = []
@@ -444,15 +417,15 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.client_policies.append(child_value)
 
-        # Parse distinguisheds (list from container "DISTINGUISHEDS")
-        obj.distinguisheds = []
-        container = SerializationHelper.find_child_element(element, "DISTINGUISHEDS")
+        # Parse distinguished_partitions (list from container "DISTINGUISHED-PARTITIONS")
+        obj.distinguished_partitions = []
+        container = SerializationHelper.find_child_element(element, "DISTINGUISHED-PARTITIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.distinguisheds.append(child_value)
+                    obj.distinguished_partitions.append(child_value)
 
         # Parse entities (list from container "ENTITIES")
         obj.entities = []
@@ -484,67 +457,65 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.exclusive_areas.append(child_value)
 
-        # Parse included_data_type_set_refs (list from container "INCLUDED-DATA-TYPE-SET-REFS")
-        obj.included_data_type_set_refs = []
-        container = SerializationHelper.find_child_element(element, "INCLUDED-DATA-TYPE-SET-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.included_data_type_set_refs.append(child_value)
-
-        # Parse included_modes (list from container "INCLUDED-MODES")
-        obj.included_modes = []
-        container = SerializationHelper.find_child_element(element, "INCLUDED-MODES")
+        # Parse included_data_type_sets (list from container "INCLUDED-DATA-TYPE-SETS")
+        obj.included_data_type_sets = []
+        container = SerializationHelper.find_child_element(element, "INCLUDED-DATA-TYPE-SETS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.included_modes.append(child_value)
+                    obj.included_data_type_sets.append(child_value)
 
-        # Parse internal_refs (list from container "INTERNAL-REFS")
-        obj.internal_refs = []
-        container = SerializationHelper.find_child_element(element, "INTERNAL-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.internal_refs.append(child_value)
-
-        # Parse mode_receivers (list from container "MODE-RECEIVERS")
-        obj.mode_receivers = []
-        container = SerializationHelper.find_child_element(element, "MODE-RECEIVERS")
+        # Parse included_mode_declaration_group_sets (list from container "INCLUDED-MODE-DECLARATION-GROUP-SETS")
+        obj.included_mode_declaration_group_sets = []
+        container = SerializationHelper.find_child_element(element, "INCLUDED-MODE-DECLARATION-GROUP-SETS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.mode_receivers.append(child_value)
+                    obj.included_mode_declaration_group_sets.append(child_value)
 
-        # Parse mode_senders (list from container "MODE-SENDERS")
-        obj.mode_senders = []
-        container = SerializationHelper.find_child_element(element, "MODE-SENDERS")
+        # Parse internal_triggering_points (list from container "INTERNAL-TRIGGERING-POINTS")
+        obj.internal_triggering_points = []
+        container = SerializationHelper.find_child_element(element, "INTERNAL-TRIGGERING-POINTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.mode_senders.append(child_value)
+                    obj.internal_triggering_points.append(child_value)
+
+        # Parse internal_triggering_point_policies (list from container "INTERNAL-TRIGGERING-POINT-POLICIES")
+        obj.internal_triggering_point_policies = []
+        container = SerializationHelper.find_child_element(element, "INTERNAL-TRIGGERING-POINT-POLICIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.internal_triggering_point_policies.append(child_value)
+
+        # Parse mode_receiver_policies (list from container "MODE-RECEIVER-POLICIES")
+        obj.mode_receiver_policies = []
+        container = SerializationHelper.find_child_element(element, "MODE-RECEIVER-POLICIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.mode_receiver_policies.append(child_value)
+
+        # Parse mode_sender_policies (list from container "MODE-SENDER-POLICIES")
+        obj.mode_sender_policies = []
+        container = SerializationHelper.find_child_element(element, "MODE-SENDER-POLICIES")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.mode_sender_policies.append(child_value)
 
         # Parse parameter_policies (list from container "PARAMETER-POLICIES")
         obj.parameter_policies = []
@@ -556,15 +527,15 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.parameter_policies.append(child_value)
 
-        # Parse per_instances (list from container "PER-INSTANCES")
-        obj.per_instances = []
-        container = SerializationHelper.find_child_element(element, "PER-INSTANCES")
+        # Parse per_instance_parameters (list from container "PER-INSTANCE-PARAMETERS")
+        obj.per_instance_parameters = []
+        container = SerializationHelper.find_child_element(element, "PER-INSTANCE-PARAMETERS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.per_instances.append(child_value)
+                    obj.per_instance_parameters.append(child_value)
 
         # Parse reception_policies (list from container "RECEPTION-POLICIES")
         obj.reception_policies = []
@@ -576,31 +547,25 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.reception_policies.append(child_value)
 
-        # Parse released_trigger_refs (list from container "RELEASED-TRIGGER-REFS")
-        obj.released_trigger_refs = []
-        container = SerializationHelper.find_child_element(element, "RELEASED-TRIGGER-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.released_trigger_refs.append(child_value)
-
-        # Parse scheduler_names (list from container "SCHEDULER-NAMES")
-        obj.scheduler_names = []
-        container = SerializationHelper.find_child_element(element, "SCHEDULER-NAMES")
+        # Parse released_trigger_policies (list from container "RELEASED-TRIGGER-POLICIES")
+        obj.released_trigger_policies = []
+        container = SerializationHelper.find_child_element(element, "RELEASED-TRIGGER-POLICIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.scheduler_names.append(child_value)
+                    obj.released_trigger_policies.append(child_value)
+
+        # Parse scheduler_name_prefixs (list from container "SCHEDULER-NAME-PREFIXS")
+        obj.scheduler_name_prefixs = []
+        container = SerializationHelper.find_child_element(element, "SCHEDULER-NAME-PREFIXS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.scheduler_name_prefixs.append(child_value)
 
         # Parse send_policies (list from container "SEND-POLICIES")
         obj.send_policies = []
@@ -612,31 +577,25 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.send_policies.append(child_value)
 
-        # Parse services (list from container "SERVICES")
-        obj.services = []
-        container = SerializationHelper.find_child_element(element, "SERVICES")
+        # Parse service_dependencies (list from container "SERVICE-DEPENDENCIES")
+        obj.service_dependencies = []
+        container = SerializationHelper.find_child_element(element, "SERVICE-DEPENDENCIES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.services.append(child_value)
+                    obj.service_dependencies.append(child_value)
 
-        # Parse trigger_direct_refs (list from container "TRIGGER-DIRECT-REFS")
-        obj.trigger_direct_refs = []
-        container = SerializationHelper.find_child_element(element, "TRIGGER-DIRECT-REFS")
+        # Parse trigger_direct_implementations (list from container "TRIGGER-DIRECT-IMPLEMENTATIONS")
+        obj.trigger_direct_implementations = []
+        container = SerializationHelper.find_child_element(element, "TRIGGER-DIRECT-IMPLEMENTATIONS")
         if container is not None:
             for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.trigger_direct_refs.append(child_value)
+                    obj.trigger_direct_implementations.append(child_value)
 
         # Parse variation_point_proxies (list from container "VARIATION-POINT-PROXIES")
         obj.variation_point_proxies = []
@@ -783,8 +742,8 @@ class BswInternalBehaviorBuilder:
         self._obj.uuid = value
         return self
 
-    def with_constants(self, items: list[ParameterDataPrototype]) -> "BswInternalBehaviorBuilder":
-        """Set constants list attribute.
+    def with_constant_memoris(self, items: list[ParameterDataPrototype]) -> "BswInternalBehaviorBuilder":
+        """Set constant_memoris list attribute.
 
         Args:
             items: List of items to set
@@ -792,11 +751,11 @@ class BswInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.constants = list(items) if items else []
+        self._obj.constant_memoris = list(items) if items else []
         return self
 
-    def with_constant_values(self, items: list[ConstantSpecification]) -> "BswInternalBehaviorBuilder":
-        """Set constant_values list attribute.
+    def with_constant_value_mappings(self, items: list[ConstantSpecificationMappingSet]) -> "BswInternalBehaviorBuilder":
+        """Set constant_value_mappings list attribute.
 
         Args:
             items: List of items to set
@@ -804,11 +763,11 @@ class BswInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.constant_values = list(items) if items else []
+        self._obj.constant_value_mappings = list(items) if items else []
         return self
 
-    def with_data_types(self, items: list[DataTypeMappingSet]) -> "BswInternalBehaviorBuilder":
-        """Set data_types list attribute.
+    def with_data_type_mappings(self, items: list[DataTypeMappingSet]) -> "BswInternalBehaviorBuilder":
+        """Set data_type_mappings list attribute.
 
         Args:
             items: List of items to set
@@ -816,7 +775,7 @@ class BswInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.data_types = list(items) if items else []
+        self._obj.data_type_mappings = list(items) if items else []
         return self
 
     def with_exclusive_areas(self, items: list[ExclusiveArea]) -> "BswInternalBehaviorBuilder":
@@ -831,8 +790,8 @@ class BswInternalBehaviorBuilder:
         self._obj.exclusive_areas = list(items) if items else []
         return self
 
-    def with_exclusive_area_nestings(self, items: list[ExclusiveAreaNestingOrder]) -> "BswInternalBehaviorBuilder":
-        """Set exclusive_area_nestings list attribute.
+    def with_exclusive_area_nesting_orders(self, items: list[ExclusiveAreaNestingOrder]) -> "BswInternalBehaviorBuilder":
+        """Set exclusive_area_nesting_orders list attribute.
 
         Args:
             items: List of items to set
@@ -840,7 +799,7 @@ class BswInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.exclusive_area_nestings = list(items) if items else []
+        self._obj.exclusive_area_nesting_orders = list(items) if items else []
         return self
 
     def with_static_memories(self, items: list[VariableDataPrototype]) -> "BswInternalBehaviorBuilder":
@@ -891,8 +850,8 @@ class BswInternalBehaviorBuilder:
         self._obj.client_policies = list(items) if items else []
         return self
 
-    def with_distinguisheds(self, items: list[BswDistinguishedPartition]) -> "BswInternalBehaviorBuilder":
-        """Set distinguisheds list attribute.
+    def with_distinguished_partitions(self, items: list[BswDistinguishedPartition]) -> "BswInternalBehaviorBuilder":
+        """Set distinguished_partitions list attribute.
 
         Args:
             items: List of items to set
@@ -900,7 +859,7 @@ class BswInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.distinguisheds = list(items) if items else []
+        self._obj.distinguished_partitions = list(items) if items else []
         return self
 
     def with_entities(self, items: list[BswModuleEntity]) -> "BswInternalBehaviorBuilder":
@@ -939,8 +898,8 @@ class BswInternalBehaviorBuilder:
         self._obj.included_data_type_sets = list(items) if items else []
         return self
 
-    def with_included_modes(self, items: list[IncludedModeDeclarationGroupSet]) -> "BswInternalBehaviorBuilder":
-        """Set included_modes list attribute.
+    def with_included_mode_declaration_group_sets(self, items: list[IncludedModeDeclarationGroupSet]) -> "BswInternalBehaviorBuilder":
+        """Set included_mode_declaration_group_sets list attribute.
 
         Args:
             items: List of items to set
@@ -948,11 +907,11 @@ class BswInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.included_modes = list(items) if items else []
+        self._obj.included_mode_declaration_group_sets = list(items) if items else []
         return self
 
-    def with_internals(self, items: list[BswInternalTriggeringPoint]) -> "BswInternalBehaviorBuilder":
-        """Set internals list attribute.
+    def with_internal_triggering_points(self, items: list[BswInternalTriggeringPoint]) -> "BswInternalBehaviorBuilder":
+        """Set internal_triggering_points list attribute.
 
         Args:
             items: List of items to set
@@ -960,11 +919,11 @@ class BswInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.internals = list(items) if items else []
+        self._obj.internal_triggering_points = list(items) if items else []
         return self
 
-    def with_mode_receivers(self, items: list[BswModeReceiverPolicy]) -> "BswInternalBehaviorBuilder":
-        """Set mode_receivers list attribute.
+    def with_internal_triggering_point_policies(self, items: list[BswInternalTriggeringPointPolicy]) -> "BswInternalBehaviorBuilder":
+        """Set internal_triggering_point_policies list attribute.
 
         Args:
             items: List of items to set
@@ -972,11 +931,11 @@ class BswInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.mode_receivers = list(items) if items else []
+        self._obj.internal_triggering_point_policies = list(items) if items else []
         return self
 
-    def with_mode_senders(self, items: list[BswModeSenderPolicy]) -> "BswInternalBehaviorBuilder":
-        """Set mode_senders list attribute.
+    def with_mode_receiver_policies(self, items: list[BswModeReceiverPolicy]) -> "BswInternalBehaviorBuilder":
+        """Set mode_receiver_policies list attribute.
 
         Args:
             items: List of items to set
@@ -984,10 +943,22 @@ class BswInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.mode_senders = list(items) if items else []
+        self._obj.mode_receiver_policies = list(items) if items else []
         return self
 
-    def with_parameter_policies(self, items: list[any (BswParameterPolicy)]) -> "BswInternalBehaviorBuilder":
+    def with_mode_sender_policies(self, items: list[BswModeSenderPolicy]) -> "BswInternalBehaviorBuilder":
+        """Set mode_sender_policies list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.mode_sender_policies = list(items) if items else []
+        return self
+
+    def with_parameter_policies(self, items: list[BswParameterPolicy]) -> "BswInternalBehaviorBuilder":
         """Set parameter_policies list attribute.
 
         Args:
@@ -999,8 +970,8 @@ class BswInternalBehaviorBuilder:
         self._obj.parameter_policies = list(items) if items else []
         return self
 
-    def with_per_instances(self, items: list[ParameterDataPrototype]) -> "BswInternalBehaviorBuilder":
-        """Set per_instances list attribute.
+    def with_per_instance_parameters(self, items: list[ParameterDataPrototype]) -> "BswInternalBehaviorBuilder":
+        """Set per_instance_parameters list attribute.
 
         Args:
             items: List of items to set
@@ -1008,7 +979,7 @@ class BswInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.per_instances = list(items) if items else []
+        self._obj.per_instance_parameters = list(items) if items else []
         return self
 
     def with_reception_policies(self, items: list[BswDataReceptionPolicy]) -> "BswInternalBehaviorBuilder":
@@ -1023,8 +994,8 @@ class BswInternalBehaviorBuilder:
         self._obj.reception_policies = list(items) if items else []
         return self
 
-    def with_released_triggers(self, items: list[any (BswReleasedTrigger)]) -> "BswInternalBehaviorBuilder":
-        """Set released_triggers list attribute.
+    def with_released_trigger_policies(self, items: list[BswReleasedTriggerPolicy]) -> "BswInternalBehaviorBuilder":
+        """Set released_trigger_policies list attribute.
 
         Args:
             items: List of items to set
@@ -1032,11 +1003,11 @@ class BswInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.released_triggers = list(items) if items else []
+        self._obj.released_trigger_policies = list(items) if items else []
         return self
 
-    def with_scheduler_names(self, items: list[BswSchedulerNamePrefix]) -> "BswInternalBehaviorBuilder":
-        """Set scheduler_names list attribute.
+    def with_scheduler_name_prefixs(self, items: list[BswSchedulerNamePrefix]) -> "BswInternalBehaviorBuilder":
+        """Set scheduler_name_prefixs list attribute.
 
         Args:
             items: List of items to set
@@ -1044,10 +1015,10 @@ class BswInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.scheduler_names = list(items) if items else []
+        self._obj.scheduler_name_prefixs = list(items) if items else []
         return self
 
-    def with_send_policies(self, items: list[any (BswDataSendPolicy)]) -> "BswInternalBehaviorBuilder":
+    def with_send_policies(self, items: list[BswDataSendPolicy]) -> "BswInternalBehaviorBuilder":
         """Set send_policies list attribute.
 
         Args:
@@ -1059,8 +1030,8 @@ class BswInternalBehaviorBuilder:
         self._obj.send_policies = list(items) if items else []
         return self
 
-    def with_services(self, items: list[any (BswService)]) -> "BswInternalBehaviorBuilder":
-        """Set services list attribute.
+    def with_service_dependencies(self, items: list[BswServiceDependency]) -> "BswInternalBehaviorBuilder":
+        """Set service_dependencies list attribute.
 
         Args:
             items: List of items to set
@@ -1068,11 +1039,11 @@ class BswInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.services = list(items) if items else []
+        self._obj.service_dependencies = list(items) if items else []
         return self
 
-    def with_trigger_directs(self, items: list[BswTriggerDirectImplementation]) -> "BswInternalBehaviorBuilder":
-        """Set trigger_directs list attribute.
+    def with_trigger_direct_implementations(self, items: list[BswTriggerDirectImplementation]) -> "BswInternalBehaviorBuilder":
+        """Set trigger_direct_implementations list attribute.
 
         Args:
             items: List of items to set
@@ -1080,7 +1051,7 @@ class BswInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.trigger_directs = list(items) if items else []
+        self._obj.trigger_direct_implementations = list(items) if items else []
         return self
 
     def with_variation_point_proxies(self, items: list[VariationPointProxy]) -> "BswInternalBehaviorBuilder":
@@ -1138,8 +1109,8 @@ class BswInternalBehaviorBuilder:
         self._obj.annotations = []
         return self
 
-    def add_constant(self, item: ParameterDataPrototype) -> "BswInternalBehaviorBuilder":
-        """Add a single item to constants list.
+    def add_constant_memori(self, item: ParameterDataPrototype) -> "BswInternalBehaviorBuilder":
+        """Add a single item to constant_memoris list.
 
         Args:
             item: Item to add
@@ -1147,20 +1118,20 @@ class BswInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.constants.append(item)
+        self._obj.constant_memoris.append(item)
         return self
 
-    def clear_constants(self) -> "BswInternalBehaviorBuilder":
-        """Clear all items from constants list.
+    def clear_constant_memoris(self) -> "BswInternalBehaviorBuilder":
+        """Clear all items from constant_memoris list.
 
         Returns:
             self for method chaining
         """
-        self._obj.constants = []
+        self._obj.constant_memoris = []
         return self
 
-    def add_constant_value(self, item: ConstantSpecification) -> "BswInternalBehaviorBuilder":
-        """Add a single item to constant_values list.
+    def add_constant_value_mapping(self, item: ConstantSpecificationMappingSet) -> "BswInternalBehaviorBuilder":
+        """Add a single item to constant_value_mappings list.
 
         Args:
             item: Item to add
@@ -1168,20 +1139,20 @@ class BswInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.constant_values.append(item)
+        self._obj.constant_value_mappings.append(item)
         return self
 
-    def clear_constant_values(self) -> "BswInternalBehaviorBuilder":
-        """Clear all items from constant_values list.
+    def clear_constant_value_mappings(self) -> "BswInternalBehaviorBuilder":
+        """Clear all items from constant_value_mappings list.
 
         Returns:
             self for method chaining
         """
-        self._obj.constant_values = []
+        self._obj.constant_value_mappings = []
         return self
 
-    def add_data_type(self, item: DataTypeMappingSet) -> "BswInternalBehaviorBuilder":
-        """Add a single item to data_types list.
+    def add_data_type_mapping(self, item: DataTypeMappingSet) -> "BswInternalBehaviorBuilder":
+        """Add a single item to data_type_mappings list.
 
         Args:
             item: Item to add
@@ -1189,16 +1160,16 @@ class BswInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.data_types.append(item)
+        self._obj.data_type_mappings.append(item)
         return self
 
-    def clear_data_types(self) -> "BswInternalBehaviorBuilder":
-        """Clear all items from data_types list.
+    def clear_data_type_mappings(self) -> "BswInternalBehaviorBuilder":
+        """Clear all items from data_type_mappings list.
 
         Returns:
             self for method chaining
         """
-        self._obj.data_types = []
+        self._obj.data_type_mappings = []
         return self
 
     def add_exclusive_area(self, item: ExclusiveArea) -> "BswInternalBehaviorBuilder":
@@ -1222,8 +1193,8 @@ class BswInternalBehaviorBuilder:
         self._obj.exclusive_areas = []
         return self
 
-    def add_exclusive_area_nesting(self, item: ExclusiveAreaNestingOrder) -> "BswInternalBehaviorBuilder":
-        """Add a single item to exclusive_area_nestings list.
+    def add_exclusive_area_nesting_order(self, item: ExclusiveAreaNestingOrder) -> "BswInternalBehaviorBuilder":
+        """Add a single item to exclusive_area_nesting_orders list.
 
         Args:
             item: Item to add
@@ -1231,16 +1202,16 @@ class BswInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.exclusive_area_nestings.append(item)
+        self._obj.exclusive_area_nesting_orders.append(item)
         return self
 
-    def clear_exclusive_area_nestings(self) -> "BswInternalBehaviorBuilder":
-        """Clear all items from exclusive_area_nestings list.
+    def clear_exclusive_area_nesting_orders(self) -> "BswInternalBehaviorBuilder":
+        """Clear all items from exclusive_area_nesting_orders list.
 
         Returns:
             self for method chaining
         """
-        self._obj.exclusive_area_nestings = []
+        self._obj.exclusive_area_nesting_orders = []
         return self
 
     def add_static_memorie(self, item: VariableDataPrototype) -> "BswInternalBehaviorBuilder":
@@ -1327,8 +1298,8 @@ class BswInternalBehaviorBuilder:
         self._obj.client_policies = []
         return self
 
-    def add_distinguished(self, item: BswDistinguishedPartition) -> "BswInternalBehaviorBuilder":
-        """Add a single item to distinguisheds list.
+    def add_distinguished_partition(self, item: BswDistinguishedPartition) -> "BswInternalBehaviorBuilder":
+        """Add a single item to distinguished_partitions list.
 
         Args:
             item: Item to add
@@ -1336,16 +1307,16 @@ class BswInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.distinguisheds.append(item)
+        self._obj.distinguished_partitions.append(item)
         return self
 
-    def clear_distinguisheds(self) -> "BswInternalBehaviorBuilder":
-        """Clear all items from distinguisheds list.
+    def clear_distinguished_partitions(self) -> "BswInternalBehaviorBuilder":
+        """Clear all items from distinguished_partitions list.
 
         Returns:
             self for method chaining
         """
-        self._obj.distinguisheds = []
+        self._obj.distinguished_partitions = []
         return self
 
     def add_entitie(self, item: BswModuleEntity) -> "BswInternalBehaviorBuilder":
@@ -1411,8 +1382,8 @@ class BswInternalBehaviorBuilder:
         self._obj.included_data_type_sets = []
         return self
 
-    def add_included_mode(self, item: IncludedModeDeclarationGroupSet) -> "BswInternalBehaviorBuilder":
-        """Add a single item to included_modes list.
+    def add_included_mode_declaration_group_set(self, item: IncludedModeDeclarationGroupSet) -> "BswInternalBehaviorBuilder":
+        """Add a single item to included_mode_declaration_group_sets list.
 
         Args:
             item: Item to add
@@ -1420,20 +1391,20 @@ class BswInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.included_modes.append(item)
+        self._obj.included_mode_declaration_group_sets.append(item)
         return self
 
-    def clear_included_modes(self) -> "BswInternalBehaviorBuilder":
-        """Clear all items from included_modes list.
+    def clear_included_mode_declaration_group_sets(self) -> "BswInternalBehaviorBuilder":
+        """Clear all items from included_mode_declaration_group_sets list.
 
         Returns:
             self for method chaining
         """
-        self._obj.included_modes = []
+        self._obj.included_mode_declaration_group_sets = []
         return self
 
-    def add_internal(self, item: BswInternalTriggeringPoint) -> "BswInternalBehaviorBuilder":
-        """Add a single item to internals list.
+    def add_internal_triggering_point(self, item: BswInternalTriggeringPoint) -> "BswInternalBehaviorBuilder":
+        """Add a single item to internal_triggering_points list.
 
         Args:
             item: Item to add
@@ -1441,20 +1412,20 @@ class BswInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.internals.append(item)
+        self._obj.internal_triggering_points.append(item)
         return self
 
-    def clear_internals(self) -> "BswInternalBehaviorBuilder":
-        """Clear all items from internals list.
+    def clear_internal_triggering_points(self) -> "BswInternalBehaviorBuilder":
+        """Clear all items from internal_triggering_points list.
 
         Returns:
             self for method chaining
         """
-        self._obj.internals = []
+        self._obj.internal_triggering_points = []
         return self
 
-    def add_mode_receiver(self, item: BswModeReceiverPolicy) -> "BswInternalBehaviorBuilder":
-        """Add a single item to mode_receivers list.
+    def add_internal_triggering_point_policie(self, item: BswInternalTriggeringPointPolicy) -> "BswInternalBehaviorBuilder":
+        """Add a single item to internal_triggering_point_policies list.
 
         Args:
             item: Item to add
@@ -1462,20 +1433,20 @@ class BswInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.mode_receivers.append(item)
+        self._obj.internal_triggering_point_policies.append(item)
         return self
 
-    def clear_mode_receivers(self) -> "BswInternalBehaviorBuilder":
-        """Clear all items from mode_receivers list.
+    def clear_internal_triggering_point_policies(self) -> "BswInternalBehaviorBuilder":
+        """Clear all items from internal_triggering_point_policies list.
 
         Returns:
             self for method chaining
         """
-        self._obj.mode_receivers = []
+        self._obj.internal_triggering_point_policies = []
         return self
 
-    def add_mode_sender(self, item: BswModeSenderPolicy) -> "BswInternalBehaviorBuilder":
-        """Add a single item to mode_senders list.
+    def add_mode_receiver_policie(self, item: BswModeReceiverPolicy) -> "BswInternalBehaviorBuilder":
+        """Add a single item to mode_receiver_policies list.
 
         Args:
             item: Item to add
@@ -1483,19 +1454,40 @@ class BswInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.mode_senders.append(item)
+        self._obj.mode_receiver_policies.append(item)
         return self
 
-    def clear_mode_senders(self) -> "BswInternalBehaviorBuilder":
-        """Clear all items from mode_senders list.
+    def clear_mode_receiver_policies(self) -> "BswInternalBehaviorBuilder":
+        """Clear all items from mode_receiver_policies list.
 
         Returns:
             self for method chaining
         """
-        self._obj.mode_senders = []
+        self._obj.mode_receiver_policies = []
         return self
 
-    def add_parameter_policie(self, item: any (BswParameterPolicy)) -> "BswInternalBehaviorBuilder":
+    def add_mode_sender_policie(self, item: BswModeSenderPolicy) -> "BswInternalBehaviorBuilder":
+        """Add a single item to mode_sender_policies list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.mode_sender_policies.append(item)
+        return self
+
+    def clear_mode_sender_policies(self) -> "BswInternalBehaviorBuilder":
+        """Clear all items from mode_sender_policies list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.mode_sender_policies = []
+        return self
+
+    def add_parameter_policie(self, item: BswParameterPolicy) -> "BswInternalBehaviorBuilder":
         """Add a single item to parameter_policies list.
 
         Args:
@@ -1516,8 +1508,8 @@ class BswInternalBehaviorBuilder:
         self._obj.parameter_policies = []
         return self
 
-    def add_per_instance(self, item: ParameterDataPrototype) -> "BswInternalBehaviorBuilder":
-        """Add a single item to per_instances list.
+    def add_per_instance_parameter(self, item: ParameterDataPrototype) -> "BswInternalBehaviorBuilder":
+        """Add a single item to per_instance_parameters list.
 
         Args:
             item: Item to add
@@ -1525,16 +1517,16 @@ class BswInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.per_instances.append(item)
+        self._obj.per_instance_parameters.append(item)
         return self
 
-    def clear_per_instances(self) -> "BswInternalBehaviorBuilder":
-        """Clear all items from per_instances list.
+    def clear_per_instance_parameters(self) -> "BswInternalBehaviorBuilder":
+        """Clear all items from per_instance_parameters list.
 
         Returns:
             self for method chaining
         """
-        self._obj.per_instances = []
+        self._obj.per_instance_parameters = []
         return self
 
     def add_reception_policie(self, item: BswDataReceptionPolicy) -> "BswInternalBehaviorBuilder":
@@ -1558,8 +1550,8 @@ class BswInternalBehaviorBuilder:
         self._obj.reception_policies = []
         return self
 
-    def add_released_trigger(self, item: any (BswReleasedTrigger)) -> "BswInternalBehaviorBuilder":
-        """Add a single item to released_triggers list.
+    def add_released_trigger_policie(self, item: BswReleasedTriggerPolicy) -> "BswInternalBehaviorBuilder":
+        """Add a single item to released_trigger_policies list.
 
         Args:
             item: Item to add
@@ -1567,20 +1559,20 @@ class BswInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.released_triggers.append(item)
+        self._obj.released_trigger_policies.append(item)
         return self
 
-    def clear_released_triggers(self) -> "BswInternalBehaviorBuilder":
-        """Clear all items from released_triggers list.
+    def clear_released_trigger_policies(self) -> "BswInternalBehaviorBuilder":
+        """Clear all items from released_trigger_policies list.
 
         Returns:
             self for method chaining
         """
-        self._obj.released_triggers = []
+        self._obj.released_trigger_policies = []
         return self
 
-    def add_scheduler_name(self, item: BswSchedulerNamePrefix) -> "BswInternalBehaviorBuilder":
-        """Add a single item to scheduler_names list.
+    def add_scheduler_name_prefix(self, item: BswSchedulerNamePrefix) -> "BswInternalBehaviorBuilder":
+        """Add a single item to scheduler_name_prefixs list.
 
         Args:
             item: Item to add
@@ -1588,19 +1580,19 @@ class BswInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.scheduler_names.append(item)
+        self._obj.scheduler_name_prefixs.append(item)
         return self
 
-    def clear_scheduler_names(self) -> "BswInternalBehaviorBuilder":
-        """Clear all items from scheduler_names list.
+    def clear_scheduler_name_prefixs(self) -> "BswInternalBehaviorBuilder":
+        """Clear all items from scheduler_name_prefixs list.
 
         Returns:
             self for method chaining
         """
-        self._obj.scheduler_names = []
+        self._obj.scheduler_name_prefixs = []
         return self
 
-    def add_send_policie(self, item: any (BswDataSendPolicy)) -> "BswInternalBehaviorBuilder":
+    def add_send_policie(self, item: BswDataSendPolicy) -> "BswInternalBehaviorBuilder":
         """Add a single item to send_policies list.
 
         Args:
@@ -1621,8 +1613,8 @@ class BswInternalBehaviorBuilder:
         self._obj.send_policies = []
         return self
 
-    def add_service(self, item: any (BswService)) -> "BswInternalBehaviorBuilder":
-        """Add a single item to services list.
+    def add_service_dependencie(self, item: BswServiceDependency) -> "BswInternalBehaviorBuilder":
+        """Add a single item to service_dependencies list.
 
         Args:
             item: Item to add
@@ -1630,20 +1622,20 @@ class BswInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.services.append(item)
+        self._obj.service_dependencies.append(item)
         return self
 
-    def clear_services(self) -> "BswInternalBehaviorBuilder":
-        """Clear all items from services list.
+    def clear_service_dependencies(self) -> "BswInternalBehaviorBuilder":
+        """Clear all items from service_dependencies list.
 
         Returns:
             self for method chaining
         """
-        self._obj.services = []
+        self._obj.service_dependencies = []
         return self
 
-    def add_trigger_direct(self, item: BswTriggerDirectImplementation) -> "BswInternalBehaviorBuilder":
-        """Add a single item to trigger_directs list.
+    def add_trigger_direct_implementation(self, item: BswTriggerDirectImplementation) -> "BswInternalBehaviorBuilder":
+        """Add a single item to trigger_direct_implementations list.
 
         Args:
             item: Item to add
@@ -1651,16 +1643,16 @@ class BswInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.trigger_directs.append(item)
+        self._obj.trigger_direct_implementations.append(item)
         return self
 
-    def clear_trigger_directs(self) -> "BswInternalBehaviorBuilder":
-        """Clear all items from trigger_directs list.
+    def clear_trigger_direct_implementations(self) -> "BswInternalBehaviorBuilder":
+        """Clear all items from trigger_direct_implementations list.
 
         Returns:
             self for method chaining
         """
-        self._obj.trigger_directs = []
+        self._obj.trigger_direct_implementations = []
         return self
 
     def add_variation_point_proxie(self, item: VariationPointProxy) -> "BswInternalBehaviorBuilder":

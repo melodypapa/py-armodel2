@@ -96,7 +96,7 @@
           "is_ref": false,
           "note": "This denotes the domain in which the engineering object"
         },
-        "revisionLabelStrings": {
+        "revisionLabels": {
           "type": "RevisionLabelString",
           "multiplicity": "*",
           "kind": "attribute",

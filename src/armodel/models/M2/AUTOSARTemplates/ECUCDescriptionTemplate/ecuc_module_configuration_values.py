@@ -21,15 +21,18 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     Boolean,
     RevisionLabelString,
 )
-from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswImplementation.bsw_implementation import (
-    BswImplementation,
-)
 from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_container_value import (
     EcucContainerValue,
 )
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_module_def import (
     EcucModuleDef,
 )
+
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswImplementation.bsw_implementation import (
+        BswImplementation,
+    )
+
 
 
 class EcucModuleConfigurationValues(ARElement):

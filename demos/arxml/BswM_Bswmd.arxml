@@ -56,20 +56,20 @@
           <ELEMENTS>
             <BSW-MODULE-ENTRY>
               <SHORT-NAME>BswM_Init</SHORT-NAME>
-              <SERVICE-ID>0</SERVICE-ID>
-              <IS-REENTRANT>false</IS-REENTRANT>
-              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>REGULAR</CALL-TYPE>
               <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <SERVICE-ID>0</SERVICE-ID>
               <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
             </BSW-MODULE-ENTRY>
             <BSW-MODULE-ENTRY>
               <SHORT-NAME>BswM_MainFunction</SHORT-NAME>
-              <SERVICE-ID>3</SERVICE-ID>
-              <IS-REENTRANT>false</IS-REENTRANT>
-              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>SCHEDULED</CALL-TYPE>
               <EXECUTION-CONTEXT>TASK</EXECUTION-CONTEXT>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <SERVICE-ID>3</SERVICE-ID>
               <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
             </BSW-MODULE-ENTRY>
           </ELEMENTS>
@@ -236,8 +236,8 @@
                   </MEMORY-SECTION>
                 </MEMORY-SECTIONS>
               </RESOURCE-CONSUMPTION>
-              <SW-VERSION>1.14.1</SW-VERSION>
               <SWC-BSW-MAPPING-REF DEST="SWC-BSW-MAPPING">/AUTOSAR_BswM/SwcBswMappings/SwcBswMapping_0</SWC-BSW-MAPPING-REF>
+              <SW-VERSION>1.14.1</SW-VERSION>
               <VENDOR-ID>1</VENDOR-ID>
               <AR-RELEASE-VERSION>4.0.3</AR-RELEASE-VERSION>
               <BEHAVIOR-REF DEST="BSW-INTERNAL-BEHAVIOR">/AUTOSAR_BswM/BswModuleDescriptions/BswM/InternalBehavior_0</BEHAVIOR-REF>

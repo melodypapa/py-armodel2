@@ -8,7 +8,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_SwcBswMapping.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
@@ -22,6 +22,12 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_intern
 )
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.SwcBswMapping.swc_bsw_runnable_mapping import (
     SwcBswRunnableMapping,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.SwcBswMapping.swc_bsw_synchronized_mode_group_prototype import (
+    SwcBswSynchronizedModeGroupPrototype,
+)
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.SwcBswMapping.swc_bsw_synchronized_trigger import (
+    SwcBswSynchronizedTrigger,
 )
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.swc_internal_behavior import (
     SwcInternalBehavior,
@@ -41,16 +47,18 @@ class SwcBswMapping(ARElement):
         return False
 
     bsw_behavior_ref: Optional[ARRef]
-    runnable_mapping_refs: list[ARRef]
+    runnable_mappings: list[SwcBswRunnableMapping]
     swc_behavior_ref: Optional[ARRef]
-    synchronizeds: list[Any]
+    synchronized_mode_groups: list[SwcBswSynchronizedModeGroupPrototype]
+    synchronized_triggers: list[SwcBswSynchronizedTrigger]
     def __init__(self) -> None:
         """Initialize SwcBswMapping."""
         super().__init__()
         self.bsw_behavior_ref: Optional[ARRef] = None
-        self.runnable_mapping_refs: list[ARRef] = []
+        self.runnable_mappings: list[SwcBswRunnableMapping] = []
         self.swc_behavior_ref: Optional[ARRef] = None
-        self.synchronizeds: list[Any] = []
+        self.synchronized_mode_groups: list[SwcBswSynchronizedModeGroupPrototype] = []
+        self.synchronized_triggers: list[SwcBswSynchronizedTrigger] = []
 
     def serialize(self) -> ET.Element:
         """Serialize SwcBswMapping to XML element.
@@ -90,20 +98,13 @@ class SwcBswMapping(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize runnable_mapping_refs (list to container "RUNNABLE-MAPPING-REFS")
-        if self.runnable_mapping_refs:
-            wrapper = ET.Element("RUNNABLE-MAPPING-REFS")
-            for item in self.runnable_mapping_refs:
+        # Serialize runnable_mappings (list to container "RUNNABLE-MAPPINGS")
+        if self.runnable_mappings:
+            wrapper = ET.Element("RUNNABLE-MAPPINGS")
+            for item in self.runnable_mappings:
                 serialized = SerializationHelper.serialize_item(item, "SwcBswRunnableMapping")
                 if serialized is not None:
-                    child_elem = ET.Element("RUNNABLE-MAPPING-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -121,11 +122,21 @@ class SwcBswMapping(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize synchronizeds (list to container "SYNCHRONIZEDS")
-        if self.synchronizeds:
-            wrapper = ET.Element("SYNCHRONIZEDS")
-            for item in self.synchronizeds:
-                serialized = SerializationHelper.serialize_item(item, "Any")
+        # Serialize synchronized_mode_groups (list to container "SYNCHRONIZED-MODE-GROUPS")
+        if self.synchronized_mode_groups:
+            wrapper = ET.Element("SYNCHRONIZED-MODE-GROUPS")
+            for item in self.synchronized_mode_groups:
+                serialized = SerializationHelper.serialize_item(item, "SwcBswSynchronizedModeGroupPrototype")
+                if serialized is not None:
+                    wrapper.append(serialized)
+            if len(wrapper) > 0:
+                elem.append(wrapper)
+
+        # Serialize synchronized_triggers (list to container "SYNCHRONIZED-TRIGGERS")
+        if self.synchronized_triggers:
+            wrapper = ET.Element("SYNCHRONIZED-TRIGGERS")
+            for item in self.synchronized_triggers:
+                serialized = SerializationHelper.serialize_item(item, "SwcBswSynchronizedTrigger")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -152,21 +163,15 @@ class SwcBswMapping(ARElement):
             bsw_behavior_ref_value = ARRef.deserialize(child)
             obj.bsw_behavior_ref = bsw_behavior_ref_value
 
-        # Parse runnable_mapping_refs (list from container "RUNNABLE-MAPPING-REFS")
-        obj.runnable_mapping_refs = []
-        container = SerializationHelper.find_child_element(element, "RUNNABLE-MAPPING-REFS")
+        # Parse runnable_mappings (list from container "RUNNABLE-MAPPINGS")
+        obj.runnable_mappings = []
+        container = SerializationHelper.find_child_element(element, "RUNNABLE-MAPPINGS")
         if container is not None:
             for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.runnable_mapping_refs.append(child_value)
+                    obj.runnable_mappings.append(child_value)
 
         # Parse swc_behavior_ref
         child = SerializationHelper.find_child_element(element, "SWC-BEHAVIOR-REF")
@@ -174,15 +179,25 @@ class SwcBswMapping(ARElement):
             swc_behavior_ref_value = ARRef.deserialize(child)
             obj.swc_behavior_ref = swc_behavior_ref_value
 
-        # Parse synchronizeds (list from container "SYNCHRONIZEDS")
-        obj.synchronizeds = []
-        container = SerializationHelper.find_child_element(element, "SYNCHRONIZEDS")
+        # Parse synchronized_mode_groups (list from container "SYNCHRONIZED-MODE-GROUPS")
+        obj.synchronized_mode_groups = []
+        container = SerializationHelper.find_child_element(element, "SYNCHRONIZED-MODE-GROUPS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.synchronizeds.append(child_value)
+                    obj.synchronized_mode_groups.append(child_value)
+
+        # Parse synchronized_triggers (list from container "SYNCHRONIZED-TRIGGERS")
+        obj.synchronized_triggers = []
+        container = SerializationHelper.find_child_element(element, "SYNCHRONIZED-TRIGGERS")
+        if container is not None:
+            for child in container:
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
+                if child_value is not None:
+                    obj.synchronized_triggers.append(child_value)
 
         return obj
 
@@ -359,8 +374,8 @@ class SwcBswMappingBuilder:
         self._obj.swc_behavior = value
         return self
 
-    def with_synchronizeds(self, items: list[any (SwcBswSynchronized)]) -> "SwcBswMappingBuilder":
-        """Set synchronizeds list attribute.
+    def with_synchronized_mode_groups(self, items: list[SwcBswSynchronizedModeGroupPrototype]) -> "SwcBswMappingBuilder":
+        """Set synchronized_mode_groups list attribute.
 
         Args:
             items: List of items to set
@@ -368,7 +383,19 @@ class SwcBswMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.synchronizeds = list(items) if items else []
+        self._obj.synchronized_mode_groups = list(items) if items else []
+        return self
+
+    def with_synchronized_triggers(self, items: list[SwcBswSynchronizedTrigger]) -> "SwcBswMappingBuilder":
+        """Set synchronized_triggers list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.synchronized_triggers = list(items) if items else []
         return self
 
 
@@ -435,8 +462,8 @@ class SwcBswMappingBuilder:
         self._obj.runnable_mappings = []
         return self
 
-    def add_synchronized(self, item: any (SwcBswSynchronized)) -> "SwcBswMappingBuilder":
-        """Add a single item to synchronizeds list.
+    def add_synchronized_mode_group(self, item: SwcBswSynchronizedModeGroupPrototype) -> "SwcBswMappingBuilder":
+        """Add a single item to synchronized_mode_groups list.
 
         Args:
             item: Item to add
@@ -444,16 +471,37 @@ class SwcBswMappingBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.synchronizeds.append(item)
+        self._obj.synchronized_mode_groups.append(item)
         return self
 
-    def clear_synchronizeds(self) -> "SwcBswMappingBuilder":
-        """Clear all items from synchronizeds list.
+    def clear_synchronized_mode_groups(self) -> "SwcBswMappingBuilder":
+        """Clear all items from synchronized_mode_groups list.
 
         Returns:
             self for method chaining
         """
-        self._obj.synchronizeds = []
+        self._obj.synchronized_mode_groups = []
+        return self
+
+    def add_synchronized_trigger(self, item: SwcBswSynchronizedTrigger) -> "SwcBswMappingBuilder":
+        """Add a single item to synchronized_triggers list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.synchronized_triggers.append(item)
+        return self
+
+    def clear_synchronized_triggers(self) -> "SwcBswMappingBuilder":
+        """Clear all items from synchronized_triggers list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.synchronized_triggers = []
         return self
 
 

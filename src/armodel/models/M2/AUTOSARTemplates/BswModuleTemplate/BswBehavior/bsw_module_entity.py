@@ -35,6 +35,9 @@ from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_variab
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group import (
     ModeDeclarationGroup,
 )
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.ModeDeclaration.mode_declaration_group_prototype import (
+    ModeDeclarationGroupPrototype,
+)
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigger import (
     Trigger,
 )
@@ -53,27 +56,27 @@ class BswModuleEntity(ExecutableEntity, ABC):
         """
         return True
 
-    accessed_mode_refs: list[ARRef]
+    accessed_mode_group_refs: list[ARRef]
     activation_point_refs: list[ARRef]
     call_points: list[BswModuleCallPoint]
-    data_receives: list[BswVariableAccess]
+    data_receive_points: list[BswVariableAccess]
     data_send_points: list[BswVariableAccess]
-    implemented_ref: Optional[ARRef]
+    implemented_entries_ref: Optional[ARRef]
     issued_trigger_refs: list[ARRef]
-    managed_mode_refs: list[ARRef]
-    scheduler_name_ref: Optional[ARRef]
+    managed_mode_group_refs: list[ARRef]
+    scheduler_name_prefix_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize BswModuleEntity."""
         super().__init__()
-        self.accessed_mode_refs: list[ARRef] = []
+        self.accessed_mode_group_refs: list[ARRef] = []
         self.activation_point_refs: list[ARRef] = []
         self.call_points: list[BswModuleCallPoint] = []
-        self.data_receives: list[BswVariableAccess] = []
+        self.data_receive_points: list[BswVariableAccess] = []
         self.data_send_points: list[BswVariableAccess] = []
-        self.implemented_ref: Optional[ARRef] = None
+        self.implemented_entries_ref: Optional[ARRef] = None
         self.issued_trigger_refs: list[ARRef] = []
-        self.managed_mode_refs: list[ARRef] = []
-        self.scheduler_name_ref: Optional[ARRef] = None
+        self.managed_mode_group_refs: list[ARRef] = []
+        self.scheduler_name_prefix_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize BswModuleEntity to XML element.
@@ -99,13 +102,13 @@ class BswModuleEntity(ExecutableEntity, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize accessed_mode_refs (list to container "ACCESSED-MODE-REFS")
-        if self.accessed_mode_refs:
-            wrapper = ET.Element("ACCESSED-MODE-REFS")
-            for item in self.accessed_mode_refs:
+        # Serialize accessed_mode_group_refs (list to container "ACCESSED-MODE-GROUP-REFS")
+        if self.accessed_mode_group_refs:
+            wrapper = ET.Element("ACCESSED-MODE-GROUP-REFS")
+            for item in self.accessed_mode_group_refs:
                 serialized = SerializationHelper.serialize_item(item, "ModeDeclarationGroup")
                 if serialized is not None:
-                    child_elem = ET.Element("ACCESSED-MODE-REF")
+                    child_elem = ET.Element("ACCESSED-MODE-GROUP-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -143,10 +146,10 @@ class BswModuleEntity(ExecutableEntity, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize data_receives (list to container "DATA-RECEIVES")
-        if self.data_receives:
-            wrapper = ET.Element("DATA-RECEIVES")
-            for item in self.data_receives:
+        # Serialize data_receive_points (list to container "DATA-RECEIVE-POINTS")
+        if self.data_receive_points:
+            wrapper = ET.Element("DATA-RECEIVE-POINTS")
+            for item in self.data_receive_points:
                 serialized = SerializationHelper.serialize_item(item, "BswVariableAccess")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -163,12 +166,12 @@ class BswModuleEntity(ExecutableEntity, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize implemented_ref
-        if self.implemented_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.implemented_ref, "BswModuleEntry")
+        # Serialize implemented_entries_ref
+        if self.implemented_entries_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.implemented_entries_ref, "BswModuleEntry")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("IMPLEMENTED-REF")
+                wrapped = ET.Element("IMPLEMENTED-ENTRIES-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -194,13 +197,13 @@ class BswModuleEntity(ExecutableEntity, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize managed_mode_refs (list to container "MANAGED-MODE-REFS")
-        if self.managed_mode_refs:
-            wrapper = ET.Element("MANAGED-MODE-REFS")
-            for item in self.managed_mode_refs:
-                serialized = SerializationHelper.serialize_item(item, "ModeDeclarationGroup")
+        # Serialize managed_mode_group_refs (list to container "MANAGED-MODE-GROUP-REFS")
+        if self.managed_mode_group_refs:
+            wrapper = ET.Element("MANAGED-MODE-GROUP-REFS")
+            for item in self.managed_mode_group_refs:
+                serialized = SerializationHelper.serialize_item(item, "ModeDeclarationGroupPrototype")
                 if serialized is not None:
-                    child_elem = ET.Element("MANAGED-MODE-REF")
+                    child_elem = ET.Element("MANAGED-MODE-GROUP-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -211,12 +214,12 @@ class BswModuleEntity(ExecutableEntity, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize scheduler_name_ref
-        if self.scheduler_name_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.scheduler_name_ref, "BswSchedulerNamePrefix")
+        # Serialize scheduler_name_prefix_ref
+        if self.scheduler_name_prefix_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.scheduler_name_prefix_ref, "BswSchedulerNamePrefix")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SCHEDULER-NAME-REF")
+                wrapped = ET.Element("SCHEDULER-NAME-PREFIX-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -240,9 +243,9 @@ class BswModuleEntity(ExecutableEntity, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswModuleEntity, cls).deserialize(element)
 
-        # Parse accessed_mode_refs (list from container "ACCESSED-MODE-REFS")
-        obj.accessed_mode_refs = []
-        container = SerializationHelper.find_child_element(element, "ACCESSED-MODE-REFS")
+        # Parse accessed_mode_group_refs (list from container "ACCESSED-MODE-GROUP-REFS")
+        obj.accessed_mode_group_refs = []
+        container = SerializationHelper.find_child_element(element, "ACCESSED-MODE-GROUP-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -254,7 +257,7 @@ class BswModuleEntity(ExecutableEntity, ABC):
                     # Deserialize each child element dynamically based on its tag
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.accessed_mode_refs.append(child_value)
+                    obj.accessed_mode_group_refs.append(child_value)
 
         # Parse activation_point_refs (list from container "ACTIVATION-POINT-REFS")
         obj.activation_point_refs = []
@@ -282,15 +285,15 @@ class BswModuleEntity(ExecutableEntity, ABC):
                 if child_value is not None:
                     obj.call_points.append(child_value)
 
-        # Parse data_receives (list from container "DATA-RECEIVES")
-        obj.data_receives = []
-        container = SerializationHelper.find_child_element(element, "DATA-RECEIVES")
+        # Parse data_receive_points (list from container "DATA-RECEIVE-POINTS")
+        obj.data_receive_points = []
+        container = SerializationHelper.find_child_element(element, "DATA-RECEIVE-POINTS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.data_receives.append(child_value)
+                    obj.data_receive_points.append(child_value)
 
         # Parse data_send_points (list from container "DATA-SEND-POINTS")
         obj.data_send_points = []
@@ -302,11 +305,11 @@ class BswModuleEntity(ExecutableEntity, ABC):
                 if child_value is not None:
                     obj.data_send_points.append(child_value)
 
-        # Parse implemented_ref
-        child = SerializationHelper.find_child_element(element, "IMPLEMENTED-REF")
+        # Parse implemented_entries_ref
+        child = SerializationHelper.find_child_element(element, "IMPLEMENTED-ENTRIES-REF")
         if child is not None:
-            implemented_ref_value = ARRef.deserialize(child)
-            obj.implemented_ref = implemented_ref_value
+            implemented_entries_ref_value = ARRef.deserialize(child)
+            obj.implemented_entries_ref = implemented_entries_ref_value
 
         # Parse issued_trigger_refs (list from container "ISSUED-TRIGGER-REFS")
         obj.issued_trigger_refs = []
@@ -324,9 +327,9 @@ class BswModuleEntity(ExecutableEntity, ABC):
                 if child_value is not None:
                     obj.issued_trigger_refs.append(child_value)
 
-        # Parse managed_mode_refs (list from container "MANAGED-MODE-REFS")
-        obj.managed_mode_refs = []
-        container = SerializationHelper.find_child_element(element, "MANAGED-MODE-REFS")
+        # Parse managed_mode_group_refs (list from container "MANAGED-MODE-GROUP-REFS")
+        obj.managed_mode_group_refs = []
+        container = SerializationHelper.find_child_element(element, "MANAGED-MODE-GROUP-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -338,13 +341,13 @@ class BswModuleEntity(ExecutableEntity, ABC):
                     # Deserialize each child element dynamically based on its tag
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.managed_mode_refs.append(child_value)
+                    obj.managed_mode_group_refs.append(child_value)
 
-        # Parse scheduler_name_ref
-        child = SerializationHelper.find_child_element(element, "SCHEDULER-NAME-REF")
+        # Parse scheduler_name_prefix_ref
+        child = SerializationHelper.find_child_element(element, "SCHEDULER-NAME-PREFIX-REF")
         if child is not None:
-            scheduler_name_ref_value = ARRef.deserialize(child)
-            obj.scheduler_name_ref = scheduler_name_ref_value
+            scheduler_name_prefix_ref_value = ARRef.deserialize(child)
+            obj.scheduler_name_prefix_ref = scheduler_name_prefix_ref_value
 
         return obj
 

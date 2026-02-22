@@ -112,8 +112,8 @@ class AutosarEngineeringObjectBuilder:
         self._obj.domain = value
         return self
 
-    def with_revision_label_strings(self, items: list[RevisionLabelString]) -> "AutosarEngineeringObjectBuilder":
-        """Set revision_label_strings list attribute.
+    def with_revision_labels(self, items: list[RevisionLabelString]) -> "AutosarEngineeringObjectBuilder":
+        """Set revision_labels list attribute.
 
         Args:
             items: List of items to set
@@ -121,7 +121,7 @@ class AutosarEngineeringObjectBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.revision_label_strings = list(items) if items else []
+        self._obj.revision_labels = list(items) if items else []
         return self
 
     def with_short_label(self, value: NameToken) -> "AutosarEngineeringObjectBuilder":
@@ -139,8 +139,8 @@ class AutosarEngineeringObjectBuilder:
         return self
 
 
-    def add_revision_label_string(self, item: RevisionLabelString) -> "AutosarEngineeringObjectBuilder":
-        """Add a single item to revision_label_strings list.
+    def add_revision_label(self, item: RevisionLabelString) -> "AutosarEngineeringObjectBuilder":
+        """Add a single item to revision_labels list.
 
         Args:
             item: Item to add
@@ -148,16 +148,16 @@ class AutosarEngineeringObjectBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.revision_label_strings.append(item)
+        self._obj.revision_labels.append(item)
         return self
 
-    def clear_revision_label_strings(self) -> "AutosarEngineeringObjectBuilder":
-        """Clear all items from revision_label_strings list.
+    def clear_revision_labels(self) -> "AutosarEngineeringObjectBuilder":
+        """Clear all items from revision_labels list.
 
         Returns:
             self for method chaining
         """
-        self._obj.revision_label_strings = []
+        self._obj.revision_labels = []
         return self
 
 

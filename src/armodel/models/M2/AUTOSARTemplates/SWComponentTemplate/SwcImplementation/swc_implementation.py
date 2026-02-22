@@ -322,8 +322,8 @@ class SwcImplementationBuilder:
         self._obj.compilers = list(items) if items else []
         return self
 
-    def with_generateds(self, items: list[DependencyOnArtifact]) -> "SwcImplementationBuilder":
-        """Set generateds list attribute.
+    def with_generated_artifacts(self, items: list[DependencyOnArtifact]) -> "SwcImplementationBuilder":
+        """Set generated_artifacts list attribute.
 
         Args:
             items: List of items to set
@@ -331,7 +331,7 @@ class SwcImplementationBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.generateds = list(items) if items else []
+        self._obj.generated_artifacts = list(items) if items else []
         return self
 
     def with_hw_elements(self, items: list[HwElement]) -> "SwcImplementationBuilder":
@@ -372,8 +372,8 @@ class SwcImplementationBuilder:
         self._obj.mc_support = value
         return self
 
-    def with_programming(self, value: Optional[ProgramminglanguageEnum]) -> "SwcImplementationBuilder":
-        """Set programming attribute.
+    def with_programming_language(self, value: Optional[ProgramminglanguageEnum]) -> "SwcImplementationBuilder":
+        """Set programming_language attribute.
 
         Args:
             value: Value to set
@@ -383,7 +383,7 @@ class SwcImplementationBuilder:
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.programming = value
+        self._obj.programming_language = value
         return self
 
     def with_required_artifacts(self, items: list[DependencyOnArtifact]) -> "SwcImplementationBuilder":
@@ -398,8 +398,8 @@ class SwcImplementationBuilder:
         self._obj.required_artifacts = list(items) if items else []
         return self
 
-    def with_requireds(self, items: list[DependencyOnArtifact]) -> "SwcImplementationBuilder":
-        """Set requireds list attribute.
+    def with_required_generator_tools(self, items: list[DependencyOnArtifact]) -> "SwcImplementationBuilder":
+        """Set required_generator_tools list attribute.
 
         Args:
             items: List of items to set
@@ -407,11 +407,11 @@ class SwcImplementationBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.requireds = list(items) if items else []
+        self._obj.required_generator_tools = list(items) if items else []
         return self
 
-    def with_resource(self, value: Optional[ResourceConsumption]) -> "SwcImplementationBuilder":
-        """Set resource attribute.
+    def with_resource_consumption(self, value: Optional[ResourceConsumption]) -> "SwcImplementationBuilder":
+        """Set resource_consumption attribute.
 
         Args:
             value: Value to set
@@ -421,11 +421,11 @@ class SwcImplementationBuilder:
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.resource = value
+        self._obj.resource_consumption = value
         return self
 
-    def with_swc_bsw(self, value: Optional[SwcBswMapping]) -> "SwcImplementationBuilder":
-        """Set swc_bsw attribute.
+    def with_swc_bsw_mapping(self, value: Optional[SwcBswMapping]) -> "SwcImplementationBuilder":
+        """Set swc_bsw_mapping attribute.
 
         Args:
             value: Value to set
@@ -435,7 +435,7 @@ class SwcImplementationBuilder:
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.swc_bsw = value
+        self._obj.swc_bsw_mapping = value
         return self
 
     def with_sw_version(self, value: Optional[RevisionLabelString]) -> "SwcImplementationBuilder":
@@ -605,8 +605,8 @@ class SwcImplementationBuilder:
         self._obj.compilers = []
         return self
 
-    def add_generated(self, item: DependencyOnArtifact) -> "SwcImplementationBuilder":
-        """Add a single item to generateds list.
+    def add_generated_artifact(self, item: DependencyOnArtifact) -> "SwcImplementationBuilder":
+        """Add a single item to generated_artifacts list.
 
         Args:
             item: Item to add
@@ -614,16 +614,16 @@ class SwcImplementationBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.generateds.append(item)
+        self._obj.generated_artifacts.append(item)
         return self
 
-    def clear_generateds(self) -> "SwcImplementationBuilder":
-        """Clear all items from generateds list.
+    def clear_generated_artifacts(self) -> "SwcImplementationBuilder":
+        """Clear all items from generated_artifacts list.
 
         Returns:
             self for method chaining
         """
-        self._obj.generateds = []
+        self._obj.generated_artifacts = []
         return self
 
     def add_hw_element(self, item: HwElement) -> "SwcImplementationBuilder":
@@ -689,8 +689,8 @@ class SwcImplementationBuilder:
         self._obj.required_artifacts = []
         return self
 
-    def add_required(self, item: DependencyOnArtifact) -> "SwcImplementationBuilder":
-        """Add a single item to requireds list.
+    def add_required_generator_tool(self, item: DependencyOnArtifact) -> "SwcImplementationBuilder":
+        """Add a single item to required_generator_tools list.
 
         Args:
             item: Item to add
@@ -698,16 +698,16 @@ class SwcImplementationBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.requireds.append(item)
+        self._obj.required_generator_tools.append(item)
         return self
 
-    def clear_requireds(self) -> "SwcImplementationBuilder":
-        """Clear all items from requireds list.
+    def clear_required_generator_tools(self) -> "SwcImplementationBuilder":
+        """Clear all items from required_generator_tools list.
 
         Returns:
             self for method chaining
         """
-        self._obj.requireds = []
+        self._obj.required_generator_tools = []
         return self
 
     def add_per_instance_memorie(self, item: PerInstanceMemory) -> "SwcImplementationBuilder":

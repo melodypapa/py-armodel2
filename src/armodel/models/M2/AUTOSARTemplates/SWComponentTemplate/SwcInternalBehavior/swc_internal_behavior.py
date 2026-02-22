@@ -652,8 +652,8 @@ class SwcInternalBehaviorBuilder:
         self._obj.uuid = value
         return self
 
-    def with_constants(self, items: list[ParameterDataPrototype]) -> "SwcInternalBehaviorBuilder":
-        """Set constants list attribute.
+    def with_constant_memoris(self, items: list[ParameterDataPrototype]) -> "SwcInternalBehaviorBuilder":
+        """Set constant_memoris list attribute.
 
         Args:
             items: List of items to set
@@ -661,11 +661,11 @@ class SwcInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.constants = list(items) if items else []
+        self._obj.constant_memoris = list(items) if items else []
         return self
 
-    def with_constant_values(self, items: list[ConstantSpecification]) -> "SwcInternalBehaviorBuilder":
-        """Set constant_values list attribute.
+    def with_constant_value_mappings(self, items: list[ConstantSpecificationMappingSet]) -> "SwcInternalBehaviorBuilder":
+        """Set constant_value_mappings list attribute.
 
         Args:
             items: List of items to set
@@ -673,11 +673,11 @@ class SwcInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.constant_values = list(items) if items else []
+        self._obj.constant_value_mappings = list(items) if items else []
         return self
 
-    def with_data_types(self, items: list[DataTypeMappingSet]) -> "SwcInternalBehaviorBuilder":
-        """Set data_types list attribute.
+    def with_data_type_mappings(self, items: list[DataTypeMappingSet]) -> "SwcInternalBehaviorBuilder":
+        """Set data_type_mappings list attribute.
 
         Args:
             items: List of items to set
@@ -685,7 +685,7 @@ class SwcInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.data_types = list(items) if items else []
+        self._obj.data_type_mappings = list(items) if items else []
         return self
 
     def with_exclusive_areas(self, items: list[ExclusiveArea]) -> "SwcInternalBehaviorBuilder":
@@ -700,8 +700,8 @@ class SwcInternalBehaviorBuilder:
         self._obj.exclusive_areas = list(items) if items else []
         return self
 
-    def with_exclusive_area_nestings(self, items: list[ExclusiveAreaNestingOrder]) -> "SwcInternalBehaviorBuilder":
-        """Set exclusive_area_nestings list attribute.
+    def with_exclusive_area_nesting_orders(self, items: list[ExclusiveAreaNestingOrder]) -> "SwcInternalBehaviorBuilder":
+        """Set exclusive_area_nesting_orders list attribute.
 
         Args:
             items: List of items to set
@@ -709,7 +709,7 @@ class SwcInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.exclusive_area_nestings = list(items) if items else []
+        self._obj.exclusive_area_nesting_orders = list(items) if items else []
         return self
 
     def with_static_memories(self, items: list[VariableDataPrototype]) -> "SwcInternalBehaviorBuilder":
@@ -949,8 +949,8 @@ class SwcInternalBehaviorBuilder:
         self._obj.annotations = []
         return self
 
-    def add_constant(self, item: ParameterDataPrototype) -> "SwcInternalBehaviorBuilder":
-        """Add a single item to constants list.
+    def add_constant_memori(self, item: ParameterDataPrototype) -> "SwcInternalBehaviorBuilder":
+        """Add a single item to constant_memoris list.
 
         Args:
             item: Item to add
@@ -958,20 +958,20 @@ class SwcInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.constants.append(item)
+        self._obj.constant_memoris.append(item)
         return self
 
-    def clear_constants(self) -> "SwcInternalBehaviorBuilder":
-        """Clear all items from constants list.
+    def clear_constant_memoris(self) -> "SwcInternalBehaviorBuilder":
+        """Clear all items from constant_memoris list.
 
         Returns:
             self for method chaining
         """
-        self._obj.constants = []
+        self._obj.constant_memoris = []
         return self
 
-    def add_constant_value(self, item: ConstantSpecification) -> "SwcInternalBehaviorBuilder":
-        """Add a single item to constant_values list.
+    def add_constant_value_mapping(self, item: ConstantSpecificationMappingSet) -> "SwcInternalBehaviorBuilder":
+        """Add a single item to constant_value_mappings list.
 
         Args:
             item: Item to add
@@ -979,20 +979,20 @@ class SwcInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.constant_values.append(item)
+        self._obj.constant_value_mappings.append(item)
         return self
 
-    def clear_constant_values(self) -> "SwcInternalBehaviorBuilder":
-        """Clear all items from constant_values list.
+    def clear_constant_value_mappings(self) -> "SwcInternalBehaviorBuilder":
+        """Clear all items from constant_value_mappings list.
 
         Returns:
             self for method chaining
         """
-        self._obj.constant_values = []
+        self._obj.constant_value_mappings = []
         return self
 
-    def add_data_type(self, item: DataTypeMappingSet) -> "SwcInternalBehaviorBuilder":
-        """Add a single item to data_types list.
+    def add_data_type_mapping(self, item: DataTypeMappingSet) -> "SwcInternalBehaviorBuilder":
+        """Add a single item to data_type_mappings list.
 
         Args:
             item: Item to add
@@ -1000,16 +1000,16 @@ class SwcInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.data_types.append(item)
+        self._obj.data_type_mappings.append(item)
         return self
 
-    def clear_data_types(self) -> "SwcInternalBehaviorBuilder":
-        """Clear all items from data_types list.
+    def clear_data_type_mappings(self) -> "SwcInternalBehaviorBuilder":
+        """Clear all items from data_type_mappings list.
 
         Returns:
             self for method chaining
         """
-        self._obj.data_types = []
+        self._obj.data_type_mappings = []
         return self
 
     def add_exclusive_area(self, item: ExclusiveArea) -> "SwcInternalBehaviorBuilder":
@@ -1033,8 +1033,8 @@ class SwcInternalBehaviorBuilder:
         self._obj.exclusive_areas = []
         return self
 
-    def add_exclusive_area_nesting(self, item: ExclusiveAreaNestingOrder) -> "SwcInternalBehaviorBuilder":
-        """Add a single item to exclusive_area_nestings list.
+    def add_exclusive_area_nesting_order(self, item: ExclusiveAreaNestingOrder) -> "SwcInternalBehaviorBuilder":
+        """Add a single item to exclusive_area_nesting_orders list.
 
         Args:
             item: Item to add
@@ -1042,16 +1042,16 @@ class SwcInternalBehaviorBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.exclusive_area_nestings.append(item)
+        self._obj.exclusive_area_nesting_orders.append(item)
         return self
 
-    def clear_exclusive_area_nestings(self) -> "SwcInternalBehaviorBuilder":
-        """Clear all items from exclusive_area_nestings list.
+    def clear_exclusive_area_nesting_orders(self) -> "SwcInternalBehaviorBuilder":
+        """Clear all items from exclusive_area_nesting_orders list.
 
         Returns:
             self for method chaining
         """
-        self._obj.exclusive_area_nestings = []
+        self._obj.exclusive_area_nesting_orders = []
         return self
 
     def add_static_memorie(self, item: VariableDataPrototype) -> "SwcInternalBehaviorBuilder":

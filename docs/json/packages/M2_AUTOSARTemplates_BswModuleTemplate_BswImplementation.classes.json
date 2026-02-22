@@ -58,7 +58,7 @@
         }
       ],
       "attributes": {
-        "arRelease": {
+        "arReleaseVersion": {
           "type": "RevisionLabelString",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -72,15 +72,15 @@
           "is_ref": true,
           "note": "The behavior of this implementation. is made as an association because follows the pattern of the SWCT ARElement cannot be splitted, but we want implementation later, the Bsw not aggregated in BswBehavior"
         },
-        "preconfigureds": {
-          "type": "any (EcucModule)",
+        "preconfiguredConfigurations": {
+          "type": "EcucModuleConfigurationValues",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
           "note": "Reference to the set of preconfigured (i.e. fixed) configuration values for this BswImplementation. BswImplementation represents a cluster of several than one EcucModuleConfigurationValues be referred (at most one per module), most one such element can be referred."
         },
-        "recommendeds": {
-          "type": "any (EcucModule)",
+        "recommendedConfigurations": {
+          "type": "EcucModuleConfigurationValues",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
@@ -93,7 +93,7 @@
           "is_ref": false,
           "note": "In driver modules which can be instantiated several times"
         },
-        "vendorSpecifics": {
+        "vendorSpecificModuleDefs": {
           "type": "EcucModuleDef",
           "multiplicity": "*",
           "kind": "ref",

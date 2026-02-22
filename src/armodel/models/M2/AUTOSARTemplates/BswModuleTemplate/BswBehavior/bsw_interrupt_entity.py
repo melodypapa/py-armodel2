@@ -347,8 +347,8 @@ class BswInterruptEntityBuilder:
         self._obj.sw_addr_method = value
         return self
 
-    def with_accessed_modes(self, items: list[ModeDeclarationGroup]) -> "BswInterruptEntityBuilder":
-        """Set accessed_modes list attribute.
+    def with_accessed_mode_groups(self, items: list[ModeDeclarationGroup]) -> "BswInterruptEntityBuilder":
+        """Set accessed_mode_groups list attribute.
 
         Args:
             items: List of items to set
@@ -356,7 +356,7 @@ class BswInterruptEntityBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.accessed_modes = list(items) if items else []
+        self._obj.accessed_mode_groups = list(items) if items else []
         return self
 
     def with_activation_points(self, items: list[BswInternalTriggeringPoint]) -> "BswInterruptEntityBuilder":
@@ -383,8 +383,8 @@ class BswInterruptEntityBuilder:
         self._obj.call_points = list(items) if items else []
         return self
 
-    def with_data_receives(self, items: list[BswVariableAccess]) -> "BswInterruptEntityBuilder":
-        """Set data_receives list attribute.
+    def with_data_receive_points(self, items: list[BswVariableAccess]) -> "BswInterruptEntityBuilder":
+        """Set data_receive_points list attribute.
 
         Args:
             items: List of items to set
@@ -392,7 +392,7 @@ class BswInterruptEntityBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.data_receives = list(items) if items else []
+        self._obj.data_receive_points = list(items) if items else []
         return self
 
     def with_data_send_points(self, items: list[BswVariableAccess]) -> "BswInterruptEntityBuilder":
@@ -407,8 +407,8 @@ class BswInterruptEntityBuilder:
         self._obj.data_send_points = list(items) if items else []
         return self
 
-    def with_implemented(self, value: Optional[BswModuleEntry]) -> "BswInterruptEntityBuilder":
-        """Set implemented attribute.
+    def with_implemented_entries(self, value: Optional[BswModuleEntry]) -> "BswInterruptEntityBuilder":
+        """Set implemented_entries attribute.
 
         Args:
             value: Value to set
@@ -418,7 +418,7 @@ class BswInterruptEntityBuilder:
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.implemented = value
+        self._obj.implemented_entries = value
         return self
 
     def with_issued_triggers(self, items: list[Trigger]) -> "BswInterruptEntityBuilder":
@@ -433,8 +433,8 @@ class BswInterruptEntityBuilder:
         self._obj.issued_triggers = list(items) if items else []
         return self
 
-    def with_managed_modes(self, items: list[ModeDeclarationGroup]) -> "BswInterruptEntityBuilder":
-        """Set managed_modes list attribute.
+    def with_managed_mode_groups(self, items: list[ModeDeclarationGroupPrototype]) -> "BswInterruptEntityBuilder":
+        """Set managed_mode_groups list attribute.
 
         Args:
             items: List of items to set
@@ -442,11 +442,11 @@ class BswInterruptEntityBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.managed_modes = list(items) if items else []
+        self._obj.managed_mode_groups = list(items) if items else []
         return self
 
-    def with_scheduler_name(self, value: Optional[BswSchedulerNamePrefix]) -> "BswInterruptEntityBuilder":
-        """Set scheduler_name attribute.
+    def with_scheduler_name_prefix(self, value: Optional[BswSchedulerNamePrefix]) -> "BswInterruptEntityBuilder":
+        """Set scheduler_name_prefix attribute.
 
         Args:
             value: Value to set
@@ -456,7 +456,7 @@ class BswInterruptEntityBuilder:
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.scheduler_name = value
+        self._obj.scheduler_name_prefix = value
         return self
 
     def with_interrupt_category(self, value: Optional[BswInterruptCategory]) -> "BswInterruptEntityBuilder":
@@ -614,8 +614,8 @@ class BswInterruptEntityBuilder:
         self._obj.runs_insides = []
         return self
 
-    def add_accessed_mode(self, item: ModeDeclarationGroup) -> "BswInterruptEntityBuilder":
-        """Add a single item to accessed_modes list.
+    def add_accessed_mode_group(self, item: ModeDeclarationGroup) -> "BswInterruptEntityBuilder":
+        """Add a single item to accessed_mode_groups list.
 
         Args:
             item: Item to add
@@ -623,16 +623,16 @@ class BswInterruptEntityBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.accessed_modes.append(item)
+        self._obj.accessed_mode_groups.append(item)
         return self
 
-    def clear_accessed_modes(self) -> "BswInterruptEntityBuilder":
-        """Clear all items from accessed_modes list.
+    def clear_accessed_mode_groups(self) -> "BswInterruptEntityBuilder":
+        """Clear all items from accessed_mode_groups list.
 
         Returns:
             self for method chaining
         """
-        self._obj.accessed_modes = []
+        self._obj.accessed_mode_groups = []
         return self
 
     def add_activation_point(self, item: BswInternalTriggeringPoint) -> "BswInterruptEntityBuilder":
@@ -677,8 +677,8 @@ class BswInterruptEntityBuilder:
         self._obj.call_points = []
         return self
 
-    def add_data_receive(self, item: BswVariableAccess) -> "BswInterruptEntityBuilder":
-        """Add a single item to data_receives list.
+    def add_data_receive_point(self, item: BswVariableAccess) -> "BswInterruptEntityBuilder":
+        """Add a single item to data_receive_points list.
 
         Args:
             item: Item to add
@@ -686,16 +686,16 @@ class BswInterruptEntityBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.data_receives.append(item)
+        self._obj.data_receive_points.append(item)
         return self
 
-    def clear_data_receives(self) -> "BswInterruptEntityBuilder":
-        """Clear all items from data_receives list.
+    def clear_data_receive_points(self) -> "BswInterruptEntityBuilder":
+        """Clear all items from data_receive_points list.
 
         Returns:
             self for method chaining
         """
-        self._obj.data_receives = []
+        self._obj.data_receive_points = []
         return self
 
     def add_data_send_point(self, item: BswVariableAccess) -> "BswInterruptEntityBuilder":
@@ -740,8 +740,8 @@ class BswInterruptEntityBuilder:
         self._obj.issued_triggers = []
         return self
 
-    def add_managed_mode(self, item: ModeDeclarationGroup) -> "BswInterruptEntityBuilder":
-        """Add a single item to managed_modes list.
+    def add_managed_mode_group(self, item: ModeDeclarationGroupPrototype) -> "BswInterruptEntityBuilder":
+        """Add a single item to managed_mode_groups list.
 
         Args:
             item: Item to add
@@ -749,16 +749,16 @@ class BswInterruptEntityBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.managed_modes.append(item)
+        self._obj.managed_mode_groups.append(item)
         return self
 
-    def clear_managed_modes(self) -> "BswInterruptEntityBuilder":
-        """Clear all items from managed_modes list.
+    def clear_managed_mode_groups(self) -> "BswInterruptEntityBuilder":
+        """Clear all items from managed_mode_groups list.
 
         Returns:
             self for method chaining
         """
-        self._obj.managed_modes = []
+        self._obj.managed_mode_groups = []
         return self
 
 

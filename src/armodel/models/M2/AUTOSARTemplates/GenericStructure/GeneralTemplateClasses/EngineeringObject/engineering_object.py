@@ -33,14 +33,14 @@ class EngineeringObject(ARObject, ABC):
 
     category: NameToken
     domain: Optional[NameToken]
-    revision_label_strings: list[RevisionLabelString]
+    revision_labels: list[RevisionLabelString]
     short_label: NameToken
     def __init__(self) -> None:
         """Initialize EngineeringObject."""
         super().__init__()
         self.category: NameToken = None
         self.domain: Optional[NameToken] = None
-        self.revision_label_strings: list[RevisionLabelString] = []
+        self.revision_labels: list[RevisionLabelString] = []
         self.short_label: NameToken = None
 
     def serialize(self) -> ET.Element:
@@ -95,13 +95,13 @@ class EngineeringObject(ARObject, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize revision_label_strings (list to container "REVISION-LABEL-STRINGS")
-        if self.revision_label_strings:
-            wrapper = ET.Element("REVISION-LABEL-STRINGS")
-            for item in self.revision_label_strings:
+        # Serialize revision_labels (list to container "REVISION-LABELS")
+        if self.revision_labels:
+            wrapper = ET.Element("REVISION-LABELS")
+            for item in self.revision_labels:
                 serialized = SerializationHelper.serialize_item(item, "RevisionLabelString")
                 if serialized is not None:
-                    child_elem = ET.Element("REVISION-LABEL-STRING")
+                    child_elem = ET.Element("REVISION-LABEL")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -153,15 +153,15 @@ class EngineeringObject(ARObject, ABC):
             domain_value = child.text
             obj.domain = domain_value
 
-        # Parse revision_label_strings (list from container "REVISION-LABEL-STRINGS")
-        obj.revision_label_strings = []
-        container = SerializationHelper.find_child_element(element, "REVISION-LABEL-STRINGS")
+        # Parse revision_labels (list from container "REVISION-LABELS")
+        obj.revision_labels = []
+        container = SerializationHelper.find_child_element(element, "REVISION-LABELS")
         if container is not None:
             for child in container:
                 # Extract primitive value (RevisionLabelString) as text
                 child_value = child.text
                 if child_value is not None:
-                    obj.revision_label_strings.append(child_value)
+                    obj.revision_labels.append(child_value)
 
         # Parse short_label
         child = SerializationHelper.find_child_element(element, "SHORT-LABEL")

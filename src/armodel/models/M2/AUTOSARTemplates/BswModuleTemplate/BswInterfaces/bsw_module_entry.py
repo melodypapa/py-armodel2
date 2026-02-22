@@ -53,10 +53,10 @@ class BswModuleEntry(ARElement):
         return False
 
     arguments: list[SwServiceArg]
-    bsw_entry_kind_enum: Optional[BswEntryKindEnum]
+    bsw_entry_kind: Optional[BswEntryKindEnum]
     call_type: Optional[BswCallType]
-    execution: Optional[BswExecutionContext]
-    function: Optional[NameToken]
+    execution_context: Optional[BswExecutionContext]
+    function_prototype_emitter: Optional[NameToken]
     is_reentrant: Optional[Boolean]
     is_synchronous: Optional[Boolean]
     return_type: Optional[SwServiceArg]
@@ -67,10 +67,10 @@ class BswModuleEntry(ARElement):
         """Initialize BswModuleEntry."""
         super().__init__()
         self.arguments: list[SwServiceArg] = []
-        self.bsw_entry_kind_enum: Optional[BswEntryKindEnum] = None
+        self.bsw_entry_kind: Optional[BswEntryKindEnum] = None
         self.call_type: Optional[BswCallType] = None
-        self.execution: Optional[BswExecutionContext] = None
-        self.function: Optional[NameToken] = None
+        self.execution_context: Optional[BswExecutionContext] = None
+        self.function_prototype_emitter: Optional[NameToken] = None
         self.is_reentrant: Optional[Boolean] = None
         self.is_synchronous: Optional[Boolean] = None
         self.return_type: Optional[SwServiceArg] = None
@@ -112,12 +112,12 @@ class BswModuleEntry(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize bsw_entry_kind_enum
-        if self.bsw_entry_kind_enum is not None:
-            serialized = SerializationHelper.serialize_item(self.bsw_entry_kind_enum, "BswEntryKindEnum")
+        # Serialize bsw_entry_kind
+        if self.bsw_entry_kind is not None:
+            serialized = SerializationHelper.serialize_item(self.bsw_entry_kind, "BswEntryKindEnum")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("BSW-ENTRY-KIND-ENUM")
+                wrapped = ET.Element("BSW-ENTRY-KIND")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -140,12 +140,12 @@ class BswModuleEntry(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize execution
-        if self.execution is not None:
-            serialized = SerializationHelper.serialize_item(self.execution, "BswExecutionContext")
+        # Serialize execution_context
+        if self.execution_context is not None:
+            serialized = SerializationHelper.serialize_item(self.execution_context, "BswExecutionContext")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("EXECUTION")
+                wrapped = ET.Element("EXECUTION-CONTEXT")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -154,12 +154,12 @@ class BswModuleEntry(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize function
-        if self.function is not None:
-            serialized = SerializationHelper.serialize_item(self.function, "NameToken")
+        # Serialize function_prototype_emitter
+        if self.function_prototype_emitter is not None:
+            serialized = SerializationHelper.serialize_item(self.function_prototype_emitter, "NameToken")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("FUNCTION")
+                wrapped = ET.Element("FUNCTION-PROTOTYPE-EMITTER")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -277,11 +277,11 @@ class BswModuleEntry(ARElement):
                 if child_value is not None:
                     obj.arguments.append(child_value)
 
-        # Parse bsw_entry_kind_enum
-        child = SerializationHelper.find_child_element(element, "BSW-ENTRY-KIND-ENUM")
+        # Parse bsw_entry_kind
+        child = SerializationHelper.find_child_element(element, "BSW-ENTRY-KIND")
         if child is not None:
-            bsw_entry_kind_enum_value = BswEntryKindEnum.deserialize(child)
-            obj.bsw_entry_kind_enum = bsw_entry_kind_enum_value
+            bsw_entry_kind_value = BswEntryKindEnum.deserialize(child)
+            obj.bsw_entry_kind = bsw_entry_kind_value
 
         # Parse call_type
         child = SerializationHelper.find_child_element(element, "CALL-TYPE")
@@ -289,17 +289,17 @@ class BswModuleEntry(ARElement):
             call_type_value = BswCallType.deserialize(child)
             obj.call_type = call_type_value
 
-        # Parse execution
-        child = SerializationHelper.find_child_element(element, "EXECUTION")
+        # Parse execution_context
+        child = SerializationHelper.find_child_element(element, "EXECUTION-CONTEXT")
         if child is not None:
-            execution_value = BswExecutionContext.deserialize(child)
-            obj.execution = execution_value
+            execution_context_value = BswExecutionContext.deserialize(child)
+            obj.execution_context = execution_context_value
 
-        # Parse function
-        child = SerializationHelper.find_child_element(element, "FUNCTION")
+        # Parse function_prototype_emitter
+        child = SerializationHelper.find_child_element(element, "FUNCTION-PROTOTYPE-EMITTER")
         if child is not None:
-            function_value = child.text
-            obj.function = function_value
+            function_prototype_emitter_value = child.text
+            obj.function_prototype_emitter = function_prototype_emitter_value
 
         # Parse is_reentrant
         child = SerializationHelper.find_child_element(element, "IS-REENTRANT")
@@ -484,8 +484,8 @@ class BswModuleEntryBuilder:
         self._obj.arguments = list(items) if items else []
         return self
 
-    def with_bsw_entry_kind_enum(self, value: Optional[BswEntryKindEnum]) -> "BswModuleEntryBuilder":
-        """Set bsw_entry_kind_enum attribute.
+    def with_bsw_entry_kind(self, value: Optional[BswEntryKindEnum]) -> "BswModuleEntryBuilder":
+        """Set bsw_entry_kind attribute.
 
         Args:
             value: Value to set
@@ -495,7 +495,7 @@ class BswModuleEntryBuilder:
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.bsw_entry_kind_enum = value
+        self._obj.bsw_entry_kind = value
         return self
 
     def with_call_type(self, value: Optional[BswCallType]) -> "BswModuleEntryBuilder":
@@ -512,8 +512,8 @@ class BswModuleEntryBuilder:
         self._obj.call_type = value
         return self
 
-    def with_execution(self, value: Optional[BswExecutionContext]) -> "BswModuleEntryBuilder":
-        """Set execution attribute.
+    def with_execution_context(self, value: Optional[BswExecutionContext]) -> "BswModuleEntryBuilder":
+        """Set execution_context attribute.
 
         Args:
             value: Value to set
@@ -523,11 +523,11 @@ class BswModuleEntryBuilder:
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.execution = value
+        self._obj.execution_context = value
         return self
 
-    def with_function(self, value: Optional[NameToken]) -> "BswModuleEntryBuilder":
-        """Set function attribute.
+    def with_function_prototype_emitter(self, value: Optional[NameToken]) -> "BswModuleEntryBuilder":
+        """Set function_prototype_emitter attribute.
 
         Args:
             value: Value to set
@@ -537,7 +537,7 @@ class BswModuleEntryBuilder:
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.function = value
+        self._obj.function_prototype_emitter = value
         return self
 
     def with_is_reentrant(self, value: Optional[Boolean]) -> "BswModuleEntryBuilder":

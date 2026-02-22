@@ -20,8 +20,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
-from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.constant_specification import (
-    ConstantSpecification,
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.Constants.constant_specification_mapping_set import (
+    ConstantSpecificationMappingSet,
 )
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.Datatypes.data_type_mapping_set import (
     DataTypeMappingSet,
@@ -53,21 +53,21 @@ class InternalBehavior(Identifiable, ABC):
         """
         return True
 
-    constants: list[ParameterDataPrototype]
-    constant_value_refs: list[ARRef]
-    data_type_refs: list[ARRef]
+    constant_memoris: list[ParameterDataPrototype]
+    constant_value_mapping_refs: list[ARRef]
+    data_type_mapping_refs: list[ARRef]
     exclusive_areas: list[ExclusiveArea]
-    exclusive_area_nestings: list[ExclusiveAreaNestingOrder]
-    static_memorie_refs: list[ARRef]
+    exclusive_area_nesting_orders: list[ExclusiveAreaNestingOrder]
+    static_memories: list[VariableDataPrototype]
     def __init__(self) -> None:
         """Initialize InternalBehavior."""
         super().__init__()
-        self.constants: list[ParameterDataPrototype] = []
-        self.constant_value_refs: list[ARRef] = []
-        self.data_type_refs: list[ARRef] = []
+        self.constant_memoris: list[ParameterDataPrototype] = []
+        self.constant_value_mapping_refs: list[ARRef] = []
+        self.data_type_mapping_refs: list[ARRef] = []
         self.exclusive_areas: list[ExclusiveArea] = []
-        self.exclusive_area_nestings: list[ExclusiveAreaNestingOrder] = []
-        self.static_memorie_refs: list[ARRef] = []
+        self.exclusive_area_nesting_orders: list[ExclusiveAreaNestingOrder] = []
+        self.static_memories: list[VariableDataPrototype] = []
 
     def serialize(self) -> ET.Element:
         """Serialize InternalBehavior to XML element.
@@ -93,23 +93,23 @@ class InternalBehavior(Identifiable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize constants (list to container "CONSTANTS")
-        if self.constants:
-            wrapper = ET.Element("CONSTANTS")
-            for item in self.constants:
+        # Serialize constant_memoris (list to container "CONSTANT-MEMORIS")
+        if self.constant_memoris:
+            wrapper = ET.Element("CONSTANT-MEMORIS")
+            for item in self.constant_memoris:
                 serialized = SerializationHelper.serialize_item(item, "ParameterDataPrototype")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize constant_value_refs (list to container "CONSTANT-VALUE-REFS")
-        if self.constant_value_refs:
-            wrapper = ET.Element("CONSTANT-VALUE-REFS")
-            for item in self.constant_value_refs:
-                serialized = SerializationHelper.serialize_item(item, "ConstantSpecification")
+        # Serialize constant_value_mapping_refs (list to container "CONSTANT-VALUE-MAPPING-REFS")
+        if self.constant_value_mapping_refs:
+            wrapper = ET.Element("CONSTANT-VALUE-MAPPING-REFS")
+            for item in self.constant_value_mapping_refs:
+                serialized = SerializationHelper.serialize_item(item, "ConstantSpecificationMappingSet")
                 if serialized is not None:
-                    child_elem = ET.Element("CONSTANT-VALUE-REF")
+                    child_elem = ET.Element("CONSTANT-VALUE-MAPPING-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -120,13 +120,13 @@ class InternalBehavior(Identifiable, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize data_type_refs (list to container "DATA-TYPE-REFS")
-        if self.data_type_refs:
-            wrapper = ET.Element("DATA-TYPE-REFS")
-            for item in self.data_type_refs:
+        # Serialize data_type_mapping_refs (list to container "DATA-TYPE-MAPPING-REFS")
+        if self.data_type_mapping_refs:
+            wrapper = ET.Element("DATA-TYPE-MAPPING-REFS")
+            for item in self.data_type_mapping_refs:
                 serialized = SerializationHelper.serialize_item(item, "DataTypeMappingSet")
                 if serialized is not None:
-                    child_elem = ET.Element("DATA-TYPE-REF")
+                    child_elem = ET.Element("DATA-TYPE-MAPPING-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -147,30 +147,23 @@ class InternalBehavior(Identifiable, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize exclusive_area_nestings (list to container "EXCLUSIVE-AREA-NESTINGS")
-        if self.exclusive_area_nestings:
-            wrapper = ET.Element("EXCLUSIVE-AREA-NESTINGS")
-            for item in self.exclusive_area_nestings:
+        # Serialize exclusive_area_nesting_orders (list to container "EXCLUSIVE-AREA-NESTING-ORDERS")
+        if self.exclusive_area_nesting_orders:
+            wrapper = ET.Element("EXCLUSIVE-AREA-NESTING-ORDERS")
+            for item in self.exclusive_area_nesting_orders:
                 serialized = SerializationHelper.serialize_item(item, "ExclusiveAreaNestingOrder")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize static_memorie_refs (list to container "STATIC-MEMORIE-REFS")
-        if self.static_memorie_refs:
-            wrapper = ET.Element("STATIC-MEMORIE-REFS")
-            for item in self.static_memorie_refs:
+        # Serialize static_memories (list to container "STATIC-MEMORIES")
+        if self.static_memories:
+            wrapper = ET.Element("STATIC-MEMORIES")
+            for item in self.static_memories:
                 serialized = SerializationHelper.serialize_item(item, "VariableDataPrototype")
                 if serialized is not None:
-                    child_elem = ET.Element("STATIC-MEMORIE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -189,19 +182,19 @@ class InternalBehavior(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(InternalBehavior, cls).deserialize(element)
 
-        # Parse constants (list from container "CONSTANTS")
-        obj.constants = []
-        container = SerializationHelper.find_child_element(element, "CONSTANTS")
+        # Parse constant_memoris (list from container "CONSTANT-MEMORIS")
+        obj.constant_memoris = []
+        container = SerializationHelper.find_child_element(element, "CONSTANT-MEMORIS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.constants.append(child_value)
+                    obj.constant_memoris.append(child_value)
 
-        # Parse constant_value_refs (list from container "CONSTANT-VALUE-REFS")
-        obj.constant_value_refs = []
-        container = SerializationHelper.find_child_element(element, "CONSTANT-VALUE-REFS")
+        # Parse constant_value_mapping_refs (list from container "CONSTANT-VALUE-MAPPING-REFS")
+        obj.constant_value_mapping_refs = []
+        container = SerializationHelper.find_child_element(element, "CONSTANT-VALUE-MAPPING-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -213,11 +206,11 @@ class InternalBehavior(Identifiable, ABC):
                     # Deserialize each child element dynamically based on its tag
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.constant_value_refs.append(child_value)
+                    obj.constant_value_mapping_refs.append(child_value)
 
-        # Parse data_type_refs (list from container "DATA-TYPE-REFS")
-        obj.data_type_refs = []
-        container = SerializationHelper.find_child_element(element, "DATA-TYPE-REFS")
+        # Parse data_type_mapping_refs (list from container "DATA-TYPE-MAPPING-REFS")
+        obj.data_type_mapping_refs = []
+        container = SerializationHelper.find_child_element(element, "DATA-TYPE-MAPPING-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -229,7 +222,7 @@ class InternalBehavior(Identifiable, ABC):
                     # Deserialize each child element dynamically based on its tag
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.data_type_refs.append(child_value)
+                    obj.data_type_mapping_refs.append(child_value)
 
         # Parse exclusive_areas (list from container "EXCLUSIVE-AREAS")
         obj.exclusive_areas = []
@@ -241,31 +234,25 @@ class InternalBehavior(Identifiable, ABC):
                 if child_value is not None:
                     obj.exclusive_areas.append(child_value)
 
-        # Parse exclusive_area_nestings (list from container "EXCLUSIVE-AREA-NESTINGS")
-        obj.exclusive_area_nestings = []
-        container = SerializationHelper.find_child_element(element, "EXCLUSIVE-AREA-NESTINGS")
+        # Parse exclusive_area_nesting_orders (list from container "EXCLUSIVE-AREA-NESTING-ORDERS")
+        obj.exclusive_area_nesting_orders = []
+        container = SerializationHelper.find_child_element(element, "EXCLUSIVE-AREA-NESTING-ORDERS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.exclusive_area_nestings.append(child_value)
+                    obj.exclusive_area_nesting_orders.append(child_value)
 
-        # Parse static_memorie_refs (list from container "STATIC-MEMORIE-REFS")
-        obj.static_memorie_refs = []
-        container = SerializationHelper.find_child_element(element, "STATIC-MEMORIE-REFS")
+        # Parse static_memories (list from container "STATIC-MEMORIES")
+        obj.static_memories = []
+        container = SerializationHelper.find_child_element(element, "STATIC-MEMORIES")
         if container is not None:
             for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.static_memorie_refs.append(child_value)
+                    obj.static_memories.append(child_value)
 
         return obj
 
