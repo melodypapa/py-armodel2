@@ -27,32 +27,38 @@ def xml_attribute(func: Any) -> Any:
     return func
 
 
-def atp_variant() -> Callable[[Any], Any]:
-    """Decorator to mark a class as using AUTOSAR atpVariation pattern.
+def atp_variant(variant_type: str = "default") -> Callable[[Any], Any]:
+    """Decorator to mark a class/attribute as using AUTOSAR atpVariation pattern.
 
-    Classes with atpVariation wrap all their attributes in nested XML elements.
-    The wrapper path is automatically derived from the class name using AUTOSAR convention:
-    - First level: <CLASS-TAG>-VARIANTS
-    - Second level: <CLASS-TAG>-CONDITIONAL
+    Classes with atpVariation wrap their content in nested XML elements.
+    The variant_type parameter determines the wrapper pattern:
+    - "default" (class-level): Two-level wrapper <CLASS-TAG>-VARIANTS/<CLASS-TAG>-CONDITIONAL
+    - "ref_conditional" (attribute-level): Single-level <REF-TAG>-CONDITIONAL for references
 
-    Usage:
+    Usage (class-level - default pattern):
         @atp_variant()
         class SwDataDefProps(ARObject):
             base_type_ref: Optional[ARRef] = None
             sw_calibration_access: Optional[SwCalibrationAccessEnum] = None
 
-    Generates wrapper path: "SW-DATA-DEF-PROPS-VARIANTS/SW-DATA-DEF-PROPS-CONDITIONAL"
+        Generates: <SW-DATA-DEF-PROPS-VARIANTS><SW-DATA-DEF-PROPS-CONDITIONAL>...attributes...</SW-DATA-DEF-PROPS-CONDITIONAL></SW-DATA-DEF-PROPS-VARIANTS>
 
-    The ARObject serialization framework automatically:
-    1. Creates the nested wrapper elements during serialization
-    2. Navigates through wrapper elements during deserialization
+    Usage (attribute-level - ref_conditional pattern):
+        @atp_variant("ref_conditional")
+        encapsulated_entry: Optional[ARRef] = None
+
+        Generates: <BSW-MODULE-ENTRY-REF-CONDITIONAL><BSW-MODULE-ENTRY-REF>...</BSW-MODULE-ENTRY-REF></BSW-MODULE-ENTRY-REF-CONDITIONAL>
+
+    Args:
+        variant_type: Pattern type - "default" (VARIANTS/CONDITIONAL) or "ref_conditional" (REF-CONDITIONAL)
 
     Returns:
-        Decorator that sets _atp_variant flag on the class
+        Decorator that sets _atp_variant flag and _atp_variant_type on the class/attribute
     """
-    def decorator(cls: Any) -> Any:
-        cls._atp_variant = True  # type: ignore[union-attr]
-        return cls
+    def decorator(obj: Any) -> Any:
+        obj._atp_variant = True  # type: ignore[union-attr]
+        obj._atp_variant_type = variant_type  # type: ignore[union-attr]
+        return obj
     return decorator
 
 
