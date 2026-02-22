@@ -135,11 +135,11 @@
           "is_ref": false,
           "note": "Specifies the compiler for which this implementation has"
         },
-        "generateds": {
+        "generatedArtifacts": {
           "type": "DependencyOnArtifact",
           "multiplicity": "*",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "Relates to an artifact that will be generated during the of this Implementation by an associated Note that this is an optional information might not always be in the scope of a single component to provide this information. atpVariation"
         },
         "hwElements": {
@@ -163,7 +163,7 @@
           "is_ref": false,
           "note": "The measurement & calibration support data belonging to The aggregtion is <<atpSplitable>> case of an already exisiting BSW this description will be added later process, namely at code generation time."
         },
-        "programming": {
+        "programmingLanguage": {
           "type": "ProgramminglanguageEnum",
           "multiplicity": "0..1",
           "kind": "attribute",
@@ -173,25 +173,25 @@
         "requiredArtifacts": {
           "type": "DependencyOnArtifact",
           "multiplicity": "*",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "Specifies that this Implementation depends on the another artifact (e.g. a library). This DependencyOnArtifact is subject to the purpose to support variability in the algorithms in the cause different dependencies, e.g. of used libraries. atpVariation"
         },
-        "requireds": {
+        "requiredGeneratorTools": {
           "type": "DependencyOnArtifact",
           "multiplicity": "*",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "Relates this Implementation to a generator tool in order to additional artifacts during integration. atpVariation"
         },
-        "resource": {
+        "resourceConsumption": {
           "type": "ResourceConsumption",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "All static and dynamic resources for each implementation described within the ResourceConsumption class."
         },
-        "swcBsw": {
+        "swcBswMapping": {
           "type": "SwcBswMapping",
           "multiplicity": "0..1",
           "kind": "ref",
@@ -309,7 +309,7 @@
         }
       ],
       "attributes": {
-        "artifact": {
+        "artifactDescriptor": {
           "type": "AutosarEngineeringObject",
           "multiplicity": "0..1",
           "kind": "attribute",

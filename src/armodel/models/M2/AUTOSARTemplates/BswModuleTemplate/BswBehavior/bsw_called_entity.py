@@ -295,8 +295,8 @@ class BswCalledEntityBuilder:
         self._obj.sw_addr_method = value
         return self
 
-    def with_accessed_modes(self, items: list[ModeDeclarationGroup]) -> "BswCalledEntityBuilder":
-        """Set accessed_modes list attribute.
+    def with_accessed_mode_groups(self, items: list[ModeDeclarationGroup]) -> "BswCalledEntityBuilder":
+        """Set accessed_mode_groups list attribute.
 
         Args:
             items: List of items to set
@@ -304,7 +304,7 @@ class BswCalledEntityBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.accessed_modes = list(items) if items else []
+        self._obj.accessed_mode_groups = list(items) if items else []
         return self
 
     def with_activation_points(self, items: list[BswInternalTriggeringPoint]) -> "BswCalledEntityBuilder":
@@ -331,8 +331,8 @@ class BswCalledEntityBuilder:
         self._obj.call_points = list(items) if items else []
         return self
 
-    def with_data_receives(self, items: list[BswVariableAccess]) -> "BswCalledEntityBuilder":
-        """Set data_receives list attribute.
+    def with_data_receive_points(self, items: list[BswVariableAccess]) -> "BswCalledEntityBuilder":
+        """Set data_receive_points list attribute.
 
         Args:
             items: List of items to set
@@ -340,7 +340,7 @@ class BswCalledEntityBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.data_receives = list(items) if items else []
+        self._obj.data_receive_points = list(items) if items else []
         return self
 
     def with_data_send_points(self, items: list[BswVariableAccess]) -> "BswCalledEntityBuilder":
@@ -355,8 +355,8 @@ class BswCalledEntityBuilder:
         self._obj.data_send_points = list(items) if items else []
         return self
 
-    def with_implemented(self, value: Optional[BswModuleEntry]) -> "BswCalledEntityBuilder":
-        """Set implemented attribute.
+    def with_implemented_entries(self, value: Optional[BswModuleEntry]) -> "BswCalledEntityBuilder":
+        """Set implemented_entries attribute.
 
         Args:
             value: Value to set
@@ -366,7 +366,7 @@ class BswCalledEntityBuilder:
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.implemented = value
+        self._obj.implemented_entries = value
         return self
 
     def with_issued_triggers(self, items: list[Trigger]) -> "BswCalledEntityBuilder":
@@ -381,8 +381,8 @@ class BswCalledEntityBuilder:
         self._obj.issued_triggers = list(items) if items else []
         return self
 
-    def with_managed_modes(self, items: list[ModeDeclarationGroup]) -> "BswCalledEntityBuilder":
-        """Set managed_modes list attribute.
+    def with_managed_mode_groups(self, items: list[ModeDeclarationGroupPrototype]) -> "BswCalledEntityBuilder":
+        """Set managed_mode_groups list attribute.
 
         Args:
             items: List of items to set
@@ -390,11 +390,11 @@ class BswCalledEntityBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.managed_modes = list(items) if items else []
+        self._obj.managed_mode_groups = list(items) if items else []
         return self
 
-    def with_scheduler_name(self, value: Optional[BswSchedulerNamePrefix]) -> "BswCalledEntityBuilder":
-        """Set scheduler_name attribute.
+    def with_scheduler_name_prefix(self, value: Optional[BswSchedulerNamePrefix]) -> "BswCalledEntityBuilder":
+        """Set scheduler_name_prefix attribute.
 
         Args:
             value: Value to set
@@ -404,7 +404,7 @@ class BswCalledEntityBuilder:
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.scheduler_name = value
+        self._obj.scheduler_name_prefix = value
         return self
 
 
@@ -534,8 +534,8 @@ class BswCalledEntityBuilder:
         self._obj.runs_insides = []
         return self
 
-    def add_accessed_mode(self, item: ModeDeclarationGroup) -> "BswCalledEntityBuilder":
-        """Add a single item to accessed_modes list.
+    def add_accessed_mode_group(self, item: ModeDeclarationGroup) -> "BswCalledEntityBuilder":
+        """Add a single item to accessed_mode_groups list.
 
         Args:
             item: Item to add
@@ -543,16 +543,16 @@ class BswCalledEntityBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.accessed_modes.append(item)
+        self._obj.accessed_mode_groups.append(item)
         return self
 
-    def clear_accessed_modes(self) -> "BswCalledEntityBuilder":
-        """Clear all items from accessed_modes list.
+    def clear_accessed_mode_groups(self) -> "BswCalledEntityBuilder":
+        """Clear all items from accessed_mode_groups list.
 
         Returns:
             self for method chaining
         """
-        self._obj.accessed_modes = []
+        self._obj.accessed_mode_groups = []
         return self
 
     def add_activation_point(self, item: BswInternalTriggeringPoint) -> "BswCalledEntityBuilder":
@@ -597,8 +597,8 @@ class BswCalledEntityBuilder:
         self._obj.call_points = []
         return self
 
-    def add_data_receive(self, item: BswVariableAccess) -> "BswCalledEntityBuilder":
-        """Add a single item to data_receives list.
+    def add_data_receive_point(self, item: BswVariableAccess) -> "BswCalledEntityBuilder":
+        """Add a single item to data_receive_points list.
 
         Args:
             item: Item to add
@@ -606,16 +606,16 @@ class BswCalledEntityBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.data_receives.append(item)
+        self._obj.data_receive_points.append(item)
         return self
 
-    def clear_data_receives(self) -> "BswCalledEntityBuilder":
-        """Clear all items from data_receives list.
+    def clear_data_receive_points(self) -> "BswCalledEntityBuilder":
+        """Clear all items from data_receive_points list.
 
         Returns:
             self for method chaining
         """
-        self._obj.data_receives = []
+        self._obj.data_receive_points = []
         return self
 
     def add_data_send_point(self, item: BswVariableAccess) -> "BswCalledEntityBuilder":
@@ -660,8 +660,8 @@ class BswCalledEntityBuilder:
         self._obj.issued_triggers = []
         return self
 
-    def add_managed_mode(self, item: ModeDeclarationGroup) -> "BswCalledEntityBuilder":
-        """Add a single item to managed_modes list.
+    def add_managed_mode_group(self, item: ModeDeclarationGroupPrototype) -> "BswCalledEntityBuilder":
+        """Add a single item to managed_mode_groups list.
 
         Args:
             item: Item to add
@@ -669,16 +669,16 @@ class BswCalledEntityBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.managed_modes.append(item)
+        self._obj.managed_mode_groups.append(item)
         return self
 
-    def clear_managed_modes(self) -> "BswCalledEntityBuilder":
-        """Clear all items from managed_modes list.
+    def clear_managed_mode_groups(self) -> "BswCalledEntityBuilder":
+        """Clear all items from managed_mode_groups list.
 
         Returns:
             self for method chaining
         """
-        self._obj.managed_modes = []
+        self._obj.managed_mode_groups = []
         return self
 
 

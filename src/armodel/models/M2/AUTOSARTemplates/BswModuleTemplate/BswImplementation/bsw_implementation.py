@@ -10,7 +10,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswImplementation.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.Implementation.implementation import (
@@ -30,6 +30,12 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_module_def
     EcucModuleDef,
 )
 
+if TYPE_CHECKING:
+    from armodel.models.M2.AUTOSARTemplates.ECUCDescriptionTemplate.ecuc_module_configuration_values import (
+        EcucModuleConfigurationValues,
+    )
+
+
 
 class BswImplementation(Implementation):
     """AUTOSAR BswImplementation."""
@@ -43,21 +49,21 @@ class BswImplementation(Implementation):
         """
         return False
 
-    ar_release: Optional[RevisionLabelString]
+    ar_release_version: Optional[RevisionLabelString]
     behavior_ref: Optional[ARRef]
-    preconfigured_refs: list[Any]
-    recommended_refs: list[Any]
+    preconfigured_configuration_refs: list[ARRef]
+    recommended_configuration_refs: list[ARRef]
     vendor_api_infix: Optional[Identifier]
-    vendor_specific_refs: list[ARRef]
+    vendor_specific_module_def_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize BswImplementation."""
         super().__init__()
-        self.ar_release: Optional[RevisionLabelString] = None
+        self.ar_release_version: Optional[RevisionLabelString] = None
         self.behavior_ref: Optional[ARRef] = None
-        self.preconfigured_refs: list[Any] = []
-        self.recommended_refs: list[Any] = []
+        self.preconfigured_configuration_refs: list[ARRef] = []
+        self.recommended_configuration_refs: list[ARRef] = []
         self.vendor_api_infix: Optional[Identifier] = None
-        self.vendor_specific_refs: list[ARRef] = []
+        self.vendor_specific_module_def_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
         """Serialize BswImplementation to XML element.
@@ -83,12 +89,12 @@ class BswImplementation(Implementation):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize ar_release
-        if self.ar_release is not None:
-            serialized = SerializationHelper.serialize_item(self.ar_release, "RevisionLabelString")
+        # Serialize ar_release_version
+        if self.ar_release_version is not None:
+            serialized = SerializationHelper.serialize_item(self.ar_release_version, "RevisionLabelString")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("AR-RELEASE")
+                wrapped = ET.Element("AR-RELEASE-VERSION")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -111,13 +117,13 @@ class BswImplementation(Implementation):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize preconfigured_refs (list to container "PRECONFIGURED-REFS")
-        if self.preconfigured_refs:
-            wrapper = ET.Element("PRECONFIGURED-REFS")
-            for item in self.preconfigured_refs:
-                serialized = SerializationHelper.serialize_item(item, "Any")
+        # Serialize preconfigured_configuration_refs (list to container "PRECONFIGURED-CONFIGURATION-REFS")
+        if self.preconfigured_configuration_refs:
+            wrapper = ET.Element("PRECONFIGURED-CONFIGURATION-REFS")
+            for item in self.preconfigured_configuration_refs:
+                serialized = SerializationHelper.serialize_item(item, "EcucModuleConfigurationValues")
                 if serialized is not None:
-                    child_elem = ET.Element("PRECONFIGURED-REF")
+                    child_elem = ET.Element("PRECONFIGURED-CONFIGURATION-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -128,13 +134,13 @@ class BswImplementation(Implementation):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize recommended_refs (list to container "RECOMMENDED-REFS")
-        if self.recommended_refs:
-            wrapper = ET.Element("RECOMMENDED-REFS")
-            for item in self.recommended_refs:
-                serialized = SerializationHelper.serialize_item(item, "Any")
+        # Serialize recommended_configuration_refs (list to container "RECOMMENDED-CONFIGURATION-REFS")
+        if self.recommended_configuration_refs:
+            wrapper = ET.Element("RECOMMENDED-CONFIGURATION-REFS")
+            for item in self.recommended_configuration_refs:
+                serialized = SerializationHelper.serialize_item(item, "EcucModuleConfigurationValues")
                 if serialized is not None:
-                    child_elem = ET.Element("RECOMMENDED-REF")
+                    child_elem = ET.Element("RECOMMENDED-CONFIGURATION-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -159,13 +165,13 @@ class BswImplementation(Implementation):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize vendor_specific_refs (list to container "VENDOR-SPECIFIC-REFS")
-        if self.vendor_specific_refs:
-            wrapper = ET.Element("VENDOR-SPECIFIC-REFS")
-            for item in self.vendor_specific_refs:
+        # Serialize vendor_specific_module_def_refs (list to container "VENDOR-SPECIFIC-MODULE-DEF-REFS")
+        if self.vendor_specific_module_def_refs:
+            wrapper = ET.Element("VENDOR-SPECIFIC-MODULE-DEF-REFS")
+            for item in self.vendor_specific_module_def_refs:
                 serialized = SerializationHelper.serialize_item(item, "EcucModuleDef")
                 if serialized is not None:
-                    child_elem = ET.Element("VENDOR-SPECIFIC-REF")
+                    child_elem = ET.Element("VENDOR-SPECIFIC-MODULE-DEF-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -191,11 +197,11 @@ class BswImplementation(Implementation):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswImplementation, cls).deserialize(element)
 
-        # Parse ar_release
-        child = SerializationHelper.find_child_element(element, "AR-RELEASE")
+        # Parse ar_release_version
+        child = SerializationHelper.find_child_element(element, "AR-RELEASE-VERSION")
         if child is not None:
-            ar_release_value = child.text
-            obj.ar_release = ar_release_value
+            ar_release_version_value = child.text
+            obj.ar_release_version = ar_release_version_value
 
         # Parse behavior_ref
         child = SerializationHelper.find_child_element(element, "BEHAVIOR-REF")
@@ -203,9 +209,9 @@ class BswImplementation(Implementation):
             behavior_ref_value = ARRef.deserialize(child)
             obj.behavior_ref = behavior_ref_value
 
-        # Parse preconfigured_refs (list from container "PRECONFIGURED-REFS")
-        obj.preconfigured_refs = []
-        container = SerializationHelper.find_child_element(element, "PRECONFIGURED-REFS")
+        # Parse preconfigured_configuration_refs (list from container "PRECONFIGURED-CONFIGURATION-REFS")
+        obj.preconfigured_configuration_refs = []
+        container = SerializationHelper.find_child_element(element, "PRECONFIGURED-CONFIGURATION-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -217,11 +223,11 @@ class BswImplementation(Implementation):
                     # Deserialize each child element dynamically based on its tag
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.preconfigured_refs.append(child_value)
+                    obj.preconfigured_configuration_refs.append(child_value)
 
-        # Parse recommended_refs (list from container "RECOMMENDED-REFS")
-        obj.recommended_refs = []
-        container = SerializationHelper.find_child_element(element, "RECOMMENDED-REFS")
+        # Parse recommended_configuration_refs (list from container "RECOMMENDED-CONFIGURATION-REFS")
+        obj.recommended_configuration_refs = []
+        container = SerializationHelper.find_child_element(element, "RECOMMENDED-CONFIGURATION-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -233,7 +239,7 @@ class BswImplementation(Implementation):
                     # Deserialize each child element dynamically based on its tag
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.recommended_refs.append(child_value)
+                    obj.recommended_configuration_refs.append(child_value)
 
         # Parse vendor_api_infix
         child = SerializationHelper.find_child_element(element, "VENDOR-API-INFIX")
@@ -241,9 +247,9 @@ class BswImplementation(Implementation):
             vendor_api_infix_value = SerializationHelper.deserialize_by_tag(child, "Identifier")
             obj.vendor_api_infix = vendor_api_infix_value
 
-        # Parse vendor_specific_refs (list from container "VENDOR-SPECIFIC-REFS")
-        obj.vendor_specific_refs = []
-        container = SerializationHelper.find_child_element(element, "VENDOR-SPECIFIC-REFS")
+        # Parse vendor_specific_module_def_refs (list from container "VENDOR-SPECIFIC-MODULE-DEF-REFS")
+        obj.vendor_specific_module_def_refs = []
+        container = SerializationHelper.find_child_element(element, "VENDOR-SPECIFIC-MODULE-DEF-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -255,7 +261,7 @@ class BswImplementation(Implementation):
                     # Deserialize each child element dynamically based on its tag
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.vendor_specific_refs.append(child_value)
+                    obj.vendor_specific_module_def_refs.append(child_value)
 
         return obj
 
@@ -430,8 +436,8 @@ class BswImplementationBuilder:
         self._obj.compilers = list(items) if items else []
         return self
 
-    def with_generateds(self, items: list[DependencyOnArtifact]) -> "BswImplementationBuilder":
-        """Set generateds list attribute.
+    def with_generated_artifacts(self, items: list[DependencyOnArtifact]) -> "BswImplementationBuilder":
+        """Set generated_artifacts list attribute.
 
         Args:
             items: List of items to set
@@ -439,7 +445,7 @@ class BswImplementationBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.generateds = list(items) if items else []
+        self._obj.generated_artifacts = list(items) if items else []
         return self
 
     def with_hw_elements(self, items: list[HwElement]) -> "BswImplementationBuilder":
@@ -480,8 +486,8 @@ class BswImplementationBuilder:
         self._obj.mc_support = value
         return self
 
-    def with_programming(self, value: Optional[ProgramminglanguageEnum]) -> "BswImplementationBuilder":
-        """Set programming attribute.
+    def with_programming_language(self, value: Optional[ProgramminglanguageEnum]) -> "BswImplementationBuilder":
+        """Set programming_language attribute.
 
         Args:
             value: Value to set
@@ -491,7 +497,7 @@ class BswImplementationBuilder:
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.programming = value
+        self._obj.programming_language = value
         return self
 
     def with_required_artifacts(self, items: list[DependencyOnArtifact]) -> "BswImplementationBuilder":
@@ -506,8 +512,8 @@ class BswImplementationBuilder:
         self._obj.required_artifacts = list(items) if items else []
         return self
 
-    def with_requireds(self, items: list[DependencyOnArtifact]) -> "BswImplementationBuilder":
-        """Set requireds list attribute.
+    def with_required_generator_tools(self, items: list[DependencyOnArtifact]) -> "BswImplementationBuilder":
+        """Set required_generator_tools list attribute.
 
         Args:
             items: List of items to set
@@ -515,11 +521,11 @@ class BswImplementationBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.requireds = list(items) if items else []
+        self._obj.required_generator_tools = list(items) if items else []
         return self
 
-    def with_resource(self, value: Optional[ResourceConsumption]) -> "BswImplementationBuilder":
-        """Set resource attribute.
+    def with_resource_consumption(self, value: Optional[ResourceConsumption]) -> "BswImplementationBuilder":
+        """Set resource_consumption attribute.
 
         Args:
             value: Value to set
@@ -529,11 +535,11 @@ class BswImplementationBuilder:
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.resource = value
+        self._obj.resource_consumption = value
         return self
 
-    def with_swc_bsw(self, value: Optional[SwcBswMapping]) -> "BswImplementationBuilder":
-        """Set swc_bsw attribute.
+    def with_swc_bsw_mapping(self, value: Optional[SwcBswMapping]) -> "BswImplementationBuilder":
+        """Set swc_bsw_mapping attribute.
 
         Args:
             value: Value to set
@@ -543,7 +549,7 @@ class BswImplementationBuilder:
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.swc_bsw = value
+        self._obj.swc_bsw_mapping = value
         return self
 
     def with_sw_version(self, value: Optional[RevisionLabelString]) -> "BswImplementationBuilder":
@@ -588,8 +594,8 @@ class BswImplementationBuilder:
         self._obj.vendor_id = value
         return self
 
-    def with_ar_release(self, value: Optional[RevisionLabelString]) -> "BswImplementationBuilder":
-        """Set ar_release attribute.
+    def with_ar_release_version(self, value: Optional[RevisionLabelString]) -> "BswImplementationBuilder":
+        """Set ar_release_version attribute.
 
         Args:
             value: Value to set
@@ -599,7 +605,7 @@ class BswImplementationBuilder:
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.ar_release = value
+        self._obj.ar_release_version = value
         return self
 
     def with_behavior(self, value: Optional[BswInternalBehavior]) -> "BswImplementationBuilder":
@@ -616,8 +622,8 @@ class BswImplementationBuilder:
         self._obj.behavior = value
         return self
 
-    def with_preconfigureds(self, items: list[any (EcucModule)]) -> "BswImplementationBuilder":
-        """Set preconfigureds list attribute.
+    def with_preconfigured_configurations(self, items: list[EcucModuleConfigurationValues]) -> "BswImplementationBuilder":
+        """Set preconfigured_configurations list attribute.
 
         Args:
             items: List of items to set
@@ -625,11 +631,11 @@ class BswImplementationBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.preconfigureds = list(items) if items else []
+        self._obj.preconfigured_configurations = list(items) if items else []
         return self
 
-    def with_recommendeds(self, items: list[any (EcucModule)]) -> "BswImplementationBuilder":
-        """Set recommendeds list attribute.
+    def with_recommended_configurations(self, items: list[EcucModuleConfigurationValues]) -> "BswImplementationBuilder":
+        """Set recommended_configurations list attribute.
 
         Args:
             items: List of items to set
@@ -637,7 +643,7 @@ class BswImplementationBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.recommendeds = list(items) if items else []
+        self._obj.recommended_configurations = list(items) if items else []
         return self
 
     def with_vendor_api_infix(self, value: Optional[Identifier]) -> "BswImplementationBuilder":
@@ -654,8 +660,8 @@ class BswImplementationBuilder:
         self._obj.vendor_api_infix = value
         return self
 
-    def with_vendor_specifics(self, items: list[EcucModuleDef]) -> "BswImplementationBuilder":
-        """Set vendor_specifics list attribute.
+    def with_vendor_specific_module_defs(self, items: list[EcucModuleDef]) -> "BswImplementationBuilder":
+        """Set vendor_specific_module_defs list attribute.
 
         Args:
             items: List of items to set
@@ -663,7 +669,7 @@ class BswImplementationBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.vendor_specifics = list(items) if items else []
+        self._obj.vendor_specific_module_defs = list(items) if items else []
         return self
 
 
@@ -751,8 +757,8 @@ class BswImplementationBuilder:
         self._obj.compilers = []
         return self
 
-    def add_generated(self, item: DependencyOnArtifact) -> "BswImplementationBuilder":
-        """Add a single item to generateds list.
+    def add_generated_artifact(self, item: DependencyOnArtifact) -> "BswImplementationBuilder":
+        """Add a single item to generated_artifacts list.
 
         Args:
             item: Item to add
@@ -760,16 +766,16 @@ class BswImplementationBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.generateds.append(item)
+        self._obj.generated_artifacts.append(item)
         return self
 
-    def clear_generateds(self) -> "BswImplementationBuilder":
-        """Clear all items from generateds list.
+    def clear_generated_artifacts(self) -> "BswImplementationBuilder":
+        """Clear all items from generated_artifacts list.
 
         Returns:
             self for method chaining
         """
-        self._obj.generateds = []
+        self._obj.generated_artifacts = []
         return self
 
     def add_hw_element(self, item: HwElement) -> "BswImplementationBuilder":
@@ -835,8 +841,8 @@ class BswImplementationBuilder:
         self._obj.required_artifacts = []
         return self
 
-    def add_required(self, item: DependencyOnArtifact) -> "BswImplementationBuilder":
-        """Add a single item to requireds list.
+    def add_required_generator_tool(self, item: DependencyOnArtifact) -> "BswImplementationBuilder":
+        """Add a single item to required_generator_tools list.
 
         Args:
             item: Item to add
@@ -844,20 +850,20 @@ class BswImplementationBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.requireds.append(item)
+        self._obj.required_generator_tools.append(item)
         return self
 
-    def clear_requireds(self) -> "BswImplementationBuilder":
-        """Clear all items from requireds list.
+    def clear_required_generator_tools(self) -> "BswImplementationBuilder":
+        """Clear all items from required_generator_tools list.
 
         Returns:
             self for method chaining
         """
-        self._obj.requireds = []
+        self._obj.required_generator_tools = []
         return self
 
-    def add_preconfigured(self, item: any (EcucModule)) -> "BswImplementationBuilder":
-        """Add a single item to preconfigureds list.
+    def add_preconfigured_configuration(self, item: EcucModuleConfigurationValues) -> "BswImplementationBuilder":
+        """Add a single item to preconfigured_configurations list.
 
         Args:
             item: Item to add
@@ -865,20 +871,20 @@ class BswImplementationBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.preconfigureds.append(item)
+        self._obj.preconfigured_configurations.append(item)
         return self
 
-    def clear_preconfigureds(self) -> "BswImplementationBuilder":
-        """Clear all items from preconfigureds list.
+    def clear_preconfigured_configurations(self) -> "BswImplementationBuilder":
+        """Clear all items from preconfigured_configurations list.
 
         Returns:
             self for method chaining
         """
-        self._obj.preconfigureds = []
+        self._obj.preconfigured_configurations = []
         return self
 
-    def add_recommended(self, item: any (EcucModule)) -> "BswImplementationBuilder":
-        """Add a single item to recommendeds list.
+    def add_recommended_configuration(self, item: EcucModuleConfigurationValues) -> "BswImplementationBuilder":
+        """Add a single item to recommended_configurations list.
 
         Args:
             item: Item to add
@@ -886,20 +892,20 @@ class BswImplementationBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.recommendeds.append(item)
+        self._obj.recommended_configurations.append(item)
         return self
 
-    def clear_recommendeds(self) -> "BswImplementationBuilder":
-        """Clear all items from recommendeds list.
+    def clear_recommended_configurations(self) -> "BswImplementationBuilder":
+        """Clear all items from recommended_configurations list.
 
         Returns:
             self for method chaining
         """
-        self._obj.recommendeds = []
+        self._obj.recommended_configurations = []
         return self
 
-    def add_vendor_specific(self, item: EcucModuleDef) -> "BswImplementationBuilder":
-        """Add a single item to vendor_specifics list.
+    def add_vendor_specific_module_def(self, item: EcucModuleDef) -> "BswImplementationBuilder":
+        """Add a single item to vendor_specific_module_defs list.
 
         Args:
             item: Item to add
@@ -907,16 +913,16 @@ class BswImplementationBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.vendor_specifics.append(item)
+        self._obj.vendor_specific_module_defs.append(item)
         return self
 
-    def clear_vendor_specifics(self) -> "BswImplementationBuilder":
-        """Clear all items from vendor_specifics list.
+    def clear_vendor_specific_module_defs(self) -> "BswImplementationBuilder":
+        """Clear all items from vendor_specific_module_defs list.
 
         Returns:
             self for method chaining
         """
-        self._obj.vendor_specifics = []
+        self._obj.vendor_specific_module_defs = []
         return self
 
 

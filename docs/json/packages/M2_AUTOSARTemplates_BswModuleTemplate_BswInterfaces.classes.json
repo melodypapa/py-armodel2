@@ -67,28 +67,28 @@
           "is_ref": false,
           "note": "An argument belonging to this BswModuleEntry."
         },
-        "bswEntryKindEnum": {
+        "bswEntryKind": {
           "type": "BswEntryKindEnum",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "This describes whether the entry is concrete or abstract. attribute is missing the entry is considered as"
         },
         "callType": {
           "type": "BswCallType",
           "multiplicity": "0..1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
           "note": "The type of call associated with this service."
         },
-        "execution": {
+        "executionContext": {
           "type": "BswExecutionContext",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Specifies the execution context which is required (in case entries into this module) or guaranteed (in case of from this module) for this service."
         },
-        "function": {
+        "functionPrototypeEmitter": {
           "type": "NameToken",
           "multiplicity": "0..1",
           "kind": "attribute",
