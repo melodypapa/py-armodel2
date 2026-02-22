@@ -372,10 +372,15 @@ The `ARObject.deserialize()` method handles this automatically by falling back t
 ### Documentation
 
 See `docs/designs/serialization.md` for complete serialization framework documentation including:
-- Decorator usage and examples
 - Name conversion rules
 - Common patterns
 - Troubleshooting guide
+
+See `docs/designs/decorators.md` for complete decorator documentation including:
+- Detailed usage examples for each decorator
+- Implementation details and best practices
+- Decorator detection and processing mechanisms
+- Testing guidelines and troubleshooting
 
 ## Known Limitations
 

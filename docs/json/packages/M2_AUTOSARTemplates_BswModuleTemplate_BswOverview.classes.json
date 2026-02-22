@@ -98,15 +98,6 @@
           "is_ref": true,
           "note": "Specifies an entry provided by this module which can be by other modules. This includes \"main\" functions, and callbacks. Replacement of expectedCallback. atpVariation"
         },
-        "providedEntries": {
-          "type": "BswModuleEntry",
-          "multiplicity": "*",
-          "kind": "ref",
-          "is_ref": true,
-          "xml_tag": "PROVIDED-ENTRYS",
-          "atp_variant_wrapper": "BSW-MODULE-ENTRY-REF-CONDITIONAL",
-          "note": "DEPRECATED - Specifies an entry provided by this module which can be called by other modules. This includes \"main\" functions and interrupt routines, but not callbacks. Use providedClientServerEntries instead. atpVariation"
-        },
         "internalBehaviors": {
           "type": "BswInternalBehavior",
           "multiplicity": "*",
@@ -126,6 +117,7 @@
           "multiplicity": "*",
           "kind": "aggr",
           "is_ref": false,
+          "decorator": "xml_element_name:PROVIDED-ENTRYS",
           "note": "Specifies that this module provides a client server entry which can be called from another partition or core.This declared locally to this context and will be the requiredClientServerEntry of another or module via the configuration of the BSW atpVariation"
         },
         "providedDatas": {
@@ -154,6 +146,7 @@
           "multiplicity": "*",
           "kind": "aggr",
           "is_ref": false,
+          "decorator": "xml_element_name:REQUIRED-ENTRYS",
           "note": "Specifies that this module requires a client server entry which can be implemented on another partition or is declared locally to this context and will to the providedClientServerEntry of another same module via the configuration of the BSW atpVariation"
         },
         "requiredDatas": {

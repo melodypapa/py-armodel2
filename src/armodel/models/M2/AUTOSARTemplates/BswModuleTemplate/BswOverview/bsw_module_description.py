@@ -13,6 +13,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswOvervie
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
     ARElement,
@@ -68,14 +69,13 @@ class BswModuleDescription(ARElement):
     bsw_module_documentation: Optional[SwComponentDocumentation]
     expected_entrie_refs: list[ARRef]
     implemented_entrie_refs: list[ARRef]
-    provided_entrie_refs: list[ARRef]
     internal_behaviors: list[BswInternalBehavior]
     module_id: Optional[PositiveInteger]
-    provided_client_server_entries: list[BswModuleClientServerEntry]
+    _provided_client_server_entries: list[BswModuleClientServerEntry]
     provided_datas: list[VariableDataPrototype]
     provided_mode_groups: list[ModeDeclarationGroup]
     released_triggers: list[Trigger]
-    required_client_server_entries: list[BswModuleClientServerEntry]
+    _required_client_server_entries: list[BswModuleClientServerEntry]
     required_datas: list[VariableDataPrototype]
     required_mode_groups: list[ModeDeclarationGroup]
     required_triggers: list[Trigger]
@@ -86,17 +86,38 @@ class BswModuleDescription(ARElement):
         self.bsw_module_documentation: Optional[SwComponentDocumentation] = None
         self.expected_entrie_refs: list[ARRef] = []
         self.implemented_entrie_refs: list[ARRef] = []
-        self.provided_entrie_refs: list[ARRef] = []
         self.internal_behaviors: list[BswInternalBehavior] = []
         self.module_id: Optional[PositiveInteger] = None
-        self.provided_client_server_entries: list[BswModuleClientServerEntry] = []
+        self._provided_client_server_entries: list[BswModuleClientServerEntry] = []
         self.provided_datas: list[VariableDataPrototype] = []
         self.provided_mode_groups: list[ModeDeclarationGroup] = []
         self.released_triggers: list[Trigger] = []
-        self.required_client_server_entries: list[BswModuleClientServerEntry] = []
+        self._required_client_server_entries: list[BswModuleClientServerEntry] = []
         self.required_datas: list[VariableDataPrototype] = []
         self.required_mode_groups: list[ModeDeclarationGroup] = []
         self.required_triggers: list[Trigger] = []
+    @property
+    @xml_element_name("PROVIDED-ENTRYS")
+    def provided_client_server_entries(self) -> list[BswModuleClientServerEntry]:
+        """Get provided_client_server_entries with custom XML element name."""
+        return self._provided_client_server_entries
+
+    @provided_client_server_entries.setter
+    def provided_client_server_entries(self, value: list[BswModuleClientServerEntry]) -> None:
+        """Set provided_client_server_entries with custom XML element name."""
+        self._provided_client_server_entries = value
+
+    @property
+    @xml_element_name("REQUIRED-ENTRYS")
+    def required_client_server_entries(self) -> list[BswModuleClientServerEntry]:
+        """Get required_client_server_entries with custom XML element name."""
+        return self._required_client_server_entries
+
+    @required_client_server_entries.setter
+    def required_client_server_entries(self, value: list[BswModuleClientServerEntry]) -> None:
+        """Set required_client_server_entries with custom XML element name."""
+        self._required_client_server_entries = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize BswModuleDescription to XML element.
@@ -184,23 +205,6 @@ class BswModuleDescription(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize provided_entrie_refs (list to container "PROVIDED-ENTRIE-REFS")
-        if self.provided_entrie_refs:
-            wrapper = ET.Element("PROVIDED-ENTRIE-REFS")
-            for item in self.provided_entrie_refs:
-                serialized = SerializationHelper.serialize_item(item, "BswModuleEntry")
-                if serialized is not None:
-                    child_elem = ET.Element("PROVIDED-ENTRIE-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
-            if len(wrapper) > 0:
-                elem.append(wrapper)
-
         # Serialize internal_behaviors (list to container "INTERNAL-BEHAVIORS")
         if self.internal_behaviors:
             wrapper = ET.Element("INTERNAL-BEHAVIORS")
@@ -225,9 +229,9 @@ class BswModuleDescription(ARElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize provided_client_server_entries (list to container "PROVIDED-CLIENT-SERVER-ENTRIES")
+        # Serialize provided_client_server_entries (list to container "PROVIDED-ENTRYS")
         if self.provided_client_server_entries:
-            wrapper = ET.Element("PROVIDED-CLIENT-SERVER-ENTRIES")
+            wrapper = ET.Element("PROVIDED-ENTRYS")
             for item in self.provided_client_server_entries:
                 serialized = SerializationHelper.serialize_item(item, "BswModuleClientServerEntry")
                 if serialized is not None:
@@ -265,9 +269,9 @@ class BswModuleDescription(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize required_client_server_entries (list to container "REQUIRED-CLIENT-SERVER-ENTRIES")
+        # Serialize required_client_server_entries (list to container "REQUIRED-ENTRYS")
         if self.required_client_server_entries:
-            wrapper = ET.Element("REQUIRED-CLIENT-SERVER-ENTRIES")
+            wrapper = ET.Element("REQUIRED-ENTRYS")
             for item in self.required_client_server_entries:
                 serialized = SerializationHelper.serialize_item(item, "BswModuleClientServerEntry")
                 if serialized is not None:
@@ -364,22 +368,6 @@ class BswModuleDescription(ARElement):
                 if child_value is not None:
                     obj.implemented_entrie_refs.append(child_value)
 
-        # Parse provided_entrie_refs (list from container "PROVIDED-ENTRIE-REFS")
-        obj.provided_entrie_refs = []
-        container = SerializationHelper.find_child_element(element, "PROVIDED-ENTRIE-REFS")
-        if container is not None:
-            for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
-                if child_value is not None:
-                    obj.provided_entrie_refs.append(child_value)
-
         # Parse internal_behaviors (list from container "INTERNAL-BEHAVIORS")
         obj.internal_behaviors = []
         container = SerializationHelper.find_child_element(element, "INTERNAL-BEHAVIORS")
@@ -396,9 +384,9 @@ class BswModuleDescription(ARElement):
             module_id_value = child.text
             obj.module_id = module_id_value
 
-        # Parse provided_client_server_entries (list from container "PROVIDED-CLIENT-SERVER-ENTRIES")
+        # Parse provided_client_server_entries (list from container "PROVIDED-ENTRYS")
         obj.provided_client_server_entries = []
-        container = SerializationHelper.find_child_element(element, "PROVIDED-CLIENT-SERVER-ENTRIES")
+        container = SerializationHelper.find_child_element(element, "PROVIDED-ENTRYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -436,9 +424,9 @@ class BswModuleDescription(ARElement):
                 if child_value is not None:
                     obj.released_triggers.append(child_value)
 
-        # Parse required_client_server_entries (list from container "REQUIRED-CLIENT-SERVER-ENTRIES")
+        # Parse required_client_server_entries (list from container "REQUIRED-ENTRYS")
         obj.required_client_server_entries = []
-        container = SerializationHelper.find_child_element(element, "REQUIRED-CLIENT-SERVER-ENTRIES")
+        container = SerializationHelper.find_child_element(element, "REQUIRED-ENTRYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -659,18 +647,6 @@ class BswModuleDescriptionBuilder:
             self for method chaining
         """
         self._obj.implemented_entries = list(items) if items else []
-        return self
-
-    def with_provided_entries(self, items: list[BswModuleEntry]) -> "BswModuleDescriptionBuilder":
-        """Set provided_entries list attribute.
-
-        Args:
-            items: List of items to set
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.provided_entries = list(items) if items else []
         return self
 
     def with_internal_behaviors(self, items: list[BswInternalBehavior]) -> "BswModuleDescriptionBuilder":
@@ -899,27 +875,6 @@ class BswModuleDescriptionBuilder:
             self for method chaining
         """
         self._obj.implemented_entries = []
-        return self
-
-    def add_provided_entrie(self, item: BswModuleEntry) -> "BswModuleDescriptionBuilder":
-        """Add a single item to provided_entries list.
-
-        Args:
-            item: Item to add
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.provided_entries.append(item)
-        return self
-
-    def clear_provided_entries(self) -> "BswModuleDescriptionBuilder":
-        """Clear all items from provided_entries list.
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.provided_entries = []
         return self
 
     def add_internal_behavior(self, item: BswInternalBehavior) -> "BswModuleDescriptionBuilder":

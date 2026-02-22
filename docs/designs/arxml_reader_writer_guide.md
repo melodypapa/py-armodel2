@@ -518,6 +518,7 @@ This is achieved by post-processing the output to replace single quotes with dou
 ## References
 
 - **Serialization Framework:** `docs/designs/serialization.md`
+- **XML Serialization Decorators:** `docs/designs/decorators.md`
 - **Design Rules:** `docs/designs/design_rules.md`
 - **Model Design:** `docs/designs/model_design.md`
 - **Integration Tests:** `docs/tests/integration/test_autosar_data_types.md`

@@ -317,7 +317,7 @@
         }
       ],
       "attributes": {
-        "encapsulated": {
+        "encapsulatedEntry": {
           "type": "BswModuleEntry",
           "multiplicity": "0..1",
           "kind": "ref",
