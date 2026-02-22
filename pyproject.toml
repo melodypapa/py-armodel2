@@ -72,5 +72,6 @@ line-length = 100
 target-version = "py39"
 
 [tool.ruff.lint.per-file-ignores]
+"src/armodel/models/__init__.py" = ["F401"]
 "src/armodel/models/M2/*" = ["F401", "F821", "E741"]
 "src/armodel/models/M2/**/*" = ["F401", "F821", "E741"]
