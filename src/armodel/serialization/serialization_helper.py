@@ -47,6 +47,92 @@ class SerializationHelper:
         return f"{class_tag}-VARIANTS/{class_tag}-CONDITIONAL"
 
     @staticmethod
+    def get_atp_variant_type(obj: Any) -> str:
+        """Get the variant type for atp_variant decorated objects.
+
+        Args:
+            obj: The decorated object (class or attribute)
+
+        Returns:
+            Variant type string - "default" for VARIANTS/CONDITIONAL pattern,
+            "ref_conditional" for REF-CONDITIONAL pattern
+        """
+        return getattr(obj, '_atp_variant_type', 'default')
+
+    @staticmethod
+    def get_ref_tag_from_type(target_type: str) -> str:
+        """Derive REF tag from target type name.
+
+        Converts target type name to XML tag and appends -REF suffix.
+
+        Args:
+            target_type: Target type name (e.g., "BswModuleEntry")
+
+        Returns:
+            Reference tag (e.g., "BSW-MODULE-ENTRY-REF")
+        """
+        type_tag = NameConverter.to_xml_tag(target_type)
+        return f"{type_tag}-REF"
+
+    @staticmethod
+    def serialize_ref_conditional(ref_elem: ET.Element, ref_tag: str) -> ET.Element:
+        """Wrap reference element in <REF-TAG>-CONDITIONAL wrapper.
+
+        This method takes a serialized reference element (e.g., BSW-MODULE-ENTRY-REF)
+        and wraps it in a REF-CONDITIONAL element for BSW module pattern.
+
+        Args:
+            ref_elem: The reference element to wrap (already serialized)
+            ref_tag: The reference tag name (e.g., "BSW-MODULE-ENTRY-REF")
+
+        Returns:
+            New element with REF-CONDITIONAL wrapper
+
+        Example:
+            Input: <BSW-MODULE-ENTRY-REF DEST="...">/path/to/entry</BSW-MODULE-ENTRY-REF>
+            Output: <BSW-MODULE-ENTRY-REF-CONDITIONAL><BSW-MODULE-ENTRY-REF DEST="...">/path/to/entry</BSW-MODULE-ENTRY-REF></BSW-MODULE-ENTRY-REF-CONDITIONAL>
+        """
+        conditional = ET.Element(f"{ref_tag}-CONDITIONAL")
+        conditional.append(ref_elem)
+        return conditional
+
+    @staticmethod
+    def deserialize_ref_conditional(parent_elem: ET.Element, ref_tag: str) -> list[ET.Element]:
+        """Extract reference elements from REF-CONDITIONAL wrappers.
+
+        This method navigates through REF-CONDITIONAL wrapper elements
+        to find the actual reference elements.
+
+        Args:
+            parent_elem: Parent XML element containing REF-CONDITIONAL wrappers
+            ref_tag: The reference tag name to look for (e.g., "BSW-MODULE-ENTRY-REF")
+
+        Returns:
+            List of reference elements extracted from wrappers
+
+        Example:
+            Input:
+                <PROVIDED-ENTRYS>
+                  <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+                    <BSW-MODULE-ENTRY-REF DEST="...">/path1</BSW-MODULE-ENTRY-REF>
+                  </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+                  <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+                    <BSW-MODULE-ENTRY-REF DEST="...">/path2</BSW-MODULE-ENTRY-REF>
+                  </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+                </PROVIDED-ENTRYS>
+
+            Output: [<BSW-MODULE-ENTRY-REF...>, <BSW-MODULE-ENTRY-REF...>]
+        """
+        conditional_tag = f"{ref_tag}-CONDITIONAL"
+        refs = []
+        for child in parent_elem:
+            if SerializationHelper.strip_namespace(child.tag) == conditional_tag:
+                # Get the first child (the actual REF element)
+                if len(child) > 0:
+                    refs.append(child[0])
+        return refs
+
+    @staticmethod
     def serialize_with_atp_variant(inner_elem: ET.Element, class_name: str) -> ET.Element:
         """Wrap serialized attributes in atp_variant VARIANTS/CONDITIONAL structure.
 
