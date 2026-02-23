@@ -116,7 +116,7 @@ class BlueprintFormula(ARObject):
         # Parse verbatim
         child = SerializationHelper.find_child_element(element, "VERBATIM")
         if child is not None:
-            verbatim_value = SerializationHelper.deserialize_with_type(child, "MultiLanguageVerbatim")
+            verbatim_value = SerializationHelper.deserialize_by_tag(child, "MultiLanguageVerbatim")
             obj.verbatim = verbatim_value
 
         return obj

@@ -243,8 +243,9 @@
         "l": {
           "type": "LEnum",
           "multiplicity": "1",
-          "kind": "attribute",
+          "kind": "aggr",
           "is_ref": false,
+          "decorator": "lang_abbr:L",
           "note": "’This attribute denotes the language in which the"
         }
       }

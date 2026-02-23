@@ -146,7 +146,7 @@ class LabeledItem(Paginateable):
         # Parse item_label
         child = SerializationHelper.find_child_element(element, "ITEM-LABEL")
         if child is not None:
-            item_label_value = SerializationHelper.deserialize_with_type(child, "MultiLanguageOverviewParagraph")
+            item_label_value = SerializationHelper.deserialize_by_tag(child, "MultiLanguageOverviewParagraph")
             obj.item_label = item_label_value
 
         return obj

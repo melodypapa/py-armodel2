@@ -364,7 +364,7 @@ The project uses a reflection-based serialization framework that eliminates boil
 - **Base class**: `ARObject` - provides `serialize()` and `deserialize()` methods
 - **SerializationHelper**: Static utility methods extracted from ARObject for better organization
 - **NameConverter**: Handles snake_case ↔ UPPER-CASE-WITH-HYPHENS conversion
-- **Decorators**: Edge case handlers for special XML scenarios (`@xml_attribute`, `@atp_variant`, `@l_prefix`, `@language_abbr`)
+- **Decorators**: Edge case handlers for special XML scenarios (`@xml_attribute`, `@atp_variant`, `@l_prefix`, `@lang_abbr`)
 
 ### Key Components
 
@@ -523,7 +523,7 @@ Location: `src/armodel/serialization/decorators.py`
 
 @l_prefix("L-1")  # Mark attribute as using language-specific L-N pattern
 
-@language_abbr("L")  # Mark attribute as language abbreviation XML attribute
+@lang_abbr("L")  # Mark attribute as language abbreviation XML attribute
 ```
 
 **xml_attribute Decorator:**
@@ -571,15 +571,15 @@ class SwDataDefProps(ARObject):
 
 Generates wrapper path: `"SW-DATA-DEF-PROPS-VARIANTS/SW-DATA-DEF-PROPS-CONDITIONAL"`
 
-**language_abbr Decorator:**
-The `@language_abbr()` decorator marks an attribute as a language abbreviation XML attribute. This is used for LanguageSpecific series classes:
+**lang_abbr Decorator:**
+The `@lang_abbr()` decorator marks an attribute as a language abbreviation XML attribute. This is used for LanguageSpecific series classes:
 
 ```python
 class LanguageSpecific(ARObject):
     def __init__(self) -> None:
         self._l: LEnum = LEnum.EN
     
-    @language_abbr("L")
+    @lang_abbr("L")
     @property
     def l(self) -> LEnum:
         return self._l
@@ -711,13 +711,13 @@ class SwDataDefProps(ARObject):
     sw_calibration_access: Optional[SwCalibrationAccessEnum] = None
 ```
 
-**Pattern 5: language_abbr Pattern**
+**Pattern 5: lang_abbr Pattern**
 ```python
 class LanguageSpecific(ARObject):
     def __init__(self) -> None:
         self._l: LEnum = LEnum.EN
     
-    @language_abbr("L")
+    @lang_abbr("L")
     @property
     def l(self) -> LEnum:
         return self._l
@@ -743,7 +743,7 @@ This is handled automatically by the code generator which detects these specific
 - **NameConverter** (`src/armodel/serialization/name_converter.py`) - Name conversion utility
 - **ModelFactory** (`src/armodel/serialization/model_factory.py`) - Factory for creating AUTOSAR model instances from XML tags with polymorphic type resolution
 - **SerializationHelper** (`src/armodel/serialization/serialization_helper.py`) - Static utility methods for XML serialization and deserialization
-- **Decorators** (`src/armodel/serialization/decorators.py`) - XML serialization decorators (`@xml_attribute`, `@atp_variant`, `@l_prefix`, `@language_abbr`)
+- **Decorators** (`src/armodel/serialization/decorators.py`) - XML serialization decorators (`@xml_attribute`, `@atp_variant`, `@l_prefix`, `@lang_abbr`)
 - **ARObject** (`src/armodel/models/M2/.../ArObject/ar_object.py`) - Base class with serialize/deserialize
 
 ### Reader/Writer
@@ -1287,7 +1287,7 @@ These tests ensure:
 - Common serialization patterns now reusable across the codebase
 
 ### Language Abbreviation Decorator
-- Added `@language_abbr()` decorator for LanguageSpecific series classes
+- Added `@lang_abbr()` decorator for LanguageSpecific series classes
 - Allows specifying exact XML attribute name for language abbreviation
 - Replaces generic `@xml_attribute` for L attribute handling
 

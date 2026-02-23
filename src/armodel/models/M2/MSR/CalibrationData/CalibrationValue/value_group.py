@@ -112,7 +112,7 @@ class ValueGroup(ARObject):
         # Parse label
         child = SerializationHelper.find_child_element(element, "LABEL")
         if child is not None:
-            label_value = SerializationHelper.deserialize_with_type(child, "MultilanguageLongName")
+            label_value = SerializationHelper.deserialize_by_tag(child, "MultilanguageLongName")
             obj.label = label_value
 
         # Parse vg_contents

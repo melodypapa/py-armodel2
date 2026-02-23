@@ -106,13 +106,13 @@ class Modification(ARObject):
         # Parse change
         child = SerializationHelper.find_child_element(element, "CHANGE")
         if child is not None:
-            change_value = SerializationHelper.deserialize_with_type(child, "MultiLanguageOverviewParagraph")
+            change_value = SerializationHelper.deserialize_by_tag(child, "MultiLanguageOverviewParagraph")
             obj.change = change_value
 
         # Parse reason
         child = SerializationHelper.find_child_element(element, "REASON")
         if child is not None:
-            reason_value = SerializationHelper.deserialize_with_type(child, "MultiLanguageOverviewParagraph")
+            reason_value = SerializationHelper.deserialize_by_tag(child, "MultiLanguageOverviewParagraph")
             obj.reason = reason_value
 
         return obj

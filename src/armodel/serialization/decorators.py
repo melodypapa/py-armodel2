@@ -108,7 +108,7 @@ def lang_prefix(xml_tag: str) -> Callable[[Any], Any]:
     return decorator
 
 
-def language_abbr(xml_attr_name: str) -> Callable[[Any], Any]:
+def lang_abbr(xml_attr_name: str) -> Callable[[Any], Any]:
     """Decorator to mark an attribute as a language abbreviation XML attribute.
 
     This decorator is used for LanguageSpecific series classes where the
@@ -116,11 +116,11 @@ def language_abbr(xml_attr_name: str) -> Callable[[Any], Any]:
     an XML attribute with a custom name (typically 'L').
 
     Unlike @xml_attribute which uses NameConverter to auto-convert names,
-    @language_abbr allows specifying the exact XML attribute name.
+    @lang_abbr allows specifying the exact XML attribute name.
 
     Usage:
         class LanguageSpecific(ARObject):
-            @language_abbr("L")
+            @lang_abbr("L")
             @property
             def l(self) -> LEnum:
                 return self._l
