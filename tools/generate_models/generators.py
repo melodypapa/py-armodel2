@@ -871,23 +871,27 @@ def _generate_deserialize_method(
                     # Check if xml_element_name decorator is present
                     decorator_name = attr_info.get("decorator_name")
                     if decorator_name == "xml_element_name":
-                        # Parse decorator params: can be single value (container tag) or two values (container tag, ref tag)
+                        # Parse decorator params: can be single value or multi-level path separated by '/'
+                        # Examples: "PROVIDED-ENTRYS" or "CAN-ENTER-EXCLUSIVE-AREA-REFS/CAN-ENTER-EXCLUSIVE-AREA/CAN-ENTER-EXCLUSIVE-AREA-REF"
                         decorator_params = attr_info.get("decorator_params", xml_tag)
-                        if isinstance(decorator_params, str) and "," in decorator_params:
-                            # Two parameters: container tag and ref tag
-                            container_tag, ref_tag = decorator_params.split(",", 1)
-                            container_tag = container_tag.strip()
-                            ref_tag = ref_tag.strip()
+                        if isinstance(decorator_params, str) and "/" in decorator_params:
+                            # Multi-level nesting: split on '/' to get all levels
+                            tag_levels = [level.strip() for level in decorator_params.split("/")]
+                            container_tag = tag_levels[0]  # Outermost container
+                            child_tag = tag_levels[-1]  # Innermost tag for individual items
+                            inner_tags = tag_levels[1:-1]  # Intermediate nesting levels (if any)
                         else:
                             # Single parameter: just container tag
                             container_tag = decorator_params if isinstance(decorator_params, str) else xml_tag
-                            ref_tag = None
+                            child_tag = None
+                            inner_tags = []
                     else:
                         # Container element (e.g., AR-PACKAGES, ELEMENTS, USE-INSTEAD-REFS)
                         # For reference lists (is_ref=True), the container tag should be singular + -REFS
                         # For non-reference lists, the container tag is the plural form (e.g., LIFE-CYCLE-INFOS)
                         container_tag = xml_tag
-                        ref_tag = None
+                        child_tag = None
+                        inner_tags = []
                         if is_ref:
                             # For reference lists, the container tag is singular form + -REFS
                             # e.g., USE-INSTEADS -> USE-INSTEAD-REFS
@@ -896,7 +900,17 @@ def _generate_deserialize_method(
 
                     code += f'''        # Parse {python_name} (list from container "{container_tag}")
         obj.{python_name} = []
-        container = SerializationHelper.find_child_element(element, "{container_tag}")
+        container = SerializationHelper.find_child_element(element, "{container_tag}")'''
+                    
+                    # Add navigation through nested levels if inner_tags is not empty
+                    if inner_tags:
+                        code += '''        # Navigate through nested container levels'''
+                        for inner_tag in inner_tags:
+                            code += f'''
+        if container is not None:
+            container = SerializationHelper.find_child_element(container, "{inner_tag}")'''
+                    
+                    code += '''
         if container is not None:
             for child in container:
 '''
@@ -905,12 +919,12 @@ def _generate_deserialize_method(
                     # For primitive/enum lists, extract text directly
                     # For non-reference class lists, deserialize each child element dynamically based on its tag
                     if is_ref:
-                        # Use the ref_tag from decorator if specified to match specific child tag
+                        # Use the child_tag from decorator if specified to match specific child tag
                         # Otherwise, check for any -REF or -TREF suffix
-                        if ref_tag:
-                            code += f'''                # Check if child matches expected reference tag "{ref_tag}"
-                child_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_tag == "{ref_tag}":
+                        if child_tag:
+                            code += f'''                # Check if child matches expected reference tag "{child_tag}"
+                child_element_tag = SerializationHelper.strip_namespace(child.tag)
+                if child_element_tag == "{child_tag}":
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
@@ -919,8 +933,8 @@ def _generate_deserialize_method(
 '''
                         else:
                             code += '''                # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                child_element_tag = SerializationHelper.strip_namespace(child.tag)
+                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
@@ -2405,23 +2419,27 @@ def _generate_serialize_method(
                     # Check if xml_element_name decorator is present
                     decorator_name = attr_info.get("decorator_name")
                     if decorator_name == "xml_element_name":
-                        # Parse decorator params: can be single value (container tag) or two values (container tag, ref tag)
+                        # Parse decorator params: can be single value or multi-level path separated by '/'
+                        # Examples: "PROVIDED-ENTRYS" or "CAN-ENTER-EXCLUSIVE-AREA-REFS/CAN-ENTER-EXCLUSIVE-AREA/CAN-ENTER-EXCLUSIVE-AREA-REF"
                         decorator_params = attr_info.get("decorator_params", xml_tag)
-                        if isinstance(decorator_params, str) and "," in decorator_params:
-                            # Two parameters: container tag and ref tag
-                            container_tag, ref_tag = decorator_params.split(",", 1)
-                            container_tag = container_tag.strip()
-                            ref_tag = ref_tag.strip()
+                        if isinstance(decorator_params, str) and "/" in decorator_params:
+                            # Multi-level nesting: split on '/' to get all levels
+                            tag_levels = [level.strip() for level in decorator_params.split("/")]
+                            container_tag = tag_levels[0]  # Outermost container
+                            child_tag = tag_levels[-1]  # Innermost tag for individual items
+                            inner_tags = tag_levels[1:-1]  # Intermediate nesting levels (if any)
                         else:
                             # Single parameter: just container tag
                             container_tag = decorator_params if isinstance(decorator_params, str) else xml_tag
-                            ref_tag = None
+                            child_tag = None
+                            inner_tags = []
                     else:
                         # Container element (e.g., AR-PACKAGES, ELEMENTS, USE-INSTEAD-REFS)
                         # For reference lists (is_ref=True), the container tag should be singular + -REFS
                         # For non-reference lists, the container tag is the plural form (e.g., LIFE-CYCLE-INFOS)
                         container_tag = xml_tag
-                        ref_tag = None
+                        child_tag = None
+                        inner_tags = []
                         if is_ref:
                             # For reference lists, the container tag is singular form + -REFS
                             # e.g., USE-INSTEADS -> USE-INSTEAD-REFS
@@ -2441,18 +2459,49 @@ def _generate_serialize_method(
                     # For primitive/enum lists, wrap each item in a child element with singular tag name
                     # For complex object lists, append the serialized item directly (it already has correct tag)
                     if is_ref:
-                        # Use the ref_tag from decorator if specified, otherwise generate from xml_tag
-                        if ref_tag:
-                            child_tag = ref_tag
+                        # Use the child_tag from decorator if specified, otherwise generate from xml_tag
+                        if child_tag:
+                            # Multi-level nesting: create nested wrappers for intermediate levels
+                            if inner_tags:
+                                # Start with the innermost child element
+                                code += f'''                    child_elem = ET.Element("{child_tag}")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+'''
+                                # Create nested wrappers in reverse order (innermost to outermost)
+                                for tag in reversed(inner_tags):
+                                    code += f'''                    nested_wrapper = ET.Element("{tag}")
+                    nested_wrapper.append(child_elem)
+                    child_elem = nested_wrapper
+'''
+                                # Append the outermost nested wrapper to the main wrapper
+                                code += '''                    wrapper.append(child_elem)
+'''
+                            else:
+                                # Single-level nesting
+                                code += f'''                    child_elem = ET.Element("{child_tag}")
+                    if hasattr(serialized, 'attrib'):
+                        child_elem.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        child_elem.text = serialized.text
+                    for child in serialized:
+                        child_elem.append(child)
+                    wrapper.append(child_elem)
+'''
                         else:
+                            # Generate child tag from xml_tag
                             singular = xml_tag[:-1]  # Remove trailing 'S'
                             # Use the kind field from JSON to determine the suffix
                             # "tref" -> -TREF, "ref" -> -REF
                             if kind == "tref":
-                                child_tag = f"{singular}-TREF"
+                                generated_child_tag = f"{singular}-TREF"
                             else:
-                                child_tag = f"{singular}-REF"
-                        code += f'''                    child_elem = ET.Element("{child_tag}")
+                                generated_child_tag = f"{singular}-REF"
+                            code += f'''                    child_elem = ET.Element("{generated_child_tag}")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -2938,33 +2987,65 @@ def _generate_deserialize_method_for_atp_variant(
                     # Check if xml_element_name decorator is present
                     decorator_name = attr_info.get("decorator_name")
                     if decorator_name == "xml_element_name":
-                        # Use the explicitly specified container tag from decorator params
-                        container_tag = attr_info.get("decorator_params", xml_tag)
+                        # Parse decorator params: can be single value or multi-level path separated by '/'
+                        # Examples: "PROVIDED-ENTRYS" or "CAN-ENTER-EXCLUSIVE-AREA-REFS/CAN-ENTER-EXCLUSIVE-AREA/CAN-ENTER-EXCLUSIVE-AREA-REF"
+                        decorator_params = attr_info.get("decorator_params", xml_tag)
+                        if isinstance(decorator_params, str) and "/" in decorator_params:
+                            # Multi-level nesting: split on '/' to get all levels
+                            tag_levels = [level.strip() for level in decorator_params.split("/")]
+                            container_tag = tag_levels[0]  # Outermost container
+                            child_tag = tag_levels[-1]  # Innermost tag for individual items
+                            inner_tags = tag_levels[1:-1]  # Intermediate nesting levels (if any)
+                        else:
+                            # Single parameter: just container tag
+                            container_tag = decorator_params if isinstance(decorator_params, str) else xml_tag
+                            child_tag = None
+                            inner_tags = []
                     else:
                         container_tag = xml_tag
+                        child_tag = None
+                        inner_tags = []
                         if is_ref:
                             singular = xml_tag[:-1]
                             container_tag = f"{singular}-REFS"
 
                     code += f'''        # Parse {python_name} (list from container "{container_tag}")
         obj.{python_name} = []
-        container = SerializationHelper.find_child_element(inner_elem, "{container_tag}")
+        container = SerializationHelper.find_child_element(inner_elem, "{container_tag}")'''
+                    
+                    # Add navigation through nested levels if inner_tags is not empty
+                    if inner_tags:
+                        code += '''        # Navigate through nested container levels'''
+                        for inner_tag in inner_tags:
+                            code += f'''
+        if container is not None:
+            container = SerializationHelper.find_child_element(container, "{inner_tag}")'''
+                    
+                    code += '''
         if container is not None:
             for child in container:
                 if is_ref:
-                    child_tag = SerializationHelper.strip_namespace(child.tag)
-                    if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
-                        child_value = ARRef.deserialize(child)
+                    # Use the child_tag from decorator if specified to match specific child tag
+                    if child_tag:
+                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
+                        if child_element_tag == "''' + f'{child_tag}' + '''":
+                            child_value = ARRef.deserialize(child)
+                        else:
+                            child_value = SerializationHelper.deserialize_by_tag(child, None)
                     else:
-                        child_value = SerializationHelper.deserialize_by_tag(child, None)
-                elif is_primitive_type("{attr_type}", package_data):
+                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
+                        if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
+                            child_value = ARRef.deserialize(child)
+                        else:
+                            child_value = SerializationHelper.deserialize_by_tag(child, None)
+                elif is_primitive_type("''' + f'{attr_type}' + '''", package_data):
                     child_value = child.text
-                elif is_enum_type("{attr_type}", package_data):
-                    child_value = {attr_type}.deserialize(child)
+                elif is_enum_type("''' + f'{attr_type}' + '''", package_data):
+                    child_value = ''' + f'{attr_type}' + '''.deserialize(child)
                 else:
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.{python_name}.append(child_value)
+                    obj.''' + f'{python_name}' + '''.append(child_value)
 
 '''
                 else:

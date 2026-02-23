@@ -15,7 +15,6 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.MSR.DataDictionary.RecordLayout.sw_record_layout_group import (
     SwRecordLayoutGroup,
 )
@@ -33,11 +32,11 @@ class SwRecordLayout(ARElement):
         """
         return False
 
-    sw_record_ref: Optional[ARRef]
+    sw_record_layout_group: Optional[SwRecordLayoutGroup]
     def __init__(self) -> None:
         """Initialize SwRecordLayout."""
         super().__init__()
-        self.sw_record_ref: Optional[ARRef] = None
+        self.sw_record_layout_group: Optional[SwRecordLayoutGroup] = None
 
     def serialize(self) -> ET.Element:
         """Serialize SwRecordLayout to XML element.
@@ -63,12 +62,12 @@ class SwRecordLayout(ARElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize sw_record_ref
-        if self.sw_record_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.sw_record_ref, "SwRecordLayoutGroup")
+        # Serialize sw_record_layout_group
+        if self.sw_record_layout_group is not None:
+            serialized = SerializationHelper.serialize_item(self.sw_record_layout_group, "SwRecordLayoutGroup")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SW-RECORD-REF")
+                wrapped = ET.Element("SW-RECORD-LAYOUT-GROUP")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -92,11 +91,11 @@ class SwRecordLayout(ARElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwRecordLayout, cls).deserialize(element)
 
-        # Parse sw_record_ref
-        child = SerializationHelper.find_child_element(element, "SW-RECORD-REF")
+        # Parse sw_record_layout_group
+        child = SerializationHelper.find_child_element(element, "SW-RECORD-LAYOUT-GROUP")
         if child is not None:
-            sw_record_ref_value = ARRef.deserialize(child)
-            obj.sw_record_ref = sw_record_ref_value
+            sw_record_layout_group_value = SerializationHelper.deserialize_by_tag(child, "SwRecordLayoutGroup")
+            obj.sw_record_layout_group = sw_record_layout_group_value
 
         return obj
 
@@ -233,8 +232,8 @@ class SwRecordLayoutBuilder:
         self._obj.uuid = value
         return self
 
-    def with_sw_record(self, value: Optional[SwRecordLayoutGroup]) -> "SwRecordLayoutBuilder":
-        """Set sw_record attribute.
+    def with_sw_record_layout_group(self, value: Optional[SwRecordLayoutGroup]) -> "SwRecordLayoutBuilder":
+        """Set sw_record_layout_group attribute.
 
         Args:
             value: Value to set
@@ -244,7 +243,7 @@ class SwRecordLayoutBuilder:
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.sw_record = value
+        self._obj.sw_record_layout_group = value
         return self
 
 

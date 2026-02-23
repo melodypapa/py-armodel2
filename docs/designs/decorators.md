@@ -242,16 +242,19 @@ class LanguageSpecific(ARObject):
 
 ### 5. `@xml_element_name(xml_tag: str)`
 
-Specify a custom XML element name for attributes when the auto-generated name differs from the schema.
+Specify a custom XML element name for attributes when the auto-generated name differs from the schema, or when multi-level nesting is required.
 
 **When to use**:
 - When the XML element name differs from the auto-generated name via NameConverter
 - When AUTOSAR schema uses non-standard naming (e.g., "PROVIDED-ENTRYS" instead of "PROVIDED-CLIENT-SERVER-ENTRIES")
+- When multi-level nesting is required (nested container elements)
+- When reference lists need custom wrapper elements
 
 **Location**: `decorators.py:140-167`
 
 #### Syntax
 
+**Single parameter** (override container tag):
 ```python
 from armodel.serialization.decorators import xml_element_name
 
@@ -263,15 +266,41 @@ class BswModuleDescription(ARElement):
     required_client_server_entries: list[BswModuleClientServerEntry] = []
 ```
 
+**Multi-level path** (nested containers):
+```python
+from armodel.serialization.decorators import xml_element_name
+
+class ExecutableEntity(ARObject):
+    _can_enter_refs: list[ARRef] = []
+    
+    @property
+    @xml_element_name("CAN-ENTER-EXCLUSIVE-AREA-REFS/CAN-ENTER-EXCLUSIVE-AREA/CAN-ENTER-EXCLUSIVE-AREA-REF")
+    def can_enter_refs(self) -> list[ARRef]:
+        """Get can_enter_refs with custom XML element name."""
+        return self._can_enter_refs
+    
+    @can_enter_refs.setter
+    def can_enter_refs(self, value: list[ARRef]) -> None:
+        """Set can_enter_refs with custom XML element name."""
+        self._can_enter_refs = value
+```
+
 #### Implementation Details
 
 1. **Attribute-level decorator**: Applied to individual attributes
-2. **Parameter**: Accepts the exact XML element name (e.g., "PROVIDED-ENTRYS")
+2. **Parameter formats**:
+   - **Single parameter**: Accepts the exact XML element name (e.g., "PROVIDED-ENTRYS")
+   - **Multi-level path**: Accepts nested container path separated by `/` (e.g., "TAG1/TAG2/TAG3")
 3. **Markers**: Sets `_xml_element_name = True` and `_xml_tag = xml_tag` on the attribute
-4. **Overrides NameConverter**: The specified tag is used instead of auto-conversion
+4. **Overrides NameConverter**: The specified tag(s) are used instead of auto-conversion
+5. **Multi-level nesting**: When `/` separator is used, the code generator:
+   - Creates nested wrapper elements during serialization
+   - Navigates through nested containers during deserialization
+   - Uses the last level tag for individual child elements
 
 #### Example Output
 
+**Single parameter** (override container tag):
 ```xml
 <!-- With @xml_element_name("PROVIDED-ENTRYS") -->
 <BSW-MODULE-DESCRIPTION>
@@ -288,6 +317,19 @@ class BswModuleDescription(ARElement):
     <BSW-MODULE-CLIENT-SERVER-ENTRY>...</BSW-MODULE-CLIENT-SERVER-ENTRY>
   </PROVIDED-CLIENT-SERVER-ENTRYS>
 </BSW-MODULE-DESCRIPTION>
+```
+
+**Multi-level path** (nested containers):
+```xml
+<!-- With @xml_element_name("CAN-ENTER-EXCLUSIVE-AREA-REFS/CAN-ENTER-EXCLUSIVE-AREA/CAN-ENTER-EXCLUSIVE-AREA-REF") -->
+<EXECUTABLE-ENTITY>
+  <SHORT-NAME>MyEntity</SHORT-NAME>
+  <CAN-ENTER-EXCLUSIVE-AREA-REFS>
+    <CAN-ENTER-EXCLUSIVE-AREA>
+      <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/AUTOSAR/EcucDefs/MyExclusiveArea</CAN-ENTER-EXCLUSIVE-AREA-REF>
+    </CAN-ENTER-EXCLUSIVE-AREA>
+  </CAN-ENTER-EXCLUSIVE-AREA-REFS>
+</EXECUTABLE-ENTITY>
 ```
 
 #### When to Use

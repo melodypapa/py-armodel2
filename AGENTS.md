@@ -587,6 +587,40 @@ class LanguageSpecific(ARObject):
 
 Generated XML: `<L-LONG-NAME L="EN">Long Name</L-LONG-NAME>`
 
+**xml_element_name Decorator:**
+The `@xml_element_name()` decorator marks an attribute to use custom XML element names. This is used when the XML element name differs from the auto-generated name or when multi-level nesting is required.
+
+```python
+class ExecutableEntity(ARObject):
+    _can_enter_refs: list[ARRef] = []
+    
+    @property
+    @xml_element_name("CAN-ENTER-EXCLUSIVE-AREA-REFS/CAN-ENTER-EXCLUSIVE-AREA/CAN-ENTER-EXCLUSIVE-AREA-REF")
+    def can_enter_refs(self) -> list[ARRef]:
+        """Get can_enter_refs with custom XML element name."""
+        return self._can_enter_refs
+```
+
+The decorator supports:
+- **Single parameter**: Override the container tag name
+  - Example: `@xml_element_name("PROVIDED-ENTRYS")` → `<PROVIDED-ENTRYS>...</PROVIDED-ENTRYS>`
+- **Multi-level path**: Specify nested container structure using `/` separator
+  - Example: `@xml_element_name("TAG1/TAG2/TAG3")` → `<TAG1><TAG2><TAG3>...</TAG3></TAG2></TAG1>`
+
+Generated XML for multi-level nesting:
+```xml
+<CAN-ENTER-EXCLUSIVE-AREA-REFS>
+  <CAN-ENTER-EXCLUSIVE-AREA>
+    <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/path/to/area</CAN-ENTER-EXCLUSIVE-AREA-REF>
+  </CAN-ENTER-EXCLUSIVE-AREA>
+</CAN-ENTER-EXCLUSIVE-AREA-REFS>
+```
+
+The serialization framework automatically:
+- Creates nested wrapper elements for each level in the path during serialization
+- Navigates through nested containers during deserialization
+- Uses the last level tag for individual child elements
+
 ### Serialization Behavior
 
 **How serialize() works:**

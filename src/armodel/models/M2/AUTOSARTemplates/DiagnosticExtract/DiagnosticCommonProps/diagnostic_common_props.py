@@ -285,11 +285,19 @@ class DiagnosticCommonProps(ARObject):
         if container is not None:
             for child in container:
                 if is_ref:
-                    child_tag = SerializationHelper.strip_namespace(child.tag)
-                    if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
-                        child_value = ARRef.deserialize(child)
+                    # Use the child_tag from decorator if specified to match specific child tag
+                    if child_tag:
+                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
+                        if child_element_tag == "None":
+                            child_value = ARRef.deserialize(child)
+                        else:
+                            child_value = SerializationHelper.deserialize_by_tag(child, None)
                     else:
-                        child_value = SerializationHelper.deserialize_by_tag(child, None)
+                        child_element_tag = SerializationHelper.strip_namespace(child.tag)
+                        if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
+                            child_value = ARRef.deserialize(child)
+                        else:
+                            child_value = SerializationHelper.deserialize_by_tag(child, None)
                 elif is_primitive_type("any (DiagnosticDebounce)", package_data):
                     child_value = child.text
                 elif is_enum_type("any (DiagnosticDebounce)", package_data):

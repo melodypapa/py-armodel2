@@ -70,7 +70,7 @@ class ExecutableEntity(Identifiable, ABC):
         self.runs_inside_refs: list[ARRef] = []
         self.sw_addr_method_ref: Optional[ARRef] = None
     @property
-    @xml_element_name("CAN-ENTER-EXCLUSIVE-AREA-REFS,CAN-ENTER-EXCLUSIVE-AREA-REF")
+    @xml_element_name("CAN-ENTER-EXCLUSIVE-AREA-REFS/CAN-ENTER-EXCLUSIVE-AREA-REF")
     def can_enter_refs(self) -> list[ARRef]:
         """Get can_enter_refs with custom XML element name."""
         return self._can_enter_refs
@@ -239,8 +239,8 @@ class ExecutableEntity(Identifiable, ABC):
         if container is not None:
             for child in container:
                 # Check if child matches expected reference tag "CAN-ENTER-EXCLUSIVE-AREA-REF"
-                child_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_tag == "CAN-ENTER-EXCLUSIVE-AREA-REF":
+                child_element_tag = SerializationHelper.strip_namespace(child.tag)
+                if child_element_tag == "CAN-ENTER-EXCLUSIVE-AREA-REF":
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
@@ -255,8 +255,8 @@ class ExecutableEntity(Identifiable, ABC):
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                child_element_tag = SerializationHelper.strip_namespace(child.tag)
+                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
@@ -283,8 +283,8 @@ class ExecutableEntity(Identifiable, ABC):
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                child_element_tag = SerializationHelper.strip_namespace(child.tag)
+                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
