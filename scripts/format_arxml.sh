@@ -167,7 +167,10 @@ if [ $failed_count -gt 0 ]; then
     done
     echo ""
     echo "To debug individual files:"
-    echo "  armodel format demos/arxml/<filename> -o data/arxml/<filename> -v"
+    for i in "${!failed_files[@]}"; do
+        filename="${failed_files[$i]}"
+        echo "  armodel format demos/arxml/$filename -o data/output.arxml -v"
+    done
 fi
 
 echo ""

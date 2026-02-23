@@ -251,6 +251,18 @@ def generate_class_code(
         if has_ref_conditional:
             decorator_import += "from armodel.serialization.decorators import ref_conditional\n"
 
+        # Check if this class has instance_ref decorators
+        has_instance_ref = False
+        if attribute_types:
+            for attr_name, attr_info in attribute_types.items():
+                decorator_name = attr_info.get("decorator_name")
+                if decorator_name == "instance_ref":
+                    has_instance_ref = True
+                    break
+        if has_instance_ref:
+            decorator_import += "from armodel.serialization.decorators import instance_ref\n"
+            decorator_import += "from armodel.serialization.decorators import ref_conditional\n"
+
         code = f'''"""{docstring}"""
 
 {future_import}{basic_import}{base_import}{decorator_import}
@@ -640,13 +652,15 @@ class {class_name}(ABC):
             # Get decorator_name if present
             decorator_name = attr_info.get("decorator_name")
 
-            # For xml_attribute, lang_prefix, language_abbr, and xml_element_name, use private field with property
+            # For xml_attribute, lang_prefix, language_abbr, xml_element_name, ref_conditional, and instance_ref, use private field with property
             if (
                 kind == "xml_attribute"
                 or decorator_name == "xml_attribute"
                 or decorator_name == "lang_prefix"
                 or kind == "language_abbr"
                 or decorator_name == "xml_element_name"
+                or decorator_name == "ref_conditional"
+                or decorator_name == "instance_ref"
             ):
                 private_name = f"_{python_name}"
                 code += f"    {private_name}: {python_type}\n"
@@ -690,7 +704,7 @@ class {class_name}(ABC):
             # Get decorator_name if present
             decorator_name = attr_info.get("decorator_name")
 
-            # For xml_attribute, lang_prefix, lang_abbr, xml_element_name, and ref_conditional, use private field
+            # For xml_attribute, lang_prefix, lang_abbr, xml_element_name, ref_conditional, and instance_ref, use private field
             if (
                 kind == "xml_attribute"
                 or decorator_name == "xml_attribute"
@@ -698,6 +712,7 @@ class {class_name}(ABC):
                 or decorator_name == "lang_abbr"
                 or decorator_name == "xml_element_name"
                 or decorator_name == "ref_conditional"
+                or decorator_name == "instance_ref"
             ):
                 private_name = f"_{python_name}"
                 attr_code = f"        self.{private_name}: {python_type} = {initial_value}\n"
@@ -816,6 +831,27 @@ class {class_name}(ABC):
     @{python_name}.setter
     def {python_name}(self, value: {python_type}) -> None:
         """Set {python_name} with ref_conditional wrapper."""
+        self.{private_name} = value
+
+'''
+            elif decorator_name == "instance_ref":
+                python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity, kind)
+                private_name = f"_{python_name}"
+                params = attr_info.get("decorator_params", "")
+                # Determine Python type for this attribute
+                python_type = get_python_type(attr_type, multiplicity, package_data, is_ref, kind)
+                # Extract flatten parameter from decorator_params
+                flatten_param = "flatten=True" if "flatten=True" in params else "flatten=False"
+                # Generate property with instance_ref decorator
+                code += f'''    @property
+    @instance_ref({flatten_param})
+    def {python_name}(self) -> {python_type}:
+        """Get {python_name} instance reference."""
+        return self.{private_name}
+
+    @{python_name}.setter
+    def {python_name}(self, value: {python_type}) -> None:
+        """Set {python_name} instance reference."""
         self.{private_name} = value
 
 '''
@@ -1017,14 +1053,18 @@ def _generate_deserialize_method(
             elif kind == "iref":
                 # Handle iref kind - instance reference with special wrapper
                 # The outer wrapper is attribute name + -IREF
-                # Check if this is a flattened iref (AssemblySwConnector pattern)
-                # Flattened types: PPortInCompositionInstanceRef, RPortInCompositionInstanceRef
-                # These types have their children directly inside the iref wrapper, not wrapped in their own element
-                flattened_iref_types = {
-                    "PPortInCompositionInstanceRef",
-                    "RPortInCompositionInstanceRef",
-                }
-                should_flatten = attr_type in flattened_iref_types
+                # Determine if this should be flattened based on decorator parameter
+                decorator_name = attr_info.get("decorator_name")
+                decorator_params = attr_info.get("decorator_params")
+                
+                # Determine if this should be flattened based on decorator parameter
+                should_flatten = False
+                if decorator_name == "instance_ref" and decorator_params:
+                    # Parse decorator params (format: "flatten=True" or "flatten=False")
+                    if "flatten=True" in decorator_params:
+                        should_flatten = True
+                    elif "flatten=False" in decorator_params:
+                        should_flatten = False
 
                 iref_wrapper_tag = f"{xml_tag}-IREF"
 
@@ -2758,14 +2798,18 @@ def _generate_serialize_method(
             elif kind == "iref":
                 # Handle iref kind - instance reference with special wrapper
                 # The outer wrapper is attribute name + -IREF
-                # Check if this is a flattened iref (AssemblySwConnector pattern)
-                # Flattened types: PPortInCompositionInstanceRef, RPortInCompositionInstanceRef
-                # These types have their children directly inside the iref wrapper, not wrapped in their own element
-                flattened_iref_types = {
-                    "PPortInCompositionInstanceRef",
-                    "RPortInCompositionInstanceRef",
-                }
-                should_flatten = attr_type in flattened_iref_types
+                # Check decorator for flatten parameter
+                decorator_name = attr_info.get("decorator_name")
+                decorator_params = attr_info.get("decorator_params")
+                
+                # Determine if this should be flattened based on decorator parameter
+                should_flatten = False
+                if decorator_name == "instance_ref" and decorator_params:
+                    # Parse decorator params (format: "flatten=True" or "flatten=False")
+                    if "flatten=True" in decorator_params:
+                        should_flatten = True
+                    elif "flatten=False" in decorator_params:
+                        should_flatten = False
 
                 iref_wrapper_tag = f"{xml_tag}-IREF"
                 if should_flatten:
@@ -3388,9 +3432,41 @@ def _generate_deserialize_method_for_atp_variant(
 '''
             elif kind == "iref":
                 # Handle iref kind - instance reference with special wrapper
+                # Flattened types have their children directly inside the iref wrapper, not wrapped in their own element
+                # These instance reference types contain direct child elements like CONTEXT-COMPOSITION-REF,
+                # CONTEXT-PORT-REF, TARGET-DATA-PROTOTYPE-REF, etc.
                 flattened_iref_types = {
+                    # SWComponentTemplate Composition InstanceRefs
                     "PPortInCompositionInstanceRef",
                     "RPortInCompositionInstanceRef",
+                    "ComponentInCompositionInstanceRef",
+                    "PortInCompositionTypeInstanceRef",
+                    "InstanceEventInCompositionInstanceRef",
+                    # SystemTemplate InstanceRefs
+                    "ComponentInSystemInstanceRef",
+                    "OperationInSystemInstanceRef",
+                    "VariableDataPrototypeInSystemInstanceRef",
+                    "TriggerInSystemInstanceRef",
+                    "PortGroupInSystemInstanceRef",
+                    # SWComponentTemplate Components InstanceRefs
+                    "VariableInAtomicSwcInstanceRef",
+                    "RVariableInAtomicSwcInstanceRef",
+                    "RModeInAtomicSwcInstanceRef",
+                    "InnerPortGroupInCompositionInstanceRef",
+                    "TriggerInAtomicSwcInstanceRef",
+                    "RTriggerInAtomicSwcInstanceRef",
+                    "PTriggerInAtomicSwcTypeInstanceRef",
+                    "OperationInAtomicSwcInstanceRef",
+                    "ROperationInAtomicSwcInstanceRef",
+                    "POperationInAtomicSwcInstanceRef",
+                    "RModeGroupInAtomicSWCInstanceRef",
+                    "PModeGroupInAtomicSwcInstanceRef",
+                    "ModeGroupInAtomicSwcInstanceRef",
+                    # SWComponentTemplate SwcInternalBehavior DataElements InstanceRefs
+                    "ParameterInAtomicSWCTypeInstanceRef",
+                    "VariableInAtomicSWCTypeInstanceRef",
+                    # SWComponentTemplate PortInterface InstanceRefs
+                    "ApplicationCompositeElementInPortInterfaceInstanceRef",
                 }
                 should_flatten = attr_type in flattened_iref_types
                 iref_wrapper_tag = f"{xml_tag}-IREF"

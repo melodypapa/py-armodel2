@@ -9,6 +9,8 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Composit
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import instance_ref
+from armodel.serialization.decorators import ref_conditional
 
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.sw_connector import (
     SwConnector,
@@ -38,13 +40,24 @@ class DelegationSwConnector(SwConnector):
         """
         return False
 
-    inner_port_iref: Optional[PortInCompositionTypeInstanceRef]
+    _inner_port_iref: Optional[PortInCompositionTypeInstanceRef]
     outer_port_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize DelegationSwConnector."""
         super().__init__()
-        self.inner_port_iref: Optional[PortInCompositionTypeInstanceRef] = None
+        self._inner_port_iref: Optional[PortInCompositionTypeInstanceRef] = None
         self.outer_port_ref: Optional[ARRef] = None
+    @property
+    @instance_ref(flatten=False)
+    def inner_port_iref(self) -> Optional[PortInCompositionTypeInstanceRef]:
+        """Get inner_port_iref instance reference."""
+        return self._inner_port_iref
+
+    @inner_port_iref.setter
+    def inner_port_iref(self, value: Optional[PortInCompositionTypeInstanceRef]) -> None:
+        """Set inner_port_iref instance reference."""
+        self._inner_port_iref = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize DelegationSwConnector to XML element.

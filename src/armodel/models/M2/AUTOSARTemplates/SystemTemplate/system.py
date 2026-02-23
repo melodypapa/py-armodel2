@@ -72,7 +72,7 @@ class System(ARElement):
     client_id_definition_set_refs: list[ARRef]
     container_i_pdu_header_byte_order: Optional[ByteOrderEnum]
     ecu_extract_version: Optional[RevisionLabelString]
-    fibex_element_refs: list[ARRef]
+    _fibex_element_refs: list[ARRef]
     interpolation_routine_mapping_set_refs: list[ARRef]
     j1939_shared_address_clusters: list[J1939SharedAddressCluster]
     mappings: list[SystemMapping]

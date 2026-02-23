@@ -17,6 +17,7 @@ Traceability:
 - SWITS IDs: SWITS-INT-0100 through SWITS-INT-0199
 """
 import pytest
+import shlex
 from pathlib import Path
 
 from armodel.reader import ARXMLReader
@@ -81,7 +82,11 @@ class TestIndividualFiles:
             f"Binary comparison failed for {filename}\n"
             f"Original:    {len(original_bytes):,} bytes\n"
             f"Serialized:  {len(serialized_bytes):,} bytes\n"
-            f"Difference:  {abs(len(serialized_bytes) - len(original_bytes)):,} bytes"
+            f"Difference:  {abs(len(serialized_bytes) - len(original_bytes)):,} bytes\n\n"
+            f"To reproduce the error, run:\n"
+            f"  armodel format {shlex.quote(str(arxml_file))} -o data/output.arxml\n\n"
+            f"To compare the differences:\n"
+            f"  diff {shlex.quote(str(arxml_file))} data/output.arxml"
         )
 
     # Primary test - enabled first
