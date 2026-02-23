@@ -423,6 +423,20 @@ class GraphicBuilder:
         self._obj: Graphic = Graphic()
 
 
+    def with_short_label(self, value: NameToken) -> "GraphicBuilder":
+        """Set short_label attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not False:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.short_label = value
+        return self
+
     def with_category(self, value: NameToken) -> "GraphicBuilder":
         """Set category attribute.
 
@@ -461,20 +475,6 @@ class GraphicBuilder:
             self for method chaining
         """
         self._obj.revision_labels = list(items) if items else []
-        return self
-
-    def with_short_label(self, value: NameToken) -> "GraphicBuilder":
-        """Set short_label attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.short_label = value
         return self
 
     def with_editfit(self, value: Optional[GraphicFitEnum]) -> "GraphicBuilder":

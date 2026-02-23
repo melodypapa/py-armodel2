@@ -87,7 +87,7 @@ class BswInternalBehavior(InternalBehavior):
     distinguished_partitions: list[BswDistinguishedPartition]
     _entities: list[BswModuleEntity]
     events: list[BswEvent]
-    exclusive_areas: list[BswExclusiveAreaPolicy]
+    _exclusive_area_policies: list[BswExclusiveAreaPolicy]
     included_data_type_sets: list[IncludedDataTypeSet]
     included_mode_declaration_group_sets: list[IncludedModeDeclarationGroupSet]
     internal_triggering_points: list[BswInternalTriggeringPoint]
@@ -112,7 +112,7 @@ class BswInternalBehavior(InternalBehavior):
         self.distinguished_partitions: list[BswDistinguishedPartition] = []
         self._entities: list[BswModuleEntity] = []
         self.events: list[BswEvent] = []
-        self.exclusive_areas: list[BswExclusiveAreaPolicy] = []
+        self._exclusive_area_policies: list[BswExclusiveAreaPolicy] = []
         self.included_data_type_sets: list[IncludedDataTypeSet] = []
         self.included_mode_declaration_group_sets: list[IncludedModeDeclarationGroupSet] = []
         self.internal_triggering_points: list[BswInternalTriggeringPoint] = []
@@ -171,6 +171,17 @@ class BswInternalBehavior(InternalBehavior):
     def entities(self, value: list[BswModuleEntity]) -> None:
         """Set entities with custom XML element name."""
         self._entities = value
+
+    @property
+    @xml_element_name("EXCLUSIVE-AREA-POLICYS")
+    def exclusive_area_policies(self) -> list[BswExclusiveAreaPolicy]:
+        """Get exclusive_area_policies with custom XML element name."""
+        return self._exclusive_area_policies
+
+    @exclusive_area_policies.setter
+    def exclusive_area_policies(self, value: list[BswExclusiveAreaPolicy]) -> None:
+        """Set exclusive_area_policies with custom XML element name."""
+        self._exclusive_area_policies = value
 
     @property
     @xml_element_name("INTERNAL-TRIGGERING-POINT-POLICYS")
@@ -356,10 +367,10 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize exclusive_areas (list to container "EXCLUSIVE-AREAS")
-        if self.exclusive_areas:
-            wrapper = ET.Element("EXCLUSIVE-AREAS")
-            for item in self.exclusive_areas:
+        # Serialize exclusive_area_policies (list to container "EXCLUSIVE-AREA-POLICYS")
+        if self.exclusive_area_policies:
+            wrapper = ET.Element("EXCLUSIVE-AREA-POLICYS")
+            for item in self.exclusive_area_policies:
                 serialized = SerializationHelper.serialize_item(item, "BswExclusiveAreaPolicy")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -591,15 +602,15 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.events.append(child_value)
 
-        # Parse exclusive_areas (list from container "EXCLUSIVE-AREAS")
-        obj.exclusive_areas = []
-        container = SerializationHelper.find_child_element(element, "EXCLUSIVE-AREAS")
+        # Parse exclusive_area_policies (list from container "EXCLUSIVE-AREA-POLICYS")
+        obj.exclusive_area_policies = []
+        container = SerializationHelper.find_child_element(element, "EXCLUSIVE-AREA-POLICYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.exclusive_areas.append(child_value)
+                    obj.exclusive_area_policies.append(child_value)
 
         # Parse included_data_type_sets (list from container "INCLUDED-DATA-TYPE-SETS")
         obj.included_data_type_sets = []
@@ -1028,6 +1039,18 @@ class BswInternalBehaviorBuilder:
             self for method chaining
         """
         self._obj.events = list(items) if items else []
+        return self
+
+    def with_exclusive_area_policies(self, items: list[BswExclusiveAreaPolicy]) -> "BswInternalBehaviorBuilder":
+        """Set exclusive_area_policies list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.exclusive_area_policies = list(items) if items else []
         return self
 
     def with_included_data_type_sets(self, items: list[IncludedDataTypeSet]) -> "BswInternalBehaviorBuilder":
@@ -1503,6 +1526,27 @@ class BswInternalBehaviorBuilder:
             self for method chaining
         """
         self._obj.events = []
+        return self
+
+    def add_exclusive_area_policie(self, item: BswExclusiveAreaPolicy) -> "BswInternalBehaviorBuilder":
+        """Add a single item to exclusive_area_policies list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.exclusive_area_policies.append(item)
+        return self
+
+    def clear_exclusive_area_policies(self) -> "BswInternalBehaviorBuilder":
+        """Clear all items from exclusive_area_policies list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.exclusive_area_policies = []
         return self
 
     def add_included_data_type_set(self, item: IncludedDataTypeSet) -> "BswInternalBehaviorBuilder":

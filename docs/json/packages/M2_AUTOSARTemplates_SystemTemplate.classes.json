@@ -121,8 +121,8 @@
         "mappings": {
           "type": "SystemMapping",
           "multiplicity": "*",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "Aggregation of all mapping aspects (mapping of SW ECUs, mapping of data elements to mapping constraints). to support OEM / Tier 1 interaction and shared one common System this aggregation is atpVariation. The content of System be provided by several parties using for the SystemMapping. is not required when the System description for a network-only use-case. atpVariation 381 Document ID 89: AUTOSAR_CP_TPS_BSWModuleDescriptionTemplate Module Description Template R23-11"
         },
         "pncVectorLength": {

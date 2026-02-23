@@ -36,12 +36,12 @@ class Code(Identifiable):
         """
         return False
 
-    artifacts: list[AutosarEngineeringObject]
+    artifact_descriptors: list[AutosarEngineeringObject]
     callback_header_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize Code."""
         super().__init__()
-        self.artifacts: list[AutosarEngineeringObject] = []
+        self.artifact_descriptors: list[AutosarEngineeringObject] = []
         self.callback_header_refs: list[ARRef] = []
 
     def serialize(self) -> ET.Element:
@@ -68,10 +68,10 @@ class Code(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize artifacts (list to container "ARTIFACTS")
-        if self.artifacts:
-            wrapper = ET.Element("ARTIFACTS")
-            for item in self.artifacts:
+        # Serialize artifact_descriptors (list to container "ARTIFACT-DESCRIPTORS")
+        if self.artifact_descriptors:
+            wrapper = ET.Element("ARTIFACT-DESCRIPTORS")
+            for item in self.artifact_descriptors:
                 serialized = SerializationHelper.serialize_item(item, "AutosarEngineeringObject")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -110,15 +110,15 @@ class Code(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(Code, cls).deserialize(element)
 
-        # Parse artifacts (list from container "ARTIFACTS")
-        obj.artifacts = []
-        container = SerializationHelper.find_child_element(element, "ARTIFACTS")
+        # Parse artifact_descriptors (list from container "ARTIFACT-DESCRIPTORS")
+        obj.artifact_descriptors = []
+        container = SerializationHelper.find_child_element(element, "ARTIFACT-DESCRIPTORS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.artifacts.append(child_value)
+                    obj.artifact_descriptors.append(child_value)
 
         # Parse callback_header_refs (list from container "CALLBACK-HEADER-REFS")
         obj.callback_header_refs = []
@@ -271,8 +271,8 @@ class CodeBuilder:
         self._obj.uuid = value
         return self
 
-    def with_artifacts(self, items: list[AutosarEngineeringObject]) -> "CodeBuilder":
-        """Set artifacts list attribute.
+    def with_artifact_descriptors(self, items: list[AutosarEngineeringObject]) -> "CodeBuilder":
+        """Set artifact_descriptors list attribute.
 
         Args:
             items: List of items to set
@@ -280,7 +280,7 @@ class CodeBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.artifacts = list(items) if items else []
+        self._obj.artifact_descriptors = list(items) if items else []
         return self
 
     def with_callback_headers(self, items: list[ServiceNeeds]) -> "CodeBuilder":
@@ -338,8 +338,8 @@ class CodeBuilder:
         self._obj.annotations = []
         return self
 
-    def add_artifact(self, item: AutosarEngineeringObject) -> "CodeBuilder":
-        """Add a single item to artifacts list.
+    def add_artifact_descriptor(self, item: AutosarEngineeringObject) -> "CodeBuilder":
+        """Add a single item to artifact_descriptors list.
 
         Args:
             item: Item to add
@@ -347,16 +347,16 @@ class CodeBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.artifacts.append(item)
+        self._obj.artifact_descriptors.append(item)
         return self
 
-    def clear_artifacts(self) -> "CodeBuilder":
-        """Clear all items from artifacts list.
+    def clear_artifact_descriptors(self) -> "CodeBuilder":
+        """Clear all items from artifact_descriptors list.
 
         Returns:
             self for method chaining
         """
-        self._obj.artifacts = []
+        self._obj.artifact_descriptors = []
         return self
 
     def add_callback_header(self, item: ServiceNeeds) -> "CodeBuilder":

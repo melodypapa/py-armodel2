@@ -11,6 +11,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_InternalBeha
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
@@ -52,7 +53,7 @@ class ExecutableEntity(Identifiable, ABC):
         return True
 
     activation_reasons: list[ExecutableEntityActivationReason]
-    can_enter_refs: list[ARRef]
+    _can_enter_refs: list[ARRef]
     exclusive_area_nesting_order_refs: list[ARRef]
     minimum_start_interval: Optional[TimeValue]
     reentrancy_level: Optional[ReentrancyLevelEnum]
@@ -62,12 +63,23 @@ class ExecutableEntity(Identifiable, ABC):
         """Initialize ExecutableEntity."""
         super().__init__()
         self.activation_reasons: list[ExecutableEntityActivationReason] = []
-        self.can_enter_refs: list[ARRef] = []
+        self._can_enter_refs: list[ARRef] = []
         self.exclusive_area_nesting_order_refs: list[ARRef] = []
         self.minimum_start_interval: Optional[TimeValue] = None
         self.reentrancy_level: Optional[ReentrancyLevelEnum] = None
         self.runs_inside_refs: list[ARRef] = []
         self.sw_addr_method_ref: Optional[ARRef] = None
+    @property
+    @xml_element_name("CAN-ENTER-EXCLUSIVE-AREA-REFS,CAN-ENTER-EXCLUSIVE-AREA-REF")
+    def can_enter_refs(self) -> list[ARRef]:
+        """Get can_enter_refs with custom XML element name."""
+        return self._can_enter_refs
+
+    @can_enter_refs.setter
+    def can_enter_refs(self, value: list[ARRef]) -> None:
+        """Set can_enter_refs with custom XML element name."""
+        self._can_enter_refs = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize ExecutableEntity to XML element.
@@ -103,13 +115,13 @@ class ExecutableEntity(Identifiable, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize can_enter_refs (list to container "CAN-ENTER-REFS")
+        # Serialize can_enter_refs (list to container "CAN-ENTER-EXCLUSIVE-AREA-REFS")
         if self.can_enter_refs:
-            wrapper = ET.Element("CAN-ENTER-REFS")
+            wrapper = ET.Element("CAN-ENTER-EXCLUSIVE-AREA-REFS")
             for item in self.can_enter_refs:
                 serialized = SerializationHelper.serialize_item(item, "ExclusiveArea")
                 if serialized is not None:
-                    child_elem = ET.Element("CAN-ENTER-REF")
+                    child_elem = ET.Element("CAN-ENTER-EXCLUSIVE-AREA-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -221,14 +233,14 @@ class ExecutableEntity(Identifiable, ABC):
                 if child_value is not None:
                     obj.activation_reasons.append(child_value)
 
-        # Parse can_enter_refs (list from container "CAN-ENTER-REFS")
+        # Parse can_enter_refs (list from container "CAN-ENTER-EXCLUSIVE-AREA-REFS")
         obj.can_enter_refs = []
-        container = SerializationHelper.find_child_element(element, "CAN-ENTER-REFS")
+        container = SerializationHelper.find_child_element(element, "CAN-ENTER-EXCLUSIVE-AREA-REFS")
         if container is not None:
             for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
+                # Check if child matches expected reference tag "CAN-ENTER-EXCLUSIVE-AREA-REF"
                 child_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                if child_tag == "CAN-ENTER-EXCLUSIVE-AREA-REF":
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:

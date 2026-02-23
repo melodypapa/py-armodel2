@@ -72,7 +72,7 @@ class System(ARElement):
     fibex_element_refs: list[ARRef]
     interpolation_routine_mapping_set_refs: list[ARRef]
     j1939_shared_address_clusters: list[J1939SharedAddressCluster]
-    mapping_refs: list[ARRef]
+    mappings: list[SystemMapping]
     pnc_vector_length: Optional[PositiveInteger]
     pnc_vector_offset: Optional[PositiveInteger]
     root_software_composition: Optional[RootSwCompositionPrototype]
@@ -88,7 +88,7 @@ class System(ARElement):
         self.fibex_element_refs: list[ARRef] = []
         self.interpolation_routine_mapping_set_refs: list[ARRef] = []
         self.j1939_shared_address_clusters: list[J1939SharedAddressCluster] = []
-        self.mapping_refs: list[ARRef] = []
+        self.mappings: list[SystemMapping] = []
         self.pnc_vector_length: Optional[PositiveInteger] = None
         self.pnc_vector_offset: Optional[PositiveInteger] = None
         self.root_software_composition: Optional[RootSwCompositionPrototype] = None
@@ -209,20 +209,13 @@ class System(ARElement):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize mapping_refs (list to container "MAPPING-REFS")
-        if self.mapping_refs:
-            wrapper = ET.Element("MAPPING-REFS")
-            for item in self.mapping_refs:
+        # Serialize mappings (list to container "MAPPINGS")
+        if self.mappings:
+            wrapper = ET.Element("MAPPINGS")
+            for item in self.mappings:
                 serialized = SerializationHelper.serialize_item(item, "SystemMapping")
                 if serialized is not None:
-                    child_elem = ET.Element("MAPPING-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -394,21 +387,15 @@ class System(ARElement):
                 if child_value is not None:
                     obj.j1939_shared_address_clusters.append(child_value)
 
-        # Parse mapping_refs (list from container "MAPPING-REFS")
-        obj.mapping_refs = []
-        container = SerializationHelper.find_child_element(element, "MAPPING-REFS")
+        # Parse mappings (list from container "MAPPINGS")
+        obj.mappings = []
+        container = SerializationHelper.find_child_element(element, "MAPPINGS")
         if container is not None:
             for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.mapping_refs.append(child_value)
+                    obj.mappings.append(child_value)
 
         # Parse pnc_vector_length
         child = SerializationHelper.find_child_element(element, "PNC-VECTOR-LENGTH")

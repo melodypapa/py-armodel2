@@ -155,6 +155,20 @@ class BuildEngineeringObjectBuilder:
         self._obj: BuildEngineeringObject = BuildEngineeringObject()
 
 
+    def with_short_label(self, value: NameToken) -> "BuildEngineeringObjectBuilder":
+        """Set short_label attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not False:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.short_label = value
+        return self
+
     def with_category(self, value: NameToken) -> "BuildEngineeringObjectBuilder":
         """Set category attribute.
 
@@ -193,20 +207,6 @@ class BuildEngineeringObjectBuilder:
             self for method chaining
         """
         self._obj.revision_labels = list(items) if items else []
-        return self
-
-    def with_short_label(self, value: NameToken) -> "BuildEngineeringObjectBuilder":
-        """Set short_label attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.short_label = value
         return self
 
     def with_file_type(self, value: NameToken) -> "BuildEngineeringObjectBuilder":
