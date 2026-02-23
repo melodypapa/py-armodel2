@@ -14,6 +14,18 @@ Decorators in py-armodel2 provide a declarative way to handle edge cases in XML 
 
 ## Available Decorators
 
+| Decorator | Purpose | Type |
+|-----------|---------|------|
+| `@xml_attribute` | Mark property as XML attribute instead of element | Attribute-level |
+| `@atp_variant()` | Mark class as using atpVariation pattern (nested wrappers) | Class-level |
+| `@l_prefix("L-1")` | Mark attribute as using language-specific L-N pattern | Attribute-level |
+| `@lang_abbr("L")` | Mark attribute as language abbreviation XML attribute | Attribute-level |
+| `@xml_element_name("TAG")` | Specify custom XML element name for attributes | Attribute-level |
+| `@ref_conditional("TAG")` | Mark attribute as using -REF-CONDITIONAL pattern | Attribute-level |
+| `@instance_ref(flatten=True, list_type='single')` | Mark attribute as instance reference with flattening and list wrapping control | Attribute-level |
+
+---
+
 ### 1. `@xml_attribute`
 
 Mark a property/attribute to be serialized as an **XML attribute** instead of a child element.
@@ -473,6 +485,238 @@ class ExecutableEntity(ARObject):
 - Legacy schema versions with non-standard naming
 - Compatibility with existing ARXML files that use older naming
 
+---
+
+### 7. `@instance_ref(flatten: bool = False, list_type: str = 'single')`
+
+Mark an attribute as an **instance reference (iref)**. Instance references are wrapped in a `<TAG>-IREF` element. The `flatten` parameter controls whether children are flattened directly into the wrapper or wrapped in their own element.
+
+**When to use**:
+- For instance reference attributes in AUTOSAR connector classes (AssemblySwConnector, DelegationSwConnector)
+- When XML structure requires `<TAG>-IREF` wrapper for instance references
+- Common in SW Component Template (Composition) and System Template (InstanceRefs)
+
+**Location**: `decorators.py:181-237`
+
+#### Syntax
+
+**Flattened structure** (AssemblySwConnector):
+```python
+from armodel.serialization.decorators import instance_ref
+
+class AssemblySwConnector(SwConnector):
+    def __init__(self) -> None:
+        self._provider_iref: Optional[PPortInCompositionInstanceRef] = None
+        self._requester_iref: Optional[RPortInCompositionInstanceRef] = None
+
+    @property
+    @instance_ref(flatten=True)
+    def provider_iref(self) -> Optional[PPortInCompositionInstanceRef]:
+        """Get provider_iref instance reference."""
+        return self._provider_iref
+
+    @provider_iref.setter
+    def provider_iref(self, value: Optional[PPortInCompositionInstanceRef]) -> None:
+        """Set provider_iref instance reference."""
+        self._provider_iref = value
+
+    @property
+    @instance_ref(flatten=True)
+    def requester_iref(self) -> Optional[RPortInCompositionInstanceRef]:
+        """Get requester_iref instance reference."""
+        return self._requester_iref
+
+    @requester_iref.setter
+    def requester_iref(self, value: Optional[RPortInCompositionInstanceRef]) -> None:
+        """Set requester_iref instance reference."""
+        self._requester_iref = value
+```
+
+**Non-flattened structure** (DelegationSwConnector):
+```python
+from armodel.serialization.decorators import instance_ref
+
+class DelegationSwConnector(SwConnector):
+    def __init__(self) -> None:
+        self._inner_port_iref: Optional[PortInCompositionTypeInstanceRef] = None
+
+    @property
+    @instance_ref(flatten=False)
+    def inner_port_iref(self) -> Optional[PortInCompositionTypeInstanceRef]:
+        """Get inner_port_iref instance reference."""
+        return self._inner_port_iref
+
+    @inner_port_iref.setter
+    def inner_port_iref(self, value: Optional[PortInCompositionTypeInstanceRef]) -> None:
+        """Set inner_port_iref instance reference."""
+        self._inner_port_iref = value
+```
+
+#### Implementation Details
+
+1. **Decorator order**: `@instance_ref(flatten=True)` must come **before** `@property`
+2. **Parameters**:
+   - `flatten` (bool): If True, children are flattened directly into wrapper. If False, the element is wrapped. Default: False
+   - `list_type` (str): For list attributes, controls wrapping pattern. 'single' for single wrapper, 'multi' for multi-wrapper. Default: 'single'
+3. **Markers**: Sets `_is_instance_ref = True`, `_flatten = flatten`, and `_list_type = list_type` on the attribute
+4. **Property pattern**: Requires property getter/setter with private backing field
+5. **Automatic code generation**: The decorator is processed by the code generator to generate correct serialize/deserialize methods
+
+#### JSON Configuration
+
+The `@instance_ref` decorator is configured via JSON mapping data in the class definition:
+
+```json
+{
+  "name": "AssemblySwConnector",
+  "attributes": {
+    "provider": {
+      "type": "PPortInCompositionInstanceRef",
+      "multiplicity": "0..1",
+      "kind": "iref",
+      "is_ref": true,
+      "decorator": "instance_ref:flatten=True",
+      "note": "implemented by: PPortInCompositionInstanceRef"
+    },
+    "requester": {
+      "type": "RPortInCompositionInstanceRef",
+      "multiplicity": "0..1",
+      "kind": "iref",
+      "is_ref": true,
+      "decorator": "instance_ref:flatten=True",
+      "note": "implemented by: RPortInCompositionInstanceRef"
+    }
+  }
+}
+```
+
+**JSON decorator format**: `"decorator_name:decorator_params"`
+
+- **decorator_name**: The decorator function name (e.g., `instance_ref`)
+- **decorator_params**: Parameters passed to the decorator (e.g., `flatten=True`, `flatten=False`)
+
+#### Example Output
+
+**Flattened structure** (`flatten=True`):
+```xml
+<!-- AssemblySwConnector with @instance_ref(flatten=True) -->
+<PROVIDER-IREF>
+  <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/path/to/component</CONTEXT-COMPONENT-REF>
+  <TARGET-P-PORT-REF DEST="P-PORT-PROTOTYPE">/path/to/port</TARGET-P-PORT-REF>
+</PROVIDER-IREF>
+
+<REQUESTER-IREF>
+  <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/path/to/component</CONTEXT-COMPONENT-REF>
+  <TARGET-R-PORT-REF DEST="R-PORT-PROTOTYPE">/path/to/port</TARGET-R-PORT-REF>
+</REQUESTER-IREF>
+```
+
+**Non-flattened structure** (`flatten=False`):
+```xml
+<!-- DelegationSwConnector with @instance_ref(flatten=False) -->
+<INNER-PORT-IREF>
+  <R-PORT-IN-COMPOSITION-INSTANCE-REF>
+    <CONTEXT-COMPONENT-REF DEST="SW-COMPONENT-PROTOTYPE">/path/to/component</CONTEXT-COMPONENT-REF>
+    <TARGET-R-PORT-REF DEST="R-PORT-PROTOTYPE">/path/to/port</TARGET-R-PORT-REF>
+  </R-PORT-IN-COMPOSITION-INSTANCE-REF>
+</INNER-PORT-IREF>
+```
+
+**Without decorator** (for comparison):
+```xml
+<!-- Default behavior would serialize as child element -->
+<ASSEMBLY-SW-CONNECTOR>
+  <PROVIDER>
+    <CONTEXT-COMPONENT-REF>...</CONTEXT-COMPONENT-REF>
+    <TARGET-P-PORT-REF>...</TARGET-P-PORT-REF>
+  </PROVIDER>
+</ASSEMBLY-SW-CONNECTOR>
+```
+
+#### When to Use Flattened vs Non-Flattened
+
+| Mode | Use Case | Type | Example |
+|------|----------|------|---------|
+| `flatten=True` | Concrete instance reference types where XML structure is flattened | `PPortInCompositionInstanceRef`, `RPortInCompositionInstanceRef` | AssemblySwConnector |
+| `flatten=False` | Abstract instance reference types where concrete type is determined at runtime | `PortInCompositionTypeInstanceRef` | DelegationSwConnector |
+
+**Flattened (`flatten=True`)**:
+- Used for concrete instance reference types
+- Children are serialized directly inside the `<TAG>-IREF` wrapper
+- The concrete type is known at compile time
+- Common in `AssemblySwConnector` for `provider` and `requester` attributes
+
+**Non-flattened (`flatten=False`)**:
+- Used for abstract instance reference types
+- The element is wrapped in its own XML element
+- The concrete type is determined at runtime via XML tag
+- Common in `DelegationSwConnector` for `innerPort` attribute
+
+#### Common Use Cases
+
+- **AssemblySwConnector.provider**: PPortInCompositionInstanceRef with flattened structure
+- **AssemblySwConnector.requester**: RPortInCompositionInstanceRef with flattened structure
+- **DelegationSwConnector.innerPort**: PortInCompositionTypeInstanceRef with non-flattened structure
+- **Collection.collectedInstance**: AnyInstanceRef with flattened structure
+- **Collection.sourceInstances**: AnyInstanceRef with flattened structure
+
+#### List Handling with `list_type` Parameter
+
+For list attributes (multiplicity `*`), the `list_type` parameter controls how list items are wrapped:
+
+**`list_type='single'` (default)**: Single wrapper pattern
+- Creates a single `<TAG>-IREF` wrapper containing all list items
+- All items are flattened together inside the wrapper
+- Example: `@instance_ref(flatten=True)` or `@instance_ref(flatten=True, list_type='single')`
+
+**`list_type='multi'`**: Multi-wrapper pattern
+- Creates a `<TAG>-IREFS` container with multiple `<TAG>-IREF` children
+- Each list item is wrapped in its own `<TAG>-IREF` element
+- Example: `@instance_ref(flatten=True, list_type='multi')`
+
+**JSON Configuration**:
+```json
+{
+  "components": {
+    "type": "ComponentInSystemInstanceRef",
+    "multiplicity": "*",
+    "kind": "iref",
+    "is_ref": true,
+    "decorator": "instance_ref:flatten=True,list_type=multi"
+  }
+}
+```
+
+**Example Output - Single Wrapper** (`list_type='single'`):
+```xml
+<COMPONENTS-IREF>
+  <CONTEXT-COMPOSITION-REF>...</CONTEXT-COMPOSITION-REF>
+  <TARGET-COMPONENT-REF>...</TARGET-COMPONENT-REF>
+  <CONTEXT-COMPOSITION-REF>...</CONTEXT-COMPOSITION-REF>
+  <TARGET-COMPONENT-REF>...</TARGET-COMPONENT-REF>
+</COMPONENTS-IREF>
+```
+
+**Example Output - Multi Wrapper** (`list_type='multi'`):
+```xml
+<COMPONENT-IREFS>
+  <COMPONENT-IREF>
+    <CONTEXT-COMPOSITION-REF>...</CONTEXT-COMPOSITION-REF>
+    <TARGET-COMPONENT-REF>...</TARGET-COMPONENT-REF>
+  </COMPONENT-IREF>
+  <COMPONENT-IREF>
+    <CONTEXT-COMPOSITION-REF>...</CONTEXT-COMPOSITION-REF>
+    <TARGET-COMPONENT-REF>...</TARGET-COMPONENT-REF>
+  </COMPONENT-IREF>
+</COMPONENT-IREFS>
+```
+
+**Use Cases**:
+- `list_type='single'`: Most common pattern for flattened lists
+- `list_type='multi'`: Required when AUTOSAR schema specifies `<TAG>-IREFS` container pattern
+
+
+
 ## JSON Configuration for Decorators
 
 Decorators can be configured via JSON mapping data in the AUTOSAR class definitions. This allows the code generator to automatically generate the correct decorator usage.
@@ -506,6 +750,8 @@ Decorators can be configured via JSON mapping data in the AUTOSAR class definiti
 | `xml_element_name` | `"decorator": "xml_element_name:PROVIDED-ENTRYS"` | Custom element name |
 | `xml_element_name` | `"decorator": "xml_element_name:TAG1/TAG2/TAG3"` | Multi-level nesting |
 | `ref_conditional` | `"decorator": "ref_conditional:FIBEX-ELEMENTS"` | -REF-CONDITIONAL pattern |
+| `instance_ref` | `"decorator": "instance_ref:flatten=True"` | Instance reference (flattened) |
+| `instance_ref` | `"decorator": "instance_ref:flatten=False"` | Instance reference (non-flattened) |
 | `lang_prefix` | `"decorator": "lang_prefix:L-10"` | Language-specific content |
 | `lang_abbr` | `"decorator": "lang_abbr:L"` | Language abbreviation attribute |
 | `xml_attribute` | `"decorator": "xml_attribute"` | XML attribute (auto-generated name) |
@@ -513,10 +759,10 @@ Decorators can be configured via JSON mapping data in the AUTOSAR class definiti
 
 ### Special Cases
 
-**Attribute-level decorators** (ref_conditional, xml_element_name, xml_attribute, lang_prefix, lang_abbr):
+**Attribute-level decorators** (ref_conditional, xml_element_name, xml_attribute, lang_prefix, lang_abbr, instance_ref):
 - Use the `decorator` field with format `"name:params"`
 - The code generator applies the decorator to the generated property
-- For xml_attribute, lang_prefix, and lang_abbr, params are required (e.g., "xml_attribute:T", "lang_prefix:L-10", "lang_abbr:L")
+- For xml_attribute, lang_prefix, lang_abbr, and instance_ref, params are required (e.g., "xml_attribute:T", "lang_prefix:L-10", "lang_abbr:L", "instance_ref:flatten=True")
 
 ### Example JSON Configurations
 
@@ -621,6 +867,42 @@ Decorators can be configured via JSON mapping data in the AUTOSAR class definiti
       "decorator": "xml_attribute",
       "is_ref": false,
       "note": "AUTOSAR schema version"
+    }
+  }
+}
+```
+
+#### instance_ref for flattened structure
+
+```json
+{
+  "name": "AssemblySwConnector",
+  "attributes": {
+    "provider": {
+      "type": "PPortInCompositionInstanceRef",
+      "multiplicity": "0..1",
+      "kind": "iref",
+      "is_ref": true,
+      "decorator": "instance_ref:flatten=True",
+      "note": "implemented by: PPortInCompositionInstanceRef"
+    }
+  }
+}
+```
+
+#### instance_ref for non-flattened structure
+
+```json
+{
+  "name": "DelegationSwConnector",
+  "attributes": {
+    "innerPort": {
+      "type": "PortInCompositionTypeInstanceRef",
+      "multiplicity": "0..1",
+      "kind": "iref",
+      "is_ref": true,
+      "decorator": "instance_ref:flatten=False",
+      "note": "by: PortInCompositionTypeInstanceRef"
     }
   }
 }
@@ -752,6 +1034,7 @@ Each decorator sets specific marker attributes that the serialization framework 
 | `@lang_abbr(attr)` | `_language_abbr`, `_xml_attr_name` | `bool`, `str` |
 | `@xml_element_name(tag)` | `_xml_element_name`, `_xml_tag` | `bool`, `str` |
 | `@ref_conditional(tag)` | `_is_ref_conditional`, `_xml_tag` | `bool`, `str` |
+| `@instance_ref(flatten, list_type)` | `_is_instance_ref`, `_flatten`, `_list_type` | `bool`, `bool`, `str` |
 
 ## Usage Guidelines
 
@@ -762,6 +1045,8 @@ Each decorator sets specific marker attributes that the serialization framework 
 | XML attribute needed | `@xml_attribute` | `<ELEMENT uuid="abc">` |
 | AUTOSAR atpVariation pattern (class-level) | `@atp_variant()` | SwDataDefProps with VARIANTS/CONDITIONAL wrappers |
 | AUTOSAR atpVariation pattern (reference lists) | `@ref_conditional("TAG")` | System.fibexElements with -REF-CONDITIONAL wrappers |
+| Instance reference (flattened) | `@instance_ref(flatten=True)` | AssemblySwConnector with <PROVIDER-IREF> |
+| Instance reference (non-flattened) | `@instance_ref(flatten=False)` | DelegationSwConnector with <INNER-PORT-IREF> |
 | Language-specific content | `@lang_prefix("L-N")` | MultiLanguagePlainText with L-10 wrapper |
 | Language abbreviation attribute | `@lang_abbr("L")` | LanguageSpecific with L attribute |
 | Non-standard element name | `@xml_element_name("TAG")` | BswModuleDescription with PROVIDED-ENTRYS |

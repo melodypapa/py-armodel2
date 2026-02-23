@@ -840,11 +840,29 @@ class {class_name}(ABC):
                 params = attr_info.get("decorator_params", "")
                 # Determine Python type for this attribute
                 python_type = get_python_type(attr_type, multiplicity, package_data, is_ref, kind)
-                # Extract flatten parameter from decorator_params
-                flatten_param = "flatten=True" if "flatten=True" in params else "flatten=False"
+                # Parse all decorator params and pass them to @instance_ref
+                # Convert comma-separated params to function call format with proper quoting
+                # e.g., "flatten=True,list_type=multi" -> "flatten=True, list_type='multi'"
+                decorator_args = ""
+                if params:
+                    param_list = [p.strip() for p in params.split(",")]
+                    formatted_params = []
+                    for param in param_list:
+                        if "=" in param:
+                            key, value = param.split("=", 1)
+                            # Quote string values, keep boolean values unquoted
+                            if value in ["True", "False"]:
+                                formatted_params.append(f"{key}={value}")
+                            else:
+                                formatted_params.append(f"{key}='{value}'")
+                        else:
+                            formatted_params.append(param)
+                    decorator_args = ", ".join(formatted_params)
+                else:
+                    decorator_args = "flatten=False"
                 # Generate property with instance_ref decorator
                 code += f'''    @property
-    @instance_ref({flatten_param})
+    @instance_ref({decorator_args})
     def {python_name}(self) -> {python_type}:
         """Get {python_name} instance reference."""
         return self.{private_name}
@@ -1059,18 +1077,52 @@ def _generate_deserialize_method(
                 
                 # Determine if this should be flattened based on decorator parameter
                 should_flatten = False
+                list_type = "single"  # Default: single-wrapper behavior
                 if decorator_name == "instance_ref" and decorator_params:
-                    # Parse decorator params (format: "flatten=True" or "flatten=False")
-                    if "flatten=True" in decorator_params:
-                        should_flatten = True
-                    elif "flatten=False" in decorator_params:
-                        should_flatten = False
+                    # Parse decorator params (format: "flatten=True,list_type=multi" or "flatten=False")
+                    # Parameters are comma-separated
+                    param_list = [p.strip() for p in decorator_params.split(",")]
+                    for param in param_list:
+                        if param == "flatten=True":
+                            should_flatten = True
+                        elif param == "flatten=False":
+                            should_flatten = False
+                        elif param == "list_type=multi":
+                            list_type = "multi"
+                        elif param == "list_type=single":
+                            list_type = "single"
 
-                iref_wrapper_tag = f"{xml_tag}-IREF"
+                # Determine iref_wrapper_tag based on list_type
+                # For multi-wrapper lists, use singular form for wrapper tag (e.g., COMPONENT-IREF, not COMPONENTS-IREF)
+                if multiplicity == "*" and list_type == "multi":
+                    singular_tag = xml_tag[:-1] if xml_tag.endswith("S") else xml_tag
+                    iref_wrapper_tag = f"{singular_tag}-IREF"
+                else:
+                    iref_wrapper_tag = f"{xml_tag}-IREF"
 
-                if should_flatten:
-                    # Flattened type: deserialize wrapper element directly as the type
-                    code += f'''        # Parse {python_name} (instance reference from wrapper "{iref_wrapper_tag}")
+                if multiplicity == "*":
+                                    # List type
+                                    if list_type == "multi":
+                                        # Multi-wrapper list: deserialize from <TAG>-IREFS container with multiple <TAG>-IREF children
+                                        # Use singular form for container tag (e.g., COMPONENT-IREFS, not COMPONENTS-IREFS)
+                                        singular_tag = xml_tag[:-1] if xml_tag.endswith("S") else xml_tag
+                                        irefs_container_tag = f"{singular_tag}-IREFS"
+                                        code += f'''        # Parse {python_name} (multi-wrapper list from "{irefs_container_tag}")
+        obj.{python_name} = []
+        irefs_container = SerializationHelper.find_child_element(element, "{irefs_container_tag}")
+        if irefs_container is not None:
+            for iref_wrapper in irefs_container:
+                if SerializationHelper.strip_namespace(iref_wrapper.tag) == "{iref_wrapper_tag}":
+                    # Deserialize each iref wrapper as the type (flattened structure)
+                    child_value = SerializationHelper.deserialize_by_tag(iref_wrapper, "{effective_type}")
+                    if child_value is not None:
+                        obj.{python_name}.append(child_value)
+
+'''
+                                    else:
+                                        # Single-wrapper list: deserialize from single <TAG>-IREF wrapper
+                                        if should_flatten:
+                                            code += f'''        # Parse {python_name} (list from wrapper "{iref_wrapper_tag}")
         wrapper = SerializationHelper.find_child_element(element, "{iref_wrapper_tag}")
         if wrapper is not None:
             # Deserialize wrapper element directly as the type (flattened structure)
@@ -1078,9 +1130,33 @@ def _generate_deserialize_method(
             obj.{python_name} = {python_name}_value
 
 '''
+                                        else:
+                                            code += f'''        # Parse {python_name} (list from wrapper "{iref_wrapper_tag}")
+        obj.{python_name} = []
+        wrapper = SerializationHelper.find_child_element(element, "{iref_wrapper_tag}")
+        if wrapper is not None:
+            # Get all child elements (each wrapped in its own element)
+            for inner_elem in wrapper:
+                {_generate_value_extraction_code(effective_type, "inner_elem", package_data, python_name, is_ref, kind)}
+                if {python_name}_value is not None:
+                    obj.{python_name}.append({python_name}_value)
+
+'''
                 else:
-                    # Non-flattened type: deserialize from child element
-                    code += f'''        # Parse {python_name} (instance reference from wrapper "{iref_wrapper_tag}")
+                    # Single item type
+                    if should_flatten:
+                        # Flattened type: deserialize wrapper element directly as the type
+                        code += f'''        # Parse {python_name} (instance reference from wrapper "{iref_wrapper_tag}")
+        wrapper = SerializationHelper.find_child_element(element, "{iref_wrapper_tag}")
+        if wrapper is not None:
+            # Deserialize wrapper element directly as the type (flattened structure)
+            {python_name}_value = SerializationHelper.deserialize_by_tag(wrapper, "{effective_type}")
+            obj.{python_name} = {python_name}_value
+
+'''
+                    else:
+                        # Non-flattened type: deserialize from child element
+                        code += f'''        # Parse {python_name} (instance reference from wrapper "{iref_wrapper_tag}")
         wrapper = SerializationHelper.find_child_element(element, "{iref_wrapper_tag}")
         if wrapper is not None:
             # Get the first child element (the actual reference)
@@ -2798,25 +2874,60 @@ def _generate_serialize_method(
             elif kind == "iref":
                 # Handle iref kind - instance reference with special wrapper
                 # The outer wrapper is attribute name + -IREF
-                # Check decorator for flatten parameter
+                # Check decorator for flatten and list_type parameters
                 decorator_name = attr_info.get("decorator_name")
                 decorator_params = attr_info.get("decorator_params")
                 
                 # Determine if this should be flattened based on decorator parameter
                 should_flatten = False
+                list_type = "single"  # Default: single-wrapper behavior
                 if decorator_name == "instance_ref" and decorator_params:
-                    # Parse decorator params (format: "flatten=True" or "flatten=False")
-                    if "flatten=True" in decorator_params:
-                        should_flatten = True
-                    elif "flatten=False" in decorator_params:
-                        should_flatten = False
+                    # Parse decorator params (format: "flatten=True,list_type=multi" or "flatten=False")
+                    # Parameters are comma-separated
+                    param_list = [p.strip() for p in decorator_params.split(",")]
+                    for param in param_list:
+                        if param == "flatten=True":
+                            should_flatten = True
+                        elif param == "flatten=False":
+                            should_flatten = False
+                        elif param == "list_type=multi":
+                            list_type = "multi"
+                        elif param == "list_type=single":
+                            list_type = "single"
 
-                iref_wrapper_tag = f"{xml_tag}-IREF"
+                # Determine iref_wrapper_tag based on list_type
+                # For multi-wrapper lists, use singular form for wrapper tag (e.g., COMPONENT-IREF, not COMPONENTS-IREF)
+                if multiplicity == "*" and list_type == "multi":
+                    singular_tag = xml_tag[:-1] if xml_tag.endswith("S") else xml_tag
+                    iref_wrapper_tag = f"{singular_tag}-IREF"
+                else:
+                    iref_wrapper_tag = f"{xml_tag}-IREF"
                 if should_flatten:
                     # Flattened type: flatten children directly into iref wrapper
                     if multiplicity == "*":
-                        # List type - check if not empty
-                        code += f'''        # Serialize {python_name} (list of instance references with wrapper "{iref_wrapper_tag}")
+                        if list_type == "multi":
+                            # Multi-wrapper list: create <TAG>-IREFS container with multiple <TAG>-IREF children
+                            # Use singular form for container tag (e.g., COMPONENT-IREFS, not COMPONENTS-IREFS)
+                            singular_tag = xml_tag[:-1] if xml_tag.endswith("S") else xml_tag
+                            irefs_container_tag = f"{singular_tag}-IREFS"
+                            code += f'''        # Serialize {python_name} (list of instance references with multi-wrapper pattern)
+        if self.{python_name}:
+            irefs_container = ET.Element("{irefs_container_tag}")
+            for item in self.{python_name}:
+                serialized = SerializationHelper.serialize_item(item, "{effective_type}")
+                if serialized is not None:
+                    # Wrap each item in its own IREF wrapper
+                    iref_wrapper = ET.Element("{iref_wrapper_tag}")
+                    # Flatten: append children of serialized element directly to iref wrapper
+                    for child in serialized:
+                        iref_wrapper.append(child)
+                    irefs_container.append(iref_wrapper)
+            elem.append(irefs_container)
+
+'''
+                        else:
+                            # Single-wrapper list: all items in one wrapper
+                            code += f'''        # Serialize {python_name} (list of instance references with wrapper "{iref_wrapper_tag}")
         if self.{python_name}:
             serialized = SerializationHelper.serialize_item(self.{python_name}, "{effective_type}")
             if serialized is not None:

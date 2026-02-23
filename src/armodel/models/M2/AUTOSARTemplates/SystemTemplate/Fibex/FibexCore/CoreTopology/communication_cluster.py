@@ -11,6 +11,9 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization.decorators import atp_variant
 
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.ar_element import (
+    ARElement,
+)
 from armodel.models.M2.builder_base import BuilderBase
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveUnlimitedInteger,
@@ -24,7 +27,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.serialization import SerializationHelper
 
 
-class CommunicationCluster(ARObject, ABC):
+class CommunicationCluster(ARElement, ABC):
     """AUTOSAR CommunicationCluster."""
 
     @property

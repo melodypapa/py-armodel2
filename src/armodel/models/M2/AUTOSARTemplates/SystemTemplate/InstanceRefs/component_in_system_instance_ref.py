@@ -6,13 +6,16 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_InstanceRefs.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.builder_base import BuilderBase
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.root_sw_composition_prototype import (
     RootSwCompositionPrototype,
+)
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.sw_component_prototype import (
+    SwComponentPrototype,
 )
 
 if TYPE_CHECKING:
@@ -37,14 +40,16 @@ class ComponentInSystemInstanceRef(ARObject):
         return False
 
     base_ref: Optional[ARRef]
-    context_ref: Optional[ARRef]
-    target_ref: Any
+    context_component_ref: Optional[ARRef]
+    context_composition_ref: Optional[ARRef]
+    target_component_ref: ARRef
     def __init__(self) -> None:
         """Initialize ComponentInSystemInstanceRef."""
         super().__init__()
         self.base_ref: Optional[ARRef] = None
-        self.context_ref: Optional[ARRef] = None
-        self.target_ref: Any = None
+        self.context_component_ref: Optional[ARRef] = None
+        self.context_composition_ref: Optional[ARRef] = None
+        self.target_component_ref: ARRef = None
 
     def serialize(self) -> ET.Element:
         """Serialize ComponentInSystemInstanceRef to XML element.
@@ -84,12 +89,12 @@ class ComponentInSystemInstanceRef(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize context_ref
-        if self.context_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.context_ref, "RootSwCompositionPrototype")
+        # Serialize context_component_ref
+        if self.context_component_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.context_component_ref, "SwComponentPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CONTEXT-REF")
+                wrapped = ET.Element("CONTEXT-COMPONENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -98,12 +103,26 @@ class ComponentInSystemInstanceRef(ARObject):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize target_ref
-        if self.target_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.target_ref, "Any")
+        # Serialize context_composition_ref
+        if self.context_composition_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.context_composition_ref, "RootSwCompositionPrototype")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("TARGET-REF")
+                wrapped = ET.Element("CONTEXT-COMPOSITION-REF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
+
+        # Serialize target_component_ref
+        if self.target_component_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.target_component_ref, "SwComponentPrototype")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("TARGET-COMPONENT-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -133,17 +152,23 @@ class ComponentInSystemInstanceRef(ARObject):
             base_ref_value = ARRef.deserialize(child)
             obj.base_ref = base_ref_value
 
-        # Parse context_ref
-        child = SerializationHelper.find_child_element(element, "CONTEXT-REF")
+        # Parse context_component_ref
+        child = SerializationHelper.find_child_element(element, "CONTEXT-COMPONENT-REF")
         if child is not None:
-            context_ref_value = ARRef.deserialize(child)
-            obj.context_ref = context_ref_value
+            context_component_ref_value = ARRef.deserialize(child)
+            obj.context_component_ref = context_component_ref_value
 
-        # Parse target_ref
-        child = SerializationHelper.find_child_element(element, "TARGET-REF")
+        # Parse context_composition_ref
+        child = SerializationHelper.find_child_element(element, "CONTEXT-COMPOSITION-REF")
         if child is not None:
-            target_ref_value = ARRef.deserialize(child)
-            obj.target_ref = target_ref_value
+            context_composition_ref_value = ARRef.deserialize(child)
+            obj.context_composition_ref = context_composition_ref_value
+
+        # Parse target_component_ref
+        child = SerializationHelper.find_child_element(element, "TARGET-COMPONENT-REF")
+        if child is not None:
+            target_component_ref_value = ARRef.deserialize(child)
+            obj.target_component_ref = target_component_ref_value
 
         return obj
 
@@ -172,8 +197,8 @@ class ComponentInSystemInstanceRefBuilder(BuilderBase):
         self._obj.base = value
         return self
 
-    def with_context(self, value: Optional[RootSwCompositionPrototype]) -> "ComponentInSystemInstanceRefBuilder":
-        """Set context attribute.
+    def with_context_component(self, value: Optional[SwComponentPrototype]) -> "ComponentInSystemInstanceRefBuilder":
+        """Set context_component attribute.
 
         Args:
             value: Value to set
@@ -183,11 +208,25 @@ class ComponentInSystemInstanceRefBuilder(BuilderBase):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.context = value
+        self._obj.context_component = value
         return self
 
-    def with_target(self, value: any (SwComponent)) -> "ComponentInSystemInstanceRefBuilder":
-        """Set target attribute.
+    def with_context_composition(self, value: Optional[RootSwCompositionPrototype]) -> "ComponentInSystemInstanceRefBuilder":
+        """Set context_composition attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.context_composition = value
+        return self
+
+    def with_target_component(self, value: SwComponentPrototype) -> "ComponentInSystemInstanceRefBuilder":
+        """Set target_component attribute.
 
         Args:
             value: Value to set
@@ -197,7 +236,7 @@ class ComponentInSystemInstanceRefBuilder(BuilderBase):
         """
         if value is None and not False:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.target = value
+        self._obj.target_component = value
         return self
 
 

@@ -72,7 +72,7 @@
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Can::CanTopology",
       "is_abstract": true,
       "atp_type": "atpVariation",
-      "parent": null,
+      "parent": "CommunicationCluster",
       "bases": [
         "ARElement",
         "ARObject",
@@ -135,7 +135,7 @@
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::Fibex4Can::CanTopology",
       "is_abstract": false,
       "atp_type": "atpVariation",
-      "parent": null,
+      "parent": "AbstractCanCluster",
       "bases": [
         "ARElement",
         "ARObject",

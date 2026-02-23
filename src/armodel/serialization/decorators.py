@@ -203,12 +203,13 @@ def ref_conditional(xml_tag: str) -> Callable[[Any], Any]:
     return decorator
 
 
-def instance_ref(flatten: bool = False) -> Callable[[Any], Any]:
+def instance_ref(flatten: bool = False, list_type: str = "single") -> Callable[[Any], Any]:
     """Decorator to mark an attribute as an instance reference (iref).
 
     Instance references are wrapped in a <TAG>-IREF element.
     The flatten parameter controls whether children are flattened directly into
     the wrapper or wrapped in their own element.
+    The list_type parameter controls how list attributes are serialized.
 
     Usage (flattened - AssemblySwConnector):
         @instance_ref(flatten=True)
@@ -236,15 +237,37 @@ def instance_ref(flatten: bool = False) -> Callable[[Any], Any]:
           </R-PORT-IN-COMPOSITION-INSTANCE-REF>
         </INNER-PORT-IREF>
 
+    Usage (multi-wrapper list - SwcToEcuMapping):
+        @instance_ref(flatten=True, list_type="multi")
+        @property
+        def component_irefs(self) -> list[ComponentInSystemInstanceRef]:
+            return self._component_irefs
+
+    Serializes as:
+        <COMPONENT-IREFS>
+          <COMPONENT-IREF>
+            <CONTEXT-COMPOSITION-REF>...</CONTEXT-COMPOSITION-REF>
+            <TARGET-COMPONENT-REF>...</TARGET-COMPONENT-REF>
+          </COMPONENT-IREF>
+          <COMPONENT-IREF>
+            <CONTEXT-COMPOSITION-REF>...</CONTEXT-COMPOSITION-REF>
+            <TARGET-COMPONENT-REF>...</TARGET-COMPONENT-REF>
+          </COMPONENT-IREF>
+        </COMPONENT-IREFS>
+
     Args:
         flatten: If True, children are flattened directly into wrapper.
                 If False, the element is wrapped. Default: False
+        list_type: For list attributes only. "single" for single-wrapper behavior
+                  (all items in one wrapper), "multi" for multi-wrapper behavior
+                  (each item in its own wrapper). Default: "single"
 
     Returns:
-        Decorator that sets _is_instance_ref and _flatten markers on the attribute
+        Decorator that sets _is_instance_ref, _flatten, and _list_type markers on the attribute
     """
     def decorator(attr_or_func: Any) -> Any:
         attr_or_func._is_instance_ref = True  # type: ignore[union-attr]
         attr_or_func._flatten = flatten  # type: ignore[union-attr]
+        attr_or_func._list_type = list_type  # type: ignore[union-attr]
         return attr_or_func
     return decorator
