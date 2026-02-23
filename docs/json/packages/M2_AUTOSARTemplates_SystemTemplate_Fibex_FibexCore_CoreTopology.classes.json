@@ -6,7 +6,7 @@
       "package": "M2::AUTOSARTemplates::SystemTemplate::Fibex::FibexCore::CoreTopology",
       "is_abstract": true,
       "atp_type": "atpVariation",
-      "parent": null,
+      "parent": "ARElement",
       "bases": [
         "ARElement",
         "ARObject",
