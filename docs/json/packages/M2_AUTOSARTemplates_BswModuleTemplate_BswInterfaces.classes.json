@@ -322,7 +322,6 @@
           "multiplicity": "0..1",
           "kind": "ref",
           "is_ref": true,
-          "decorator": "atp_variant:ref_conditional",
           "note": "The underlying BswModuleEntry. xml.sequenceOffset=5"
         },
         "isReentrant": {
