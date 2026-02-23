@@ -31,17 +31,17 @@ class EngineeringObject(ARObject, ABC):
         """
         return True
 
+    short_label: NameToken
     category: NameToken
     domain: Optional[NameToken]
     revision_labels: list[RevisionLabelString]
-    short_label: NameToken
     def __init__(self) -> None:
         """Initialize EngineeringObject."""
         super().__init__()
+        self.short_label: NameToken = None
         self.category: NameToken = None
         self.domain: Optional[NameToken] = None
         self.revision_labels: list[RevisionLabelString] = []
-        self.short_label: NameToken = None
 
     def serialize(self) -> ET.Element:
         """Serialize EngineeringObject to XML element.
@@ -66,6 +66,20 @@ class EngineeringObject(ARObject, ABC):
         # Copy all children from parent element
         for child in parent_elem:
             elem.append(child)
+
+        # Serialize short_label
+        if self.short_label is not None:
+            serialized = SerializationHelper.serialize_item(self.short_label, "NameToken")
+            if serialized is not None:
+                # Wrap with correct tag
+                wrapped = ET.Element("SHORT-LABEL")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
+                elem.append(wrapped)
 
         # Serialize category
         if self.category is not None:
@@ -112,20 +126,6 @@ class EngineeringObject(ARObject, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize short_label
-        if self.short_label is not None:
-            serialized = SerializationHelper.serialize_item(self.short_label, "NameToken")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("SHORT-LABEL")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
-
         return elem
 
     @classmethod
@@ -140,6 +140,12 @@ class EngineeringObject(ARObject, ABC):
         """
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EngineeringObject, cls).deserialize(element)
+
+        # Parse short_label
+        child = SerializationHelper.find_child_element(element, "SHORT-LABEL")
+        if child is not None:
+            short_label_value = child.text
+            obj.short_label = short_label_value
 
         # Parse category
         child = SerializationHelper.find_child_element(element, "CATEGORY")
@@ -162,12 +168,6 @@ class EngineeringObject(ARObject, ABC):
                 child_value = child.text
                 if child_value is not None:
                     obj.revision_labels.append(child_value)
-
-        # Parse short_label
-        child = SerializationHelper.find_child_element(element, "SHORT-LABEL")
-        if child is not None:
-            short_label_value = child.text
-            obj.short_label = short_label_value
 
         return obj
 

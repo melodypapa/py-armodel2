@@ -871,31 +871,54 @@ def _generate_deserialize_method(
                     # Check if xml_element_name decorator is present
                     decorator_name = attr_info.get("decorator_name")
                     if decorator_name == "xml_element_name":
-                        # Use the explicitly specified container tag from decorator params
-                        container_tag = attr_info.get("decorator_params", xml_tag)
+                        # Parse decorator params: can be single value (container tag) or two values (container tag, ref tag)
+                        decorator_params = attr_info.get("decorator_params", xml_tag)
+                        if isinstance(decorator_params, str) and "," in decorator_params:
+                            # Two parameters: container tag and ref tag
+                            container_tag, ref_tag = decorator_params.split(",", 1)
+                            container_tag = container_tag.strip()
+                            ref_tag = ref_tag.strip()
+                        else:
+                            # Single parameter: just container tag
+                            container_tag = decorator_params if isinstance(decorator_params, str) else xml_tag
+                            ref_tag = None
                     else:
                         # Container element (e.g., AR-PACKAGES, ELEMENTS, USE-INSTEAD-REFS)
                         # For reference lists (is_ref=True), the container tag should be singular + -REFS
                         # For non-reference lists, the container tag is the plural form (e.g., LIFE-CYCLE-INFOS)
                         container_tag = xml_tag
+                        ref_tag = None
                         if is_ref:
                             # For reference lists, the container tag is singular form + -REFS
                             # e.g., USE-INSTEADS -> USE-INSTEAD-REFS
                             singular = xml_tag[:-1]  # Remove trailing 'S'
                             container_tag = f"{singular}-REFS"
-                    
+
                     code += f'''        # Parse {python_name} (list from container "{container_tag}")
         obj.{python_name} = []
         container = SerializationHelper.find_child_element(element, "{container_tag}")
         if container is not None:
             for child in container:
 '''
-                    
+
                     # For reference lists, check if child is a reference element and use ARRef.deserialize()
                     # For primitive/enum lists, extract text directly
                     # For non-reference class lists, deserialize each child element dynamically based on its tag
                     if is_ref:
-                        code += '''                # Check if child is a reference element (ends with -REF or -TREF)
+                        # Use the ref_tag from decorator if specified to match specific child tag
+                        # Otherwise, check for any -REF or -TREF suffix
+                        if ref_tag:
+                            code += f'''                # Check if child matches expected reference tag "{ref_tag}"
+                child_tag = SerializationHelper.strip_namespace(child.tag)
+                if child_tag == "{ref_tag}":
+                    # Use ARRef.deserialize() for reference elements
+                    child_value = ARRef.deserialize(child)
+                else:
+                    # Deserialize each child element dynamically based on its tag
+                    child_value = SerializationHelper.deserialize_by_tag(child, None)
+'''
+                        else:
+                            code += '''                # Check if child is a reference element (ends with -REF or -TREF)
                 child_tag = SerializationHelper.strip_namespace(child.tag)
                 if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
@@ -2382,20 +2405,30 @@ def _generate_serialize_method(
                     # Check if xml_element_name decorator is present
                     decorator_name = attr_info.get("decorator_name")
                     if decorator_name == "xml_element_name":
-                        # Use the explicitly specified container tag from decorator params
-                        container_tag = attr_info.get("decorator_params", xml_tag)
+                        # Parse decorator params: can be single value (container tag) or two values (container tag, ref tag)
+                        decorator_params = attr_info.get("decorator_params", xml_tag)
+                        if isinstance(decorator_params, str) and "," in decorator_params:
+                            # Two parameters: container tag and ref tag
+                            container_tag, ref_tag = decorator_params.split(",", 1)
+                            container_tag = container_tag.strip()
+                            ref_tag = ref_tag.strip()
+                        else:
+                            # Single parameter: just container tag
+                            container_tag = decorator_params if isinstance(decorator_params, str) else xml_tag
+                            ref_tag = None
                     else:
                         # Container element (e.g., AR-PACKAGES, ELEMENTS, USE-INSTEAD-REFS)
                         # For reference lists (is_ref=True), the container tag should be singular + -REFS
                         # For non-reference lists, the container tag is the plural form (e.g., LIFE-CYCLE-INFOS)
                         container_tag = xml_tag
+                        ref_tag = None
                         if is_ref:
                             # For reference lists, the container tag is singular form + -REFS
                             # e.g., USE-INSTEADS -> USE-INSTEAD-REFS
                             # Child tag is singular form + -REF
                             singular = xml_tag[:-1]  # Remove trailing 'S'
                             container_tag = f"{singular}-REFS"
-                    
+
                     code += f'''        # Serialize {python_name} (list to container "{container_tag}")
         if self.{python_name}:
             wrapper = ET.Element("{container_tag}")
@@ -2403,18 +2436,22 @@ def _generate_serialize_method(
                 serialized = SerializationHelper.serialize_item(item, "{effective_type}")
                 if serialized is not None:
 '''
-                    
+
                     # For reference lists, wrap each item in a child element with -REF suffix
                     # For primitive/enum lists, wrap each item in a child element with singular tag name
                     # For complex object lists, append the serialized item directly (it already has correct tag)
                     if is_ref:
-                        singular = xml_tag[:-1]  # Remove trailing 'S'
-                        # Use the kind field from JSON to determine the suffix
-                        # "tref" -> -TREF, "ref" -> -REF
-                        if kind == "tref":
-                            child_tag = f"{singular}-TREF"
+                        # Use the ref_tag from decorator if specified, otherwise generate from xml_tag
+                        if ref_tag:
+                            child_tag = ref_tag
                         else:
-                            child_tag = f"{singular}-REF"
+                            singular = xml_tag[:-1]  # Remove trailing 'S'
+                            # Use the kind field from JSON to determine the suffix
+                            # "tref" -> -TREF, "ref" -> -REF
+                            if kind == "tref":
+                                child_tag = f"{singular}-TREF"
+                            else:
+                                child_tag = f"{singular}-REF"
                         code += f'''                    child_elem = ET.Element("{child_tag}")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)

@@ -82,6 +82,13 @@
         }
       ],
       "attributes": {
+        "shortLabel": {
+          "type": "NameToken",
+          "multiplicity": "1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This is the short name of the engineering object. Note"
+        },
         "category": {
           "type": "NameToken",
           "multiplicity": "1",
@@ -102,13 +109,6 @@
           "kind": "attribute",
           "is_ref": false,
           "note": "This is a revision label denoting a particular version of the"
-        },
-        "shortLabel": {
-          "type": "NameToken",
-          "multiplicity": "1",
-          "kind": "attribute",
-          "is_ref": false,
-          "note": "This is the short name of the engineering object. Note"
         }
       }
     }

@@ -177,6 +177,7 @@
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
+          "decorator": "xml_element_name:CAN-ENTER-EXCLUSIVE-AREA-REFS,CAN-ENTER-EXCLUSIVE-AREA-REF",
           "note": "This means that the executable entity can enter/leave the"
         },
         "exclusiveAreaNestingOrders": {
