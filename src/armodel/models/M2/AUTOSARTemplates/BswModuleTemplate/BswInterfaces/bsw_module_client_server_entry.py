@@ -8,7 +8,6 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswInterfa
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
-from armodel.serialization.decorators import atp_variant
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
     Referrable,
@@ -45,17 +44,6 @@ class BswModuleClientServerEntry(Referrable):
         self.encapsulated_entry_ref: Optional[ARRef] = None
         self.is_reentrant: Optional[Boolean] = None
         self.is_synchronous: Optional[Boolean] = None
-    @property
-    @atp_variant("ref_conditional")
-    def encapsulated_entry_ref(self) -> Optional[ARRef]:
-        """Get encapsulated_entry_ref with atp_variant pattern (ref_conditional)."""
-        return self._encapsulated_entry_ref
-
-    @encapsulated_entry_ref.setter
-    def encapsulated_entry_ref(self, value: Optional[ARRef]) -> None:
-        """Set encapsulated_entry_ref with atp_variant pattern (ref_conditional)."""
-        self._encapsulated_entry_ref = value
-
 
     def serialize(self) -> ET.Element:
         """Serialize BswModuleClientServerEntry to XML element.
@@ -81,13 +69,18 @@ class BswModuleClientServerEntry(Referrable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize encapsulated_entry_ref with ref_conditional pattern
+        # Serialize encapsulated_entry_ref
         if self.encapsulated_entry_ref is not None:
             serialized = SerializationHelper.serialize_item(self.encapsulated_entry_ref, "BswModuleEntry")
             if serialized is not None:
-                # Wrap reference in REF-CONDITIONAL element
-                ref_tag = SerializationHelper.get_ref_tag_from_type("BswModuleEntry")
-                wrapped = SerializationHelper.serialize_ref_conditional(serialized, ref_tag)
+                # Wrap with correct tag
+                wrapped = ET.Element("ENCAPSULATED-ENTRY-REF")
+                if hasattr(serialized, 'attrib'):
+                    wrapped.attrib.update(serialized.attrib)
+                    if serialized.text:
+                        wrapped.text = serialized.text
+                for child in serialized:
+                    wrapped.append(child)
                 elem.append(wrapped)
 
         # Serialize is_reentrant
@@ -133,11 +126,9 @@ class BswModuleClientServerEntry(Referrable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswModuleClientServerEntry, cls).deserialize(element)
 
-        # Parse encapsulated_entry_ref from REF-CONDITIONAL wrapper
-        ref_elems = SerializationHelper.deserialize_ref_conditional(element, "BSW-MODULE-ENTRY-REF")
-        if ref_elems:
-            # Take the first reference (single value)
-            child = ref_elems[0]
+        # Parse encapsulated_entry_ref
+        child = SerializationHelper.find_child_element(element, "ENCAPSULATED-ENTRY-REF")
+        if child is not None:
             encapsulated_entry_ref_value = ARRef.deserialize(child)
             obj.encapsulated_entry_ref = encapsulated_entry_ref_value
 

@@ -206,17 +206,6 @@ def generate_class_code(
         if atp_type == "atpVariation":
             decorator_import += "from armodel.serialization.decorators import atp_variant\n"
         
-        # Check if this class has atp_variant decorated attributes
-        has_atp_variant_attr = False
-        if attribute_types:
-            for attr_name, attr_info in attribute_types.items():
-                decorator_name = attr_info.get("decorator_name")
-                if decorator_name == "atp_variant":
-                    has_atp_variant_attr = True
-                    break
-        if has_atp_variant_attr:
-            decorator_import += "from armodel.serialization.decorators import atp_variant\n"
-        
         # Check if this class has l_prefix attributes
         has_l_prefix = False
         if attribute_types:
@@ -628,25 +617,6 @@ class {class_name}(ABC):
         self.{private_name} = value
 
 '''
-            elif decorator_name == "atp_variant":
-                python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity, kind)
-                private_name = f"_{python_name}"
-                params = attr_info.get("decorator_params", "default")
-                # Determine Python type for this attribute
-                python_type = get_python_type(attr_type, multiplicity, package_data, is_ref, kind)
-                # Generate property with atp_variant decorator
-                code += f'''    @property
-    @atp_variant("{params}")
-    def {python_name}(self) -> {python_type}:
-        """Get {python_name} with atp_variant pattern ({params})."""
-        return self.{private_name}
-
-    @{python_name}.setter
-    def {python_name}(self, value: {python_type}) -> None:
-        """Set {python_name} with atp_variant pattern ({params})."""
-        self.{private_name} = value
-
-'''
             elif kind == "l_prefix":
                 python_name = get_python_identifier_with_ref(attr_name, is_ref, multiplicity, kind)
                 private_name = f"_{python_name}"
@@ -948,35 +918,7 @@ def _generate_deserialize_method(
 '''
                     else:
                         # Regular non-container list
-                        # Get decorator_name before generating code
-                        attr_decorator_name = attr_info.get("decorator_name")
-                        if attr_decorator_name == "atp_variant":
-                            params = attr_info.get("decorator_params", "default")
-                            if params == "ref_conditional":
-                                # Derive ref_tag from target type and embed in generated code
-                                from armodel.serialization.name_converter import NameConverter
-                                type_tag = NameConverter.to_xml_tag(attr_type)
-                                ref_tag = f"{type_tag}-REF"
-                                code += f'''        # Parse {python_name} (list from REF-CONDITIONAL wrappers)
-        obj.{python_name} = []
-        ref_elems = SerializationHelper.deserialize_ref_conditional(element, "{ref_tag}")
-        for child in ref_elems:
-            {_generate_value_extraction_code(effective_type, "child", package_data, python_name, is_ref)}
-            obj.{python_name}.append({python_name}_value)
-
-'''
-                            else:
-                                # Default atp_variant pattern (not implemented for attributes yet)
-                                code += f'''        # Parse {python_name} (list)
-        obj.{python_name} = []
-        for child in SerializationHelper.find_all_child_elements(element, "{xml_tag}"):
-            {_generate_value_extraction_code(effective_type, "child", package_data, python_name, is_ref)}
-            obj.{python_name}.append({python_name}_value)
-
-'''
-                        else:
-                            # Normal list parsing
-                            code += f'''        # Parse {python_name} (list)
+                        code += f'''        # Parse {python_name} (list)
         obj.{python_name} = []
         for child in SerializationHelper.find_all_child_elements(element, "{xml_tag}"):
             {_generate_value_extraction_code(effective_type, "child", package_data, python_name, is_ref)}
@@ -985,36 +927,7 @@ def _generate_deserialize_method(
 '''
             else:
                 # Single value type
-                # Get decorator_name before generating code
-                attr_decorator_name = attr_info.get("decorator_name")
-                if attr_decorator_name == "atp_variant":
-                    params = attr_info.get("decorator_params", "default")
-                    if params == "ref_conditional":
-                        # Derive ref_tag from target type and embed in generated code
-                        from armodel.serialization.name_converter import NameConverter
-                        type_tag = NameConverter.to_xml_tag(attr_type)
-                        ref_tag = f"{type_tag}-REF"
-                        code += f'''        # Parse {python_name} from REF-CONDITIONAL wrapper
-        ref_elems = SerializationHelper.deserialize_ref_conditional(element, "{ref_tag}")
-        if ref_elems:
-            # Take the first reference (single value)
-            child = ref_elems[0]
-            {_generate_value_extraction_code(effective_type, "child", package_data, python_name, is_ref)}
-            obj.{python_name} = {python_name}_value
-
-'''
-                    else:
-                        # Default atp_variant pattern (not implemented for attributes yet)
-                        code += f'''        # Parse {python_name}
-        child = SerializationHelper.find_child_element(element, "{xml_tag}")
-        if child is not None:
-            {_generate_value_extraction_code(effective_type, "child", package_data, python_name, is_ref)}
-            obj.{python_name} = {python_name}_value
-
-'''
-                else:
-                    # Normal single value type
-                    code += f'''        # Parse {python_name}
+                code += f'''        # Parse {python_name}
         child = SerializationHelper.find_child_element(element, "{xml_tag}")
         if child is not None:
             {_generate_value_extraction_code(effective_type, "child", package_data, python_name, is_ref)}
@@ -2551,34 +2464,7 @@ def _generate_serialize_method(
 '''
             else:
                 # Single value type
-                # Get decorator_name before generating code
-                attr_decorator_name = attr_info.get("decorator_name")
-                if attr_decorator_name == "atp_variant":
-                    params = attr_info.get("decorator_params", "default")
-                    if params == "ref_conditional":
-                        # Derive ref_tag from target type and embed in generated code
-                        code += f'''        # Serialize {python_name} with ref_conditional pattern
-        if self.{python_name} is not None:
-            serialized = SerializationHelper.serialize_item(self.{python_name}, "{effective_type}")
-            if serialized is not None:
-                # Wrap reference in REF-CONDITIONAL element
-                ref_tag = SerializationHelper.get_ref_tag_from_type("{attr_type}")
-                wrapped = SerializationHelper.serialize_ref_conditional(serialized, ref_tag)
-                elem.append(wrapped)
-
-'''
-                    else:
-                        # Default atp_variant pattern (not implemented for attributes yet)
-                        code += f'''        # Serialize {python_name}
-        if self.{python_name} is not None:
-            serialized = SerializationHelper.serialize_item(self.{python_name}, "{effective_type}")
-            if serialized is not None:
-                elem.append(serialized)
-
-'''
-                else:
-                    # Normal single value type
-                    code += f'''        # Serialize {python_name}
+                code += f'''        # Serialize {python_name}
         if self.{python_name} is not None:
             serialized = SerializationHelper.serialize_item(self.{python_name}, "{effective_type}")
             if serialized is not None:
@@ -3034,7 +2920,6 @@ def _generate_deserialize_method_for_atp_variant(
 
 '''
                     else:
-                        # Default atp_variant pattern (not implemented for attributes yet)
                         code += f'''        # Parse {python_name} (list)
         obj.{python_name} = []
         for child in SerializationHelper.find_all_child_elements(inner_elem, "{xml_tag}"):
@@ -3044,36 +2929,7 @@ def _generate_deserialize_method_for_atp_variant(
 '''
             else:
                 # Single value type
-                # Get decorator_name before generating code
-                attr_decorator_name = attr_info.get("decorator_name")
-                if attr_decorator_name == "atp_variant":
-                    params = attr_info.get("decorator_params", "default")
-                    if params == "ref_conditional":
-                        # Derive ref_tag from target type and embed in generated code
-                        from armodel.serialization.name_converter import NameConverter
-                        type_tag = NameConverter.to_xml_tag(attr_type)
-                        ref_tag = f"{type_tag}-REF"
-                        code += f'''        # Parse {python_name} from REF-CONDITIONAL wrapper
-        ref_elems = SerializationHelper.deserialize_ref_conditional(inner_elem, "{ref_tag}")
-        if ref_elems:
-                            # Take the first reference (single value)
-                            child = ref_elems[0]
-                            {_generate_value_extraction_code(effective_type, "child", package_data, python_name, is_ref)}
-                            obj.{python_name} = {python_name}_value
-
-'''
-                    else:
-                        # Default atp_variant pattern (not implemented for attributes yet)
-                        code += f'''        # Parse {python_name}
-        child = SerializationHelper.find_child_element(inner_elem, "{xml_tag}")
-        if child is not None:
-                            {_generate_value_extraction_code(effective_type, "child", package_data, python_name, is_ref)}
-                            obj.{python_name} = {python_name}_value
-
-'''
-                else:
-                    # Normal single value type
-                    code += f'''        # Parse {python_name}
+                code += f'''        # Parse {python_name}
         child = SerializationHelper.find_child_element(inner_elem, "{xml_tag}")
         if child is not None:
             {_generate_value_extraction_code(effective_type, "child", package_data, python_name, is_ref)}
