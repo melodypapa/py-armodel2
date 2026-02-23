@@ -7,7 +7,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCore_CoreTopology.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
@@ -26,6 +26,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.comm_connector_port import (
     CommConnectorPort,
 )
+from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_controller import (
+    CommunicationController,
+)
 from abc import ABC, abstractmethod
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
 from armodel.serialization import SerializationHelper
@@ -43,21 +46,21 @@ class CommunicationConnector(Identifiable, ABC):
         """
         return True
 
-    comm_controller_ref: Optional[Any]
-    create_ecu: Optional[Boolean]
-    dynamic_pnc_to: Optional[Boolean]
-    ecu_comm_ports: list[CommConnectorPort]
-    pnc_filter_arrays: list[PositiveInteger]
-    pnc_gateway_type_enum: Optional[PncGatewayTypeEnum]
+    comm_controller_ref: Optional[ARRef]
+    create_ecu_wakeup_source: Optional[Boolean]
+    dynamic_pnc_to_channel_mapping_enabled: Optional[Boolean]
+    ecu_comm_port_instances: list[CommConnectorPort]
+    pnc_filter_array_masks: list[PositiveInteger]
+    pnc_gateway_type: Optional[PncGatewayTypeEnum]
     def __init__(self) -> None:
         """Initialize CommunicationConnector."""
         super().__init__()
-        self.comm_controller_ref: Optional[Any] = None
-        self.create_ecu: Optional[Boolean] = None
-        self.dynamic_pnc_to: Optional[Boolean] = None
-        self.ecu_comm_ports: list[CommConnectorPort] = []
-        self.pnc_filter_arrays: list[PositiveInteger] = []
-        self.pnc_gateway_type_enum: Optional[PncGatewayTypeEnum] = None
+        self.comm_controller_ref: Optional[ARRef] = None
+        self.create_ecu_wakeup_source: Optional[Boolean] = None
+        self.dynamic_pnc_to_channel_mapping_enabled: Optional[Boolean] = None
+        self.ecu_comm_port_instances: list[CommConnectorPort] = []
+        self.pnc_filter_array_masks: list[PositiveInteger] = []
+        self.pnc_gateway_type: Optional[PncGatewayTypeEnum] = None
 
     def serialize(self) -> ET.Element:
         """Serialize CommunicationConnector to XML element.
@@ -85,7 +88,7 @@ class CommunicationConnector(Identifiable, ABC):
 
         # Serialize comm_controller_ref
         if self.comm_controller_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.comm_controller_ref, "Any")
+            serialized = SerializationHelper.serialize_item(self.comm_controller_ref, "CommunicationController")
             if serialized is not None:
                 # Wrap with correct tag
                 wrapped = ET.Element("COMM-CONTROLLER-REF")
@@ -97,12 +100,12 @@ class CommunicationConnector(Identifiable, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize create_ecu
-        if self.create_ecu is not None:
-            serialized = SerializationHelper.serialize_item(self.create_ecu, "Boolean")
+        # Serialize create_ecu_wakeup_source
+        if self.create_ecu_wakeup_source is not None:
+            serialized = SerializationHelper.serialize_item(self.create_ecu_wakeup_source, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("CREATE-ECU")
+                wrapped = ET.Element("CREATE-ECU-WAKEUP-SOURCE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -111,12 +114,12 @@ class CommunicationConnector(Identifiable, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize dynamic_pnc_to
-        if self.dynamic_pnc_to is not None:
-            serialized = SerializationHelper.serialize_item(self.dynamic_pnc_to, "Boolean")
+        # Serialize dynamic_pnc_to_channel_mapping_enabled
+        if self.dynamic_pnc_to_channel_mapping_enabled is not None:
+            serialized = SerializationHelper.serialize_item(self.dynamic_pnc_to_channel_mapping_enabled, "Boolean")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("DYNAMIC-PNC-TO")
+                wrapped = ET.Element("DYNAMIC-PNC-TO-CHANNEL-MAPPING-ENABLED")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -125,23 +128,23 @@ class CommunicationConnector(Identifiable, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize ecu_comm_ports (list to container "ECU-COMM-PORTS")
-        if self.ecu_comm_ports:
-            wrapper = ET.Element("ECU-COMM-PORTS")
-            for item in self.ecu_comm_ports:
+        # Serialize ecu_comm_port_instances (list to container "ECU-COMM-PORT-INSTANCES")
+        if self.ecu_comm_port_instances:
+            wrapper = ET.Element("ECU-COMM-PORT-INSTANCES")
+            for item in self.ecu_comm_port_instances:
                 serialized = SerializationHelper.serialize_item(item, "CommConnectorPort")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize pnc_filter_arrays (list to container "PNC-FILTER-ARRAYS")
-        if self.pnc_filter_arrays:
-            wrapper = ET.Element("PNC-FILTER-ARRAYS")
-            for item in self.pnc_filter_arrays:
+        # Serialize pnc_filter_array_masks (list to container "PNC-FILTER-ARRAY-MASKS")
+        if self.pnc_filter_array_masks:
+            wrapper = ET.Element("PNC-FILTER-ARRAY-MASKS")
+            for item in self.pnc_filter_array_masks:
                 serialized = SerializationHelper.serialize_item(item, "PositiveInteger")
                 if serialized is not None:
-                    child_elem = ET.Element("PNC-FILTER-ARRAY")
+                    child_elem = ET.Element("PNC-FILTER-ARRAY-MASK")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -152,12 +155,12 @@ class CommunicationConnector(Identifiable, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize pnc_gateway_type_enum
-        if self.pnc_gateway_type_enum is not None:
-            serialized = SerializationHelper.serialize_item(self.pnc_gateway_type_enum, "PncGatewayTypeEnum")
+        # Serialize pnc_gateway_type
+        if self.pnc_gateway_type is not None:
+            serialized = SerializationHelper.serialize_item(self.pnc_gateway_type, "PncGatewayTypeEnum")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("PNC-GATEWAY-TYPE-ENUM")
+                wrapped = ET.Element("PNC-GATEWAY-TYPE")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -187,43 +190,43 @@ class CommunicationConnector(Identifiable, ABC):
             comm_controller_ref_value = ARRef.deserialize(child)
             obj.comm_controller_ref = comm_controller_ref_value
 
-        # Parse create_ecu
-        child = SerializationHelper.find_child_element(element, "CREATE-ECU")
+        # Parse create_ecu_wakeup_source
+        child = SerializationHelper.find_child_element(element, "CREATE-ECU-WAKEUP-SOURCE")
         if child is not None:
-            create_ecu_value = child.text
-            obj.create_ecu = create_ecu_value
+            create_ecu_wakeup_source_value = child.text
+            obj.create_ecu_wakeup_source = create_ecu_wakeup_source_value
 
-        # Parse dynamic_pnc_to
-        child = SerializationHelper.find_child_element(element, "DYNAMIC-PNC-TO")
+        # Parse dynamic_pnc_to_channel_mapping_enabled
+        child = SerializationHelper.find_child_element(element, "DYNAMIC-PNC-TO-CHANNEL-MAPPING-ENABLED")
         if child is not None:
-            dynamic_pnc_to_value = child.text
-            obj.dynamic_pnc_to = dynamic_pnc_to_value
+            dynamic_pnc_to_channel_mapping_enabled_value = child.text
+            obj.dynamic_pnc_to_channel_mapping_enabled = dynamic_pnc_to_channel_mapping_enabled_value
 
-        # Parse ecu_comm_ports (list from container "ECU-COMM-PORTS")
-        obj.ecu_comm_ports = []
-        container = SerializationHelper.find_child_element(element, "ECU-COMM-PORTS")
+        # Parse ecu_comm_port_instances (list from container "ECU-COMM-PORT-INSTANCES")
+        obj.ecu_comm_port_instances = []
+        container = SerializationHelper.find_child_element(element, "ECU-COMM-PORT-INSTANCES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.ecu_comm_ports.append(child_value)
+                    obj.ecu_comm_port_instances.append(child_value)
 
-        # Parse pnc_filter_arrays (list from container "PNC-FILTER-ARRAYS")
-        obj.pnc_filter_arrays = []
-        container = SerializationHelper.find_child_element(element, "PNC-FILTER-ARRAYS")
+        # Parse pnc_filter_array_masks (list from container "PNC-FILTER-ARRAY-MASKS")
+        obj.pnc_filter_array_masks = []
+        container = SerializationHelper.find_child_element(element, "PNC-FILTER-ARRAY-MASKS")
         if container is not None:
             for child in container:
                 # Extract primitive value (PositiveInteger) as text
                 child_value = child.text
                 if child_value is not None:
-                    obj.pnc_filter_arrays.append(child_value)
+                    obj.pnc_filter_array_masks.append(child_value)
 
-        # Parse pnc_gateway_type_enum
-        child = SerializationHelper.find_child_element(element, "PNC-GATEWAY-TYPE-ENUM")
+        # Parse pnc_gateway_type
+        child = SerializationHelper.find_child_element(element, "PNC-GATEWAY-TYPE")
         if child is not None:
-            pnc_gateway_type_enum_value = PncGatewayTypeEnum.deserialize(child)
-            obj.pnc_gateway_type_enum = pnc_gateway_type_enum_value
+            pnc_gateway_type_value = PncGatewayTypeEnum.deserialize(child)
+            obj.pnc_gateway_type = pnc_gateway_type_value
 
         return obj
 
@@ -238,7 +241,7 @@ class CommunicationConnectorBuilder(IdentifiableBuilder):
         self._obj: CommunicationConnector = CommunicationConnector()
 
 
-    def with_comm_controller(self, value: Optional[any (Communication)]) -> "CommunicationConnectorBuilder":
+    def with_comm_controller(self, value: Optional[CommunicationController]) -> "CommunicationConnectorBuilder":
         """Set comm_controller attribute.
 
         Args:
@@ -252,8 +255,8 @@ class CommunicationConnectorBuilder(IdentifiableBuilder):
         self._obj.comm_controller = value
         return self
 
-    def with_create_ecu(self, value: Optional[Boolean]) -> "CommunicationConnectorBuilder":
-        """Set create_ecu attribute.
+    def with_create_ecu_wakeup_source(self, value: Optional[Boolean]) -> "CommunicationConnectorBuilder":
+        """Set create_ecu_wakeup_source attribute.
 
         Args:
             value: Value to set
@@ -263,11 +266,11 @@ class CommunicationConnectorBuilder(IdentifiableBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.create_ecu = value
+        self._obj.create_ecu_wakeup_source = value
         return self
 
-    def with_dynamic_pnc_to(self, value: Optional[Boolean]) -> "CommunicationConnectorBuilder":
-        """Set dynamic_pnc_to attribute.
+    def with_dynamic_pnc_to_channel_mapping_enabled(self, value: Optional[Boolean]) -> "CommunicationConnectorBuilder":
+        """Set dynamic_pnc_to_channel_mapping_enabled attribute.
 
         Args:
             value: Value to set
@@ -277,11 +280,11 @@ class CommunicationConnectorBuilder(IdentifiableBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.dynamic_pnc_to = value
+        self._obj.dynamic_pnc_to_channel_mapping_enabled = value
         return self
 
-    def with_ecu_comm_ports(self, items: list[CommConnectorPort]) -> "CommunicationConnectorBuilder":
-        """Set ecu_comm_ports list attribute.
+    def with_ecu_comm_port_instances(self, items: list[CommConnectorPort]) -> "CommunicationConnectorBuilder":
+        """Set ecu_comm_port_instances list attribute.
 
         Args:
             items: List of items to set
@@ -289,11 +292,11 @@ class CommunicationConnectorBuilder(IdentifiableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.ecu_comm_ports = list(items) if items else []
+        self._obj.ecu_comm_port_instances = list(items) if items else []
         return self
 
-    def with_pnc_filter_arrays(self, items: list[PositiveInteger]) -> "CommunicationConnectorBuilder":
-        """Set pnc_filter_arrays list attribute.
+    def with_pnc_filter_array_masks(self, items: list[PositiveInteger]) -> "CommunicationConnectorBuilder":
+        """Set pnc_filter_array_masks list attribute.
 
         Args:
             items: List of items to set
@@ -301,11 +304,11 @@ class CommunicationConnectorBuilder(IdentifiableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.pnc_filter_arrays = list(items) if items else []
+        self._obj.pnc_filter_array_masks = list(items) if items else []
         return self
 
-    def with_pnc_gateway_type_enum(self, value: Optional[PncGatewayTypeEnum]) -> "CommunicationConnectorBuilder":
-        """Set pnc_gateway_type_enum attribute.
+    def with_pnc_gateway_type(self, value: Optional[PncGatewayTypeEnum]) -> "CommunicationConnectorBuilder":
+        """Set pnc_gateway_type attribute.
 
         Args:
             value: Value to set
@@ -315,12 +318,12 @@ class CommunicationConnectorBuilder(IdentifiableBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.pnc_gateway_type_enum = value
+        self._obj.pnc_gateway_type = value
         return self
 
 
-    def add_ecu_comm_port(self, item: CommConnectorPort) -> "CommunicationConnectorBuilder":
-        """Add a single item to ecu_comm_ports list.
+    def add_ecu_comm_port_instance(self, item: CommConnectorPort) -> "CommunicationConnectorBuilder":
+        """Add a single item to ecu_comm_port_instances list.
 
         Args:
             item: Item to add
@@ -328,20 +331,20 @@ class CommunicationConnectorBuilder(IdentifiableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.ecu_comm_ports.append(item)
+        self._obj.ecu_comm_port_instances.append(item)
         return self
 
-    def clear_ecu_comm_ports(self) -> "CommunicationConnectorBuilder":
-        """Clear all items from ecu_comm_ports list.
+    def clear_ecu_comm_port_instances(self) -> "CommunicationConnectorBuilder":
+        """Clear all items from ecu_comm_port_instances list.
 
         Returns:
             self for method chaining
         """
-        self._obj.ecu_comm_ports = []
+        self._obj.ecu_comm_port_instances = []
         return self
 
-    def add_pnc_filter_array(self, item: PositiveInteger) -> "CommunicationConnectorBuilder":
-        """Add a single item to pnc_filter_arrays list.
+    def add_pnc_filter_array_mask(self, item: PositiveInteger) -> "CommunicationConnectorBuilder":
+        """Add a single item to pnc_filter_array_masks list.
 
         Args:
             item: Item to add
@@ -349,16 +352,16 @@ class CommunicationConnectorBuilder(IdentifiableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.pnc_filter_arrays.append(item)
+        self._obj.pnc_filter_array_masks.append(item)
         return self
 
-    def clear_pnc_filter_arrays(self) -> "CommunicationConnectorBuilder":
-        """Clear all items from pnc_filter_arrays list.
+    def clear_pnc_filter_array_masks(self) -> "CommunicationConnectorBuilder":
+        """Clear all items from pnc_filter_array_masks list.
 
         Returns:
             self for method chaining
         """
-        self._obj.pnc_filter_arrays = []
+        self._obj.pnc_filter_array_masks = []
         return self
 
 

@@ -52,7 +52,7 @@
         }
       ],
       "attributes": {
-        "hwElements": {
+        "hwElementConnections": {
           "type": "HwElementConnector",
           "multiplicity": "*",
           "kind": "attribute",
@@ -62,7 +62,7 @@
         "hwPinGroups": {
           "type": "HwPinGroup",
           "multiplicity": "*",
-          "kind": "ref",
+          "kind": "aggr",
           "is_ref": true,
           "note": "This aggregation is used to describe the connection a hardware element. Note that hardware no pins but only pingroups. atpVariation"
         },
@@ -80,10 +80,11 @@
       "package": "M2::AUTOSARTemplates::EcuResourceTemplate",
       "is_abstract": true,
       "atp_type": null,
-      "parent": "Referrable",
+      "parent": "Identifiable",
       "bases": [
         "ARObject",
-        "Referrable"
+        "Referrable",
+        "Identifiable"
       ],
       "children": [
         "HwElement",
@@ -114,7 +115,7 @@
         }
       ],
       "attributes": {
-        "hwAttributes": {
+        "hwAttributeValues": {
           "type": "HwAttributeValue",
           "multiplicity": "*",
           "kind": "attribute",

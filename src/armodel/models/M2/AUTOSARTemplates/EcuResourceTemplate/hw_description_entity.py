@@ -11,8 +11,8 @@ from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 from armodel.serialization.decorators import xml_element_name
 
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
-    Referrable,
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
+    Identifiable,
 )
 from armodel.models.M2.builder_base import BuilderBase
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import ReferrableBuilder
@@ -36,7 +36,7 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.serialization import SerializationHelper
 
 
-class HwDescriptionEntity(Referrable, ABC):
+class HwDescriptionEntity(Identifiable, ABC):
     """AUTOSAR HwDescriptionEntity."""
 
     @property
@@ -48,13 +48,13 @@ class HwDescriptionEntity(Referrable, ABC):
         """
         return True
 
-    hw_attributes: list[HwAttributeValue]
+    hw_attribute_values: list[HwAttributeValue]
     _hw_categorie_refs: list[ARRef]
     hw_type_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize HwDescriptionEntity."""
         super().__init__()
-        self.hw_attributes: list[HwAttributeValue] = []
+        self.hw_attribute_values: list[HwAttributeValue] = []
         self._hw_categorie_refs: list[ARRef] = []
         self.hw_type_ref: Optional[ARRef] = None
     @property
@@ -93,10 +93,10 @@ class HwDescriptionEntity(Referrable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize hw_attributes (list to container "HW-ATTRIBUTES")
-        if self.hw_attributes:
-            wrapper = ET.Element("HW-ATTRIBUTES")
-            for item in self.hw_attributes:
+        # Serialize hw_attribute_values (list to container "HW-ATTRIBUTE-VALUES")
+        if self.hw_attribute_values:
+            wrapper = ET.Element("HW-ATTRIBUTE-VALUES")
+            for item in self.hw_attribute_values:
                 serialized = SerializationHelper.serialize_item(item, "HwAttributeValue")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -149,15 +149,15 @@ class HwDescriptionEntity(Referrable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(HwDescriptionEntity, cls).deserialize(element)
 
-        # Parse hw_attributes (list from container "HW-ATTRIBUTES")
-        obj.hw_attributes = []
-        container = SerializationHelper.find_child_element(element, "HW-ATTRIBUTES")
+        # Parse hw_attribute_values (list from container "HW-ATTRIBUTE-VALUES")
+        obj.hw_attribute_values = []
+        container = SerializationHelper.find_child_element(element, "HW-ATTRIBUTE-VALUES")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.hw_attributes.append(child_value)
+                    obj.hw_attribute_values.append(child_value)
 
         # Parse hw_categorie_refs (list from container "HW-CATEGORYS")
         obj.hw_categorie_refs = []
@@ -194,8 +194,8 @@ class HwDescriptionEntityBuilder(ReferrableBuilder):
         self._obj: HwDescriptionEntity = HwDescriptionEntity()
 
 
-    def with_hw_attributes(self, items: list[HwAttributeValue]) -> "HwDescriptionEntityBuilder":
-        """Set hw_attributes list attribute.
+    def with_hw_attribute_values(self, items: list[HwAttributeValue]) -> "HwDescriptionEntityBuilder":
+        """Set hw_attribute_values list attribute.
 
         Args:
             items: List of items to set
@@ -203,7 +203,7 @@ class HwDescriptionEntityBuilder(ReferrableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.hw_attributes = list(items) if items else []
+        self._obj.hw_attribute_values = list(items) if items else []
         return self
 
     def with_hw_categories(self, items: list[HwCategory]) -> "HwDescriptionEntityBuilder":
@@ -233,8 +233,8 @@ class HwDescriptionEntityBuilder(ReferrableBuilder):
         return self
 
 
-    def add_hw_attribute(self, item: HwAttributeValue) -> "HwDescriptionEntityBuilder":
-        """Add a single item to hw_attributes list.
+    def add_hw_attribute_value(self, item: HwAttributeValue) -> "HwDescriptionEntityBuilder":
+        """Add a single item to hw_attribute_values list.
 
         Args:
             item: Item to add
@@ -242,16 +242,16 @@ class HwDescriptionEntityBuilder(ReferrableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.hw_attributes.append(item)
+        self._obj.hw_attribute_values.append(item)
         return self
 
-    def clear_hw_attributes(self) -> "HwDescriptionEntityBuilder":
-        """Clear all items from hw_attributes list.
+    def clear_hw_attribute_values(self) -> "HwDescriptionEntityBuilder":
+        """Clear all items from hw_attribute_values list.
 
         Returns:
             self for method chaining
         """
-        self._obj.hw_attributes = []
+        self._obj.hw_attribute_values = []
         return self
 
     def add_hw_categorie(self, item: HwCategory) -> "HwDescriptionEntityBuilder":
