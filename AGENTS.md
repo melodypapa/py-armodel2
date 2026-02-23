@@ -364,7 +364,7 @@ The project uses a reflection-based serialization framework that eliminates boil
 - **Base class**: `ARObject` - provides `serialize()` and `deserialize()` methods
 - **SerializationHelper**: Static utility methods extracted from ARObject for better organization
 - **NameConverter**: Handles snake_case ↔ UPPER-CASE-WITH-HYPHENS conversion
-- **Decorators**: Edge case handlers for special XML scenarios (`@xml_attribute`, `@atp_variant`, `@l_prefix`, `@lang_abbr`)
+- **Decorators**: Edge case handlers for special XML scenarios (`@xml_attribute`, `@atp_variant`, `@l_prefix`, `@lang_abbr`, `@xml_element_name`, `@ref_conditional`, `@instance_ref`)
 
 ### Key Components
 
@@ -516,110 +516,19 @@ python tools/generate_model_mappings.py
 
 Location: `src/armodel/serialization/decorators.py`
 
-```python
-@xml_attribute  # Mark property as XML attribute instead of element
+**Documentation**: See [`docs/designs/decorators.md`](docs/designs/decorators.md) for detailed documentation on all decorators.
 
-@atp_variant()  # Mark class as using atpVariation pattern (nested wrappers)
+**Available Decorators:**
 
-@l_prefix("L-1")  # Mark attribute as using language-specific L-N pattern
-
-@lang_abbr("L")  # Mark attribute as language abbreviation XML attribute
-```
-
-**xml_attribute Decorator:**
-Marks a property to be serialized as XML attribute instead of child element.
-
-```python
-class AUTOSAR(ARObject):
-    def __init__(self) -> None:
-        self._schema_version: str = "4.5.0"
-    
-    @xml_attribute
-    @property
-    def schema_version(self) -> str:
-        return self._schema_version
-```
-
-**l_prefix Decorator:**
-The `@l_prefix` decorator marks an attribute as using the language-specific L-N pattern. This is used for MultiLanguage* classes where language-specific content is wrapped in L-<number> elements.
-
-```python
-class MultiLanguageParagraph(ARObject):
-    _l1: list[LParagraph] = []
-    
-    @property
-    @l_prefix("L-1")
-    def l1(self) -> list[LParagraph]:
-        """Get l1 with language-specific wrapper."""
-        return self._l1
-```
-
-The serialization framework automatically:
-- Wraps each LParagraph in an `<L-1>` element during serialization
-- Extracts `<L-1>` elements and populates `_l1` list during deserialization
-- Handles private backing fields (e.g., `_l1`) with corresponding public properties (e.g., `l1`)
-
-**atp_variant Decorator:**
-The `@atp_variant()` decorator marks a class as using the AUTOSAR atpVariation pattern. Classes with atpVariation wrap all their attributes in nested XML elements:
-
-```python
-@atp_variant()
-class SwDataDefProps(ARObject):
-    base_type_ref: Optional[ARRef] = None
-    sw_calibration_access: Optional[SwCalibrationAccessEnum] = None
-```
-
-Generates wrapper path: `"SW-DATA-DEF-PROPS-VARIANTS/SW-DATA-DEF-PROPS-CONDITIONAL"`
-
-**lang_abbr Decorator:**
-The `@lang_abbr()` decorator marks an attribute as a language abbreviation XML attribute. This is used for LanguageSpecific series classes:
-
-```python
-class LanguageSpecific(ARObject):
-    def __init__(self) -> None:
-        self._l: LEnum = LEnum.EN
-    
-    @lang_abbr("L")
-    @property
-    def l(self) -> LEnum:
-        return self._l
-```
-
-Generated XML: `<L-LONG-NAME L="EN">Long Name</L-LONG-NAME>`
-
-**xml_element_name Decorator:**
-The `@xml_element_name()` decorator marks an attribute to use custom XML element names. This is used when the XML element name differs from the auto-generated name or when multi-level nesting is required.
-
-```python
-class ExecutableEntity(ARObject):
-    _can_enter_refs: list[ARRef] = []
-    
-    @property
-    @xml_element_name("CAN-ENTER-EXCLUSIVE-AREA-REFS/CAN-ENTER-EXCLUSIVE-AREA/CAN-ENTER-EXCLUSIVE-AREA-REF")
-    def can_enter_refs(self) -> list[ARRef]:
-        """Get can_enter_refs with custom XML element name."""
-        return self._can_enter_refs
-```
-
-The decorator supports:
-- **Single parameter**: Override the container tag name
-  - Example: `@xml_element_name("PROVIDED-ENTRYS")` → `<PROVIDED-ENTRYS>...</PROVIDED-ENTRYS>`
-- **Multi-level path**: Specify nested container structure using `/` separator
-  - Example: `@xml_element_name("TAG1/TAG2/TAG3")` → `<TAG1><TAG2><TAG3>...</TAG3></TAG2></TAG1>`
-
-Generated XML for multi-level nesting:
-```xml
-<CAN-ENTER-EXCLUSIVE-AREA-REFS>
-  <CAN-ENTER-EXCLUSIVE-AREA>
-    <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/path/to/area</CAN-ENTER-EXCLUSIVE-AREA-REF>
-  </CAN-ENTER-EXCLUSIVE-AREA>
-</CAN-ENTER-EXCLUSIVE-AREA-REFS>
-```
-
-The serialization framework automatically:
-- Creates nested wrapper elements for each level in the path during serialization
-- Navigates through nested containers during deserialization
-- Uses the last level tag for individual child elements
+| Decorator | Purpose |
+|-----------|---------|
+| `@xml_attribute` | Mark property as XML attribute instead of element |
+| `@atp_variant()` | Mark class as using atpVariation pattern (nested wrappers) |
+| `@l_prefix("L-1")` | Mark attribute as using language-specific L-N pattern |
+| `@lang_abbr("L")` | Mark attribute as language abbreviation XML attribute |
+| `@xml_element_name("TAG")` | Specify custom XML element name for attributes |
+| `@ref_conditional("TAG")` | Mark attribute as using -REF-CONDITIONAL pattern |
+| `@instance_ref(flatten=True)` | Mark attribute as instance reference with flattening control |
 
 ### Serialization Behavior
 
@@ -723,9 +632,10 @@ class LanguageSpecific(ARObject):
         return self._l
 ```
 
-**Pattern 6: Flattened iref Pattern (AssemblySwConnector)**
-For certain instance reference types (PPortInCompositionInstanceRef, RPortInCompositionInstanceRef), the XML structure is flattened - the children are directly inside the iref wrapper instead of being wrapped in their own element:
+**Pattern 6: Instance Reference Pattern (AssemblySwConnector and DelegationSwConnector)**
+Instance references are wrapped in a `<TAG>-IREF` element. The `@instance_ref` decorator controls whether children are flattened directly into the wrapper or wrapped in their own element.
 
+**Flattened structure (AssemblySwConnector):**
 ```xml
 <PROVIDER-IREF>
   <CONTEXT-COMPONENT-REF>...</CONTEXT-COMPONENT-REF>
@@ -733,7 +643,17 @@ For certain instance reference types (PPortInCompositionInstanceRef, RPortInComp
 </PROVIDER-IREF>
 ```
 
-This is handled automatically by the code generator which detects these specific types and generates appropriate serialization/deserialization code.
+**Non-flattened structure (DelegationSwConnector):**
+```xml
+<INNER-PORT-IREF>
+  <R-PORT-IN-COMPOSITION-INSTANCE-REF>
+    <CONTEXT-COMPONENT-REF>...</CONTEXT-COMPONENT-REF>
+    <TARGET-R-PORT-REF>...</TARGET-R-PORT-REF>
+  </R-PORT-IN-COMPOSITION-INSTANCE-REF>
+</INNER-PORT-IREF>
+```
+
+This is handled by the `@instance_ref` decorator with the `flatten` parameter. See the [@instance_ref](#@instance_ref) section for details.
 
 ## Key Files and Modules
 
@@ -743,7 +663,7 @@ This is handled automatically by the code generator which detects these specific
 - **NameConverter** (`src/armodel/serialization/name_converter.py`) - Name conversion utility
 - **ModelFactory** (`src/armodel/serialization/model_factory.py`) - Factory for creating AUTOSAR model instances from XML tags with polymorphic type resolution
 - **SerializationHelper** (`src/armodel/serialization/serialization_helper.py`) - Static utility methods for XML serialization and deserialization
-- **Decorators** (`src/armodel/serialization/decorators.py`) - XML serialization decorators (`@xml_attribute`, `@atp_variant`, `@l_prefix`, `@lang_abbr`)
+- **Decorators** (`src/armodel/serialization/decorators.py`) - XML serialization decorators (`@xml_attribute`, `@atp_variant`, `@l_prefix`, `@lang_abbr`, `@xml_element_name`, `@ref_conditional`, `@instance_ref`)
 - **ARObject** (`src/armodel/models/M2/.../ArObject/ar_object.py`) - Base class with serialize/deserialize
 
 ### Reader/Writer

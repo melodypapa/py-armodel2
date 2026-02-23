@@ -9,7 +9,7 @@ References:
 JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate.classes.json"""
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, Any
+from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
@@ -18,6 +18,9 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
 from armodel.models.M2.builder_base import BuilderBase
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import IdentifiableBuilder
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.MeasurementAndCalibration.CalibrationParameter.calibration_parameter_value_set import (
+    CalibrationParameterValueSet,
+)
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Composition.composition_sw_component_type import (
     CompositionSwComponentType,
 )
@@ -40,15 +43,15 @@ class RootSwCompositionPrototype(Identifiable):
         """
         return False
 
-    calibration_refs: list[Any]
+    calibration_parameter_value_set_refs: list[ARRef]
     flat_map_ref: Optional[ARRef]
-    software: Optional[CompositionSwComponentType]
+    software_composition_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize RootSwCompositionPrototype."""
         super().__init__()
-        self.calibration_refs: list[Any] = []
+        self.calibration_parameter_value_set_refs: list[ARRef] = []
         self.flat_map_ref: Optional[ARRef] = None
-        self.software: Optional[CompositionSwComponentType] = None
+        self.software_composition_ref: Optional[ARRef] = None
 
     def serialize(self) -> ET.Element:
         """Serialize RootSwCompositionPrototype to XML element.
@@ -74,13 +77,13 @@ class RootSwCompositionPrototype(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize calibration_refs (list to container "CALIBRATION-REFS")
-        if self.calibration_refs:
-            wrapper = ET.Element("CALIBRATION-REFS")
-            for item in self.calibration_refs:
-                serialized = SerializationHelper.serialize_item(item, "Any")
+        # Serialize calibration_parameter_value_set_refs (list to container "CALIBRATION-PARAMETER-VALUE-SET-REFS")
+        if self.calibration_parameter_value_set_refs:
+            wrapper = ET.Element("CALIBRATION-PARAMETER-VALUE-SET-REFS")
+            for item in self.calibration_parameter_value_set_refs:
+                serialized = SerializationHelper.serialize_item(item, "CalibrationParameterValueSet")
                 if serialized is not None:
-                    child_elem = ET.Element("CALIBRATION-REF")
+                    child_elem = ET.Element("CALIBRATION-PARAMETER-VALUE-SET-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -105,12 +108,12 @@ class RootSwCompositionPrototype(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize software
-        if self.software is not None:
-            serialized = SerializationHelper.serialize_item(self.software, "CompositionSwComponentType")
+        # Serialize software_composition_ref
+        if self.software_composition_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.software_composition_ref, "CompositionSwComponentType")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("SOFTWARE")
+                wrapped = ET.Element("SOFTWARE-COMPOSITION-TREF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -134,9 +137,9 @@ class RootSwCompositionPrototype(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RootSwCompositionPrototype, cls).deserialize(element)
 
-        # Parse calibration_refs (list from container "CALIBRATION-REFS")
-        obj.calibration_refs = []
-        container = SerializationHelper.find_child_element(element, "CALIBRATION-REFS")
+        # Parse calibration_parameter_value_set_refs (list from container "CALIBRATION-PARAMETER-VALUE-SET-REFS")
+        obj.calibration_parameter_value_set_refs = []
+        container = SerializationHelper.find_child_element(element, "CALIBRATION-PARAMETER-VALUE-SET-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -148,7 +151,7 @@ class RootSwCompositionPrototype(Identifiable):
                     # Deserialize each child element dynamically based on its tag
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.calibration_refs.append(child_value)
+                    obj.calibration_parameter_value_set_refs.append(child_value)
 
         # Parse flat_map_ref
         child = SerializationHelper.find_child_element(element, "FLAT-MAP-REF")
@@ -156,11 +159,11 @@ class RootSwCompositionPrototype(Identifiable):
             flat_map_ref_value = ARRef.deserialize(child)
             obj.flat_map_ref = flat_map_ref_value
 
-        # Parse software
-        child = SerializationHelper.find_child_element(element, "SOFTWARE")
+        # Parse software_composition_ref
+        child = SerializationHelper.find_child_element(element, "SOFTWARE-COMPOSITION-TREF")
         if child is not None:
-            software_value = SerializationHelper.deserialize_by_tag(child, "CompositionSwComponentType")
-            obj.software = software_value
+            software_composition_ref_value = ARRef.deserialize(child)
+            obj.software_composition_ref = software_composition_ref_value
 
         return obj
 
@@ -175,8 +178,8 @@ class RootSwCompositionPrototypeBuilder(IdentifiableBuilder):
         self._obj: RootSwCompositionPrototype = RootSwCompositionPrototype()
 
 
-    def with_calibrations(self, items: list[any (CalibrationParameter)]) -> "RootSwCompositionPrototypeBuilder":
-        """Set calibrations list attribute.
+    def with_calibration_parameter_value_sets(self, items: list[CalibrationParameterValueSet]) -> "RootSwCompositionPrototypeBuilder":
+        """Set calibration_parameter_value_sets list attribute.
 
         Args:
             items: List of items to set
@@ -184,7 +187,7 @@ class RootSwCompositionPrototypeBuilder(IdentifiableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.calibrations = list(items) if items else []
+        self._obj.calibration_parameter_value_sets = list(items) if items else []
         return self
 
     def with_flat_map(self, value: Optional[FlatMap]) -> "RootSwCompositionPrototypeBuilder":
@@ -201,8 +204,8 @@ class RootSwCompositionPrototypeBuilder(IdentifiableBuilder):
         self._obj.flat_map = value
         return self
 
-    def with_software(self, value: Optional[CompositionSwComponentType]) -> "RootSwCompositionPrototypeBuilder":
-        """Set software attribute.
+    def with_software_composition(self, value: Optional[CompositionSwComponentType]) -> "RootSwCompositionPrototypeBuilder":
+        """Set software_composition attribute.
 
         Args:
             value: Value to set
@@ -212,12 +215,12 @@ class RootSwCompositionPrototypeBuilder(IdentifiableBuilder):
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.software = value
+        self._obj.software_composition = value
         return self
 
 
-    def add_calibration(self, item: any (CalibrationParameter)) -> "RootSwCompositionPrototypeBuilder":
-        """Add a single item to calibrations list.
+    def add_calibration_parameter_value_set(self, item: CalibrationParameterValueSet) -> "RootSwCompositionPrototypeBuilder":
+        """Add a single item to calibration_parameter_value_sets list.
 
         Args:
             item: Item to add
@@ -225,16 +228,16 @@ class RootSwCompositionPrototypeBuilder(IdentifiableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.calibrations.append(item)
+        self._obj.calibration_parameter_value_sets.append(item)
         return self
 
-    def clear_calibrations(self) -> "RootSwCompositionPrototypeBuilder":
-        """Clear all items from calibrations list.
+    def clear_calibration_parameter_value_sets(self) -> "RootSwCompositionPrototypeBuilder":
+        """Clear all items from calibration_parameter_value_sets list.
 
         Returns:
             self for method chaining
         """
-        self._obj.calibrations = []
+        self._obj.calibration_parameter_value_sets = []
         return self
 
 

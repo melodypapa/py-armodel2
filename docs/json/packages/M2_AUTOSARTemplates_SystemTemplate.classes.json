@@ -221,8 +221,8 @@
         }
       ],
       "attributes": {
-        "calibrations": {
-          "type": "any (CalibrationParameter)",
+        "calibrationParameterValueSets": {
+          "type": "CalibrationParameterValueSet",
           "multiplicity": "*",
           "kind": "ref",
           "is_ref": true,
@@ -235,11 +235,11 @@
           "is_ref": true,
           "note": "The FlatMap used in the scope of this RootSw"
         },
-        "software": {
+        "softwareComposition": {
           "type": "CompositionSwComponentType",
           "multiplicity": "0..1",
-          "kind": "attribute",
-          "is_ref": false,
+          "kind": "tref",
+          "is_ref": true,
           "note": "We assume that there is exactly one top-level composition"
         }
       }

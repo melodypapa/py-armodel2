@@ -231,7 +231,7 @@ class Collection(ARElement):
             auto_collect_value = AutoCollectEnum.deserialize(child)
             obj.auto_collect = auto_collect_value
 
-        # Parse collected_instance_irefs (instance reference from wrapper "COLLECTED-INSTANCE-IREF")
+        # Parse collected_instance_irefs (list from wrapper "COLLECTED-INSTANCE-IREF")
         wrapper = SerializationHelper.find_child_element(element, "COLLECTED-INSTANCE-IREF")
         if wrapper is not None:
             # Deserialize wrapper element directly as the type (flattened structure)
@@ -282,7 +282,7 @@ class Collection(ARElement):
                 if child_value is not None:
                     obj.source_element_refs.append(child_value)
 
-        # Parse source_instance_irefs (instance reference from wrapper "SOURCE-INSTANCES-IREF")
+        # Parse source_instance_irefs (list from wrapper "SOURCE-INSTANCES-IREF")
         wrapper = SerializationHelper.find_child_element(element, "SOURCE-INSTANCES-IREF")
         if wrapper is not None:
             # Deserialize wrapper element directly as the type (flattened structure)

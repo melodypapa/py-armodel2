@@ -57,7 +57,7 @@ class SwcToEcuMapping(Identifiable):
         self.ecu_instance_ref: Optional[ARRef] = None
         self.processing_unit_ref: Optional[ARRef] = None
     @property
-    @instance_ref(flatten=True)
+    @instance_ref(flatten=True, list_type='multi')
     def component_irefs(self) -> list[ComponentInSystemInstanceRef]:
         """Get component_irefs instance reference."""
         return self._component_irefs
@@ -92,16 +92,19 @@ class SwcToEcuMapping(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize component_irefs (list of instance references with wrapper "COMPONENTS-IREF")
+        # Serialize component_irefs (list of instance references with multi-wrapper pattern)
         if self.component_irefs:
-            serialized = SerializationHelper.serialize_item(self.component_irefs, "ComponentInSystemInstanceRef")
-            if serialized is not None:
-                # Wrap in IREF wrapper element
-                iref_wrapper = ET.Element("COMPONENTS-IREF")
-                # Flatten: append children of serialized element directly to iref wrapper
-                for child in serialized:
-                    iref_wrapper.append(child)
-                elem.append(iref_wrapper)
+            irefs_container = ET.Element("COMPONENT-IREFS")
+            for item in self.component_irefs:
+                serialized = SerializationHelper.serialize_item(item, "ComponentInSystemInstanceRef")
+                if serialized is not None:
+                    # Wrap each item in its own IREF wrapper
+                    iref_wrapper = ET.Element("COMPONENT-IREF")
+                    # Flatten: append children of serialized element directly to iref wrapper
+                    for child in serialized:
+                        iref_wrapper.append(child)
+                    irefs_container.append(iref_wrapper)
+            elem.append(irefs_container)
 
         # Serialize controlled_hw_element_ref
         if self.controlled_hw_element_ref is not None:
@@ -160,12 +163,16 @@ class SwcToEcuMapping(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(SwcToEcuMapping, cls).deserialize(element)
 
-        # Parse component_irefs (instance reference from wrapper "COMPONENTS-IREF")
-        wrapper = SerializationHelper.find_child_element(element, "COMPONENTS-IREF")
-        if wrapper is not None:
-            # Deserialize wrapper element directly as the type (flattened structure)
-            component_irefs_value = SerializationHelper.deserialize_by_tag(wrapper, "ComponentInSystemInstanceRef")
-            obj.component_irefs = component_irefs_value
+        # Parse component_irefs (multi-wrapper list from "COMPONENT-IREFS")
+        obj.component_irefs = []
+        irefs_container = SerializationHelper.find_child_element(element, "COMPONENT-IREFS")
+        if irefs_container is not None:
+            for iref_wrapper in irefs_container:
+                if SerializationHelper.strip_namespace(iref_wrapper.tag) == "COMPONENT-IREF":
+                    # Deserialize each iref wrapper as the type (flattened structure)
+                    child_value = SerializationHelper.deserialize_by_tag(iref_wrapper, "ComponentInSystemInstanceRef")
+                    if child_value is not None:
+                        obj.component_irefs.append(child_value)
 
         # Parse controlled_hw_element_ref
         child = SerializationHelper.find_child_element(element, "CONTROLLED-HW-ELEMENT-REF")
