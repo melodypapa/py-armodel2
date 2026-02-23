@@ -13,6 +13,7 @@ xml_tag_mappings:
   BSW-ENTRY-RELATIONSHIP-SET: BswEntryRelationshipSet
   BSW-ENTRY-RELATIONSHIP: BswEntryRelationship
   BSW-MODULE-CLIENT-SERVER-ENTRY: BswModuleClientServerEntry
+  BSW-MODULE-ENTRY-REF-CONDITIONAL: BswModuleClientServerEntry
   BSW-INTERNAL-BEHAVIOR: BswInternalBehavior
   BSW-MODULE-ENTITY: BswModuleEntity
   BSW-CALLED-ENTITY: BswCalledEntity

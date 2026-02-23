@@ -50,6 +50,9 @@ skip_classes:
   # DocumentationBlock requires custom serialization - handles L-1 through L-10 language-specific elements (P paragraphs)
   - "DocumentationBlock"
 
+  # BswModuleClientServerEntry requires custom serialization for REF-CONDITIONAL wrapper pattern
+  - "BswModuleClientServerEntry"
+
 # Force TYPE_CHECKING Imports
 # These types will always be imported inside TYPE_CHECKING blocks to prevent circular imports.
 # This is needed when the automatic circular import detection doesn't catch all cases,
