@@ -515,7 +515,6 @@ class TestIndividualFiles:
             tmp_path
         )
 
-    @pytest.mark.xfail
     def test_bswm_bswmd_binary_comparison(
         self,
         reader: ARXMLReader,

@@ -39,9 +39,10 @@
         "type": {
           "type": "ListEnum",
           "multiplicity": "0..1",
-          "kind": "xml_attribute",
+          "kind": "aggr",
           "is_ref": false,
-          "note": "The type of the list. Default is \"UNNUMBER\""
+          "note": "The type of the list. Default is \"UNNUMBER\"",
+          "decorator": "xml_attribute"
         }
       }
     },

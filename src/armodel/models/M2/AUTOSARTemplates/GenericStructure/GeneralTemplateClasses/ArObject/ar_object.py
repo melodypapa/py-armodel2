@@ -50,7 +50,7 @@ class ARObject:
         self._checksum = value
 
     @property
-    @xml_attribute
+    @xml_attribute("T")
     def timestamp(self) -> Optional["DateTime"]:
         """Timestamp attribute serialized as XML attribute 'T'."""
         return self._timestamp

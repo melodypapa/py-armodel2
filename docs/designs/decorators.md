@@ -29,6 +29,7 @@ Mark a property/attribute to be serialized as an **XML attribute** instead of a 
 ```python
 from armodel.serialization.decorators import xml_attribute
 
+# Basic usage (auto-generated XML attribute name)
 class AUTOSAR(ARObject):
     def __init__(self) -> None:
         self._schema_version: str = "4.5.0"
@@ -41,6 +42,20 @@ class AUTOSAR(ARObject):
     @schema_version.setter
     def schema_version(self, value: str) -> None:
         self._schema_version = value
+
+# With custom XML attribute name
+class ARObject(ARObject):
+    def __init__(self) -> None:
+        self._timestamp: Optional[DateTime] = None
+
+    @xml_attribute("T")
+    @property
+    def timestamp(self) -> Optional[DateTime]:
+        return self._timestamp
+
+    @timestamp.setter
+    def timestamp(self, value: Optional[DateTime]) -> None:
+        self._timestamp = value
 ```
 
 #### Implementation Details
@@ -48,14 +63,21 @@ class AUTOSAR(ARObject):
 1. **Decorator order**: `@xml_attribute` must come **before** `@property`
 2. **Property pattern**: Requires property getter/setter pattern with private backing field
 3. **Marker**: Sets `_is_xml_attribute = True` on the property's `fget` function
+4. **Custom attribute name**: Optional parameter to specify a custom XML attribute name (e.g., `"T"` instead of auto-generated `"TIMESTAMP"`)
+5. **Marker**: Sets `_xml_attr_name = <custom_name>` on the property's `fget` function when custom name is provided
 
 #### Example Output
 
 ```xml
-<!-- With @xml_attribute decorator -->
+<!-- With @xml_attribute decorator (auto-generated name) -->
 <AUTOSAR SCHEMA-VERSION="4.5.0">
     <AR-PACKAGES>...</AR-PACKAGES>
 </AUTOSAR>
+
+<!-- With @xml_attribute("T") decorator (custom name) -->
+<AR-OBJECT T="2025-01-01T12:00:00">
+    <CHECKSUM>abc123</CHECKSUM>
+</AR-OBJECT>
 
 <!-- Without decorator (would be) -->
 <AUTOSAR>
@@ -133,27 +155,27 @@ The atpVariation pattern is used in AUTOSAR schemas to support conditional varia
 
 ---
 
-### 3. `@l_prefix(xml_tag: str)`
+### 3. `@lang_prefix(xml_tag: str)`
 
 Mark an attribute as using the **language-specific L-N** naming pattern for multilanguage text.
 
 **When to use**:
 - For MultiLanguage* classes where content is wrapped in language tags (e.g., L-1, L-2, L-4, L-5, L-10)
-- Automatically applied by code generator based on JSON `kind: "l_prefix"` mapping
+- Automatically applied by code generator based on JSON `decorator: "lang_prefix:L-N"` mapping
 
 **Location**: `decorators.py:71-102`
 
 #### Syntax
 
 ```python
-from armodel.serialization.decorators import l_prefix
+from armodel.serialization.decorators import lang_prefix
 
 class MultiLanguagePlainText(ARObject):
     def __init__(self) -> None:
         self._l10: LPlainText = None
 
     @property
-    @l_prefix("L-10")
+    @lang_prefix("L-10")
     def l10(self) -> LPlainText:
         return self._l10
 
@@ -164,9 +186,9 @@ class MultiLanguagePlainText(ARObject):
 
 #### Implementation Details
 
-1. **Decorator order**: `@l_prefix("L-N")` must come **before** `@property`
+1. **Decorator order**: `@lang_prefix("L-N")` must come **before** `@property`
 2. **Parameter**: Accepts the exact XML tag name (e.g., "L-10", "L-4", "L-2")
-3. **Markers**: Sets `_l_prefix = True` and `_l_prefix_tag = xml_tag` on the attribute
+3. **Markers**: Sets `_lang_prefix = True` and `_lang_prefix_tag = xml_tag` on the attribute
 4. **Property pattern**: Requires property getter/setter with private backing field
 
 #### Example Output
@@ -177,7 +199,7 @@ class MultiLanguagePlainText(ARObject):
 
 #### Language Tag Pattern
 
-The l_prefix pattern is used for AUTOSAR multilanguage support:
+The lang_prefix pattern is used for AUTOSAR multilanguage support:
 
 ```
 <L-1 L="EN">English text</L-1>
@@ -474,7 +496,7 @@ Decorators can be configured via JSON mapping data in the AUTOSAR class definiti
 
 **Format**: `"decorator_name:decorator_params"`
 
-- **decorator_name**: The decorator function name (e.g., `xml_element_name`, `ref_conditional`, `l_prefix`)
+- **decorator_name**: The decorator function name (e.g., `xml_element_name`, `ref_conditional`, `lang_prefix`)
 - **decorator_params**: Parameters passed to the decorator (e.g., `FIBEX-ELEMENTS`, `L-10`)
 
 ### Decorator Types in JSON
@@ -484,17 +506,19 @@ Decorators can be configured via JSON mapping data in the AUTOSAR class definiti
 | `xml_element_name` | `"decorator": "xml_element_name:PROVIDED-ENTRYS"` | Custom element name |
 | `xml_element_name` | `"decorator": "xml_element_name:TAG1/TAG2/TAG3"` | Multi-level nesting |
 | `ref_conditional` | `"decorator": "ref_conditional:FIBEX-ELEMENTS"` | -REF-CONDITIONAL pattern |
-| `l_prefix` | `"kind": "l_prefix"` | Language-specific content |
+| `lang_prefix` | `"decorator": "lang_prefix:L-10"` | Language-specific content |
 | `language_abbr` | `"kind": "language_abbr"` | Language abbreviation attribute |
-| `xml_attribute` | `"kind": "xml_attribute"` | XML attribute |
+| `xml_attribute` | `"decorator": "xml_attribute"` | XML attribute (auto-generated name) |
+| `xml_attribute` | `"decorator": "xml_attribute:T"` | XML attribute (custom name) |
 
 ### Special Cases
 
-**Attribute-level decorators** (ref_conditional, xml_element_name):
+**Attribute-level decorators** (ref_conditional, xml_element_name, xml_attribute, lang_prefix):
 - Use the `decorator` field with format `"name:params"`
 - The code generator applies the decorator to the generated property
+- For xml_attribute and lang_prefix, params are required (e.g., "xml_attribute:T", "lang_prefix:L-10")
 
-**Kind-based decorators** (xml_attribute, l_prefix, language_abbr):
+**Kind-based decorators** (language_abbr):
 - Use the `kind` field instead of `decorator`
 - The code generator automatically applies the appropriate decorator
 
@@ -547,6 +571,60 @@ Decorators can be configured via JSON mapping data in the AUTOSAR class definiti
       "kind": "aggr",
       "is_ref": false,
       "decorator": "xml_element_name:PROVIDED-ENTRYS"
+    }
+  }
+}
+```
+
+#### xml_attribute with custom name
+
+```json
+{
+  "name": "ARObject",
+  "attributes": {
+    "timestamp": {
+      "type": "DateTime",
+      "multiplicity": "0..1",
+      "kind": "aggr",
+      "decorator": "xml_attribute:T",
+      "is_ref": false,
+      "note": "Timestamp calculated by the user's tool environment"
+    }
+  }
+}
+```
+
+#### lang_prefix for language-specific content
+
+```json
+{
+  "name": "MultiLanguageParagraph",
+  "attributes": {
+    "l1": {
+      "type": "LParagraph",
+      "multiplicity": "*",
+      "kind": "aggr",
+      "decorator": "lang_prefix:L-1",
+      "is_ref": false,
+      "note": "Language-specific paragraphs"
+    }
+  }
+}
+```
+
+#### xml_attribute without parameter (auto-generated name)
+
+```json
+{
+  "name": "AUTOSAR",
+  "attributes": {
+    "schemaVersion": {
+      "type": "String",
+      "multiplicity": "1",
+      "kind": "aggr",
+      "decorator": "xml_attribute",
+      "is_ref": false,
+      "note": "AUTOSAR schema version"
     }
   }
 }
@@ -672,9 +750,9 @@ Each decorator sets specific marker attributes that the serialization framework 
 
 | Decorator | Marker Attributes | Type |
 |-----------|-------------------|------|
-| `@xml_attribute` | `_is_xml_attribute` | `bool` |
+| `@xml_attribute` | `_is_xml_attribute`, `_xml_attr_name` | `bool`, `str` |
 | `@atp_variant()` | `_atp_variant` | `bool` |
-| `@l_prefix(tag)` | `_l_prefix`, `_l_prefix_tag` | `bool`, `str` |
+| `@lang_prefix(tag)` | `_lang_prefix`, `_lang_prefix_tag` | `bool`, `str` |
 | `@language_abbr(attr)` | `_language_abbr`, `_xml_attr_name` | `bool`, `str` |
 | `@xml_element_name(tag)` | `_xml_element_name`, `_xml_tag` | `bool`, `str` |
 | `@ref_conditional(tag)` | `_is_ref_conditional`, `_xml_tag` | `bool`, `str` |
@@ -688,7 +766,7 @@ Each decorator sets specific marker attributes that the serialization framework 
 | XML attribute needed | `@xml_attribute` | `<ELEMENT uuid="abc">` |
 | AUTOSAR atpVariation pattern (class-level) | `@atp_variant()` | SwDataDefProps with VARIANTS/CONDITIONAL wrappers |
 | AUTOSAR atpVariation pattern (reference lists) | `@ref_conditional("TAG")` | System.fibexElements with -REF-CONDITIONAL wrappers |
-| Language-specific content | `@l_prefix("L-N")` | MultiLanguagePlainText with L-10 wrapper |
+| Language-specific content | `@lang_prefix("L-N")` | MultiLanguagePlainText with L-10 wrapper |
 | Language abbreviation attribute | `@language_abbr("L")` | LanguageSpecific with L attribute |
 | Non-standard element name | `@xml_element_name("TAG")` | BswModuleDescription with PROVIDED-ENTRYS |
 | Multi-level nesting | `@xml_element_name("TAG1/TAG2/TAG3")` | ExecutableEntity with nested containers |
@@ -768,8 +846,8 @@ def test_atp_variant():
     assert conditional is not None
 
 
-def test_l_prefix():
-    """Test @l_prefix decorator."""
+def test_lang_prefix():
+    """Test @lang_prefix decorator."""
     obj = MultiLanguagePlainText()
     l10 = LPlainText()
     l10.value = "English text"
@@ -825,7 +903,7 @@ def test_xml_element_name():
 
 **Solutions**:
 1. For `@xml_attribute`: Check that attribute name is correct in XML
-2. For `@l_prefix`: Verify the tag parameter matches XML (e.g., "L-10")
+2. For `@lang_prefix`: Verify the tag parameter matches XML (e.g., "L-10")
 3. For `@language_abbr`: Verify the attr parameter matches XML (e.g., "L")
 4. For `@xml_element_name`: Verify the tag parameter matches XML exactly
 

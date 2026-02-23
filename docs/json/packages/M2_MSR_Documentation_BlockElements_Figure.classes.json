@@ -241,9 +241,10 @@
         "filename": {
           "type": "String",
           "multiplicity": "0..1",
-          "kind": "xml_attribute",
+          "kind": "aggr",
           "is_ref": false,
-          "note": "Name of the file that should be displayed. This attribute is"
+          "note": "Name of the file that should be displayed. This attribute is",
+          "decorator": "xml_attribute"
         },
         "fit": {
           "type": "GraphicFitEnum",
@@ -495,9 +496,10 @@
         "lGraphic": {
           "type": "LGraphic",
           "multiplicity": "*",
-          "kind": "l_prefix",
+          "kind": "aggr",
           "is_ref": false,
-          "note": "Container of the graphic (or diagram) and optional map of"
+          "note": "Container of the graphic (or diagram) and optional map of",
+          "decorator": "lang_prefix:L-GRAPHIC"
         },
         "pgwide": {
           "type": "PgwideEnum",

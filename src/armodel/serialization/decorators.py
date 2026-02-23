@@ -3,28 +3,52 @@
 from typing import Any, Callable
 
 
-def xml_attribute(func: Any) -> Any:
+def xml_attribute(func_or_name: Any = None) -> Any:
     """Mark a property/attribute to be serialized as XML attribute instead of element.
 
-    Usage:
+    Usage (without parameter):
         class AUTOSAR(ARObject):
             @xml_attribute
             @property
             def schema_version(self) -> str:
                 return self._schema_version
 
+    Usage (with custom XML attribute name):
+        class ARObject(ARObject):
+            @xml_attribute("T")
+            @property
+            def timestamp(self) -> str:
+                return self._timestamp
+
     Args:
-        func: Property or function to mark as XML attribute
+        func_or_name: Either a property/function to mark, or a custom XML attribute name (string)
 
     Returns:
-        The decorated function/property with _is_xml_attribute marker set
+        The decorated function/property with _is_xml_attribute marker set,
+        or a decorator function if called with a parameter
     """
-    # If func is a property, mark its fget (the underlying function)
-    if isinstance(func, property):
-        func.fget._is_xml_attribute = True  # type: ignore[union-attr]
+    # If called with a parameter (custom attribute name), return a decorator
+    if isinstance(func_or_name, str):
+        custom_attr_name = func_or_name
+        def decorator(func: Any) -> Any:
+            # If func is a property, mark its fget (the underlying function)
+            if isinstance(func, property):
+                func.fget._is_xml_attribute = True  # type: ignore[union-attr]
+                func.fget._xml_attr_name = custom_attr_name  # type: ignore[union-attr]
+            else:
+                func._is_xml_attribute = True  # type: ignore[union-attr]
+                func._xml_attr_name = custom_attr_name  # type: ignore[union-attr]
+            return func
+        return decorator
     else:
-        func._is_xml_attribute = True  # type: ignore[union-attr]
-    return func
+        # No parameter, mark the function directly
+        func = func_or_name
+        # If func is a property, mark its fget (the underlying function)
+        if isinstance(func, property):
+            func.fget._is_xml_attribute = True  # type: ignore[union-attr]
+        else:
+            func._is_xml_attribute = True  # type: ignore[union-attr]
+        return func
 
 
 def atp_variant() -> Callable[[Any], Any]:
@@ -56,10 +80,10 @@ def atp_variant() -> Callable[[Any], Any]:
     return decorator
 
 
-def l_prefix(xml_tag: str) -> Callable[[Any], Any]:
-    """Decorator to mark an attribute as using the l_prefix pattern.
+def lang_prefix(xml_tag: str) -> Callable[[Any], Any]:
+    """Decorator to mark an attribute as using the lang_prefix pattern.
 
-    The l_prefix pattern wraps child elements in language-specific XML tags.
+    The lang_prefix pattern wraps child elements in language-specific XML tags.
     This is used for MultiLanguage* classes where language-specific content
     is wrapped in L-<number> elements.
 
@@ -68,18 +92,18 @@ def l_prefix(xml_tag: str) -> Callable[[Any], Any]:
 
     Usage:
         class MultiLanguagePlainText(ARObject):
-            @l_prefix("L-10")
+            @lang_prefix("L-10")
             l10: LPlainText = None
 
     Args:
         xml_tag: The XML tag to use for wrapping (e.g., "L-10", "L-4", "L-2")
 
     Returns:
-        Decorator that sets _l_prefix and _l_prefix_tag on the attribute
+        Decorator that sets _lang_prefix and _lang_prefix_tag on the attribute
     """
     def decorator(attr_or_func: Any) -> Any:
-        attr_or_func._l_prefix = True  # type: ignore[union-attr]
-        attr_or_func._l_prefix_tag = xml_tag  # type: ignore[union-attr]
+        attr_or_func._lang_prefix = True  # type: ignore[union-attr]
+        attr_or_func._lang_prefix_tag = xml_tag  # type: ignore[union-attr]
         return attr_or_func
     return decorator
 
