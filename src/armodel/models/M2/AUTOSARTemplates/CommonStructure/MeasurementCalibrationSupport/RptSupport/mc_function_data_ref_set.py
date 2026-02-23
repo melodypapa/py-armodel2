@@ -9,6 +9,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_MeasurementC
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import xml_element_name
 from armodel.serialization.decorators import atp_variant
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
@@ -36,13 +37,24 @@ class McFunctionDataRefSet(ARObject):
         """
         return False
 
-    flat_map_entrie_refs: list[ARRef]
+    _flat_map_entrie_refs: list[ARRef]
     mc_data_instance_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize McFunctionDataRefSet."""
         super().__init__()
-        self.flat_map_entrie_refs: list[ARRef] = []
+        self._flat_map_entrie_refs: list[ARRef] = []
         self.mc_data_instance_refs: list[ARRef] = []
+    @property
+    @xml_element_name("FLAT-MAP-ENTRYS")
+    def flat_map_entrie_refs(self) -> list[ARRef]:
+        """Get flat_map_entrie_refs with custom XML element name."""
+        return self._flat_map_entrie_refs
+
+    @flat_map_entrie_refs.setter
+    def flat_map_entrie_refs(self, value: list[ARRef]) -> None:
+        """Set flat_map_entrie_refs with custom XML element name."""
+        self._flat_map_entrie_refs = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize McFunctionDataRefSet to XML element with atp_variant wrapper.
@@ -142,9 +154,9 @@ class McFunctionDataRefSet(ARObject):
             # No wrapper structure found, return object with default values
             return obj
 
-        # Parse flat_map_entrie_refs (list from container "FLAT-MAP-ENTRIE-REFS")
+        # Parse flat_map_entrie_refs (list from container "FLAT-MAP-ENTRYS")
         obj.flat_map_entrie_refs = []
-        container = SerializationHelper.find_child_element(inner_elem, "FLAT-MAP-ENTRIE-REFS")
+        container = SerializationHelper.find_child_element(inner_elem, "FLAT-MAP-ENTRYS")
         if container is not None:
             for child in container:
                 if is_ref:

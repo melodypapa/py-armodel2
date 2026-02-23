@@ -8,6 +8,7 @@ JSON Source: docs/json/packages/M2_MSR_DataDictionary_Axis.classes.json"""
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.MSR.DataDictionary.CalibrationParameter.sw_calprm_axis_type_props import (
     SwCalprmAxisTypeProps,
@@ -59,7 +60,7 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
     sw_axis_generic: Optional[SwAxisGeneric]
     sw_max_axis: Optional[Integer]
     sw_min_axis: Optional[Integer]
-    sw_variable_ref_proxie_refs: list[ARRef]
+    _sw_variable_ref_proxie_refs: list[ARRef]
     unit_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize SwAxisIndividual."""
@@ -70,8 +71,19 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
         self.sw_axis_generic: Optional[SwAxisGeneric] = None
         self.sw_max_axis: Optional[Integer] = None
         self.sw_min_axis: Optional[Integer] = None
-        self.sw_variable_ref_proxie_refs: list[ARRef] = []
+        self._sw_variable_ref_proxie_refs: list[ARRef] = []
         self.unit_ref: Optional[ARRef] = None
+    @property
+    @xml_element_name("SW-VARIABLE-REF-PROXYS")
+    def sw_variable_ref_proxie_refs(self) -> list[ARRef]:
+        """Get sw_variable_ref_proxie_refs with custom XML element name."""
+        return self._sw_variable_ref_proxie_refs
+
+    @sw_variable_ref_proxie_refs.setter
+    def sw_variable_ref_proxie_refs(self, value: list[ARRef]) -> None:
+        """Set sw_variable_ref_proxie_refs with custom XML element name."""
+        self._sw_variable_ref_proxie_refs = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize SwAxisIndividual to XML element.
@@ -181,9 +193,9 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize sw_variable_ref_proxie_refs (list to container "SW-VARIABLE-REF-PROXIE-REFS")
+        # Serialize sw_variable_ref_proxie_refs (list to container "SW-VARIABLE-REF-PROXYS")
         if self.sw_variable_ref_proxie_refs:
-            wrapper = ET.Element("SW-VARIABLE-REF-PROXIE-REFS")
+            wrapper = ET.Element("SW-VARIABLE-REF-PROXYS")
             for item in self.sw_variable_ref_proxie_refs:
                 serialized = SerializationHelper.serialize_item(item, "SwVariableRefProxy")
                 if serialized is not None:
@@ -263,9 +275,9 @@ class SwAxisIndividual(SwCalprmAxisTypeProps):
             sw_min_axis_value = child.text
             obj.sw_min_axis = sw_min_axis_value
 
-        # Parse sw_variable_ref_proxie_refs (list from container "SW-VARIABLE-REF-PROXIE-REFS")
+        # Parse sw_variable_ref_proxie_refs (list from container "SW-VARIABLE-REF-PROXYS")
         obj.sw_variable_ref_proxie_refs = []
-        container = SerializationHelper.find_child_element(element, "SW-VARIABLE-REF-PROXIE-REFS")
+        container = SerializationHelper.find_child_element(element, "SW-VARIABLE-REF-PROXYS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

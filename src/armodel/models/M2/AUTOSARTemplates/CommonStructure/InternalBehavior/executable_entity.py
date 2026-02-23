@@ -30,6 +30,9 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.exclusi
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.exclusive_area_nesting_order import (
     ExclusiveAreaNestingOrder,
 )
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.executable_entity_activation_reason import (
+    ExecutableEntityActivationReason,
+)
 from armodel.models.M2.MSR.DataDictionary.AuxillaryObjects.sw_addr_method import (
     SwAddrMethod,
 )
@@ -48,21 +51,21 @@ class ExecutableEntity(Identifiable, ABC):
         """
         return True
 
-    activations: list[ExecutableEntity]
+    activation_reasons: list[ExecutableEntityActivationReason]
     can_enter_refs: list[ARRef]
-    exclusive_area_nesting_refs: list[ARRef]
-    minimum_start: Optional[TimeValue]
-    reentrancy_level_enum: Optional[ReentrancyLevelEnum]
+    exclusive_area_nesting_order_refs: list[ARRef]
+    minimum_start_interval: Optional[TimeValue]
+    reentrancy_level: Optional[ReentrancyLevelEnum]
     runs_inside_refs: list[ARRef]
     sw_addr_method_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize ExecutableEntity."""
         super().__init__()
-        self.activations: list[ExecutableEntity] = []
+        self.activation_reasons: list[ExecutableEntityActivationReason] = []
         self.can_enter_refs: list[ARRef] = []
-        self.exclusive_area_nesting_refs: list[ARRef] = []
-        self.minimum_start: Optional[TimeValue] = None
-        self.reentrancy_level_enum: Optional[ReentrancyLevelEnum] = None
+        self.exclusive_area_nesting_order_refs: list[ARRef] = []
+        self.minimum_start_interval: Optional[TimeValue] = None
+        self.reentrancy_level: Optional[ReentrancyLevelEnum] = None
         self.runs_inside_refs: list[ARRef] = []
         self.sw_addr_method_ref: Optional[ARRef] = None
 
@@ -90,11 +93,11 @@ class ExecutableEntity(Identifiable, ABC):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize activations (list to container "ACTIVATIONS")
-        if self.activations:
-            wrapper = ET.Element("ACTIVATIONS")
-            for item in self.activations:
-                serialized = SerializationHelper.serialize_item(item, "ExecutableEntity")
+        # Serialize activation_reasons (list to container "ACTIVATION-REASONS")
+        if self.activation_reasons:
+            wrapper = ET.Element("ACTIVATION-REASONS")
+            for item in self.activation_reasons:
+                serialized = SerializationHelper.serialize_item(item, "ExecutableEntityActivationReason")
                 if serialized is not None:
                     wrapper.append(serialized)
             if len(wrapper) > 0:
@@ -117,13 +120,13 @@ class ExecutableEntity(Identifiable, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize exclusive_area_nesting_refs (list to container "EXCLUSIVE-AREA-NESTING-REFS")
-        if self.exclusive_area_nesting_refs:
-            wrapper = ET.Element("EXCLUSIVE-AREA-NESTING-REFS")
-            for item in self.exclusive_area_nesting_refs:
+        # Serialize exclusive_area_nesting_order_refs (list to container "EXCLUSIVE-AREA-NESTING-ORDER-REFS")
+        if self.exclusive_area_nesting_order_refs:
+            wrapper = ET.Element("EXCLUSIVE-AREA-NESTING-ORDER-REFS")
+            for item in self.exclusive_area_nesting_order_refs:
                 serialized = SerializationHelper.serialize_item(item, "ExclusiveAreaNestingOrder")
                 if serialized is not None:
-                    child_elem = ET.Element("EXCLUSIVE-AREA-NESTING-REF")
+                    child_elem = ET.Element("EXCLUSIVE-AREA-NESTING-ORDER-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -134,12 +137,12 @@ class ExecutableEntity(Identifiable, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize minimum_start
-        if self.minimum_start is not None:
-            serialized = SerializationHelper.serialize_item(self.minimum_start, "TimeValue")
+        # Serialize minimum_start_interval
+        if self.minimum_start_interval is not None:
+            serialized = SerializationHelper.serialize_item(self.minimum_start_interval, "TimeValue")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("MINIMUM-START")
+                wrapped = ET.Element("MINIMUM-START-INTERVAL")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -148,12 +151,12 @@ class ExecutableEntity(Identifiable, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize reentrancy_level_enum
-        if self.reentrancy_level_enum is not None:
-            serialized = SerializationHelper.serialize_item(self.reentrancy_level_enum, "ReentrancyLevelEnum")
+        # Serialize reentrancy_level
+        if self.reentrancy_level is not None:
+            serialized = SerializationHelper.serialize_item(self.reentrancy_level, "ReentrancyLevelEnum")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("REENTRANCY-LEVEL-ENUM")
+                wrapped = ET.Element("REENTRANCY-LEVEL")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -208,15 +211,15 @@ class ExecutableEntity(Identifiable, ABC):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(ExecutableEntity, cls).deserialize(element)
 
-        # Parse activations (list from container "ACTIVATIONS")
-        obj.activations = []
-        container = SerializationHelper.find_child_element(element, "ACTIVATIONS")
+        # Parse activation_reasons (list from container "ACTIVATION-REASONS")
+        obj.activation_reasons = []
+        container = SerializationHelper.find_child_element(element, "ACTIVATION-REASONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.activations.append(child_value)
+                    obj.activation_reasons.append(child_value)
 
         # Parse can_enter_refs (list from container "CAN-ENTER-REFS")
         obj.can_enter_refs = []
@@ -234,9 +237,9 @@ class ExecutableEntity(Identifiable, ABC):
                 if child_value is not None:
                     obj.can_enter_refs.append(child_value)
 
-        # Parse exclusive_area_nesting_refs (list from container "EXCLUSIVE-AREA-NESTING-REFS")
-        obj.exclusive_area_nesting_refs = []
-        container = SerializationHelper.find_child_element(element, "EXCLUSIVE-AREA-NESTING-REFS")
+        # Parse exclusive_area_nesting_order_refs (list from container "EXCLUSIVE-AREA-NESTING-ORDER-REFS")
+        obj.exclusive_area_nesting_order_refs = []
+        container = SerializationHelper.find_child_element(element, "EXCLUSIVE-AREA-NESTING-ORDER-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -248,19 +251,19 @@ class ExecutableEntity(Identifiable, ABC):
                     # Deserialize each child element dynamically based on its tag
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.exclusive_area_nesting_refs.append(child_value)
+                    obj.exclusive_area_nesting_order_refs.append(child_value)
 
-        # Parse minimum_start
-        child = SerializationHelper.find_child_element(element, "MINIMUM-START")
+        # Parse minimum_start_interval
+        child = SerializationHelper.find_child_element(element, "MINIMUM-START-INTERVAL")
         if child is not None:
-            minimum_start_value = child.text
-            obj.minimum_start = minimum_start_value
+            minimum_start_interval_value = child.text
+            obj.minimum_start_interval = minimum_start_interval_value
 
-        # Parse reentrancy_level_enum
-        child = SerializationHelper.find_child_element(element, "REENTRANCY-LEVEL-ENUM")
+        # Parse reentrancy_level
+        child = SerializationHelper.find_child_element(element, "REENTRANCY-LEVEL")
         if child is not None:
-            reentrancy_level_enum_value = ReentrancyLevelEnum.deserialize(child)
-            obj.reentrancy_level_enum = reentrancy_level_enum_value
+            reentrancy_level_value = ReentrancyLevelEnum.deserialize(child)
+            obj.reentrancy_level = reentrancy_level_value
 
         # Parse runs_inside_refs (list from container "RUNS-INSIDE-REFS")
         obj.runs_inside_refs = []

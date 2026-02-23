@@ -10,6 +10,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ResourceCons
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
@@ -46,7 +47,7 @@ class MemorySection(Identifiable):
         return False
 
     alignment: Optional[AlignmentType]
-    executable_entitie_refs: list[ARRef]
+    _executable_entitie_refs: list[ARRef]
     options: list[Identifier]
     prefix_ref: Optional[ARRef]
     size: Optional[PositiveInteger]
@@ -56,12 +57,23 @@ class MemorySection(Identifiable):
         """Initialize MemorySection."""
         super().__init__()
         self.alignment: Optional[AlignmentType] = None
-        self.executable_entitie_refs: list[ARRef] = []
+        self._executable_entitie_refs: list[ARRef] = []
         self.options: list[Identifier] = []
         self.prefix_ref: Optional[ARRef] = None
         self.size: Optional[PositiveInteger] = None
         self.sw_addrmethod_ref: Optional[ARRef] = None
         self.symbol: Optional[Identifier] = None
+    @property
+    @xml_element_name("EXECUTABLE-ENTITYS")
+    def executable_entitie_refs(self) -> list[ARRef]:
+        """Get executable_entitie_refs with custom XML element name."""
+        return self._executable_entitie_refs
+
+    @executable_entitie_refs.setter
+    def executable_entitie_refs(self, value: list[ARRef]) -> None:
+        """Set executable_entitie_refs with custom XML element name."""
+        self._executable_entitie_refs = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize MemorySection to XML element.
@@ -101,9 +113,9 @@ class MemorySection(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize executable_entitie_refs (list to container "EXECUTABLE-ENTITIE-REFS")
+        # Serialize executable_entitie_refs (list to container "EXECUTABLE-ENTITYS")
         if self.executable_entitie_refs:
-            wrapper = ET.Element("EXECUTABLE-ENTITIE-REFS")
+            wrapper = ET.Element("EXECUTABLE-ENTITYS")
             for item in self.executable_entitie_refs:
                 serialized = SerializationHelper.serialize_item(item, "ExecutableEntity")
                 if serialized is not None:
@@ -212,9 +224,9 @@ class MemorySection(Identifiable):
             alignment_value = child.text
             obj.alignment = alignment_value
 
-        # Parse executable_entitie_refs (list from container "EXECUTABLE-ENTITIE-REFS")
+        # Parse executable_entitie_refs (list from container "EXECUTABLE-ENTITYS")
         obj.executable_entitie_refs = []
-        container = SerializationHelper.find_child_element(element, "EXECUTABLE-ENTITIE-REFS")
+        container = SerializationHelper.find_child_element(element, "EXECUTABLE-ENTITYS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

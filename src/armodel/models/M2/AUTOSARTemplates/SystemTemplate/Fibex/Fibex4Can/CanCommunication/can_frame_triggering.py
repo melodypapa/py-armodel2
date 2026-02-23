@@ -8,6 +8,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4C
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.frame_triggering import (
     FrameTriggering,
@@ -48,7 +49,7 @@ class CanFrameTriggering(FrameTriggering):
         """
         return False
 
-    absolutelies: list[TtcanAbsolutelyScheduledTiming]
+    _absolutelies: list[TtcanAbsolutelyScheduledTiming]
     can_addressing: Optional[CanAddressingModeType]
     can_frame_rx_behavior: Optional[CanFrameRxBehaviorEnum]
     can_frame_tx_behavior: Optional[CanFrameTxBehaviorEnum]
@@ -61,7 +62,7 @@ class CanFrameTriggering(FrameTriggering):
     def __init__(self) -> None:
         """Initialize CanFrameTriggering."""
         super().__init__()
-        self.absolutelies: list[TtcanAbsolutelyScheduledTiming] = []
+        self._absolutelies: list[TtcanAbsolutelyScheduledTiming] = []
         self.can_addressing: Optional[CanAddressingModeType] = None
         self.can_frame_rx_behavior: Optional[CanFrameRxBehaviorEnum] = None
         self.can_frame_tx_behavior: Optional[CanFrameTxBehaviorEnum] = None
@@ -71,6 +72,17 @@ class CanFrameTriggering(FrameTriggering):
         self.rx_identifier_range_range: Optional[RxIdentifierRange] = None
         self.rx_mask: Optional[PositiveInteger] = None
         self.tx_mask: Optional[PositiveInteger] = None
+    @property
+    @xml_element_name("ABSOLUTELYS")
+    def absolutelies(self) -> list[TtcanAbsolutelyScheduledTiming]:
+        """Get absolutelies with custom XML element name."""
+        return self._absolutelies
+
+    @absolutelies.setter
+    def absolutelies(self, value: list[TtcanAbsolutelyScheduledTiming]) -> None:
+        """Set absolutelies with custom XML element name."""
+        self._absolutelies = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize CanFrameTriggering to XML element.
@@ -96,9 +108,9 @@ class CanFrameTriggering(FrameTriggering):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize absolutelies (list to container "ABSOLUTELIES")
+        # Serialize absolutelies (list to container "ABSOLUTELYS")
         if self.absolutelies:
-            wrapper = ET.Element("ABSOLUTELIES")
+            wrapper = ET.Element("ABSOLUTELYS")
             for item in self.absolutelies:
                 serialized = SerializationHelper.serialize_item(item, "TtcanAbsolutelyScheduledTiming")
                 if serialized is not None:
@@ -247,9 +259,9 @@ class CanFrameTriggering(FrameTriggering):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(CanFrameTriggering, cls).deserialize(element)
 
-        # Parse absolutelies (list from container "ABSOLUTELIES")
+        # Parse absolutelies (list from container "ABSOLUTELYS")
         obj.absolutelies = []
-        container = SerializationHelper.find_child_element(element, "ABSOLUTELIES")
+        container = SerializationHelper.find_child_element(element, "ABSOLUTELYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

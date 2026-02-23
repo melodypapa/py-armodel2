@@ -8,6 +8,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_VariantHand
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ARPackage.packageable_element import (
     PackageableElement,
@@ -29,11 +30,22 @@ class EnumerationMappingTable(PackageableElement):
         """
         return False
 
-    entrie_refs: list[Any]
+    _entrie_refs: list[Any]
     def __init__(self) -> None:
         """Initialize EnumerationMappingTable."""
         super().__init__()
-        self.entrie_refs: list[Any] = []
+        self._entrie_refs: list[Any] = []
+    @property
+    @xml_element_name("ENTRYS")
+    def entrie_refs(self) -> list[Any]:
+        """Get entrie_refs with custom XML element name."""
+        return self._entrie_refs
+
+    @entrie_refs.setter
+    def entrie_refs(self, value: list[Any]) -> None:
+        """Set entrie_refs with custom XML element name."""
+        self._entrie_refs = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize EnumerationMappingTable to XML element.
@@ -59,9 +71,9 @@ class EnumerationMappingTable(PackageableElement):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize entrie_refs (list to container "ENTRIE-REFS")
+        # Serialize entrie_refs (list to container "ENTRYS")
         if self.entrie_refs:
-            wrapper = ET.Element("ENTRIE-REFS")
+            wrapper = ET.Element("ENTRYS")
             for item in self.entrie_refs:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -91,9 +103,9 @@ class EnumerationMappingTable(PackageableElement):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EnumerationMappingTable, cls).deserialize(element)
 
-        # Parse entrie_refs (list from container "ENTRIE-REFS")
+        # Parse entrie_refs (list from container "ENTRYS")
         obj.entrie_refs = []
-        container = SerializationHelper.find_child_element(element, "ENTRIE-REFS")
+        container = SerializationHelper.find_child_element(element, "ENTRYS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

@@ -8,6 +8,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_Fibex4F
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommunication.frame_triggering import (
     FrameTriggering,
@@ -35,17 +36,28 @@ class FlexrayFrameTriggering(FrameTriggering):
         """
         return False
 
-    absolutelies: list[FlexrayAbsolutelyScheduledTiming]
+    _absolutelies: list[FlexrayAbsolutelyScheduledTiming]
     allow_dynamic: Optional[Boolean]
     message_id: Optional[PositiveInteger]
     payload_preamble: Optional[Any]
     def __init__(self) -> None:
         """Initialize FlexrayFrameTriggering."""
         super().__init__()
-        self.absolutelies: list[FlexrayAbsolutelyScheduledTiming] = []
+        self._absolutelies: list[FlexrayAbsolutelyScheduledTiming] = []
         self.allow_dynamic: Optional[Boolean] = None
         self.message_id: Optional[PositiveInteger] = None
         self.payload_preamble: Optional[Any] = None
+    @property
+    @xml_element_name("ABSOLUTELYS")
+    def absolutelies(self) -> list[FlexrayAbsolutelyScheduledTiming]:
+        """Get absolutelies with custom XML element name."""
+        return self._absolutelies
+
+    @absolutelies.setter
+    def absolutelies(self, value: list[FlexrayAbsolutelyScheduledTiming]) -> None:
+        """Set absolutelies with custom XML element name."""
+        self._absolutelies = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize FlexrayFrameTriggering to XML element.
@@ -71,9 +83,9 @@ class FlexrayFrameTriggering(FrameTriggering):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize absolutelies (list to container "ABSOLUTELIES")
+        # Serialize absolutelies (list to container "ABSOLUTELYS")
         if self.absolutelies:
-            wrapper = ET.Element("ABSOLUTELIES")
+            wrapper = ET.Element("ABSOLUTELYS")
             for item in self.absolutelies:
                 serialized = SerializationHelper.serialize_item(item, "FlexrayAbsolutelyScheduledTiming")
                 if serialized is not None:
@@ -138,9 +150,9 @@ class FlexrayFrameTriggering(FrameTriggering):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(FlexrayFrameTriggering, cls).deserialize(element)
 
-        # Parse absolutelies (list from container "ABSOLUTELIES")
+        # Parse absolutelies (list from container "ABSOLUTELYS")
         obj.absolutelies = []
-        container = SerializationHelper.find_child_element(element, "ABSOLUTELIES")
+        container = SerializationHelper.find_child_element(element, "ABSOLUTELYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

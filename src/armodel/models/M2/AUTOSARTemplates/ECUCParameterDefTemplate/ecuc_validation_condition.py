@@ -8,6 +8,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_ECUCParameterDefTemplate.cla
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
@@ -37,13 +38,24 @@ class EcucValidationCondition(Identifiable):
         """
         return False
 
-    ecuc_queries: list[EcucQuery]
+    _ecuc_queries: list[EcucQuery]
     validation: Optional[EcucConditionFormula]
     def __init__(self) -> None:
         """Initialize EcucValidationCondition."""
         super().__init__()
-        self.ecuc_queries: list[EcucQuery] = []
+        self._ecuc_queries: list[EcucQuery] = []
         self.validation: Optional[EcucConditionFormula] = None
+    @property
+    @xml_element_name("ECUC-QUERYS")
+    def ecuc_queries(self) -> list[EcucQuery]:
+        """Get ecuc_queries with custom XML element name."""
+        return self._ecuc_queries
+
+    @ecuc_queries.setter
+    def ecuc_queries(self, value: list[EcucQuery]) -> None:
+        """Set ecuc_queries with custom XML element name."""
+        self._ecuc_queries = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize EcucValidationCondition to XML element.
@@ -69,9 +81,9 @@ class EcucValidationCondition(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize ecuc_queries (list to container "ECUC-QUERIES")
+        # Serialize ecuc_queries (list to container "ECUC-QUERYS")
         if self.ecuc_queries:
-            wrapper = ET.Element("ECUC-QUERIES")
+            wrapper = ET.Element("ECUC-QUERYS")
             for item in self.ecuc_queries:
                 serialized = SerializationHelper.serialize_item(item, "EcucQuery")
                 if serialized is not None:
@@ -108,9 +120,9 @@ class EcucValidationCondition(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(EcucValidationCondition, cls).deserialize(element)
 
-        # Parse ecuc_queries (list from container "ECUC-QUERIES")
+        # Parse ecuc_queries (list from container "ECUC-QUERYS")
         obj.ecuc_queries = []
-        container = SerializationHelper.find_child_element(element, "ECUC-QUERIES")
+        container = SerializationHelper.find_child_element(element, "ECUC-QUERYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

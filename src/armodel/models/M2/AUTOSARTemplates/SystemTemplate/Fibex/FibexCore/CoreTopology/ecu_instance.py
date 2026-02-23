@@ -11,6 +11,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SystemTemplate_Fibex_FibexCo
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.fibex_element import (
     FibexElement,
@@ -80,7 +81,7 @@ class EcuInstance(FibexElement):
     connectors: list[Any]
     dlt_config: Optional[DltConfig]
     do_ip_config: Optional[DoIpConfig]
-    ecu_task_proxie_refs: list[ARRef]
+    _ecu_task_proxie_refs: list[ARRef]
     eth_switch_port: Optional[Boolean]
     firewall_rule_refs: list[ARRef]
     partitions: list[EcuPartition]
@@ -107,7 +108,7 @@ class EcuInstance(FibexElement):
         self.connectors: list[Any] = []
         self.dlt_config: Optional[DltConfig] = None
         self.do_ip_config: Optional[DoIpConfig] = None
-        self.ecu_task_proxie_refs: list[ARRef] = []
+        self._ecu_task_proxie_refs: list[ARRef] = []
         self.eth_switch_port: Optional[Boolean] = None
         self.firewall_rule_refs: list[ARRef] = []
         self.partitions: list[EcuPartition] = []
@@ -120,6 +121,17 @@ class EcuInstance(FibexElement):
         self.tcp_ip_props_ref: Optional[ARRef] = None
         self.v2x_supported: Optional[Any] = None
         self.wake_up_over_bus_supported: Optional[Boolean] = None
+    @property
+    @xml_element_name("ECU-TASK-PROXYS")
+    def ecu_task_proxie_refs(self) -> list[ARRef]:
+        """Get ecu_task_proxie_refs with custom XML element name."""
+        return self._ecu_task_proxie_refs
+
+    @ecu_task_proxie_refs.setter
+    def ecu_task_proxie_refs(self, value: list[ARRef]) -> None:
+        """Set ecu_task_proxie_refs with custom XML element name."""
+        self._ecu_task_proxie_refs = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize EcuInstance to XML element.
@@ -300,9 +312,9 @@ class EcuInstance(FibexElement):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize ecu_task_proxie_refs (list to container "ECU-TASK-PROXIE-REFS")
+        # Serialize ecu_task_proxie_refs (list to container "ECU-TASK-PROXYS")
         if self.ecu_task_proxie_refs:
-            wrapper = ET.Element("ECU-TASK-PROXIE-REFS")
+            wrapper = ET.Element("ECU-TASK-PROXYS")
             for item in self.ecu_task_proxie_refs:
                 serialized = SerializationHelper.serialize_item(item, "OsTaskProxy")
                 if serialized is not None:
@@ -603,9 +615,9 @@ class EcuInstance(FibexElement):
             do_ip_config_value = SerializationHelper.deserialize_by_tag(child, "DoIpConfig")
             obj.do_ip_config = do_ip_config_value
 
-        # Parse ecu_task_proxie_refs (list from container "ECU-TASK-PROXIE-REFS")
+        # Parse ecu_task_proxie_refs (list from container "ECU-TASK-PROXYS")
         obj.ecu_task_proxie_refs = []
-        container = SerializationHelper.find_child_element(element, "ECU-TASK-PROXIE-REFS")
+        container = SerializationHelper.find_child_element(element, "ECU-TASK-PROXYS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

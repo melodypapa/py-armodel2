@@ -257,8 +257,8 @@ class BswInterruptEntityBuilder:
         self._obj.uuid = value
         return self
 
-    def with_activations(self, items: list[ExecutableEntity]) -> "BswInterruptEntityBuilder":
-        """Set activations list attribute.
+    def with_activation_reasons(self, items: list[ExecutableEntityActivationReason]) -> "BswInterruptEntityBuilder":
+        """Set activation_reasons list attribute.
 
         Args:
             items: List of items to set
@@ -266,7 +266,7 @@ class BswInterruptEntityBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.activations = list(items) if items else []
+        self._obj.activation_reasons = list(items) if items else []
         return self
 
     def with_can_enters(self, items: list[ExclusiveArea]) -> "BswInterruptEntityBuilder":
@@ -281,8 +281,8 @@ class BswInterruptEntityBuilder:
         self._obj.can_enters = list(items) if items else []
         return self
 
-    def with_exclusive_area_nestings(self, items: list[ExclusiveAreaNestingOrder]) -> "BswInterruptEntityBuilder":
-        """Set exclusive_area_nestings list attribute.
+    def with_exclusive_area_nesting_orders(self, items: list[ExclusiveAreaNestingOrder]) -> "BswInterruptEntityBuilder":
+        """Set exclusive_area_nesting_orders list attribute.
 
         Args:
             items: List of items to set
@@ -290,11 +290,11 @@ class BswInterruptEntityBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.exclusive_area_nestings = list(items) if items else []
+        self._obj.exclusive_area_nesting_orders = list(items) if items else []
         return self
 
-    def with_minimum_start(self, value: Optional[TimeValue]) -> "BswInterruptEntityBuilder":
-        """Set minimum_start attribute.
+    def with_minimum_start_interval(self, value: Optional[TimeValue]) -> "BswInterruptEntityBuilder":
+        """Set minimum_start_interval attribute.
 
         Args:
             value: Value to set
@@ -304,11 +304,11 @@ class BswInterruptEntityBuilder:
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.minimum_start = value
+        self._obj.minimum_start_interval = value
         return self
 
-    def with_reentrancy_level_enum(self, value: Optional[ReentrancyLevelEnum]) -> "BswInterruptEntityBuilder":
-        """Set reentrancy_level_enum attribute.
+    def with_reentrancy_level(self, value: Optional[ReentrancyLevelEnum]) -> "BswInterruptEntityBuilder":
+        """Set reentrancy_level attribute.
 
         Args:
             value: Value to set
@@ -318,7 +318,7 @@ class BswInterruptEntityBuilder:
         """
         if value is None and not True:
             raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.reentrancy_level_enum = value
+        self._obj.reentrancy_level = value
         return self
 
     def with_runs_insides(self, items: list[ExclusiveArea]) -> "BswInterruptEntityBuilder":
@@ -530,8 +530,8 @@ class BswInterruptEntityBuilder:
         self._obj.annotations = []
         return self
 
-    def add_activation(self, item: ExecutableEntity) -> "BswInterruptEntityBuilder":
-        """Add a single item to activations list.
+    def add_activation_reason(self, item: ExecutableEntityActivationReason) -> "BswInterruptEntityBuilder":
+        """Add a single item to activation_reasons list.
 
         Args:
             item: Item to add
@@ -539,16 +539,16 @@ class BswInterruptEntityBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.activations.append(item)
+        self._obj.activation_reasons.append(item)
         return self
 
-    def clear_activations(self) -> "BswInterruptEntityBuilder":
-        """Clear all items from activations list.
+    def clear_activation_reasons(self) -> "BswInterruptEntityBuilder":
+        """Clear all items from activation_reasons list.
 
         Returns:
             self for method chaining
         """
-        self._obj.activations = []
+        self._obj.activation_reasons = []
         return self
 
     def add_can_enter(self, item: ExclusiveArea) -> "BswInterruptEntityBuilder":
@@ -572,8 +572,8 @@ class BswInterruptEntityBuilder:
         self._obj.can_enters = []
         return self
 
-    def add_exclusive_area_nesting(self, item: ExclusiveAreaNestingOrder) -> "BswInterruptEntityBuilder":
-        """Add a single item to exclusive_area_nestings list.
+    def add_exclusive_area_nesting_order(self, item: ExclusiveAreaNestingOrder) -> "BswInterruptEntityBuilder":
+        """Add a single item to exclusive_area_nesting_orders list.
 
         Args:
             item: Item to add
@@ -581,16 +581,16 @@ class BswInterruptEntityBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.exclusive_area_nestings.append(item)
+        self._obj.exclusive_area_nesting_orders.append(item)
         return self
 
-    def clear_exclusive_area_nestings(self) -> "BswInterruptEntityBuilder":
-        """Clear all items from exclusive_area_nestings list.
+    def clear_exclusive_area_nesting_orders(self) -> "BswInterruptEntityBuilder":
+        """Clear all items from exclusive_area_nesting_orders list.
 
         Returns:
             self for method chaining
         """
-        self._obj.exclusive_area_nestings = []
+        self._obj.exclusive_area_nesting_orders = []
         return self
 
     def add_runs_inside(self, item: ExclusiveArea) -> "BswInterruptEntityBuilder":

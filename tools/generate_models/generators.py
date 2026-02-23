@@ -155,6 +155,17 @@ def generate_class_code(
                             else:
                                 attribute_types[attr_name]["decorator_name"] = decorator_spec
                                 attribute_types[attr_name]["decorator_params"] = None
+                        else:
+                            # Auto-detect YS→IES pattern and add xml_element_name decorator
+                            # Check if attribute name ends with "ies" and multiplicity is "*"
+                            if attr_name.lower().endswith("ies") and attr_info.get("multiplicity") == "*":
+                                # Convert attribute name to XML tag
+                                snake_name = to_snake_case(attr_name)
+                                xml_tag = snake_name.upper().replace("_", "-")
+                                # Convert IES to YS (e.g., ENTITIES → ENTITYS)
+                                legacy_tag = f"{xml_tag[:-3]}YS"
+                                attribute_types[attr_name]["decorator_name"] = "xml_element_name"
+                                attribute_types[attr_name]["decorator_params"] = legacy_tag
                     break
 
         # Auto-detect LanguageSpecific series classes and apply language_abbr to l attribute
@@ -278,6 +289,17 @@ def generate_class_code(
                         else:
                             attribute_types[attr_name]["decorator_name"] = decorator_spec
                             attribute_types[attr_name]["decorator_params"] = None
+                    else:
+                        # Auto-detect YS→IES pattern and add xml_element_name decorator
+                        # Check if attribute name ends with "ies" and multiplicity is "*"
+                        if attr_name.lower().endswith("ies") and attr_info.get("multiplicity") == "*":
+                            # Convert attribute name to XML tag
+                            snake_name = to_snake_case(attr_name)
+                            xml_tag = snake_name.upper().replace("_", "-")
+                            # Convert IES to YS (e.g., ENTITIES → ENTITYS)
+                            legacy_tag = f"{xml_tag[:-3]}YS"
+                            attribute_types[attr_name]["decorator_name"] = "xml_element_name"
+                            attribute_types[attr_name]["decorator_params"] = legacy_tag
                 break
 
     # Add ARRef import if any attribute has is_ref=True

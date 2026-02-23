@@ -9,6 +9,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_Implicit
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
@@ -33,13 +34,24 @@ class RunnableEntityGroup(Identifiable):
         """
         return False
 
-    runnable_entities: list[RunnableEntity]
+    _runnable_entities: list[RunnableEntity]
     runnable_entity_group_group_in_composition_instance_ref_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize RunnableEntityGroup."""
         super().__init__()
-        self.runnable_entities: list[RunnableEntity] = []
+        self._runnable_entities: list[RunnableEntity] = []
         self.runnable_entity_group_group_in_composition_instance_ref_refs: list[ARRef] = []
+    @property
+    @xml_element_name("RUNNABLE-ENTITYS")
+    def runnable_entities(self) -> list[RunnableEntity]:
+        """Get runnable_entities with custom XML element name."""
+        return self._runnable_entities
+
+    @runnable_entities.setter
+    def runnable_entities(self, value: list[RunnableEntity]) -> None:
+        """Set runnable_entities with custom XML element name."""
+        self._runnable_entities = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize RunnableEntityGroup to XML element.
@@ -65,9 +77,9 @@ class RunnableEntityGroup(Identifiable):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize runnable_entities (list to container "RUNNABLE-ENTITIES")
+        # Serialize runnable_entities (list to container "RUNNABLE-ENTITYS")
         if self.runnable_entities:
-            wrapper = ET.Element("RUNNABLE-ENTITIES")
+            wrapper = ET.Element("RUNNABLE-ENTITYS")
             for item in self.runnable_entities:
                 serialized = SerializationHelper.serialize_item(item, "RunnableEntity")
                 if serialized is not None:
@@ -107,9 +119,9 @@ class RunnableEntityGroup(Identifiable):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(RunnableEntityGroup, cls).deserialize(element)
 
-        # Parse runnable_entities (list from container "RUNNABLE-ENTITIES")
+        # Parse runnable_entities (list from container "RUNNABLE-ENTITYS")
         obj.runnable_entities = []
-        container = SerializationHelper.find_child_element(element, "RUNNABLE-ENTITIES")
+        container = SerializationHelper.find_child_element(element, "RUNNABLE-ENTITYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

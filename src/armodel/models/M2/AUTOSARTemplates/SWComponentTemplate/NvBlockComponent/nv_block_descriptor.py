@@ -8,6 +8,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_SWComponentTemplate_NvBlockC
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
@@ -70,7 +71,7 @@ class NvBlockDescriptor(Identifiable):
     rom_block_ref: Optional[ARRef]
     support_dirty: Optional[Boolean]
     timing_event_ref: Optional[ARRef]
-    writing_strategies: list[Any]
+    _writing_strategies: list[Any]
     def __init__(self) -> None:
         """Initialize NvBlockDescriptor."""
         super().__init__()
@@ -85,7 +86,18 @@ class NvBlockDescriptor(Identifiable):
         self.rom_block_ref: Optional[ARRef] = None
         self.support_dirty: Optional[Boolean] = None
         self.timing_event_ref: Optional[ARRef] = None
-        self.writing_strategies: list[Any] = []
+        self._writing_strategies: list[Any] = []
+    @property
+    @xml_element_name("WRITING-STRATEGYS")
+    def writing_strategies(self) -> list[Any]:
+        """Get writing_strategies with custom XML element name."""
+        return self._writing_strategies
+
+    @writing_strategies.setter
+    def writing_strategies(self, value: list[Any]) -> None:
+        """Set writing_strategies with custom XML element name."""
+        self._writing_strategies = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize NvBlockDescriptor to XML element.
@@ -262,9 +274,9 @@ class NvBlockDescriptor(Identifiable):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize writing_strategies (list to container "WRITING-STRATEGIES")
+        # Serialize writing_strategies (list to container "WRITING-STRATEGYS")
         if self.writing_strategies:
-            wrapper = ET.Element("WRITING-STRATEGIES")
+            wrapper = ET.Element("WRITING-STRATEGYS")
             for item in self.writing_strategies:
                 serialized = SerializationHelper.serialize_item(item, "Any")
                 if serialized is not None:
@@ -395,9 +407,9 @@ class NvBlockDescriptor(Identifiable):
             timing_event_ref_value = ARRef.deserialize(child)
             obj.timing_event_ref = timing_event_ref_value
 
-        # Parse writing_strategies (list from container "WRITING-STRATEGIES")
+        # Parse writing_strategies (list from container "WRITING-STRATEGYS")
         obj.writing_strategies = []
-        container = SerializationHelper.find_child_element(element, "WRITING-STRATEGIES")
+        container = SerializationHelper.find_child_element(element, "WRITING-STRATEGYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

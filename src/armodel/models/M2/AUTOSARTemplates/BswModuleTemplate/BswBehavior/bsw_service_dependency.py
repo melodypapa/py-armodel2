@@ -10,6 +10,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswBehavio
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional, Any
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.ServiceNeeds.service_dependency import (
     ServiceDependency,
@@ -37,16 +38,27 @@ class BswServiceDependency(ServiceDependency):
         return False
 
     assigned_datas: list[Any]
-    assigned_entries: list[RoleBasedBswModuleEntryAssignment]
+    _assigned_entries: list[RoleBasedBswModuleEntryAssignment]
     ident: Optional[Any]
     service_needs: Optional[ServiceNeeds]
     def __init__(self) -> None:
         """Initialize BswServiceDependency."""
         super().__init__()
         self.assigned_datas: list[Any] = []
-        self.assigned_entries: list[RoleBasedBswModuleEntryAssignment] = []
+        self._assigned_entries: list[RoleBasedBswModuleEntryAssignment] = []
         self.ident: Optional[Any] = None
         self.service_needs: Optional[ServiceNeeds] = None
+    @property
+    @xml_element_name("ASSIGNED-ENTRYS")
+    def assigned_entries(self) -> list[RoleBasedBswModuleEntryAssignment]:
+        """Get assigned_entries with custom XML element name."""
+        return self._assigned_entries
+
+    @assigned_entries.setter
+    def assigned_entries(self, value: list[RoleBasedBswModuleEntryAssignment]) -> None:
+        """Set assigned_entries with custom XML element name."""
+        self._assigned_entries = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize BswServiceDependency to XML element.
@@ -82,9 +94,9 @@ class BswServiceDependency(ServiceDependency):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize assigned_entries (list to container "ASSIGNED-ENTRIES")
+        # Serialize assigned_entries (list to container "ASSIGNED-ENTRYS")
         if self.assigned_entries:
-            wrapper = ET.Element("ASSIGNED-ENTRIES")
+            wrapper = ET.Element("ASSIGNED-ENTRYS")
             for item in self.assigned_entries:
                 serialized = SerializationHelper.serialize_item(item, "RoleBasedBswModuleEntryAssignment")
                 if serialized is not None:
@@ -145,9 +157,9 @@ class BswServiceDependency(ServiceDependency):
                 if child_value is not None:
                     obj.assigned_datas.append(child_value)
 
-        # Parse assigned_entries (list from container "ASSIGNED-ENTRIES")
+        # Parse assigned_entries (list from container "ASSIGNED-ENTRYS")
         obj.assigned_entries = []
-        container = SerializationHelper.find_child_element(element, "ASSIGNED-ENTRIES")
+        container = SerializationHelper.find_child_element(element, "ASSIGNED-ENTRYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

@@ -12,6 +12,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_BswModuleTemplate_BswBehavio
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.internal_behavior import (
     InternalBehavior,
@@ -80,53 +81,196 @@ class BswInternalBehavior(InternalBehavior):
         """
         return False
 
-    ar_typed_per_instance_memories: list[VariableDataPrototype]
-    bsw_per_instance_memory_policies: list[BswPerInstanceMemoryPolicy]
-    client_policies: list[BswClientPolicy]
+    _ar_typed_per_instance_memories: list[VariableDataPrototype]
+    _bsw_per_instance_memory_policies: list[BswPerInstanceMemoryPolicy]
+    _client_policies: list[BswClientPolicy]
     distinguished_partitions: list[BswDistinguishedPartition]
-    entities: list[BswModuleEntity]
+    _entities: list[BswModuleEntity]
     events: list[BswEvent]
     exclusive_areas: list[BswExclusiveAreaPolicy]
     included_data_type_sets: list[IncludedDataTypeSet]
     included_mode_declaration_group_sets: list[IncludedModeDeclarationGroupSet]
     internal_triggering_points: list[BswInternalTriggeringPoint]
-    internal_triggering_point_policies: list[BswInternalTriggeringPointPolicy]
-    mode_receiver_policies: list[BswModeReceiverPolicy]
-    mode_sender_policies: list[BswModeSenderPolicy]
-    parameter_policies: list[BswParameterPolicy]
+    _internal_triggering_point_policies: list[BswInternalTriggeringPointPolicy]
+    _mode_receiver_policies: list[BswModeReceiverPolicy]
+    _mode_sender_policies: list[BswModeSenderPolicy]
+    _parameter_policies: list[BswParameterPolicy]
     per_instance_parameters: list[ParameterDataPrototype]
-    reception_policies: list[BswDataReceptionPolicy]
-    released_trigger_policies: list[BswReleasedTriggerPolicy]
+    _reception_policies: list[BswDataReceptionPolicy]
+    _released_trigger_policies: list[BswReleasedTriggerPolicy]
     scheduler_name_prefixs: list[BswSchedulerNamePrefix]
-    send_policies: list[BswDataSendPolicy]
-    service_dependencies: list[BswServiceDependency]
+    _send_policies: list[BswDataSendPolicy]
+    _service_dependencies: list[BswServiceDependency]
     trigger_direct_implementations: list[BswTriggerDirectImplementation]
-    variation_point_proxies: list[VariationPointProxy]
+    _variation_point_proxies: list[VariationPointProxy]
     def __init__(self) -> None:
         """Initialize BswInternalBehavior."""
         super().__init__()
-        self.ar_typed_per_instance_memories: list[VariableDataPrototype] = []
-        self.bsw_per_instance_memory_policies: list[BswPerInstanceMemoryPolicy] = []
-        self.client_policies: list[BswClientPolicy] = []
+        self._ar_typed_per_instance_memories: list[VariableDataPrototype] = []
+        self._bsw_per_instance_memory_policies: list[BswPerInstanceMemoryPolicy] = []
+        self._client_policies: list[BswClientPolicy] = []
         self.distinguished_partitions: list[BswDistinguishedPartition] = []
-        self.entities: list[BswModuleEntity] = []
+        self._entities: list[BswModuleEntity] = []
         self.events: list[BswEvent] = []
         self.exclusive_areas: list[BswExclusiveAreaPolicy] = []
         self.included_data_type_sets: list[IncludedDataTypeSet] = []
         self.included_mode_declaration_group_sets: list[IncludedModeDeclarationGroupSet] = []
         self.internal_triggering_points: list[BswInternalTriggeringPoint] = []
-        self.internal_triggering_point_policies: list[BswInternalTriggeringPointPolicy] = []
-        self.mode_receiver_policies: list[BswModeReceiverPolicy] = []
-        self.mode_sender_policies: list[BswModeSenderPolicy] = []
-        self.parameter_policies: list[BswParameterPolicy] = []
+        self._internal_triggering_point_policies: list[BswInternalTriggeringPointPolicy] = []
+        self._mode_receiver_policies: list[BswModeReceiverPolicy] = []
+        self._mode_sender_policies: list[BswModeSenderPolicy] = []
+        self._parameter_policies: list[BswParameterPolicy] = []
         self.per_instance_parameters: list[ParameterDataPrototype] = []
-        self.reception_policies: list[BswDataReceptionPolicy] = []
-        self.released_trigger_policies: list[BswReleasedTriggerPolicy] = []
+        self._reception_policies: list[BswDataReceptionPolicy] = []
+        self._released_trigger_policies: list[BswReleasedTriggerPolicy] = []
         self.scheduler_name_prefixs: list[BswSchedulerNamePrefix] = []
-        self.send_policies: list[BswDataSendPolicy] = []
-        self.service_dependencies: list[BswServiceDependency] = []
+        self._send_policies: list[BswDataSendPolicy] = []
+        self._service_dependencies: list[BswServiceDependency] = []
         self.trigger_direct_implementations: list[BswTriggerDirectImplementation] = []
-        self.variation_point_proxies: list[VariationPointProxy] = []
+        self._variation_point_proxies: list[VariationPointProxy] = []
+    @property
+    @xml_element_name("AR-TYPED-PER-INSTANCE-MEMORYS")
+    def ar_typed_per_instance_memories(self) -> list[VariableDataPrototype]:
+        """Get ar_typed_per_instance_memories with custom XML element name."""
+        return self._ar_typed_per_instance_memories
+
+    @ar_typed_per_instance_memories.setter
+    def ar_typed_per_instance_memories(self, value: list[VariableDataPrototype]) -> None:
+        """Set ar_typed_per_instance_memories with custom XML element name."""
+        self._ar_typed_per_instance_memories = value
+
+    @property
+    @xml_element_name("BSW-PER-INSTANCE-MEMORY-POLICYS")
+    def bsw_per_instance_memory_policies(self) -> list[BswPerInstanceMemoryPolicy]:
+        """Get bsw_per_instance_memory_policies with custom XML element name."""
+        return self._bsw_per_instance_memory_policies
+
+    @bsw_per_instance_memory_policies.setter
+    def bsw_per_instance_memory_policies(self, value: list[BswPerInstanceMemoryPolicy]) -> None:
+        """Set bsw_per_instance_memory_policies with custom XML element name."""
+        self._bsw_per_instance_memory_policies = value
+
+    @property
+    @xml_element_name("CLIENT-POLICYS")
+    def client_policies(self) -> list[BswClientPolicy]:
+        """Get client_policies with custom XML element name."""
+        return self._client_policies
+
+    @client_policies.setter
+    def client_policies(self, value: list[BswClientPolicy]) -> None:
+        """Set client_policies with custom XML element name."""
+        self._client_policies = value
+
+    @property
+    @xml_element_name("ENTITYS")
+    def entities(self) -> list[BswModuleEntity]:
+        """Get entities with custom XML element name."""
+        return self._entities
+
+    @entities.setter
+    def entities(self, value: list[BswModuleEntity]) -> None:
+        """Set entities with custom XML element name."""
+        self._entities = value
+
+    @property
+    @xml_element_name("INTERNAL-TRIGGERING-POINT-POLICYS")
+    def internal_triggering_point_policies(self) -> list[BswInternalTriggeringPointPolicy]:
+        """Get internal_triggering_point_policies with custom XML element name."""
+        return self._internal_triggering_point_policies
+
+    @internal_triggering_point_policies.setter
+    def internal_triggering_point_policies(self, value: list[BswInternalTriggeringPointPolicy]) -> None:
+        """Set internal_triggering_point_policies with custom XML element name."""
+        self._internal_triggering_point_policies = value
+
+    @property
+    @xml_element_name("MODE-RECEIVER-POLICYS")
+    def mode_receiver_policies(self) -> list[BswModeReceiverPolicy]:
+        """Get mode_receiver_policies with custom XML element name."""
+        return self._mode_receiver_policies
+
+    @mode_receiver_policies.setter
+    def mode_receiver_policies(self, value: list[BswModeReceiverPolicy]) -> None:
+        """Set mode_receiver_policies with custom XML element name."""
+        self._mode_receiver_policies = value
+
+    @property
+    @xml_element_name("MODE-SENDER-POLICYS")
+    def mode_sender_policies(self) -> list[BswModeSenderPolicy]:
+        """Get mode_sender_policies with custom XML element name."""
+        return self._mode_sender_policies
+
+    @mode_sender_policies.setter
+    def mode_sender_policies(self, value: list[BswModeSenderPolicy]) -> None:
+        """Set mode_sender_policies with custom XML element name."""
+        self._mode_sender_policies = value
+
+    @property
+    @xml_element_name("PARAMETER-POLICYS")
+    def parameter_policies(self) -> list[BswParameterPolicy]:
+        """Get parameter_policies with custom XML element name."""
+        return self._parameter_policies
+
+    @parameter_policies.setter
+    def parameter_policies(self, value: list[BswParameterPolicy]) -> None:
+        """Set parameter_policies with custom XML element name."""
+        self._parameter_policies = value
+
+    @property
+    @xml_element_name("RECEPTION-POLICYS")
+    def reception_policies(self) -> list[BswDataReceptionPolicy]:
+        """Get reception_policies with custom XML element name."""
+        return self._reception_policies
+
+    @reception_policies.setter
+    def reception_policies(self, value: list[BswDataReceptionPolicy]) -> None:
+        """Set reception_policies with custom XML element name."""
+        self._reception_policies = value
+
+    @property
+    @xml_element_name("RELEASED-TRIGGER-POLICYS")
+    def released_trigger_policies(self) -> list[BswReleasedTriggerPolicy]:
+        """Get released_trigger_policies with custom XML element name."""
+        return self._released_trigger_policies
+
+    @released_trigger_policies.setter
+    def released_trigger_policies(self, value: list[BswReleasedTriggerPolicy]) -> None:
+        """Set released_trigger_policies with custom XML element name."""
+        self._released_trigger_policies = value
+
+    @property
+    @xml_element_name("SEND-POLICYS")
+    def send_policies(self) -> list[BswDataSendPolicy]:
+        """Get send_policies with custom XML element name."""
+        return self._send_policies
+
+    @send_policies.setter
+    def send_policies(self, value: list[BswDataSendPolicy]) -> None:
+        """Set send_policies with custom XML element name."""
+        self._send_policies = value
+
+    @property
+    @xml_element_name("SERVICE-DEPENDENCYS")
+    def service_dependencies(self) -> list[BswServiceDependency]:
+        """Get service_dependencies with custom XML element name."""
+        return self._service_dependencies
+
+    @service_dependencies.setter
+    def service_dependencies(self, value: list[BswServiceDependency]) -> None:
+        """Set service_dependencies with custom XML element name."""
+        self._service_dependencies = value
+
+    @property
+    @xml_element_name("VARIATION-POINT-PROXYS")
+    def variation_point_proxies(self) -> list[VariationPointProxy]:
+        """Get variation_point_proxies with custom XML element name."""
+        return self._variation_point_proxies
+
+    @variation_point_proxies.setter
+    def variation_point_proxies(self, value: list[VariationPointProxy]) -> None:
+        """Set variation_point_proxies with custom XML element name."""
+        self._variation_point_proxies = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize BswInternalBehavior to XML element.
@@ -152,9 +296,9 @@ class BswInternalBehavior(InternalBehavior):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize ar_typed_per_instance_memories (list to container "AR-TYPED-PER-INSTANCE-MEMORIES")
+        # Serialize ar_typed_per_instance_memories (list to container "AR-TYPED-PER-INSTANCE-MEMORYS")
         if self.ar_typed_per_instance_memories:
-            wrapper = ET.Element("AR-TYPED-PER-INSTANCE-MEMORIES")
+            wrapper = ET.Element("AR-TYPED-PER-INSTANCE-MEMORYS")
             for item in self.ar_typed_per_instance_memories:
                 serialized = SerializationHelper.serialize_item(item, "VariableDataPrototype")
                 if serialized is not None:
@@ -162,9 +306,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize bsw_per_instance_memory_policies (list to container "BSW-PER-INSTANCE-MEMORY-POLICIES")
+        # Serialize bsw_per_instance_memory_policies (list to container "BSW-PER-INSTANCE-MEMORY-POLICYS")
         if self.bsw_per_instance_memory_policies:
-            wrapper = ET.Element("BSW-PER-INSTANCE-MEMORY-POLICIES")
+            wrapper = ET.Element("BSW-PER-INSTANCE-MEMORY-POLICYS")
             for item in self.bsw_per_instance_memory_policies:
                 serialized = SerializationHelper.serialize_item(item, "BswPerInstanceMemoryPolicy")
                 if serialized is not None:
@@ -172,9 +316,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize client_policies (list to container "CLIENT-POLICIES")
+        # Serialize client_policies (list to container "CLIENT-POLICYS")
         if self.client_policies:
-            wrapper = ET.Element("CLIENT-POLICIES")
+            wrapper = ET.Element("CLIENT-POLICYS")
             for item in self.client_policies:
                 serialized = SerializationHelper.serialize_item(item, "BswClientPolicy")
                 if serialized is not None:
@@ -192,9 +336,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize entities (list to container "ENTITIES")
+        # Serialize entities (list to container "ENTITYS")
         if self.entities:
-            wrapper = ET.Element("ENTITIES")
+            wrapper = ET.Element("ENTITYS")
             for item in self.entities:
                 serialized = SerializationHelper.serialize_item(item, "BswModuleEntity")
                 if serialized is not None:
@@ -252,9 +396,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize internal_triggering_point_policies (list to container "INTERNAL-TRIGGERING-POINT-POLICIES")
+        # Serialize internal_triggering_point_policies (list to container "INTERNAL-TRIGGERING-POINT-POLICYS")
         if self.internal_triggering_point_policies:
-            wrapper = ET.Element("INTERNAL-TRIGGERING-POINT-POLICIES")
+            wrapper = ET.Element("INTERNAL-TRIGGERING-POINT-POLICYS")
             for item in self.internal_triggering_point_policies:
                 serialized = SerializationHelper.serialize_item(item, "BswInternalTriggeringPointPolicy")
                 if serialized is not None:
@@ -262,9 +406,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize mode_receiver_policies (list to container "MODE-RECEIVER-POLICIES")
+        # Serialize mode_receiver_policies (list to container "MODE-RECEIVER-POLICYS")
         if self.mode_receiver_policies:
-            wrapper = ET.Element("MODE-RECEIVER-POLICIES")
+            wrapper = ET.Element("MODE-RECEIVER-POLICYS")
             for item in self.mode_receiver_policies:
                 serialized = SerializationHelper.serialize_item(item, "BswModeReceiverPolicy")
                 if serialized is not None:
@@ -272,9 +416,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize mode_sender_policies (list to container "MODE-SENDER-POLICIES")
+        # Serialize mode_sender_policies (list to container "MODE-SENDER-POLICYS")
         if self.mode_sender_policies:
-            wrapper = ET.Element("MODE-SENDER-POLICIES")
+            wrapper = ET.Element("MODE-SENDER-POLICYS")
             for item in self.mode_sender_policies:
                 serialized = SerializationHelper.serialize_item(item, "BswModeSenderPolicy")
                 if serialized is not None:
@@ -282,9 +426,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize parameter_policies (list to container "PARAMETER-POLICIES")
+        # Serialize parameter_policies (list to container "PARAMETER-POLICYS")
         if self.parameter_policies:
-            wrapper = ET.Element("PARAMETER-POLICIES")
+            wrapper = ET.Element("PARAMETER-POLICYS")
             for item in self.parameter_policies:
                 serialized = SerializationHelper.serialize_item(item, "BswParameterPolicy")
                 if serialized is not None:
@@ -302,9 +446,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize reception_policies (list to container "RECEPTION-POLICIES")
+        # Serialize reception_policies (list to container "RECEPTION-POLICYS")
         if self.reception_policies:
-            wrapper = ET.Element("RECEPTION-POLICIES")
+            wrapper = ET.Element("RECEPTION-POLICYS")
             for item in self.reception_policies:
                 serialized = SerializationHelper.serialize_item(item, "BswDataReceptionPolicy")
                 if serialized is not None:
@@ -312,9 +456,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize released_trigger_policies (list to container "RELEASED-TRIGGER-POLICIES")
+        # Serialize released_trigger_policies (list to container "RELEASED-TRIGGER-POLICYS")
         if self.released_trigger_policies:
-            wrapper = ET.Element("RELEASED-TRIGGER-POLICIES")
+            wrapper = ET.Element("RELEASED-TRIGGER-POLICYS")
             for item in self.released_trigger_policies:
                 serialized = SerializationHelper.serialize_item(item, "BswReleasedTriggerPolicy")
                 if serialized is not None:
@@ -332,9 +476,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize send_policies (list to container "SEND-POLICIES")
+        # Serialize send_policies (list to container "SEND-POLICYS")
         if self.send_policies:
-            wrapper = ET.Element("SEND-POLICIES")
+            wrapper = ET.Element("SEND-POLICYS")
             for item in self.send_policies:
                 serialized = SerializationHelper.serialize_item(item, "BswDataSendPolicy")
                 if serialized is not None:
@@ -342,9 +486,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize service_dependencies (list to container "SERVICE-DEPENDENCIES")
+        # Serialize service_dependencies (list to container "SERVICE-DEPENDENCYS")
         if self.service_dependencies:
-            wrapper = ET.Element("SERVICE-DEPENDENCIES")
+            wrapper = ET.Element("SERVICE-DEPENDENCYS")
             for item in self.service_dependencies:
                 serialized = SerializationHelper.serialize_item(item, "BswServiceDependency")
                 if serialized is not None:
@@ -362,9 +506,9 @@ class BswInternalBehavior(InternalBehavior):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize variation_point_proxies (list to container "VARIATION-POINT-PROXIES")
+        # Serialize variation_point_proxies (list to container "VARIATION-POINT-PROXYS")
         if self.variation_point_proxies:
-            wrapper = ET.Element("VARIATION-POINT-PROXIES")
+            wrapper = ET.Element("VARIATION-POINT-PROXYS")
             for item in self.variation_point_proxies:
                 serialized = SerializationHelper.serialize_item(item, "VariationPointProxy")
                 if serialized is not None:
@@ -387,9 +531,9 @@ class BswInternalBehavior(InternalBehavior):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(BswInternalBehavior, cls).deserialize(element)
 
-        # Parse ar_typed_per_instance_memories (list from container "AR-TYPED-PER-INSTANCE-MEMORIES")
+        # Parse ar_typed_per_instance_memories (list from container "AR-TYPED-PER-INSTANCE-MEMORYS")
         obj.ar_typed_per_instance_memories = []
-        container = SerializationHelper.find_child_element(element, "AR-TYPED-PER-INSTANCE-MEMORIES")
+        container = SerializationHelper.find_child_element(element, "AR-TYPED-PER-INSTANCE-MEMORYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -397,9 +541,9 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.ar_typed_per_instance_memories.append(child_value)
 
-        # Parse bsw_per_instance_memory_policies (list from container "BSW-PER-INSTANCE-MEMORY-POLICIES")
+        # Parse bsw_per_instance_memory_policies (list from container "BSW-PER-INSTANCE-MEMORY-POLICYS")
         obj.bsw_per_instance_memory_policies = []
-        container = SerializationHelper.find_child_element(element, "BSW-PER-INSTANCE-MEMORY-POLICIES")
+        container = SerializationHelper.find_child_element(element, "BSW-PER-INSTANCE-MEMORY-POLICYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -407,9 +551,9 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.bsw_per_instance_memory_policies.append(child_value)
 
-        # Parse client_policies (list from container "CLIENT-POLICIES")
+        # Parse client_policies (list from container "CLIENT-POLICYS")
         obj.client_policies = []
-        container = SerializationHelper.find_child_element(element, "CLIENT-POLICIES")
+        container = SerializationHelper.find_child_element(element, "CLIENT-POLICYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -427,9 +571,9 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.distinguished_partitions.append(child_value)
 
-        # Parse entities (list from container "ENTITIES")
+        # Parse entities (list from container "ENTITYS")
         obj.entities = []
-        container = SerializationHelper.find_child_element(element, "ENTITIES")
+        container = SerializationHelper.find_child_element(element, "ENTITYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -487,9 +631,9 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.internal_triggering_points.append(child_value)
 
-        # Parse internal_triggering_point_policies (list from container "INTERNAL-TRIGGERING-POINT-POLICIES")
+        # Parse internal_triggering_point_policies (list from container "INTERNAL-TRIGGERING-POINT-POLICYS")
         obj.internal_triggering_point_policies = []
-        container = SerializationHelper.find_child_element(element, "INTERNAL-TRIGGERING-POINT-POLICIES")
+        container = SerializationHelper.find_child_element(element, "INTERNAL-TRIGGERING-POINT-POLICYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -497,9 +641,9 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.internal_triggering_point_policies.append(child_value)
 
-        # Parse mode_receiver_policies (list from container "MODE-RECEIVER-POLICIES")
+        # Parse mode_receiver_policies (list from container "MODE-RECEIVER-POLICYS")
         obj.mode_receiver_policies = []
-        container = SerializationHelper.find_child_element(element, "MODE-RECEIVER-POLICIES")
+        container = SerializationHelper.find_child_element(element, "MODE-RECEIVER-POLICYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -507,9 +651,9 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.mode_receiver_policies.append(child_value)
 
-        # Parse mode_sender_policies (list from container "MODE-SENDER-POLICIES")
+        # Parse mode_sender_policies (list from container "MODE-SENDER-POLICYS")
         obj.mode_sender_policies = []
-        container = SerializationHelper.find_child_element(element, "MODE-SENDER-POLICIES")
+        container = SerializationHelper.find_child_element(element, "MODE-SENDER-POLICYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -517,9 +661,9 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.mode_sender_policies.append(child_value)
 
-        # Parse parameter_policies (list from container "PARAMETER-POLICIES")
+        # Parse parameter_policies (list from container "PARAMETER-POLICYS")
         obj.parameter_policies = []
-        container = SerializationHelper.find_child_element(element, "PARAMETER-POLICIES")
+        container = SerializationHelper.find_child_element(element, "PARAMETER-POLICYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -537,9 +681,9 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.per_instance_parameters.append(child_value)
 
-        # Parse reception_policies (list from container "RECEPTION-POLICIES")
+        # Parse reception_policies (list from container "RECEPTION-POLICYS")
         obj.reception_policies = []
-        container = SerializationHelper.find_child_element(element, "RECEPTION-POLICIES")
+        container = SerializationHelper.find_child_element(element, "RECEPTION-POLICYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -547,9 +691,9 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.reception_policies.append(child_value)
 
-        # Parse released_trigger_policies (list from container "RELEASED-TRIGGER-POLICIES")
+        # Parse released_trigger_policies (list from container "RELEASED-TRIGGER-POLICYS")
         obj.released_trigger_policies = []
-        container = SerializationHelper.find_child_element(element, "RELEASED-TRIGGER-POLICIES")
+        container = SerializationHelper.find_child_element(element, "RELEASED-TRIGGER-POLICYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -567,9 +711,9 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.scheduler_name_prefixs.append(child_value)
 
-        # Parse send_policies (list from container "SEND-POLICIES")
+        # Parse send_policies (list from container "SEND-POLICYS")
         obj.send_policies = []
-        container = SerializationHelper.find_child_element(element, "SEND-POLICIES")
+        container = SerializationHelper.find_child_element(element, "SEND-POLICYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -577,9 +721,9 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.send_policies.append(child_value)
 
-        # Parse service_dependencies (list from container "SERVICE-DEPENDENCIES")
+        # Parse service_dependencies (list from container "SERVICE-DEPENDENCYS")
         obj.service_dependencies = []
-        container = SerializationHelper.find_child_element(element, "SERVICE-DEPENDENCIES")
+        container = SerializationHelper.find_child_element(element, "SERVICE-DEPENDENCYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
@@ -597,9 +741,9 @@ class BswInternalBehavior(InternalBehavior):
                 if child_value is not None:
                     obj.trigger_direct_implementations.append(child_value)
 
-        # Parse variation_point_proxies (list from container "VARIATION-POINT-PROXIES")
+        # Parse variation_point_proxies (list from container "VARIATION-POINT-PROXYS")
         obj.variation_point_proxies = []
-        container = SerializationHelper.find_child_element(element, "VARIATION-POINT-PROXIES")
+        container = SerializationHelper.find_child_element(element, "VARIATION-POINT-PROXYS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag

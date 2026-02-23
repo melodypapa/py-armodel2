@@ -9,6 +9,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_EcuResourceTemplate.classes.
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.referrable import (
     Referrable,
@@ -46,14 +47,25 @@ class HwDescriptionEntity(Referrable, ABC):
         return True
 
     hw_attributes: list[HwAttributeValue]
-    hw_categorie_refs: list[ARRef]
+    _hw_categorie_refs: list[ARRef]
     hw_type_ref: Optional[ARRef]
     def __init__(self) -> None:
         """Initialize HwDescriptionEntity."""
         super().__init__()
         self.hw_attributes: list[HwAttributeValue] = []
-        self.hw_categorie_refs: list[ARRef] = []
+        self._hw_categorie_refs: list[ARRef] = []
         self.hw_type_ref: Optional[ARRef] = None
+    @property
+    @xml_element_name("HW-CATEGORYS")
+    def hw_categorie_refs(self) -> list[ARRef]:
+        """Get hw_categorie_refs with custom XML element name."""
+        return self._hw_categorie_refs
+
+    @hw_categorie_refs.setter
+    def hw_categorie_refs(self, value: list[ARRef]) -> None:
+        """Set hw_categorie_refs with custom XML element name."""
+        self._hw_categorie_refs = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize HwDescriptionEntity to XML element.
@@ -89,9 +101,9 @@ class HwDescriptionEntity(Referrable, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize hw_categorie_refs (list to container "HW-CATEGORIE-REFS")
+        # Serialize hw_categorie_refs (list to container "HW-CATEGORYS")
         if self.hw_categorie_refs:
-            wrapper = ET.Element("HW-CATEGORIE-REFS")
+            wrapper = ET.Element("HW-CATEGORYS")
             for item in self.hw_categorie_refs:
                 serialized = SerializationHelper.serialize_item(item, "HwCategory")
                 if serialized is not None:
@@ -145,9 +157,9 @@ class HwDescriptionEntity(Referrable, ABC):
                 if child_value is not None:
                     obj.hw_attributes.append(child_value)
 
-        # Parse hw_categorie_refs (list from container "HW-CATEGORIE-REFS")
+        # Parse hw_categorie_refs (list from container "HW-CATEGORYS")
         obj.hw_categorie_refs = []
-        container = SerializationHelper.find_child_element(element, "HW-CATEGORIE-REFS")
+        container = SerializationHelper.find_child_element(element, "HW-CATEGORYS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)

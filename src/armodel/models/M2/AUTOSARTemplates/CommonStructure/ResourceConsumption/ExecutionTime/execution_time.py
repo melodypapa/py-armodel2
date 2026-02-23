@@ -9,6 +9,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_CommonStructure_ResourceCons
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import xml_element_name
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
@@ -56,7 +57,7 @@ class ExecutionTime(Identifiable, ABC):
     executable_entity_ref: Optional[ARRef]
     hardware: Optional[HardwareConfiguration]
     hw_element_ref: Optional[ARRef]
-    included_librarie_refs: list[ARRef]
+    _included_librarie_refs: list[ARRef]
     memory_section_locations: list[MemorySectionLocation]
     software_context: Optional[SoftwareContext]
     def __init__(self) -> None:
@@ -66,9 +67,20 @@ class ExecutionTime(Identifiable, ABC):
         self.executable_entity_ref: Optional[ARRef] = None
         self.hardware: Optional[HardwareConfiguration] = None
         self.hw_element_ref: Optional[ARRef] = None
-        self.included_librarie_refs: list[ARRef] = []
+        self._included_librarie_refs: list[ARRef] = []
         self.memory_section_locations: list[MemorySectionLocation] = []
         self.software_context: Optional[SoftwareContext] = None
+    @property
+    @xml_element_name("INCLUDED-LIBRARYS")
+    def included_librarie_refs(self) -> list[ARRef]:
+        """Get included_librarie_refs with custom XML element name."""
+        return self._included_librarie_refs
+
+    @included_librarie_refs.setter
+    def included_librarie_refs(self, value: list[ARRef]) -> None:
+        """Set included_librarie_refs with custom XML element name."""
+        self._included_librarie_refs = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize ExecutionTime to XML element.
@@ -150,9 +162,9 @@ class ExecutionTime(Identifiable, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize included_librarie_refs (list to container "INCLUDED-LIBRARIE-REFS")
+        # Serialize included_librarie_refs (list to container "INCLUDED-LIBRARYS")
         if self.included_librarie_refs:
-            wrapper = ET.Element("INCLUDED-LIBRARIE-REFS")
+            wrapper = ET.Element("INCLUDED-LIBRARYS")
             for item in self.included_librarie_refs:
                 serialized = SerializationHelper.serialize_item(item, "DependencyOnArtifact")
                 if serialized is not None:
@@ -230,9 +242,9 @@ class ExecutionTime(Identifiable, ABC):
             hw_element_ref_value = ARRef.deserialize(child)
             obj.hw_element_ref = hw_element_ref_value
 
-        # Parse included_librarie_refs (list from container "INCLUDED-LIBRARIE-REFS")
+        # Parse included_librarie_refs (list from container "INCLUDED-LIBRARYS")
         obj.included_librarie_refs = []
-        container = SerializationHelper.find_child_element(element, "INCLUDED-LIBRARIE-REFS")
+        container = SerializationHelper.find_child_element(element, "INCLUDED-LIBRARYS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
