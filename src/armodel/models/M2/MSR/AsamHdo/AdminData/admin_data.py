@@ -169,7 +169,7 @@ class AdminData(ARObject):
         # Parse used_languages
         child = SerializationHelper.find_child_element(element, "USED-LANGUAGES")
         if child is not None:
-            used_languages_value = SerializationHelper.deserialize_with_type(child, "MultiLanguagePlainText")
+            used_languages_value = SerializationHelper.deserialize_by_tag(child, "MultiLanguagePlainText")
             obj.used_languages = used_languages_value
 
         return obj

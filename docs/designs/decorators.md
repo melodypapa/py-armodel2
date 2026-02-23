@@ -211,7 +211,7 @@ The lang_prefix pattern is used for AUTOSAR multilanguage support:
 
 ---
 
-### 4. `@language_abbr(xml_attr_name: str)`
+### 4. `@lang_abbr(xml_attr_name: str)`
 
 Mark an attribute as a language abbreviation XML attribute with exact control over the attribute name.
 
@@ -224,13 +224,13 @@ Mark an attribute as a language abbreviation XML attribute with exact control ov
 #### Syntax
 
 ```python
-from armodel.serialization.decorators import language_abbr
+from armodel.serialization.decorators import lang_abbr
 
 class LanguageSpecific(ARObject):
     def __init__(self) -> None:
         self._l: LEnum = LEnum.EN
 
-    @language_abbr("L")
+    @lang_abbr("L")
     @property
     def l(self) -> LEnum:
         return self._l
@@ -242,7 +242,7 @@ class LanguageSpecific(ARObject):
 
 #### Implementation Details
 
-1. **Decorator order**: `@language_abbr("L")` must come **before** `@property`
+1. **Decorator order**: `@lang_abbr("L")` must come **before** `@property`
 2. **Parameter**: Accepts the exact XML attribute name (e.g., "L")
 3. **Markers**: Sets `_language_abbr = True` and `_xml_attr_name = xml_attr_name` on the attribute
 4. **Property pattern**: Requires property getter/setter with private backing field
@@ -252,7 +252,7 @@ class LanguageSpecific(ARObject):
 | Decorator | Name Conversion | Use Case |
 |-----------|----------------|----------|
 | `@xml_attribute` | Auto-converted via NameConverter | General XML attributes |
-| `@language_abbr` | Exact attribute name specified | Language abbreviation attributes |
+| `@lang_abbr` | Exact attribute name specified | Language abbreviation attributes |
 
 #### Example Output
 
@@ -507,20 +507,16 @@ Decorators can be configured via JSON mapping data in the AUTOSAR class definiti
 | `xml_element_name` | `"decorator": "xml_element_name:TAG1/TAG2/TAG3"` | Multi-level nesting |
 | `ref_conditional` | `"decorator": "ref_conditional:FIBEX-ELEMENTS"` | -REF-CONDITIONAL pattern |
 | `lang_prefix` | `"decorator": "lang_prefix:L-10"` | Language-specific content |
-| `language_abbr` | `"kind": "language_abbr"` | Language abbreviation attribute |
+| `lang_abbr` | `"decorator": "lang_abbr:L"` | Language abbreviation attribute |
 | `xml_attribute` | `"decorator": "xml_attribute"` | XML attribute (auto-generated name) |
 | `xml_attribute` | `"decorator": "xml_attribute:T"` | XML attribute (custom name) |
 
 ### Special Cases
 
-**Attribute-level decorators** (ref_conditional, xml_element_name, xml_attribute, lang_prefix):
+**Attribute-level decorators** (ref_conditional, xml_element_name, xml_attribute, lang_prefix, lang_abbr):
 - Use the `decorator` field with format `"name:params"`
 - The code generator applies the decorator to the generated property
-- For xml_attribute and lang_prefix, params are required (e.g., "xml_attribute:T", "lang_prefix:L-10")
-
-**Kind-based decorators** (language_abbr):
-- Use the `kind` field instead of `decorator`
-- The code generator automatically applies the appropriate decorator
+- For xml_attribute, lang_prefix, and lang_abbr, params are required (e.g., "xml_attribute:T", "lang_prefix:L-10", "lang_abbr:L")
 
 ### Example JSON Configurations
 
@@ -753,7 +749,7 @@ Each decorator sets specific marker attributes that the serialization framework 
 | `@xml_attribute` | `_is_xml_attribute`, `_xml_attr_name` | `bool`, `str` |
 | `@atp_variant()` | `_atp_variant` | `bool` |
 | `@lang_prefix(tag)` | `_lang_prefix`, `_lang_prefix_tag` | `bool`, `str` |
-| `@language_abbr(attr)` | `_language_abbr`, `_xml_attr_name` | `bool`, `str` |
+| `@lang_abbr(attr)` | `_language_abbr`, `_xml_attr_name` | `bool`, `str` |
 | `@xml_element_name(tag)` | `_xml_element_name`, `_xml_tag` | `bool`, `str` |
 | `@ref_conditional(tag)` | `_is_ref_conditional`, `_xml_tag` | `bool`, `str` |
 
@@ -767,7 +763,7 @@ Each decorator sets specific marker attributes that the serialization framework 
 | AUTOSAR atpVariation pattern (class-level) | `@atp_variant()` | SwDataDefProps with VARIANTS/CONDITIONAL wrappers |
 | AUTOSAR atpVariation pattern (reference lists) | `@ref_conditional("TAG")` | System.fibexElements with -REF-CONDITIONAL wrappers |
 | Language-specific content | `@lang_prefix("L-N")` | MultiLanguagePlainText with L-10 wrapper |
-| Language abbreviation attribute | `@language_abbr("L")` | LanguageSpecific with L attribute |
+| Language abbreviation attribute | `@lang_abbr("L")` | LanguageSpecific with L attribute |
 | Non-standard element name | `@xml_element_name("TAG")` | BswModuleDescription with PROVIDED-ENTRYS |
 | Multi-level nesting | `@xml_element_name("TAG1/TAG2/TAG3")` | ExecutableEntity with nested containers |
 
@@ -860,8 +856,8 @@ def test_lang_prefix():
     assert l10_elem.get("L") == "EN"
 
 
-def test_language_abbr():
-    """Test @language_abbr decorator."""
+def test_lang_abbr():
+    """Test @lang_abbr decorator."""
     obj = LanguageSpecific()
     obj.l = LEnum.EN
     elem = obj.serialize("")

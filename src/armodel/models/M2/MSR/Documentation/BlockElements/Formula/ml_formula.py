@@ -169,7 +169,7 @@ class MlFormula(Paginateable):
         # Parse generic_math
         child = SerializationHelper.find_child_element(element, "GENERIC-MATH")
         if child is not None:
-            generic_math_value = SerializationHelper.deserialize_with_type(child, "MultiLanguagePlainText")
+            generic_math_value = SerializationHelper.deserialize_by_tag(child, "MultiLanguagePlainText")
             obj.generic_math = generic_math_value
 
         # Parse l_graphics (list from container "L-GRAPHICS")
@@ -185,13 +185,13 @@ class MlFormula(Paginateable):
         # Parse tex_math
         child = SerializationHelper.find_child_element(element, "TEX-MATH")
         if child is not None:
-            tex_math_value = SerializationHelper.deserialize_with_type(child, "MultiLanguagePlainText")
+            tex_math_value = SerializationHelper.deserialize_by_tag(child, "MultiLanguagePlainText")
             obj.tex_math = tex_math_value
 
         # Parse verbatim
         child = SerializationHelper.find_child_element(element, "VERBATIM")
         if child is not None:
-            verbatim_value = SerializationHelper.deserialize_with_type(child, "MultiLanguageVerbatim")
+            verbatim_value = SerializationHelper.deserialize_by_tag(child, "MultiLanguageVerbatim")
             obj.verbatim = verbatim_value
 
         return obj

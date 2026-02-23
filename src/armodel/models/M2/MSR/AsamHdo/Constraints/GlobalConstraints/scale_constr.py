@@ -158,7 +158,7 @@ class ScaleConstr(ARObject):
         # Parse desc
         child = SerializationHelper.find_child_element(element, "DESC")
         if child is not None:
-            desc_value = SerializationHelper.deserialize_with_type(child, "MultiLanguageOverviewParagraph")
+            desc_value = SerializationHelper.deserialize_by_tag(child, "MultiLanguageOverviewParagraph")
             obj.desc = desc_value
 
         # Parse lower_limit
