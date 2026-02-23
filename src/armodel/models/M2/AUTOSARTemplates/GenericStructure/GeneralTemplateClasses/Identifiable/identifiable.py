@@ -20,6 +20,7 @@ JSON Source: docs/json/packages/M2_AUTOSARTemplates_GenericStructure_GeneralTemp
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 import xml.etree.ElementTree as ET
+from armodel.serialization.decorators import xml_attribute
 
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.multilanguage_referrable import (
     MultilanguageReferrable,
@@ -64,7 +65,7 @@ class Identifiable(MultilanguageReferrable, ABC):
     desc: Optional[MultiLanguageOverviewParagraph]
     category: Optional[CategoryString]
     introduction: Optional[DocumentationBlock]
-    uuid: Optional[String]
+    _uuid: Optional[String]
     def __init__(self) -> None:
         """Initialize Identifiable."""
         super().__init__()
@@ -73,7 +74,18 @@ class Identifiable(MultilanguageReferrable, ABC):
         self.desc: Optional[MultiLanguageOverviewParagraph] = None
         self.category: Optional[CategoryString] = None
         self.introduction: Optional[DocumentationBlock] = None
-        self.uuid: Optional[String] = None
+        self._uuid: Optional[String] = None
+    @property
+    @xml_attribute
+    def uuid(self) -> String:
+        """Get uuid XML attribute."""
+        return self._uuid
+
+    @uuid.setter
+    def uuid(self, value: String) -> None:
+        """Set uuid XML attribute."""
+        self._uuid = value
+
 
     def serialize(self) -> ET.Element:
         """Serialize Identifiable to XML element.
@@ -165,19 +177,9 @@ class Identifiable(MultilanguageReferrable, ABC):
                     wrapped.append(child)
                 elem.append(wrapped)
 
-        # Serialize uuid
+        # Serialize uuid as XML attribute
         if self.uuid is not None:
-            serialized = SerializationHelper.serialize_item(self.uuid, "String")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("UUID")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+            elem.attrib["UUID"] = str(self.uuid)
 
         return elem
 
@@ -228,10 +230,9 @@ class Identifiable(MultilanguageReferrable, ABC):
             introduction_value = SerializationHelper.deserialize_by_tag(child, "DocumentationBlock")
             obj.introduction = introduction_value
 
-        # Parse uuid
-        child = SerializationHelper.find_child_element(element, "UUID")
-        if child is not None:
-            uuid_value = child.text
+        # Parse uuid from XML attribute
+        if "UUID" in element.attrib:
+            uuid_value = element.attrib["UUID"]
             obj.uuid = uuid_value
 
         return obj

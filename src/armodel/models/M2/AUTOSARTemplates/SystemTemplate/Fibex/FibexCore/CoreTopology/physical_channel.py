@@ -47,18 +47,18 @@ class PhysicalChannel(Identifiable, ABC):
         return True
 
     comm_connector_refs: list[ARRef]
-    frame_triggering_refs: list[ARRef]
-    i_signal_refs: list[ARRef]
-    managed_refs: list[ARRef]
-    pdu_triggering_refs: list[ARRef]
+    frame_triggerings: list[FrameTriggering]
+    i_signal_triggerings: list[ISignalTriggering]
+    managed_physical_channel_refs: list[ARRef]
+    pdu_triggerings: list[PduTriggering]
     def __init__(self) -> None:
         """Initialize PhysicalChannel."""
         super().__init__()
         self.comm_connector_refs: list[ARRef] = []
-        self.frame_triggering_refs: list[ARRef] = []
-        self.i_signal_refs: list[ARRef] = []
-        self.managed_refs: list[ARRef] = []
-        self.pdu_triggering_refs: list[ARRef] = []
+        self.frame_triggerings: list[FrameTriggering] = []
+        self.i_signal_triggerings: list[ISignalTriggering] = []
+        self.managed_physical_channel_refs: list[ARRef] = []
+        self.pdu_triggerings: list[PduTriggering] = []
 
     def serialize(self) -> ET.Element:
         """Serialize PhysicalChannel to XML element.
@@ -101,47 +101,33 @@ class PhysicalChannel(Identifiable, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize frame_triggering_refs (list to container "FRAME-TRIGGERING-REFS")
-        if self.frame_triggering_refs:
-            wrapper = ET.Element("FRAME-TRIGGERING-REFS")
-            for item in self.frame_triggering_refs:
+        # Serialize frame_triggerings (list to container "FRAME-TRIGGERINGS")
+        if self.frame_triggerings:
+            wrapper = ET.Element("FRAME-TRIGGERINGS")
+            for item in self.frame_triggerings:
                 serialized = SerializationHelper.serialize_item(item, "FrameTriggering")
                 if serialized is not None:
-                    child_elem = ET.Element("FRAME-TRIGGERING-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize i_signal_refs (list to container "I-SIGNAL-REFS")
-        if self.i_signal_refs:
-            wrapper = ET.Element("I-SIGNAL-REFS")
-            for item in self.i_signal_refs:
+        # Serialize i_signal_triggerings (list to container "I-SIGNAL-TRIGGERINGS")
+        if self.i_signal_triggerings:
+            wrapper = ET.Element("I-SIGNAL-TRIGGERINGS")
+            for item in self.i_signal_triggerings:
                 serialized = SerializationHelper.serialize_item(item, "ISignalTriggering")
                 if serialized is not None:
-                    child_elem = ET.Element("I-SIGNAL-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize managed_refs (list to container "MANAGED-REFS")
-        if self.managed_refs:
-            wrapper = ET.Element("MANAGED-REFS")
-            for item in self.managed_refs:
+        # Serialize managed_physical_channel_refs (list to container "MANAGED-PHYSICAL-CHANNEL-REFS")
+        if self.managed_physical_channel_refs:
+            wrapper = ET.Element("MANAGED-PHYSICAL-CHANNEL-REFS")
+            for item in self.managed_physical_channel_refs:
                 serialized = SerializationHelper.serialize_item(item, "PhysicalChannel")
                 if serialized is not None:
-                    child_elem = ET.Element("MANAGED-REF")
+                    child_elem = ET.Element("MANAGED-PHYSICAL-CHANNEL-REF")
                     if hasattr(serialized, 'attrib'):
                         child_elem.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -152,20 +138,13 @@ class PhysicalChannel(Identifiable, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize pdu_triggering_refs (list to container "PDU-TRIGGERING-REFS")
-        if self.pdu_triggering_refs:
-            wrapper = ET.Element("PDU-TRIGGERING-REFS")
-            for item in self.pdu_triggering_refs:
+        # Serialize pdu_triggerings (list to container "PDU-TRIGGERINGS")
+        if self.pdu_triggerings:
+            wrapper = ET.Element("PDU-TRIGGERINGS")
+            for item in self.pdu_triggerings:
                 serialized = SerializationHelper.serialize_item(item, "PduTriggering")
                 if serialized is not None:
-                    child_elem = ET.Element("PDU-TRIGGERING-REF")
-                    if hasattr(serialized, 'attrib'):
-                        child_elem.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        child_elem.text = serialized.text
-                    for child in serialized:
-                        child_elem.append(child)
-                    wrapper.append(child_elem)
+                    wrapper.append(serialized)
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
@@ -200,41 +179,29 @@ class PhysicalChannel(Identifiable, ABC):
                 if child_value is not None:
                     obj.comm_connector_refs.append(child_value)
 
-        # Parse frame_triggering_refs (list from container "FRAME-TRIGGERING-REFS")
-        obj.frame_triggering_refs = []
-        container = SerializationHelper.find_child_element(element, "FRAME-TRIGGERING-REFS")
+        # Parse frame_triggerings (list from container "FRAME-TRIGGERINGS")
+        obj.frame_triggerings = []
+        container = SerializationHelper.find_child_element(element, "FRAME-TRIGGERINGS")
         if container is not None:
             for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.frame_triggering_refs.append(child_value)
+                    obj.frame_triggerings.append(child_value)
 
-        # Parse i_signal_refs (list from container "I-SIGNAL-REFS")
-        obj.i_signal_refs = []
-        container = SerializationHelper.find_child_element(element, "I-SIGNAL-REFS")
+        # Parse i_signal_triggerings (list from container "I-SIGNAL-TRIGGERINGS")
+        obj.i_signal_triggerings = []
+        container = SerializationHelper.find_child_element(element, "I-SIGNAL-TRIGGERINGS")
         if container is not None:
             for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.i_signal_refs.append(child_value)
+                    obj.i_signal_triggerings.append(child_value)
 
-        # Parse managed_refs (list from container "MANAGED-REFS")
-        obj.managed_refs = []
-        container = SerializationHelper.find_child_element(element, "MANAGED-REFS")
+        # Parse managed_physical_channel_refs (list from container "MANAGED-PHYSICAL-CHANNEL-REFS")
+        obj.managed_physical_channel_refs = []
+        container = SerializationHelper.find_child_element(element, "MANAGED-PHYSICAL-CHANNEL-REFS")
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
@@ -246,23 +213,17 @@ class PhysicalChannel(Identifiable, ABC):
                     # Deserialize each child element dynamically based on its tag
                     child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.managed_refs.append(child_value)
+                    obj.managed_physical_channel_refs.append(child_value)
 
-        # Parse pdu_triggering_refs (list from container "PDU-TRIGGERING-REFS")
-        obj.pdu_triggering_refs = []
-        container = SerializationHelper.find_child_element(element, "PDU-TRIGGERING-REFS")
+        # Parse pdu_triggerings (list from container "PDU-TRIGGERINGS")
+        obj.pdu_triggerings = []
+        container = SerializationHelper.find_child_element(element, "PDU-TRIGGERINGS")
         if container is not None:
             for child in container:
-                # Check if child is a reference element (ends with -REF or -TREF)
-                child_element_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
-                    # Use ARRef.deserialize() for reference elements
-                    child_value = ARRef.deserialize(child)
-                else:
-                    # Deserialize each child element dynamically based on its tag
-                    child_value = SerializationHelper.deserialize_by_tag(child, None)
+                # Deserialize each child element dynamically based on its tag
+                child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.pdu_triggering_refs.append(child_value)
+                    obj.pdu_triggerings.append(child_value)
 
         return obj
 
@@ -301,8 +262,8 @@ class PhysicalChannelBuilder(IdentifiableBuilder):
         self._obj.frame_triggerings = list(items) if items else []
         return self
 
-    def with_i_signals(self, items: list[ISignalTriggering]) -> "PhysicalChannelBuilder":
-        """Set i_signals list attribute.
+    def with_i_signal_triggerings(self, items: list[ISignalTriggering]) -> "PhysicalChannelBuilder":
+        """Set i_signal_triggerings list attribute.
 
         Args:
             items: List of items to set
@@ -310,11 +271,11 @@ class PhysicalChannelBuilder(IdentifiableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.i_signals = list(items) if items else []
+        self._obj.i_signal_triggerings = list(items) if items else []
         return self
 
-    def with_manageds(self, items: list[PhysicalChannel]) -> "PhysicalChannelBuilder":
-        """Set manageds list attribute.
+    def with_managed_physical_channels(self, items: list[PhysicalChannel]) -> "PhysicalChannelBuilder":
+        """Set managed_physical_channels list attribute.
 
         Args:
             items: List of items to set
@@ -322,7 +283,7 @@ class PhysicalChannelBuilder(IdentifiableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.manageds = list(items) if items else []
+        self._obj.managed_physical_channels = list(items) if items else []
         return self
 
     def with_pdu_triggerings(self, items: list[PduTriggering]) -> "PhysicalChannelBuilder":
@@ -380,8 +341,8 @@ class PhysicalChannelBuilder(IdentifiableBuilder):
         self._obj.frame_triggerings = []
         return self
 
-    def add_i_signal(self, item: ISignalTriggering) -> "PhysicalChannelBuilder":
-        """Add a single item to i_signals list.
+    def add_i_signal_triggering(self, item: ISignalTriggering) -> "PhysicalChannelBuilder":
+        """Add a single item to i_signal_triggerings list.
 
         Args:
             item: Item to add
@@ -389,20 +350,20 @@ class PhysicalChannelBuilder(IdentifiableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.i_signals.append(item)
+        self._obj.i_signal_triggerings.append(item)
         return self
 
-    def clear_i_signals(self) -> "PhysicalChannelBuilder":
-        """Clear all items from i_signals list.
+    def clear_i_signal_triggerings(self) -> "PhysicalChannelBuilder":
+        """Clear all items from i_signal_triggerings list.
 
         Returns:
             self for method chaining
         """
-        self._obj.i_signals = []
+        self._obj.i_signal_triggerings = []
         return self
 
-    def add_managed(self, item: PhysicalChannel) -> "PhysicalChannelBuilder":
-        """Add a single item to manageds list.
+    def add_managed_physical_channel(self, item: PhysicalChannel) -> "PhysicalChannelBuilder":
+        """Add a single item to managed_physical_channels list.
 
         Args:
             item: Item to add
@@ -410,16 +371,16 @@ class PhysicalChannelBuilder(IdentifiableBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.manageds.append(item)
+        self._obj.managed_physical_channels.append(item)
         return self
 
-    def clear_manageds(self) -> "PhysicalChannelBuilder":
-        """Clear all items from manageds list.
+    def clear_managed_physical_channels(self) -> "PhysicalChannelBuilder":
+        """Clear all items from managed_physical_channels list.
 
         Returns:
             self for method chaining
         """
-        self._obj.manageds = []
+        self._obj.managed_physical_channels = []
         return self
 
     def add_pdu_triggering(self, item: PduTriggering) -> "PhysicalChannelBuilder":

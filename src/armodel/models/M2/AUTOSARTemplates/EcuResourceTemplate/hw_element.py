@@ -43,13 +43,13 @@ class HwElement(HwDescriptionEntity):
         """
         return False
 
-    hw_elements: list[HwElementConnector]
+    hw_element_connections: list[HwElementConnector]
     hw_pin_group_refs: list[ARRef]
     nested_element_refs: list[ARRef]
     def __init__(self) -> None:
         """Initialize HwElement."""
         super().__init__()
-        self.hw_elements: list[HwElementConnector] = []
+        self.hw_element_connections: list[HwElementConnector] = []
         self.hw_pin_group_refs: list[ARRef] = []
         self.nested_element_refs: list[ARRef] = []
 
@@ -77,10 +77,10 @@ class HwElement(HwDescriptionEntity):
         for child in parent_elem:
             elem.append(child)
 
-        # Serialize hw_elements (list to container "HW-ELEMENTS")
-        if self.hw_elements:
-            wrapper = ET.Element("HW-ELEMENTS")
-            for item in self.hw_elements:
+        # Serialize hw_element_connections (list to container "HW-ELEMENT-CONNECTIONS")
+        if self.hw_element_connections:
+            wrapper = ET.Element("HW-ELEMENT-CONNECTIONS")
+            for item in self.hw_element_connections:
                 serialized = SerializationHelper.serialize_item(item, "HwElementConnector")
                 if serialized is not None:
                     wrapper.append(serialized)
@@ -136,15 +136,15 @@ class HwElement(HwDescriptionEntity):
         # First, call parent's deserialize to handle inherited attributes
         obj = super(HwElement, cls).deserialize(element)
 
-        # Parse hw_elements (list from container "HW-ELEMENTS")
-        obj.hw_elements = []
-        container = SerializationHelper.find_child_element(element, "HW-ELEMENTS")
+        # Parse hw_element_connections (list from container "HW-ELEMENT-CONNECTIONS")
+        obj.hw_element_connections = []
+        container = SerializationHelper.find_child_element(element, "HW-ELEMENT-CONNECTIONS")
         if container is not None:
             for child in container:
                 # Deserialize each child element dynamically based on its tag
                 child_value = SerializationHelper.deserialize_by_tag(child, None)
                 if child_value is not None:
-                    obj.hw_elements.append(child_value)
+                    obj.hw_element_connections.append(child_value)
 
         # Parse hw_pin_group_refs (list from container "HW-PIN-GROUP-REFS")
         obj.hw_pin_group_refs = []
@@ -191,8 +191,8 @@ class HwElementBuilder(HwDescriptionEntityBuilder):
         self._obj: HwElement = HwElement()
 
 
-    def with_hw_elements(self, items: list[HwElementConnector]) -> "HwElementBuilder":
-        """Set hw_elements list attribute.
+    def with_hw_element_connections(self, items: list[HwElementConnector]) -> "HwElementBuilder":
+        """Set hw_element_connections list attribute.
 
         Args:
             items: List of items to set
@@ -200,7 +200,7 @@ class HwElementBuilder(HwDescriptionEntityBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.hw_elements = list(items) if items else []
+        self._obj.hw_element_connections = list(items) if items else []
         return self
 
     def with_hw_pin_groups(self, items: list[HwPinGroup]) -> "HwElementBuilder":
@@ -228,8 +228,8 @@ class HwElementBuilder(HwDescriptionEntityBuilder):
         return self
 
 
-    def add_hw_element(self, item: HwElementConnector) -> "HwElementBuilder":
-        """Add a single item to hw_elements list.
+    def add_hw_element_connection(self, item: HwElementConnector) -> "HwElementBuilder":
+        """Add a single item to hw_element_connections list.
 
         Args:
             item: Item to add
@@ -237,16 +237,16 @@ class HwElementBuilder(HwDescriptionEntityBuilder):
         Returns:
             self for method chaining
         """
-        self._obj.hw_elements.append(item)
+        self._obj.hw_element_connections.append(item)
         return self
 
-    def clear_hw_elements(self) -> "HwElementBuilder":
-        """Clear all items from hw_elements list.
+    def clear_hw_element_connections(self) -> "HwElementBuilder":
+        """Clear all items from hw_element_connections list.
 
         Returns:
             self for method chaining
         """
-        self._obj.hw_elements = []
+        self._obj.hw_element_connections = []
         return self
 
     def add_hw_pin_group(self, item: HwPinGroup) -> "HwElementBuilder":

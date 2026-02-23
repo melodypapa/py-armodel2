@@ -360,18 +360,18 @@
         "frameTriggerings": {
           "type": "FrameTriggering",
           "multiplicity": "*",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "One frame triggering is defined for exactly one channel. have assigned an arbitrary number of signals/PDUs/frames are variable, the shall be variable, too. atpVariation"
         },
-        "iSignals": {
+        "iSignalTriggerings": {
           "type": "ISignalTriggering",
           "multiplicity": "*",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "One ISignalTriggering is defined for exactly one channel. may have assigned an arbitrary number of signals/PDUs/frames are variable, the shall be variable, too. atpVariation 719 Document ID 673: AUTOSAR_CP_TPS_DiagnosticExtractTemplate Template R23-11"
         },
-        "manageds": {
+        "managedPhysicalChannels": {
           "type": "PhysicalChannel",
           "multiplicity": "*",
           "kind": "ref",
@@ -381,8 +381,8 @@
         "pduTriggerings": {
           "type": "PduTriggering",
           "multiplicity": "*",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "One PduTriggering is defined for exactly one channel."
         }
       }
@@ -523,41 +523,41 @@
       ],
       "attributes": {
         "commController": {
-          "type": "any (Communication)",
+          "type": "CommunicationController",
           "multiplicity": "0..1",
           "kind": "ref",
           "is_ref": true,
           "note": "Reference to the communication controller. The"
         },
-        "createEcu": {
+        "createEcuWakeupSource": {
           "type": "Boolean",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "If this parameter is available and set to true then a"
         },
-        "dynamicPncTo": {
+        "dynamicPncToChannelMappingEnabled": {
           "type": "Boolean",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "Defines if this EcuInstance shall implement the dynamic"
         },
-        "ecuCommPorts": {
+        "ecuCommPortInstances": {
           "type": "CommConnectorPort",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "An ECUs reception or send ports. If signals/PDUs/frames are variable, the shall be variable, too. atpVariation"
         },
-        "pncFilterArrays": {
+        "pncFilterArrayMasks": {
           "type": "PositiveInteger",
           "multiplicity": "*",
           "kind": "attribute",
           "is_ref": false,
           "note": "Bit mask for NM-Pdu Payload used to configure the NM filter mask for the Network Management."
         },
-        "pncGatewayTypeEnum": {
+        "pncGatewayType": {
           "type": "PncGatewayTypeEnum",
           "multiplicity": "0..1",
           "kind": "attribute",

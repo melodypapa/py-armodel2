@@ -694,7 +694,8 @@
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
-          "note": "The purpose of this attribute is to provide a globally"
+          "note": "The purpose of this attribute is to provide a globally",
+          "decorator": "xml_attribute"
         }
       }
     },
