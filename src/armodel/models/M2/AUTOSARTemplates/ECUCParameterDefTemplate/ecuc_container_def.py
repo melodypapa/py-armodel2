@@ -15,8 +15,8 @@ from armodel.serialization.decorators import xml_element_name
 from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_definition_element import (
     EcucDefinitionElement,
 )
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-from armodel.serialization import SerializationHelper
+from armodel.models.M2.builder_base import BuilderBase
+from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_definition_element import EcucDefinitionElementBuilder
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -29,6 +29,8 @@ from armodel.models.M2.AUTOSARTemplates.ECUCParameterDefTemplate.ecuc_multiplici
     EcucMultiplicityConfigurationClass,
 )
 from abc import ABC, abstractmethod
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class EcucContainerDef(EcucDefinitionElement, ABC):
@@ -224,3 +226,201 @@ class EcucContainerDef(EcucDefinitionElement, ABC):
 
 
 
+class EcucContainerDefBuilder(EcucDefinitionElementBuilder):
+    """Builder for EcucContainerDef with fluent API."""
+
+    def __init__(self) -> None:
+        """Initialize builder with defaults."""
+        super().__init__()
+        self._obj: EcucContainerDef = EcucContainerDef()
+
+
+    def with_destination_uris(self, items: list[EcucDestinationUriDef]) -> "EcucContainerDefBuilder":
+        """Set destination_uris list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.destination_uris = list(items) if items else []
+        return self
+
+    def with_multiplicities(self, items: list[EcucMultiplicityConfigurationClass]) -> "EcucContainerDefBuilder":
+        """Set multiplicities list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.multiplicities = list(items) if items else []
+        return self
+
+    def with_origin(self, value: Optional[String]) -> "EcucContainerDefBuilder":
+        """Set origin attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.origin = value
+        return self
+
+    def with_post_build_variant(self, value: Optional[Boolean]) -> "EcucContainerDefBuilder":
+        """Set post_build_variant attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.post_build_variant = value
+        return self
+
+    def with_requires_index(self, value: Optional[Boolean]) -> "EcucContainerDefBuilder":
+        """Set requires_index attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.requires_index = value
+        return self
+
+
+    def add_destination_uri(self, item: EcucDestinationUriDef) -> "EcucContainerDefBuilder":
+        """Add a single item to destination_uris list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.destination_uris.append(item)
+        return self
+
+    def clear_destination_uris(self) -> "EcucContainerDefBuilder":
+        """Clear all items from destination_uris list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.destination_uris = []
+        return self
+
+    def add_multiplicitie(self, item: EcucMultiplicityConfigurationClass) -> "EcucContainerDefBuilder":
+        """Add a single item to multiplicities list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.multiplicities.append(item)
+        return self
+
+    def clear_multiplicities(self) -> "EcucContainerDefBuilder":
+        """Clear all items from multiplicities list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.multiplicities = []
+        return self
+
+
+
+    def _validate_instance(self) -> None:
+        """Validate the built instance based on settings."""
+        from typing import get_type_hints
+        from armodel.core import GlobalSettingsManager, BuilderValidationMode
+
+        settings = GlobalSettingsManager()
+        mode = settings.builder_validation
+
+        if mode == BuilderValidationMode.DISABLED:
+            return
+
+        # Get type hints for the class
+        try:
+            type_hints_dict = get_type_hints(type(self._obj))
+        except Exception:
+            # Cannot resolve type hints (e.g., forward references), skip validation
+            return
+
+        for attr_name, attr_type in type_hints_dict.items():
+            if attr_name.startswith("_"):
+                continue
+
+            value = getattr(self._obj, attr_name)
+
+            # Check required fields (not Optional)
+            if value is None and not self._is_optional_type(attr_type):
+                if mode == BuilderValidationMode.STRICT:
+                    raise ValueError(
+                        f"Required attribute '{attr_name}' is None"
+                    )
+                elif mode == BuilderValidationMode.LENIENT:
+                    import warnings
+                    warnings.warn(
+                        f"Required attribute '{attr_name}' is None",
+                        UserWarning
+                    )
+
+    @staticmethod
+    def _is_optional_type(type_hint: Any) -> bool:
+        """Check if a type hint is Optional.
+
+        Args:
+            type_hint: Type hint to check
+
+        Returns:
+            True if type is Optional, False otherwise
+        """
+        origin = getattr(type_hint, "__origin__", None)
+        return origin is Union
+
+    @staticmethod
+    def _get_expected_type(type_hint: Any) -> type:
+        """Extract expected type from type hint.
+
+        Args:
+            type_hint: Type hint to extract from
+
+        Returns:
+            Expected type
+        """
+        if isinstance(type_hint, str):
+            return object
+        origin = getattr(type_hint, "__origin__", None)
+        if origin is Union:
+            args = getattr(type_hint, "__args__", [])
+            for arg in args:
+                if arg is not type(None):
+                    return arg
+        elif origin is list:
+            args = getattr(type_hint, "__args__", [object])
+            return args[0] if args else object
+        return type_hint if isinstance(type_hint, type) else object
+
+
+    @abstractmethod
+    def build(self) -> EcucContainerDef:
+        """Build and return the EcucContainerDef instance (abstract)."""
+        raise NotImplementedError

@@ -70,7 +70,6 @@ class TestGlobalSettingsValidation:
 
     def test_warn_on_unrecognized_elements(self):
         """Test warn_on_unrecognized emits warning for unrecognized elements."""
-        import warnings
         import xml.etree.ElementTree as ET
         from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
         from armodel.serialization import SerializationHelper
@@ -124,7 +123,6 @@ class TestGlobalSettingsValidation:
 
     def test_strict_validation_raises_error(self):
         """Test strict_validation raises ValueError for unrecognized elements."""
-        import xml.etree.ElementTree as ET
         from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
         from armodel.serialization import SerializationHelper
 
@@ -170,7 +168,6 @@ class TestGlobalSettingsValidation:
 
     def test_no_warning_when_disabled(self):
         """Test no warning when warn_on_unrecognized is False."""
-        import warnings
         import xml.etree.ElementTree as ET
         from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
         from armodel.serialization import SerializationHelper

@@ -30,19 +30,13 @@ from armodel.models import (
     SwBaseTypeBuilder,
     BaseTypeDirectDefinition,
     # MSR - Computation Method
-    CompuMethod,
     CompuMethodBuilder,
-    Compu,
     CompuBuilder,
-    CompuScales,
     CompuScalesBuilder,
     CompuScale,
     CompuScaleBuilder,
-    CompuConst,
     CompuConstBuilder,
-    CompuScaleConstantContents,
     CompuScaleConstantContentsBuilder,
-    CompuConstTextContent,
     CompuConstTextContentBuilder,
     # MSR - Constraints
     DataConstr,
@@ -51,8 +45,6 @@ from armodel.models import (
     DataConstrRule,
     # MSR - Data Dictionary
     SwDataDefProps,
-    SwDataDefPropsBuilder,
-    # Primitive Types
     Limit,
     IntervalTypeEnum,
     VerbatimString,

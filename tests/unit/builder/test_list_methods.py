@@ -3,10 +3,7 @@
 import pytest
 
 from armodel.models import (
-    ImplementationDataType,
     ImplementationDataTypeBuilder,
-    SwBaseType,
-    SwBaseTypeBuilder,
 )
 from armodel.core import GlobalSettingsManager, BuilderValidationMode
 

@@ -14,8 +14,8 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.executable_entity import (
     ExecutableEntity,
 )
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-from armodel.serialization import SerializationHelper
+from armodel.models.M2.builder_base import BuilderBase
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.executable_entity import ExecutableEntityBuilder
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.BswModuleTemplate.BswBehavior.bsw_internal_triggering_point import (
     BswInternalTriggeringPoint,
@@ -42,6 +42,8 @@ from armodel.models.M2.AUTOSARTemplates.CommonStructure.TriggerDeclaration.trigg
     Trigger,
 )
 from abc import ABC, abstractmethod
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class BswModuleEntity(ExecutableEntity, ABC):
@@ -353,3 +355,352 @@ class BswModuleEntity(ExecutableEntity, ABC):
 
 
 
+class BswModuleEntityBuilder(ExecutableEntityBuilder):
+    """Builder for BswModuleEntity with fluent API."""
+
+    def __init__(self) -> None:
+        """Initialize builder with defaults."""
+        super().__init__()
+        self._obj: BswModuleEntity = BswModuleEntity()
+
+
+    def with_accessed_mode_groups(self, items: list[ModeDeclarationGroup]) -> "BswModuleEntityBuilder":
+        """Set accessed_mode_groups list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.accessed_mode_groups = list(items) if items else []
+        return self
+
+    def with_activation_points(self, items: list[BswInternalTriggeringPoint]) -> "BswModuleEntityBuilder":
+        """Set activation_points list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.activation_points = list(items) if items else []
+        return self
+
+    def with_call_points(self, items: list[BswModuleCallPoint]) -> "BswModuleEntityBuilder":
+        """Set call_points list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.call_points = list(items) if items else []
+        return self
+
+    def with_data_receive_points(self, items: list[BswVariableAccess]) -> "BswModuleEntityBuilder":
+        """Set data_receive_points list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.data_receive_points = list(items) if items else []
+        return self
+
+    def with_data_send_points(self, items: list[BswVariableAccess]) -> "BswModuleEntityBuilder":
+        """Set data_send_points list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.data_send_points = list(items) if items else []
+        return self
+
+    def with_implemented_entry(self, value: Optional[BswModuleEntry]) -> "BswModuleEntityBuilder":
+        """Set implemented_entry attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.implemented_entry = value
+        return self
+
+    def with_issued_triggers(self, items: list[Trigger]) -> "BswModuleEntityBuilder":
+        """Set issued_triggers list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.issued_triggers = list(items) if items else []
+        return self
+
+    def with_managed_mode_groups(self, items: list[ModeDeclarationGroupPrototype]) -> "BswModuleEntityBuilder":
+        """Set managed_mode_groups list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.managed_mode_groups = list(items) if items else []
+        return self
+
+    def with_scheduler_name_prefix(self, value: Optional[BswSchedulerNamePrefix]) -> "BswModuleEntityBuilder":
+        """Set scheduler_name_prefix attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.scheduler_name_prefix = value
+        return self
+
+
+    def add_accessed_mode_group(self, item: ModeDeclarationGroup) -> "BswModuleEntityBuilder":
+        """Add a single item to accessed_mode_groups list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.accessed_mode_groups.append(item)
+        return self
+
+    def clear_accessed_mode_groups(self) -> "BswModuleEntityBuilder":
+        """Clear all items from accessed_mode_groups list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.accessed_mode_groups = []
+        return self
+
+    def add_activation_point(self, item: BswInternalTriggeringPoint) -> "BswModuleEntityBuilder":
+        """Add a single item to activation_points list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.activation_points.append(item)
+        return self
+
+    def clear_activation_points(self) -> "BswModuleEntityBuilder":
+        """Clear all items from activation_points list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.activation_points = []
+        return self
+
+    def add_call_point(self, item: BswModuleCallPoint) -> "BswModuleEntityBuilder":
+        """Add a single item to call_points list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.call_points.append(item)
+        return self
+
+    def clear_call_points(self) -> "BswModuleEntityBuilder":
+        """Clear all items from call_points list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.call_points = []
+        return self
+
+    def add_data_receive_point(self, item: BswVariableAccess) -> "BswModuleEntityBuilder":
+        """Add a single item to data_receive_points list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.data_receive_points.append(item)
+        return self
+
+    def clear_data_receive_points(self) -> "BswModuleEntityBuilder":
+        """Clear all items from data_receive_points list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.data_receive_points = []
+        return self
+
+    def add_data_send_point(self, item: BswVariableAccess) -> "BswModuleEntityBuilder":
+        """Add a single item to data_send_points list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.data_send_points.append(item)
+        return self
+
+    def clear_data_send_points(self) -> "BswModuleEntityBuilder":
+        """Clear all items from data_send_points list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.data_send_points = []
+        return self
+
+    def add_issued_trigger(self, item: Trigger) -> "BswModuleEntityBuilder":
+        """Add a single item to issued_triggers list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.issued_triggers.append(item)
+        return self
+
+    def clear_issued_triggers(self) -> "BswModuleEntityBuilder":
+        """Clear all items from issued_triggers list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.issued_triggers = []
+        return self
+
+    def add_managed_mode_group(self, item: ModeDeclarationGroupPrototype) -> "BswModuleEntityBuilder":
+        """Add a single item to managed_mode_groups list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.managed_mode_groups.append(item)
+        return self
+
+    def clear_managed_mode_groups(self) -> "BswModuleEntityBuilder":
+        """Clear all items from managed_mode_groups list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.managed_mode_groups = []
+        return self
+
+
+
+    def _validate_instance(self) -> None:
+        """Validate the built instance based on settings."""
+        from typing import get_type_hints
+        from armodel.core import GlobalSettingsManager, BuilderValidationMode
+
+        settings = GlobalSettingsManager()
+        mode = settings.builder_validation
+
+        if mode == BuilderValidationMode.DISABLED:
+            return
+
+        # Get type hints for the class
+        try:
+            type_hints_dict = get_type_hints(type(self._obj))
+        except Exception:
+            # Cannot resolve type hints (e.g., forward references), skip validation
+            return
+
+        for attr_name, attr_type in type_hints_dict.items():
+            if attr_name.startswith("_"):
+                continue
+
+            value = getattr(self._obj, attr_name)
+
+            # Check required fields (not Optional)
+            if value is None and not self._is_optional_type(attr_type):
+                if mode == BuilderValidationMode.STRICT:
+                    raise ValueError(
+                        f"Required attribute '{attr_name}' is None"
+                    )
+                elif mode == BuilderValidationMode.LENIENT:
+                    import warnings
+                    warnings.warn(
+                        f"Required attribute '{attr_name}' is None",
+                        UserWarning
+                    )
+
+    @staticmethod
+    def _is_optional_type(type_hint: Any) -> bool:
+        """Check if a type hint is Optional.
+
+        Args:
+            type_hint: Type hint to check
+
+        Returns:
+            True if type is Optional, False otherwise
+        """
+        origin = getattr(type_hint, "__origin__", None)
+        return origin is Union
+
+    @staticmethod
+    def _get_expected_type(type_hint: Any) -> type:
+        """Extract expected type from type hint.
+
+        Args:
+            type_hint: Type hint to extract from
+
+        Returns:
+            Expected type
+        """
+        if isinstance(type_hint, str):
+            return object
+        origin = getattr(type_hint, "__origin__", None)
+        if origin is Union:
+            args = getattr(type_hint, "__args__", [])
+            for arg in args:
+                if arg is not type(None):
+                    return arg
+        elif origin is list:
+            args = getattr(type_hint, "__args__", [object])
+            return args[0] if args else object
+        return type_hint if isinstance(type_hint, type) else object
+
+
+    @abstractmethod
+    def build(self) -> BswModuleEntity:
+        """Build and return the BswModuleEntity instance (abstract)."""
+        raise NotImplementedError

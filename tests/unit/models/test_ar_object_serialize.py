@@ -73,7 +73,6 @@ class TestARObjectSerialize:
 
     def test_serialize_with_arprimitive_wrapping(self) -> None:
         """Test that ARPrimitive types are wrapped with correct tag names."""
-        from typing import Optional
 
         class TestObjectWithLimit(ARObject):
             def __init__(self):
@@ -115,7 +114,6 @@ class TestARObjectSerialize:
 
     def test_serialize_with_arprimitive_without_attributes(self) -> None:
         """Test that ARPrimitive without attributes is wrapped correctly."""
-        from typing import Optional
 
         class TestObjectWithLimit(ARObject):
             def __init__(self):

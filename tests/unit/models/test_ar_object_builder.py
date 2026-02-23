@@ -5,7 +5,6 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     ARObject,
     ARObjectBuilder,
 )
-from armodel.serialization import SerializationHelper
 
 
 class TestARObjectBuilder:

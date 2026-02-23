@@ -13,8 +13,8 @@ from armodel.serialization.decorators import xml_element_name
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-from armodel.serialization import SerializationHelper
+from armodel.models.M2.builder_base import BuilderBase
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import IdentifiableBuilder
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
@@ -29,6 +29,8 @@ from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.
     TagWithOptionalValue,
 )
 from abc import ABC, abstractmethod
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class AbstractServiceInstance(Identifiable, ABC):
@@ -202,3 +204,187 @@ class AbstractServiceInstance(Identifiable, ABC):
 
 
 
+class AbstractServiceInstanceBuilder(IdentifiableBuilder):
+    """Builder for AbstractServiceInstance with fluent API."""
+
+    def __init__(self) -> None:
+        """Initialize builder with defaults."""
+        super().__init__()
+        self._obj: AbstractServiceInstance = AbstractServiceInstance()
+
+
+    def with_capabilities(self, items: list[TagWithOptionalValue]) -> "AbstractServiceInstanceBuilder":
+        """Set capabilities list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.capabilities = list(items) if items else []
+        return self
+
+    def with_major_version(self, value: Optional[PositiveInteger]) -> "AbstractServiceInstanceBuilder":
+        """Set major_version attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.major_version = value
+        return self
+
+    def with_method(self, value: Optional[PduActivationRoutingGroup]) -> "AbstractServiceInstanceBuilder":
+        """Set method attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.method = value
+        return self
+
+    def with_routing_groups(self, items: list[SoAdRoutingGroup]) -> "AbstractServiceInstanceBuilder":
+        """Set routing_groups list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.routing_groups = list(items) if items else []
+        return self
+
+
+    def add_capabilitie(self, item: TagWithOptionalValue) -> "AbstractServiceInstanceBuilder":
+        """Add a single item to capabilities list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.capabilities.append(item)
+        return self
+
+    def clear_capabilities(self) -> "AbstractServiceInstanceBuilder":
+        """Clear all items from capabilities list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.capabilities = []
+        return self
+
+    def add_routing_group(self, item: SoAdRoutingGroup) -> "AbstractServiceInstanceBuilder":
+        """Add a single item to routing_groups list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.routing_groups.append(item)
+        return self
+
+    def clear_routing_groups(self) -> "AbstractServiceInstanceBuilder":
+        """Clear all items from routing_groups list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.routing_groups = []
+        return self
+
+
+
+    def _validate_instance(self) -> None:
+        """Validate the built instance based on settings."""
+        from typing import get_type_hints
+        from armodel.core import GlobalSettingsManager, BuilderValidationMode
+
+        settings = GlobalSettingsManager()
+        mode = settings.builder_validation
+
+        if mode == BuilderValidationMode.DISABLED:
+            return
+
+        # Get type hints for the class
+        try:
+            type_hints_dict = get_type_hints(type(self._obj))
+        except Exception:
+            # Cannot resolve type hints (e.g., forward references), skip validation
+            return
+
+        for attr_name, attr_type in type_hints_dict.items():
+            if attr_name.startswith("_"):
+                continue
+
+            value = getattr(self._obj, attr_name)
+
+            # Check required fields (not Optional)
+            if value is None and not self._is_optional_type(attr_type):
+                if mode == BuilderValidationMode.STRICT:
+                    raise ValueError(
+                        f"Required attribute '{attr_name}' is None"
+                    )
+                elif mode == BuilderValidationMode.LENIENT:
+                    import warnings
+                    warnings.warn(
+                        f"Required attribute '{attr_name}' is None",
+                        UserWarning
+                    )
+
+    @staticmethod
+    def _is_optional_type(type_hint: Any) -> bool:
+        """Check if a type hint is Optional.
+
+        Args:
+            type_hint: Type hint to check
+
+        Returns:
+            True if type is Optional, False otherwise
+        """
+        origin = getattr(type_hint, "__origin__", None)
+        return origin is Union
+
+    @staticmethod
+    def _get_expected_type(type_hint: Any) -> type:
+        """Extract expected type from type hint.
+
+        Args:
+            type_hint: Type hint to extract from
+
+        Returns:
+            Expected type
+        """
+        if isinstance(type_hint, str):
+            return object
+        origin = getattr(type_hint, "__origin__", None)
+        if origin is Union:
+            args = getattr(type_hint, "__args__", [])
+            for arg in args:
+                if arg is not type(None):
+                    return arg
+        elif origin is list:
+            args = getattr(type_hint, "__args__", [object])
+            return args[0] if args else object
+        return type_hint if isinstance(type_hint, type) else object
+
+
+    @abstractmethod
+    def build(self) -> AbstractServiceInstance:
+        """Build and return the AbstractServiceInstance instance (abstract)."""
+        raise NotImplementedError

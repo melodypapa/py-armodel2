@@ -18,8 +18,8 @@ from armodel.serialization.decorators import xml_element_name
 from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.internal_behavior import (
     InternalBehavior,
 )
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-from armodel.serialization import SerializationHelper
+from armodel.models.M2.builder_base import BuilderBase
+from armodel.models.M2.AUTOSARTemplates.CommonStructure.InternalBehavior.internal_behavior import InternalBehaviorBuilder
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
@@ -57,6 +57,8 @@ from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Datatype.DataPrototy
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.SwcInternalBehavior.VariantHandling.variation_point_proxy import (
     VariationPointProxy,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class SwcInternalBehavior(InternalBehavior):
@@ -544,208 +546,14 @@ class SwcInternalBehavior(InternalBehavior):
 
 
 
-class SwcInternalBehaviorBuilder:
+class SwcInternalBehaviorBuilder(InternalBehaviorBuilder):
     """Builder for SwcInternalBehavior with fluent API."""
 
     def __init__(self) -> None:
         """Initialize builder with defaults."""
-        pass
+        super().__init__()
         self._obj: SwcInternalBehavior = SwcInternalBehavior()
 
-
-    def with_short_name(self, value: Identifier) -> "SwcInternalBehaviorBuilder":
-        """Set short_name attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.short_name = value
-        return self
-
-    def with_short_name_fragments(self, items: list[ShortNameFragment]) -> "SwcInternalBehaviorBuilder":
-        """Set short_name_fragments list attribute.
-
-        Args:
-            items: List of items to set
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.short_name_fragments = list(items) if items else []
-        return self
-
-    def with_long_name(self, value: Optional[MultilanguageLongName]) -> "SwcInternalBehaviorBuilder":
-        """Set long_name attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.long_name = value
-        return self
-
-    def with_admin_data(self, value: Optional[AdminData]) -> "SwcInternalBehaviorBuilder":
-        """Set admin_data attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.admin_data = value
-        return self
-
-    def with_annotations(self, items: list[Annotation]) -> "SwcInternalBehaviorBuilder":
-        """Set annotations list attribute.
-
-        Args:
-            items: List of items to set
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.annotations = list(items) if items else []
-        return self
-
-    def with_desc(self, value: Optional[MultiLanguageOverviewParagraph]) -> "SwcInternalBehaviorBuilder":
-        """Set desc attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.desc = value
-        return self
-
-    def with_category(self, value: Optional[CategoryString]) -> "SwcInternalBehaviorBuilder":
-        """Set category attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.category = value
-        return self
-
-    def with_introduction(self, value: Optional[DocumentationBlock]) -> "SwcInternalBehaviorBuilder":
-        """Set introduction attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.introduction = value
-        return self
-
-    def with_uuid(self, value: Optional[String]) -> "SwcInternalBehaviorBuilder":
-        """Set uuid attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.uuid = value
-        return self
-
-    def with_constant_memoris(self, items: list[ParameterDataPrototype]) -> "SwcInternalBehaviorBuilder":
-        """Set constant_memoris list attribute.
-
-        Args:
-            items: List of items to set
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.constant_memoris = list(items) if items else []
-        return self
-
-    def with_constant_value_mappings(self, items: list[ConstantSpecificationMappingSet]) -> "SwcInternalBehaviorBuilder":
-        """Set constant_value_mappings list attribute.
-
-        Args:
-            items: List of items to set
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.constant_value_mappings = list(items) if items else []
-        return self
-
-    def with_data_type_mappings(self, items: list[DataTypeMappingSet]) -> "SwcInternalBehaviorBuilder":
-        """Set data_type_mappings list attribute.
-
-        Args:
-            items: List of items to set
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.data_type_mappings = list(items) if items else []
-        return self
-
-    def with_exclusive_areas(self, items: list[ExclusiveArea]) -> "SwcInternalBehaviorBuilder":
-        """Set exclusive_areas list attribute.
-
-        Args:
-            items: List of items to set
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.exclusive_areas = list(items) if items else []
-        return self
-
-    def with_exclusive_area_nesting_orders(self, items: list[ExclusiveAreaNestingOrder]) -> "SwcInternalBehaviorBuilder":
-        """Set exclusive_area_nesting_orders list attribute.
-
-        Args:
-            items: List of items to set
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.exclusive_area_nesting_orders = list(items) if items else []
-        return self
-
-    def with_static_memories(self, items: list[VariableDataPrototype]) -> "SwcInternalBehaviorBuilder":
-        """Set static_memories list attribute.
-
-        Args:
-            items: List of items to set
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.static_memories = list(items) if items else []
-        return self
 
     def with_ar_typed_pers(self, items: list[VariableDataPrototype]) -> "SwcInternalBehaviorBuilder":
         """Set ar_typed_pers list attribute.
@@ -769,6 +577,18 @@ class SwcInternalBehaviorBuilder:
             self for method chaining
         """
         self._obj.events = list(items) if items else []
+        return self
+
+    def with_exclusive_areas(self, items: list[SwcExclusiveAreaPolicy]) -> "SwcInternalBehaviorBuilder":
+        """Set exclusive_areas list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.exclusive_areas = list(items) if items else []
         return self
 
     def with_explicit_inters(self, items: list[VariableDataPrototype]) -> "SwcInternalBehaviorBuilder":
@@ -930,174 +750,6 @@ class SwcInternalBehaviorBuilder:
         return self
 
 
-    def add_short_name_fragment(self, item: ShortNameFragment) -> "SwcInternalBehaviorBuilder":
-        """Add a single item to short_name_fragments list.
-
-        Args:
-            item: Item to add
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.short_name_fragments.append(item)
-        return self
-
-    def clear_short_name_fragments(self) -> "SwcInternalBehaviorBuilder":
-        """Clear all items from short_name_fragments list.
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.short_name_fragments = []
-        return self
-
-    def add_annotation(self, item: Annotation) -> "SwcInternalBehaviorBuilder":
-        """Add a single item to annotations list.
-
-        Args:
-            item: Item to add
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.annotations.append(item)
-        return self
-
-    def clear_annotations(self) -> "SwcInternalBehaviorBuilder":
-        """Clear all items from annotations list.
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.annotations = []
-        return self
-
-    def add_constant_memori(self, item: ParameterDataPrototype) -> "SwcInternalBehaviorBuilder":
-        """Add a single item to constant_memoris list.
-
-        Args:
-            item: Item to add
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.constant_memoris.append(item)
-        return self
-
-    def clear_constant_memoris(self) -> "SwcInternalBehaviorBuilder":
-        """Clear all items from constant_memoris list.
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.constant_memoris = []
-        return self
-
-    def add_constant_value_mapping(self, item: ConstantSpecificationMappingSet) -> "SwcInternalBehaviorBuilder":
-        """Add a single item to constant_value_mappings list.
-
-        Args:
-            item: Item to add
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.constant_value_mappings.append(item)
-        return self
-
-    def clear_constant_value_mappings(self) -> "SwcInternalBehaviorBuilder":
-        """Clear all items from constant_value_mappings list.
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.constant_value_mappings = []
-        return self
-
-    def add_data_type_mapping(self, item: DataTypeMappingSet) -> "SwcInternalBehaviorBuilder":
-        """Add a single item to data_type_mappings list.
-
-        Args:
-            item: Item to add
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.data_type_mappings.append(item)
-        return self
-
-    def clear_data_type_mappings(self) -> "SwcInternalBehaviorBuilder":
-        """Clear all items from data_type_mappings list.
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.data_type_mappings = []
-        return self
-
-    def add_exclusive_area(self, item: ExclusiveArea) -> "SwcInternalBehaviorBuilder":
-        """Add a single item to exclusive_areas list.
-
-        Args:
-            item: Item to add
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.exclusive_areas.append(item)
-        return self
-
-    def clear_exclusive_areas(self) -> "SwcInternalBehaviorBuilder":
-        """Clear all items from exclusive_areas list.
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.exclusive_areas = []
-        return self
-
-    def add_exclusive_area_nesting_order(self, item: ExclusiveAreaNestingOrder) -> "SwcInternalBehaviorBuilder":
-        """Add a single item to exclusive_area_nesting_orders list.
-
-        Args:
-            item: Item to add
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.exclusive_area_nesting_orders.append(item)
-        return self
-
-    def clear_exclusive_area_nesting_orders(self) -> "SwcInternalBehaviorBuilder":
-        """Clear all items from exclusive_area_nesting_orders list.
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.exclusive_area_nesting_orders = []
-        return self
-
-    def add_static_memorie(self, item: VariableDataPrototype) -> "SwcInternalBehaviorBuilder":
-        """Add a single item to static_memories list.
-
-        Args:
-            item: Item to add
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.static_memories.append(item)
-        return self
-
-    def clear_static_memories(self) -> "SwcInternalBehaviorBuilder":
-        """Clear all items from static_memories list.
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.static_memories = []
-        return self
-
     def add_ar_typed_per(self, item: VariableDataPrototype) -> "SwcInternalBehaviorBuilder":
         """Add a single item to ar_typed_pers list.
 
@@ -1138,6 +790,27 @@ class SwcInternalBehaviorBuilder:
             self for method chaining
         """
         self._obj.events = []
+        return self
+
+    def add_exclusive_area(self, item: SwcExclusiveAreaPolicy) -> "SwcInternalBehaviorBuilder":
+        """Add a single item to exclusive_areas list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.exclusive_areas.append(item)
+        return self
+
+    def clear_exclusive_areas(self) -> "SwcInternalBehaviorBuilder":
+        """Clear all items from exclusive_areas list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.exclusive_areas = []
         return self
 
     def add_explicit_inter(self, item: VariableDataPrototype) -> "SwcInternalBehaviorBuilder":
@@ -1392,110 +1065,6 @@ class SwcInternalBehaviorBuilder:
         self._obj.variation_point_proxies = []
         return self
 
-
-    @staticmethod
-    def _coerce_to_int(value: Any) -> int:
-        """Coerce value to int.
-
-        Args:
-            value: Value to coerce
-
-        Returns:
-            Integer value
-
-        Raises:
-            ValueError: If value cannot be coerced to int
-        """
-        if isinstance(value, int):
-            return value
-        if isinstance(value, str) and value.isdigit():
-            return int(value)
-        if isinstance(value, float):
-            return int(value)
-        if isinstance(value, bool):
-            return int(value)
-        raise ValueError(f"Cannot coerce {type(value).__name__} to int: {value}")
-
-    @staticmethod
-    def _coerce_to_float(value: Any) -> float:
-        """Coerce value to float.
-
-        Args:
-            value: Value to coerce
-
-        Returns:
-            Float value
-
-        Raises:
-            ValueError: If value cannot be coerced to float
-        """
-        if isinstance(value, float):
-            return value
-        if isinstance(value, int):
-            return float(value)
-        if isinstance(value, str):
-            try:
-                return float(value)
-            except ValueError:
-                pass
-        raise ValueError(f"Cannot coerce {type(value).__name__} to float: {value}")
-
-    @staticmethod
-    def _coerce_to_bool(value: Any) -> bool:
-        """Coerce value to bool.
-
-        Args:
-            value: Value to coerce
-
-        Returns:
-            Boolean value
-
-        Raises:
-            ValueError: If value cannot be coerced to bool
-        """
-        if isinstance(value, bool):
-            return value
-        if isinstance(value, int):
-            return bool(value)
-        if isinstance(value, str):
-            if value.lower() in ("true", "1", "yes"):
-                return True
-            if value.lower() in ("false", "0", "no"):
-                return False
-        raise ValueError(f"Cannot coerce {type(value).__name__} to bool: {value}")
-
-    @staticmethod
-    def _coerce_to_str(value: Any) -> str:
-        """Coerce value to str.
-
-        Args:
-            value: Value to coerce
-
-        Returns:
-            String value
-        """
-        return str(value)
-
-
-    @staticmethod
-    def _coerce_to_list(value: Any, item_type: str) -> list:
-        """Coerce value to list.
-
-        Args:
-            value: Value to coerce
-            item_type: Expected item type (for error messages)
-
-        Returns:
-            List value
-
-        Raises:
-            ValueError: If value cannot be coerced to list
-        """
-        if isinstance(value, list):
-            return value
-        if isinstance(value, tuple):
-            return list(value)
-        raise ValueError(f"Cannot coerce {type(value).__name__} to list[{item_type}]: {value}")
 
 
     def _validate_instance(self) -> None:

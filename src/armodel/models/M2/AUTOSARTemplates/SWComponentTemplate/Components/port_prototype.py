@@ -25,8 +25,8 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-from armodel.serialization import SerializationHelper
+from armodel.models.M2.builder_base import BuilderBase
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import IdentifiableBuilder
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.ApplicationAttributes.client_server_annotation import (
     ClientServerAnnotation,
@@ -55,6 +55,8 @@ if TYPE_CHECKING:
 
 
 from abc import ABC, abstractmethod
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class PortPrototype(Identifiable, ABC):
@@ -305,3 +307,338 @@ class PortPrototype(Identifiable, ABC):
 
 
 
+class PortPrototypeBuilder(IdentifiableBuilder):
+    """Builder for PortPrototype with fluent API."""
+
+    def __init__(self) -> None:
+        """Initialize builder with defaults."""
+        super().__init__()
+        self._obj: PortPrototype = PortPrototype()
+
+
+    def with_client_servers(self, items: list[ClientServerAnnotation]) -> "PortPrototypeBuilder":
+        """Set client_servers list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.client_servers = list(items) if items else []
+        return self
+
+    def with_delegated_port(self, value: Optional[DelegatedPortAnnotation]) -> "PortPrototypeBuilder":
+        """Set delegated_port attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.delegated_port = value
+        return self
+
+    def with_io_hw_abstraction_server_annotations(self, items: list[IoHwAbstractionServerAnnotation]) -> "PortPrototypeBuilder":
+        """Set io_hw_abstraction_server_annotations list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.io_hw_abstraction_server_annotations = list(items) if items else []
+        return self
+
+    def with_mode_port_annotations(self, items: list[ModePortAnnotation]) -> "PortPrototypeBuilder":
+        """Set mode_port_annotations list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.mode_port_annotations = list(items) if items else []
+        return self
+
+    def with_nv_data_port_annotations(self, items: list[NvDataPortAnnotation]) -> "PortPrototypeBuilder":
+        """Set nv_data_port_annotations list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.nv_data_port_annotations = list(items) if items else []
+        return self
+
+    def with_parameter_ports(self, items: list[ParameterPortAnnotation]) -> "PortPrototypeBuilder":
+        """Set parameter_ports list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.parameter_ports = list(items) if items else []
+        return self
+
+    def with_sender_receivers(self, items: list[any (SenderReceiver)]) -> "PortPrototypeBuilder":
+        """Set sender_receivers list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.sender_receivers = list(items) if items else []
+        return self
+
+    def with_trigger_port_annotations(self, items: list[TriggerPortAnnotation]) -> "PortPrototypeBuilder":
+        """Set trigger_port_annotations list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.trigger_port_annotations = list(items) if items else []
+        return self
+
+
+    def add_client_server(self, item: ClientServerAnnotation) -> "PortPrototypeBuilder":
+        """Add a single item to client_servers list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.client_servers.append(item)
+        return self
+
+    def clear_client_servers(self) -> "PortPrototypeBuilder":
+        """Clear all items from client_servers list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.client_servers = []
+        return self
+
+    def add_io_hw_abstraction_server_annotation(self, item: IoHwAbstractionServerAnnotation) -> "PortPrototypeBuilder":
+        """Add a single item to io_hw_abstraction_server_annotations list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.io_hw_abstraction_server_annotations.append(item)
+        return self
+
+    def clear_io_hw_abstraction_server_annotations(self) -> "PortPrototypeBuilder":
+        """Clear all items from io_hw_abstraction_server_annotations list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.io_hw_abstraction_server_annotations = []
+        return self
+
+    def add_mode_port_annotation(self, item: ModePortAnnotation) -> "PortPrototypeBuilder":
+        """Add a single item to mode_port_annotations list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.mode_port_annotations.append(item)
+        return self
+
+    def clear_mode_port_annotations(self) -> "PortPrototypeBuilder":
+        """Clear all items from mode_port_annotations list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.mode_port_annotations = []
+        return self
+
+    def add_nv_data_port_annotation(self, item: NvDataPortAnnotation) -> "PortPrototypeBuilder":
+        """Add a single item to nv_data_port_annotations list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.nv_data_port_annotations.append(item)
+        return self
+
+    def clear_nv_data_port_annotations(self) -> "PortPrototypeBuilder":
+        """Clear all items from nv_data_port_annotations list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.nv_data_port_annotations = []
+        return self
+
+    def add_parameter_port(self, item: ParameterPortAnnotation) -> "PortPrototypeBuilder":
+        """Add a single item to parameter_ports list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.parameter_ports.append(item)
+        return self
+
+    def clear_parameter_ports(self) -> "PortPrototypeBuilder":
+        """Clear all items from parameter_ports list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.parameter_ports = []
+        return self
+
+    def add_sender_receiver(self, item: any (SenderReceiver)) -> "PortPrototypeBuilder":
+        """Add a single item to sender_receivers list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.sender_receivers.append(item)
+        return self
+
+    def clear_sender_receivers(self) -> "PortPrototypeBuilder":
+        """Clear all items from sender_receivers list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.sender_receivers = []
+        return self
+
+    def add_trigger_port_annotation(self, item: TriggerPortAnnotation) -> "PortPrototypeBuilder":
+        """Add a single item to trigger_port_annotations list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.trigger_port_annotations.append(item)
+        return self
+
+    def clear_trigger_port_annotations(self) -> "PortPrototypeBuilder":
+        """Clear all items from trigger_port_annotations list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.trigger_port_annotations = []
+        return self
+
+
+
+    def _validate_instance(self) -> None:
+        """Validate the built instance based on settings."""
+        from typing import get_type_hints
+        from armodel.core import GlobalSettingsManager, BuilderValidationMode
+
+        settings = GlobalSettingsManager()
+        mode = settings.builder_validation
+
+        if mode == BuilderValidationMode.DISABLED:
+            return
+
+        # Get type hints for the class
+        try:
+            type_hints_dict = get_type_hints(type(self._obj))
+        except Exception:
+            # Cannot resolve type hints (e.g., forward references), skip validation
+            return
+
+        for attr_name, attr_type in type_hints_dict.items():
+            if attr_name.startswith("_"):
+                continue
+
+            value = getattr(self._obj, attr_name)
+
+            # Check required fields (not Optional)
+            if value is None and not self._is_optional_type(attr_type):
+                if mode == BuilderValidationMode.STRICT:
+                    raise ValueError(
+                        f"Required attribute '{attr_name}' is None"
+                    )
+                elif mode == BuilderValidationMode.LENIENT:
+                    import warnings
+                    warnings.warn(
+                        f"Required attribute '{attr_name}' is None",
+                        UserWarning
+                    )
+
+    @staticmethod
+    def _is_optional_type(type_hint: Any) -> bool:
+        """Check if a type hint is Optional.
+
+        Args:
+            type_hint: Type hint to check
+
+        Returns:
+            True if type is Optional, False otherwise
+        """
+        origin = getattr(type_hint, "__origin__", None)
+        return origin is Union
+
+    @staticmethod
+    def _get_expected_type(type_hint: Any) -> type:
+        """Extract expected type from type hint.
+
+        Args:
+            type_hint: Type hint to extract from
+
+        Returns:
+            Expected type
+        """
+        if isinstance(type_hint, str):
+            return object
+        origin = getattr(type_hint, "__origin__", None)
+        if origin is Union:
+            args = getattr(type_hint, "__args__", [])
+            for arg in args:
+                if arg is not type(None):
+                    return arg
+        elif origin is list:
+            args = getattr(type_hint, "__args__", [object])
+            return args[0] if args else object
+        return type_hint if isinstance(type_hint, type) else object
+
+
+    @abstractmethod
+    def build(self) -> PortPrototype:
+        """Build and return the PortPrototype instance (abstract)."""
+        raise NotImplementedError

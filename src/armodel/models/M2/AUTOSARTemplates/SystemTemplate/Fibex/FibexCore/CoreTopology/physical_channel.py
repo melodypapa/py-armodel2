@@ -14,8 +14,8 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-from armodel.serialization import SerializationHelper
+from armodel.models.M2.builder_base import BuilderBase
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import IdentifiableBuilder
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreTopology.communication_connector import (
     CommunicationConnector,
@@ -30,6 +30,8 @@ from armodel.models.M2.AUTOSARTemplates.SystemTemplate.Fibex.FibexCore.CoreCommu
     PduTriggering,
 )
 from abc import ABC, abstractmethod
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class PhysicalChannel(Identifiable, ABC):
@@ -266,3 +268,258 @@ class PhysicalChannel(Identifiable, ABC):
 
 
 
+class PhysicalChannelBuilder(IdentifiableBuilder):
+    """Builder for PhysicalChannel with fluent API."""
+
+    def __init__(self) -> None:
+        """Initialize builder with defaults."""
+        super().__init__()
+        self._obj: PhysicalChannel = PhysicalChannel()
+
+
+    def with_comm_connectors(self, items: list[CommunicationConnector]) -> "PhysicalChannelBuilder":
+        """Set comm_connectors list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.comm_connectors = list(items) if items else []
+        return self
+
+    def with_frame_triggerings(self, items: list[FrameTriggering]) -> "PhysicalChannelBuilder":
+        """Set frame_triggerings list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.frame_triggerings = list(items) if items else []
+        return self
+
+    def with_i_signals(self, items: list[ISignalTriggering]) -> "PhysicalChannelBuilder":
+        """Set i_signals list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.i_signals = list(items) if items else []
+        return self
+
+    def with_manageds(self, items: list[PhysicalChannel]) -> "PhysicalChannelBuilder":
+        """Set manageds list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.manageds = list(items) if items else []
+        return self
+
+    def with_pdu_triggerings(self, items: list[PduTriggering]) -> "PhysicalChannelBuilder":
+        """Set pdu_triggerings list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.pdu_triggerings = list(items) if items else []
+        return self
+
+
+    def add_comm_connector(self, item: CommunicationConnector) -> "PhysicalChannelBuilder":
+        """Add a single item to comm_connectors list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.comm_connectors.append(item)
+        return self
+
+    def clear_comm_connectors(self) -> "PhysicalChannelBuilder":
+        """Clear all items from comm_connectors list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.comm_connectors = []
+        return self
+
+    def add_frame_triggering(self, item: FrameTriggering) -> "PhysicalChannelBuilder":
+        """Add a single item to frame_triggerings list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.frame_triggerings.append(item)
+        return self
+
+    def clear_frame_triggerings(self) -> "PhysicalChannelBuilder":
+        """Clear all items from frame_triggerings list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.frame_triggerings = []
+        return self
+
+    def add_i_signal(self, item: ISignalTriggering) -> "PhysicalChannelBuilder":
+        """Add a single item to i_signals list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.i_signals.append(item)
+        return self
+
+    def clear_i_signals(self) -> "PhysicalChannelBuilder":
+        """Clear all items from i_signals list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.i_signals = []
+        return self
+
+    def add_managed(self, item: PhysicalChannel) -> "PhysicalChannelBuilder":
+        """Add a single item to manageds list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.manageds.append(item)
+        return self
+
+    def clear_manageds(self) -> "PhysicalChannelBuilder":
+        """Clear all items from manageds list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.manageds = []
+        return self
+
+    def add_pdu_triggering(self, item: PduTriggering) -> "PhysicalChannelBuilder":
+        """Add a single item to pdu_triggerings list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.pdu_triggerings.append(item)
+        return self
+
+    def clear_pdu_triggerings(self) -> "PhysicalChannelBuilder":
+        """Clear all items from pdu_triggerings list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.pdu_triggerings = []
+        return self
+
+
+
+    def _validate_instance(self) -> None:
+        """Validate the built instance based on settings."""
+        from typing import get_type_hints
+        from armodel.core import GlobalSettingsManager, BuilderValidationMode
+
+        settings = GlobalSettingsManager()
+        mode = settings.builder_validation
+
+        if mode == BuilderValidationMode.DISABLED:
+            return
+
+        # Get type hints for the class
+        try:
+            type_hints_dict = get_type_hints(type(self._obj))
+        except Exception:
+            # Cannot resolve type hints (e.g., forward references), skip validation
+            return
+
+        for attr_name, attr_type in type_hints_dict.items():
+            if attr_name.startswith("_"):
+                continue
+
+            value = getattr(self._obj, attr_name)
+
+            # Check required fields (not Optional)
+            if value is None and not self._is_optional_type(attr_type):
+                if mode == BuilderValidationMode.STRICT:
+                    raise ValueError(
+                        f"Required attribute '{attr_name}' is None"
+                    )
+                elif mode == BuilderValidationMode.LENIENT:
+                    import warnings
+                    warnings.warn(
+                        f"Required attribute '{attr_name}' is None",
+                        UserWarning
+                    )
+
+    @staticmethod
+    def _is_optional_type(type_hint: Any) -> bool:
+        """Check if a type hint is Optional.
+
+        Args:
+            type_hint: Type hint to check
+
+        Returns:
+            True if type is Optional, False otherwise
+        """
+        origin = getattr(type_hint, "__origin__", None)
+        return origin is Union
+
+    @staticmethod
+    def _get_expected_type(type_hint: Any) -> type:
+        """Extract expected type from type hint.
+
+        Args:
+            type_hint: Type hint to extract from
+
+        Returns:
+            Expected type
+        """
+        if isinstance(type_hint, str):
+            return object
+        origin = getattr(type_hint, "__origin__", None)
+        if origin is Union:
+            args = getattr(type_hint, "__args__", [])
+            for arg in args:
+                if arg is not type(None):
+                    return arg
+        elif origin is list:
+            args = getattr(type_hint, "__args__", [object])
+            return args[0] if args else object
+        return type_hint if isinstance(type_hint, type) else object
+
+
+    @abstractmethod
+    def build(self) -> PhysicalChannel:
+        """Build and return the PhysicalChannel instance (abstract)."""
+        raise NotImplementedError

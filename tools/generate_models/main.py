@@ -112,6 +112,14 @@ def generate_all_models(
             filename = dir_path / f"{to_snake_case(class_name)}.py"
 
             # Generate class code
+            # Get builder imports first (to add at top of file)
+            builder_imports, builder_class_code = generate_builder_code(
+                type_def,
+                hierarchy_info,
+                package_data,
+                include_members,
+            )
+
             class_code = generate_class_code(
                 type_def,
                 hierarchy_info,
@@ -120,16 +128,11 @@ def generate_all_models(
                 json_file_path,
                 dependency_graph,
                 force_type_checking_imports,
-            )
-            builder_code = generate_builder_code(
-                type_def,
-                hierarchy_info,
-                package_data,
-                include_members,
+                builder_imports,  # Pass builder imports to be added at top
             )
 
-            # Write to file
-            full_code = class_code + "\n\n" + builder_code
+            # Write to file (class code already includes builder imports at top)
+            full_code = class_code + "\n\n" + builder_class_code
             filename.write_text(full_code)
             total_generated += 1
 

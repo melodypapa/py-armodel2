@@ -12,14 +12,16 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_class import (
     DiagnosticServiceClass,
 )
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-from armodel.serialization import SerializationHelper
+from armodel.models.M2.builder_base import BuilderBase
+from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.CommonService.diagnostic_service_class import DiagnosticServiceClassBuilder
 from armodel.models.M2.AUTOSARTemplates.DiagnosticExtract.Dcm.DiagnosticService.DynamicallyDefineData import (
     DiagnosticHandleDDDIConfigurationEnum,
 )
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     Boolean,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class DiagnosticDynamicallyDefineDataIdentifierClass(DiagnosticServiceClass):
@@ -147,136 +149,14 @@ class DiagnosticDynamicallyDefineDataIdentifierClass(DiagnosticServiceClass):
 
 
 
-class DiagnosticDynamicallyDefineDataIdentifierClassBuilder:
+class DiagnosticDynamicallyDefineDataIdentifierClassBuilder(DiagnosticServiceClassBuilder):
     """Builder for DiagnosticDynamicallyDefineDataIdentifierClass with fluent API."""
 
     def __init__(self) -> None:
         """Initialize builder with defaults."""
-        pass
+        super().__init__()
         self._obj: DiagnosticDynamicallyDefineDataIdentifierClass = DiagnosticDynamicallyDefineDataIdentifierClass()
 
-
-    def with_short_name(self, value: Identifier) -> "DiagnosticDynamicallyDefineDataIdentifierClassBuilder":
-        """Set short_name attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not False:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.short_name = value
-        return self
-
-    def with_short_name_fragments(self, items: list[ShortNameFragment]) -> "DiagnosticDynamicallyDefineDataIdentifierClassBuilder":
-        """Set short_name_fragments list attribute.
-
-        Args:
-            items: List of items to set
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.short_name_fragments = list(items) if items else []
-        return self
-
-    def with_long_name(self, value: Optional[MultilanguageLongName]) -> "DiagnosticDynamicallyDefineDataIdentifierClassBuilder":
-        """Set long_name attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.long_name = value
-        return self
-
-    def with_admin_data(self, value: Optional[AdminData]) -> "DiagnosticDynamicallyDefineDataIdentifierClassBuilder":
-        """Set admin_data attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.admin_data = value
-        return self
-
-    def with_annotations(self, items: list[Annotation]) -> "DiagnosticDynamicallyDefineDataIdentifierClassBuilder":
-        """Set annotations list attribute.
-
-        Args:
-            items: List of items to set
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.annotations = list(items) if items else []
-        return self
-
-    def with_desc(self, value: Optional[MultiLanguageOverviewParagraph]) -> "DiagnosticDynamicallyDefineDataIdentifierClassBuilder":
-        """Set desc attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.desc = value
-        return self
-
-    def with_category(self, value: Optional[CategoryString]) -> "DiagnosticDynamicallyDefineDataIdentifierClassBuilder":
-        """Set category attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.category = value
-        return self
-
-    def with_introduction(self, value: Optional[DocumentationBlock]) -> "DiagnosticDynamicallyDefineDataIdentifierClassBuilder":
-        """Set introduction attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.introduction = value
-        return self
-
-    def with_uuid(self, value: Optional[String]) -> "DiagnosticDynamicallyDefineDataIdentifierClassBuilder":
-        """Set uuid attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.uuid = value
-        return self
 
     def with_check_per(self, value: Optional[Boolean]) -> "DiagnosticDynamicallyDefineDataIdentifierClassBuilder":
         """Set check_per attribute.
@@ -319,48 +199,6 @@ class DiagnosticDynamicallyDefineDataIdentifierClassBuilder:
         return self
 
 
-    def add_short_name_fragment(self, item: ShortNameFragment) -> "DiagnosticDynamicallyDefineDataIdentifierClassBuilder":
-        """Add a single item to short_name_fragments list.
-
-        Args:
-            item: Item to add
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.short_name_fragments.append(item)
-        return self
-
-    def clear_short_name_fragments(self) -> "DiagnosticDynamicallyDefineDataIdentifierClassBuilder":
-        """Clear all items from short_name_fragments list.
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.short_name_fragments = []
-        return self
-
-    def add_annotation(self, item: Annotation) -> "DiagnosticDynamicallyDefineDataIdentifierClassBuilder":
-        """Add a single item to annotations list.
-
-        Args:
-            item: Item to add
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.annotations.append(item)
-        return self
-
-    def clear_annotations(self) -> "DiagnosticDynamicallyDefineDataIdentifierClassBuilder":
-        """Clear all items from annotations list.
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.annotations = []
-        return self
-
     def add_subfunction(self, item: any (DiagnosticDynamically)) -> "DiagnosticDynamicallyDefineDataIdentifierClassBuilder":
         """Add a single item to subfunctions list.
 
@@ -382,110 +220,6 @@ class DiagnosticDynamicallyDefineDataIdentifierClassBuilder:
         self._obj.subfunctions = []
         return self
 
-
-    @staticmethod
-    def _coerce_to_int(value: Any) -> int:
-        """Coerce value to int.
-
-        Args:
-            value: Value to coerce
-
-        Returns:
-            Integer value
-
-        Raises:
-            ValueError: If value cannot be coerced to int
-        """
-        if isinstance(value, int):
-            return value
-        if isinstance(value, str) and value.isdigit():
-            return int(value)
-        if isinstance(value, float):
-            return int(value)
-        if isinstance(value, bool):
-            return int(value)
-        raise ValueError(f"Cannot coerce {type(value).__name__} to int: {value}")
-
-    @staticmethod
-    def _coerce_to_float(value: Any) -> float:
-        """Coerce value to float.
-
-        Args:
-            value: Value to coerce
-
-        Returns:
-            Float value
-
-        Raises:
-            ValueError: If value cannot be coerced to float
-        """
-        if isinstance(value, float):
-            return value
-        if isinstance(value, int):
-            return float(value)
-        if isinstance(value, str):
-            try:
-                return float(value)
-            except ValueError:
-                pass
-        raise ValueError(f"Cannot coerce {type(value).__name__} to float: {value}")
-
-    @staticmethod
-    def _coerce_to_bool(value: Any) -> bool:
-        """Coerce value to bool.
-
-        Args:
-            value: Value to coerce
-
-        Returns:
-            Boolean value
-
-        Raises:
-            ValueError: If value cannot be coerced to bool
-        """
-        if isinstance(value, bool):
-            return value
-        if isinstance(value, int):
-            return bool(value)
-        if isinstance(value, str):
-            if value.lower() in ("true", "1", "yes"):
-                return True
-            if value.lower() in ("false", "0", "no"):
-                return False
-        raise ValueError(f"Cannot coerce {type(value).__name__} to bool: {value}")
-
-    @staticmethod
-    def _coerce_to_str(value: Any) -> str:
-        """Coerce value to str.
-
-        Args:
-            value: Value to coerce
-
-        Returns:
-            String value
-        """
-        return str(value)
-
-
-    @staticmethod
-    def _coerce_to_list(value: Any, item_type: str) -> list:
-        """Coerce value to list.
-
-        Args:
-            value: Value to coerce
-            item_type: Expected item type (for error messages)
-
-        Returns:
-            List value
-
-        Raises:
-            ValueError: If value cannot be coerced to list
-        """
-        if isinstance(value, list):
-            return value
-        if isinstance(value, tuple):
-            return list(value)
-        raise ValueError(f"Cannot coerce {type(value).__name__} to list[{item_type}]: {value}")
 
 
     def _validate_instance(self) -> None:

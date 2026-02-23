@@ -12,11 +12,13 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.receiver_com_spec import (
     ReceiverComSpec,
 )
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-from armodel.serialization import SerializationHelper
+from armodel.models.M2.builder_base import BuilderBase
+from armodel.models.M2.AUTOSARTemplates.SWComponentTemplate.Communication.receiver_com_spec import ReceiverComSpecBuilder
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.PrimitiveTypes import (
     PositiveInteger,
 )
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class QueuedReceiverComSpec(ReceiverComSpec):
@@ -100,108 +102,14 @@ class QueuedReceiverComSpec(ReceiverComSpec):
 
 
 
-class QueuedReceiverComSpecBuilder:
+class QueuedReceiverComSpecBuilder(ReceiverComSpecBuilder):
     """Builder for QueuedReceiverComSpec with fluent API."""
 
     def __init__(self) -> None:
         """Initialize builder with defaults."""
-        pass
+        super().__init__()
         self._obj: QueuedReceiverComSpec = QueuedReceiverComSpec()
 
-
-    def with_composite_networks(self, items: list[CompositeNetworkRepresentation]) -> "QueuedReceiverComSpecBuilder":
-        """Set composite_networks list attribute.
-
-        Args:
-            items: List of items to set
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.composite_networks = list(items) if items else []
-        return self
-
-    def with_data_element(self, value: Optional[AutosarDataPrototype]) -> "QueuedReceiverComSpecBuilder":
-        """Set data_element attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.data_element = value
-        return self
-
-    def with_handle_out_of_range(self, value: Optional[any (HandleOutOfRange)]) -> "QueuedReceiverComSpecBuilder":
-        """Set handle_out_of_range attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.handle_out_of_range = value
-        return self
-
-    def with_max_delta(self, value: Optional[PositiveInteger]) -> "QueuedReceiverComSpecBuilder":
-        """Set max_delta attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.max_delta = value
-        return self
-
-    def with_sync_counter_init(self, value: Optional[PositiveInteger]) -> "QueuedReceiverComSpecBuilder":
-        """Set sync_counter_init attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.sync_counter_init = value
-        return self
-
-    def with_transformation_coms(self, items: list[any (TransformationCom)]) -> "QueuedReceiverComSpecBuilder":
-        """Set transformation_coms list attribute.
-
-        Args:
-            items: List of items to set
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.transformation_coms = list(items) if items else []
-        return self
-
-    def with_uses_end_to_end(self, value: Optional[Boolean]) -> "QueuedReceiverComSpecBuilder":
-        """Set uses_end_to_end attribute.
-
-        Args:
-            value: Value to set
-
-        Returns:
-            self for method chaining
-        """
-        if value is None and not True:
-            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
-        self._obj.uses_end_to_end = value
-        return self
 
     def with_queue_length(self, value: Optional[PositiveInteger]) -> "QueuedReceiverComSpecBuilder":
         """Set queue_length attribute.
@@ -218,152 +126,6 @@ class QueuedReceiverComSpecBuilder:
         return self
 
 
-    def add_composite_network(self, item: CompositeNetworkRepresentation) -> "QueuedReceiverComSpecBuilder":
-        """Add a single item to composite_networks list.
-
-        Args:
-            item: Item to add
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.composite_networks.append(item)
-        return self
-
-    def clear_composite_networks(self) -> "QueuedReceiverComSpecBuilder":
-        """Clear all items from composite_networks list.
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.composite_networks = []
-        return self
-
-    def add_transformation_com(self, item: any (TransformationCom)) -> "QueuedReceiverComSpecBuilder":
-        """Add a single item to transformation_coms list.
-
-        Args:
-            item: Item to add
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.transformation_coms.append(item)
-        return self
-
-    def clear_transformation_coms(self) -> "QueuedReceiverComSpecBuilder":
-        """Clear all items from transformation_coms list.
-
-        Returns:
-            self for method chaining
-        """
-        self._obj.transformation_coms = []
-        return self
-
-
-    @staticmethod
-    def _coerce_to_int(value: Any) -> int:
-        """Coerce value to int.
-
-        Args:
-            value: Value to coerce
-
-        Returns:
-            Integer value
-
-        Raises:
-            ValueError: If value cannot be coerced to int
-        """
-        if isinstance(value, int):
-            return value
-        if isinstance(value, str) and value.isdigit():
-            return int(value)
-        if isinstance(value, float):
-            return int(value)
-        if isinstance(value, bool):
-            return int(value)
-        raise ValueError(f"Cannot coerce {type(value).__name__} to int: {value}")
-
-    @staticmethod
-    def _coerce_to_float(value: Any) -> float:
-        """Coerce value to float.
-
-        Args:
-            value: Value to coerce
-
-        Returns:
-            Float value
-
-        Raises:
-            ValueError: If value cannot be coerced to float
-        """
-        if isinstance(value, float):
-            return value
-        if isinstance(value, int):
-            return float(value)
-        if isinstance(value, str):
-            try:
-                return float(value)
-            except ValueError:
-                pass
-        raise ValueError(f"Cannot coerce {type(value).__name__} to float: {value}")
-
-    @staticmethod
-    def _coerce_to_bool(value: Any) -> bool:
-        """Coerce value to bool.
-
-        Args:
-            value: Value to coerce
-
-        Returns:
-            Boolean value
-
-        Raises:
-            ValueError: If value cannot be coerced to bool
-        """
-        if isinstance(value, bool):
-            return value
-        if isinstance(value, int):
-            return bool(value)
-        if isinstance(value, str):
-            if value.lower() in ("true", "1", "yes"):
-                return True
-            if value.lower() in ("false", "0", "no"):
-                return False
-        raise ValueError(f"Cannot coerce {type(value).__name__} to bool: {value}")
-
-    @staticmethod
-    def _coerce_to_str(value: Any) -> str:
-        """Coerce value to str.
-
-        Args:
-            value: Value to coerce
-
-        Returns:
-            String value
-        """
-        return str(value)
-
-
-    @staticmethod
-    def _coerce_to_list(value: Any, item_type: str) -> list:
-        """Coerce value to list.
-
-        Args:
-            value: Value to coerce
-            item_type: Expected item type (for error messages)
-
-        Returns:
-            List value
-
-        Raises:
-            ValueError: If value cannot be coerced to list
-        """
-        if isinstance(value, list):
-            return value
-        if isinstance(value, tuple):
-            return list(value)
-        raise ValueError(f"Cannot coerce {type(value).__name__} to list[{item_type}]: {value}")
 
 
     def _validate_instance(self) -> None:

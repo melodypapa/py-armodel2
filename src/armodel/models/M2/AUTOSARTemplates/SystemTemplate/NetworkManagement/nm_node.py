@@ -12,8 +12,8 @@ import xml.etree.ElementTree as ET
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import (
     Identifiable,
 )
-from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
-from armodel.serialization import SerializationHelper
+from armodel.models.M2.builder_base import BuilderBase
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.Identifiable.identifiable import IdentifiableBuilder
 from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_ref import ARRef
 from armodel.models.M2.AUTOSARTemplates.SystemTemplate.NetworkManagement import (
     NmCoordinatorRoleEnum,
@@ -35,6 +35,8 @@ if TYPE_CHECKING:
 
 
 from abc import ABC, abstractmethod
+from armodel.models.M2.AUTOSARTemplates.GenericStructure.GeneralTemplateClasses.ArObject.ar_object import ARObject
+from armodel.serialization import SerializationHelper
 
 
 class NmNode(Identifiable, ABC):
@@ -298,3 +300,243 @@ class NmNode(Identifiable, ABC):
 
 
 
+class NmNodeBuilder(IdentifiableBuilder):
+    """Builder for NmNode with fluent API."""
+
+    def __init__(self) -> None:
+        """Initialize builder with defaults."""
+        super().__init__()
+        self._obj: NmNode = NmNode()
+
+
+    def with_controller(self, value: Optional[any (Communication)]) -> "NmNodeBuilder":
+        """Set controller attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.controller = value
+        return self
+
+    def with_nm_coord_cluster(self, value: Optional[PositiveInteger]) -> "NmNodeBuilder":
+        """Set nm_coord_cluster attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.nm_coord_cluster = value
+        return self
+
+    def with_nm_coordinator_role(self, value: Optional[NmCoordinatorRoleEnum]) -> "NmNodeBuilder":
+        """Set nm_coordinator_role attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.nm_coordinator_role = value
+        return self
+
+    def with_nm_if_ecu(self, value: Optional[NmEcu]) -> "NmNodeBuilder":
+        """Set nm_if_ecu attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.nm_if_ecu = value
+        return self
+
+    def with_nm_node_id(self, value: Optional[Integer]) -> "NmNodeBuilder":
+        """Set nm_node_id attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.nm_node_id = value
+        return self
+
+    def with_nm_passive(self, value: Optional[Boolean]) -> "NmNodeBuilder":
+        """Set nm_passive attribute.
+
+        Args:
+            value: Value to set
+
+        Returns:
+            self for method chaining
+        """
+        if value is None and not True:
+            raise ValueError("Attribute '" + snake_attr_name + "' is required and cannot be None")
+        self._obj.nm_passive = value
+        return self
+
+    def with_rx_nm_pdus(self, items: list[NmPdu]) -> "NmNodeBuilder":
+        """Set rx_nm_pdus list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.rx_nm_pdus = list(items) if items else []
+        return self
+
+    def with_tx_nm_pdus(self, items: list[NmPdu]) -> "NmNodeBuilder":
+        """Set tx_nm_pdus list attribute.
+
+        Args:
+            items: List of items to set
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.tx_nm_pdus = list(items) if items else []
+        return self
+
+
+    def add_rx_nm_pdu(self, item: NmPdu) -> "NmNodeBuilder":
+        """Add a single item to rx_nm_pdus list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.rx_nm_pdus.append(item)
+        return self
+
+    def clear_rx_nm_pdus(self) -> "NmNodeBuilder":
+        """Clear all items from rx_nm_pdus list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.rx_nm_pdus = []
+        return self
+
+    def add_tx_nm_pdu(self, item: NmPdu) -> "NmNodeBuilder":
+        """Add a single item to tx_nm_pdus list.
+
+        Args:
+            item: Item to add
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.tx_nm_pdus.append(item)
+        return self
+
+    def clear_tx_nm_pdus(self) -> "NmNodeBuilder":
+        """Clear all items from tx_nm_pdus list.
+
+        Returns:
+            self for method chaining
+        """
+        self._obj.tx_nm_pdus = []
+        return self
+
+
+
+    def _validate_instance(self) -> None:
+        """Validate the built instance based on settings."""
+        from typing import get_type_hints
+        from armodel.core import GlobalSettingsManager, BuilderValidationMode
+
+        settings = GlobalSettingsManager()
+        mode = settings.builder_validation
+
+        if mode == BuilderValidationMode.DISABLED:
+            return
+
+        # Get type hints for the class
+        try:
+            type_hints_dict = get_type_hints(type(self._obj))
+        except Exception:
+            # Cannot resolve type hints (e.g., forward references), skip validation
+            return
+
+        for attr_name, attr_type in type_hints_dict.items():
+            if attr_name.startswith("_"):
+                continue
+
+            value = getattr(self._obj, attr_name)
+
+            # Check required fields (not Optional)
+            if value is None and not self._is_optional_type(attr_type):
+                if mode == BuilderValidationMode.STRICT:
+                    raise ValueError(
+                        f"Required attribute '{attr_name}' is None"
+                    )
+                elif mode == BuilderValidationMode.LENIENT:
+                    import warnings
+                    warnings.warn(
+                        f"Required attribute '{attr_name}' is None",
+                        UserWarning
+                    )
+
+    @staticmethod
+    def _is_optional_type(type_hint: Any) -> bool:
+        """Check if a type hint is Optional.
+
+        Args:
+            type_hint: Type hint to check
+
+        Returns:
+            True if type is Optional, False otherwise
+        """
+        origin = getattr(type_hint, "__origin__", None)
+        return origin is Union
+
+    @staticmethod
+    def _get_expected_type(type_hint: Any) -> type:
+        """Extract expected type from type hint.
+
+        Args:
+            type_hint: Type hint to extract from
+
+        Returns:
+            Expected type
+        """
+        if isinstance(type_hint, str):
+            return object
+        origin = getattr(type_hint, "__origin__", None)
+        if origin is Union:
+            args = getattr(type_hint, "__args__", [])
+            for arg in args:
+                if arg is not type(None):
+                    return arg
+        elif origin is list:
+            args = getattr(type_hint, "__args__", [object])
+            return args[0] if args else object
+        return type_hint if isinstance(type_hint, type) else object
+
+
+    @abstractmethod
+    def build(self) -> NmNode:
+        """Build and return the NmNode instance (abstract)."""
+        raise NotImplementedError

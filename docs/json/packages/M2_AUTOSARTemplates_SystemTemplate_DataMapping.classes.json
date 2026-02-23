@@ -87,25 +87,25 @@
         }
       ],
       "attributes": {
-        "dataElementSystemInstanceRef": {
+        "dataElement": {
           "type": "VariableDataPrototype",
           "multiplicity": "0..1",
           "kind": "ref",
           "is_ref": true,
           "note": "by: VariableDataPrototypeIn"
         },
-        "senderToSignal": {
+        "senderToSignalTextTableMapping": {
           "type": "TextTableMapping",
           "multiplicity": "0..1",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "This mapping allows for the text-table translation between sending DataPrototype that is defined in the Port and the physicalProps defined for the System"
         },
-        "signalTo": {
+        "signalToReceiverTextTableMapping": {
           "type": "TextTableMapping",
           "multiplicity": "0..1",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "This mapping allows for the text-table translation between physicalProps defined for the SystemSignal and a DataPrototype that is defined in the Port"
         },
         "systemSignal": {
