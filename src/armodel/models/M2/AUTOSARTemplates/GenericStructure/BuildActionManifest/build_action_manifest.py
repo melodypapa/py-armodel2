@@ -165,8 +165,8 @@ class BuildActionManifest(ARElement):
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                child_element_tag = SerializationHelper.strip_namespace(child.tag)
+                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
@@ -181,8 +181,8 @@ class BuildActionManifest(ARElement):
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                child_element_tag = SerializationHelper.strip_namespace(child.tag)
+                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:
@@ -197,8 +197,8 @@ class BuildActionManifest(ARElement):
         if container is not None:
             for child in container:
                 # Check if child is a reference element (ends with -REF or -TREF)
-                child_tag = SerializationHelper.strip_namespace(child.tag)
-                if child_tag.endswith("-REF") or child_tag.endswith("-TREF"):
+                child_element_tag = SerializationHelper.strip_namespace(child.tag)
+                if child_element_tag.endswith("-REF") or child_element_tag.endswith("-TREF"):
                     # Use ARRef.deserialize() for reference elements
                     child_value = ARRef.deserialize(child)
                 else:

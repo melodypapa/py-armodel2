@@ -39,11 +39,11 @@
         }
       ],
       "attributes": {
-        "swRecord": {
+        "swRecordLayoutGroup": {
           "type": "SwRecordLayoutGroup",
           "multiplicity": "0..1",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "This is the top level record layout group."
         }
       }
@@ -165,20 +165,63 @@
           "is_ref": false,
           "note": "This attribute specifies a name which can be used e.g."
         },
-        "swGenericAxisParam": {
-          "type": "SwGenericAxisParam",
+        "swGenericAxisParamType": {
+          "type": "SwGenericAxisParamType",
           "multiplicity": "0..1",
           "kind": "ref",
           "is_ref": true,
           "note": "This association allows to specify record layout groups to iterate over generic axis parameters. For example, if the parameter is an array, the record layout iterate over this array. axis referred to by swRecordLayoutGroup be a generic axis in which the referenced Sw aggregated."
         },
-        "swRecord": {
+        "swRecordLayoutComponent": {
+          "type": "Identifier",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This attribute specifies the end point for the iteration. Negative values are also possible, i.e. the value -4 counts the fourth value from the end. If this property is not iteration ends at \"-1\" which is the last element."
+        },
+        "swRecordLayoutGroupAxis": {
+          "type": "AxisIndexType ",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This attribute specifies the end point for the iteration. Negative values are also possible, i.e. the value -4 counts the fourth value from the end. If this property is not iteration ends at \"-1\" which is the last element."
+        },
+        "swRecordLayoutGroupContentType": {
+          "type": "swRecordLayoutGroupContent",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This attribute specifies the end point for the iteration. Negative values are also possible, i.e. the value -4 counts the fourth value from the end. If this property is not iteration ends at \"-1\" which is the last element."
+        },
+        "swRecordLayoutGroupIndex": {
+          "type": "NameToken",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This attribute specifies the end point for the iteration. Negative values are also possible, i.e. the value -4 counts the fourth value from the end. If this property is not iteration ends at \"-1\" which is the last element."
+        },
+        "swRecordLayoutGroupStep": {
+          "type": "Integer",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This attribute specifies the end point for the iteration. Negative values are also possible, i.e. the value -4 counts the fourth value from the end. If this property is not iteration ends at \"-1\" which is the last element."
+        },
+        "swRecordLayoutGroupFrom": {
+          "type": "RecordLayoutIteratorPoint",
+          "multiplicity": "0..1",
+          "kind": "attribute",
+          "is_ref": false,
+          "note": "This attribute specifies the end point for the iteration. Negative values are also possible, i.e. the value -4 counts the fourth value from the end. If this property is not iteration ends at \"-1\" which is the last element."
+        },
+        "swRecordLayoutGroupTo": {
           "type": "RecordLayoutIteratorPoint",
           "multiplicity": "0..1",
           "kind": "attribute",
           "is_ref": false,
           "note": "This attribute specifies the end point for the iteration. Negative values are also possible, i.e. the value -4 counts the fourth value from the end. If this property is not iteration ends at \"-1\" which is the last element."
         }
+        
       }
     },
     {
