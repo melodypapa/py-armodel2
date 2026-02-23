@@ -374,11 +374,11 @@
           "is_ref": false,
           "note": "The used length (in bytes) of the referencing frame."
         },
-        "pduToFrames": {
+        "pduToFrameMappings": {
           "type": "PduToFrameMapping",
           "multiplicity": "*",
-          "kind": "ref",
-          "is_ref": true,
+          "kind": "aggr",
+          "is_ref": false,
           "note": "A frames layout as a sequence of Pdus. The content of a frame can be variable. atpVariation"
         }
       }

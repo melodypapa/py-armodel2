@@ -218,8 +218,8 @@ class FlexrayFrameBuilder:
         self._obj.frame_length = value
         return self
 
-    def with_pdu_to_frames(self, items: list[PduToFrameMapping]) -> "FlexrayFrameBuilder":
-        """Set pdu_to_frames list attribute.
+    def with_pdu_to_frame_mappings(self, items: list[PduToFrameMapping]) -> "FlexrayFrameBuilder":
+        """Set pdu_to_frame_mappings list attribute.
 
         Args:
             items: List of items to set
@@ -227,7 +227,7 @@ class FlexrayFrameBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.pdu_to_frames = list(items) if items else []
+        self._obj.pdu_to_frame_mappings = list(items) if items else []
         return self
 
 
@@ -273,8 +273,8 @@ class FlexrayFrameBuilder:
         self._obj.annotations = []
         return self
 
-    def add_pdu_to_frame(self, item: PduToFrameMapping) -> "FlexrayFrameBuilder":
-        """Add a single item to pdu_to_frames list.
+    def add_pdu_to_frame_mapping(self, item: PduToFrameMapping) -> "FlexrayFrameBuilder":
+        """Add a single item to pdu_to_frame_mappings list.
 
         Args:
             item: Item to add
@@ -282,16 +282,16 @@ class FlexrayFrameBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.pdu_to_frames.append(item)
+        self._obj.pdu_to_frame_mappings.append(item)
         return self
 
-    def clear_pdu_to_frames(self) -> "FlexrayFrameBuilder":
-        """Clear all items from pdu_to_frames list.
+    def clear_pdu_to_frame_mappings(self) -> "FlexrayFrameBuilder":
+        """Clear all items from pdu_to_frame_mappings list.
 
         Returns:
             self for method chaining
         """
-        self._obj.pdu_to_frames = []
+        self._obj.pdu_to_frame_mappings = []
         return self
 
 

@@ -301,7 +301,7 @@
           "is_ref": false,
           "note": "The data is sent via the BSW Scheduler. atpVariation"
         },
-        "implementedEntries": {
+        "implementedEntry": {
           "type": "BswModuleEntry",
           "multiplicity": "0..1",
           "kind": "ref",

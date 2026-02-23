@@ -312,8 +312,8 @@ class Ieee1722TpEthernetFrameBuilder:
         self._obj.frame_length = value
         return self
 
-    def with_pdu_to_frames(self, items: list[PduToFrameMapping]) -> "Ieee1722TpEthernetFrameBuilder":
-        """Set pdu_to_frames list attribute.
+    def with_pdu_to_frame_mappings(self, items: list[PduToFrameMapping]) -> "Ieee1722TpEthernetFrameBuilder":
+        """Set pdu_to_frame_mappings list attribute.
 
         Args:
             items: List of items to set
@@ -321,7 +321,7 @@ class Ieee1722TpEthernetFrameBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.pdu_to_frames = list(items) if items else []
+        self._obj.pdu_to_frame_mappings = list(items) if items else []
         return self
 
     def with_relative(self, value: Optional[TimeValue]) -> "Ieee1722TpEthernetFrameBuilder":
@@ -423,8 +423,8 @@ class Ieee1722TpEthernetFrameBuilder:
         self._obj.annotations = []
         return self
 
-    def add_pdu_to_frame(self, item: PduToFrameMapping) -> "Ieee1722TpEthernetFrameBuilder":
-        """Add a single item to pdu_to_frames list.
+    def add_pdu_to_frame_mapping(self, item: PduToFrameMapping) -> "Ieee1722TpEthernetFrameBuilder":
+        """Add a single item to pdu_to_frame_mappings list.
 
         Args:
             item: Item to add
@@ -432,16 +432,16 @@ class Ieee1722TpEthernetFrameBuilder:
         Returns:
             self for method chaining
         """
-        self._obj.pdu_to_frames.append(item)
+        self._obj.pdu_to_frame_mappings.append(item)
         return self
 
-    def clear_pdu_to_frames(self) -> "Ieee1722TpEthernetFrameBuilder":
-        """Clear all items from pdu_to_frames list.
+    def clear_pdu_to_frame_mappings(self) -> "Ieee1722TpEthernetFrameBuilder":
+        """Clear all items from pdu_to_frame_mappings list.
 
         Returns:
             self for method chaining
         """
-        self._obj.pdu_to_frames = []
+        self._obj.pdu_to_frame_mappings = []
         return self
 
 

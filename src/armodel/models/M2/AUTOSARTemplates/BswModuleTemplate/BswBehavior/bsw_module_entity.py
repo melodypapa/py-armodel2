@@ -61,7 +61,7 @@ class BswModuleEntity(ExecutableEntity, ABC):
     call_points: list[BswModuleCallPoint]
     data_receive_points: list[BswVariableAccess]
     data_send_points: list[BswVariableAccess]
-    implemented_entries_ref: Optional[ARRef]
+    implemented_entry_ref: Optional[ARRef]
     issued_trigger_refs: list[ARRef]
     managed_mode_group_refs: list[ARRef]
     scheduler_name_prefix_ref: Optional[ARRef]
@@ -73,7 +73,7 @@ class BswModuleEntity(ExecutableEntity, ABC):
         self.call_points: list[BswModuleCallPoint] = []
         self.data_receive_points: list[BswVariableAccess] = []
         self.data_send_points: list[BswVariableAccess] = []
-        self.implemented_entries_ref: Optional[ARRef] = None
+        self.implemented_entry_ref: Optional[ARRef] = None
         self.issued_trigger_refs: list[ARRef] = []
         self.managed_mode_group_refs: list[ARRef] = []
         self.scheduler_name_prefix_ref: Optional[ARRef] = None
@@ -166,12 +166,12 @@ class BswModuleEntity(ExecutableEntity, ABC):
             if len(wrapper) > 0:
                 elem.append(wrapper)
 
-        # Serialize implemented_entries_ref
-        if self.implemented_entries_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.implemented_entries_ref, "BswModuleEntry")
+        # Serialize implemented_entry_ref
+        if self.implemented_entry_ref is not None:
+            serialized = SerializationHelper.serialize_item(self.implemented_entry_ref, "BswModuleEntry")
             if serialized is not None:
                 # Wrap with correct tag
-                wrapped = ET.Element("IMPLEMENTED-ENTRIES-REF")
+                wrapped = ET.Element("IMPLEMENTED-ENTRY-REF")
                 if hasattr(serialized, 'attrib'):
                     wrapped.attrib.update(serialized.attrib)
                     if serialized.text:
@@ -305,11 +305,11 @@ class BswModuleEntity(ExecutableEntity, ABC):
                 if child_value is not None:
                     obj.data_send_points.append(child_value)
 
-        # Parse implemented_entries_ref
-        child = SerializationHelper.find_child_element(element, "IMPLEMENTED-ENTRIES-REF")
+        # Parse implemented_entry_ref
+        child = SerializationHelper.find_child_element(element, "IMPLEMENTED-ENTRY-REF")
         if child is not None:
-            implemented_entries_ref_value = ARRef.deserialize(child)
-            obj.implemented_entries_ref = implemented_entries_ref_value
+            implemented_entry_ref_value = ARRef.deserialize(child)
+            obj.implemented_entry_ref = implemented_entry_ref_value
 
         # Parse issued_trigger_refs (list from container "ISSUED-TRIGGER-REFS")
         obj.issued_trigger_refs = []
