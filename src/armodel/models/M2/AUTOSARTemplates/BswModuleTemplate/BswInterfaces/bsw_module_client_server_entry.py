@@ -48,68 +48,28 @@ class BswModuleClientServerEntry(Referrable):
     def serialize(self) -> ET.Element:
         """Serialize BswModuleClientServerEntry to XML element.
 
+        BswModuleClientServerEntry is serialized as BSW-MODULE-ENTRY-REF-CONDITIONAL
+        element containing BSW-MODULE-ENTRY-REF inner element.
+
         Returns:
             xml.etree.ElementTree.Element representing this object
         """
-        # Get XML tag name for this class
-        tag = SerializationHelper.get_xml_tag(self.__class__)
-        elem = ET.Element(tag)
+        # Serialize as BSW-MODULE-ENTRY-REF-CONDITIONAL element
+        elem = ET.Element("BSW-MODULE-ENTRY-REF-CONDITIONAL")
 
-        # First, call parent's serialize to handle inherited attributes
-        parent_elem = super(BswModuleClientServerEntry, self).serialize()
-
-        # Copy all attributes from parent element
-        elem.attrib.update(parent_elem.attrib)
-
-        # Copy text from parent element
-        if parent_elem.text:
-            elem.text = parent_elem.text
-
-        # Copy all children from parent element
-        for child in parent_elem:
-            elem.append(child)
-
-        # Serialize encapsulated_entry_ref
+        # Serialize encapsulated_entry_ref as BSW-MODULE-ENTRY-REF
         if self.encapsulated_entry_ref is not None:
-            serialized = SerializationHelper.serialize_item(self.encapsulated_entry_ref, "BswModuleEntry")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("ENCAPSULATED-ENTRY-REF")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
-
-        # Serialize is_reentrant
-        if self.is_reentrant is not None:
-            serialized = SerializationHelper.serialize_item(self.is_reentrant, "Boolean")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IS-REENTRANT")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
-
-        # Serialize is_synchronous
-        if self.is_synchronous is not None:
-            serialized = SerializationHelper.serialize_item(self.is_synchronous, "Boolean")
-            if serialized is not None:
-                # Wrap with correct tag
-                wrapped = ET.Element("IS-SYNCHRONOUS")
-                if hasattr(serialized, 'attrib'):
-                    wrapped.attrib.update(serialized.attrib)
-                    if serialized.text:
-                        wrapped.text = serialized.text
-                for child in serialized:
-                    wrapped.append(child)
-                elem.append(wrapped)
+            inner_ref = ET.Element("BSW-MODULE-ENTRY-REF")
+            # Set DEST attribute
+            if hasattr(self.encapsulated_entry_ref, '_dest') and self.encapsulated_entry_ref._dest is not None:
+                inner_ref.set("DEST", self.encapsulated_entry_ref._dest)
+            else:
+                inner_ref.set("DEST", "BSW-MODULE-ENTRY")
+            # Set text content (reference path)
+            if hasattr(self.encapsulated_entry_ref, '_value') and self.encapsulated_entry_ref._value is not None:
+                inner_ref.text = self.encapsulated_entry_ref._value
+            # Append inner ref to element
+            elem.append(inner_ref)
 
         return elem
 
@@ -117,32 +77,23 @@ class BswModuleClientServerEntry(Referrable):
     def deserialize(cls, element: ET.Element) -> "BswModuleClientServerEntry":
         """Deserialize XML element to BswModuleClientServerEntry object.
 
+        BswModuleClientServerEntry is deserialized from BSW-MODULE-ENTRY-REF-CONDITIONAL
+        element containing BSW-MODULE-ENTRY-REF inner element.
+
         Args:
-            element: XML element to deserialize from
+            element: XML element to deserialize from (BSW-MODULE-ENTRY-REF-CONDITIONAL)
 
         Returns:
             Deserialized BswModuleClientServerEntry object
         """
-        # First, call parent's deserialize to handle inherited attributes
-        obj = super(BswModuleClientServerEntry, cls).deserialize(element)
+        obj = cls.__new__(cls)
+        obj.__init__()
 
-        # Parse encapsulated_entry_ref
-        child = SerializationHelper.find_child_element(element, "ENCAPSULATED-ENTRY-REF")
-        if child is not None:
-            encapsulated_entry_ref_value = ARRef.deserialize(child)
+        # Extract BSW-MODULE-ENTRY-REF from the wrapper
+        inner_ref = SerializationHelper.find_child_element(element, "BSW-MODULE-ENTRY-REF")
+        if inner_ref is not None:
+            encapsulated_entry_ref_value = ARRef.deserialize(inner_ref)
             obj.encapsulated_entry_ref = encapsulated_entry_ref_value
-
-        # Parse is_reentrant
-        child = SerializationHelper.find_child_element(element, "IS-REENTRANT")
-        if child is not None:
-            is_reentrant_value = child.text
-            obj.is_reentrant = is_reentrant_value
-
-        # Parse is_synchronous
-        child = SerializationHelper.find_child_element(element, "IS-SYNCHRONOUS")
-        if child is not None:
-            is_synchronous_value = child.text
-            obj.is_synchronous = is_synchronous_value
 
         return obj
 

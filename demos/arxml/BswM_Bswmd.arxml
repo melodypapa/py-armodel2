@@ -9,15 +9,6 @@
           <ELEMENTS>
             <BSW-MODULE-DESCRIPTION>
               <SHORT-NAME>BswM</SHORT-NAME>
-              <MODULE-ID>34</MODULE-ID>
-              <PROVIDED-ENTRYS>
-                <BSW-MODULE-ENTRY-REF-CONDITIONAL>
-                  <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_BswM/BswModuleEntrys/BswM_Init</BSW-MODULE-ENTRY-REF>
-                </BSW-MODULE-ENTRY-REF-CONDITIONAL>
-                <BSW-MODULE-ENTRY-REF-CONDITIONAL>
-                  <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_BswM/BswModuleEntrys/BswM_MainFunction</BSW-MODULE-ENTRY-REF>
-                </BSW-MODULE-ENTRY-REF-CONDITIONAL>
-              </PROVIDED-ENTRYS>
               <INTERNAL-BEHAVIORS>
                 <BSW-INTERNAL-BEHAVIOR>
                   <SHORT-NAME>InternalBehavior_0</SHORT-NAME>
@@ -48,6 +39,15 @@
                   </EVENTS>
                 </BSW-INTERNAL-BEHAVIOR>
               </INTERNAL-BEHAVIORS>
+              <MODULE-ID>34</MODULE-ID>
+              <PROVIDED-ENTRYS>
+                <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+                  <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_BswM/BswModuleEntrys/BswM_Init</BSW-MODULE-ENTRY-REF>
+                </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+                <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+                  <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_BswM/BswModuleEntrys/BswM_MainFunction</BSW-MODULE-ENTRY-REF>
+                </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              </PROVIDED-ENTRYS>
             </BSW-MODULE-DESCRIPTION>
           </ELEMENTS>
         </AR-PACKAGE>
